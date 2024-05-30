@@ -1,0 +1,933 @@
+ 
+
+Software
+Product
+Description
+
+___________________________________________________________________
+
+PRODUCT NAME:  Compaq ACMS for OpenVMS, Version 4.4A   SPD 25.50.20
+               (Application Control and Management Sys-
+               tem)
+
+DESCRIPTION
+
+Compaq ACMS for OpenVMS (ACMS) is a transaction processing (TP) mon-
+itor designed for the Compaq OpenVMS operating systems. ACMS works with
+other Compaq Computer Corporation commercial application software prod-
+ucts to provide users with a complete and customizable development and
+run-time environment for transaction processing applications such as
+order tracking, accounting and billing, banking, shop floor control,
+and insurance claims processing.
+
+ACMS software helps users through the entire application development
+life cycle, including the installation, planning, design, development,
+testing, implementation, management, and maintenance of complex TP ap-
+plications. ACMS provides a special-purpose application definition lan-
+guage for the structured definition of TP application functions and
+run-time characteristics.
+
+ACMS makes efficient use of the OpenVMS operating systems and asso-
+ciated hardware resources, making ACMS particularly suited to mission-
+critical applications that require high throughput and performance.
+
+ACMS integrates with the following Compaq and third-party layered prod-
+ucts:
+
+o  Compaq TP Desktop Connector, formerly called ACMS Desktop, for mul-
+   tivendor client access to ACMS applications
+
+o  Compaq TP Web Connector for Web browser-based access to ACMS ap-
+   plications
+
+o  Compaq DECforms or Compaq TDMS for forms management (Note: Usage
+   of TDMS requires an OpenVMS VAX system.)
+
+                                                       January 2002
+
+ 
+
+o  All OpenVMS languages that conform to the OpenVMS Calling Standard
+
+o  Oracle CDD for the creation, analysis, and administration of meta-
+   data
+
+o  Oracle Rdb, Oracle CODASYL DBMS, and OpenVMS RMS for data manage-
+   ment
+
+o  Oracle Trace for performance event data collection
+
+Because ACMS is designed to allow for modular implementation as well
+as development, the client/server model can be used to separate and
+distribute front-end processing (data input/output operations such as
+forms processing) from back-end processing (data calculations and database
+storage). In addition, ACMS allows users the use of nonstandard ter-
+minal or I/O devices, such as bar-code readers and automatic teller
+machines (ATMs).
+
+Features
+
+ACMS provides the following features:
+
+o  Application development environment
+
+o  Run-time system
+
+o  Application management and control
+
+o  Remote system management
+
+o  Client/server processing
+
+o  Presentation services
+
+o  Database management
+
+o  Resource utilization collection and reporting
+
+o  Task queuing
+
+o  Data dictionary
+
+o  Security
+
+o  OpenVMS Cluster environment and availability
+
+                                 2
+
+ 
+
+Application Development Environment
+
+ACMS uses a high-level, English-like definition language that replaces
+system service calls for most TP application functions. Using the ACMS
+Application Definition Utility (ADU), a programmer can:
+
+o  Structure all application work into three basic steps:
+
+   -  Exchange steps for terminal I/O processing
+
+   -  Processing steps for database access and general computation
+
+   -  Block steps for performing work common to several processing and
+      exchange steps
+
+o  Control task execution and flow using conditional statements such
+   as IF THEN ... ELSE, WHILE DO, SELECT FIRST, and CONTROL FIELD syn-
+   tax in conjunction with Boolean expressions.
+
+o  Define and implement subroutine transactions using the CALL TASK
+   syntax.
+
+o  Create menus and hierarchies of menus.
+
+o  Define resources used to execute transactions, such as servers, workspaces,
+   and audit trails.
+
+o  Start and end database recovery units.
+
+ACMS also includes the ACMS Task Debugger to debug ACMS definitions
+and servers.
+
+Run-Time System
+
+ACMS includes a complete run-time system for application deployment.
+The ACMS Run-Time System consists of eight specialized processes.
+
+The following ACMS processes manage the work within ACMS transactions:
+
+o  Command Process (CP) - Manages logins and interaction between ter-
+   minals and ACMS. CPs are multithreaded (one CP process can handle
+   menus and forms I/O for many ACMS terminals simultaneously). The
+   CP passes input data to the Application Execution Controller (EXC)
+   for processing by a server.
+
+                                 3
+
+ 
+
+o  Application Execution Controller (EXC) - Controls task execution
+   for all the tasks in an application. Each application has its own
+   EXC process, which starts up and controls the server processes needed
+   to handle processing work for tasks.
+
+o  Server Process (SP) - Carries out the high-level programming lan-
+   guage routines or DCL routines that handle a task's processing work
+   and database or file I/O. Programmers link their routines to the
+   ACMS-supplied main program to create customized servers for database
+   access, computation, and other functions.
+
+o  Queued Task Initiator (QTI) - Removes task elements from a task queue
+   and initiates their execution in a specified application. Queued
+   tasks are tasks placed in a queue for later execution. Queued tasks
+   cannot collect terminal input data; otherwise they are the same as
+   any other ACMS task.
+
+The ACMS processes that monitor and control the run-time system are:
+
+o  ACMS Central Controller (ACC) - Acts as the central control point
+   for ACMS run-time systems. The ACC starts and controls the Termi-
+   nal Subsystem Controller, the QTI, the EXC, and the audit trail log.
+   The ACC process must be started and running on each computer sys-
+   tem where ACMS applications are used.
+
+o  Audit Trail Logger (ATL) - Writes information about a running ACMS
+   system to the audit trail log file. The ATL keeps a record of when
+   the ACMS system starts and stops, when users log in, and when ap-
+   plications and tasks start and stop.
+
+o  Terminal Subsystem Controller (TSC) - Creates and controls the num-
+   ber of active Command Processes (CPs) and assigns terminals to CPs.
+   The TSC starts and stops CPs as needed, and controls which termi-
+   nals can access ACMS.
+
+o  Software Event Logger (SWL) - Records all ACMS internal software
+   errors and event messages that occur during the execution of ACMS
+   application programs.
+
+
+                                 4
+
+ 
+
+Communication among these run-time processes can occur on a single com-
+puter system, or between more than one computer in a OpenVMS Cluster
+system or DECnet network. For example, a Command Process (CP) on one
+computer system can initiate a task within an application on another
+computer system.
+
+Application Management and Control
+
+Once an application is developed, the user moves that application into
+a production (real-use) environment. ACMS provides support for ACMS
+applications used in a production environment.
+
+ACMS includes seven utilities for defining, monitoring and modifying
+application management characteristics:
+
+o  ACMSGEN - Modifies and displays ACMS system parameters.
+
+o  Application Authorization Utility (AAU) - Authorizes applications
+   to be installed.
+
+o  User Definition Utility (UDU) - Authorizes users to log in to ACMS
+   and assigns login displays, including default menus, to ACMS users.
+
+o  Device Definition Utility (DDU) - Authorizes ACMS terminals and,
+   optionally, defines captive terminals to log in directly to ACMS.
+
+o  Queue Manager (QUEMGR) - Creates and manages ACMS task queues and
+   queued task elements.
+
+o  Software Event Log Utility Program (SWLUP) - Creates reports of se-
+   lected events recorded by the Software Event Logger.
+
+o  Audit Trail Report Utility (ATR) - Returns records of application
+   and user activity.
+
+In addition to the utilities, ACMS also provides users with the fol-
+lowing support for application management and control:
+
+o  ACMS operator commands - Performs standard operator functions such
+   as starting and stopping the ACMS system, the TSC process, the QTI
+   process, and ACMS applications.
+
+                                 5
+
+ 
+
+o  Command procedures - Evaluates and modifies the values of OpenVMS
+   and ACMS system parameters and of ACMS run-time process quotas.
+
+Remote System Management
+
+The ACMS Remote Manager provides the capability to monitor and man-
+age the ACMS application environment. ACMS system managers can access
+the Remote Manager using one of the supported interfaces over a TCP/IP
+network.
+
+The Remote Manager must be running on the same node as the ACMS run-
+time system it is monitoring or accessing. Communication between the
+Remote Manager and the ACMS run-time system is transparent.
+
+Three interfaces allow access to the Remote Manager:
+
+o  RPC Interface-Provides local or remote access to ACMS management
+   information using the Open Network Computing Remote Procedure Call
+   (ONC RPC) protocol. This interface can be used by user-written pro-
+   grams to implement customized ACMS management tools.
+
+o  Command Line Utility-Provides command line access to management in-
+   formation as well as control of the Remote Manager process. This
+   utility uses the RPC Interface.
+
+o  Simple Network Management Protocol (SNMP) Interface-Provides net-
+   work access to ACMS management information using the industry stan-
+   dard SNMP protocol. This protocol is supported by most system man-
+   agement consoles and tools.
+
+ACMS system managers control the data being collected, including ACMS
+process monitoring, and the management interfaces themselves through
+either SNMP or RPC commands.
+
+The Remote Manager enables ACMS system managers to do the following:
+
+o  Remotely manage the Remote Manager.
+
+o  Remotely manage data collection including configuring SNMP traps
+   and viewing management information on line.
+
+o  Remotely modify ACMS run-time systems.
+
+                                 6
+
+ 
+
+o  Write programs that remotely access management information online
+   using ONC RPC and SNMP.
+
+Client/Server Processing
+
+ACMS uses the client/server model to distribute and separate functions.
+This model can be implemented on a single node or on multiple nodes
+in a DECnet network.
+
+The terminal and menu functions are handled on the client, or front
+end, of the transaction processing system, while task flow control,
+data processing, and computations are performed on the server, or back
+end, of the system.
+
+Because the ACMS client/server model always provides separate front
+and back ends, users can at any time offload the front-end to another
+computer system without reprogramming the application code.
+
+The ACMS Systems Interface (SI) lets users write front end programs,
+or agents, to support specialized devices such as bar-code readers and
+automatic teller machines.
+
+ACMS includes support for failover in a distributed environment. If
+one OpenVMS node is not available to process a transaction, ACMS can
+automatically route the transaction to another application running on
+an available node.
+
+Presentation Services
+
+ACMS supports both terminal-driven and PC/workstation-driven TP ap-
+plications with presentation services. Users have the option of run-
+ning ACMS tasks from menus on VT terminals, or from a GUI interface
+on a PC/workstation desktop system.
+
+ACMS supports DECforms as its primary presentation service for character-
+cell terminals in ACMS applications. In addition, ACMS provides sup-
+port for Compaq TDMS on OpenVMS VAX systems. ACMS applications that
+use TDMS must be distributed in order to use ACMS on OpenVMS Alpha.
+See the Compaq ACMS for OpenVMS Writing Applications manual for more
+information about these restrictions.
+
+                                 7
+
+ 
+
+The TP Desktop Connector product provides an API that allows user-written
+program running on various PC or workstation desktop systems to ini-
+tiate and respond to ACMS tasks. A wide range of Compaq and third-party
+desktop tools can be used for the development of client presentation
+services and applications.
+
+ACMS also provides support for other presentation service products through
+the ACMS Request Interface and Systems Interface. The Request Inter-
+face lets users use presentation services other than DECforms or TDMS
+for I/O functions limited to one user per process. The Systems Inter-
+face lets users use presentation services for single-user or multiple-
+user I/O functions.
+
+Database Management
+
+ACMS includes support in its definition language for starting and end-
+ing database transactions/recovery units through a database manage-
+ment system. Database products supported include Oracle Rdb (includ-
+ing SQL), RMS, and Oracle CODASYL DBMS.
+
+Using the DECdtm component of the OpenVMS operating system, ACMS lets
+users coordinate operations on multiple recoverable resources (such
+as databases and files) within a single atomic transaction. Users can
+perform operations on multiple databases through a single transaction
+and ensure atomicity (that is, if the transaction fails, any changes
+made to databases, files, or ACMS queues are rolled back to their pre-
+vious state before the transaction started). Please note that RMS Jour-
+naling for OpenVMS is required to support recoverable ACMS queue op-
+erations coordinated using DECdtm. RMS Journaling for OpenVMS is a sep-
+arate layered product, distinct from RMS, and is supplied with Open-
+VMS.
+
+ACMS applications can also access other data management products or
+file management systems that support the OpenVMS Calling Standard.
+
+Resource Utilization Collection and Reporting
+
+
+
+
+                                 8
+
+ 
+
+ACMS supports Oracle Trace to allow the collection and reporting of
+event-based data gathered from any combination of OpenVMS layered prod-
+ucts and ACMS applications. For each predefined event in ACMS, Ora-
+cle Trace can collect information about resource utilization, such as
+CPU time, or ACMS data items, such as task name. Using the Oracle Trace
+cross-facility feature, you can relate ACMS events with events from
+multiple layered products.
+
+Task Queuing
+
+Some ACMS applications require that the data be collected and stored
+in a temporary storage area (queue) for the application to process at
+another time. The ACMS queuing facility lets users create and manage
+ACMS task queues. ACMS queue services are used to place/remove tasks
+on/off ACMS task queues.
+
+Data Dictionary
+
+ACMS supports the Oracle CDD/Repository data dictionary. ACMS stores
+application definitions in Oracle CDD/Repository directories and uses
+Oracle CDD/Repository record definitions for its workspaces.
+
+Security
+
+ACMS ensures that the user's data remains secure by giving the sys-
+tem manager control over which users have access to ACMS. Using Open-
+VMS and ACMS authorization facilities, system managers can:
+
+o  Authorize users to use ACMS.
+
+o  Control terminals connecting to ACMS.
+
+o  Limit the applications a user can run.
+
+o  Prevent unauthorized access to the operating system while running
+   ACMS tasks.
+
+ACMS includes transaction security in the form of access control lists
+(ACLs) in the definition language. Whenever a user selects a trans-
+action, that user's OpenVMS identifier is checked against the ACL de-
+fined for that transaction to determine whether that user is allowed
+to execute that transaction.
+
+                                 9
+
+ 
+
+OpenVMS Cluster Environment/Availability
+
+In a OpenVMS Cluster environment, ACMS applications support highly avail-
+able configurations that help avoid single points of system failure.
+
+ACMS includes support for failover in a OpenVMS Cluster environment.
+If one OpenVMS Cluster processor is not available to process a trans-
+action, ACMS can automatically route the transaction to another ap-
+plication running on an available processor that shares the same data.
+
+ACMS can improve the performance of a database management system in
+a OpenVMS Cluster environment by allowing the use of the client/server
+model to run database servers on a single processor.
+
+Documentation
+
+ACMS includes a complete and comprehensive documentation set:
+
+o  An introductory manual explains ACMS concepts and components to new
+   users.
+
+o  Advanced manuals describe, in a task-oriented style, how to design,
+   build, and manage ACMS applications.
+
+o  Complete reference information is provided.
+
+The ACMS Development System documentation set consists of the follow-
+ing manuals:
+
+o  Getting Started
+
+   -  Provides an introduction to the basic elements of the ACMS trans-
+      action processing system.
+
+   -  Provides a step-by-step tutorial for developing a simple ACMS
+      application.
+
+   -  Provides an overview of the AVERTZ sample application.
+
+   -  Provides a glossary of ACMS terms.
+
+o  Concepts and Design Guidelines
+
+   -  Describes how to design an ACMS application.
+
+                                10
+
+ 
+
+o  Writing Applications
+
+   -  Describes how to write task, task group, application, and menu
+      definitions using the Application Definition Utility (ADU).
+
+   -  Describes the input/output options and restrictions in a dis-
+      tributed environment.
+
+   -  Describes how to write and migrate ACMS applications to Open-
+      VMS Alpha systems.
+
+o  Writing Server Procedures
+
+   -  Describes how to write programs for use with tasks and how to
+      debug tasks and programs, including how to write procedures that
+      access databases.
+
+   -  Describes how ACMS works with the APPC/LU6.2 programming inter-
+      face to communicate with IBM CICS applications.
+
+o  Systems Interface Programming
+
+   -  Describes how to use Systems Interface (SI) Services to submit
+      tasks to an ACMS system.
+
+o  Managing Applications
+
+   -  Describes how to authorize, install, run, and manage ACMS ap-
+      plications, and how to control the ACMS system.
+
+o  Remote Systems Management Guide
+
+   -  Describes the features of the Remote Manager for managing ACMS
+      systems, how to use the features, and how to manage the Remote
+      Manager.
+
+o  ADU Reference Manual
+
+   -  Provides reference information about the ADU commands, phrases,
+      and clauses.
+
+o  ACMS Version 4.4 Installation Guide
+
+   -  Describes installation requirements, step-by-step installation
+      instructions, and required post-installation tasks.
+
+                                11
+
+ 
+
+o  Quick Reference Guide
+
+   -  Provides a complete list of ACMS syntax with brief descriptions.
+
+o  Release Notes
+
+   -  Provides late-breaking and other notable online information about
+      the latest release of the software.
+
+o  Online Help
+
+   -  Provides online help about ACMS and its utilities.
+
+HARDWARE REQUIREMENTS
+
+Hardware Configurations
+
+ACMS is supported on all hardware configurations referenced in the Open-
+VMS Operating System for Alpha and VAX, Version 7.3, Software Prod-
+uct Description (SPD 25.01.xx).
+
+Disk Space Requirements (Block Cluster Size = 1)
+
+The approximate amount of space required on the system disk to sup-
+port the ACMS for OpenVMS software is as follows. Actual sizes may vary
+depending on the system environment, configuration, and software op-
+tions.
+
+___________________________________________________________________
+ACMS_Kit___________VAX__________Alpha______________________________
+
+Development        43,000       70,000 blocks
+Installation       blocks
+                   21.5         35.0 Mbytes
+                   Mbytes
+
+Development        30,000       42,000 blocks
+Permanent          blocks
+                   15.0         21.0 Mbytes
+                   Mbytes
+
+                                12
+
+ 
+
+
+___________________________________________________________________
+
+Run-Time In-       28,000       38,000 blocks
+stallation         blocks
+                   14.0         19.0 Mbytes
+                   Mbytes
+
+Run-Time Perma-    25,000       33,000 blocks
+nent               blocks
+                   12.5         16.5 Mbytes
+                   Mbytes
+
+Remote Instal-     21,000       27,000 blocks
+lation             blocks
+                   10.5         13.5 Mbytes
+                   Mbytes
+
+Remote Perma-      18,000       24,000 blocks
+nent               blocks
+                   9.0          12.0 Mbytes
+___________________Mbytes__________________________________________
+
+SOFTWARE REQUIREMENTS
+
+Compaq ACMS for OpenVMS Version 4.4A software runs on the following
+versions of the OpenVMS operating system:
+
+o  OpenVMS Alpha Operating Systems Versions 7.2-2 and 7.3.
+
+o  OpenVMS VAX Operating Systems Versions 7.2, and 7.3.
+
+However, only specific versions of networking software are supported
+for each version of the operating system. See the following sections
+for the supported versions.
+
+
+
+
+
+                                13
+
+ 
+
+
+________________Compaq_TCP/IP_Services_for_________________________
+O/S_Version_____OpenVMS_Version____________________________________
+
+Alpha V7.2-2    V5.1
+
+VAX V7.2        V5.1
+
+Alpha V7.3      V5.1
+
+VAX_V7.3________V5.1_______________________________________________
+
+The following versions of Oracle CDD/Repository is required that is
+supported on your version of the operating system as follows:
+
+o  OpenVMS Alpha requires V5.3, V6.1A, V7.0
+
+o  OpenVMS VAX requires V5.3 - V7.0
+
+Note: When using ACMS with Compaq DECnet-Plus for OpenVMS (formerly called
+DECnet/OSI), the Transport Layer must be configured to use the Net-
+work Services Protocol (NSP). ACMS restricts node names to a maximum
+of six characters.
+
+OPTIONAL SOFTWARE
+
+Certain versions of these products depend on a specific version of the
+operating system. Please refer to the Software Product Description (SPD)
+or contact the vendor for the product in question to determine which
+version is required for correct operation.
+
+___________________________________________________________________
+                     OpenVMS
+Software_____________VAX_________OpenVMS_Alpha_____________________
+
+Compaq DECforms      V3.0,       V3.0, V3.1. V3.2
+                     V3.1,
+                     V3.2
+Compaq DECset        V11.2-      V12.4A
+(except PCA)         12.4A
+LSE (part of         V4.2-       V4.3
+DECset)              V4.3
+
+                                14
+
+ 
+
+
+_____________________OpenVMS_______________________________________
+Software_____________VAX_________OpenVMS_Alpha_____________________
+
+Compaq TDMS          V1.9A,V1.9B -
+Compaq TP Desktop    V2.2,       V2.2, V2.3, V3.1A
+Connector (for-      V2.3,
+merly called ACMS    V3.1A
+Desktop)
+Compaq TP Web        V1.0 or     V1.0 or later
+Connector            later
+Oracle CDD/RepositoryV5.3-       V5.3, V6.1A, V7.0
+                     V7.0
+Oracle CODASYL       V5.1-       V5.1-V7.0
+DBMS                 V7.0
+Oracle Rdb           V5.1-       V5.1-V7.0
+                     V7.0
+Oracle Trace         V2.2,       V2.2, V2.4
+                     V2.4
+RMS Journaling       V6.2,       V6.2, V7.1, V7.2
+for OpenVMS          V7.1,
+_____________________V7.2__________________________________________
+
+Requirements for Web Enabled Remote Manager
+
+The pre-requisite software for using the ACMS HMMO are:
+
+o  Compaq Management Agents for OpenVMS
+
+   Note: Only the WEBM Server is required to be started. The included
+   web agents are not required.
+
+o  OpenVMS Alpha V7.1-2 or higher (as required by Compaq Management
+   Agents for OpenVMS)
+
+o  Web Browser - A browser or platform that supports Java Plug-ins,
+   JavaScript & Cascading Style Sheets (CSS).
+
+The following browser versions and platforms are supported:
+
+o  Windows - Netscape V4.76, Netscape V6, Internet Explorer V5.5 with
+   Java Plugin V1.3.0
+
+                                15
+
+ 
+
+o  Tru64 UNIX - Netscape V4.72 with Java Plugin V1.2.2
+
+SOFTWARE LICENSING
+
+This software is furnished only under a license. For more information
+about licensing terms and policies from Compaq, contact your local Com-
+paq office. LICENSE MANAGEMENT FACILITY (LMF)
+
+This layered product supports the OpenVMS License Management Facil-
+ity.
+
+License units for the Development System are allocated on a Capacity
+Basis by hardware tier. License units for the Run-Time or Remote Sys-
+tems are allocated on a Capacity Basis by hardware tier or a Concur-
+rent Use basis.
+
+For more information on the License Management Facility, refer to the
+OpenVMS Operating System for Alpha and VAX Software Product Descrip-
+tion (SPD 25.01.xx) or the License Management Facility manual of the
+OpenVMS Operating System documentation set.
+
+CLUSTER ENVIRONMENT
+
+This layered product is fully supported when installed on any valid
+and licensed OpenVMS Cluster configuration without restrictions. The
+Hardware Requirements section of this Software Product Description de-
+tails any special hardware required by this product.
+
+OpenVMS Cluster configurations are fully described in the OpenVMS Cluster
+Software Software Product Description (SPD 29.78.xx) and include CI,
+Ethernets and mixed-interconnect configurations.
+
+DISTRIBUTION MEDIA
+
+This product is distributed as part of the OpenVMS Software Product
+Libraries.
+
+The software documentation is also available as part of the OpenVMS
+Online Documentation Libraries on CD-ROM.
+
+ORDERING INFORMATION
+
+                                16
+
+ 
+
+Three kits are available for ACMS:
+
+o  ACMS Development System-The complete set of ACMS features that fa-
+   cilitate the development and deployment of ACMS applications on an
+   OpenVMS system.
+
+o  ACMS Run-Time System-A subset of the ACMS Development System that
+   allows the deployment and limited customization of ACMS applica-
+   tions on an OpenVMS system.
+
+o  ACMS Remote Access-A subset of the ACMS Run-Time System that pro-
+   vides the capability to place users and the associated terminal I/O
+   on a separate OpenVMS system to offload the application system or
+   OpenVMS Cluster.
+
+___________________________________________________________________
+For_OpenVMS_VAX______________Part_Number___________________________
+
+Development License,         QL-079A*-AA
+Unlimited Use
+
+Development Documentation    QA-079AA-GZ
+
+Development Software         QT-079A*-**
+Product Services
+
+Run-Time License, Unlim-     QL-076A*-AA
+ited Use
+
+Run-Time License, Concur-    QL-076AA-3B
+rent Use
+
+Run-Time Documentation       QA-076AA-GZ
+
+Run-Time Software Product    QT-076A*-**
+Services
+
+Remote Access, Unlimited     QL-Y30A*-**
+Use
+
+Remote Access, Concurrent    QL-Y30AA-3B
+Use
+
+                                17
+
+ 
+
+
+___________________________________________________________________
+
+Remote Access Documenta-     QA-Y30AA-GZ
+tion
+
+Remote Access Software       QT-Y30A*-**
+Product_Services___________________________________________________
+
+___________________________________________________________________
+For_OpenVMS_Alpha____________Part_Number___________________________
+
+Development License,         QL-2PZA*-AA
+Unlimited Use
+
+Development Documentation    QA-076AA-GZ
+
+Development Software         QT-2PZA*-**
+Product Services
+
+Run-Time License, Unlim-     QL-2Q1A*-AA
+ited Use
+
+Run-Time License, Concur-    QL-076AA-3B
+rent Use
+
+Run-Time Documentation       QA-076AA-GZ
+
+Run-Time Software Product    QT-2Q1A*-**
+Services
+
+Remote Access, Unlimited     QL-2Q0A*-**
+Use
+
+Remote Access, Concurrent    QL-Y30AA-3B
+Use
+
+Remote Access Documenta-     QA-Y30AA-GZ
+tion
+
+Remote Access Software       QT-2Q0A*-**
+Product_Services___________________________________________________
+
+*  Denotes variant fields. For additional information on available li-
+   censes, services, and media, refer to the appropriate price book.
+
+SOFTWARE PRODUCT SERVICES
+
+                                18
+
+ 
+
+A variety of service options are available from Compaq. For more in-
+formation, contact your local Compaq office.
+
+GROWTH CONSIDERATIONS
+
+The minimum hardware/software requirements for any future version of
+this product may be different from the requirements for the current
+version.
+
+SOFTWARE WARRANTY
+
+This software is provided by Compaq with a 90-day conformance warranty
+in accordance with the Compaq warranty terms applicable to the license
+purchase.
+
+The above information is valid at time of release. Please contact your
+local Compaq office for the most up-to-date information.
+
+© 2002 Compaq Information Technologies Group, L.P.
+
+Compaq, the Compaq logo, ACMS, Alpha, DECforms, DECnet, DIGITAL, Open-
+VMS, and VAX are trademarks of Compaq Information Technologies Group,
+L.P. in the U.S. and/or other countries.
+
+Microsoft and Windows NT are trademarks of Microsoft Corporation in
+the U.S. and/or other countries.
+
+UNIX is a trademark of The Open Group in the U.S. and/or other coun-
+tries.
+
+All other product names mentioned herein may be trademarks of their
+respective companies.
+
+Confidential computer software. Valid license from Compaq required for
+possession, use, or copying. Consistent with FAR 12.211 and 12.212,
+Commercial Computer Software, Computer Software Documentation, and Tech-
+nical Data for Commercial Items are licensed to the U.S. Government
+under vendor's standard commercial license.
+
+
+                                19
+
+ 
+
+Compaq shall not be liable for technical or editorial errors or omis-
+sions contained herein. The information is provided "as is" without
+warranty of any kind and is subject to change without notice. The war-
+ranties for Compaq products are set forth in the express limited war-
+ranty statements accompanying such products. Nothing herein should be
+construed as constituting an additional warranty.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                20

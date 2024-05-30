@@ -1,0 +1,1677 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital SNA 3270 Data Stream
+                     Programming Interface
+                     for_OpenVMS___________________________________
+                     Installation
+
+                     Part Number: AA-EV64E-TE
+
+                     May 1996
+
+                     This document describes how to install the Digital
+                     SNA 3270 Data Stream Programming Interface. The
+                     document also explains how to configure the IBM
+                     software to communicate with the interface.
+
+
+
+
+
+
+                     Revision/Update Information: This is a revised
+                                                  manual.
+
+                     Operating System and Version: OpenVMS VAX Versions
+                                                  6.1, 6.2, or 7.0
+                                                  OpenVMS Alpha
+                                                  Versions 6.1, 6.2,
+                                                  or 7.0
+
+                     Software Version:            Digital SNA 3270 Data
+                                                  Stream Programming
+                                                  Interface for
+                                                  OpenVMS, Version
+                                                  1.5
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           May 1996
+
+           The information in this document is subject to change
+           without notice and should not be construed as a commitment
+           by Digital Equipment Corporation or EDS. Digital Equipment
+           Corporation or EDS assumes no responsibility for any
+           errors that may appear in this document.
+
+           The software described in this document is furnished under
+           a license and may be used or copied only in accordance
+           with the terms of such license.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           Digital conducts its business in a manner that conserves
+           the environment.
+
+           Restricted Rights: Use, duplication, or disclosure by the
+           U.S. Government is subject to restrictions as set forth in
+           subparagraph (c)(1)(ii) of the Rights in Technical Data
+           and Computer Software clause at DFARS 252.227-7013.
+
+                    Copyright © 1988, 1996 Digital Equipment
+                        Corporation, EDS Defense Limited
+                              All Rights Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation:
+
+           Alpha, DEC, DEC/CMS, DEC/MSS, DECnet, DECsystem-10,
+           DECSYSTEM-20, DECUS, DECwriter, DIBOL, EduSystem, IAS,
+           MASSBUS, OpenVMS, PDP, PDT, RSTS, RSX, UNIBUS, VAX,
+           VAXcluster, VMS, VT, and the Digital logo.
+
+           IBM is a registered trademark of International Business
+           Machines Corporation.
+
+           MS-DOS is a registered trademark of Microsoft Corporation.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing for Installation
+
+         1.1   Checking the Distribution Kit................    1-1
+         1.2   Prerequisite Software........................    1-1
+         1.3   OpenVMS System Requirements..................    1-2
+         1.3.1     Installation Requirements................    1-2
+         1.3.2     OpenVMS License Management Facility
+                   Requirements.............................    1-3
+         1.3.3     OpenVMS Tailor Requirements..............    1-5
+         1.3.4     Checking System Parameter Values.........    1-5
+         1.3.5     Calculating the Value for GBLSECTIONS....    1-5
+         1.3.6     Changing System Parameter Values with
+                   AUTOGEN..................................    1-6
+         1.4   VMSINSTAL Requirements.......................    1-8
+         1.4.1     Using VMSINSTAL..........................    1-8
+         1.5   On-Line Release Notes........................   1-10
+
+   2  Installing the 3270 DS Interface
+
+         2.1   Installation Procedure.......................    2-1
+         2.1.1     Running VMSINSTAL........................    2-2
+         2.2   Postinstallation Considerations..............    2-6
+         2.2.1     Files Created During Installation........    2-7
+         2.2.2     Adding the SNA_3270DS Help File to an EDT
+                   Help File................................    2-7
+         2.2.3     Verifying the Installation of the 3270 DS
+                   Interface Software.......................    2-8
+         2.2.4     Installing the 3270 DS Programming
+                   Interface as a Shareable Image...........    2-9
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+           2.2.5     Using the 3270 DS Interface Software in a
+                     Cluster..................................    2-9
+           2.3   Sample Installation..........................   2-10
+
+
+     Tables
+
+           1-1       Installation Requirements................    1-2
+
+           2-1       Files Created During Installation........    2-7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              The Digital SNA 3270 Data Stream Programming Interface
+              (3270 DS Interface) enables OpenVMS users to communicate
+              with programs running on an IBM host. The interface allows
+              you to develop applications on an OpenVMS system that
+              require support for an IBM SNA logical unit (LU) type 2
+              session. Access to the IBM SNA network is through one of
+              the following transport products:
+
+              o  DECnet SNA Gateway-ST
+
+              o  DECnet SNA Gateway-CT
+
+              o  Digital SNA Domain Gateway
+
+              o  Digital SNA Peer Server
+
+              o  OpenVMS SNA (OpenVMS VAX Version 6.1 and Version 6.2
+                 only)
+
+        Manual Objectives
+
+              The Digital SNA Data Stream Programming Interface
+              Installation manual provides the information needed to
+              install and verify the 3270 DS Interface software.
+
+        Intended Audience
+
+              This manual is designed for system managers responsible
+              for installing the 3270 DS Interface and configuring the
+              IBM software to communicate with the 3270 DS Interface.
+              Readers of this manual must have a working knowledge of
+              the Digital and IBM systems that they will be using.
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+     Associated Documents
+
+           The following is a list of documents related to the 3270
+           Data Stream Programming Interface:
+
+           o  Digital SNA 3270 Data Stream Programming Interface for
+              OpenVMS Installation
+
+           o  Digital SNA 3270 Data Stream Programming Interface for
+              OpenVMS Problem Solving
+
+           o  Digital SNA 3270 Data Stream Programming Interface for
+              OpenVMS Programming
+
+           You should have the following Digital documents available
+           for reference when you use the Application Programming
+           Interface:
+
+           o  Digital SNA Domain Gateway Installation
+
+           o  Digital SNA Domain Gateway Management
+
+           o  Digital SNA Domain Gateway Guide to IBM Resource
+              Definition
+
+           o  DECnet SNA Gateway Problem Determination Guide
+
+           o  DECnet SNA Gateway-CT Installation
+
+           o  DECnet SNA Gateway-CT Problem Solving (OpenVMS &
+              ULTRIX)
+
+           o  DECnet SNA Gateway-CT Management (OpenVMS)
+
+           o  DECnet SNA Gateway-CT Guide to IBM Parameters
+
+           o  DECnet SNA Gateway-ST Installation
+
+           o  DECnet SNA Gateway-ST Problem Solving (OpenVMS)
+
+           o  DECnet SNA Gateway-ST Guide to IBM Parameters
+
+           o  DECnet SNA Gateway Management for OpenVMS
+
+           o  Digital Peer Server Installation and Configuration
+
+           o  Digital Peer Server Management
+
+           o  Digital Peer Server Network Control Language Reference
+
+ |         o  Digital Peer Server Guide to IBM Resource Definition
+ |
+ |         o  OpenVMS SNA Installation
+
+     vi
+
+ 
+
+
+
+
+
+
+              o  OpenVMS SNA Problem Solving                              |
+                                                                          |
+              o  OpenVMS SNA Guide to IBM Parameters                      |
+                                                                          |
+              o  OpenVMS SNA Management                                   |
+                                                                          |
+              o  OpenVMS SNA Problem Determination Guide                  |
+
+              See the following documents for more information about the
+              IBM 3270 Information Display System:
+
+              o  ACF for VTAM Version 2, Messages and Codes (IBM Order
+                 No. SC27-0614)
+
+              o  IBM 3270 Information Display System and 3274 Control
+                 Unit Description and Programmer's Guide (IBM Order No.
+                 GA23-0061)
+
+              o  IBM 3287 Printer Models 1 and 2 Component Description
+                 (IBM Order No. GA27-3153)
+
+              o  MVS/TSO/VTAM Data Set Print Program Description
+                 /Operations Manual (IBM Order No. SB21-2070)
+
+              o  IBM 3270 Information Display System, Order No. GA23-
+                 0060
+
+              o  IBM 3270 Information Display System Data Stream
+                 Programmer's Reference, Order No. GA23-0059
+
+              o  Systems Network Architecture-Introduction to Sessions
+                 Between Logical Units, Order No. GC20-1869
+
+              o  Systems Network Architecture-Sessions Between Logical
+                 Units, Order No. GC20-1868
+
+              o  IBM 3270 Information Display System: Operator's Guide,
+                 Order No. GA27-2742
+
+        Graphic Conventions
+
+              This manual uses the following conventions:
+
+              __________________________________________________________
+              Convention__________Meaning_______________________________
+
+              CAPITAL LETTERS     Represent constant values, or symbols.
+                                  Code these exactly as they are
+                                  specified.
+
+                                                                     vii
+
+ 
+
+
+
+
+
+           __________________________________________________________
+           Convention__________Meaning_______________________________
+
+           lowercase italics   Represent variables for which you must
+                               supply a value.
+
+           [ ]                 Square brackets enclose parameters
+                               or symbols that are either optional
+                               or conditional. Specify the parameter
+                               and value if you want the condition
+                               to apply. Do not type the brackets in
+                               the line of code. The following rules
+                               generally apply to parameters:
+
+                               o  You may code or omit an optional
+                                  parameter. Omitting an optional
+                                  parameter may impact a related
+                                  parameter or may cause a default
+                                  value to be specified.
+
+                               o  You may code or omit a conditional
+                                  parameter. Your choice is
+                                  determined by how other parameters
+                                  are coded.
+
+           ( )                 Parentheses delimit the argument list.
+                               The arguments must be typed in the
+                               line of code in the order indicated.
+                               Parentheses must be typed where they
+                               appear in a line of code.
+
+           Special type        Examples of system output and user
+                               input are printed in this special
+                               type.
+
+           Numbers             Numbers are decimal unless otherwise
+                               noted.
+
+           <RET>               Unless otherwise specified, every
+                               command line is terminated by pressing
+                               the RETURN key.
+
+
+
+
+
+     viii
+
+ 
+
+
+
+
+
+              __________________________________________________________
+              Convention__________Meaning_______________________________
+
+              <CTRL/x>            Control characters are shown as
+                                  <CTRL/x>, where x is an alphabetic
+                                  character. The CTRL key and the
+                                  appropriate key should be pressed
+              ____________________simultaneously._______________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                              Preparing for Installation
+
+
+
+              This chapter describes what you need to do before you
+              install the Digital SNA 3270 Data Stream Interface (3270
+              DS Interface).
+
+              This installation involves writing to your system disk.
+              Digital Equipment Corporation recommends that you make a
+              backup copy of your system disk before you begin.
+
+        1.1 Checking the Distribution Kit
+
+              Your bill of materials (BOM) specifies the number and
+              contents of your media. Check the contents of your kit
+              against the list in the BOM. If your kit is damaged or
+              if you think that parts are missing, call your Digital
+              representative.
+
+        1.2 Prerequisite Software
+
+              Version 1.5 of the 3270 DS Interface requires the
+              following software:
+
+              o  OpenVMS VAX Versions 6.1, 6.2, or 7.0
+                 OpenVMS Alpha Versions 6.1, 6.2, or 7.0.
+
+              o  Either the DECnet SNA Gateway-ST, the DECnet SNA
+                 Gateway-CT, the Digital SNA Domain Gateway, the Digital
+                 SNA Peer Server, or OpenVMS SNA
+
+
+
+
+
+
+
+
+                                          Preparing for Installation 1-1
+
+ 
+
+
+
+
+
+
+           The 3270 DS Interface also requires Gateway Management
+           installed on the OpenVMS load host. The individual
+           transport products require the following versions of the
+           Gateway Management product:
+
+           o  DECnet SNA Gateway-ST requires Gateway Management
+              Version 2.0 or later
+
+           o  DECnet SNA Gateway-CT requires Gateway Management
+              Version 2.0 or later
+
+           o  Digital SNA Domain Gateway-CT requires Domain Gateway
+              Management software Version 1.1 or later
+
+           o  Digital SNA Peer Server Version 1.3 or later
+
+           o  OpenVMS SNA
+
+     1.3 OpenVMS System Requirements
+
+           This section discusses the OpenVMS requirements as well as
+           checking, calculating, and changing parameter values for
+           the 3270 DS Interface.
+
+     1.3.1 Installation Requirements
+
+           Before you install the 3270 DS interface software, verify
+           that the following installation requirements have been
+           met:
+
+           Table_1-1_Installation_Requirements_______________________
+
+           Requirements______OpenVMS_VAX_________OpenVMS_Alpha_______
+
+           Software          OpenVMS VAX Versions 6.1, 6.2, or 7.0,
+                             OpenVMS Alpha Versions 6.1, 6.2, or 7.0,
+                             DECnet SNA Gateway-ST, or
+                             DECnet SNA Gateway-CT, or
+                             Digital SNA Domain Gateway, or
+                             Digital SNA Peer Server, or
+                             OpenVMS SNA, and related management
+                             software listed in Section 1.2
+
+           Privileges                  System Manager Level
+
+                                             (continued on next page)
+
+     1-2 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              Table_1-1_(Cont.)_Installation_Requirements_______________
+
+              Requirements______OpenVMS_VAX_________OpenVMS_Alpha_______
+
+              Disk Space        13,826 blocks       13,409 blocks
+                                minimum during      minimum during
+                                installation        installation
+                                6228 blocks         5833 blocks minimum
+                                minimum after       after installation
+                                installation
+
+              Global Sections   2                   3
+
+              Global Pages      64                  974
+
+              Approximate              5 to 30 minutes, depending
+              Installation              on your system processor
+              Time______________________________________________________
+
+              For background information on installing optional products
+              on an OpenVMS system, refer to the Guide to OpenVMS
+              Software Installation.
+
+              Make sure that you have registered and loaded the Product
+              Authorization Key (PAK) before you begin the installation.
+              Refer to the OpenVMS License Management Utility Reference
+              Manual for this information.
+
+              The following sections show you how to check system
+              parameter values, calculate values for the GBLSECTIONS
+              system parameter, and change parameter values with the
+              OpenVMS AUTOGEN command procedure.
+
+        1.3.2 OpenVMS License Management Facility Requirements
+
+              Before you install this product, you should register
+              your Product Authorization Key (PAK) with the License
+              Management Facility (LMF). The PAK, which contains
+              information about the license, is a paper certificate
+              shipped with the product.
+
+              During the installation, you are asked if you have
+              registered the 3270 DS Interface license and loaded the
+              appropriate PAK. If you have not already done so, you can
+              complete the installation. However, the 3270 DS Interface
+              and IVP will not run if you have not registered the
+              license or loaded the PAK. Once you perform the license
+
+                                          Preparing for Installation 1-3
+
+ 
+
+
+
+
+
+
+           registration and have loaded the PAK, you will be able to
+           run the 3270 DS Interface and IVP.
+
+           To register and load the license, log in to the system
+           manager's account, and type the following:
+
+           $ @SYS$UPDATE:VMSLICENSE.COM
+
+           When you are prompted for information, enter the data
+           from your PAK. For more information on LMF, refer to the
+           OpenVMS License Management Utility Manual in the OpenVMS
+           documentation set.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     1-4 Preparing for Installation
+
+ 
+
+
+
+
+
+
+        1.3.3 OpenVMS Tailor Requirements
+
+              The required classes of software are: OpenVMS Required
+              Save Set, Network Support, Programming Support, and
+              Utilities. Be certain these classes are installed on your
+              system before installing the product. Refer to the OpenVMS
+              Tailor documentation in the OpenVMS documentation set for
+              more information.
+
+        1.3.4 Checking System Parameter Values
+
+              To check the values of your system parameters, enter the
+              following command at the DCL prompt to invoke the SYSGEN
+              utility:
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN>
+
+              At the SYSGEN> prompt, enter the SHOW command to display
+              the value of each system parameter. The values displayed
+              should equal or exceed the value of each parameter listed
+              in Table 1-1. The following command displays the value for
+              the GBLSECTIONS system parameter:
+
+              SYSGEN> SHOW GBLSECTIONS
+
+              After you finish checking the parameters with the SHOW
+              command, you can enter the EXIT command at the SYSGEN>
+              prompt to return to the DCL level.
+
+        1.3.5 Calculating the Value for GBLSECTIONS
+
+              The value for GBLSECTIONS in Table 1-1 indicates that you
+              must have at least three unused sections available on your
+              system for the installation to process successfully. To
+              calculate how many unused global sections your system has,
+              perform the following steps:
+
+              1. Run the OpenVMS Install Utility (INSTALL) using the
+                 following DCL command:
+
+                 $ INSTALL LIST /GLOBAL /SUMMARY
+
+                 The INSTALL utility displays a summary of global pages
+                 and global sections used by your system, as well as the
+                 current number of unused global pages. For example:
+
+                                          Preparing for Installation 1-5
+
+ 
+
+
+
+
+
+
+                            Summary of Local Memory Global Sections
+              258 Global Sections Used, 22580/3420 Global Pages Used/Unused
+
+           2. Note the amount shown for "Global Section Used" (258 in
+              the example).
+
+           3. Run the SYSGEN utility. Use the SHOW command to
+              determine the number of global sections allocated:
+
+              $ RUN SYS$SYSGEN
+              SYSGEN> SHOW GBLSECTIONS
+
+              Parameter Name  Current  Default  Minimum  Maximum  Unit  Dynamic
+              --------------  -------  -------  -------  -------  ----  -------
+              GBLSECTIONS     512      250      20       4095     Sections
+
+           4. Subtract the number shown in the summary (258 in the
+              example) from the amount allocated. If the difference
+              is less than the number required in Table 1-1, increase
+              the value of the GBLSECTIONS parameter.
+
+           Section Section 1.3.6 describes the procedure for
+           increasing these values as well as those of other system
+           parameters. Refer to the OpenVMS documentation on system
+           management and operations for more information.
+
+     1.3.6 Changing System Parameter Values with AUTOGEN
+
+           You use the AUTOGEN command procedure to change system
+           parameters. AUTOGEN automatically adjusts values for
+           parameters that are associated with the ones you reset
+           manually. To change system parameters with AUTOGEN, you
+           must edit the following file:
+
+           SYS$SYSTEM:MODPARAMS.DAT
+
+           For example, to change the setting for the GBLSECTIONS
+           system parameter, add this line to the file:
+
+           GBLSECTIONS = 1024
+
+           Now, run the AUTOGEN procedure to recalculate your system
+           parameters. Enter the following command at the DCL prompt:
+
+           $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+     1-6 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              AUTOGEN performs an automatic system shutdown and reboots
+              when it has finished. Rebooting your system makes the
+              new parameter values active. Also, on OpenVMS Version
+              6.1 and later, you can add the [NO]FEEDBACK parameter
+              to the AUTOGEN command line. For more information
+              about using AUTOGEN, see the instructions on modifying
+              system parameters in the OpenVMS documentation on System
+              Management and Operations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          Preparing for Installation 1-7
+
+ 
+
+
+
+
+
+
+     1.4 VMSINSTAL Requirements
+
+           The procedure for installing files using VMSINSTAL on an
+           OpenVMS system is automated. You just answer questions
+           displayed while the procedure (VMSINSTAL) runs.
+
+           Each question i the installation is marked with an
+           asterisk (*) at the beginning of the line. Some questions
+           show the default response in brackets; for example:
+
+           * Are you satisfied with the backup of your system disk [YES]:?
+
+           To answer a question with the default, press <RET>.
+
+           To install the distributions kit on your OpenVMS host:
+
+           o  Log into the system manager's account.
+
+           o  Make sure that all users are logged out and all batch
+              jobs are complete.
+
+           o  Make sure you have backed up the system disk.
+
+           o  Make sure you have more than 13,826 free blocks for
+              OpenVMS VAX, and 13,409 for OpenVMS Alpha, on the
+              system disk.
+
+           o  Make sure you have 64 free global pages for OpenVMS
+              VAX, and 974 for OpenVMS Alpha. (If there are not
+              enough global pages, the start-up procedure, invoked
+              immediately before the Installation Verification
+              Procedure (IVP) will fail. See Table 1-1 for more
+              information.)
+
+     1.4.1 Using VMSINSTAL
+
+           VMSINSTAL is a command procedure that installs OpenVMS
+           layered software products. The VMSINSTAL command line has
+           the following format:
+
+           $ @SYS$UPDATE:VMSINSTAL SNA3270nnn ddcu: [OPTIONS N]
+
+           where:
+
+           nnn
+
+           represents the major version number and the current
+           maintenance update in that version. The first and second
+           digits represent the major version number, and the third
+           digit represents the current maintenance update version
+
+     1-8 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              number. For the version number of your kit. refer to the
+              label on the distribution kit or the BOM. If you do not
+              supply the product name and version number, VMSINSTAL
+              prompts you for them.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          Preparing for Installation 1-9
+
+ 
+
+
+
+
+
+
+           ddcu
+
+           represents a device name for the 3270 DS Interface
+           installation media, where dd is the device code, c is
+           the controller id, and u is the unit number. It is not
+           necessary to use the console drive. If you do not supply
+           the device name, VMSINSTAL prompts you for it. MTA0, is
+           the device name used in examples in this document.
+
+           OPTIONS N
+
+           is an optional parameter you should provide if you want to
+           be prompted to display or print the release notes. If you
+           do not include the OPTIONS N parameter, VMSINSTAL does not
+           prompt you to display or print the release notes.
+
+           When you install a product using VMSINSTAL, you have two
+           installation options. Either you can enter the VMSINSTAL
+           command line specifying the product name, version number,
+           device name, and release notes option, or you can enter
+           the following command:
+
+           $ @SYS$UPDATE:VMSINSTAL
+
+           If you enter the preceding command, VMSINSTAL prompts
+           you for the product name, version number, and device name
+           during the installation. If you use this command, you do
+           not have the option of displaying or printing the release
+           notes.
+
+     1.5 On-Line Release Notes
+
+           The 3270 DS Interface installation kit provides on-line
+           release notes. A prompt to display or print the release
+           notes appears during the installation procedure if you
+           invoke VMSINSTAL wit the OPTIONS N parameter. Later,
+           you can read the release notes by typing or printing
+           the file SYS$HELP:SNA3270nnn.RELEASE_NOTES (for example,
+           SYS$HELP:SNA3270015.RELEASE_NOTES).
+
+           nnn represents the major version number and all mainte-
+           nance updates in that version. The first and second digits
+           represent the major version number, and the third digit
+           represents the maintenance update version number.
+
+     1-10 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                        Installing the 3270 DS Interface
+
+
+
+              This chapter describes how to install the Digital SNA 3270
+              Data Stream Programming Interface (3270 DS Interface) for
+              OpenVMS. It contains a step-by-step description of the
+              installation considerations. The final section contains an
+              actual system log of an installation using PAK information
+              and VMSINSTAL.
+
+        2.1 Installation Procedure
+
+              The installation consists of a series or questions and
+              informational messages; the process takes from 5 to 30
+              minutes to complete.
+
+                ________________________Note  ________________________
+
+                You can install the 3270 DS Interface software
+                from two locations: the Consolidated Software
+                Distribution CD-ROM or a remote node in your local
+                area network using the Remote Installation Service
+                (RIS). The VMSINSTAL procedure presented in this
+                chapter assumes the 3270 DS Interface software is
+                being installed from your local area network.
+
+                To install the 3270 DS Interface software from the
+                Consolidated Software Distribution CD-ROM, see the
+                master index table in the document Consolidated
+                Software Distribution Disk User's Guide for the
+                directory containing the 3270 DS Interface files.
+
+                _____________________________________________________
+
+
+
+
+
+                                    Installing the 3270 DS Interface 2-1
+
+ 
+
+
+
+
+
+
+     2.1.1 Running VMSINSTAL
+
+           This section shows the script you see when you use
+           VMSINSTAL to install the 3270 DS Interface software. In
+           addition, this section contains explanatory text for each
+           prompt.
+
+           When you run VMSINSTAL, you may accept the default values
+           by pressing the <RET> key. Unless it is otherwise stated,
+           end every command line by pressing <RET>.
+
+           To terminate the procedure at any time during the
+           installation, press <Ctrl/Y>. When you press <Ctrl/Y>, the
+           installation procedure deletes all files it has created
+           up to that point and exits. To restart the installation
+           procedure after pressing <Ctrl/Y>, invoke VMSINSTAL again.
+
+           Enhancements to VMSINSTAL in future releases of the
+           OpenVMS operating system might result in additional
+           prompts appearing during the course of the installation.
+           Although such prompts might not be documented in this
+           installation manual, the installation should proceed
+           normally.
+
+           Step 1: Log in to the system manager's account.
+
+           Username: SYSTEM <RET>
+           Password: <RET>
+
+           Step 2: Invoke VMSINSTAL
+
+           $ @SYS$UPDATE:VMSINSTAL SNA3270nnn ddcn: OPTIONS N <RET>
+
+           Replace nnn with the product name with the version number
+           of the software, for example, SNA3270015.
+
+           Replace ddcn with the name of the device on which you plan
+           to mount the media, where dd is the device name, c is the
+           controller ID, and n is the unit number.
+
+                        OpenVMS Software Product Installation Procedure V6.1
+
+           It is dd-mmm-yyyy at hh:mm.
+           Enter a question mark (?) at any time for help.
+
+           * Are you satisfied with the backup of your system disk [YES]
+
+     2-2 Installing the 3270 DS Interface
+
+ 
+
+
+
+
+
+
+              Step 3: Product Installation Begins
+
+              VMSINSTAL displays a message that the media containing
+              the 3270 DS Interface software has been mounted on the
+              specified device and that the installation has begun.
+
+              Please mount the first volume of the set on MTA0:.
+              * Are you ready [YES? <RET>
+              %MOUNT-I-MOUNTED, SNA3270 mounted on MTA0:
+
+              The following products will be processed:
+
+                SNA3270 Vn.n
+
+                      Beginning installation of SNA3270 Vn.n at hh.mm
+
+              %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+              n.n is automatically replaced with the version number of
+              the 3270 DS Interface, for example, V1.5.
+
+              Step 4: Select a release notes option
+
+              The following prompts appear only if you specified OPTIONS
+              N in step 2.
+
+                Release notes options:
+
+                    1.  Display release notes
+                    2.  Print release notes
+                    3.  Both 1 and 2
+                    4.  Copy release notes to SYS$HELP
+                    5.  Do not display, print, or copy release notes
+
+              * Select option [3]: <RET>
+
+              If you select option 1, VMSINSTAL displays the release
+              notes immediately on your screen. You can terminate the
+              display at any time by pressing <Ctrl/C>.
+
+              If you select option 2, VMSINSTAL prompts you for a queue
+              name.
+
+              * Queue name [SYS$PRINT]: <RET>
+
+              Either type a queue name, or press <RET> to send the file
+              to the default output print device.
+
+              If you select option 3, VMSINSTAL prompts you for a queue
+              name and displays the release notes.
+
+                                    Installing the 3270 DS Interface 2-3
+
+ 
+
+
+
+
+
+
+           After the release notes are displayed or printed, the
+           following prompt and message appear:
+
+           * Do you want to continue the installation? Y <RET>
+           %VMSINSTAL-I-RELMOVED, Product's release notes have been
+           moved to SYS$HELP.
+
+           To continue the installation, type Y and press <RET>. If
+           you type N and press <RET>, or just press <RET>, VMSINSTAL
+           stops the installation.
+
+           Step 5: Register the product with the License Management
+           Facility
+
+           You must use the OpenVMS License Management Facility (LMF)
+           to register the product. The following text appears:
+
+                Product:       SNA-3270-DSPI
+                Producer:      DEC
+                Version        Vn.n
+                Release Date:  dd-mmm-yyyy
+
+           * Does this product have an authorization key registered and loaded? Y <RET>
+
+           Check to see if this is the same information contained
+           in your Product Authorization Key (PAK). Type Y or N in
+           response to the question.
+
+           If you do not register and load the authorization key,
+           the product will not run. For more information on LMF,
+           refer to the OpenVMS License Management Utility Reference
+           Manual.
+
+           Step 6: Select installation options
+
+           * Do you want to run the IVP after the installation [YES]? <RET>
+
+           The installation verification procedure (IVP) checks
+           whether the installation procedure was successful. Press
+           <RET> to run the IVP after installation. If you do not
+           want to run the IVP, enter N in response to the prompt.
+
+           * Do you want to purge files replaced by this installation [YES]? <RET>
+
+           The system disk might contain previous versions of
+           the distribution files. The files are replaced during
+           installation with new files, but the old files are not
+           automatically purged. Purging is recommended. In response
+           to the purging prompt, press <RET> to purge the files, or
+           N to keep them.
+
+     2-4 Installing the 3270 DS Interface
+
+ 
+
+
+
+
+
+
+                ________________________Note  ________________________
+
+                Digital Equipment Corporation recommends that you
+                do not delete previous versions of on-line release
+                notes after receiving a new release of the product.
+
+                _____________________________________________________
+
+              Step 7: Read informational message
+
+              The installation procedure now displays the following
+              informational message:
+
+                All questions have been asked, installation continuing ...
+
+                The IVP for this product, SNA3270$IVP.COM can be found in
+                the SYS$TEST directory.
+
+                To install the 3270 Data Stream images as shareable each
+                time the system reboots, you must add the following line
+                to your system startup procedure:
+
+                    $ @SYS$STARTUP:SNA3270$STARTUP
+
+                On-line release notes for this product can be found in the file,
+                    SYS$HELP:SNA3270nnn.RELEASE_NOTES
+
+              %VMSINSTALL-I-MOVEFILES, Files will now be moved to their target directories
+
+              Step 8: The IVP is run
+
+              The installation procedure calls the IVP to verify that
+              the 3270 DS Interface software was successfully installed.
+              The system displays the following messages:
+
+        ** Digital SNA 3270 Data Stream Interface for OpenVMS Vn.n Installation Test **
+
+        ... Testing 3270 Data Stream
+
+        ** Digital SNA 3270 Data Stream Interface for OpenVMS Vn.n Installation Test Successful **
+
+              Step 9: End the Installation Procedure
+
+              Installation of SNA3270 Vn.n completed at hh:mm
+
+              If you typed Y in response to the prompt that request a
+              file purge, previous versions of the files are now purged.
+
+              When installation is complete, the executable files are
+              moved to their target directory.
+
+                                    Installing the 3270 DS Interface 2-5
+
+ 
+
+
+
+
+
+
+              ________________________Note ________________________
+
+              The release notes file installed by VMSINSTAL has a
+              different name in each maintenance release.
+
+              _____________________________________________________
+
+                  VMSINSTAL procedure done at hh:mm
+
+           $ LOGOUT <RET>
+           SYSTEM logged out dd-mmm-yyyy hh:mm
+
+           When the installation procedure is complete, you can
+           continue to install more products or end the installation
+           procedure. To end the procedure, press <Ctrl/Z> or the
+           <RET> key.
+
+           VMSINSTAL deletes or changes entries in the process symbol
+           tables during the installation. Therefore, to continue
+           using the system manager's account and restore those
+           symbols you should log out and log in again.
+
+     2.2 Postinstallation Considerations
+
+           The installation procedure for 3270 DS Interface installs
+           a SNA3270SH.EXE and SNA3270MG.EXE files as shareable
+           images. Section Section 2.2.1 lists the files added to
+           the system.
+
+           The 3270 DS Interface Help file can be added to an
+           EDT Help file. Section Section 2.2.2 shows the command
+           procedure for adding 3270 DS Interface Help.
+
+           Verification of the installation can be done either during
+           installation through the VMSINSTAL utility or at any
+           other time by running SYS$TEST:SNA3270$IVP. This command
+           procedure verifies that the 3270 DS Interface has been
+           installed correctly on your system. Section Section 2.2.3
+           shows the command procedure for running the IVP.
+
+           Using the SYS$STARTUP:SNA$STARTUP.COM command file you
+           can install the 3270 DS Interface as a shareable image.
+           Section Section 2.2.4 shows the procedure for doing this.
+
+           You can install the 3270 DS Interface on a cluster
+           using the command procedure SNA3270$STARTUP.COM. Section
+           Section 2.2.5 shows the procedure for doing this.
+
+     2-6 Installing the 3270 DS Interface
+
+ 
+
+
+
+
+
+
+        2.2.1 Files Created During Installation
+
+              During installation VMSINSTAL creates the files in the
+              locations shown in Table 2-1.
+
+              Table_2-1_Files_Created_During_Installation_______________
+
+              SNA3270SH.EXE         SYS$SHARE
+
+              SNA3270MG.EXE         SYS$MESSAGE
+
+              SNA3270DF.BAS         SYS$LIBRARY
+
+              SNA3270DF.FOR         SYS$LIBRARY
+
+              SNA3270DF.H           SYS$LIBRARY
+
+              SNA3270DF.LIB         SYS$LIBRARY
+
+              SNA3270DF.MAR         SYS$LIBRARY
+
+              SNA3270DF.PAS         SYS$LIBRARY
+
+              SNA3270DF.PEN         SYS$LIBRARY
+
+              SNA3270DF.PLI         SYS$LIBRARY
+
+              SNA3270DF.R32         SYS$LIBRARY
+
+              SNA3270$STARTUP.COM   SYS$STARTUP
+
+              SNA3270$IVP.COM       SYS$TEST
+
+              SNA3270015.RELEASE_   SYS$HELP
+              NOTES
+
+              SNA3270SH.IIF_________SYS$LIBRARY_(OpenVMS_Alpha_only)____
+
+              You can find help information for the 3270 DS Interface in
+              the system help facility under the topic SNA_3270DS.
+
+        2.2.2 Adding the SNA_3270DS Help File to an EDT Help File
+
+              The 3270 DS Interface help information that is added to
+              the HELPLIB file during installation can also be inserted
+              into an EDT HELP file for programmers who use EDT to
+              develop DECnet SNA applications. The following commands
+              are used to perform this task:
+
+                ________________________Note  ________________________
+
+                You must have system manager privileges to execute
+                the following commands.
+
+                _____________________________________________________
+
+                                    Installing the 3270 DS Interface 2-7
+
+ 
+
+
+
+
+
+
+           $ LIBRARY/HELP/EXTRACT=SNA_3270DS/OUTPUT=SNA3270DS SYS$HELP:HELPLIB
+           $ LIBRARY/HELP/INSERT SYS$HELP:EDTHELP SNA3270DS
+           $ DELETE SNA3270DS.HLP;*
+
+     2.2.3 Verifying the Installation of the 3270 DS Interface
+           Software
+
+           The IVP runs automatically at the end of the installation
+           if you have chosen that option. You can also run the
+           IVP after the installation to verify that the 3270 DS
+           Interface is installed and working properly. To run the
+           IVP after installation, enter the following command from
+           your terminal:
+
+           $ @SYS$TEST:SNA3270$IVP
+
+           If the following text appears, the software is success-
+           fully installed:
+
+           ** Digital SNA 3270 Data Stream Interface for OpenVMS V1.5 Installation Test **
+
+           ... Testing 3270 Data Stream
+
+           ** Digital SNA 3270 Data Stream Interface for OpenVMS V1.5 Test Successful **
+
+              ________________________Note ________________________
+
+              The IVP does not verify that the 3270 DS Interface
+              cab connect to an IBM system.
+
+              _____________________________________________________
+
+           If the software was not installed properly, error messages
+           are displayed. Correct the problems indicated by the
+           messages and rerun the 3270 DS Interface installation
+           procedure. If you receive IP errors, you have a damaged
+           kit; contact your Digital representative.
+
+              ________________________Note ________________________
+
+              For information about configuring your IBM SNA
+              software for LU type 2 communications, refer to
+              the Guide to IBM Parameters for your particular
+              transport product.
+
+              _____________________________________________________
+
+     2-8 Installing the 3270 DS Interface
+
+ 
+
+
+
+
+
+
+              If you have not registered the 3270 DS Interface with LMF,
+              the following text appears:
+
+              ** Digital SNA 3270 Data Stream Interface for OpenVMS V1.5 Installation Test **
+
+              %LICENSE-F-NOAUTH, Digital SNA-3270-DSPI use is not authorized on this node
+              -LICENSE-F-NOLICENSE, no license is active for this software product
+              -LICENSE-I-SYSMGR, please see your system manager
+              %Failed to test program with shareable image
+
+              ** Digital SNA 3270 Data Stream Interface for OpenVMS V1.5 Test FAILED **
+
+              Stop the installation and register the 3270 DS Interface
+              with LMF as described in Step 5.
+
+        2.2.4 Installing the 3270 DS Programming Interface as a
+              Shareable Image
+
+              The file, SYS$STARTUP:SNA3270$STARTUP.COM, contains the
+              start-up command procedure for the 3270 DS Programming
+              Interface. To install the 3270 DS Programming Interface as
+              a shareable image, enter the following command procedure:
+
+              $ @SYS$STARTUP:SNA3270$STARTUP.COM
+
+              To automatically install the 3270 DS Programming Interface
+              as a shareable image when you boot the system, include
+              this command in your system start-up procedure.
+
+        2.2.5 Using the 3270 DS Interface Software in a Cluster
+
+              After you have installed the 3270 DS Interface software
+              on one node of a cluster, you can install it on the other
+              nodes of the cluster by executing the SNA3270$STARTUP.COM
+              procedure on each node as follows:
+
+              $ @SYS$STARTUP:SNA3270$STARTUP.COM
+
+              You must activate a 3270 DS Interface license for
+              each node in the cluster that will execute and run the
+              interface software. You can activate the license in one of
+              the following ways:
+
+              o  Log into each cluster node, and enter the LICENSE LOAD
+                 command.
+
+                                    Installing the 3270 DS Interface 2-9
+
+ 
+
+
+
+
+
+
+           o  Invoke the VMS SYSMAN Utility to execute the LICENSE
+              LOAD command on the desired cluster nodes. See the
+              VMS SYSMAN Utility Manual for details on defining your
+              management environment and executing commands on other
+              nodes.
+
+           For more information on the LICENSE LOAD command, refer to
+           the VMS License Management Utility Manual.
+
+     2.3 Sample Installation
+
+           This section contains a sample installation of the 3270 DS
+           Interface software. The installation procedure might be
+           modified slightly in maintenance updates of this product.
+
+           Unless otherwise stated, every command line ends with a
+           <Return>
+
+           $ @sys$update:vmsinstal sna3270015 MTA0: OPTIONS N
+
+                 OpenVMS Software Product Installation Procedure V6.1
+
+           It is dd-mmm-yyyy at hh:mm.
+           Enter a question mark (?) at any time for help.
+
+           * Are you satisfied with the backup of your system disk [YES]?
+
+           Please mount the first volume of the set on MTA0:
+           * Are you ready [YES]?
+
+           The following products will be processed:
+             SNA3270 V1.5
+
+                   Beginning installation of SNA3270 V1.5 at hh:mm
+
+           %VMSINSTAL-I-RESTORE, Restoring product saveset A ...
+
+               Release Notes Option:
+
+                   1. Display release notes
+                   2. Print release notes
+                   3. Both 1 and 2
+                   4. Copy release notes to SYS$HELP
+                   5. Do not display, print or copy release notes
+
+     2-10 Installing the 3270 DS Interface
+
+ 
+
+
+
+
+
+
+              * Select option [2]:
+              * Queue name [SYS$PRINT]:
+              Job SNA3270015 (queue SYS$PRINT, entry 317) started on LPA0
+              * Do you want to continue the installation? Y
+              %VMSINSTAL-I-REMOVED , Product's release notes have been
+              moved to SYS$HELP
+
+                      Product:      SNA-3270-DSPI
+                      Producer:     DEC
+                      Version:      V1.5
+                      Release Date: dd-mmm-yyyy
+
+              * Does this product have an authorization key registered and loaded? Y
+              * Do you want to run the IVP after the installation [YES]?
+              * Do you want to purge files replaced by this installation [YES]?
+
+                  All questions have been asked, installation continuing ...
+
+                  The IVP for this product, SNA3270$IVP.COM, can be found in
+                  the SYS$TEST directory.
+
+                  To install the 3270 Data Stream images as shareable each
+                  time the system reboots, you must add the following line
+                  to your system start procedure:
+
+                      $ @SYS$STARTUP:SNA3270$STARTUP
+
+                  On-line release notes for this product can be found in the file,
+                      SYS$HELP:SNA3270015.RELEASE_NOTES
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              **** Digital SNA 3270 Data Stream Interface for OpenVMS, V1.5 Installation Test ****
+
+              ...  Testing 3270 Data Stream
+
+              **** Digital SNA 3270 Data Stream Interface for OpenVMS, V1.5 Test Successful ****
+
+                      Installation of SNA3270 V1.5 completed at hh:mm
+
+               VMSINSTAL procedure done at hh:mm
+
+
+
+
+                                   Installing the 3270 DS Interface 2-11

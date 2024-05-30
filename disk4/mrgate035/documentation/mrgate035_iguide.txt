@@ -1,0 +1,2251 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     VAX_Message_Router_VMSmail_Gateway____________
+                     Installation Guide
+
+                     Order Number: AA-Q1RXB-TE
+
+                     Revision/Update Information: Version 3.5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital Equipment Corporation
+                     Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           Fifth Printing, June 1998
+
+           Digital Equipment Corporation makes no representations
+           that the use of its products in the manner described in
+           this publication will not infringe on existing or future
+           patent rights, nor do the descriptions contained in this
+           publication imply the granting of licenses to make, use,
+           or sell equipment or software in accordance with the
+           description.
+
+           Possession, use, or copying of the software described in
+           this publication is authorized only pursuant to a valid
+           written license from Digital or an authorized sublicensor.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           © Digital Equipment Corporation 1987, 1998. All Rights
+           Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: DECnet, DECwindows, MAILbus, Message Router,
+           MicroVAX, OpenVMS, VAX, VAXcluster, VAX DOCUMENT, VMS, and
+           the DIGITAL logo.
+
+           This document was prepared using VAX DOCUMENT, Version
+           2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Introduction
+
+      1.1  Introducing the Gateway.........................     1-1
+      1.2  Installing and Configuring  .....................    1-1
+      1.2.1   The Installation Procedure ...................    1-2
+      1.2.2   The Configuration Procedure ..................    1-3
+      1.3  Handling Installation Errors  ...................    1-3
+
+   2  Preparing to Install the Gateway
+
+      2.1  Preparation Checklist...........................     2-1
+      2.2  Prerequisite Software and Hardware..............     2-2
+      2.2.1   Tailoring OpenVMS  ...........................    2-3
+      2.3  Preparing Your System for Installation..........     2-3
+      2.4  Further Preparations for an Upgrade Installation
+           or a Reinstallation.............................     2-7
+      2.5  Preparing to Install the Gateway on a VAXcluster
+           or Local Area VAXcluster........................     2-8
+
+   3  Installing the Gateway
+
+      3.1  Overview of VMSINSTAL...........................     3-1
+      3.2  Installation Procedure..........................     3-1
+      3.3  Running the Installation Verification Procedure
+           (IVP)...........................................     3-8
+      3.4  Completing the Installation.....................    3-10
+      3.5  Location of the Gateway Software................    3-11
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     A  Distribution Media
+
+
+     B  Sample Installation Procedure
+
+     Index
+
+
+     Figures
+
+         3-1    Directory Structure of the MRGATE Account ....   3-11
+
+     Tables
+
+         3-1    Location of Gateway Files ....................   3-12
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              Purpose of This Book
+
+              This book describes how to install the Message Router[TM]
+              VMSmail Gateway Version 3.5. It also describes how to
+              upgrade from Version 3.3A of the Gateway.
+
+              Intended Audience
+
+              This book is for the person responsible for installing
+              and maintaining the Message Router VMSmail Gateway. That
+              person should be familiar with operating system management
+              and DECnet[TM], and have access to the SYSTEM account on
+              the OpenVMS[TM] VAX[TM] system where the Gateway is to be
+              installed.
+
+              How to Use this Book
+
+              Read Chapter 1 and Chapter 2 to understand the prepara-
+              tions required before installation.
+
+              Read Chapter 3 for a step-by-step description of the
+              interactive installation procedure.
+
+              Refer to Appendix A for a list of the files supplied as
+              part of the Message Router VMSmail Gateway distribution
+              kit.
+
+              Refer to Appendix B for an example of a successful Gateway
+              installation on OpenVMS Version 5.5-2.
+
+              Related Documents
+
+              Before installing the Gateway, as described in Chapter 3,
+              you must install Message Router Version 3.5 as described
+              in the VAX Message Router Installation Guide.
+
+              You may also need to refer to:
+
+              VAX Message Router VMSmail Gateway Release Notes
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+           The Release Notes are found in the following location:
+
+              SYS$HELP:MRGATE035.RELEASE_NOTES
+
+           The Message Router VMSmail Gateway documentation consists
+           of the following guides:
+
+           o  VAX Message Router VMSmail Gateway Installation Guide -
+              this guide
+
+           o  VAX Message Router VMSmail Gateway Management Guide -
+              explains how to configure and manage the Gateway
+
+           o  VAX Message Router VMSmail Gateway User's Guide -
+              explains how to address mail using various User Agents
+
+           You may also need to refer to the following books for
+           information on the software products with which the
+           Gateway interacts:
+
+           o  Introduction to Message Router
+
+           o  VAX Message Router Configuration Guide
+
+           o  VAX Message Router Management Guide
+
+           o  VAX Message Router Management Reference Manual
+
+           o  VAX Message Router Release Notes
+
+           o  VMS Authorize Utility Manual
+
+           o  VMS License Management Utility Manual
+
+           o  OpenVMS Version 5.5 Upgrade and Installation Manual
+
+           Conventions
+
+           The following conventions are used in this book:
+
+           this          Indicates commands or responses that you
+           typeface      type.
+                         Unless otherwise stated, press Return after
+                         each command or response.
+
+           variable      Represents variables to type in commands or
+                         responses.
+
+     vi
+
+ 
+
+
+
+
+
+
+
+
+
+              this          Indicates prompts and messages from the
+              typeface      computer and also an example of code.
+
+              $             A dollar sign ($) is the default user
+                            prompt.
+
+
+              []            Brackets are used after questions to
+                            enclose the default answer. Press Return
+                            to accept the default. Brackets also denote
+                            a directory specification.
+
+              ...           Horizontal ellipses indicate that additional
+                            text can be entered.
+                            In the MB$CONTROL command, horizontal
+                            ellipses indicate that you can add
+                            identifiers for other MAILbus[TM] Gateways,
+                            for example, MRX for the Message Router
+                            X.400 Gateway.
+
+
+              VMSmail       Refers to the OpenVMS Mail Utility.
+
+              Press         Indicates that you make one keystroke with
+                            an editing or command key, for example,
+                            press Return.
+
+
+              Type          Indicates characters that you type at the
+                            keyboard.
+
+              Ctrl/Z        Indicates that you hold down the Ctrl key
+                            while pressing the other key (Z).
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                                            Introduction
+
+
+
+        1.1 Introducing the Gateway
+
+              The Message Router VMSmail Gateway is part of MAILbus.
+              MAILbus comprises Message Router and its Gateways, of
+              which the VMSmail Gateway is one. The Message Router
+              VMSmail Gateway Kit contains the Message Router VMSmail
+              Gateway and Message Router.
+
+              The Gateway allows you to exchange mail between VMSmail
+              and a Message Router system. Using the Gateway, a VMSmail
+              user and a user of a Message Router based mail system can
+              send mail to each other.
+
+              VMSmail users can also use the Gateway when exchanging
+              mail with each other. This enables them to take advantage
+              of Message Router's store-and-forward capability, which is
+              useful if a node is not operating.
+
+        1.2 Installing and Configuring
+
+              You must install Message Router Version 3.5 before you
+              install the Gateway. You cannot use the Gateway until
+              you have first installed and then configured it. You must
+              configure Message Router before you configure the Gateway.
+
+              You do not have to configure the Gateway immediately after
+              installing it. If you have other MAILbus components that
+              you want to install, such as other Gateways, you can
+              install these first and configure all the components,
+              including Message Router, together. However, there is one
+              exception to this: the Message Router X.400 Gateway (MRX)
+              needs Message Router to be configured before it can be
+              installed.
+
+
+                                                        Introduction 1-1
+
+ 
+
+
+
+
+
+
+           Before starting the installation procedure, you must use
+           the VMS License Management Utility to register and load
+           the Product Authorization Key (PAK) for the Gateway,
+           MR-VMSMAIL-GATEWAY. If you install the Gateway without
+           first loading and registering its PAK, the installation
+           verification procedure fails. Refer to the VMS License
+           Management Utility Manual for information on how to use
+           the VMS License Management Utility.
+
+     1.2.1 The Installation Procedure
+
+           This guide explains how to install the Message Router
+           VMSmail Gateway on an OpenVMS operating system using
+           VMSINSTAL. VMSINSTAL is a command procedure used to
+           install optional software products on an OpenVMS operating
+           system. Basic knowledge of VMSINSTAL is required to
+           perform the installation. This procedure is interactive
+           and takes you through the installation step by step. Each
+           step is described fully in Chapter 3.
+
+           You can check that the installation has succeeded by
+           running the installation verification procedure (IVP)
+           after the installation is complete. The IVP, if you
+           request it, runs automatically after the installation,
+           and is described fully in Chapter 3. If the IVP runs
+           successfully, the Gateway software resides on your system,
+           but cannot be used until it is configured.
+
+           Installing the Gateway and running the IVP should take
+           about 15 minutes, depending on the system configuration
+           and type of media used. The installation procedure is the
+           same, regardless of the distribution media.
+
+           The installation procedure varies slightly, according
+           to whether you are performing a new or an upgrade
+           installation. The differences are fully described in
+           Chapter 2.
+
+           Prepare your system for installation by following the
+           instructions in Chapter 2.
+
+
+
+
+
+     1-2 Introduction
+
+ 
+
+
+
+
+
+
+        1.2.2 The Configuration Procedure
+
+              After installing the Gateway, configure it as described in
+              the VAX Message Router VMSmail Gateway Management Guide.
+              You will not be able to use the Gateway until it has been
+              configured.
+
+              The configuration procedure allows you to customize the
+              Gateway to meet the requirements of your system.
+
+        1.3 Handling Installation Errors
+
+              It is a good idea to take a log of the installation
+              procedure to keep a record of any errors. If you receive
+              an unexpected error message during installation, do the
+              following:
+
+              1. Check that you have responded to the prompts correctly
+
+              2. If you have made a mistake and are re-prompted, enter
+                 the correct information
+
+              3. If re-entering the information fails, restart the
+                 installation
+
+              4. If the installation fails again at the same point,
+                 contact Digital as follows:
+
+                 o  Contact your Customer Support Center, if you have a
+                    service contract
+
+                 o  Contact your local Digital office to arrange for a
+                    service contract, if you do not have one
+
+              Turn to Chapter 2 to prepare for installation.
+
+
+
+
+
+
+
+
+
+
+                                                        Introduction 1-3
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                        Preparing to Install the Gateway
+
+
+
+        2.1 Preparation Checklist
+
+              Complete the steps in the following checklist to
+              prepare your OpenVMS VAX system for the new or upgrade
+              installation:
+
+              1. Ensure that your Gateway distribution kit contains
+                 everything listed on the bill of materials, which is
+                 included with the kit.
+
+                 The distribution medium may be a magnetic tape or
+                 disk(s), or an optical disk, containing all the files
+                 listed in Appendix A. The type of media depends on your
+                 system hardware.
+
+              2. Ensure that your system has the prerequisite software
+                 and hardware. See Section 2.2.
+
+              3. Ensure that the SYSTEM account is setup with sufficient
+                 quota. See Section 2.3.
+
+              4. Ensure that the Product Authorization Key (PAK) for
+                 your Gateway is registered and active. See Section 2.3.
+
+              5. Prepare the system for installation. See Section 2.3.
+
+              6. Make sure Message Router Version 3.5 that has been
+                 successfully installed on your system. You can do this
+                 by running the Message Router IVP during the Message
+                 Router installation. You do not have to configure
+                 Message Router Version 3.5 before installing the
+                 Gateway.
+
+                 If you run the Gateway IVP during the Gateway
+                 installation, Message Router is set running on the
+                 node where you are installing the Gateway. Message
+                 Router and the Gateway are shut down after the Gateway
+                 IVP has been run.
+
+                                    Preparing to Install the Gateway 2-1
+
+ 
+
+
+
+
+
+
+     2.2 Prerequisite Software and Hardware
+
+           To install the Message Router VMSmail Gateway Version 3.5,
+           you must have:
+
+           o  Version 5.5-2, 6.2 and 7.1 Year 2000 ECO patches
+              installed
+
+           o  Message Router Version 3.5 installed.
+
+           o  OpenVMS[TM] for VAX[TM] Version 5.5-2, Version 6.2, or
+              Version 7.1
+
+           o  OpenVMS[TM]/VAX Version 5.5-2 either DECnet VAX Version
+              5.5-2 or DECnet/OSI [R] Version 5.6B.
+
+           o  OpenVMS[TM]/VAX Version 6.2 either DECnet VAX Version
+              6.2 or DECnet/OSI [R] Version 6.3.
+
+           o  OpenVMS[TM]/VAX Version 7.1 either DECnet VAX or DECnet
+              /OSI [R] Version 7.1.
+
+           o  You need a valid license (MR-VMSMAIL-GATEWAY) to use
+              V3.5 of the Gateway.
+
+              The Gateway runs on either Phase IV DECnet or DECnet
+              /OSI for OpenVMS. If the Gateway is running on DECnet
+              /OSI, there are some restrictions to how messages can
+              be addressed. See Section 6.2 in the Release Notes
+              for Message Router VMSmail Gateway V3.5 for details of
+              these restrictions in addressing.
+
+              It is not supported to run V3.5 of the Gateway on a
+              VAXcluster[TM] that is running a mixture of DECnet/VAX
+              Phase IV and DECnet/OSI for OpenVMS VAX.
+
+           o  A valid VAX or MicroVAX system configuration.
+
+              Note that you cannot use node names longer than six
+              characters with the Message Router VMSmail Gateway.
+              Therefore, on DECnet/OSI systems, the node name synonym
+              database must be accessible on the node where the
+              Message Router VMSmail Gateway is installed.
+
+           o  Optional: DECwindows MOTIF installed (required for the
+              support of CDA documents).
+
+           o  A minimum of 5000 free blocks on the system disk
+              available for installation and 700 free blocks
+              available after installation.
+
+     2-2 Preparing to Install the Gateway
+
+ 
+
+
+
+
+
+
+              o  About 6000 free blocks on the target disk. This is the
+                 disk where the Gateway directory is to be created.
+
+        2.2.1 Tailoring OpenVMS
+
+              You must check that appropriate OpenVMS software is
+              available on your system. Do this using the OpenVMS
+              Tailoring utility. The tailoring utility enables you to
+              add and remove software from the OpenVMS Version 5.5-
+              2 system. You can use the OpenVMS Tailoring utility on
+              any VAX system, but you are more likely to need it on a
+              MicroVAX.
+
+              Message Router Version 3.5 requires the following classes
+              of OpenVMS files:
+
+              o  OpenVMS Required Saveset
+
+              o  Network Support
+
+              o  Programming Support
+
+              o  Secure User's Environment
+
+              o  Utilities
+
+              If any of these classes are missing, use the OpenVMS
+              Tailoring utility (VMSTAILOR) to install them. Refer
+              to OpenVMS Version 5.5 Upgrade and Installation Manual
+              for details of VMSTAILOR. When you have completed these
+              preparations, go to Section 2.3.
+
+        2.3 Preparing Your System for Installation
+
+              Before installation, ensure you are logged on to the
+              SYSTEM, or suitably privileged, account.
+
+              To install the Gateway, use VMSINSTAL. Before invoking
+              VMSINSTAL, prepare your system, as follows:
+
+              1. Check that the Gateway PAK is registered and active, by
+                 typing the following command:
+
+                 $ LICENSE LIST MR-VMSMAIL-GATEWAY /FULL
+
+                 The license for your Gateway should be displayed. If it
+                 is not displayed, you need to register and load your
+                 Gateway PAK. For details of how to do this, see the VMS
+                 License Management Utility Manual.
+
+                                    Preparing to Install the Gateway 2-3
+
+ 
+
+
+
+
+
+
+           2. If you have not already done so, check that there
+              are no active users on the system using the following
+              command:
+
+              $ SHOW USERS
+
+              The system lists the active users currently on the
+              system.
+
+              If there are any users active on the system, ask them
+              to log out by typing:
+
+              $ REPLY /BELL /USERNAME "PLEASE LOG OUT"
+
+           3. You may want to keep a log of the installation
+              procedure. You can do this either by using the
+              operator's console, which is usually a hardcopy
+              terminal, or by keeping a log, as follows:
+
+              $ SET HOST 0 /LOG=filename
+
+              where filename is the name of the file that is to
+              contain the installation log.
+
+           4. Backup your system disk.
+
+              If a system failure occurs at a critical point during
+              the installation, some files can be corrupted. Also,
+              you are given the choice of purging old files during
+              the installation.
+
+           5. Ensure that there are at least 5000 blocks available on
+              the system disk for the installation of the Gateway.
+              After installation, the Gateway needs at least 700
+              blocks on the system disk and about 6000 blocks on
+              the target disk. Of this 6000 blocks on the target
+              disk, the installed Gateway software uses 1800 blocks.
+              The remaining 4200 blocks are used to hold messages,
+              database and queue files.
+
+           6. You must ensure that the SYSTEM account is set up with
+              sufficient quota. The quotas that you set to install
+              and run Message Router are sufficient to install and
+              run the Gateway.
+
+           7. The Gateway requires the following minimum free global
+              pages and global sections:
+
+                 100 GBLPAGES available
+                   2 GBLSECTIONS available
+
+     2-4 Preparing to Install the Gateway
+
+ 
+
+
+
+
+
+
+                 Use the following commands to find the number of
+                 available global pages and global sections:
+
+                 $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+                 $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+
+                 If necessary, make incremental changes to the parameter
+                 values. Edit the file SYS$SYSTEM:MODPARAMS.DAT to
+                 include the following lines:
+
+                 ADD_GBLPAGES=100
+                 ADD_GBLSECTIONS=2
+
+              8. You must ensure that the account that VMSmail uses is
+                 set up with sufficient quota. By default, VMSmail uses
+                 the MAIL$SERVER account.
+
+                 Set FILLM for the account that VMSmail uses to at least
+                 20.
+
+                 Set BYTLM for the account to 512 multiplied by FILLM.
+
+                 To set the quota for these parameters, use the
+                 Authorize utility as follows:
+
+                 a. Invoke the Authorize utility:
+
+                    $ RUN SYS$SYSTEM:AUTHORIZE
+
+                 b. Modify the FILLM quota:
+
+                    UAF> MODIFY accountname /FILLM=quota1
+
+                    where:
+
+                    o  accountname is the name of the account that
+                       VMSmail uses
+
+                    o  quota1 is the quota you want to specify for
+                       FILLM, and should be at least 20
+
+                 c. Modify the BYTLM quota:
+
+                    UAF> MODIFY accountname /BYTLM=quota2
+
+                    where:
+
+                    o  accountname is the name of the account that
+                       VMSmail uses
+
+                    o  quota2 is 512 multiplied by the quota1 you
+                       specified for FILLM
+
+                                    Preparing to Install the Gateway 2-5
+
+ 
+
+
+
+
+
+
+              d. Exit from the Authorize utility:
+
+                 UAF> EXIT
+
+              If these quotas for the account that VMSmail uses
+              are not set sufficiently high, a message sent to
+              many recipients on many nodes might not be delivered
+              efficiently.
+
+              ________________________Note ________________________
+
+              During the configuration procedure, you can specify
+              the number of nodes that the Gateway can connect
+              to at one time. The default is 5 nodes. You must
+              set the FILLM quota for the account that VMSmail
+              uses to the number of nodes that can be connected to
+              at any one time, plus 4. If you choose to increase
+              the number of nodes during the configuration, you
+              will need to modify the FILLM and BYTLM quotas
+              accordingly.
+
+              _____________________________________________________
+
+           9. Check that VMSmail is working by sending a mail message
+              to 0::SYSTEM. If the message arrives at the SYSTEM
+              account, VMSmail is working.
+
+           10.If Message Router Version 3.5 is running on your
+              system, you must stop it and all MAILbus components
+              as follows:
+
+              $ @SYS$MANAGER:MB$CONTROL STOP=(ER,...,TS,DDS,MS)
+
+              where . . . is a list of the identifiers of other
+              MAILbus components that are installed on your system.
+              If this is not a new installation, include MRG in this
+              command.
+
+              You must use this command on every node in a VAXcluster[TM].
+
+           If you are upgrading the Gateway from Version 3.2, or
+           reinstalling Version 3.3 of the Gateway, complete the
+           further preparations described in Section 2.4.
+
+           If you are installing the Gateway on a VAXcluster or
+           Local Area VAXcluster, complete the further preparations
+           described in Section 2.5.
+
+     2-6 Preparing to Install the Gateway
+
+ 
+
+
+
+
+
+
+              Otherwise, turn to the next chapter to install the
+              Gateway.
+
+        2.4 Further Preparations for an Upgrade Installation or a
+            Reinstallation
+
+              Customers who have Message Router VMSmail Gateway V3.2
+              or later can upgrade to V3.5 directly. Customers who have
+              earlier Versions need to install atleast V3.2 and then
+              upgrade to V3.5.
+
+              When you install V3.5 of the Gateway, VMSINSTAL asks you
+              whether you have a Product Authorization Key (PAK) for
+              V3.5. Answer YES if you have a License PAK for V3.2 or
+              V3.3 of the Gateway, because V3.5 uses the same PAK as
+              V3.2 and V3.3. If you have a License PAK for V3.2 or V3.3
+              of the Gateway, you do not need a new PAK for V3.5 of the
+              Gateway.
+
+              However, if you have a Nonlicense PAK for V3.2 or V3.3
+              of the Gateway, you must update the PAK to allow you
+              to run V3.5 of the Gateway. If you are not sure whether
+              you have a License PAK or Nonlicense PAK, examine the
+              Authorization Number data field on the PAK. If the second
+              and third characters correspond to the list below, you
+              have a Nonlicense PAK:
+
+                 FT, IM, QM, RE, SI, SP, TC, TP, TS, WS
+
+              In addition to the above list, a PAK that has the letters
+              CS as the second and third characters is not valid unless
+              it was generated by ALL-IN-1[TM] IOS or MailWorks[TM].
+
+              Prepare your system for installation as follows:
+
+              1. If you are upgrading the Gateway from Version 3.2, you
+                 must remove MRTOVMS from the batch queue.
+
+                 During the installation procedure, you are asked if
+                 you want to purge files replaced by this installation.
+                 If you are reinstalling Version 3.3 of the Gateway and
+                 purge your files, as recommended, you must also remove
+                 MRTOVMS from the batch queue.
+
+                 To remove MRTOVMS from the batch queue, log in to the
+                 SYSTEM account, and type:
+
+                 $ SHOW QUEUE queuename /ALL
+
+                                    Preparing to Install the Gateway 2-7
+
+ 
+
+
+
+
+
+
+              where queuename is the name of the batch queue MRTOVMS
+              is running on. The default queue name is MB$BATCH.
+
+              This command shows the list of jobs queued to run on
+              the batch queue.
+
+              Examine the queue for the MRTOVMS entry and make a note
+              of the entry number. Delete this entry from the queue
+              by typing:
+
+              $ DELETE /ENTRY=entrynumber queuename
+
+              where entrynumber is the entry number noted above and
+              queuename is the name of the queue.
+
+           2. If you configured the Gateway to run with exception
+              reporting, you must also delete MB$MRG from the batch
+              queue. Do this in the same way as you deleted MRTOVMS
+              from the batch queue.
+
+              If either of these two entries are in the batch queue,
+              the old batch jobs will fail if you select the purge
+              option during the installation procedure.
+
+           3. If you are installing the Gateway on a VAXcluster
+              or Local Area VAXcluster, complete the further
+              preparations described in Section 2.5. Otherwise, turn
+              to Chapter 3 to install the Gateway.
+
+     2.5 Preparing to Install the Gateway on a VAXcluster or Local
+         Area VAXcluster
+
+           You can run the Gateway on any OpenVMS VAXcluster or
+           Local Area VAXcluster configuration. For each Gateway
+           in the cluster, you need to register and load your Gateway
+           Product Authorization Key (PAK), using the VMS License
+           Management Utility. The VMS License Management Utility
+           Manual describes how to register and load your PAK.
+
+           In a VAXcluster, all the nodes may share a single
+           SYSUAF.DAT file and DECnet database or one group of nodes
+           may share one set of resources, and another group may
+           share a different set of resources. Also, in a cluster,
+           there may be a single system disk or multiple system
+           disks.
+
+     2-8 Preparing to Install the Gateway
+
+ 
+
+
+
+
+
+
+              Irrespective of how your cluster is defined, there must
+              be only one Message Router VMSmail Gateway environment
+              within the cluster. However, the Gateway does not need to
+              be installed and configured on all nodes in a cluster.
+
+              Choose the set of nodes that you want the Message Router
+              VMSmail Gateway to run on, and make sure you install it
+              such that the installation satisfies the following two
+              constraints:
+
+              o  It modifies all the SYSUAF.DAT files and DECnet
+                 databases that are shared by those nodes
+
+              o  It modifies all the system disks that are used by those
+                 nodes
+
+              To satisfy both of these constraints, you may need to
+              perform more than one installation. However, all the
+              installations of the Gateway on a cluster must use the
+              same Message Router VMSmail Gateway environment, that
+              is, the same MB$ directory structure and associated data
+              files.
+
+              When you have installed the Gateway, you must configure
+              it. As part of configuration you can choose whether to
+              enable the use of the cluster alias, if one is defined.
+              You can also choose to start a minimum set of Message
+              Router VMSmail Gateway processes on some of the nodes in
+              the cluster. (See the VAX Message Router VMSmail Gateway
+              Management Guide.)
+
+              Turn to Chapter 3 to install the Gateway.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    Preparing to Install the Gateway 2-9
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                                  Installing the Gateway
+
+
+
+              This chapter explains how to install the Gateway.
+
+        3.1 Overview of VMSINSTAL
+
+              VMSINSTAL is a procedure that can be used to install
+              optional software products on the OpenVMS operating
+              system. VMSINSTAL requires at least two parameters:
+
+              o  The name of the product(s) being installed
+
+              o  The name of the device where the distribution medium is
+                 mounted or loaded
+
+        3.2 Installation Procedure
+
+              If possible, use a hardcopy terminal when performing the
+              installation, to preserve a record of the procedure in
+              case of failure.
+
+              Remember that you can call on-line help by typing a
+              question mark (?) in response to any prompt.
+
+              Complete the following steps:
+
+              1. Log in to the SYSTEM account, and type the following
+                 command:
+
+                 $ @SYS$UPDATE:VMSINSTAL MRGATE035 device OPTIONS N
+
+                 where:
+
+                 o  MRGATE035 is the identity of the product being
+                    installed
+
+                 o  device is the name of the device where the
+                    distribution medium is to be mounted, for example,
+                    MTA0
+
+                                              Installing the Gateway 3-1
+
+ 
+
+
+
+
+
+
+              o  OPTIONS N provides the option of reading or printing
+                 the on-line release notes
+
+              ________________________Note ________________________
+
+              Do not use the VMSINSTAL alternate root option,
+              OPTION R. The Message Router VMSmail Gateway does
+              not support this option in VMSINSTAL.
+
+              If this is a reinstallation of the Gateway Version
+              3.5, you can omit the parameter OPTIONS N, provided
+              you have already read the release notes.
+
+              _____________________________________________________
+
+           2. The procedure starts, and displays:
+
+                      VAX/VMS Software Product Installation Procedure Vx.x
+
+              It is dd-mmm-yyyy at hh:mm.
+
+              Enter a question mark (?) at any time for help.
+
+              where dd-mmm-yyyy and hh:mm are the current date and
+              time, and x.x is the OpenVMS version number.
+
+           3. You may receive the following warning message:
+
+              %VMSINSTAL-W-ACTIVE, The following processes are still active.
+
+              * Do you want to continue anyway [NO]?
+
+              If you receive any warning messages, you are advised
+              to exit from the installation procedure, by pressing
+              RETURN, and correct the problem, as described in
+              Chapter 2. Then restart the installation.
+
+              If any processes are still active, you are advised to
+              shut them down. To do this, press RETURN to accept the
+              default answer of NO and to exit from the installation
+              procedure. Ask users with active processes to log out,
+              as described in step 2 of Section 2.3. Then restart the
+              installation.
+
+              If you want to continue the installation regardless of
+              the warning messages, type YES.
+
+     3-2 Installing the Gateway
+
+ 
+
+
+
+
+
+
+              4. You may receive one or more of the following error
+                 messages:
+
+                 %VMSINSTAL-E-LOWQUOTA, The following account quotas for Message
+                 Router VMSmail Gateway V3.5 are too low.
+                 %VMSINSTAL-E-LOWSYSGEN, The following SYSGEN parameters for Message
+                 Router VMSmail Gateway V3.5 are too low.
+
+                 In this case, the installation will cease immediately.
+                 You are not given the option to continue.
+
+                 A list of the incorrect quotas and/or parameters is
+                 displayed. You must set these quotas and/or parameters
+                 to the values stated in Chapter 2.
+
+              5. The procedure asks:
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 If the system disk has not recently been backed up,
+                 type NO to abort the installation and make a backup
+                 copy.
+
+                 Otherwise, press RETURN to accept the default answer of
+                 YES.
+
+              6. The procedure instructs you to mount the distribution
+                 volume:
+
+                 * Please mount the first volume of the set on device
+
+                 * Are you ready?
+
+                 where device is the device name you supplied in Step 1.
+
+                 When you have mounted the distribution volume, type
+                 YES.
+
+              7. The procedure confirms that the volume has been
+                 successfully mounted and displays:
+
+                 %MOUNT-I-MOUNTED, Message Router VMSmail Gateway mounted on _device
+
+                 The following products will be processed:
+                    MRGATE V3.5
+
+                  Beginning installation of MRGATE V3.5 at hh:mm
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+                     Release notes included with this kit are always copied to SYS$HELP.
+
+                     Additional Release Notes Options:
+
+                                              Installing the Gateway 3-3
+
+ 
+
+
+
+
+
+
+               1.  Display release notes
+               2.  Print release notes
+               3.  Both 1 and 2
+               4.  None of the above
+
+              * Select option [2]:
+
+           8. If you specified option 4, the procedure continues at
+              Step 9.
+
+              Otherwise, the procedure displays a list of options
+              relating to the release notes. Select the option that
+              prints the release notes.
+
+              If you select the option that prints the release notes,
+              the procedure displays:
+
+              * Queue name[SYS$PRINT]:
+
+              Enter the name of a print queue where you want the
+              release notes to be printed. The procedure then
+              displays a message telling you that the release notes
+              have been successfully queued to the printer. If you do
+              not specify the name of a print queue, the output is
+              directed by default to SYS$PRINT.
+
+           9. The procedure asks:
+
+              * Do you want to continue the installation [NO]?
+
+              You are advised to exit from the installation and read
+              the release notes. Press RETURN to accept the default
+              answer of NO.
+
+              Otherwise, type YES and press RETURN.
+
+              When you have read the release notes you can restart
+              the installation, omitting the parameter OPTIONS N.
+
+           10.The procedure confirms that the product's release notes
+              have been moved to SYS$HELP.
+
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been successfully
+              moved to SYS$HELP
+
+           11.The procedure displays copyright information followed
+              by details of the product that you want to install:
+
+     3-4 Installing the Gateway
+
+ 
+
+
+
+
+
+
+                        Product:         MR-VMSMAIL-GATEWAY
+                        Producer:        DEC
+                        Version:         3.5
+                        Release Date:    dd-mmm-yyyy
+
+                 where dd-mmm-yyyy is the release date.
+
+                 VMSINSTAL displays:
+
+                 * Does this product have an authorization key registered and loaded?
+
+                 If you have not registered and loaded the Gateway PAK,
+                 type NO to abort the installation, and refer to the VMS
+                 License Management Utility Manual for a description
+                 of how to register and load the Gateway PAK. When
+                 you have registered and loaded the PAK, restart the
+                 installation.
+
+                 If the Gateway PAK is already registered and loaded,
+                 type YES.
+
+              12.The procedure asks:
+
+                 * Do you want help text printed before every question [NO]?
+
+                 Help text is available for all questions asked during
+                 the installation. If you want the help text displayed
+                 before each question, type YES and press RETURN.
+
+                 Otherwise, press RETURN to accept the default answer of
+                 NO.
+
+                 Remember that you can still type a question mark (?) in
+                 response to any prompt, to call on-line help if you do
+                 not want help text printed automatically.
+
+              13.The procedure asks:
+
+                 * Do you want to purge files replaced by this installation [YES]?
+
+                 Press RETURN to accept the default answer of YES.
+                 Otherwise, type NO.
+
+              14.The procedure asks:
+
+                 * Do you want to run the IVP after the installation [YES]?
+
+                 You are advised to run the IVP to check that the
+                 installation has been successful. Press RETURN to
+                 accept the default answer of YES.
+
+                 Otherwise, type NO.
+
+                                              Installing the Gateway 3-5
+
+ 
+
+
+
+
+
+
+           15.If the procedure finds a previous Message Router
+              VMSmail Gateway installation, VMSINSTAL displays:
+
+                     A Message Router VMSmail Gateway V3.* system has been found.
+                     Any data from this system will be included in the current
+                     installation.
+
+           16.The procedure displays:
+
+               You have answered all the questions for the
+               Message Router VMSmail Gateway installation.
+               The Message Router VMSmail Gateway is now being installed.
+               The installation will take approximately 15 minutes
+               depending on system configuration and media type.
+
+           17.The procedure displays a series of messages that
+              tell you that the generation phase of the Gateway
+              installation is proceeding. There is a pause between
+              each message.
+
+              If this is a reinstallation of Version 3.5 of the
+              Gateway, or an upgrade from an earlier version, the
+              procedure continues at Step 18. Otherwise, for a new
+              installation, the procedure displays:
+
+              %MRG-I-CHECDIRS, Checking Directories
+              %MRGATE-I-CREMBDIR, Creating directory device:[MB$.MRG]
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+              %MRG-I-SETMRGFILES, Setting Message Router VMSmail Gateway file
+              ownership and protection
+              %MRG-I-ASIGNMRGATE, Assigning Message Router VMSmail Gateway files
+              to target directories
+
+              If the installation procedure finds an account or
+              directory it does not expect, the following message
+              is displayed:
+
+              %MRG-I-ACCEXIST, MRGATE account already existed.
+
+                       The account already exists. It should only exist when
+                       the Message Router VMSmail Gateway is re-installed.
+
+                       Check that the account does not have another use.
+
+              The installation procedure continues at Step 19.
+
+     3-6 Installing the Gateway
+
+ 
+
+
+
+
+
+
+              18.If this is a reinstallation of Version 3.5, or an
+                 upgrade from an earlier version of the Gateway, the
+                 procedure displays:
+
+                 %MRG-I-MODACC, Modifying the MRGATE account
+                 %MRG-I-CHECDIRS, Checking Directories
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+                 %MRG-I-SETMRGFILES, Setting Message Router VMSmail Gateway file
+                 ownership and protection
+                 %MRG-I-ASIGNMRGATE, Assigning Message Router VMSmail Gateway files
+                 to target directories
+
+              19.After VMSINSTAL has marked the files for moving to the
+                 Gateway, more messages are displayed:
+
+                  The generation phase of the Message Router VMSmail Gateway
+                  installation is now complete.
+
+                     In order to tailor the Message Router VMSmail Gateway to your
+                     requirements, you must use the MAILbus configuration procedure,
+                     SYS$MANAGER:MB$CONFIG.COM.
+
+                 You will not have a working system until the Gateway
+                 has been configured. The configuration procedure is
+                 described in the VAX Message Router VMSmail Gateway
+                 Management Guide. You also need to refer to the VAX
+                 Message Router Configuration Guide and other gateway
+                 management guides, if you want to configure all the
+                 MAILbus products together.
+
+              20.The procedure moves the Gateway files to their
+                 specified directories:
+
+                 %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+                 directories...
+
+                 When this message appears, the installation is
+                 completing.
+
+
+
+
+
+                                              Installing the Gateway 3-7
+
+ 
+
+
+
+
+
+
+     3.3 Running the Installation Verification Procedure (IVP)
+
+           The IVP runs automatically after the installation is
+           complete, if you requested it. It checks that the
+           installation was successful. The following is an example
+           of the Gateway installation verification procedure.
+
+                      IVP for Message Router VMSmail Gateway
+
+                                  Version V3.5-402
+
+               This is the installation verification procedure (IVP) for
+               the Message Router VMSmail Gateway. It checks that the Gateway is
+               successfully installed on your system.
+
+              © Digital Equipment Corporation 1983, 1998. All rights reserved.
+
+           ==================================================================
+
+           Message Router VMSmail Gateway Version V3.5-402 IVP
+           This verification procedure is in four stages:
+
+           Stage 1 checks that all the Gateway files exist, and are the right size.
+
+           Stage 2 sets DECnet running if necessary.
+
+           Stage 3 tests the Gateway by sending a mail message from VMSmail to
+           Message Router.  When this stage is complete, a message is displayed
+           on the screen.
+
+           Stage 4 tests the Gateway by sending a mail message from Message Router
+           to VMSmail.  When this stage is complete, you will receive a mail
+           message.  This message is sent to the account from which you are
+           performing the verification.
+
+           The verification procedure has not completed successfully
+           until you have seen both the screen message and the mail message.
+
+           --------------------------------------------------------------------
+
+           Message Router VMSmail Gateway V3.5-402 file check
+           The total number of files is 17.
+           All files exist and are the correct size.
+           End of Message Router VMSmail Gateway V3.5-402 file check.
+
+           ------------------------------------------------------------------
+
+           Checking MOURYA VMSmail network response
+           Succeeded in activating VMSmail DECnet object 27 on node MOURYA
+
+     3-8 Installing the Gateway
+
+ 
+
+
+
+
+
+
+                      Starting Management Service
+
+              %JBC-I-QUENOTMOD, modifications not made to running queue
+
+                      Starting Transfer Service
+
+                      Starting the Message Router VMSmail Gateway
+
+                      Stage 3 of the installation verification procedure for
+
+                      the Message Router VMSmail Gateway V3.5-402 successful
+
+                      Waiting for delivery of VMSmail sent through Gateway V3.5-402.
+
+                      The IVP waits for a maximum of 2 minutes before timing out.
+
+                      New mail on node MOURYA from MOURYA::MRGATE::"MRGATE::SYSTEM"
+
+                      Stage 4 of the installation verification procedure for
+
+                      the Message Router VMSmail Gateway V3.5-402 successful
+
+                      Shutting down the Message Router VMSmail Gateway
+
+                      Shutting down Transfer Service
+
+                      Shutting down Management Service
+
+                      The Message Router VMSmail Gateway V3.5-402 IVP completed successfully
+
+                      Installation of MRGATE V3.5 completed at hh:mm
+
+                      VMSINSTAL procedure done at hh:mm
+
+              If you performed the installation from the console medium,
+              you are asked to remove the distribution volume from the
+              console device and replace it with the console volume:
+
+              Please mount the console volume on device:
+              Are you ready?
+
+              where device is the device name that you specified in Step
+              1 of Section 3.2.
+
+              When you have replaced the console volume, type YES.
+
+                                              Installing the Gateway 3-9
+
+ 
+
+
+
+
+
+
+           The system confirms that the console volume has been
+           mounted, and then exits from VMSINSTAL:
+
+           %MOUNT-I-MOUNTED, CONSOLE mounted on _device:
+
+                     VMSINSTAL procedure done at hh:mm
+
+           Provided you have received the mail message from stage 4
+           of the IVP, the installation was successful. You must now
+           complete the installation as described in Section 3.4.
+
+           If you do not receive the mail message from stage 4, you
+           must reinstall the Gateway. If the IVP did not indicate
+           the reason for the failure of the installation, you can
+           set VERIFY on the installation procedure, so that the IVP
+           displays more information on your screen.
+
+           To set VERIFY on the Gateway installation procedure, use
+           the following command:
+
+           $ VFY$MRGCVP=1
+
+           You then install the Gateway again in the usual way.
+
+     3.4 Completing the Installation
+
+           Following the successful completion of the installation
+           and the IVP, check the location of the software (described
+           in Section 3.5). You must then configure the Gateway
+           as described in the VAX Message Router VMSmail Gateway
+           Management Guide. If you do not configure the Gateway you
+           will not be able to use it.
+
+           If you do not want to configure the Gateway immediately,
+           restart Message Router and other MAILbus products that you
+           stopped, using the command:
+
+           $ @SYS$MANAGER:MB$CONTROL START=(MS,DDS,TS,...,ER)
+
+           You must restart MAILbus on every node in a cluster.
+
+
+
+
+
+     3-10 Installing the Gateway
+
+ 
+
+
+
+
+
+
+        3.5 Location of the Gateway Software
+
+              Figure 3-1 shows the directory structure of the Gateway
+              software in relation to other MAILbus software.
+
+              Figure 3-1 Directory Structure of the MRGATE Account
+
+
+
+
+
+
+
+
+
+                              MB$
+                               |
+                               |
+               ----------------------------------
+               |       |       |       |        |
+               |       |       |       |        |
+               MR     DDS      MB    TOOLS     MRG
+                                                |
+               ---------------------------------|------------------------
+               |       |       |       |        |       |       |       |
+               |       |       |       |        |       |       |       |
+              *.NBS VMSERROR MRGINIT MRGQUEUE MRTOVMS MRTOVMS MRTOVMS MRTOVMS
+                     .DAT    .DAT    .DAT     .COM    .EXE    .INF    .LOG
+
+                                                                   MIG0177
+
+              Of the files shown in [MB$.MRG], only VMSERROR.DAT,
+              MRTOVMS.COM, and MRTOVMS.EXE are installed during the
+              installation procedure. The remaining files are created
+              during the configuration or operation of the Gateway.
+
+              If you are reinstalling or upgrading the Gateway, new ver-
+              sions of
+              VMSERROR.DAT, MRTOVMS.COM, and MRTOVMS.EXE are installed.
+              The other files shown in [MB$.MRG] are not affected by the
+              reinstallation or upgrade installation.
+
+
+
+
+                                             Installing the Gateway 3-11
+
+ 
+
+
+
+
+
+
+           During configuration, MRGINIT.DAT is recreated, with new
+           configuration data, or data from the previous MRGINIT.DAT,
+           depending on whether you specify that you want to keep old
+           data.
+
+           Initially, allow a disk quota of at least 5000 blocks for
+           the MRGATE account. When required, the quota should be
+           raised to allow for any increase in the volume of message
+           traffic.
+
+           Table 3-1 shows how the Gateway software is distributed
+           after the installation. The file protection codes are the
+           recommended settings that are issued in the distribution
+           kit.
+
+           Table_3-1_Location_of_Gateway_Files_______________________
+
+           Directory_and_File__________Protection_(S,O,G,W)__________
+
+           [MB$.TOOLS]
+
+           MRGATE$CVP.DAT              (RWED,RWED,RE,)
+
+           MB$MRGATE.COM               (RWED,RWED,RE,RE)
+
+           [MB$.MB.MB$COM]
+
+           MB$MRG_ER.COM               (RWED,RWED,RE,RE)
+
+           MB$MRG_ERRORS.DAT           (RWED,RWED,RE,RE)
+
+           [MB$.MB.MB$WORK]
+
+           MB$MRG$CONFIG$CUSTOMIZED.DAT(RWED,RWED,RE,RE)
+
+           MB$MRG$CONFIG$DEFAULT.DAT   (RWED,RWED,RE,RE)
+
+           [MB$.MRG]
+
+                                             (continued on next page)
+
+
+
+
+
+     3-12 Installing the Gateway
+
+ 
+
+
+
+
+
+
+              Table_3-1_(Cont.)_Location_of_Gateway_Files_______________
+
+              Directory_and_File__________Protection_(S,O,G,W)__________
+
+              MRTOVMS.COM                 (RWED,RWED,RWED,RE)
+
+              MRTOVMS.EXE                 (RWED,RWED,RWED,RE)
+
+              VMSERROR.DAT                (RWED,RWED,RWED,RE)
+
+              SYS$COMMON:[SYSHLP]
+
+              MRGATE035.RELEASE_NOTES     (RWED,RWED,RWED,RE)
+
+              MB$MRG_CONFIG.HLB           (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSLIB]
+
+              MRFROMVMS.EXE               (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSMGR]
+
+              MB$$MRG_CONFIG.COM          (RWED,RWED,RE,RE)
+
+              MB$$MRG_START.COM           (RWED,RWED,RE,RE)
+
+              MB$$MRG_STOP.COM            (RWED,RWED,RE,E)
+
+              MRGATE$DELETE_SPECIFIC.COM  (RWED,RWED,,RE)
+
+              SYS$COMMON:[SYSMSG]
+
+              MRGATE$MSG.EXE              (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSTEST.MB]
+
+              MB$MRGCVP.COM_______________(RWED,RE,RE,)_________________
+
+
+
+
+
+
+
+
+                                             Installing the Gateway 3-13
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                      Distribution Media
+
+
+
+              This appendix contains a list of the files contained in
+              the installation save sets.
+
+              The files supplied in the installation save set A are:
+
+                 MRGATE$PROTN.COM
+                 MRGATE$FILES.DAT
+                 MRGATE$IMAGES.DAT
+                 MRGATE$DELETE_SPECIFIC.COM
+                 KITINSTAL.COM
+                 MRGATE$SYSGEN.DAT
+                 MRGATE035.RELEASE_NOTES
+                 MB$MRGCVP.COM
+                 MRFROMVMS.EXE
+                 MRGATE$MSG.EXE
+                 MRTOVMS.EXE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                  Distribution Media A-1
+
+ 
+
+
+
+
+
+
+           The files supplied in the installation save set B are:
+
+              MB$MRG_CONFIG.HLB
+              MB$$MRG_CONFIG.COM
+              MB$MRG$CONFIG$CUSTOMIZED.DAT
+              MB$MRG$CONFIG$DEFAULT.DAT
+              MB$$MRG_START.COM
+              MB$$MRG_STOP.COM
+              MB$MRG_ER.COM
+              MB$MRG_ERRORS.DAT
+              MB$MRGATE.COM
+              MRTOVMS.COM
+              VMSERROR.DAT
+              MRGATE$STOP.DAT
+              MRGATE$CVP.DAT
+              MRGINIT.DAT
+              MB$CNFDB_IVP.DAT
+              MRINIT.DAT
+              MRSTOP.DAT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     A-2 Distribution Media
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                          Sample Installation Procedure
+
+
+
+              This appendix gives an example of the log of a new
+              installation of the Gateway on OpenVMS Version 5.5-2.
+              It also gives an example of the test mail message sent
+              through the Gateway.
+
+        $ @sys$update:vmsinstal mrgate035 DUAO: OPTIONS N
+
+                OpenVMS VAX Software Product Installation Procedure V7.1
+
+        It is 30-JUN-1998 at 11:22.
+
+        Enter a question mark (?) at any time for help.
+
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                SERVER_00BC
+        * Do you want to continue anyway [NO]? y
+
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          MRGATE V3.5
+
+                Beginning installation of MRGATE V3.5 at 11:22
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+        © Digital Equipment Corporation 1983, 1998. All rights reserved.
+
+        Restricted Rights: Use, duplication, or disclosure by the U.S. Government is
+        subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+        DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+        as applicable.
+
+        This software is proprietary to and embodies the confidential technology of
+        Digital Equipment Corporation. Possession, use, or copying of this software
+        and media is authorized only pursuant to a valid written license from Digital
+        or an authorized sublicensor.
+
+                                      Sample Installation Procedure  B-1
+
+ 
+
+
+
+
+
+
+             Product:      MR-VMSMAIL-GATEWAY
+
+             Producer:     DEC
+
+             Version:      3.5
+
+             Release Date: 26-JUN-1998
+
+     * Does this product have an authorization key registered and loaded? y
+
+     * Do you want help text printed before every question [NO]?
+
+     * Do you want to purge files replaced by this installation [YES]?
+
+     * Do you want to run the IVP after the installation [YES]?
+
+             You have answered all the questions for the
+             Message Router VMSmail Gateway installation.
+             The Message Router VMSmail Gateway is now being installed.
+             The installation will take approximately 15 minutes
+             depending on system configuration and media type.
+
+     %MRGATE-I-CHECDIRS, Checking Directories
+     %MRGATE-I-CREMBDIR, Creating directory DKA100:[MB$.MRG]
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MRG].
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+     %MRGATE-I-SETMRGFILES, Setting Message Router VMSmail Gateway file ownership and protection
+     %MRGATE-I-ASIGNMRGATE, Assigning Message Router VMSmail Gateway files to target directories
+
+      The generation phase of the Message Router VMSmail Gateway
+      installation is now complete.
+
+         In order to tailor the Message Router VMSmail Gateway to your
+         requirements, you must use the MAILbus configuration procedure,
+         SYS$MANAGER:MB$CONFIG.COM.
+
+     %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                IVP for Message Router VMSmail Gateway
+
+                            Version V3.5-402
+
+         This is the installation verification procedure (IVP) for
+         the Message Router VMSmail Gateway. It checks that the Gateway is
+         successfully installed on your system.
+
+        © Digital Equipment Corporation 1983, 1998. All rights reserved.
+
+     ==================================================================
+
+     B-2 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+                Message Router VMSmail Gateway Version V3.5-402 IVP
+
+        This verification procedure is in four stages:
+
+        Stage 1 checks that all the Gateway files exist, and are the right size.
+
+        Stage 2 sets DECnet running if necessary.
+
+        Stage 3 tests the Gateway by sending a mail message from VMSmail to
+        Message Router.  When this stage is complete, a message is displayed
+        on the screen.
+
+        Stage 4 tests the Gateway by sending a mail message from Message Router
+        to VMSmail.  When this stage is complete, you will receive a mail
+        message.  This message is sent to the account from which you are
+        performing the verification.
+
+        The verification procedure has not completed successfully
+        until you have seen both the screen message and the mail message.
+
+        ------------------------------------------------------------------
+
+                Message Router VMSmail Gateway V3.5-402 file check
+                The total number of files is 17.
+                All files exist and are the correct size.
+                End of Message Router VMSmail Gateway V3.5-402 file check.
+
+        ------------------------------------------------------------------
+
+        Checking MOURYA VMSmail network response
+        Succeeded in activating VMSmail DECnet object 27 on node MOURYA
+
+                Starting Management Service
+
+        %JBC-I-QUENOTMOD, modifications not made to running queue
+
+                Starting Transfer Service
+
+                Starting the Message Router VMSmail Gateway
+
+                Stage 3 of the installation verification procedure for
+                the Message Router VMSmail Gateway V3.5-402 successful
+
+                Waiting for delivery of VMSmail sent through Gateway V3.5-402.
+
+                The IVP waits for a maximum of 2 minutes before timing out.
+
+         New mail on node MOURYA from MOURYA::MRGATE::"MRGATE::SYSTEM"
+
+                Stage 4 of the installation verification procedure for
+
+                the Message Router VMSmail Gateway V3.5-402 successful
+
+                                      Sample Installation Procedure  B-3
+
+ 
+
+
+
+
+
+
+     Shutting down the Message Router VMSmail Gateway
+
+     Shutting down Transfer Service
+
+     Shutting down Management Service
+
+             The Message Router VMSmail Gateway V3.5-402 IVP completed successfully
+
+             Installation of MRGATE V3.5 completed at hh:mm
+
+             VMSINSTAL procedure done at hh:mm
+
+     $ mail
+
+     You have 1 new message.
+
+     MAIL> read /new
+
+     From:   MOURYA::MRGATE::"MRGATE::SYSTEM" 30-JUN-1998 11:22:42.68
+     To:     MOURYA::SYSTEM
+     CC:
+     Subj:   Message Router VMSmail Gateway V3.5 CVP
+
+     From:   NAME: SYSTEM <SYSTEM@MRGATE@MOURYA>
+     To:     SYSTEM@MOURYA@MRGATE
+
+     This is a Gateway test message.
+
+     If you receive this message, stage 4 of the verification
+     procedure has successfully completed.
+
+     All stages of the verification procedure have now
+     completed successfully
+
+     MAIL>
+
+
+
+
+
+
+
+
+
+
+     B-4 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+
+     A__________________________          F__________________________
+
+     Account quotas,  2-4                 FILLM
+
+                                           account quota,  2-5
+     B__________________________
+
+     BYTLM                                G__________________________
+       account quota, 2-5                 Gateway
+
+                                           installing,  1-1, 3-1
+     C__________________________           introducing,  1-1
+
+     Configuration,  1-3, 3-10             license,  1-1
+     Contacting Digital,  1-3              shutting down,  2-6
+                                           upgrade,  3-6
+
+     D__________________________
+     DECnet,  2-2                         H__________________________
+
+     DECnet/OSI,  2-2                     Handling errors, 1-3
+     Digital                              Hardware
+       how to contact, 1-3                 prerequisite,  2-2
+     Disk quota                           Help
+       recommended for                     while installing,  3-1
+
+         installation,  2-1
+     Distribution medium                  I__________________________
+
+       list of files, A-1                 Installation
+
+                                           backup,  3-3
+     E__________________________           check list,  2-1
+
+     Errors                                completing,  3-10, 3-11
+       handling, 1-3                       Help,  3-5
+                                           list of files,  A-1
+                                           new,  1-2
+                                           on-line release notes,
+                                              3-4
+                                           preparations,  2-3
+                                           sample,  B-1
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+     Installation (cont'd)                Purging files, 3-5
+
+       save sets, A-1
+       upgrade, 1-2, 3-6                  Q__________________________
+
+     Installation Help,  3-1              Quota
+
+     installation verification             account,  2-4
+        procedure                          accounts,  2-5
+       see IVP                             disk,  2-1
+
+     Installing,  1-1
+     IVP,  1-2, 3-5, 3-8                  R__________________________
+
+                                          Release Notes, 3-4
+     L__________________________
+
+     License                              S__________________________
+
+       checking, 2-3                      Sample installation, B-1
+     License Management Utility,          Save sets, A-1
+        1-1                               Shutting down
+
+                                           Gateway,  2-6
+     M__________________________           Message Router,  2-6
+     Message Router                       Software
+       shutting down, 2-6                  location,  3-11
+     MicroVAX                              prerequisite,  2-2
+       checking software is               Software versions, 1-1
+
+         installed,  2-3                  V
+                                          ___________________________
+     P__________________________          VAXcluster
+     Preparing                             preparing,  2-8
+       for installation, 2-3              Versions
+       PAK, 2-3                            software,  1-1
+       VAXcluster, 2-8                    VMSINSTAL, 1-2
+     Prerequisite                          command procedure,  3-1
+       software and hardware,              overview,  3-1
+         2-2                               parameters,  3-1
+     Product Authorization Key            VMSTAILOR, 2-3
+
+        (PAK), 2-1
+
+
+     Index-2

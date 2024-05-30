@@ -1,0 +1,1490 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     VAX Message Router
+                     Programmer's_Kit______________________________
+                     Installation Guide
+
+                     Order Number: AA-KR22E-TE
+
+                     Software Version:             Version 3.5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital Equipment Corporation
+                     Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           Fifth Printing, June 1998
+
+           Digital Equipment Corporation makes no representations
+           that the use of its products in the manner described in
+           this publication will not infringe on existing or future
+           patent rights, nor do the descriptions contained in this
+           publication imply the granting of licenses to make, use,
+           or sell equipment or software in accordance with the
+           description.
+
+           Possession, use, or copying of the software described in
+           this publication is authorized only pursuant to a valid
+           written license from Digital or an authorized sublicensor.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           © Digital Equipment Corporation 1987, 1998.
+
+           All Rights Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: ALL-IN-1, AXP, DEC, DECnet, MAILbus, Message
+           Router, VAX, VAXcluster, VAX C, VAX DOCUMENT, VAX Macro,
+           VAX Pascal, OpenVMS, VMS, and the DIGITAL logo.
+
+           This document was prepared using VAX DOCUMENT, Version
+           2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Introduction
+
+      1.1  The Message Router Programmer's Kit.............     1-1
+      1.2  Installing the Programmer's Kit.................     1-2
+      1.3  Installing Message Router.......................     1-3
+
+   2  Preparing for Installation
+
+      2.1  Pre-installation Checklist......................     2-1
+      2.2  VAXcluster Installation.........................     2-2
+      2.3  Time Required for Installation..................     2-3
+      2.4  Error Handling..................................     2-3
+      2.5  Prerequisite Software...........................     2-3
+
+   3  Installing the Programmer's Kit
+
+      3.1  The Installation Procedure......................     3-1
+      3.2  Running the IVP.................................     3-4
+      3.3  Completing the Installation.....................     3-5
+      3.4  Removing Unwanted Definition Files..............     3-7
+      3.5  Verifying the Installation......................     3-7
+      3.6  Porting Your VAX Application to an OpenVMS Alpha
+           System..........................................     3-8
+      3.7  Interworking....................................     3-9
+      3.7.1   Interworking with Earlier Versions of VAX
+              Message Router................................    3-9
+      3.7.2   Interworking with the VAX Message Router X.400
+              Gateway.......................................    3-9
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     A  Sample of an Installation on OpenVMS VAX Version 5.5-2
+
+
+     Index
+
+
+     Tables
+
+         3-1    Programmer's Kit Files .......................    3-6
+
+         3-2    Definition Files .............................    3-7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              This book describes how to install the Message Router
+              Programmer's Kit.
+
+              The Message Router Programmer's Kit has the following
+              components:
+
+              o  A set of Interface Routines that enable you to assemble
+                 and disassemble messages and connect Applications to
+                 the Transfer Service
+
+              o  A definition file for each of the following languages:
+
+                 -  VAX PASCAL[TM]
+
+                 -  VAX C[TM]
+
+                 -  VAX MACRO[TM]
+
+                 -  VAX FORTRAN[TM]
+
+                 -  VAX BLISS-32
+
+              o  Three example programs
+
+              Intended Audience
+
+              This book is intended for the person who is installing the
+              Message Router Programmer's Kit.
+
+              The installer needs to be familiar with VMSINSTAL.
+
+              Structure of this Book
+
+              This book contains three chapters and an appendix:
+
+              o  Chapter 1 gives an overview of the installation
+                 procedure.
+
+              o  Chapter 2 lists the tasks that the installer must
+                 complete before installing the Programmer's Kit.
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+           o  Chapter 3 describes the installation and installation
+              verification procedures.
+
+           o  Appendix A contains an example log from an installation
+              on OpenVMS[TM] VAX Version 5.5-2.
+
+           How to Use this Book
+
+           Read Chapter 1 and Chapter 2 to prepare for installing the
+           Programmer's Kit.
+
+           Read Chapter 3 to install the Programmer's Kit.
+
+           Associated Documents
+
+           Refer to the VMS License Management Utility Manual, which
+           explains how to register the Product Authorization Key for
+           the Programmer's Kit. You cannot use the Programmer's Kit
+           until its license has been registered.
+
+           You may need to refer to the Guide to Setting Up a VMS
+           System for details of VMSTAILOR.
+
+           The VAX Message Router Programmer's Kit Programming Guide
+           describes how to write an Application program for use with
+           the Transfer Service component of Message Router.
+
+           You may also need to refer to the following Message Router
+           books:
+
+           o  Introduction to Message Router, which explains what
+              Message Router is and how it works with User Agents and
+              Gateways
+
+           o  VAX Message Router Installation Guide, which describes
+              how to install Message Router
+
+           o  VAX Message Router Configuration Guide, which describes
+              how to configure Message Router.
+
+           Conventions
+
+           The following conventions are used in this book:
+
+           this          Indicates commands or responses that you
+           typeface      type.
+                         Unless otherwise stated, press Return after
+                         each command or response.
+
+     vi
+
+ 
+
+
+
+
+
+
+
+              this          Indicates prompts and messages from the
+              typeface      computer
+                            Indicates examples of commands.
+
+
+              variable      Represents a variable.
+
+              $             A dollar sign ($) is the default user
+                            prompt.
+
+
+              []            Brackets are used after questions to
+                            enclose the default answer. Press Return
+                            to accept the default. Brackets also denote
+                            a directory specification.
+
+              ...           Horizontal ellipses indicate that additional
+                            text can be entered.
+
+
+              Press         Indicates that you make one keystroke with
+                            an editing or command key, for example,
+                            press Return.
+
+              Type          Indicates characters that you type at the
+                            keyboard.
+
+
+              Ctrl/Z        Indicates that you hold down the Ctrl key
+                            while pressing the other key (Z).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                                            Introduction
+
+
+
+        1.1 The Message Router Programmer's Kit
+
+              The Message Router Programmer's Kit provides a set
+              of tools that a programmer must use when writing an
+              Application for Message Router.
+
+              The kit contains:
+
+              o  A set of Interface Routines. These routines assemble
+                 and disassemble messages and enable the Application
+                 to communicate with the Transfer Service component
+                 of Message Router. The routines are provided as a
+                 shareable image. The Interface Routines run on OpenVMS
+                 VAX 5.5-2 and OpenVMS AXP[TM] Version 6.2 & 7.1.
+
+              o  Five definition files, one for each of the following
+                 programming languages:
+
+                 -  VAX PASCAL
+
+                 -  VAX C
+
+                 -  VAX MACRO
+
+                 -  VAX FORTRAN
+
+                 -  VAX BLISS-32
+
+                 These files contain constants and mask values that are
+                 used with the Interface Routines.
+
+              o  Example programs that show you some of the ways in
+                 which you can use the Interface Routines.
+
+
+                                                        Introduction 1-1
+
+ 
+
+
+
+
+
+
+     1.2 Installing the Programmer's Kit
+
+           Install the Programmer's Kit on the node where the
+           programmer is developing the Application.
+
+           Use the VMSINSTAL procedure to install the Programmer's
+           Kit. This procedure is interactive and takes you through
+           the installation step by step. Chapter 3 describes how to
+           install the Programmer's Kit on OpenVMS VAX.
+
+           The following files are copied during the installation
+           procedure:
+
+           o  The Interface Routines and definition files, which are
+              copied into SYS$COMMON:[SYSLIB]:
+
+              -  MRIFSHARE.EXE
+
+              -  MRIFDEFS.FOR
+
+              -  MRIFDEFS.H
+
+              -  MRIFDEFS.MAR
+
+              -  MRIFDEFS.PAS
+
+              -  MRIFDEFS.R32
+
+           o  The message file, MRIFSHRMSG.EXE, which is copied into
+              SYS$COMMON:[SYSMSG].
+
+           o  The installation verification procedure (IVP) file,
+              MRIF$IVP.EXE, which is copied into SYS$COMMON:[SYSTEST.MB].
+
+           o  MRAXPMSG.EXE, which is copied to SYS$COMMON:[SYSMSG],
+              MRAXPSHAR.EXE and MRAXPSHAR.IIF, which are copied to
+              SYS$COMMON:[SYSLIB].
+
+              Use these files when connecting your Application to
+              Message Router from an OpenVMS AXP system.
+
+           o  The files containing the example programs, which
+              are copied into the SYS$COMMON:[SYSHLP.EXAMPLES]
+              directory:
+
+              -  MRIF$EXAMPLE_ASSEMBLE.PAS, which contains a program,
+                 written in VAX PASCAL, that assembles a message
+                 using the V3.0 level of service.
+
+     1-2 Introduction
+
+ 
+
+
+
+
+
+
+                 -  MRIF$EXAMPLE_DISASSEMBLE.PAS, which contains a
+                    program, written in VAX PASCAL, that disassembles a
+                    message using the V3.1 level of service.
+
+                 -  MRIF$EXAMPLE_FIND.C, which contains a program,
+                    written in VAX C, that shows different ways of using
+                    the FIND routine using the V3.0 level of service.
+
+                 -  MRIF$EXAMPLE_FULL_ASSEMBLY.C, which contains a
+                    program, written in VAX C, that assembles a message
+                    using the V3.1 level of service.
+
+              These files are all owned by the SYSTEM account.
+
+              The IVP, if requested, runs immediately after the
+              installation and is described fully in Section 3.2.
+
+              You can also run the IVP separately, after the Programmer's
+              Kit is installed, as described in Section 3.5.
+
+        1.3 Installing Message Router
+
+              You can install Message Router before or after you install
+              the Programmer's Kit. If you have already installed
+              Message Router, you do not need to re-install it. The
+              installation procedure for Message Router is described in
+              the VAX Message Router Installation Guide.
+
+              You must configure Message Router before you can use it
+              and before you can use your Application. The configuration
+              procedure is described in the VAX Message Router
+              Configuration Guide. You do not need to configure the
+              Programmer's Kit.
+
+              Message Router does not need to be installed on the same
+              node as the Programmer's Kit and the Application.
+
+
+
+
+
+
+
+
+
+                                                        Introduction 1-3
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                              Preparing for Installation
+
+
+
+        2.1 Pre-installation Checklist
+
+              Complete the following checklist to prepare your system
+              for the installation:
+
+              1. Check that your Programmer's Kit distribution kit
+                 contains everything listed on the bill of materials
+                 included with the kit.
+
+              2. Check that OpenVMS VAX Version 5.5-2 or later is
+                 installed.
+
+              3. Check that DECnet is installed. If Message Router is
+                 installed on the node where you are installing the
+                 Programmer's Kit, DECnet is already installed there.
+                 If Message Router is not installed on the node where
+                 you are installing the Programmer's Kit, install DECnet
+                 before you install the Programmer's Kit.
+
+                 The Programmer's Kit requires either OpenVMS DECnet
+                 or OpenVMS DECnet/OSI. Note that you cannot use node
+                 names longer than six characters with the Programmers's
+                 Kit. Therefore, on DECnet/OSI systems, the node name
+                 synonym database must be accessible on the node where
+                 the Programmer's Kit is installed.
+
+              4. Check that you have 2000 blocks of free space available
+                 on the system disk for installation.
+
+              5. Check that you have a recent backup copy of your system
+                 disk.
+
+              6. Check that the Programmer's Kit license is registered
+                 and active by typing the following command:
+
+                 $ LICENSE LIST/FULL MR-PROGRAMMER-KIT
+
+                                          Preparing for Installation 2-1
+
+ 
+
+
+
+
+
+
+              Details of the MR-PROGRAMMER-KIT license are displayed.
+              Check that the license is active and if it is not, you
+              must load and register the Product Authorization Key
+              (PAK) for the Programmer's Kit as described in the VMS
+              License Management Utility Manual.
+
+           7. Ask other users on the system to log out of the system
+              by typing:
+
+              $ REPLY /BELL /USERNAME "PLEASE LOG OUT"
+
+           8. If you are upgrading from a previous version of the
+              Programmer's Kit, shut down any Applications that use
+              the Programmer's Kit.
+
+           9. If you are installing the Programmer's Kit on a
+              VAXcluster, read Section 2.2 and decide which nodes
+              to install the Programmer's Kit on.
+
+           10.Check that the Object and Shareable Image Libraries are
+              installed (SYS$SHARE:IMAGELIB.OLB). If the libraries
+              are installed, the file IMAGELIB.OLB is in SYS$SHARE.
+
+              If the libraries are missing, use the VMSTAILOR Utility
+              to install them as described in the Guide to Setting Up
+              a VMS System.
+
+     2.2 VAXcluster Installation
+
+           The Programmer's Kit can connect to the Transfer Service
+           on the local node or cluster, through the shareable image
+           or a DECnet connection, or it can connect to a Transfer
+           Service on a remote node or cluster. See the VAX Message
+           Router Programmer's Kit Programming Guide for details on
+           how to connect to the Transfer Service.
+
+           If your Application is going to connect to the Transfer
+           Service locally, install the Programmer's Kit as follows:
+
+           o  In a common-environment cluster, install the Programmer's
+              Kit on every system disk.
+
+           o  In a multiple-environment cluster, find out which nodes
+              have the Transfer Service installed. Decide which of
+              these nodes you want to install the Programmer's Kit
+              on.
+
+     2-2 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              If your Application is going to use a remote Transfer
+              Service, install the Programmer's Kit as follows:
+
+              o  In a common-environment cluster, install the Programmer's
+                 Kit on every system disk.
+
+              o  In a multiple-environment cluster, install the
+                 Programmer's Kit on every node which you want your
+                 Application to run on.
+
+        2.3 Time Required for Installation
+
+              Installing the Programmer's Kit and running the IVP should
+              take about 5 minutes. If you are using diskettes, the
+              procedure may take slightly longer. The installation
+              procedure is the same, whatever the distribution medium.
+
+        2.4 Error Handling
+
+              If you receive an unexpected error message during the
+              installation, check that you have responded to the prompts
+              correctly. If you make a mistake and are re-prompted,
+              enter the correct information. If that fails, restart the
+              installation. If the installation fails again at the same
+              point, stop the installation and contact:
+
+              o  Your Customer Support Center if you have a service
+                 contract with Digital
+
+              o  Your local Digital office to arrange for a service
+                 contract
+
+              Make sure that you take a log of the installation in case
+              of failure.
+
+        2.5 Prerequisite Software
+
+              VAX Message Router Programmer's Kit V3.5 requires:
+
+              o  Version 5.5-2, 6.2 and 7.1 Year 2000 ECO patches
+                 installed
+
+              o  OpenVMS[TM] for VAX[TM] Version 5.5-2, Version 6.2, or
+                 Version 7.1.
+
+              o  OpenVMS[TM]/VAX Version 5.5-2 either DECnet VAX Version
+                 5.5-2 or DECnet/OSI [R] Version 5.6B.
+
+                                          Preparing for Installation 2-3
+
+ 
+
+
+
+
+
+
+           o  OpenVMS[TM]/VAX Version 6.2 either DECnet VAX Version
+              6.2 or DECnet/OSI [R] Version 6.3.
+
+           o  OpenVMS[TM]/VAX Version 7.1 either DECnet VAX or DECnet
+              /OSI [R] Version 7.1.
+
+           Note that you cannot use node names longer than six
+           characters with the Programmer's Kit. Therefore, on
+           DECnet/OSI systems, the node name synonym database must
+           be accessible on the node where the Programmer's Kit is
+           installed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-4 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                         Installing the Programmer's Kit
+
+
+
+        3.1 The Installation Procedure
+
+              Complete the following steps:
+
+              1. Log in to the SYSTEM account and type in the following
+                 command:
+
+                 $ SYS$UPDATE:VMSINSTAL MRIF035 device OPTIONS N
+
+                 where device is the device where the distribution
+                 volume is mounted.
+
+              2. VMSINSTAL starts up and displays the following:
+
+                     VAX/VMS Software Product Installation Procedure V5.5-2
+
+                 It is dd-mmm-yyyy at hh:mm.
+
+                 Enter a question mark (?) at any time for help.
+
+              3. If you see any warning messages, you are advised to
+                 press Ctrl/Y to exit from the installation procedure
+                 and to make sure that you followed all the instructions
+                 in the pre-installation checklist.
+
+              4. If there are any active system processes, VMSINSTAL
+                 lists them and asks:
+
+                 * Do you want to continue anyway [NO]?
+
+                 Press RETURN to exit from the installation, and then
+                 shut down the active processes.
+
+              5. VMSINSTAL asks:
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 If the system disk has not recently been backed up, you
+                 should answer NO to abort the installation, and then
+                 make a backup copy. Otherwise, press RETURN to accept
+                 the default answer of YES.
+
+                                     Installing the Programmer's Kit 3-1
+
+ 
+
+
+
+
+
+
+           6. VMSINSTAL instructs you to mount the distribution
+              volume:
+
+              Please mount the first volume of the set on device
+
+              * Are you ready?
+
+              where device is the device name you supplied on the
+              command line.
+
+              When you have mounted the distribution volume, type
+              YES.
+
+           7. VMSINSTAL confirms that the volume has been success-
+              fully mounted and displays:
+
+              %MOUNT-I-MOUNTED, MRIF mounted on device
+
+              The following products will be processed:
+
+                MRIF V3.5
+
+                      Beginning installation of MRIF V3.5 at hh:mm
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A...
+
+              If you have not specified OPTIONS N, the installation
+              continues at Step 10. Otherwise, the procedure displays
+              a menu of options relating to the release notes. If you
+              are installing the Programmer's Kit for the first time,
+              you should print the release notes and read them before
+              you proceed. If you have performed this installation
+              before, display the release notes and continue the
+              installation.
+
+           8. If you chose to print the release notes, VMSINSTAL
+              displays:
+
+              * Queue name [SYS$PRINT]:
+
+              Type the name of the printer on which you want to
+              print the release notes, or press RETURN to accept
+              the default printer, SYS$PRINT.
+
+           9. If you chose to display the release notes, VMSINSTAL
+              displays them and then asks:
+
+              * Do you want to continue the installation [NO]?
+
+     3-2 Installing the Programmer's Kit
+
+ 
+
+
+
+
+
+
+                 If you are installing the Programmer's Kit for the
+                 first time, press RETURN to halt the installation and
+                 read the release notes. When you have read the release
+                 notes, restart the installation as described in Step
+                 1, but omit OPTIONS N from the command. If you have
+                 already read the release notes, type YES to continue
+                 the installation.
+
+              10.VMSINSTAL displays details of the product that you want
+                 to install:
+
+                 © Digital Equipment Corporation 1985, 1998. All rights reserved.
+
+                 Restricted Rights: Use, duplication, or disclosure by the U.S. Government is
+                 subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+                 DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+                 as applicable.
+
+                 This software is proprietary to and embodies the confidential technology of
+                 Digital Equipment Corporation. Possession, use, or copying of this software
+                 and media is authorized only pursuant to a valid written license from Digital
+                 or an authorized sublicensor.
+
+                        Product:         MR-PROGRAMMER-KIT
+                        Producer:        DEC
+                        Version:         3.5
+                        Release Date:    dd-mmm-yyyy
+
+                 VMSINSTAL then displays:
+
+                 * Does this product have an authorization key registered and loaded?
+
+                 If you have not registered and loaded the Product
+                 Authorization Key (PAK) for the Programmer's Kit,
+                 type NO to abort the installation. Refer to the VMS
+                 License Management Utility Manual for details of how
+                 to register the PAK for the Programmer's Kit. When
+                 you have registered and loaded the PAK, restart the
+                 installation.
+
+                 If the Product Authorization Key for the Programmer's
+                 Kit is registered and loaded, type YES.
+
+              11.VMSINSTAL asks:
+
+                 * Do you want to run the IVP after the installation [YES]?
+
+                                     Installing the Programmer's Kit 3-3
+
+ 
+
+
+
+
+
+
+              To ensure that the installation is successful, you are
+              advised to run the installation verification procedure
+              (IVP). Press RETURN to accept the default answer of
+              YES. Otherwise, type NO.
+
+           12.VMSINSTAL asks:
+
+              * Do you want to purge files replaced by this installation [YES]?
+
+              Press RETURN to accept the default answer of YES.
+              However, if you wish to keep the original files, type
+              NO.
+
+           13.VMSINSTAL displays:
+
+                  The Message Router Programmer's Kit is being installed.
+                     This installation takes approximately 5 minutes.
+
+              %MRIF-I-LINKIMG, Linking the IVP
+              %MRIF-I-SETMRFILES, Setting MRIF file ownership and protection
+              %MRIF-I-ASGNMRFILES, Assigning MRIF files to target directories
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+              directories...
+
+     3.2 Running the IVP
+
+           The IVP runs automatically after the installation is
+           complete, if you requested it.
+
+           The IVP assembles a message and then disassembles it. If
+           the disassembled message elements match the elements used
+           to assemble the message, the verification is successful.
+
+           The IVP displays the following messages:
+
+           Running the IVP
+
+
+
+
+
+
+
+
+
+     3-4 Installing the Programmer's Kit
+
+ 
+
+
+
+
+
+
+                      © Digital Equipment Corporation 1985, 1998. All rights reserved.
+              Verifying Message Router Programmer's Kit Version V3.5-118
+                      Starting Message Assembly
+                      Writing FROM name
+                      Writing TEXT bodypart
+                      Ending Message Assembly
+                      Starting Message Disassembly
+                      Reading FROM name
+                              FROM: IVPTEST
+                      Reading TEXT bodypart
+                              TEXT: Hello World
+                      Ending Message Disassembly
+              Message Router Programmer's Kit Version V3.5-118 verification is SUCCESSFUL
+
+              This verifies that the installation is successful.
+
+              If you see the following message, the IVP was not
+              successful:
+
+              Message Router Programmer's Kit Version 3.5 verification FAILED
+
+              This message is displayed at the point at which the IVP
+              failed. Attempt the installation again. If you cannot
+              install the Programmer's Kit and run the IVP successfully,
+              contact Digital as described in Section 2.4.
+
+        3.3 Completing the Installation
+
+              VMSINSTAL displays:
+
+              $ VMSINSTAL procedure done at hh:mm
+
+              The installation procedure is now complete.
+
+              Restart Message Router (if installed), and any Applications
+              that you stopped.
+
+              Table 3-1 shows the location, and protection of the files
+              left on your system after you install the Programmer's
+              Kit.
+
+
+
+
+
+                                     Installing the Programmer's Kit 3-5
+
+ 
+
+
+
+
+
+
+           Table_3-1_Programmer's_Kit_Files__________________________
+
+           Name_______________________Protection_(S,O,G,W)___________
+
+           SYS$LIBRARY
+
+             MRIFSHARE.EXE            (RWED,RED,RE,RE)
+
+             MRAXPSHAR.EXE            (RWED,RED,RE,RE)
+
+             MRAXPSHAR.IIF            (RWED,RED,RE,RE)
+
+             MRIFDEFS.FOR             (RWED,RED,R,R)
+
+             MRIFDEFS.H               (RWED,RED,R,R)
+
+             MRIFDEFS.MAR             (RWED,RED,R,R)
+
+             MRIFDEFS.PAS             (RWED,RED,R,R)
+
+             MRIFDEFS.R32             (RWED,RED,R,R)
+
+           SYS$MESSAGE
+
+             MRIFSHRMSG.EXE           (RWED,RED,RE,RE)
+
+             MRAXPMSG.EXE             (RWED,RED,RE,RE)
+
+           SYS$EXAMPLES
+
+             MRIF$EXAMPLE_            (RWED,RED,R,R)
+           ASSEMBLE.PAS
+
+             MRIF$EXAMPLE_            (RWED,RED,R,R)
+           DISASSEMBLE.PAS
+
+             MRIF$EXAMPLE_FIND.C      (RWED,RED,R,R)
+
+             MRIF$EXAMPLE_FULL_       (RWED,RED,R,R)
+           ASSEMBLY.C
+
+           SYS$HELP
+
+             MRIF035.RELEASE_NOTES    (RWED,RWED,RWED,RE)
+
+           SYS$COMMON:[SYSTEST.MB]
+
+           __MRIF$IVP.EXE_____________(RWED,RED,RE,RE)_______________
+
+     3-6 Installing the Programmer's Kit
+
+ 
+
+
+
+
+
+
+        3.4 Removing Unwanted Definition Files
+
+              After installation you may want to delete any definition
+              or example files that you are not going to use. Table 3-2
+              identifies these files.
+
+              Table_3-2_Definition_Files________________________________
+
+              File_Name_____________________Definition__________________
+
+              SYS$LIBRARY
+
+                MRIFDEFS.FOR                VAX FORTRAN
+
+                MRIFDEFS.H                  VAX C
+
+                MRIFDEFS.MAR                VAX MACRO
+
+                MRIFDEFS.PAS                VAX PASCAL
+
+                MRIFDEFS.R32                VAX BLISS-32
+
+              SYS$EXAMPLES
+
+                MRIF$EXAMPLE_ASSEMBLE.PAS   VAX PASCAL Assembly example
+
+                MRIF$EXAMPLE_DISASSEMBLE.PASVAX PASCAL Disassembly
+                                            example
+
+                MRIF$EXAMPLE_FIND.C         VAX C Find example
+
+                MRIF$EXAMPLE_FULL_          VAX C Assemble example
+              ASSEMBLY.C________________________________________________
+
+        3.5 Verifying the Installation
+
+              You can run the IVP independently of the installation
+              procedure. To do this, type:
+
+              $ RUN SYS$COMMON:[SYSTEST.MB]MRIF$IVP
+
+              The IVP runs and displays the messages shown in Section 3.2.
+
+
+
+                                     Installing the Programmer's Kit 3-7
+
+ 
+
+
+
+
+
+
+     3.6 Porting Your VAX Application to an OpenVMS Alpha System
+
+           If you intend to translate an Application that was linked
+           to run on an OpenVMS VAX system to run on an OpenVMS
+           Alpha system, you need to copy the following files to
+           the OpenVMS Alpha system:
+
+           o  SYS$COMMON:[SYSLIB]MRAXPSHAR.EXE, which is copied to
+              SYS$COMMON:[SYSLIB]MRAXPSHAR.EXE on the OpenVMS Alpha
+              system
+
+           o  SYS$COMMON:[SYSMSG]MRAXPMSG.EXE, which is copied to
+              SYS$COMMON:[SYSMSG]MRAXPMSG.EXE on the OpenVMS Alpha
+              system
+
+              ________________________Note ________________________
+
+              These files might already exist on the OpenVMS Alpha
+              system, in which case, you must ensure that you use
+              the latest versions. You can do this by checking the
+              image identification of the files as follows:
+
+              $ ANALYZE /IMAGE /HEADER /INTERACTIVE filename
+
+              Use the most recent version of the files, that is,
+              the files with the most recent date.
+
+              _____________________________________________________
+
+           You will also need to copy the following file to the
+           VEST$INCLUDE directory on the OpenVMS Alpha AXP system, in
+           addition to those described above:
+
+              SYS$COMMON:[SYSLIB]MRAXPSHAR.IIF
+
+           If your application was linked against MRIFSHARE, give
+           this file the name MRIFSHARE.IIF; if your application
+           was linked against MRAPPSHAR give this file the name
+           MRAPPSHAR.IIF.
+
+           You can then translate your application on the OpenVMS
+           Alpha system as follows:
+
+           $ VEST program
+
+     3-8 Installing the Programmer's Kit
+
+ 
+
+
+
+
+
+
+              In order to run your translated program, you will also
+              need to define a logical name to allow the image activator
+              to locate the correct image. The logical that you define
+              depends on whether your Application is linked against
+              MRIFSHARE or MRAPPSHAR.
+
+              If your Application is linked against MRIFSHARE define the
+              following logical name:
+
+              $ DEFINE MRIFSHARE_TV   SYS$SHARE:MRAXPSHAR.EXE
+
+              If your Application is linked against MRAPPSHAR define the
+              following logical name:
+
+              $ DEFINE MRAPPSHAR_TV   SYS$SHARE:MRAXPSHAR.EXE
+
+        3.7 Interworking
+
+              The following sections describe how to interwork with
+              earlier versions of VAX Message Router and with the VAX
+              Message Router X.400 Gateway.
+
+        3.7.1 Interworking with Earlier Versions of VAX Message Router
+
+              Applications written using V3.5 of the Programmer's Kit
+              work with previous versions of Message Router. However,
+              DIGITAL recommends that applications using V3.5 of the
+              Programmer's Kit connect to V3.5 of Message Router.
+
+        3.7.2 Interworking with the VAX Message Router X.400 Gateway
+
+              If you want to send forwarded IP messages (FWDIPMSG)
+              from an Application through the VAX Message Router X.400
+              Gateway using the Version 3.1 level of service, you must
+              include ENCODEDTYPES and PERMSGFLG, as well as the other
+              required elements, in the delivery information for the
+              forwarded body. If you do not, only the forwarded bodypart
+              (FORWARDED) is sent; the delivery information contained in
+              the forwarded IP message is lost.
+
+
+
+
+
+
+                                     Installing the Programmer's Kit 3-9
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                  Sample of an Installation on OpenVMS VAX Version 5.5-2
+
+
+
+              The following is an example of the log from an installa-
+              tion of the Message Router Programmer's Kit.
+
+              $ sys$update:vmsinstal mrif035 mua0: options n
+
+                      OpenVMS VAX Software Product Installation Procedure V7.1
+
+              It is 30-JUN-1998 at 11:42.
+
+              Enter a question mark (?) at any time for help.
+
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                      SERVER_00B6
+                      SERVER_00B2
+                      SERVER_00B1
+              * Do you want to continue anyway [NO]? y
+
+              * Are you satisfied with the backup of your system disk [YES]?
+
+              The following products will be processed:
+
+                MRIF V3.5
+
+                      Beginning installation of MRIF V3.5 at 11:43
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+              © Digital Equipment Corporation 1985, 1998. All rights reserved.
+
+              Restricted Rights: Use, duplication, or disclosure by the U.S. Government is
+              subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+              DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+              as applicable.
+
+              This software is proprietary to and embodies the confidential technology of
+              Digital Equipment Corporation. Possession, use, or copying of this software
+              and media is authorized only pursuant to a valid written license from Digital
+              or an authorized sublicensor.
+
+              Sample of an Installation on OpenVMS VAX Version 5.5-2 A-1
+
+ 
+
+
+
+
+
+
+                   Product:      MR-PROGRAMMER-KIT
+
+                   Producer:     DEC
+
+                   Version:      3.5
+
+                   Release Date: 26-JUN-1998
+
+           * Does this product have an authorization key registered and loaded? y
+
+           * Do you want to run the IVP after the installation [YES]?
+
+           * Do you want to purge files replaced by this installation [YES]?
+
+               The Message Router Programmer's Kit is being installed.
+                  This installation takes approximately 5 minutes.
+
+           %MRIF-I-LINKIMG, Linking the IVP
+           %MRIF-I-SETMRFILES, Setting MRIF file ownership and protection
+           %MRIF-I-ASGNMRFILES, Assigning MRIF files to target directories
+           %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+           Running the IVP
+
+                   © Digital Equipment Corporation 1985, 1998. All rights reserved.
+           Verifying Message Router Programmer's Kit Version V3.5-118
+                   Starting Message Assembly
+                   Writing FROM name
+                   Writing TEXT bodypart
+                   Ending Message Assembly
+                   Starting Message Disassembly
+                   Reading FROM name
+                           FROM: IVPTEST
+                   Reading TEXT bodypart
+                           TEXT: Hello World
+                   Ending Message Disassembly
+           Message Router Programmer's Kit Version V3.5-118 verification is SUCCESSFUL
+
+                   Installation of MRIF V3.5 completed at 11:44
+
+                   VMSINSTAL procedure done at 11:44
+
+           $
+
+
+     A-2 Sample of an Installation on OpenVMS VAX Version 5.5-2
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+     C                                    Installing (cont'd)
+     ___________________________           prerequisite software,
+     Cluster installation,  2-2               2-1
+
+                                           Programmer's Kit,  1-2
+     D__________________________           sample,  A-1
+
+     Definition files,  1-1                shutting down
+       languages, 1-1                         Applications,  2-2
+     Disk space required,  2-1             time required,  2-3
+                                          Interface Routines, 1-1
+     E__________________________          Interworking, 3-9
+     Error handling,  2-3                  VAX Message Router,  3-9
+     Examples,  1-1                        X.400 Gateway,  3-9
+                                          IVP
+                                           running at installation,
+     H__________________________              3-4
+
+     Handling errors,  2-3                 running independently,
+     Help                                     3-7
+       while installing, 1-2
+
+                                          L__________________________
+     I__________________________          License
+
+     Installation Help,  1-2               checking,  2-1
+
+     Installation verification
+        procedure                         M__________________________
+
+       see IVP                            Message Router
+     Installing                            installing,  1-3
+       backup of system disk,
+         2-1                              O__________________________
+       disk space, 2-1                    OpenVMS version, 1-1
+       license, 2-1
+       Message Router, 1-3
+       on a VAXcluster, 2-2
+       preparation, 2-1
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+                                           Interface Routines,  1-1
+     P__________________________
+     PAK,  2-2                            S__________________________
+
+     Porting                              Software
+       VAX to Open VMS Alpha,              prerequisite,  2-1
+         3-8                              System disk, 2-1
+     Prerequisite software,  2-1
+     Product Authorization Key            V__________________________
+       see PAK, 3-3                       VAXcluster installation,
+     Programmer's Kit,  1-1                 2-2
+       definition files, 1-1              VMSINSTAL, 1-2
+       installing, 1-2, 3-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Index-2

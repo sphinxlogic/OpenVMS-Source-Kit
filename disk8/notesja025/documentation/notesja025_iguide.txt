@@ -1,0 +1,2974 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     _日本語DEC_Notes______________________________
+                      インストレーション・ガイド
+
+                     AA-QWSNA-TE
+
+
+                      1996年5月
+
+                     本書は，日本語OpenVMSオペレーティング・システムに日
+                     本語DEC Notesをインストールする方法を記述していま
+                     す。また，日本語DEC Notesをインストールする前あるい
+                     は後にオンライン・リリース・ノートを読む方法も説明
+                     しています。
+
+
+
+
+
+                      オペレーティング・システム  ：日本語OpenVMS VAX
+                                                 Version 6.0以降
+                                                 ：日本語OpenVMS Alpha
+                                                 Version 6.1以降
+
+                      ソフトウェア・バージョン    ：日本語DEC Notes
+                                                 Version 2.5
+
+
+
+
+                     日本ディジタル イクイップメント株式会社
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           1996年5月
+
+           本書の著作権は日本ディジタル イクイップメント株式会社(日本
+           DEC)が保有しており，本書中の解説および図，表は日本DECの文
+           書による許可なしに，その全体または一部を，いかなる場合にも
+           再版あるいは複製することを禁じます。
+
+           また，本書に記載されている事項は，予告なく変更されることが
+           ありますので，あらかじめご承知おきください。万一，本書の記
+           述に誤りがあった場合でも，日本DECは一切その責任を負いかね
+           ます。
+
+           本書で解説するソフトウェア(対象ソフトウェア)は，所定のライ
+           センス契約が締結された場合に限り，その使用あるいは複製が許
+           可されます。
+
+           日本DECは，日本DECまたは日本DECの指定する会社から納入され
+           た機器以外の機器で対象ソフトウェアを使用した場合，その性能
+           あるいは信頼性について一切責任を負いかねます。
+
+           (c) Digital Equipment Corporation Japan 1996.
+
+           All Rights Reserved.
+           Printed in Singapore.
+
+           以下は米国Digital Equipment Corporationの商標です：
+           ALL-IN-1, Alpha AXP, AXP, Bookreader, DECnet, DEC Notes,
+           DECwindows, Digital, OpenVMS, PATHWORKS, PrintServer,
+           TeamLinks, VAX, VAX Notes, VAXcluster, VAXserver,
+           VAXstation, VMS, WPS-PLUS, XUI,およびDIGITALロゴ。
+
+           以下は他社の商標です：
+           MotifおよびOSF/MotifはOpen Software Foundation社の商標で
+           す。
+           PostScriptは米国Adobe Systems社の商標です。
+           UNIXはX/Openカンパニーリミテッドが独占的にライセンスしてい
+           る米国ならびに他の国における登録商標です。
+
+           本書は，日本語VAX DOCUMENT V 2.1を用いて作成しています。
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                               目次
+
+
+
+    まえがき................................................      v
+
+
+    1     インストールの準備
+
+          1.1   ディストリビューション・キットの確認........    1-1
+
+          1.2   オンライン・リリース・ノートへのアクセス....    1-1
+
+          1.3   VAXインストレーション・プロシージャの必要条
+               件...........................................    1-2
+
+          1.4   Alphaインストレーション・プロシージャの必要
+               条件.........................................    1-4
+
+          1.5   ユーザ・アカウント・クォータと特権..........    1-6
+
+          1.6   VMS License Management Facility.............    1-7
+
+          1.7   VMSINSTALの使用.............................    1-9
+
+    2     日本語DEC Notesのインストール
+
+          2.1   インストレーション・プロシージャの実行......    2-1
+
+    3     インストール後の手順
+
+          3.1   システム・スタートアップ・ファイルの変更....    3-1
+
+          3.2   ネットワーク・トランスポート情報............    3-1
+          3.2.1     DECnet情報..............................    3-2
+          3.2.2     TCP/IP情報..............................    3-2
+
+          3.3   VAXclusterでの日本語DEC Notesのインストール.    3-3
+
+          3.4   インストール後の日本語DEC Notesの起動.......    3-4
+
+          3.5   日本語DEC Notesサーバの制御.................    3-5
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+            3.6   Installation Verification Procedureの単独実
+                 行...........................................    3-6
+
+            3.7   エラー条件..................................    3-7
+
+            3.8   保守用アップデート版........................    3-8
+
+            3.9   問題の判断と報告............................    3-9
+
+      A   インストレーションの例
+
+      B   日本語DEC Notesライセンス情報
+
+            B.1   NOTES-CLIENT-USERライセンス.................    B-1
+
+            B.2   NOTES-SERVER-LANLINKライセンス..............    B-1
+            B.2.1     予約リストへのユーザの追加..............    B-1
+
+      索引
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                まえがき
+
+
+
+        本書では，日本語OpenVMSオペレーティング・システムに日本語DEC
+        Notesをインストールし，保守する方法について説明します。実際にイ
+        ンストールを開始する前に，本書全体をよく読んでください。
+
+
+
+        本書の対象読者
+
+              本書はシステム管理者をはじめ，システム・ソフトウェアのイン
+              ストールを担当する人を対象にしています。日本語DEC Notesソ
+              フトウェアをインストールするには，SYSTEMアカウントなどの特
+              権付きアカウントにアクセスできなければならず，OpenVMSイン
+              ストール・プロシージャ，VMSINSTAL.COMを十分理解していなけ
+              ればなりません。
+
+
+              本書はディストリビューション・キットともに保管してくださ
+              い。保守更新をインストールする場合や，他の理由で日本語DEC
+              Notesを再インストールする場合には，本書が必要になります。
+
+
+        参考文献
+
+              OpenVMSシステムで日本語DEC Notesをインストールする処理の詳
+              細については，各プロセッサのインストレーション/操作ガイド
+              を参照してください。
+
+              VMSINSTALコマンド・プロシージャについての詳細は，次のいず
+              れかのマニュアルを参照してください。
+
+               o  OpenVMSベース・ドキュメンテーション・セットの
+                  『OpenVMSシステム管理者マニュアル』
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+            o  OpenVMSベース・ドキュメンテーション・セットの
+               『OpenVMS License Management Utility Manual』
+
+            o  OpenVMSベース・ドキュメンテーション・セットの
+               『OpenVMS Authorize Utility Manual』
+
+            o  OpenVMSベース・ドキュメンテーション・セットの
+               『OpenVMS System Messages and Recovery Procedures
+               Reference Volume』
+
+            o  OpenVMSシステム管理キットの『Guide to Setting Up a
+               VMS System』
+
+     表記法
+
+           本書は次の表記法を使用して書かれています。
+
+           <Return>        プロシージャの説明で四角で囲んだキー名は，
+                           キーボードでそのキーを押すことを示す。
+
+           <Ctrl/x>        <Ctrl/x>などのシーケンスは，Ctrlキーを押し
+                           ながら，別のキーまたはポインティング・デバ
+                           イス・ボタンを押すことを示す。
+
+           ()              形式の説明で使用している括弧は，複数のオプ
+                           ションを選択するときに，全体を括弧で囲まな
+                           ければならないことを示す。
+
+           []              形式の説明で使用している大括弧は，囲んだ要
+                           素が省略可能であることを示す。要素をまった
+                           く選択しないことも，1つまたは全部を選択す
+                           ることも可能である。
+
+           bold            オンライン・バージョンで使用している太字
+                           は，使用例中のユーザ入力部分を示す。
+
+           italic text     斜体は，システム・メッセージで変化する可
+                           能性がある情報を示す(たとえば，Internal
+                           error number)。
+
+
+
+
+
+
+
+      vi
+
+ 
+
+
+
+
+
+
+
+              UPPERCASE TEXT  大文字の英字は，コマンドを入力しなければな
+                              らないことを示す。また，ルーチン名，ファイ
+                              ル名，ファイル保護コードの名前，システム特
+                              権の省略形を示すこともある。
+
+              ブックリーダ    ブックリーダ・ソフトウェアを示す。
+
+              OpenVMS, VMS    OpenVMSオペレーティング・システムを示す。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                                      インストールの準備
+
+
+              この章では，日本語DEC Notesのインストールを開始する前に終
+              了しておかなければならない作業について説明します。
+
+
+        ___________________________________________________________
+
+        1.1   ディストリビューション・キットの確認
+
+              Bill of Materials (BOM)とBills Report (BIL)には，メディア
+              の数と内容が指定されています。キットの内容をこの情報と突き
+              合わせてください。キットが破損している場合や，不足するもの
+              がある場合には，日本DECの担当者にご連絡ください。
+
+              ディストリビューション・メディアは，示されている番号の順に
+              マウントしなければなりません。インストレーション・プロシー
+              ジャでは，ボリュームのマウントを要求するプロンプトが表示さ
+              れます。ディストリビューション・メディアのマウントの方法に
+              ついては，各プロセッサのインストレーション/操作ガイドを参
+              照してください。そのマニュアルでは，インストレーション・プ
+              ロシージャに対するオプションについても詳しく説明されていま
+              す。
+
+        ___________________________________________________________
+
+        1.2   オンライン・リリース・ノートへのアクセス
+
+              日本語DEC Notesでは，オンライン・リリース・ノートが提供さ
+              れます。OPTIONS Nパラメータを指定してVMSINSTALを起動する
+              と，インストレーション・プロシージャの手順4で，インストー
+              ル中にリリース・ノートを表示または印刷するように促すプロン
+              プトが表示されます。
+
+              インストールが終了した後でリリース・ノートを入手するには，
+              ファイルSYS$HELP:NOTESJA025.RELEASE_NOTESを印刷するか，ま
+              たは次のように入力します。オンライン・ヘルプでも，リリー
+
+
+
+                                                                     1-1
+
+ 
+
+
+      1.2オンライン・リリース・ノートへのアクセス
+
+
+
+           ス・ノート・ファイルが示されます。インストールの後で次のコ
+           マンドを入力してください。
+
+           $ HELP NOTES RELEASE_NOTES
+
+
+     ___________________________________________________________
+
+     1.3    VAXインストレーション・プロシージャの必要条件
+
+           VAXのインストールには，メディアの種類とシステム構成に応じ
+           て約15分かかります。日本語DEC Notesのインストールを開始す
+           る前に，次の特権とリソースを準備しておいてください。
+
+            o  SETPRV特権，またはCMKRNL，WORLD，OPER，およびSYSPRV特
+               権。
+
+            o  インストール時に6400ブロック以上の空きディスク容量，
+               インストール後に5600ブロックが使用される。
+
+            o  SYS$LIBRARY:DCLTABLES.EXEのサイズに2360ページの空きグ
+               ローバル・ページを加算したものが必要である。
+
+            o  インストール時に全部で6セクションの空きグローバル・セ
+               クションが必要である。
+
+            o  OpenVMS VAXバージョン6.0以降。
+
+              _______________________  注意 _______________________
+
+              インストールのためにシステムに必要なグローバル・ペー
+              ジおよびグローバル・セクションSYSGENクォータがあるか
+              どうかを確認しなければなりません。このことを確認し
+              なかった場合には，DCLテーブルが壊れる可能性がありま
+              す。
+
+              _____________________________________________________
+
+           システムで使用できるグローバル・ページ数を判断するには，
+           VMS Installユーティリティを使用します。次のコマンドを入力
+           してください。
+
+
+
+
+
+      1-2
+
+ 
+
+
+                       1.3 VAXインストレーション・プロシージャの必要条件
+
+
+
+              $ INSTALL :== $INSTALL/COMMAND_MODE
+              $ INSTALL
+              INSTALL> LIST/GLOBAL/SUMMARY
+
+                      Summary of Local Memory Global Sections
+
+              ?? Global Sections Used,  ???/??? Global Pages Used/Unused
+
+              INSTALL> EXIT
+
+              これらのコマンドを入力すると，使用済みのグローバル・セクシ
+              ョン数，使用済みのグローバル・ページ数，未使用のグローバ
+              ル・ページ数が表示されます。VMS Installユーティリティを終
+              了するには，EXITコマンドを使用します。
+
+              日本語DEC Notesでは，約2360のグローバル・ページが必
+              要です。使用できるページ数が2360ページ未満の場合に
+              は，VMS Installユーティリティを使用して，既存の既知
+              のイメージを削除することができます。また，VMS System
+              Generationユーティリティ(SYSGEN)を使用し，ファイル
+              SYS$SYSTEM:MODPARAMS.DATを変更した後，AUTOGENコマンド・
+              プロシージャSYS$UPDATE:AUTOGEN.COMを起動することにより，
+              GBLPAGESシステム・パラメータを増加することもできます。たと
+              えば，次のような行をMODPARAMS.DATに指定できます。
+
+              ADD_GBLPAGES=4000
+
+              AUTOGENコマンド・プロシージャの詳細については，
+              VMS System Managementサブキットを参照してください。
+
+              使用可能なグローバル・セクションの数は，次に示すように，
+              SYSGENを起動することにより判断できます。
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN> USE CURRENT
+              SYSGEN> SHOW GBLSECTIONS
+                 .
+                 .
+                 .
+              SYSGEN> EXIT
+
+
+
+
+
+
+                                                                     1-3
+
+ 
+
+
+      1.3 VAXインストレーション・プロシージャの必要条件
+
+
+
+           最後に表示される値は，グローバル・セクションの最大数です。
+           この値を，VMS Installユーティリティで表示された使用中のグ
+           ローバル・セクション数と比較してください。日本語DEC Notes
+           では，最大6つのグローバル・セクションが必要です。したがっ
+           て，使用済みのグローバル・セクション数に6を加算した値が
+           最大グローバル・セクション数をこえる場合には，日本語DEC
+           Notesをインストールする前に，使用可能なグローバル・セクシ
+           ョンの数を増加しなければなりません。この値を増加するには，
+           SYSGENを使用し，ファイルSYS$SYSTEM:MODPARAMS.DATを変更した
+           後，SYS$UPDATE:AUTOGEN.COMプロシージャを起動することによ
+           り，GBLSECTIONSシステム・パラメータを増大しなければなりま
+           せん。AUTOGENコマンド・プロシージャの詳細については，VMS
+           System Managementサブキットを参照してください。
+
+
+           使用済みグローバル・セクションの数に6を加算した値が最大グ
+           ローバル・セクション数より少ない場合には，SYSGENを終了し，
+           インストールを続行できます。
+
+     ___________________________________________________________
+
+     1.4    Alphaインストレーション・プロシージャの必要条件
+
+           Alphaのインストールには，メディアの種類とシステム構成に応
+           じて約15分かかります。日本語DEC Notesをインストールする前
+           に，次の特権とリソースを準備しておく必要があります。
+
+            o  SETPRV特権，またはCMKRNL，WORLD，OPER，およびSYSPRV特
+               権。
+
+            o  インストール時に11000ブロック以上の空きディスク容量，
+               インストール後に6900ブロックが使用される。
+
+            o  SYS$LIBRARY:DCLTABLES.EXEのサイズに3750ページの空きグ
+               ローバル・ページを加算したものが必要である。
+
+            o  インストール時に全部で10個の空きグローバル・セクショ
+               ンが必要である。
+
+            o  OpenVMS Alphaバージョン6.1以降。
+
+              _______________________  注意 _______________________
+
+              インストールのために必要なグローバル・ページとグロー
+              バル・セクションのSYSGENクォータがシステムにあるかど
+
+      1-4
+
+ 
+
+
+                     1.4 Alphaインストレーション・プロシージャの必要条件
+
+
+
+                うか確認しなければなりません。このことを確認しない
+                と，DCLテーブルが壊れることがあります。
+
+                _____________________________________________________
+
+              システムで使用可能なグローバル・ページ数を判断するには，
+              VMS Installユーティリティを使用します。次のコマンドを入力
+              してください。
+
+              $ INSTALL :== $INSTALL/COMMAND_MODE
+              $ INSTALL
+              INSTALL> LIST/GLOBAL/SUMMARY
+
+                      Summary of Local Memory Global Sections
+
+              ?? Global Sections Used,  ???/??? Global Pages Used/Unused
+
+              INSTALL> EXIT
+
+              これらのコマンドを入力すると，使用済みグローバル・セクショ
+              ン数，使用済みグローバル・ページ数，未使用のグローバル・ペ
+              ージ数が表示されます。VMS Installユーティリティを終了する
+              には，EXITコマンドを入力します。
+
+              日本語DEC Notesでは，約3750ページのグローバル・ページが
+              必要です。使用できるページ数が3750ページ未満の場合には，
+              VMS Installユーティリティを使用して，既存の既知のイメージ
+              を削除できます。また，VMS System Generationユーティリティ
+              (SYSGEN)を使用して，ファイルSYS$SYSTEM:MODPARAMS.DATを変更
+              し，AUTOGENコマンド・プロシージャSYS$UPDATE:AUTOGEN.COMを
+              起動することにより，GBLPAGESシステム・パラメータを増大する
+              こともできます。たとえば，次の行をMODPARAMS.DATに指定でき
+              ます。
+
+              ADD_GBLPAGES=4000
+
+              AUTOGENコマンド・プロシージャの詳細については，
+              VMS System Managementサブキットを参照してください。
+
+              使用可能なグローバル・セクション数は，次に示すようにSYSGEN
+              を起動することにより判断できます。
+
+
+
+
+
+                                                                     1-5
+
+ 
+
+
+      1.4 Alphaインストレーション・プロシージャの必要条件
+
+
+
+           $ RUN SYS$SYSTEM:SYSGEN
+           SYSGEN> USE CURRENT
+           SYSGEN> SHOW GBLSECTIONS
+              .
+              .
+              .
+           SYSGEN> EXIT
+
+
+           最後に表示される値は最大グローバル・セクション数です。こ
+           の値を，VMS Installユーティリティで表示された使用中のグロ
+           ーバル・セクション数と比較してください。日本語DEC Notesで
+           は，最大10個のグローバル・セクションが必要です。したがっ
+           て，使用済みグローバル・セクション数に10を加算した値が最
+           大グローバル・セクション数より大きい場合には，日本語DEC
+           Notesをインストールする前に，使用可能なグローバル・セク
+           ション数を増大する必要があります。この値を増大するには，
+           SYSGENを使用し，ファイルSYS$SYSTEM:MODPARAMS.DATを変更し，
+           SYS$UPDATE:AUTOGEN.COMコマンド・プロシージャを起動すること
+           により，GBLSECTIONSシステム・パラメータを増加しなければな
+           りません。AUTOGENコマンド・プロシージャの詳細については，
+           VMS System Managementサブキットを参照してください。
+
+           使用済みグローバル・セクション数に10を加算した値が最大グロ
+           ーバル・セクション数より少ない場合には，SYSGENを終了し，イ
+           ンストールを続行できます。
+
+     ___________________________________________________________
+
+     1.5    ユーザ・アカウント・クォータと特権
+
+           日本語DEC Notesを使用するには，各アカウントにTMPMBX特権と
+           NETMBX特権が必要であり，各クォータが次の最小値を満たさなけ
+           ればなりません。
+
+            o  ASTリミット(ASTLM): 24 (最小値)
+
+            o  バッファード入出力クォータ(BIOLM): 18 (最小値)
+
+            o  バッファード入出力バイト・カウント・クォータ(BYTLM):
+               8192 (最小値)
+
+            o  ダイレクト入出力クォータ(DIOLM): 18 (最小値)
+
+            o  エンキュー・クォータ(ENQLM): 30 (最小値)
+
+      1-6
+
+ 
+
+
+                                   1.5ユーザ・アカウント・クォータと特権
+
+
+
+               o  オープン・ファイル・リミット(FILLM): 20 (最小値)
+
+               o  ページング・ファイル・クォータ(PGFLQUOTA): 20,000ペー
+                  ジ(最小値)
+
+               o  サブプロセス生成クォータ(PRCLM): 2 (最小値)
+
+               o  ワーキング・セット・サイズ(WSDEF): 512ページ(最小
+                  値)，1024ページ(最適値)
+
+              これらのクォータの現在の値と日本語DEC Notesの必要条件を比
+              較するには，VMS Authorizeユーティリティ(AUTHORIZE)を使用し
+              ます。たとえば，次の例で使用されているアカウントはSYSTEMア
+              カウントです。
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF> SHOW SYSTEM
+
+              ユーザ・アカウント・クォータと特権の値を変更するには，VMS
+              AuthorizeユーティリティのMODIFYコマンドを使用します。詳細
+              については，『OpenVMS Authorize Utility Manual』を参照して
+              ください。
+
+        ___________________________________________________________
+
+        1.6   VMS License Management Facility
+
+              この製品では，OpenVMS (バージョン5.0以上)で提供される
+              License Management Facililty (LMF)機能がサポートされ，
+              Product Authorization Key (PAK)が登録されている必要があり
+              ます。
+
+              必要なライセンス登録情報は，日本語DEC Notesに添付されてい
+              るPAKに同梱されています。PAKは特定のソフトウェアを実行する
+              のに必要なライセンスに関する情報を記載した認定書です。
+
+              インストール時に，日本語DEC Notesライセンスを登録したかど
+              うかと，適切な登録キーをロードしたかどうかが質問されます。
+              Installation Verification Procedure (IVP)を実行し，このソ
+              フトウェアを使用するには，インストールを開始する前に，日本
+              語DEC Notesのライセンスを登録し，ロードしておかなければな
+              りません。
+
+
+
+                                                                     1-7
+
+ 
+
+
+      1.6 VMS License Management Facility
+
+
+
+           OpenVMSバージョン5.0以上でライセンスを登録するには，まずシ
+           ステム管理者のアカウント，SYSTEMにログインします。次に，次
+           のいずれかの方法で登録を行います。
+
+            o  SYS$UPDATE:VMSLICENSE.COMプロシージャを起動する。情報
+               を要求するプロンプトが表示されたら，PAKに記載されてい
+               るデータを入力する。
+
+            o  DCLのLICENSE REGISTERコマンドと，PAKの情報に対応する
+               適切な修飾子を入力する。
+
+           VMSLICENSE.COMプロシージャとLMFの管理機能の詳細について
+           は，『OpenVMS License Management Utility Manual』を参照し
+           てください。
+
+           日本語DEC Notesのキットは1つのみですが，ライセンスは次の5
+           種類があります。
+
+            o  NOTES-UI-JAPANESE
+
+            o  NOTES-USER-UI-JAPANESE
+
+            o  NOTES-CLIENT-UI-JAPANESE
+
+            o  NOTES-CLIENT-USER
+
+            o  NOTES-SERVER-LANLINK
+
+           NOTES-UI-JAPANESEライセンスとNOTES-USER-UI-JAPANESEライセ
+           ンスは完全な機能を備えています。この2つのライセンスの違い
+           は，NOTES-USER-UI-JAPANESEライセンスでは，一度に日本語DEC
+           Notesを使用できるユーザの最大数が指定されているという点で
+           す。NOTES-UI-JAPANESEライセンスには，最大ユーザ数の制限が
+           ありません。
+
+           NOTES-CLIENT-UI-JAPANESEライセンスとNOTES-CLIENT-USERライ
+           センスでは，完全な機能は提供されません。この2つのライセン
+           スの違いは，NOTES-CLIENT-USERライセンスでは，一度に日本語
+           DEC Notesを使用できるユーザの最大数が指定されているという
+           ことです。ユーザはリモート・コンファレンスにだけアクセスで
+           きます。ローカル・コンファレンスを作成したり，アクセスする
+           ことはできません。NOTES-CLIENT-UI-JAPANESEライセンスでは，
+           ユーザ数は制限されません。
+
+
+
+      1-8
+
+ 
+
+
+                                     1.6 VMS License Management Facility
+
+
+
+              NOTES-SERVER-LANLINKライセンスでは，DEC Notesサーバをノー
+              ドで実行できますが，DEC Notesクライアントは実行できませ
+              ん。ユーザはリモート・ノードのDEC Notesクライアントまたは
+              他のプラットフォームのConferencingクライアントを使用して，
+              ライセンスが提供されるノードのコンファレンスにアクセスでき
+              ます。
+
+
+              NOTES-CLIENT-UI-JAPANESEライセンスのあるシステムのユーザが
+              NOTES-CLIENT-UI-JAPANESEライセンスで認められていない操作を
+              実行しようとすると，次のエラー・メッセージが戻されます。
+
+              Your software license does not allow this operation
+
+              NOTES-USER-UI-JAPANESEライセンスのあるシステムのユーザが日
+              本語DEC Notesを起動しようとしたときに，すでにライセンスで
+              認められている最大数のユーザが日本語DEC Notesを使用してい
+              る場合には，次のエラー・メッセージが戻されます。
+
+              $ NOTES
+              %LICENSE-F-NOAUTH, DEC NOTES-USER-UI-JAPANESE use is not authorized on this node
+              -LICENSE-F-EXCEEDED, attempted usage exceeds active license limits
+              -LICENSE-I-SYSMGR, please see your system manager
+
+        ___________________________________________________________
+
+        1.7   VMSINSTALの使用
+
+              日本語DEC Notesをインストールするために特権付きアカウント
+              にログインした後，省略時のディレクトリをSYS$UPDATE:に設定
+              し，VMSINSTALを起動します。これは，この製品をインストール
+              するコマンド・プロシージャです。このプロシージャの例は，第
+              2章の手順1と手順2に示されています。
+
+              $ SET DEFAULT SYS$UPDATE
+              $ @VMSINSTAL NOTESJA025 ddn: [OPTIONS N]
+
+              また，NOTESJA025の代わりにアスタリスク(*)を入力することも
+              できます。磁気テープからインストールする場合には，アスタリ
+              スクを使用すると，インストール時間を短縮できます。アスタリ
+              スクを指定すると，日本語DEC Notesは最小のテープ・パスでイ
+              ンストールされます。次の例を参照してください。
+
+
+
+
+                                                                     1-9
+
+ 
+
+
+      1.7 VMSINSTALの使用
+
+
+
+           $ SET DEFAULT SYS$UPDATE
+           $ @VMSINSTAL * ddn: [OPTIONS N]
+
+
+           コマンド・パラメータについては，この後の説明を参照してくだ
+           さい。最初の2つのパラメータ(NOTESJA025とddn:)を指定しなか
+           った場合には，VMSINSTALは製品名とデバイス名を要求するプロ
+           ンプトを表示します。製品名とデバイス名を要求するプロンプト
+           を表示し，リリース・ノートを表示または印刷する場合には，次
+           のように入力してください。
+
+           $ @SYS$UPDATE:VMSINSTAL "" "" OPTIONS N
+
+           ddn:
+           ディストリビューション・ボリュームがマウントされるデバ
+           イスの名前を指定します。ただし，ddはデバイス・コードであ
+           り，nはユニット番号です。日本語DEC Notesをインストールする
+           ために，コンソール・ドライブを使用する必要はありません。コ
+           ンソール・ドライブを使用する場合には，ドライブから取り出し
+           たメディアを交換しなければなりません。CSA1:は本書の例で使
+           用されるデバイス名です。
+
+           OPTIONS N
+           これは省略可能なパラメータであり，リリース・ノートを表示ま
+           たは印刷するためのプロンプトを表示したいときは，このパラメ
+           ータを指定しなければなりません。OPTIONS Nパラメータを指定
+           しなかった場合には，VMSINSTALはリリース・ノートの表示また
+           は印刷を促すプロンプトを表示しません。VMSINSTALでは，この
+           他にもいくつかのオプションを使用できます。他のオプションの
+           詳細については，各プロセッサのインストレーション/操作ガイ
+           ドを使用してください。
+
+           VMSINSTALを起動すると，次のことが確認されます。
+
+            o  特権付きアカウントにログインしているかどうか。シス
+               テム管理者のアカウントからソフトウェアをインストー
+               ルする場合には，省略時のデバイスとディレクトリを
+               SYS$UPDATEに設定することが望ましい。
+
+            o  インストールに必要なクォータがあるかどうか。VMSINSTAL
+               は次のクォータ値を確認する。
+
+               -    ASTLM = 24
+
+               -    BIOLM = 18
+
+      1-10
+
+ 
+
+
+                                                     1.7 VMSINSTALの使用
+
+
+
+                  -   BYTLM = 18000
+
+                  -   DIOLM = 18
+
+                  -   ENQLM = 30
+
+                  -   FILLM = 20
+
+              次に，VMSINSTALは次の条件が満たされるかどうか確認します。
+
+               o  DECnetが起動されておらず，実行されていないこと。
+
+               o  他のユーザがシステムにログインしていないこと。
+
+              VMSINSTALでこれらの条件が確認されると，インストールを続け
+              るかどうか質問されます。続ける場合はYESと入力してくださ
+              い。インストールを中断する場合は，RETURNを押してください。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                    1-11
+
+ 
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                           日本語DEC Notesのインストール
+
+
+              この章では，インストレーション・プロシージャの抜粋を示し，
+              各手順について説明します。インストレーション・プロシージャ
+              での省略時の設定は，大括弧で囲んで示しています。
+
+
+        ___________________________________________________________
+
+        2.1   インストレーション・プロシージャの実行
+
+              インストレーション・プロシージャを強制終了するには，CTRL/Y
+              を押します。CTRL/Yを押すと，インストレーション・プロシージ
+              ャはその時点まで作成したすべてのファイルを削除し，DCLレベ
+              ルに戻ります。CTRL/Yを押した後，インストレーション・プロシ
+              ージャを再実行する場合には，手順2から開始しなければなりま
+              せん。
+
+               1. 特権付きアカウントにログインし，省略時のデバイスとデ
+                  ィレクトリをSYS$UPDATEに設定します。
+
+                  Username: SYSTEM
+                  Password:
+                  $ SET DEFAULT SYS$UPDATE
+
+               2. VMSINSTALを起動します。
+
+                  $ @VMSINSTAL NOTESJA025 CSA1: OPTIONS N
+
+                        VAX/VMS Software Product Installation Procedure Vx.x
+
+
+                  It is dd-mmm-yyyy at hh:mm.
+                  Enter a question mark (?) at any time for help.
+
+                  * Are you satisfied with the backup of your system disk [YES]? YES
+
+
+
+
+                                                                     2-1
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+               システム・ディスクのバックアップに問題がない場合に
+               は，RETURNを押します。バックアップに問題がある場合に
+               は，NOと入力し，RETURNを押し，インストレーションを中
+               止します。
+
+
+
+            3. インストレーション・キット・ボリュームを挿入します。
+
+               Please mount the first volume of the set on CSA1:.
+               * Are you ready? YES
+               The following products will be processed:
+
+                 NOTES 2.5
+
+                   Beginning installation of NOTESJA V2.5 at hh:mm
+
+               %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+               インストレーションを続ける場合は，YESと入力し，RETURN
+               を押します。
+
+
+            4. リリース・ノート・オプションを選択します。
+
+               この手順は，手順2でOPTIONS Nを指定した場合にのみ実行
+               されます。
+
+               Release notes included with this kit are always copied to SYS$HELP.
+
+               Additional Release Notes Options:
+
+                   1. Display release notes
+                   2. Print release notes
+                   3. Both 1 and 2
+                   4. None of the above
+
+               * Select option [2]: 2
+
+               オプション1を選択した場合には，VMSINSTALはリリース・
+               ノートをオンラインでただちに表示します。CTRL/Cを押す
+               と，いつでも表示を終了できます。
+
+
+
+
+      2-2
+
+ 
+
+
+                               2.1インストレーション・プロシージャの実行
+
+
+
+                  オプション2を選択した場合には，VMSINSTALはキュー名を
+                  要求するプロンプトを表示します。プロンプトに対してキ
+                  ュー名を入力します。または，ファイルを省略時の出力プ
+                  リント・デバイスに送信するときはRETURNを押します。
+
+                  * Queue name [SYS$PRINT]: SYS$PRINT
+
+                  オプション3を選択した場合には，VMSINSTALはリリース・
+                  ノートをオンラインでただちに表示し，キュー名を要求す
+                  るプロンプトを表示します。
+
+                  オプション4を選択した場合には，VMSINSTALはリリース・
+                  ノートの表示，印刷，またはコピーを行いません。通常，
+                  このオプションは，ユーザがインストレーションを終了す
+                  るときに選択します。
+
+                _______________________  注意 _______________________
+
+                VMSINSTALでインストールされるリリース・ノート・ファ
+                イルのこのバージョンには，現在の製品名とバージョン番
+                号がラベルに示されています。DEC Notesの以前のバージ
+                ョンのリリース・ノートを削除しないように注意してくだ
+                さい。
+
+                _____________________________________________________
+
+                  次に，VMSINSTALは次のプロンプトを表示します。
+
+                  * Do you want to continue the installation [N]?: YES
+                  %VMSINSTAL-I-RELMOVED, The product's release notes have been successfully
+                      moved to SYS$HELP.
+
+                  インストレーションを続行するときは，YESと入力し，
+                  RETURNを押します。NOと入力するか，RETURNを押すと，
+                  VMSINSTALはインストレーションを中止します。どちらの場
+                  合も，VMSINSTALはリリース・ノートをSYS$HELPに移動しま
+                  す。
+
+               5. インストレーション・オプションを選択し，ライセンスを
+                  指定します。
+
+
+
+
+
+
+                                                                     2-3
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+                 ***********************************************************
+                               DEC Notes/Japanese Installation Procedure
+                       Copyright (c) Digital Equipment Corporation. 1996.
+                                     All Rights Reserved.
+
+                                        DEC Notes/Japanese V2.5
+
+                   DEC Notes can be installed on any system running
+                   OpenVMS AXP V6.1 (or later).
+                   This installation will fail if this system is running an
+                   older version of OpenVMS.
+
+                   DEC Notes/Japanese provides both a character-cell and a DECwindows/Motif
+                   user interface.  Use of the DECwindows/Motif interface requires
+                   that DECwindows/Motif V1.2 (or later) be installed.
+                   This installation can continue and the character-cell interface can
+                   be used if the required version of DECwindows/Motif is not installed.
+
+                   DEC Notes/Japanese supports both DECnet and TCP/IP transports.  Use of
+                   the TCP/IP transport requires prior installation of
+                   V3.1 (or later) of DEC TCP/IP Services for OpenVMS.
+                   Installation can continue and only the DECnet transport will be
+                   used if the required version of DEC TCP/IP Services for OpenVMS is
+                   not installed on this system.
+
+                   An appropriate software license is required to run DEC Notes/Japanese.
+                   The license should be installed before attempting to install
+                   DEC Notes/Japanese.  If you have not yet installed a DEC Notes/Japanese
+                   license, you can continue with this installation, but you will be unable
+                   to run either DEC Notes/Japanese or the DEC Notes/Japanese Installation
+                   Verification Procedure until an appropriate license has been installed.
+
+                 ***********************************************************
+
+               * Do you want to continue with this installation [YES]?
+
+               この時点でインストレーションを続行するときは，YESと入
+               力し，RETURNを押します。NOと入力するか，またはRETURN
+               だけを押した場合には，VMSINSTALはインストレーションを
+               中止します。
+
+               * Do you want to purge files replaced by this installation [YES]? YES
+
+
+
+
+      2-4
+
+ 
+
+
+                               2.1インストレーション・プロシージャの実行
+
+
+
+                  ディレクトリSYS$HELP，SYS$LIBRARY，SYS$MANAGER，およ
+                  びSYS$SYSTEMには，DEC NotesあるいはVAX Notesファイル
+                  の以前のバージョンが格納されている可能性があります。
+                  これらのファイルはインストール時に新しいファイルに置
+                  き換えられますが，古いファイルは自動的に消去されませ
+                  ん。なるべく消去するようにしてください。消去プロンプ
+                  トに対する応答として，ファイルを消去するときはRETURN
+                  を押し，消去せずに保存するときはNOと入力します。
+
+                  * Do you want to run the IVP after the installation [YES]? YES
+
+                  Installation Verification Procedure (IVP)は，インスト
+                  レーション・プロシージャが正常終了したかどうかを確認
+                  するためのテストを実行します。インストレーションの後
+                  でIVPを実行するときは，RETURNを押します。IVPを実行し
+                  ないときは，プロンプトに対する応答としてNOと入力しま
+                  す。
+
+                  %NOTESJA-I-CHKPRDVER, Checking installation requirements
+
+                      All installation and product dependencies will now be checked.
+                      If problems are discovered, it may still be possible to complete
+                      this installation, depending upon the nature of the problems.
+
+                  %NOTESJA-I-VMSVER, Checking OpenVMS version...
+                  %NOTESJA-I-MOTIFVER, Checking DECwindows/Motif version...
+                  %NOTESJA-I-UCXVER, Checking DEC TCP/IP Services for OpenVMS version...
+                  %NOTESJA-I-SYSRES, Checking system resources...
+
+                  購入したライセンスを指定するように要求するプロンプト
+                  が表示されます。
+
+                    Please indicate the level of capability that you want to install:
+
+                           1. Full capability (NOTES-UI-JAPANESE or NOTES-USER-UI-JAPANESE)
+                           2. TeamLinks DEC Notes/Japanese server (NOTES-SERVER-LANLINK)
+                           3. Reduced capability, client-only (NOTES-CLIENT-UI-JAPANESE or
+                              NOTES-CLIENT-USER)
+
+                  * Enter the number of the level of capability to install [1]:
+
+                  次に，日本語DEC Notes PAKを登録し，ロードしたかどうか
+                  を確認するプロンプトが表示されます。
+
+
+
+                                                                     2-5
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+                       Product:      NOTES-UI-JAPANESE or NOTES-USER-UI-JAPANESE
+                       Producer:     DEC
+                       Version:      2.5
+                       Release Date: dd-mmm-yyyy
+
+               * Does this product have an authorization key registered and loaded? YES
+
+               PAKを登録し，ロードした場合には，YESと入力してくださ
+               い。まだロードしていない場合には，NOと入力してくださ
+               い。その場合には，IVPは実行されません。
+
+
+            6. 適用可能な場合は，サーバ・アカウントをセットアップし
+               ます。
+
+              _______________________  注意 _______________________
+
+              手順6は，完全な機能を持つライセンス(NOTES-UI-
+              JAPANESEまたはNOTES-USER-UI-JAPANESE)を購入した場
+              合にだけ実行されます。NOTES-CLIENT-UI-JAPANESEライセ
+              ンスを購入した場合には，この手順をとばして，手順7に
+              進んでください。
+
+              _____________________________________________________
+
+               日本語DEC Notesのアップグレードをインストールする場合
+               には，手順6aに進んでください。初めて日本語DEC Notesを
+               インストールする場合には，手順6aをとばし，手順6bに進
+               んでください。
+
+                a.  日本語DEC Notesのアップグレードのインストール
+                    (NOTES-UI-JAPANESEまたはNOTES-USER-UI-JAPANESEラ
+                    イセンス)
+
+                    次のメッセージは，日本語DEC Notesのアップグレード
+                    をインストールする場合にだけ表示されます。
+
+
+
+
+
+
+
+
+
+
+      2-6
+
+ 
+
+
+                               2.1インストレーション・プロシージャの実行
+
+
+
+                      %NOTES-I-EXISTS, NOTES$SERVER account already exists
+                      %NOTES-I-MODACC, Modifying account NOTES$SERVER...
+                      %VMSINSTAL-I-ACCOUNT, This installation updates an account named NOTES$SERVER.
+                      %UAF-I-MDFYMSG, user record(s) updated
+                      %NOTES-I-EXISTS, The logical NOTES$LIBRARY exists
+                      %NOTES-I-ASSUMEOK, This installation will assume it is properly defined
+
+                        The network object NOTES has been defined.  If you wish
+                        to view this, run SYS$SYSTEM:NCP and issue the command
+                              NCP> LIST OBJECT NOTES CHAR
+
+                      TCP/IPがインストールされていない場合には，次のメ
+                      ッセージは表示されません。
+
+                        The TCP/IP service NOTES has been defined.  If you wish
+                        to view this, run SYS$SYSTEM:UCX and issue the command
+                              UCX> SHOW SERVICE/FULL NOTES
+
+                      この時点で手順6bをとばし，手順7に進んでください。
+
+                   b. 初めての日本語DEC Notesのインストール(NOTES-
+                      UI-JAPANESEまたはNOTES-USER-UI-JAPANESEライセン
+                      ス)
+
+                      日本語DEC Notesを初めてインストールする場合には，
+                      次のメッセージが表示され，新規NOTES$SERVERアカウ
+                      ントに割り当てるUIC番号が要求されます。なるべく省
+                      略時のUIC [376,377]を使用してください。省略時の設
+                      定を使用しなかった場合には，固有のUICを使用するよ
+                      うに注意してください。
+
+                        In order to ensure that the DEC Notes/Japanese server runs with the proper
+                        quotas, this installation procedure will create an account for the server.
+                        This account, NOTES$SERVER, has no special privileges and is set up for only
+                        network operation.
+
+                            You must specify a unique UIC for this account in order
+                            to ensure proper security of your conferences.
+
+                        You may want to change the password on this account after the
+                        installation has completed.  If you do, you must also change the
+                        password with NCP SET/DEF OBJECT NOTES commands.
+
+
+
+
+                                                                     2-7
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+                    * Enter UIC for NOTES server account (include brackets) [[376,377]]:
+                    %NOTESJA-I-CREACC, Creating account NOTES$SERVER for the DEC Notes server
+                    %VMSINSTAL-I-ACCOUNT, This installation creates an ACCOUNT named NOTES$SERVER.
+                    %UAF-I-ADDMSG, user record successfully added
+                    %UAF-I-RDBADDMSGU, identifier NOTES$SERVER value [000376,000377] added to
+                       rights database
+                    %NOTESJA-I-MODACC, Modifying account NOTES$SERVER quotas...
+                    %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                    %UAF-I-MDFYMSG, user record(s) updated
+                    %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                    %UAF-I-MDFYMSG, user record(s) updated
+                    %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                    %UAF-I-MDFYMSG, user record(s) updated
+                    %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                    %UAF-I-MDFYMSG, user record(s) updated
+                    %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                       SYS$SYSDEVICE:[NOTES$SERVER].
+
+                    コンファレンスを格納するために使用するデバイスの
+                    名前を要求するプロンプトが表示されます。ここでは
+                    デモンストレーションの目的で，DUA1:というデバイス
+                    名を使用します。
+
+                      DEC NOTES/Japanese conference files are stored in a directory named
+                      [NOTES$LIBRARY].
+                      You must designate the device on which this directory is to be created.
+
+                      Be sure that the device you specify has plenty of free
+                      blocks to permit normal conference file expansion.
+
+                    * Device to be used for storing conferences: SYS$SYSDEVICE
+                    %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                       SYS$SYSDEVICE:[NOTES$LIBRARY].
+
+                      The DECnet object NOTES has been defined.  If you wish
+                      to view this, run SYS$SYSTEM:NCP and issue the command
+                            NCP> LIST OBJECT NOTES CHAR
+
+                      The TCP/IP service NOTES has been defined.  If you wish
+                      to view this, run SYS$SYSTEM:UCX and issue the command
+                            UCX> SHOW SERVICE/FULL NOTES
+
+            7. メッセージを読みます。
+
+
+
+      2-8
+
+ 
+
+
+                               2.1インストレーション・プロシージャの実行
+
+
+
+                  日本語DEC Notesインストレーション・プロシージャでは，
+                  インストールの進行状況に関して多くの情報メッセージが
+                  表示されます。インストレーション・プロシージャが正常
+                  終了すると，新しいファイルまたは変更されたファイルが
+                  ターゲット・ディレクトリに移動されます。
+
+                    No further questions will be asked during this installation.
+                    Completion of the installation should take another 5-10 minutes.
+
+
+
+                    This installation will add the following files:
+                     .
+                     .
+                     .
+
+                  SYS$HELP:HELPLIB.HLBファイルとSYS$LIBRARY:DCLTABLES.EXE
+                  ファイルは更新され，日本語DEC Notesヘルプ・テキストと
+                  NOTESコマンド・ライン定義の新しいバージョンを含むよう
+                  になります。
+
+                  手順5でファイルの消去を要求するプロンプトに対してYES
+                  と入力した場合には，DEC Notesファイルの以前のバージョ
+                  ンはここで消去されます。
+
+
+               8. 情報メッセージの確認とInstallation Verification
+                  Procedure (NOTES-UI-JAPANESEまたはNOTES-USER-UI-
+                  JAPANESEライセンス)
+
+                    This installation will add the following files:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     2-9
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+                       [SYSLIB]NOTES$SHARE.EXE
+                       [SYSLIB]NOTES$SECTION.TPU$SECTION
+                       [SYSEXE]NOTES$MAIN.EXE
+                       JSY$SYSTEM:NOTES$COMMAND.TPU
+                       [SYSEXE]NOTES$SERVER.EXE
+                       [SYSEXE]NOTES$SERVER_LOGIN.COM
+                       SYS$SYSROOT:[SYSTEST]NOTES$IVP.COM
+                       [SYSMGR]NOTES$REMOVE.COM
+                       [SYSMGR]NOTES$MOVE_CONFERENCE.COM
+                       NOTES$LIBRARY:NOTES$SAMPLE.NOTE
+                       NOTES$LIBRARY:JNOTES$SAMPLE.NOTE
+                       SYS$SYSROOT:[SYSTEST]NOTES$IVP_CLIENT.COM
+                       SYS$SYSROOT:[SYSTEST]NOTES$IVP_LOCAL.COM
+                       [SYSHLP]NOTESJA025.RELEASE_NOTES
+                       [SYSHLP]NOTES_SHORTGUIDE.MEM
+                       [SYSHLP]NOTES$HELP.HLB
+                       [SYSHLP]NOTES$DWHELP.HLB
+                       [SYSLIB]NOTES$DWSHARE.EXE
+                       [SYSLIB]NOTES$DWNOTES.UID
+                       [SYSLIB]NOTES$DEFAULTS.DAT
+                       [SYS$STARTUP]NOTES$STARTUP.COM
+                       [DECW$DEFAULTS.SYSTEM]LWK_REG_NOTESNOTE.UID
+
+                 ***********************************************************
+                 REMINDERS:
+
+                 1. SYSTEM STARTUP
+                    --------------
+
+                 After the installation has completed, you should execute
+
+                           SYS$STARTUP:NOTES$STARTUP.COM
+
+                 on each system on which this copy of DEC Notes will be run.
+
+                 You should also edit your system startup procedure to run
+                 SYS$STARTUP:NOTES$STARTUP.COM on each system on which this
+                 copy of DEC Notes will be run.
+
+                 ** IMPORTANT NOTE: Installation instructions for previous
+                 versions of VAX Notes suggested that NOTES$STARTUP.COM be
+                 run prior to network startup during the system startup process.
+                 It is now recommended that NOTES$STARTUP run AFTER network
+                 startup has COMPLETED, particularly if TCP/IP will be used
+                 as the network transport for DEC Notes connections.
+
+      2-10
+
+ 
+
+
+                               2.1インストレーション・プロシージャの実行
+
+
+
+                    2. DEC NOTES SHUTDOWN OR DEINSTALLATION
+                       ------------------------------------
+
+                    A new utility, SYS$MANAGER:NOTES$REMOVE.COM, can be used to
+                    deinstall DEC Notes/Japanese or to prevent new servers from executing.
+                    Type:
+
+                                  $ @SYS$MANAGER:NOTES$REMOVE
+
+                    for further details.
+
+                    3. VMSCLUSTER ENVIRONMENTS
+                       -----------------------
+
+                    If DEC Notes/Japanese is run in a VMScluster environment with
+                    multiple copies of SYS$SYSTEM:NETOBJECT.DAT in use, NCP must be
+                    used to define the NOTES DECnet object in each copy of NETOBJECT.DAT.
+                    The password used when defining the NOTES object must always
+                    match the password for account NOTES$SERVER in the system
+                    authorization file.
+
+                    If DEC Notes/Japanese is run in a VMScluster environment with
+                    multiple copies of SYS$SYSTEM:UCX$SERVICE.DAT in use, it is
+                    similarly required that UCX be used to define the NOTES service
+                    in each copy of UCX$SERVICE.DAT.  This can normally be accomplished
+                    by running NOTES$STARTUP.COM on each system.  NOTES$STARTUP.COM
+                    will attempt to properly define and enable the NOTES service
+                    each time it is executed.
+
+                  %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+                  %NOTES-I-SHUT, Disabling Notes server...
+                  %NOTES-I-STARTDNSRV, Notes server enabled for DECnet
+                  %NOTES-I-STARTTCPSRV, Notes server enabled for TCP/IP
+
+                  手順5でIVPを実行することを選択した場合には，VMSINSTAL
+                  はここでIVPを呼び出して，日本語DEC Notesが正しくイン
+                  ストールされたかどうか確認します。
+
+                      Beginning the DEC Notes/Japanese V2.5 Installation Verification Procedure.
+                  Copyright (c) Digital Equipment Corporation. 1988, 1996. All Rights Reserved.
+
+                      Testing OPEN, READ, DIRECTORY, SHOW, HELP, and CLOSE.
+
+                      Successful completion of this procedure does not imply the presence
+                      of a full function DEC Notes/Japanese license.
+
+                                                                    2-11
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+                                               電子会議システム
+                            ヘルプが必要な場合には，HELP コマンドを
+     入力してください
+
+               ノートブック (NOTES$NOTEBOOK) を作成中
+               SYS$SYSROOT:[SYSMGR]NOTES$NOTEBOOK.NOTE;1 created
+               エントリ SAMPLE_CONFERENCE がクラス MAIN に追加されま
+     した
+
+               Copyright (c) Digital Equipment Corporation. 1986, 1996. All Rights Reserved.
+
+                                          DEC Notes Sample Conference
+               作成: 27-JAN-1986 10:39         9 トピッ
+     ク            更新: 26-JAN-1993 17:34
+
+               ノー
+     ト 1.0                    Welcome to DEC Notes          リプ
+     ライの数は 7
+               MAR::JOHN_Q_NOTER "I'll make a note!"                    24 行 27-JAN-1986 10:42
+
+                   DEC Notes is a computer-mediated conferencing system that lets you
+                   conduct online conferences or meetings.  Using DEC Notes, you can
+                   communicate conveniently and economically with people in different
+                   geographic locations.  Anyone connected to the system can participate,
+                   making it possible for you to receive input from many people without
+                   costly, time-consuming meetings.
+
+                   This sample conference has been provided to help you quickly get
+                   started using DEC Notes.  It contains definitions of terms, ways to
+                   read notes, a place for you to add your first reply, and helpful hints
+                   for running and participating in an online conference.  This conference
+                   also has information about choosing an editor for writing notes,
+                   running DEC Notes in batch mode, and protecting a confidential meeting
+                   with an Access Control List (ACL).
+
+                   To continue reading this note, press the RETURN key.
+               [ 8 行続きがあります... ]
+
+               [ 6 行続きがあります... ]
+
+                                          DEC Notes Sample Conference
+               作成: 27-JAN-1986 10:39         9 トピッ
+     ク            更新: 26-JAN-1993 17:34
+
+               トピック 作成者              日付       リプライ タイ
+     トル
+
+      2-12
+
+ 
+
+
+                               2.1インストレーション・プロシージャの実行
+
+
+
+                       1     MAR::JOHN_Q_NOTER 27-JAN-1986     7  Welcome to DEC Notes
+                       2     MAR::JOHN_Q_NOTER 27-JAN-1986     1  Choosing an editor to use in DE
+
+                       3     MAR::NEW_USER     27-JAN-1986     2  Help! I don't understand NEXT U
+
+                       4     MAR::JOHN_Q_NOTER 27-JAN-1986     0  Who Are You? - Tell us about yo
+
+                       5     MAR::JOHN_Q_NOTER 27-JAN-1986     3  Using the DIRECTORY, PRINT and
+
+                       6     MAR::JOHN_Q_NOTER 27-JAN-1986     0  Suggestions for the Welcome note
+                       7     MAR::JOHN_Q_NOTER 27-JAN-1986     5  Online Etiquette
+                       8     MAR::JOHN_Q_NOTER 27-JAN-1986     1  Using NOTES$COMMAND to Define A
+
+                       9     MAR::JOHN_Q_NOTER  3-FEB-1986     0  DEC Notes Security Consideratio
+
+                  [ リストの終わり ]
+
+                  ノー
+        ト 1.0                    Welcome to DEC Notes          リプ
+        ライの数は 7
+                  MAR::JOHN_Q_NOTER "I'll make a note!"                    24 行 27-JAN-1986 10:42
+
+                       ノートは隠されていません
+                       リプライは許可されています
+
+                                             DEC Notes Sample Conference
+                  作成: 27-JAN-1986 10:39         9 トピッ
+        ク            更新: 26-JAN-1993 17:34
+
+                       ファイ
+        ル:    JRDORA::SYS$SYSDEVICE:[NOTES$LIBRARY]NOTES$SAMPLE.NOTE;1
+                       モデレーター:MAR::JOHN_Q_NOTER
+
+                       アクセスは制限されていません
+                       キーワードの作成は制限されています
+                       ノートを書き込むことができます
+
+                                    NOTES$LIBRARY: のコンファレンスのデ
+        ィレクトリ
+
+                  コンファレンス・ファイル
+
+                    JNOTES$SAMPLE
+                     タイトル: 日本語 VAX Notes コンファレンス例
+                     モデレーター:  SALES::TAKAHASHI
+                     作成: 16-JAN-1991 14:03  10 トピック，33 ノー
+        ト   更新: 16-JAN-1991 14:11
+
+                                                                    2-13
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+                 NOTES$SAMPLE
+                  タイトル: DEC Notes Sample Conference
+                  モデレーター:  MAR::JOHN_Q_NOTER
+                  作成: 27-JAN-1986 10:39  9 トピック，28 ノー
+     ト   更新: 26-JAN-1993 17:34
+
+               [ リストの終わり ]
+
+                                          DEC Notes Sample Conference
+               作成: 27-JAN-1986 10:39         9 トピッ
+     ク            更新: 26-JAN-1993 17:34
+                メンバ           ノード              メール・アドレ
+     ス               特権
+
+                JOHN_Q_NOTER     MAR::JOHN_Q_NOTER                                  [M]
+                SYSTEM           0::SYSTEM           SYSTEM                         [MK]
+               [ リストの終わり ]
+
+               DEC Notes V2.5-0J - Copyright (c) Digital Equipment Corporation. 1986, 1996.
+
+               Command_Summary
+
+                    DEC Notesを初めて使用する場合には，次のようにし
+     てヘルプを使用して
+                    ください。
+
+                    o  基本的なコマンドの使用例を表示するためには
+     New_Userとタイプしま
+                       す。
+
+                    o  DEC Notesで使用する用語や概念についての説明を
+     表示するためには,
+                       Terms_and_Conceptsとタイプします。
+
+                    o  DEC Notesのすべてのコマンドのリストを表示する
+     ためには，疑問符
+                       (?)をタイプします。
+
+                    基本コマンド:
+
+                      ADD ENTRY             REPLY (また
+     は ANSWER)   CLOSE
+                      DIRECTORY             EXIT                    PRINT
+                      NOTES (DCL コマン
+     ド)  HELP                    WRITE
+                      READ                  OPEN
+
+      2-14
+
+ 
+
+
+                               2.1インストレーション・プロシージャの実行
+
+
+
+                       以下の項目は，より詳しい説明や，より高度なコマン
+        ドの使い方の説明で
+                       す：
+
+                         Information_Commands  Keyword_Commands        Logical_Names
+                         Moderator_Commands    Notebook_Commands       Subprocess_Commands
+                         Other_Utilities       Reading_Notes
+
+
+                                                  電子会議システム
+                               ヘルプが必要な場合には，HELP コマンドを
+        入力してください
+
+                      If the informational output above is similar to the example
+                      displayed in the DEC Notes/Japanese Installation Guide, then this
+                      installation is successful.
+
+                      The DEC Notes/Japanese V2.5 Installation Verification Procedure completed.
+
+
+               9. 情報メッセージの確認とInstallation Verification
+                  Procedure (NOTES-CLIENT-UI-JAPANESEライセンス)
+
+                  NOTES-CLIENT-UI-JAPANESEライセンスの場合の日本語DEC
+                  NotesのインストレーションのメッセージとIVPは，付録 A
+                  に示すとおりです。
+
+
+               10.インストレーション・プロシージャを終了します。
+
+                          Installation of NOTESJA V2.5 completed at hh:mm
+
+                      Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+                      Creating installation data file: VMI$ROOT:[SYSUPD]NOTESJA025.VMI_DATA
+
+                          VMSINSTAL procedure done at hh:mm
+
+                  製品のインストレーション・プロシージャが終了するとき
+                  に，他の製品をインストールするのか，ログアウトするの
+                  かを選択できます(ここではログアウトします)。インスト
+                  レーションを開始する前にコンソール・ドライブからメデ
+                  ィアを取り出した場合には，ここで元に戻してください。
+
+
+
+                                                                    2-15
+
+ 
+
+
+      2.1インストレーション・プロシージャの実行
+
+
+
+               VMSINSTALはインストール時にプロセス・シンボル・テーブ
+               ルのエントリを削除または変更します。したがって，今後
+               もシステム管理者のアカウントを使用し，これらのシンボ
+               ルを復元したい場合には，一度ログアウトして，再度ログ
+               インしなければなりません。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      2-16
+
+ 
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                                    インストール後の手順
+
+
+              この章では，日本語DEC Notesをインストールした後で実行しな
+              ければならない作業について説明します。
+
+
+        ___________________________________________________________
+
+        3.1   システム・スタートアップ・ファイルの変更
+
+              ネットワークを起動した後，SYS$STARTUP:NOTES$STARTUP.COM
+              が起動されるように，システム・スタートアップ・ファイル
+              SYSTARTUP_VMS.COMを変更しなければなりません。
+
+                _______________________  注意 _______________________
+
+                DEC Notesの以前のバージョンでは，ネットワークを
+                起動する前に，SYS$STARTUP:NOTES$STARTUP.COMを起
+                動するように，システム・スタートアップ・ファイル
+                SYSTARTUP_VMS.COMを変更しなければなりませんでし
+                た。この条件は，日本語DEC NotesのVersion 2.5で変
+                更されました。今後はネットワークを起動した後に，
+                SYS$STARTUP:NOTES$STARTUP.COMを起動するように，シス
+                テム・スタートアップ・ファイルを変更しなければなりま
+                せん。
+
+                _____________________________________________________
+
+        ___________________________________________________________
+
+        3.2   ネットワーク・トランスポート情報
+
+              この節では，Notesがネットワーク・トランスポートを選択する
+              方法について説明します。
+
+              DECnetネットワーク・トランスポートとTCP/IPネットワーク・ト
+              ランスポートの両方が動作している必要はありません。どちらか
+              一方のネットワーク・トランスポートが動作していない場合に
+              は，Notesサーバはもう1つのトランスポートを使用します。
+
+                                                                     3-1
+
+ 
+
+
+      3.2ネットワーク・トランスポート情報
+
+
+
+           Notesサーバが起動され，実行された後，サポートされるネット
+           ワーク・トランスポートの1つの新しいバージョンをインストー
+           ルした場合には，NOTES$STARTUP.COMを再実行して，Notesサーバ
+           で新しいトランスポートを有効にしなければなりません。
+
+
+
+     3.2.1  DECnet情報
+
+           DECnetオブジェクト・データベースでNotesオブジェクトに対し
+           てパスワードが定義されます。このパスワードは，システム登録
+           ファイル(SYS$SYSTEM:SYSUAF.DAT)でNOTES$SERVERアカウントに
+           割り当てられているアカウントと一致しなければなりません。
+
+           SYS$STARTUP:NOTES$STARTUP.COMは，DECnetデータベース
+           (SYS$SYSTEM:NETOBJECT.DAT)でNotesオブジェクト(オブジェ
+           クト33)を有効に設定しようとします。ネットワーク・トラン
+           スポートの1つとしてDECnetを使用する計画がある場合には，
+           NOTES$STARTUPを実行する前に，DECnetの構成とスタートアップ
+           を完了しておかなければなりません。
+
+           NOTES$SERVER.COMが起動されるときに，DECnetが動作していない
+           場合には，NotesサーバはDECnet接続を受け付けることができま
+           せん。
+
+           Notesオブジェクトが正しく有効に設定されると，Notesサーバは
+           DECnet接続を受け付けることができるようになります。
+
+
+     3.2.2  TCP/IP情報
+
+
+           NOTES$STARTUP.COMは，日本語DEC TCP/IP Services for
+           OpenVMSが使用可能かどうか判断します。使用可能な場合
+           には，NOTES$STARTUP.COMはTCP/IP Serviceデータベース
+           (SYS$SYSTEM:UCX$SERVICE.DAT)でNotesサービス(ポート3333)を
+           有効に設定しようとします。
+
+           ネットワーク・トランスポートの1つとしてTCP/IPを使用する計
+           画がある場合には，NOTES$STARTUP.COMを実行する前に，TCP/IP
+           の構成とスタートアップを完了しておかなければなりません。
+           NOTES$STARTUP.COMを起動する前にTCP/IPが動作していない場合
+
+
+
+
+      3-2
+
+ 
+
+
+                                     3.2ネットワーク・トランスポート情報
+
+
+
+              には，NotesサーバはTCP/IP接続を受け付けることができませ
+              ん。
+
+
+              Notesサービスを正しく有効に設定すると，日本語DEC TCP/IP
+              Services for OpenVMSによって，ファイルSYS$SYSTEM:NOTES$SERVER.COM
+              が作成され(まだ存在しない場合)，NotesサーバはTCP/IP接続を
+              受け付けることができるようになります。
+
+        ___________________________________________________________
+
+        3.3   VAXclusterでの日本語DEC Notesのインストール
+
+              複数のノードを接続したVAXclusterで日本語DEC Notesを実行し
+              たい場合には，まず，適切なソフトウェア・ライセンスがあるが
+              どうか確認してください。その後，クラスタ内の他の各ノードの
+              特権付きアカウントにログインし，次の操作を実行します。
+
+               1. LICENSE LOADコマンドを使用して，ライセンスをアクテ
+                  ィブにします。『OpenVMS License Management Utility
+                  Manual』の説明を参照してください。
+
+               2. 次のコマンドを入力します。
+
+                  $ INSTALL :== $INSTALL/COMMAND_MODE
+                  $ INSTALL
+                  INSTALL> REPLACE SYS$LIBRARY:DCLTABLES.EXE
+                  INSTALL> EXIT
+
+               3. クラスタにサーバがある場合には(つまり，1つ以上のノー
+                  ドにNOTES-UI-JAPANESEまたはNOTES-USER-UI-JAPANESEライ
+                  センスがある場合)，次のいずれかの操作を実行しなければ
+                  なりません。
+
+                   a. 日本語DEC Notesをこのシステムに初めてインストール
+                      する場合には，次のコマンドを入力します。
+
+                      $ RUN SYS$SYSTEM:NCP
+                      NCP> DEF OBJ NOTES NUM 33 FILE NOTES$SERVER.EXE
+                      NCP> DEF OBJ NOTES USER NOTES$SERVER PASSWORD <password> PROXY OUT
+                      NCP> SET OBJ NOTES ALL
+                      NCP> EXIT
+
+                _______________________  注意 _______________________
+
+                <password>フィールドで使用するパスワードは，
+
+                                                                     3-3
+
+ 
+
+
+      3.3 VAXclusterでの日本語DEC Notesのインストール
+
+
+
+              NOTES$SERVERアカウントのパスワードと一致しなけれ
+              ばなりません。
+
+              _____________________________________________________
+
+
+                b.  これが日本語DEC Notesのアップグレードである場合に
+                    は，以前のNotesサーバ(NOTES$nnnn_nという名前のネ
+                    ットワーク・プロセス)を停止して，新しいサーバ・コ
+                    ードで再起動されるようにします。それぞれ，DCLの
+                    SHOW SYSTEM/NETWORKコマンドとSTOP/IDENTIFICATION
+                    コマンドを使用してください。
+
+            4. 次のコマンドを入力します。
+
+               $ @SYS$STARTUP:NOTES$STARTUP.COM
+
+     ___________________________________________________________
+
+     3.4    インストール後の日本語DEC Notesの起動
+
+           第2章で説明した手順をすべて実行し，システム・スタートアッ
+           プ・ファイルを編集した後，NOTESコマンドを使用して，すべて
+           のユーザが日本語DEC Notesを起動できるようになります。
+
+           NOTESコマンドが認識され，処理されるように，インストレーシ
+           ョン・プロシージャではDCLコマンド・テーブルを変更します。
+           しかし，現在ログインしているユーザのために，以前のコマン
+           ド・テーブルもまだ有効です。現在ログインしているユーザのう
+           ち，NOTESコマンドを使用したいユーザは，システムからログア
+           ウトして，再度ログインするか，または次のコマンドを使用しま
+           す。
+
+           $ SET COMMAND/TABLE=SYS$LIBRARY:DCLTABLES
+
+           このシステムにNOTES-CLIENT-UI-JAPANESEライセンスがある
+           場合には，Notesコンファレンス・ファイルが格納されるシ
+           ステムを指すように，NOTES$LIBRARYを定義すれば，システム
+           のユーザのためにコンファレンスの指定を簡単にすることが
+           できます(この操作が可能なのは，NOTES-UI-JAPANESEまたは
+           NOTES-USER-UI-JAPANESEライセンスのあるシステムの場合だけで
+           す)。
+
+
+
+
+      3-4
+
+ 
+
+
+                                3.4インストール後の日本語DEC Notesの起動
+
+
+
+              ユーザの多くがコンピュータの"初心者"の場合には，ノートブッ
+              クをセットアップするのに援助が必要なことがあります。システ
+              ム管理者はこのようなユーザのために，ノートブックをセットア
+              ップし，ノートブックに1つ以上のエントリを指定することがで
+              きます。次の例はこの操作方法を示しています。
+
+              $ DEFINE /USER NOTES$NOTEBOOK NOTES$LIBRARY:NOTES$NOTEBOOK.NOTE
+              $ NOTES
+              Notes> ADD ENTRY ABC::DECNOTES !abc::decnotes is used as an example
+              Notes> ADD ENTRY your-notefile
+              Notes> SET PROFILE /EDITOR=EDT !make EDT keypad the default
+              Notes> EXIT
+
+              その後，NOTES$LIBRARY:NOTES$NOTEBOOK.NOTEというノートブッ
+              ク・ファイルを初心者ユーザのSYS$LOGINディレクトリにコピー
+              します。
+
+
+        ___________________________________________________________
+
+        3.5   日本語DEC Notesサーバの制御
+
+              使用状況によっては，日本語DEC Notesバージョン2.5は，システ
+              ムで認められている最大サーバ・リンク数を使用してしまう可能
+              性があります。この状況が発生するのを防止するには，日本語
+              DEC Notesを特定のサーバ数に制限するためのシステム論理名を
+              定義します。さらに，SYS$STARTUP:NOTES$STARTUP.COMファイル
+              を変更し，次の論理名のどちらか一方または両方を適切な値にな
+              るように設定することにより，各サーバのリンク数を制限できま
+              す。この例では，値として4と16を使用しています。
+
+              $ DEFINE /SYSTEM /EXEC NOTES$SERVER_MAX_SERVERS 4 !per system
+              $ DEFINE /SYSTEM /EXEC NOTES$SERVER_MAX_LINKS 16  !per server
+
+              大部分のシステムでは，省略時のサーバ数は無制限です。日本語
+              DEC Notesでは，各サーバで16のリンクが省略時の値として設定
+              されています。これらの値は，必要に応じてシステムで変更でき
+              ます。これらのコマンドを指定する場合には，日本語DEC Notes
+              をアップグレードするたびに，NOTES$STARTUPファイルを再変更
+              しなければなりません。
+
+
+
+
+
+
+                                                                     3-5
+
+ 
+
+
+      3.5日本語DEC Notesサーバの制御
+
+
+
+              _______________________  注意 _______________________
+
+              DECnetトランスポートとTCP/IPトランスポートの両方を有
+              効に設定した場合には，リンクの最大数は，1つのサーバ
+              で同時に開かれるDECnet接続とTCP/IP接続の合計になりま
+              す。
+
+              _____________________________________________________
+
+           これまで日本語DEC Notesを実行していなかったシステム
+           に，日本語DEC Notesをインストールする場合には，ワーキ
+           ング・セット・エクステント(WSEXTENT)とワーキング・セット・
+           クォータ(WSQUOTA)の省略時の値がNOTES$SERVERアカウントで設
+           定されていることに注意してください。WSEXTENTの省略時の値は
+           512以上で2048以下でなければなりません。WSQUOTAの省略時の値
+           はWSEXTENTの正確に半分です。次のコマンドを使用すれば，これ
+           らの省略時の値を変更できます(XとYに対してシステムで適切な
+           値を指定してください)。
+
+           $ SET DEFAULT SYS$SYSTEM
+           $ RUN AUTHORIZE
+           UAF> MODIFY NOTES$SERVER /WSEXTENT=X /WSQUOTA=Y
+           UAF> EXIT
+
+     ___________________________________________________________
+
+     3.6    Installation Verification Procedureの単独実行
+
+           Installation Verification Procedure (IVP)は通常，インスト
+           ール時に実行されます。システムで問題が発生したときに，イ
+           ンストールされているファイルの整合性を確実にするために，
+           IVPを単独で実行したい場合には，NOTES-UI-JAPANESEまたは
+           NOTES-USER-UI-JAPANESEライセンスがあるときは，次のコマン
+           ド・プロシージャを実行します。
+
+           $ @SYS$TEST:NOTES$IVP
+
+           IVPが正常に実行されると，画面に表示される出力は第2章の手順
+           8の例に示すとおりになります。何らかの理由でIVPが失敗する
+           と，次のメッセージが表示されます。
+
+           The DEC Notes V2.5 Installation Verification Procedure failed.
+
+
+
+
+      3-6
+
+ 
+
+
+                       3.6 Installation Verification Procedureの単独実行
+
+
+
+              NOTES-CLIENT-UI-JAPANESEライセンスがある場合には，次のコマ
+              ンド・プロシージャを実行してください。
+
+              $ @SYS$TEST:NOTES$IVP_CLIENT
+
+              IVPが正常に実行されると，画面に表示される出力は付録 Aに示
+              した例のとおりになります。何らかの理由でIVPが失敗すると，
+              次のメッセージが表示されます。
+
+              The DEC Notes V2.5 Client-only Installation Verification Procedure failed.
+
+
+        ___________________________________________________________
+
+        3.7   エラー条件
+
+              何らかの理由でインストレーション・プロシージャが失敗した場
+              合には，次のようなメッセージが表示されます。
+
+              %VMSINSTAL-E-INSFAIL, The installation of Notes V2.5 has failed.
+
+              インストール時にエラーが発生するのは，次の問題が1つ以上あ
+              るからです。
+
+               o  オペレーティング・システム・バージョンが正しくない。
+
+               o  正しくインストールするのに必要なクォータが不足してい
+                  る(第1.3節または第1.4節を参照)。
+
+               o  VMSINSTALで必要とされるプロセス・クォータが満たされな
+                  い(第1.7節を参照)。
+
+               o  VMS HELPライブラリが現在使用中である。
+
+               o  製品が正しく登録されていないか，またはまったく登録さ
+                  れていない。
+
+              これらの問題があるために生成されるエラー・メッセージの
+              説明については，『OpenVMS System Messages and Recovery
+              Procedures Reference Volume』，プロセッサのインストレ
+              ーション/操作ガイド，または『OpenVMS License Management
+              Utility Manual』を参照してください。
+
+
+
+
+                                                                     3-7
+
+ 
+
+
+      3.7エラー条件
+
+
+
+           これらの問題があることが通知された場合には，メッセージに示
+           される適切な処置をとらなければなりません。システム・パラメ
+           ータを変更したり，認可されるクォータ値を増大する必要があり
+           ます。
+
+
+           インストレーションが失敗した場合には，手順2からインストレ
+           ーション・プロシージャを再起動しなければなりません。IVPが
+           失敗したためにインストレーションが失敗した場合には，DECの
+           フィールド・サービスにご連絡ください。
+
+     ___________________________________________________________
+
+     3.8    保守用アップデート版
+
+           定期的に日本語DEC Notesの保守用アップデート版がリリースさ
+           れます。各アップデート版はインストレーション・キットで構成
+           されます。このキットは，本書の説明または保守用アップデート
+           版に添付されているマニュアルの説明に従ってインストールして
+           ください。
+
+           保守用アップデート版がリリースされるたびに，バージョン番号
+           が変化します。たとえば，現在のバージョンが1.0の場合には，
+           最初の保守用アップデート版のバージョン番号は1.1になりま
+           す。さらに，保守用アップデート版には新しいリリース・ノート
+           も添付されています。リリース・ノートでは，前のリリースから
+           日本語DEC Notesに対して行われた変更点が説明されています。
+
+           保守用アップデート版のリリース・ノートはオンラインで提
+           供されます。日本語DEC Notesを最初にインストールするとき
+           は，リリース・ノートを必ず参照してください。また，製品
+           をインストールした後も，リリース・ノートはいつでもアク
+           セスできます。日本語DEC Notesをインストールするときにリ
+           リース・ノートを参照する方法については，インストレーショ
+           ン・プロシージャの手順4に従ってください。日本語DEC Notes
+           をインストールした後でリリース・ノートを検索するときは，
+           SYS$HELP:NOTESJA025.RELEASE_NOTESファイルを表示または印刷
+           するか，次のように入力してください。
+
+           $ HELP NOTES RELEASE_NOTES
+
+
+
+
+
+
+      3-8
+
+ 
+
+
+                                                 3.8保守用アップデート版
+
+
+
+              日本語DEC Notesの以前のバージョンでプライベート・セクショ
+              ン・ファイルを使用していた場合には，バージョン2.5をインス
+              トールした後，バージョン2.5と互換性があるように，セクショ
+              ン・ファイルを再構築しなければなりません。
+
+
+        ___________________________________________________________
+
+        3.9   問題の判断と報告
+
+              日本語DEC Notesの使用中にエラーが発生し，そのエラーが日本
+              語DEC Notesの問題によって発生したと考えられる場合には，日
+              本DECの担当者または，最寄りの日本DEC各支店/営業所へお知ら
+              せください。
+
+              日本語DEC Notesのマニュアルに誤りがある場合には，その誤り
+              のあるマニュアルの最後に添付されているコメント用紙に記入し
+              て提出してください。その場合，誤りがある節の番号とページ番
+              号もお書き願います。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     3-9
+
+ 
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                  インストレーションの例
+
+
+              この付録では，NOTES-CLIENT-UI-JAPANESEライセンスがある場合
+              の日本語DEC Notesのインストレーションの例を示します(第2章
+              に示したインストレーションの抜粋は，NOTES-UI-JAPANESEライ
+              センスの場合のインストレーションであり，これはNOTES-USER-
+              UI-JAPANESEライセンスの場合のインストレーションに類似して
+              います)。
+
+
+        Username: SYSTEM
+        Password:
+           .
+           .
+           .
+
+        $ set default sys$update
+        $ @vmsinstal notesJA025 $disk:
+
+                OpenVMS AXP Software Product Installation Procedure Vx.x
+
+        It is dd-mmm-yyy at hh:mm.
+
+        Enter a question mark (?) at any time for help.
+
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          NOTESJA V2.5
+
+                Beginning installation of NOTESJA V2.5 at hh:mm
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+          ***********************************************************
+                        DEC Notes/Japanese Installation Procedure
+                Copyright (c) Digital Equipment Corporation. 1996.
+                              All Rights Reserved.
+
+                                                                     A-1
+
+ 
+
+
+
+
+
+
+                              DEC Notes/Japanese V2.5
+
+         DEC Notes can be installed on any system running
+         OpenVMS AXP V6.1 (or later).
+         This installation will fail if this system is running an
+         older version of OpenVMS.
+
+         DEC Notes/Japanese provides both a character-cell and a DECwindows/Motif
+         user interface.  Use of the DECwindows/Motif interface requires
+         that DECwindows/Motif V1.2 (or later) be installed.
+         This installation can continue and the character-cell interface can
+         be used if the required version of DECwindows/Motif is not installed.
+
+         DEC Notes/Japanese supports both DECnet and TCP/IP transports.  Use of
+         the TCP/IP transport requires prior installation of
+         V3.1 (or later) of DEC TCP/IP Services for OpenVMS.
+         Installation can continue and only the DECnet transport will be
+         used if the required version of DEC TCP/IP Services for OpenVMS is
+         not installed on this system.
+
+         An appropriate software license is required to run DEC Notes/Japanese.
+         The license should be installed before attempting to install
+         DEC Notes/Japanese.  If you have not yet installed a DEC Notes/Japanese
+         license, you can continue with this installation, but you will be unable
+         to run either DEC Notes/Japanese or the DEC Notes/Japanese Installation
+         Verification Procedure until an appropriate license has been installed.
+
+       ***********************************************************
+
+     * Do you want to continue with this installation [YES]?
+
+     * Do you want to purge files replaced by this installation [YES]?
+     * Do you want to run the IVP after the installation [YES]?
+
+     %NOTESJA-I-CHKPRDVER, Checking installation requirements
+
+         All installation and product dependencies will now be checked.
+         If problems are discovered, it may still be possible to complete
+         this installation, depending upon the nature of the problems.
+
+     %NOTESJA-I-VMSVER, Checking OpenVMS version...
+     %NOTESJA-I-MOTIFVER, Checking DECwindows/Motif version...
+     %NOTESJA-I-UCXVER, Checking DEC TCP/IP Services for OpenVMS version...
+     %NOTESJA-I-SYSRES, Checking system resources...
+
+       Please indicate the level of capability that you want to install:
+
+      A-2
+
+ 
+
+
+
+
+
+
+                 1. Full capability (NOTES-UI-JAPANESE or NOTES-USER-UI-JAPANESE)
+                 2. TeamLinks DEC Notes/Japanese server (NOTES-SERVER-LANLINK)
+                 3. Reduced capability, client-only (NOTES-CLIENT-UI-JAPANESE or
+                    NOTES-CLIENT-USER)
+
+        * Enter the number of the level of capability to install [1]: 3
+
+                Product:      NOTES-CLIENT-UI-JAPANESE or NOTES-CLIENT-USER
+                Producer:     DEC
+                Version:      2.5
+                Release Date: 20-APR-1996
+
+        * Does this product have an authorization key registered and loaded? y
+
+          No further questions will be asked during this installation.
+          Completion of the installation should take another 5-10 minutes.
+
+          This installation will add the following files:
+
+                [SYSLIB]NOTES$SHARE.EXE
+                [SYSLIB]NOTES$SECTION.TPU$SECTION
+                [SYSEXE]NOTES$MAIN.EXE
+                JSY$SYSTEM:NOTES$COMMAND.TPU
+                [SYSMGR]NOTES$REMOVE.COM
+                SYS$SYSROOT:[SYSTEST]NOTES$IVP_CLIENT.COM
+                SYS$SYSROOT:[SYSTEST]NOTES$IVP_LOCAL.COM
+                [SYSHLP]NOTESJA025.RELEASE_NOTES
+                [SYSHLP]NOTES_SHORTGUIDE.MEM
+                [SYSHLP]NOTES$HELP.HLB
+                [SYSHLP]NOTES$DWHELP.HLB
+                [SYSLIB]NOTES$DWSHARE.EXE
+                [SYSLIB]NOTES$DWNOTES.UID
+                [SYSLIB]NOTES$DEFAULTS.DAT
+                [SYS$STARTUP]NOTES$STARTUP.COM
+                [DECW$DEFAULTS.SYSTEM]LWK_REG_NOTESNOTE.UID
+
+          ***********************************************************
+          REMINDERS:
+
+          1. SYSTEM STARTUP
+             --------------
+
+          After the installation has completed, you should execute
+
+                    SYS$STARTUP:NOTES$STARTUP.COM
+
+                                                                     A-3
+
+ 
+
+
+
+
+
+
+       on each system on which this copy of DEC Notes will be run.
+
+       You should also edit your system startup procedure to run
+       SYS$STARTUP:NOTES$STARTUP.COM on each system on which this
+       copy of DEC Notes will be run.
+
+       ** IMPORTANT NOTE: Installation instructions for previous
+       versions of VAX Notes suggested that NOTES$STARTUP.COM be
+       run prior to network startup during the system startup process.
+       It is now recommended that NOTES$STARTUP run AFTER network
+       startup has COMPLETED, particularly if TCP/IP will be used
+       as the network transport for DEC Notes connections.
+
+       2. DEC NOTES SHUTDOWN OR DEINSTALLATION
+          ------------------------------------
+
+       A new utility, SYS$MANAGER:NOTES$REMOVE.COM, can be used to
+       deinstall DEC Notes/Japanese or to prevent new servers from executing.
+       Type:
+
+                     $ @SYS$MANAGER:NOTES$REMOVE
+
+       for further details.
+
+     %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+     %NOTES-I-SHUT, Disabling Notes server...
+
+        Beginning the DEC Notes/Japanese V2.5 Client-only Installation Verification
+        Procedure.
+        Copyright (c) Digital Equipment Corporation. 1988, 1996. All Rights Reserved.
+
+         Testing SHOW, HELP, and EXIT.
+
+                                     電子会議システム
+                  ヘルプが必要な場合には，HELP コマンドを入力してくださ
+     い
+                         ノートブック・クラス MAIN のディレクトリ
+
+      エントリ名             未読  最新のノート      トピック 更新ステー
+     タス
+
+       SAMPLE_CONFERENCE        1  17-NOV-1858 00:00      0  アクセスし
+     ていません
+     [ リストの終わり ]
+
+     DEC Notes V2.5-0J - Copyright (c) Digital Equipment Corporation. 1986, 1996.
+
+      A-4
+
+ 
+
+
+
+
+
+
+        Command_Summary
+
+             DEC Notesを初めて使用する場合には，次のようにしてヘルプを使用
+        して
+             ください。
+
+             o  基本的なコマンドの使用例を表示するためにはNew_Userとタイプ
+        しま
+                す。
+
+             o  DEC Notesで使用する用語や概念についての説明を表示するために
+        は,
+                Terms_and_Conceptsとタイプします。
+
+             o  DEC Notesのすべてのコマンドのリストを表示するためには，疑問
+        符
+                (?)をタイプします。
+
+             基本コマンド:
+
+               ADD ENTRY             REPLY (または ANSWER)   CLOSE
+               DIRECTORY             EXIT                    PRINT
+               NOTES (DCL コマンド)  HELP                    WRITE
+               READ                  OPEN
+
+             以下の項目は，より詳しい説明や，より高度なコマンドの使い方の説
+        明で
+             す：
+
+               Information_Commands  Keyword_Commands        Logical_Names
+               Moderator_Commands    Notebook_Commands       Subprocess_Commands
+               Other_Utilities       Reading_Notes
+
+            If the informational output above is similar to the example
+            displayed in the DEC Notes/Japanese Installation Guide, then this
+            installation is successful.
+
+           The DEC Notes/Japanese V2.5 Client-only Installation Verification Procedure
+           completed.
+
+                Installation of NOTESJA V2.5 completed at hh:mm
+
+            Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+            Creating installation data file: VMI$ROOT:[SYSUPD]NOTESJA025.VMI_DATA
+
+                                                                     A-5
+
+ 
+
+
+
+
+
+
+             VMSINSTAL procedure done at hh:mm
+
+     $ LOGOUT
+
+       SYSTEM       logged out at  dd-mmm-yyyy hh:mm:ss.ss
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      A-6
+
+ 
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                           日本語DEC Notesライセンス情報
+
+
+              この付録では，日本語DEC Notesライセンスについて説明しま
+              す。
+
+
+        ___________________________________________________________
+
+        B.1   NOTES-CLIENT-USERライセンス
+
+              NOTES-CLIENT-USERライセンスは並列クライアント専用ライセン
+              スであり，Notesを同時に特定の数だけ起動することができ，ク
+              ライアントのみの機能が提供されます。詳細については，『日本
+              語DEC Notesソフトウェア仕様書』(SPD)を参照してください。
+
+        ___________________________________________________________
+
+        B.2   NOTES-SERVER-LANLINKライセンス
+
+              NOTES-SERVER-LANLINKライセンスはサーバのみの機能を提供しま
+              す。このライセンスでは，Notesをコマンド・ラインから起動で
+              きません(つまり，クライアント機能はありません)。これは個人
+              用に使用するライセンスであるため，ユーザに対してサーバの使
+              用を許可する前に，そのユーザをライセンス予約リストに追加し
+              なければなりません。予約リストにはユーザ名だけでなく，ノー
+              ド名も含まれるため，予約リストの形式は他の多くのアプリケー
+              ションと異なります。PATHWORKS Conferencing (SPD 38.65.xx)
+              クライアントからの省略時のユーザ名はConferencing-Userです
+              が，これはユーザが変更できます。
+
+        B.2.1  予約リストへのユーザの追加
+
+              NOTES-SERVER-LANLINKライセンスの場合，ユーザを予約リストに
+              追加するには，ノード名を指定しなければなりません。たとえ
+              ば，MYPCノードのユーザがユーザ名をJohnsonに設定している場
+              合には，認可がXXXXであるPAKに対してそのユーザを予約リスト
+              に追加するコマンドは次のようになります。
+
+
+
+                                                                     B-1
+
+ 
+
+
+      B.2 NOTES-SERVER-LANLINKライセンス
+
+
+
+           $ license modify NOTES-SERVER-LANLINK  -
+           _$ /authorization=XXXX/reserve=(MYPC::Johnson)/add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      B-2
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                 索引
+
+
+
+
+     _A_________________________          _V_________________________
+
+     Alphaインストレーション・            VAXインストレーション・プロ
+        プロシージャの必要条件,             シージャの必要条件,  1-2
+        1-4                               VMSINSTAL,  2-1
+
+                                           使用,  1-9
+     _B_________________________
+
+     BIL,  1-1                            _ア________________________
+     BOM,  1-1                            アップデート版,  3-8
+
+     _D_________________________          _イ________________________
+
+     DECnet,  3-2                         インストール
+
+                                           VAXclusterでの,  3-3
+     _I_________________________           アップグレードの,  2-6
+
+     IVP                                   後の手順,  3-1
+       単独実行,  3-6                      準備,  1-1
+                                           手順,  2-1
+     _L_________________________           初めての,  2-7
+     LMF,  1-7                             例,  A-1
+                                          インストレーション
+                                           メッセージ,  2-15
+     _P_________________________          インストレーション・プロシ
+
+     PAK,  1-7                              ージャ
+       登録,  2-5                          実行,  2-1
+                                           失敗,  3-7
+     _T_________________________          インストレーション・プロシ
+     TCP/IP,  3-2                           ージャの必要条件
+                                           Alpha,  1-4
+                                           VAX,  1-2
+
+                                                               索引-1
+
+ 
+
+
+
+
+
+
+
+     _エ________________________          _ネ________________________
+
+     エラー,  3-7                         ネットワーク・トランスポー
+                                            ト,  3-1
+
+     _オ________________________
+     オンライン・リリース・ノー           _ホ________________________
+
+        ト,  1-1                          保守用アップデート版,  3-8
+
+     ___________________________          _ユ________________________
+
+     クォータ,  1-6                       ユーザ・アカウント・クォー
+                                            タ,  1-6
+     _コ________________________          ユーザの追加,  B-1
+
+     コマンド・パラメータ,  1-10           ヨ
+                                          ___________________________
+     _シ________________________          予約リスト,  B-1
+
+     システム・スタートアップ・            ラ
+        ファイル,  3-1                    ___________________________
+                                          ライセンス
+     _テ________________________           NOTES-CLIENT-UI-JAPANESE,
+     ディスク・スペースの必要条               1-8
+        件                                 NOTES-CLIENT-USER,  1-8,
+       Alpha,  1-4                            B-1
+       VAX,  1-2                           NOTES-SERVER-LANLINK,
+                                              1-9, B-1
+      ト                                   NOTES-UI-JAPANESE,  1-8
+     ___________________________           NOTES-USER-UI-JAPANESE,
+     特権,  1-6                               1-8
+                                           指定,  2-3
+     _ニ________________________           種類,  1-8
+     日本語DEC Notesのインストー           登録,  1-7
+
+        ル,  2-1                           リ
+     日本語DEC Notesの起動,  3-4          ___________________________
+                                          リリース・ノート,  1-1
+
+
+
+
+
+
+      索引-2
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             日本語DEC Notes    インストレーション・ガイド
+
+        ________________________________________________________________
+
+                 1996年5月 発行
+
+                   日本ディジタル イクイップメント株式会社
+
+                   〒167 東京都杉並区上荻1-2-1
+
+                        電話 (03)5349-7111 (大代表)
+
+        ________________________________________________________________
+
+                                                             AA-QWSNA-TE

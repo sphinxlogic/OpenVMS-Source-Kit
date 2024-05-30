@@ -1,0 +1,4863 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     DECnet SNA Gateway
+                     for_Channel_Transport_________________________
+                     Installation (OpenVMS)
+
+                     Part Number: AA-MA07E-TE
+
+                     November 1993
+
+                     This manual explains how to install the DECnet SNA
+                     Gateway
+                     for Channel Transport software, including
+                     Gateway Management, on an OpenVMS host, configure
+                     the system, and load the software.
+
+
+
+
+
+
+                     Revision/Update Information: This is a revised
+                                                  manual.
+
+                     Operating System and Version: OpenVMS VAX V5.4 or
+                                                  later
+                                                  OpenVMS AXP V1.5
+
+                     Software Version:            DECnet SNA Gateway
+                                                  for Channel Transport,
+                                                  V2.1
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           November 1993
+
+           The information in this document is subject to change
+           without notice and should not be construed as a commitment
+           by Digital Equipment Corporation. Digital Equipment
+           Corporation assumes no responsibility for any errors that
+           may appear in this document.
+
+           The software described in this document is furnished under
+           a license and may be used or copied only in accordance
+           with the terms of such a license.
+
+           No responsibility is assumed for the use or reliability of
+           software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+           Restricted Rights: Use, duplication, or disclosure by the
+           U.S. Government is subject to restrictions as set forth in
+           subparagraph (c)(1)(ii) of the Rights in Technical Data
+           and Computer Software clause at DFARS 252.227-7013.
+
+                         Copyright ©1988, 1991, 1993 by
+                          Digital Equipment Corporation
+                               All Rights Reserved
+
+           The following are trademarks of Digital Equipment
+           Corporation:
+
+           AXP, DEC, DEC/CMS, DEC/MSS, DECnet, DECsystem-10,
+           DECSYSTEM-20, DECUS, DECwriter, DIBOL, EduSystem, IAS,
+           MASSBUS, OpenVMS, PDP, PDT, RSTS, RSX, UNIBUS, VAX,
+           VAXcluster, VMS, VT, and the Digital logo.
+
+           IBM is a registered trademark of International Business
+           Machines Corporation.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing for Installation and Configuration
+
+         1.1   Inspecting the Distribution Kit..............    1-2
+         1.2   Preparing the IBM SNA Environment............    1-3
+         1.3   Identifying Where the Gateway-CT Software
+               Will Be Installed............................    1-3
+         1.4   Verifying Required Disk Space................    1-5
+         1.5   Verifying Necessary Privileges...............    1-5
+         1.6   Verifying Required Process Account Quotas....    1-5
+         1.7   Verifying the Required OpenVMS Version.......    1-7
+         1.8   Installing DECnet SNA OpenVMS Access
+               Routines.....................................    1-7
+         1.9   Backing Up Your System Disk..................    1-7
+         1.10  Checking Required OpenVMS and DECnet Files...    1-7
+         1.11  Configuration Considerations.................    1-8
+         1.12  Preparing for the Configuration..............    1-8
+         1.13  Part 1: Information About the Gateway
+               Definition in the Load Host..................    1-9
+         1.14  Part 2: Information About the SNA Database in
+               the Gateway..................................   1-12
+         1.14.1    Defining the Channel-Attached Line.......   1-13
+         1.14.2    Defining Channel-Attached Circuits.......   1-14
+         1.14.3    Defining Physical Units..................   1-14
+         1.14.4    Defining Access Names....................   1-14
+         1.14.5    Defining Servers.........................   1-16
+         1.15  Part 3: Information About the DECnet Database
+               in the Gateway...............................   1-16
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     2  Installing the Gateway-CT Software
+
+           2.1   DECnet/VAX Configuration.....................    2-2
+           2.2   Files Installed..............................   2-14
+
+     3  Configuring the Gateway-CT
+
+           3.1   DECnet/OSI Configuration Example.............   3-23
+
+     4  Loading the Gateway-CT Software
+
+           4.1   Before Loading the Software..................    4-2
+           4.2   Loading the Software on DECnet/VAX...........    4-4
+           4.3   Loading the Software on DECnet/OSI...........    4-7
+           4.4   Checking the Connection Between the Gateway
+                 Node and the Load Host.......................   4-10
+
+     Index
+
+
+     Figures
+
+           1-3       Gateway-CT Configuration Worksheet, Part
+                     2........................................   1-13
+
+     Tables
+
+           1-1       Process Quotas for the Installing
+                     Account..................................    1-6
+
+           4-1       Ethernet Line and Circuit
+                     Characteristics..........................    4-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              The DECnet SNA Gateway for Channel Transport for OpenVMS
+              (called the Gateway-CT in this manual) is a system of
+              hardware and software that provides an interface between
+              Digital Equipment Corporation and International Business
+              Machines Corporation networks. Because the Gateway-CT can
+              handle the different communications protocols between a
+              Digital and an IBM[R] network, it enables certain nodes in
+              a Digital DECnet[TM] network to communicate with one or
+              more hosts in an IBM SNA network. The Gateway-CT provides
+              an interface to the IBM network through a channel directly
+              attached to the IBM host. The Gateway-CT software runs
+              on either a DEC ChannelServer or a DEC ChannelServer II
+              hardware platform.
+
+                ________________________Note  ________________________
+
+                Throughout this manual, the hardware server box
+                is generically referred to as the ChannelServer.
+                Where differences occur, distinctions between the
+                DEC ChannelServer and the DEC ChannelServer II are
+                noted.
+
+                _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+           This manual explains how to install, configure, and load
+           the Gateway Management and Gateway-CT software on an
+           OpenVMS[R] host running OpenVMS VAX V5.4 or later, or
+           OpenVMS AXP V1.5.
+
+
+     Intended Audience
+
+           This manual is written for DECnet system managers and
+           network managers who install and configure Gateway-CT
+           systems. This manual should be used with other Digital and
+           IBM documentation.
+
+     New Features
+
+           This release of DECnet SNA Gateway for Channel Transport
+           enables the loading of software from DECnet/OSI on
+           OpenVMS, as of SNACSA V2.1 ECO3.
+
+           Figure 1 lists the Gateway-CT manuals according to the
+           major tasks they describe. Arrows suggest the order for
+           using the books. Highlighting indicates this manual.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     vi
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+           Digital Equipment Corporation provides access routine
+           products that use the Gateway-CT to access IBM systems.
+           Each access routine has its own manual or set of manuals.
+
+           You might find the following OpenVMS manuals helpful:
+
+           o  OpenVMS Networking Manual
+
+           o  OpenVMS Network Control Program Manual
+
+           o  OpenVMS Install Utility Manual
+
+           o  OpenVMS System Messages and Recovery Procedures
+
+           o  Guide to Maintaining an OpenVMS System
+
+           o  Guide to OpenVMS System Security
+
+           o  OpenVMS Authorize Utility Manual
+
+           o  OpenVMS Network Control Language Manual
+
+     Conventions
+
+           This manual uses the following conventions:
+
+           SNANCP> SET LINE line-In command examples, black
+           id                    monospaced type indicates system
+                                 output. Red monospaced type
+                                 indicates user input.
+
+                                 Uppercase letters represent text
+                                 that you must enter exactly as
+                                 shown. Lowercase letters in italics
+                                 represent variables for which
+                                 you must substitute specific
+                                 information.
+
+           <Return>              Unless otherwise specified, every
+                                 command line is terminated by
+                                 pressing the Return key.
+
+           <Ctrl/x>              This symbol indicates that you
+                                 press and hold down the key labeled
+                                 Ctrl while simultaneously pressing
+                                 another key (for example, <Ctrl/C>
+                                 or <Ctrl/T>).
+
+     viii
+
+ 
+
+
+
+
+
+
+              When you issue NCP, NCL, and SNANCP commands, many
+              component names, parameters, and qualifiers require
+              additional information. In most cases, the syntax of this
+              additional information follows a standard set of rules.
+              (Exceptions to these rules are noted where appropriate.)
+              All numeric values are in decimal form and range from 0 to
+              65,535 unless otherwise specified.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+           NCL, SNANCP, and NCP commands use the following conven-
+           tions:
+
+           circuit-id  A string of characters whose exact syntax is
+                       that for a DECnet or SNA circuit identifica-
+                       tion.
+
+                       On DECnet nodes, circuit identification takes
+                       the following form:
+
+                            dev-c
+
+                       where dev is a device name and c is a decimal
+                       number (0 or a positive integer) designating
+                       the device's hardware controller.
+
+                       Channel-attached circuits are identified by a
+                       string in the form CHAN-n, where n indicates
+                       the number of the circuit.
+
+                       On the Gateway node, the Ethernet circuit is
+                       identified by the string ETHERNET.
+
+           E-address   A string of 12 hexadecimal digits, represented
+                       by 6 bytes separated by hyphens (for example,
+                       08-00-2B-0A-6C-F3). The string indicates the
+                       Ethernet hardware address.
+
+           line-id     A string of characters whose exact syntax is
+                       that for a DECnet or SNA line identification.
+
+                       On DECnet nodes, line identification takes one
+                       of the following formats:
+
+                            dev-c
+
+                       where dev is a device name and c is a decimal
+                       number (0 or a positive integer) designating
+                       the device's hardware controller.
+
+                       On the Gateway node, the Ethernet line is
+                       identified by the string ETHERNET.
+
+                       Channel-attached lines are identified as a
+                       string in the form CQ-n, where n indicates the
+                       number of the line.
+
+     x
+
+ 
+
+
+
+
+
+
+
+              node-       A numeric value ranging from 1.1 to 63.1023,
+              address     composed of an area number to the left of
+                          the period followed by a node number to the
+                          right of the period. If the area number is
+                          not supplied, the area number of the executor
+                          node is used. The default area number for the
+                          executor is 1.
+
+              node-id     Either a node-name or a node-address.
+
+              node-name   A string of up to 6 alphanumeric characters
+                          containing at least 1 alphabetic character.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      xi
+
+ 
+
+
+
+
+
+
+     Abbreviations and Acronyms
+
+           The following abbreviations and acronyms are used
+           throughout this manual:
+
+           DHCF       DECnet/SNA VMS Distributed Host Command
+                      Facility
+
+           LU         Logical unit
+
+           NCP        Network Control Program. Can refer to Digital's
+                      NCP or IBM's NCP. This manual uses NCP to refer
+                      to the Digital product and IBM NCP to refer to
+                      the IBM product.
+
+           NCL        Network Control Language
+
+           PU         Physical unit
+
+           RU         Request/response unit
+
+           SNA        IBM's Systems Network Architecture
+
+           SNANCP     DECnet SNA Gateway Network Control Program
+
+           UIC        User identification code
+
+           VAX        Any one of the systems listed in the Software
+                      Product Description (SPD) but not a particular
+                      system
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     xii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                            Preparing for Installation and Configuration
+
+
+
+              The DECnet SNA Gateway for Channel Transport for OpenVMS
+              is a system of hardware and software that handles protocol
+              differences between IBM[R] SNA networks and Digital
+              Equipment Corporation DECnet[TM] networks. DECnet
+              SNA access routines use the Gateway-CT to access IBM
+              subsystems, applications, and programs.
+
+              Gateway-CT V2.1 combines management software with the
+              Gateway-CT software. There is no longer a separate process
+              for installing these two software components. As part
+              of the installation process, you are given the option
+              of installing the management software as a separate
+              entity; installing the Gateway-CT diagnostic software;
+              or installing the entire software package, which includes
+              the management, diagnostic, and load host software. This
+              chapter describes the preparations you must make before
+              you install and configure the Gateway-CT.
+
+                ________________________Note  ________________________
+
+                This chapter deals with DECnet/VAX commands and
+                examples, and these may be different for DECnet
+                /OSI. See Section 3.1 and Section 4.3 for complete
+                examples of a configuration and loading of the
+                software on a DECnet/OSI system. Also, refer to
+                the DECnet/OSI NCL Reference Manual for information
+                on NCL commands.
+
+                _____________________________________________________
+
+
+
+
+
+
+                        Preparing for Installation and Configuration 1-1
+
+ 
+
+
+
+
+
+
+           Figure 1-1 shows a DECnet SNA network with multiple
+           gateways.
+
+
+
+     1.1 Inspecting the Distribution Kit
+
+           The Software Bill of Materials (BOM) included with
+           your distribution kit specifies the contents of the
+           distribution kit. Carefully compare the items you received
+           with the items listed in the BOM. If any components are
+           missing or damaged, contact Digital Equipment Corporation
+           before continuing with the installation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     1-2 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+        1.2 Preparing the IBM SNA Environment
+
+              You must prepare certain software components in the IBM
+              environment before you can use the Gateway-CT software.
+              The DECnet SNA Gateway for Channel Transport Guide to IBM
+              Parameters explains which IBM parameters must be correctly
+              defined for successful communication between the IBM host
+              and your Gateway-CT. Chapter 3 explains how IBM parameter
+              settings can affect parameter settings for various Gateway
+              components.
+
+              You should view the Digital documentation as an adjunct
+              to the IBM documentation; the IBM documentation remains
+              the authoritative source for IBM software concepts and
+              procedures.
+
+                ________________________Note  ________________________
+
+                Since IBM system programmers reconfigure and
+                generate their systems according to a set schedule,
+                give them as much advance notice as possible to
+                prepare for the Gateway-CT installation.
+
+                _____________________________________________________
+
+        1.3 Identifying Where the Gateway-CT Software Will Be Installed
+
+              Before you install the Gateway-CT software, you must
+              identify the DECnet nodes which will contain the software.
+              A DECnet/SNA network with a Gateway-CT has the following
+              DECnet nodes:
+
+              o  Gateway node: A DEC ChannelServer II or a DEC
+                 ChannelServer running the Gateway-CT software.
+
+              o  Gateway load host node: A DECnet for OpenVMS node from
+                 which you load the Gateway-CT system image onto the
+                 Gateway node. You must install both the management and
+                 the Gateway-CT software on the load host node.
+
+                 In environments where reliability is critical, you
+                 should install the entire Gateway-CT software kit
+                 (installation option 3) on at least one additional
+                 load host. The second load host can then load the
+                 software onto the Gateway if the first load host is
+                 unavailable. The second load host can also be used to
+
+                        Preparing for Installation and Configuration 1-3
+
+ 
+
+
+
+
+
+
+              receive dumps from the Gateway. Any DECnet node that is
+              running OpenVMS VAX V5.4 or later, or OpenVMS AXP V1.5,
+              and is connected to the same Ethernet as the Gateway
+              can be used as a load host.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     1-4 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+              o  Access node: A DECnet node with one or more access
+                 routine products. The access node must be running the
+                 version of the operating system software (OpenVMS[R],
+                 ULTRIX[R], or MS-DOS[R]) required by the access
+                 routine.
+
+
+        1.4 Verifying Required Disk Space
+
+              Installing the Gateway-CT kit requires 4800 free blocks
+              on the system disk. If you want just the management
+              software, you still require 4800 free blocks for the
+              installation, but only 1700 blocks are allocated after
+              the installation is completed. Use the SHOW DEVICE command
+              to check available disk space.
+
+              The Gateway-CT software supports OpenVMS tailoring for
+              installation on systems that have limited system disk
+              space. The Gateway-CT Software Product Description (SPD)
+              explains OpenVMS tailoring and lists the necessary OpenVMS
+              system classes. The OpenVMS SPD provides more information
+              on classes and OpenVMS tailoring.
+
+        1.5 Verifying Necessary Privileges
+
+              To install Gateway-CT, you must be logged in to an account
+              that has SYSPRV. Use the SHOW PROCESS/PRIVILEGES command
+              to check privileges.
+
+              For DECnet/OSI, you must also grant the NET$MANAGE rights
+              identifier to the account from which the configuration
+              SNACSA$CONFIGURE.COM is being performed. The procedure
+              will prompt you for this, and will not run until the
+              identifier is granted.
+
+        1.6 Verifying Required Process Account Quotas
+
+              To install Gateway-CT, the account you use must have
+              sufficient quotas. Table 1-1 summarizes the required
+              process quotas.
+
+
+
+
+
+                        Preparing for Installation and Configuration 1-5
+
+ 
+
+
+
+
+
+
+           Table_1-1_Process_Quotas_for_the_Installing_Account_______
+
+           Requirements                     Specifications
+           ______________________VAX___________________AXP___________
+
+           Software              OpenVMS VAX V5.4 or   OpenVMS AXP
+                                 later                 V1.5
+                                 DECnet/VAX or DECnet  and DECnet for
+                                 /OSI                  OpenVMS V1.5A
+
+           Privileges                    System manager level
+
+           Disk Space            5250 blocks           5250 blocks
+
+           Process Quota Values  ASTLM = 24            24
+                                 BIOLM = 18            18
+                                 BYTLM = 18000         18000
+                                 DIOLM = 18            18
+                                 ENQLM = 30            30
+                                 FILLM = 20            20
+
+           Approximate                15 to 30 minutes depending
+           Installation Time          on the type of medium used
+                                     and the system configuration
+
+           Associated Documents    The OpenVMS software installation
+           _______________________guide_for_your_particular_processor
+
+           Use the OpenVMS Authorize Utility (AUTHORIZE) to compare
+           the current values of these quotas with the requirements
+           for installing Gateway-CT. The following example uses the
+           SYSTEM account:
+
+           $ SET DEFAULT SYS$SYSTEM <Return>
+           $ RUN AUTHORIZE <Return>
+           UAF> SHOW SYSTEM <Return>
+
+           To change the values of these quotas, use the OpenVMS
+           Authorize Utility's MODIFY command. For more information,
+           see the OpenVMS System Manager's Manual.
+
+
+
+
+
+     1-6 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+        1.7 Verifying the Required OpenVMS Version
+
+              Your OpenVMS system must be running either OpenVMS VAX
+              V5.4 or
+              OpenVMS AXP V1.5. Use the SHOW SYSTEM command to determine
+              the current version. If you do not have the required
+              version, you must install it before you install the
+              Gateway-CT software. The OpenVMS System Manager's Manual
+              explains how to install OpenVMS software.
+
+        1.8 Installing DECnet SNA OpenVMS Access Routines
+
+              DECnet SNA OpenVMS access routines allow you to communi-
+              cate with programs running on the IBM system. Each access
+              routine is installed separately. This manual provides
+              instructions for installing the Gateway-CT software only.
+              The SPD for Gateway-CT provides a complete list of access
+              routines.
+
+        1.9 Backing Up Your System Disk
+
+              Before you start an installation that involves writing to
+              your system disk, Digital Equipment Corporation recommends
+              that you make a backup copy of your system disk. The
+              OpenVMS System Manager's Manual explains how to back up
+              your system disk.
+
+        1.10 Checking Required OpenVMS and DECnet Files
+
+              The installation process checks that NETPROXY.DAT and
+              RIGHTSLIST.DAT exist on your system. These files must
+              reside in SYS$SYSTEM or you need to define system logical
+              names that point to their locations. If the files do not
+              exist, the installation procedure asks if you want to
+              create them. Respond Yes to these prompts if they appear.
+
+              If SYSUAF.DAT does not exist on your system, the
+              installation will fail.
+
+
+
+
+
+
+
+                        Preparing for Installation and Configuration 1-7
+
+ 
+
+
+
+
+
+
+     1.11 Configuration Considerations
+
+           When the load host is a member of an homogeneous
+           VMScluster[TM], you must execute at least Part 1 of the
+           Gateway-CT configuration procedure on the load host node
+           itself. If more than one cluster member will be used as a
+           load host, then you must execute Part 1 on each load host.
+           This is necessary because the load host's DECnet SERVICE
+           CIRCUIT parameter (in the DECnet for OpenVMS definition of
+           the Gateway node) is hardware dependent.
+
+           To have a distinct Gateway node definition for each
+           cluster member, the DECnet for OpenVMS remote node
+           name database (NETNODE_REMOTE.DAT) must be located in
+           the system-specific directory. DECnet for OpenVMS is
+           configured this way by default.
+
+           Only Part 1 of the configuration procedure needs to be
+           executed on each load host. Parts 2 and 3 need only be
+           executed once since they simply create files that are
+           located in the common directory.
+
+     1.12 Preparing for the Configuration
+
+           After you install the Gateway-CT software on the load
+           host, you configure the Gateway-CT system by running
+           SNACSA$CONFIGURE.COM, a command procedure that generates
+           the initial configuration by performing the following
+           steps using default information and information you
+           provide:
+
+           o  Part 1: Defines the Gateway node in the load host's
+              DECnet database.
+
+           o  Part 2: Creates a command file that configures the SNA
+              database in the Gateway.
+
+           o  Part 3: Creates a command file that configures the
+              DECnet database in the Gateway.
+
+
+
+
+
+
+     1-8 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+        1.13 Part 1: Information About the Gateway Definition in the
+             Load Host
+
+              In Part 1 of the configuration procedure, you define
+              information about the Gateway node in the DECnet database
+              on the load host. This information is used for loading
+              and dumping. This part of the configuration also defines
+              the SNAINI object and creates a proxy account for the
+              Gateway-CT initialization. The proxy account maps the
+              remote username, gateway_name::SNA$GO, to the local
+              username, SNA$CSV.
+
+                ________________________Note  ________________________
+
+                If you are upgrading the Gateway-CT software (not
+                performing the initial installation), you only need
+                to complete Part 1 of the configuration to change
+                the Gateway load file. The procedure will determine
+                the current settings and display those settings as
+                the defaults.
+
+                _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        Preparing for Installation and Configuration 1-9
+
+ 
+
+
+
+
+
+
+           Figure 1-2 shows Part 1 of the Gateway-CT Configuration
+           Worksheet.
+
+           The sections that follow explain the information you need
+           to record in Part 1 of the worksheet.
+
+           Gateway Node Name
+           This is the name of the Gateway-CT node (1 to 6 alphanu-
+           meric characters). The name must be unique within the
+           DECnet network.
+
+           Gateway Node Address
+           This is the DECnet address of the Gateway node in the
+           format aa.nnnn where aa is the (optional) DECnet area
+           number ranging from 1 to 63 (decimal) and nnnn is the
+           DECnet node number ranging from 1 to 1023 (decimal). The
+           address must be unique within the DECnet network.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     1-10 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+              Ethernet Hardware Address
+              The Ethernet hardware address of the Ethernet port for the
+              Gateway node. Enter this address either as 12 hexadecimal
+              digits or as six pairs of hexadecimal digits separated by
+              hyphens. For example, the following expressions specify
+              the same address:
+
+                  08002B08CCB3  or  08-00-2B-08-CC-B3
+
+              If this is a new node or if the Ethernet controller in
+              the node has been changed, you can find the address
+              on the label on the DELQA or the DESQA (on the back
+              of the DEC ChannelServer or the DEC ChannelServer II,
+              respectively). You can also find the address for both the
+              DEC ChannelServer and the DEC ChannelServer II by entering
+              the following at the console prompt:
+
+              >>>E/P/W/N:5 20001920
+                P 20001920 FF08
+                P 20001922 FF00
+                P 20001924 FF2B
+                P 20001926 FF0F
+                P 20001928 FF5B
+                P 2000192A FF96
+              >>>
+
+              You derive the Ethernet address by taking the last two
+              hexadecimal digits of the lines displayed (08-00-2B-0F-5B-
+              96 in the example).
+
+              In addition, you can find the address for the DEC ChannelServer II
+              by entering the following at the console prompt:
+
+              >>>SHOW ETHERNET
+              Ethernet Adapter 0 (774440)
+              -XQA0 (08-00-2B-0F-5B-96)
+              >>>
+
+                ________________________Note  ________________________
+
+                The SHOW ETHERNET command works with the
+                DEC ChannelServer II only.
+
+                _____________________________________________________
+
+                       Preparing for Installation and Configuration 1-11
+
+ 
+
+
+
+
+
+
+           Host's Ethernet Circuit Name
+           The name of the Ethernet circuit that connects the load
+           host to the Gateway-CT. The Gateway node makes service
+           requests for loading and dumping on this circuit.
+
+           Enter the circuit-id for this node using the syntax dev-c
+           where dev is the Ethernet controller type (QNA, BNA, SVA,
+           etc.) and c is a decimal number (0 or a positive integer)
+           that designates the hardware controller number for the
+           device.
+
+           Dump File Device and Directory
+           The device and directory on the load host which will
+           contain the dump file should the Gateway node perform
+           an up-line dump. The dump file is not created until it is
+           required.
+
+           The default device and directory is SYS$COMMON:[SNA$CSV].
+           Ensure that the specified device always has enough free
+           space for the dump file. The size of your Gateway's dump
+           file can vary depending on your hardware platform (amount
+           of memory your system has):
+
+           o  If you have a DEC Channelserver (with 5 megabytes
+              of memory), the dump file can be a maximum of 10,240
+              blocks.
+
+           o  If you have a DEC Channelserver II (with 16 megabytes
+              of memory), the dump file can be a maximum of 32,768
+              blocks.
+
+           If there is insufficient space on the specified device,
+           the system issues a warning message.
+
+     1.14 Part 2: Information About the SNA Database in the Gateway
+
+           In Part 2 of the configuration procedure, you define the
+           following Gateway components:
+
+           o  Lines
+
+           o  Circuits
+
+           o  Physical units (PUs)
+
+           o  Access names
+
+     1-12 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+              o  Servers
+
+              Figure 1-3 shows Part 2 of the Gateway-CT Configuration
+              Worksheet.
+
+
+              The sections that follow explain the information you need
+              to record in Part 2 of the worksheet.
+
+        1.14.1 Defining the Channel-Attached Line
+
+              The information in this section defines the channel-
+              attached line, CQ-0.
+
+              Number of Circuits
+              The number of circuits to be configured for the line. Each
+              circuit corresponds to a channel address on the line; you
+              should specify the same number of circuits as there are
+              channel addresses defined on the IBM side for this line.
+              The default is 1.
+
+              Channel Type
+              The type of channel used. The channel type can be byte
+              multiplexer, block multiplexer, or selector. Ask your IBM
+              system programmer for the type of channel to specify. The
+              default is block multiplexer.
+
+              Forced Burst
+              The type of transfer mode used on a byte multiplexer
+              channel. Enter Y if forced-burst mode is to be enabled
+              for the line or N if forced-burst mode is to be disabled.
+              This information is only required if you specify a byte
+              multiplexer channel.
+
+              Line Buffer Size
+              The maximum size of buffers used to receive request
+              /response units (RUs) transmitted by the IBM host.
+              Determine the buffer size by adding 9 bytes to the maximum
+              RU size the IBM host will send to the Gateway. The default
+              is 8201 which allows RUs up to 8192 bytes. Maximum buffer
+              size is 8250 bytes.
+
+
+
+
+                       Preparing for Installation and Configuration 1-13
+
+ 
+
+
+
+
+
+
+     1.14.2 Defining Channel-Attached Circuits
+
+           Information in this section is used to define each
+           channel-attached circuit.
+
+           Circuit Name
+           The circuit name in the format CHAN-n where n is an
+           integer ranging from 1 to 4.
+
+           Channel Address
+           The channel address of the Gateway-CT specified as three
+           hexadecimal digits. Obtain the channel address from
+           your IBM system programmer. There is no default channel
+           address.
+
+     1.14.3 Defining Physical Units
+
+           The information in this section defines the PU for each
+           channel-attached circuit; you define one PU for each
+           circuit. Physical units (PUs) provide the SNA physical
+           unit services for the Gateway node.
+
+           LU list
+           The logical units (LUs) that are defined for the PU.
+           Specify the available LU addresses as a list of decimal
+           number ranges from 1-255. For example, define LUs 1
+           through 75, LUs 101 through 200, and LU 215 as follows:
+
+           1-75,101-200,215
+
+           DECnet/SNA access routines can use only those LUs defined
+           in the list. Any request for communication with an LU not
+           in the list will be rejected. Also, the LUs listed must
+           correspond with the LU addresses defined in the LOCADDR
+           parameter for the IBM ACF/VTAM LU macro; your IBM system
+           programmer can supply you with these addresses.
+
+     1.14.4 Defining Access Names
+
+           The information in this section is used to define
+           access names. Access names are a convenient way to pass
+           information about the type of session being requested
+           when an LU-LU session is being established. DECnet SNA
+           Gateway for Channel Transport and Gateway for Synchronous
+           Transport Management (OpenVMS) explains access names in
+           greater detail.
+
+     1-14 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+              The following information should be completed for each
+              access name that you want to define.
+
+              Access Name
+              The access name specified as 1 to 16 alphanumeric
+              characters; for example, CICS.
+
+              PU Name
+              The PU used to access the IBM system. Enter the PU in the
+              format SNA-n, for example, SNA-0. You can define more than
+              one PU per access name. You are required to enter at least
+              one PU per access name.
+
+              LU List
+              The list of LUs, for a given PU, that can use this access
+              name. When setting an LU list for the access name, you
+              must first specify a particular PU. Enter a list of
+              numbers or number ranges separated by commas. For example,
+              the following list specifies LUs 1 through 50, LUs 100
+              through 150, and LU 160:
+
+              1-50,100-150,160
+
+              IBM Application Name
+              The name of the IBM application for the access name. Enter
+              1 through 8 alphanumeric characters. Sessions established
+              with this access name connect to the designated IBM
+              application. If you need to specify this parameter, ask
+              the IBM system programmer for the name.
+
+              IBM Logon Mode Name
+              The IBM ACF/VTAM Logon Mode Table entry that is used at
+              the start of each session. Enter 1 through 8 alphanumeric
+              characters. The Logon Mode Table entry can specify the
+              protocol rules for the session. If you specify no logon
+              mode name, the default entry for the LU address, as
+              defined on the IBM system, is used. The name should
+              correspond with the operand label of an IBM ACF/VTAM
+              MODEENT macro.
+
+              IBM User Data
+              An optional string of user data, which will be passed to
+              the session partner. Enter 1 through 32 characters. The
+              format of the data is specific to the IBM application
+
+                       Preparing for Installation and Configuration 1-15
+
+ 
+
+
+
+
+
+
+           acting as the session partner. Check with the IBM system
+           programmer for the requirements of this field.
+
+     1.14.5 Defining Servers
+
+           The information in this section is used to define the DHCF
+           server.
+
+           The system automatically defines all parameters for the
+           SNA-ACCESS and RJE servers. The configuration procedure
+           will also define all parameters for the DHCF server except
+           for the LU list information.
+
+           LU List for DHCF
+           A list of LUs to be allocated to the DHCF server. Enter
+           a list of numbers or ranges separated by commas, for
+           example, 20-30.
+
+     1.15 Part 3: Information About the DECnet Database in the
+          Gateway
+
+           In Part 3 of the configuration procedure you provide
+           information for the DECnet database in the Gateway-CT,
+           which initializes the DECnet database components in the
+           Gateway-CT each time the gateway is loaded. You can edit
+           this file to customize your configuration.
+
+           Each time the Gateway software is loaded, the Gateway node
+           performs the following steps to initialize the database:
+
+           o  Reads all the nodes defined in the DECnet database on
+              the load host.
+
+           o  Selects the nodes that are in its area (that is, nodes
+              that have the same DECnet area number as the Gateway
+              node).
+
+           o  Defines all the nodes in the same DECnet area in the
+              Gateway node's DECnet database.
+
+           o  Requests that the load host execute the command
+              procedure that is created in this part of the
+              configuration procedure. This file specifies the
+              privileged username and password for access control
+              of the Gateway-CT.
+
+     1-16 Preparing for Installation and Configuration
+
+ 
+
+
+
+
+
+
+              Figure 1-4 shows Part 3 of the Gateway-CT Configuration
+              Worksheet.
+
+              The sections that follow explain the information you need
+              to record in Part 3 of the worksheet.
+
+              Privileged Username and Privileged Password
+              The privileged username and password (both 1-16 alphanu-
+              meric characters in length) that control access to the
+              following Gateway functions:
+
+              o  NCP CLEAR, LOOP, SET, and ZERO commands
+
+              o  SNANCP CLEAR, LOOP, SET, SHOW LU (for authorization
+                 information), and ZERO commands
+
+              o  NETTRACE commands
+
+              o  SNATRACE commands
+
+              DECnet Service Password
+              The password required to trigger the bootstrap mechanism
+              on the target node. The password can be up to 16 hexadec-
+              imal digits. For Ethernet circuits, the password ranges
+              from
+              0 to FFFFFFFFFFFFFFFF. If you choose the default, no
+              password is set.
+
+                ________________________Note  ________________________
+
+                Digital Equipment Corporation recommends that
+                you select a service password that is at least 6
+                hexadecimal digits long.
+
+                _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+                       Preparing for Installation and Configuration 1-17
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                      Installing the Gateway-CT Software
+
+
+
+              This chapter explains how to install the Gateway-CT
+              software for DECnet/VAX. Make sure you install the
+              required hardware and software and prepare the IBM SNA
+              environment before you begin the installation.
+
+              The procedure for installing files on an OpenVMS system
+              is automated. You simply answer questions displayed while
+              the procedure (VMSINSTAL) runs. Most questions require
+              a simple yes or no answer. The Gateway-CT installation
+              should take no longer than 15 minutes, depending on the
+              type of medium you use. The estimated installation time
+              does not include preparation time.
+
+              The following illustration shows how the installation
+              information is presented.
+
+              Default answers appear in brackets throughout the
+              installation procedure. Press <Return> to accept a default
+              answer. Press <Ctrl/Y> to abort the installation procedure
+              at any time; later, you can restart the installation at 2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Installing the Gateway-CT Software 2-1
+
+ 
+
+
+
+
+
+
+     2.1 DECnet/VAX Configuration
+
+
+     Username: SYSTEM   <Return>  1
+     Password: password <Return>
+
+     $ SET DEFAULT SYS$UPDATE <Return>
+
+     $ @VMSINSTAL SNACSA021 ddcu: [OPTIONS N]<Return>  2
+
+           OpenVMS Alpha Software Product Installation Procedure V1.5
+
+     It is dd-mmm-yyyy at hh:mm.
+     Enter a question mark (?) at any time for help.
+
+     %VMSINSTAL-W-ACTIVE, The following processes are still active:
+
+        JONES
+
+     * Do you want to continue anyway [NO]?  3
+
+     * Are you satisfied with the backup of your system disk [YES]?  4
+
+     The following products will be processed:
+
+       SNACSA V2.1
+
+         Beginning installation of SNACSA V2.1 at hh:mm
+
+     %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+     Release notes included with this kit are always copied to SYS$HELP.
+
+     Release Notes Options:
+
+         1. Display release notes
+         2. Print release notes
+         3. Both 1 and 2
+         4. None of the above
+
+     * Select option [2]:  5
+
+     * Queue name [SYS$PRINT]:
+     Job SNACSA021 (queue SYS$PRINT, entry 142) started on LPA0
+
+     2-2 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              1  Digital Equipment Corporation recommends that you
+                 install software from the system manager's account
+                 [SYSTEM] with your default device and directory set to
+                 SYS$UPDATE.
+
+              2  VMSINSTAL prompts you if you do not supply the product
+                 and device names. If you want to be prompted for the
+                 product name, device name, and installation options,
+                 type the following:
+
+                 $ @SYS$UPDATE:VMSINSTAL <Return>
+
+                 ddcu:
+                 A device name where the distribution kit will be
+                 mounted for the Gateway-CT installation media, where dd
+                 is the device, c is the controller, and u is the unit
+                 number. It is not necessary to use the console drive to
+                 install Gateway-CT.
+
+                 OPTIONS N
+                 Specifying this optional parameter allows you to
+                 display or print the release notes. If you do not
+                 include the OPTIONS N parameter (excluding the
+                 brackets), VMSINSTAL copies the release notes to
+                 SYS$HELP. VMSINSTAL also provides several other
+                 options. For more information on options, see your
+                 processor-specific installation/operations guide.
+
+              3  If users are logged in, you are asked whether you want
+                 to continue the installation. To continue, type YES
+                 and press <Return>. To stop the installation, press
+                 <Return>.
+
+              4  Before you proceed with the installation, make sure you
+                 have a good backup copy. If you are satisfied with the
+                 backup of your system disk, press <Return>. If you do
+                 not have a good backup copy, type NO and press <Return>
+                 to end the installation.
+
+              5  This step applies only if you specified OPTIONS N at 2.
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes. Press <Ctrl/C> to terminate the display.
+
+
+                                  Installing the Gateway-CT Software 2-3
+
+ 
+
+
+
+
+
+
+              If you select option 2, VMSINSTAL prompts you for a
+              queue name. Either type a queue name and press <Return>
+              or press <Return> to send the file to the default
+              output print device.
+
+              If you select option 3, VMSINSTAL displays the release
+              notes and then prompts you for a queue name.
+
+              If you select option 4, VMSINSTAL does not display or
+              print the release notes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-4 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+        * Do you want to continue the installation?  6
+
+        %VMSINSTAL-I-RELMOVED, Product release notes have been moved to SYS$HELP.
+
+
+                You can install:
+
+                [1] The gateway management utilities
+                [2] The DEC ChannelServer II diagnostic software
+                [3] The entire Gateway-CT kit (including management and diagnostics)
+
+        * Enter an option [3]:  <Return>  7
+
+        * Do you want to start the event logger on this node [YES]?  <Return>  8
+
+          Add the following command to your system startup procedures:
+
+           $ @SYS$STARTUP:SNAGM$STARTUP  9
+
+          You can edit SNAG$STARTUP.COM if you wish to change whether or not
+          the DECnet SNA Event Logger is run on this node or cluster.  10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Installing the Gateway-CT Software 2-5
+
+ 
+
+
+
+
+
+
+           6  To continue the installation, type YES and press
+              <Return>. If you type NO and press <Return>, VMSINSTAL
+              moves the release notes to SYS$HELP and ends the
+              installation.
+
+           7  You have three installation options. The default
+              selection, (3), installs the complete Gateway-CT
+              software kit, including management and diagnostics.
+              To start this process, press <Return>. This option
+              requires that the product authorization key (PAK) be
+              registered and loaded. Failure to do this causes the
+              installation process to fail with an error message
+              notifying you that the license must be installed. Refer
+              to the PAK installation procedure in Chapter 1 for
+              details. After registering and loading the PAK, restart
+              the installation from step 2.
+
+              If you want to install just the Gateway management
+              software, enter 1, press <Return>, and proceed with the
+              remainder of the installation procedure.
+
+              If you want to install just the DEC ChannelServer II
+              diagnostic software, enter 2 and press <Return>. If you
+              select option 2, the following messages display:
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to
+                                      their target directories...
+
+                      Installation of SNACSA V2.1 completed at 15:54
+
+                      VMSINSTAL procedure done at hh:mm
+
+           8  At this prompt, press <Return> to start event logging.
+              If you want to manually start event logging later, type
+              NO and press <Return>. Because the event logger must
+              be running for a DECnet node to log SNA Gateway event
+              messages, Digital recommends that you start the event
+              logger at this time.
+
+           9  Add this command to your system startup file so that
+              event logging and NETTRACE begin automatically at
+              system startup.
+
+           10 If you responded NO to the prompt at item 8, the
+              event logger command in SNAGM$STARTUP.COM is dis-
+              abled. To enable the command at a later time, edit
+              SNAGM$STARTUP.COM in SYS$STARTUP, and remove the
+
+     2-6 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+                 exclamation point (!) from in front of the following
+                 command:
+
+                 $ @SYS$STARTUP:SNAGM$EVL_STARTUP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Installing the Gateway-CT Software 2-7
+
+ 
+
+
+
+
+
+
+     * This product needs a DECnet proxy login database (NETPROXY)
+
+     * Do you want to create NETPROXY.DAT [YES]?  11
+
+     * This product needs a rights database (RIGHTSLIST)
+
+     * Do you want to create RIGHTSLIST.DAT [YES]?  12
+
+     A directory and account must be created for use by the
+     Gateway. This account allows only network logins,
+     and is used by the Gateway for execution of initialization
+     procedures.  The account details are as follows:
+
+           Directory: SYS$COMMON:[SNA$CSV]
+           Username:  SNA$CSV
+           Password:  randomly generated
+           UIC:       specified by you
+
+     * UIC for SNA$CSV account [56,56]:  13
+
+     %VMSINSTAL-I-ACCOUNT, This installation creates an account named SNA$CSV.
+     %UAF-I-ADDMSG, user record successfully added
+     %UAF-I-RDBADDMSGU, identifier SNA$CSV value: [000056, 000056] added to
+                        RIGHTSLIST.DAT
+     %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named SNA$CSV.
+     %UAF-I-MDFYMSG, user record(s) updated
+     %VMSINSTAL-I-SYSDISK, This product creates system disk directory
+                           VMI$ROOT:[SNA$CSV].  14
+
+     You will be prompted to run the IVP as part of this installation, but
+     you may also manually invoke the IVP at any time by issuing the command:
+
+             $ @SYS$TEST:SNACSA$IVP
+
+     * Do you want to run the IVP after the installation [YES]?  15
+
+     * Do you want to purge files replaced by this installation [YES]?  16
+
+
+
+
+
+
+
+
+     2-8 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              11 If this option displays, the file NETPROXY.DAT, which
+                 contains the proxy login entries that allow remote
+                 users access to your system, does not exist. Press
+                 <Return> to create this file. Type NO and press
+                 <Return> and the installation ends; no software is
+                 installed.
+
+                 The configuration procedure uses NETPROXY.DAT to create
+                 a proxy for the Gateway account.
+
+              12 If this option displays, RIGHTSLIST.DAT does not exist.
+                 Press <Return> and the system creates the file. Type
+                 NO and press <Return> and the installation ends; no
+                 software is installed.
+
+                 RIGHTSLIST.DAT is a collection of data that the system
+                 maintains and uses to define and associate identifiers
+                 with the holders of those identifiers.
+
+              13 You are prompted for a UIC only if the account does
+                 not exist. If the account already exists, the system
+                 displays the following:
+
+                 %SNACSA-I-USREX, username SNA$CSV already exists -
+                                  UIC [56,56]
+
+                 If no UIC exits for SNA$CSV, you are prompted to supply
+                 one; a default account of [56,56] is provided. If
+                 this is acceptable, press <Return>. You can specify
+                 a different UIC if you choose, but ensure that you
+                 specify a unique UIC (not a system UIC and not one that
+                 is in a group with other UICs).
+
+              14 A directory and an account are created for the configu-
+                 ration files. If the directory SYS$COMMON:[SNA$CSV]
+                 already exists, the Gateway-CT uses the existing
+                 directory. If the directory SYS$COMMON:[SNA$CSV]
+                 does not exist, it is created during the installation
+                 procedure.
+
+              15 The installation verification procedure (IVP) runs
+                 tests to check whether the installation procedure was
+                 successful. Press <Return> to run the IVP after the
+                 installation. If you do not want to run the IVP, type
+                 NO and press <Return>.
+
+                                  Installing the Gateway-CT Software 2-9
+
+ 
+
+
+
+
+
+
+           16 The system disk might contain previous versions of
+              the Gateway-CT files. The files are replaced during
+              installation with new files, but the old files are
+              not automatically purged. Digital recommends purging.
+              Press <Return> to purge the files, or type NO and press
+              <Return> to retain them.
+
+              ________________________Note ________________________
+
+              System images from previous versions of the Gateway-
+              CT will NOT be deleted during the installation
+              procedure.
+
+              _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-10 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+        No more questions...  17
+
+        To create the initial configuration files for your Gateway, invoke
+        the following configuration procedure, thus:
+
+                $ @SYS$MANAGER:SNACSA$CONFIGURE
+
+        If this is an update to a previous version, invoke the above configuration
+        procedure and execute Part 1 of the procedure only.  This will define the
+        Gateway node in the load host's DECnet database but leave the Gateway's
+        DECnet and SNA configuration files unchanged.
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+        DECnet SNA Gateway-CT V2.1
+        Installation Verification Procedure.
+
+        The IVP checks that the directory SYS$COMMON:[SNA$CSV] was
+        successfully created, that all Gateway-CT files have been correctly
+        installed from the kit, that NETPROXY.DAT and RIGHTSLIST.DAT exist,
+        and that the username SNA$CSV was correctly set up.
+
+        Executing the IVP ... 18
+        Directory ok  ...
+
+        Management Files ok ...
+        Gateway files ok...
+        Username ok ...
+
+        IVP for DECnet SNA Gateway-CT V2.1 completed successfully.
+
+                Installation of SNACSA V2.1 completed at hh:mm
+
+
+                VMSINSTAL procedure done at hh:mm  19
+
+        $ LOGOUT  20
+
+        SYSTEM     logged out at dd-mmm-yyyy hh:mm
+
+
+
+
+
+
+                                 Installing the Gateway-CT Software 2-11
+
+ 
+
+
+
+
+
+
+           17 No more input is required. If you pressed <Return> in
+              response to the prompt at 16, previous file versions
+              are now purged.
+
+              If the installation procedure is successful, the
+              executable files are moved to their target directory.
+
+           18 If you pressed <Return> in response to the prompt at
+              15, the installation procedure now calls the IVP to
+              verify that the Gateway-CT software was successfully
+              installed.
+
+              If the installation procedure or IVP fails for any
+              reason, the following message is displayed:
+
+              %VMSINSTAL-E-INSFAIL, the installation of SNACSA V2.1
+                                    has failed.
+
+              Errors can result if any of the following conditions
+              are true:
+
+              o  The VMS operating system version is not V5.4
+
+              o  The Product Authorization Key was not registered and
+                 loaded
+
+              o  Disk quotas are insufficient
+
+              o  Process quotas are incorrect
+
+              The OpenVMS System Manager's Manual explains error
+              messages generated by these conditions.
+
+              If you are notified that any of these conditions exist,
+              you should take the action described in the message.
+              You might need to change a system parameter, increase
+              an authorized quota value, or register and load the
+              PAK.
+
+              If an IVP failure causes the installation to fail,
+              contact Digital Customer Service.
+
+           19 When the installation procedure is complete, you
+              can continue to install more products or end the
+              installation procedure. To end the procedure, press
+              <Ctrl/Z> or <Return>.
+
+     2-12 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              20 VMSINSTAL deletes or changes entries in the process
+                 symbol tables during the installation. Therefore, if
+                 you are going to continue using the system manager's
+                 account and want to restore those symbols, you should
+                 log out and log in again.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                 Installing the Gateway-CT Software 2-13
+
+ 
+
+
+
+
+
+
+     2.2 Files Installed
+
+           If you select option 3, the VMSINSTAL procedure for the
+           Gateway-CT creates the SNA$CSV account and the [SNA$CSV]
+           directory. VMSINSTAL also installs or modifies the
+           following files:
+
+           o  SYS$HELP:SNANCP.HLB
+                   SNANCP HELP library
+
+           o  SYS$HELP:SNATRACE.HLB
+                   SNATRACE HELP library
+
+           o  SYS$HELP:SNATRACEHLP.HLB
+                   NETTRACE HELP library
+
+           o  SYS$LIBRARY:NETTRACE$KEY.INIT
+                   NETTRACE Key definitions
+
+           o  SYS$LIBRARY:NETTRACE$CHAN_ANALYZE.EXE
+                   NETTRACE channel trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$SDLC_ANALYZE.EXE
+                   NETTRACE SDLC trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$PU_ANALYZE.EXE
+                   NETTRACE PU trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$ETHERNET_ANALYZE_TV.EXE (AXP only)
+                   NETTRACE ETHERNET trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$ETHERNET_ANALYZE_TV.IIF (AXP only)
+                   NETTRACE ETHERNET trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$ETHERNET_ANALYZE.EXE (VAX only)
+                   NETTRACE ETHERNET trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$NSP_ANALYZE_TV.EXE (AXP only)
+                   NETTRACE NSP trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$NSP_ANALYZE.IIF (AXP only)
+                   NETTRACE NSP trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$NSP_ANALYZE.EXE (VAX only)
+                   NETTRACE NSP trace analyzer
+
+           o  SYS$LIBRARY:NETTRACE$SNATRAPRE.MAR
+                   Translation table prefix file
+
+           o  SYS$LIBRARY:SNATRATBL.MAR
+                   Translation table template
+
+     2-14 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              o  SYS$MANAGER:NETTRACE_INSTALL.COM
+                      Command procedure for starting NETTRACE
+
+              o  SYS$MESSAGE:NETTRACE_MESSAGES_TV.EXE (AXP only)
+                      NETTRACE message file
+
+              o  SYS$MESSAGE:NETTRACE_MESSAGES.IIF (AXP only)
+                      NETTRACE message file
+
+              o  SYS$MESSAGE:NETTRACE_MESSAGES.EXE (VAX only)
+                      NETTRACE message file
+
+              o  SYS$MESSAGE:SNAEVLMSG.EXE
+                      SNAEVL message file
+
+              o  SYS$MESSAGE:SNANCPMSG.EXE
+                      SNANCP message file
+
+              o  SYS$MESSAGE:SNAPMSG.EXE
+                      SNAP message file
+
+              o  SYS$MESSAGE:SNATRCMSG.EXE
+                      SNATRACE message file
+
+              o  SYS$STARTUP:SNAGM$EVL_STARTUP.COM
+                      Command procedure for starting SNAEVL
+
+              o  SYS$STARTUP:SNAGM$STARTUP.COM
+                      Gateway Management startup procedure
+
+              o  SYS$SYSTEM:NETLTC_TV.EXE (AXP only)
+                      NETTRACE trace collector image
+
+              o  SYS$SYSTEM:NETLTC.EXE (VAX only)
+                      NETTRACE trace collector image
+
+              o  SYS$SYSTEM:NETTRACE_TV.EXE (AXP only)
+                      NETTRACE utility
+
+              o  SYS$SYSTEM:NETTRACE.EXE (VAX only)
+                      NETTRACE utility
+
+              o  SYS$SYSTEM:SNAEVL.EXE
+                      SNA event logging program
+
+              o  SYS$SYSTEM:SNANCP.EXE
+                      SNA network control program
+
+              o  SYS$SYSTEM:SNAP.EXE
+                      SNAP utility
+
+                                 Installing the Gateway-CT Software 2-15
+
+ 
+
+
+
+
+
+
+           o  SYS$SYSTEM:SNATRACE.EXE
+                   SNATRACE utility
+
+           o  SYS$COMMON:[SNA$CSV]SNACSA021.SYS
+                   Gateway system image
+
+           o  SYS$COMMON:[SNA$CSV]SNACSA021.STB
+                   Gateway symbol table
+
+           o  SYS$HELP:SNACSA021.RELEASE_NOTES
+                   Gateway-CT Release notes
+
+           o  SYS$COMMON:[MOM$SYSTEM]SNACSA$DESNX.SYS
+                   DEC ChannelServer II diagnostic image
+
+           o  SYS$COMMON:[MOM$SYSTEM]SNACSA$MDM.SYS
+                   DEC ChannelServer II diagnostic image
+
+           o  SYS$MANAGER:SNACSA$CONFIGURE.COM
+                   Gateway configuration procedure
+
+           o  SYS$HELP:SNACSA$CONFIGURE.TLB
+                   Configuration help text
+
+           o  SYS$TEST:SNACSA$IVP.COM
+                   Installation verification procedure
+
+           o  SYS$COMMON:[SNA$CSV]SNAINI.COM
+                   Gateway initialization procedure
+
+              ________________________Note ________________________
+
+              SNAINI.COM is reserved for Digital use only. Do not
+              attempt to modify this file to include site-specific
+              startup procedures.
+
+              _____________________________________________________
+
+              ________________________Note ________________________
+
+              This section deals with DECnet/VAX commands and
+              examples, and these may be different for DECnet
+              /OSI. See Section 3.1 and Section 4.3 for complete
+              examples of a configuration and loading of the
+              software on a DECnet/OSI system. Also, refer to
+              the DECnet/OSI NCL Reference Manual for information
+              on NCL commands.
+
+              _____________________________________________________
+
+     2-16 Installing the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                              Configuring the Gateway-CT
+
+
+
+              This chapter explains how to configure the Gateway-CT
+              software. Make sure you complete the Gateway-CT Configuration
+              Worksheet (see Preparing for the Configuration in Chapter
+              1) before you begin.
+
+              After you install the Gateway-CT software on the load
+              host, you configure the Gateway-CT system by running
+              SNACSA$CONFIGURE.COM. This command procedure helps you
+              with the initial configuration by defining the Gateway
+              node in the load host's DECnet database and by creating
+              command files that configure the SNA and the DECnet
+              databases in the Gateway. The configuration should take no
+              longer than 15 minutes, excluding preparation time.
+
+              The following illustration shows how to use the informa-
+              tion in this chapter:
+
+              Default answers appear in brackets throughout the
+              procedure. Press <Return> to accept the default.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          Configuring the Gateway-CT 3-1
+
+ 
+
+
+
+
+
+
+     $ @SYS$MANAGER:SNACSA$CONFIGURE  <Return>
+
+          CONFIGURE V2.1
+          DECnet SNA Gateway-CT configuration procedure.
+
+         Configuration is divided into three parts:
+
+          .     Part 1: Define the Gateway node in the load host's
+                        DECnet database.
+
+          .     Part 2: Create a command file that will be used to
+                        configure the SNA database in the Gateway
+                        each time it is loaded.
+
+          .     Part 3: Create a command file that will be used to
+                        configure the DECnet database in the Gateway
+                        each time it is loaded.
+
+         This configuration procedure prompts you to see if you want
+         to run each of the three parts.  All parts must be completed
+         before the Gateway can be loaded. Enter "?" at any time for
+         help.
+
+     DECnet SNA Gateway-CT node name [] :STAR  <Return>  1
+
+     ============================================================================
+       Part 1: Define the Gateway node in the load host DECnet database
+     ============================================================================
+
+     Define the Gateway node in MIEMAT's DECnet database? (Y|N) [Y] :  2
+
+     DECnet node address of STAR (aa.nnnn) [4.752] :  3
+     Ethernet hardware address (12 hex digits) [08-00-2B-08-CC-B3] :  4
+     Device and directory for dump file [SYS$COMMON:[SNA$CSV]] :  5
+     Host's Ethernet circuit name (circuit-id) [BNA-0] :  6
+
+            All questions for this section have been answered.
+
+
+
+
+
+
+
+
+     3-2 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+              1  Enter the Gateway node name (1 to 6 alphanumeric
+                 characters) and press <Return>. The name must be unique
+                 within the DECnet network.
+
+              2  If you press <Return> to accept the default, the system
+                 prompts you for the information that follows.
+
+                 If the Gateway node, the SNAINI object, and the proxy
+                 login information have already been defined on the
+                 load host and no changes need to be made, enter N and
+                 press <Return>. The system will skip to Part 2 of the
+                 configuration procedure.
+
+              3  If this node was already defined, the previous
+                 definition appears as the default. Press <Return> to
+                 accept the default.
+
+                 If this is a new configuration or you if want to change
+                 the default address, enter a unique DECnet node address
+                 in the format [aa.]nnnn and press <Return>. Your
+                 network manager can assign such a unique address.
+
+              4  Enter the Ethernet hardware address of the Ethernet
+                 port for the Gateway node (either 12 hexadecimal
+                 digits or six pairs of hexadecimal digits separated
+                 by hyphens) and press <Return>.
+
+                 If this node has already been defined, the previous
+                 definition appears as the default. Press <Return>
+                 to accept the default. If this is a new node or if
+                 the Ethernet controller in the node has been changed,
+                 enter the new Ethernet hardware address and then press
+                 <Return>.
+
+              5  Specify the device and directory on the load host where
+                 the dump file is written if the Gateway node performs
+                 an up-line dump and press <Return>. The dump file
+                 is not created until it is required. The device you
+                 specify must have enough free space for the dump file.
+                 If fewer than 8192 blocks are available, a warning
+                 message is issued.
+
+                 The default is SYS$COMMON:[SNA$CSV]. Press <Return> to
+                 accept the default.
+
+                                          Configuring the Gateway-CT 3-3
+
+ 
+
+
+
+
+
+
+           6  Enter the name of the Ethernet circuit (in the format
+              dev-c) that connects the load host to the Gateway-CT
+              and press <Return>. The Gateway node makes service
+              requests for loading and dumping on this circuit.
+
+              If the name has already been defined, the previous
+              definition appears as the default. Press <Return> to
+              accept the default.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     3-4 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+               The following NCP commands will be used to define the Gateway
+               node and SNAINI object in the load host's DECnet database.
+               In addition, a proxy login will be established for the Gateway
+               initialization process.  7
+
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+        $! Start of file: SYS$COMMON:[SNA$CSV]DEFINE_STAR_ON_MIEMAT.COM
+        $! DECnet SNA Gateway-CT -- load host database setup
+        $! Created: dd-mmm-yyyy hh:mm:ss by CONFIGURE V2.1
+        $! Host node: MIEMAT  User: JONES
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+        $ v = f$verify(1)
+        $ DEFINE/USER SYS$OUTPUT _NLA0:
+        $ DEFINE/USER SYS$ERROR _NLA0:
+        $ RUN SYS$SYSTEM:NCP
+        PURGE OBJECT SNAINI ALL
+        PURGE NODE STAR ALL
+        PURGE NODE 4.752 ALL
+        CLEAR OBJECT SNAINI ALL
+        CLEAR NODE STAR ALL
+        CLEAR NODE 4.752 ALL
+        $ RUN SYS$SYSTEM:NCP
+        DEFINE OBJECT SNAINI NUMBER 39 -
+               FILE SYS$COMMON:[SNA$CSV]SNAINI.COM PROXY INCOMING
+        DEFINE NODE 4.752 NAME STAR
+        DEFINE NODE STAR HARDWARE ADDRESS 08-00-2B-08-CC-B3 -
+               LOAD FILE SYS$COMMON:[SNA$CSV]SNACSA021.SYS -
+               DUMP FILE SYS$COMMON:[SNA$CSV]STAR.DMP -
+               SERVICE CIRCUIT BNA-0 -
+               ACCESS BOTH
+        DEFINE EXECUTOR INCOMING PROXY ENABLED
+        DEFINE CIRCUIT BNA-0 SERVICE ENABLED
+        SET OBJECT SNAINI ALL
+        SET NODE STAR ALL
+        SET EXECUTOR INCOMING PROXY ENABLED
+        $ EXIT $STATUS + (0 * 'f$verify(v)')
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+        $! End of file: SYS$COMMON:[SNA$CSV]DEFINE_STAR_ON_MIEMAT.COM
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+        Are you satisfied with these answers? (Y|N) [Y] :  8
+
+
+
+
+                                          Configuring the Gateway-CT 3-5
+
+ 
+
+
+
+
+
+
+           7  SNACSA$CONFIGURE creates and displays the
+              DEFINE_gateway-node-name_ON_load-host-node.COM
+              command procedure, which contains NCP commands that
+              define the Gateway node and SNAINI object in the load
+              host's DECnet database. When executed, the commands in
+              the file perform the following functions:
+
+              o  Remove existing definitions, if any, of the Gateway
+                 node and SNAINI in both the permanent and volatile
+                 databases.
+
+              o  Define the SNAINI object.
+
+              o  Define the Gateway node using the name, addresses,
+                 circuit, and files you specified.
+
+              o  Enable the load host to accept incoming connections
+                 via proxy accounts.
+
+              o  Enable the circuit you specified as a service
+                 circuit (for loading the Gateway software).
+
+              o  Set the above SNAINI, Gateway node, and circuit
+                 definitions in the volatile database.
+
+           8  If you are satisfied with the answers you gave to
+              the five prompts at the beginning of Part 1 (Gateway
+              node name, DECnet address, hardware address, Ethernet
+              circuit-id, and dump file location), press <Return>.
+              The following occurs:
+
+              o  A proxy account is created on the load host for the
+                 Gateway node account. A message appears indicating
+                 this.
+
+              o  The command procedure is run, executing the NCP
+                 commands. The command procedure displays as it runs.
+
+              ________________________Note ________________________
+
+              The following message could appear:
+
+                    %NONAME-W-NOMSG, Message number 00000000
+
+              You can ignore this message.
+
+              _____________________________________________________
+
+     3-6 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+                    If you answer N and press <Return>, this part of the
+                    configuration is run again, allowing you to provide
+                    different values for the items.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          Configuring the Gateway-CT 3-7
+
+ 
+
+
+
+
+
+
+     Creating proxy login for STAR::SNA$GO.
+     %UAF-I-NAFADDMSG, record successfully added to network proxy database
+
+     $ DEFINE/USER SYS$OUTPUT _NLA0:
+     $ DEFINE/USER SYS$ERROR _NLA0:
+     $ RUN SYS$SYSTEM:NCP
+     PURGE OBJECT SNAINI ALL
+     PURGE NODE STAR ALL
+     PURGE NODE 4.752 ALL
+     CLEAR OBJECT SNAINI ALL
+     CLEAR NODE STAR ALL
+     CLEAR NODE 4.752 ALL
+     $ RUN SYS$SYSTEM:NCP
+     DEFINE OBJECT SNAINI NUMBER 39 -
+            FILE SYS$COMMON:[SNA$CSV]SNAINI.COM PROXY INCOMING
+     DEFINE NODE 4.752 NAME STAR
+     DEFINE NODE STAR HARDWARE ADDRESS 08-00-2B-08-CC-B3 -
+            LOAD FILE SYS$COMMON:[SNA$CSV]SNACSA021.SYS -
+            DUMP FILE SYS$COMMON:[SNA$CSV]STAR.DMP -
+            SERVICE CIRCUIT BNA-0 -
+            ACCESS BOTH
+     DEFINE EXECUTOR INCOMING PROXY ENABLED
+     DEFINE CIRCUIT BNA-0 SERVICE ENABLED
+     SET OBJECT SNAINI ALL
+     SET NODE STAR ALL
+     SET EXECUTOR INCOMING PROXY ENABLED
+
+     %%% Warning - service must be enabled on circuit BNA-0.
+
+         The configuration procedure has defined the correct service state
+         in the permanent database, but it cannot change the running system.
+         You must turn the circuit off and then use the NCP command
+                     SET CIRCUIT BNA-0 SERVICE ENABLED
+         before this node can load the gateway system.  9
+
+     Do you wish to redo this section? (Y|N) [N] :  10
+
+             The file you have created has been saved in:
+
+             SYS$COMMON:[SNA$CSV]DEFINE_STAR_ON_MIEMAT.COM
+
+             This command file may be used to redefine the Gateway node
+             and SNAINI object in the load host's DECnet database,
+             should you need to do so at some future time.
+
+     3-8 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+              9  You have to manually issue the NCP command to enable
+                 service functions on the load host's Ethernet circuit.
+                 Before you enable the circuit for service, turn the
+                 circuit off with a SET CIRCUIT STATE OFF command. Make
+                 a note to execute this command, substituting your load
+                 host's circuit-id (BNA-0 in the example) for dev-c,
+                 after you finish running the configuration procedure.
+
+              10 If you answer Y and press <Return>, this part of the
+                 configuration is run again, allowing you to provide
+                 different values for the items.
+
+                 Press <Return> to accept the default N.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          Configuring the Gateway-CT 3-9
+
+ 
+
+
+
+
+
+
+     ================================================================================
+       Part 2: Create a command file to configure the SNA database in the Gateway
+     ================================================================================
+
+     Do you wish to create this command file? (Y|N) [Y] :  11
+
+     This product supports a single line.
+
+                         +---------------+
+                         |   Line CQ-0   |
+                         +---------------+
+
+     Number of circuits to be configured for CQ-0 (1-4) [1] : 2  12
+     What type of channel will be used? (Block/Byte/Selector) [Block] : <Return>  13
+     Line buffer size (maximum RU size plus 9)? (bytes) [8201] : <Return>  14)
+
+                         +---------------+
+                         |Circuit CHAN-0 |
+                         +---------------+
+
+     Channel address? (3 hex digits) [] : E11 <Return>  15
+
+                         +---------------+
+                         |   PU SNA-0    |
+                         +---------------+
+
+     Enter the list of available LU addresses (number or range) [1-255] :<Return>  16
+
+                         +---------------+
+                         |Circuit CHAN-1 |
+                         +---------------+
+
+     Channel address? (3 hex digits) [] : E12 <Return>
+
+                         +---------------+
+                         |   PU SNA-1    |
+                         +---------------+
+
+     Enter the list of available LU addresses (number or range) [1-255] : <Return>
+
+
+
+
+
+
+     3-10 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+              11 If you press <Return> to accept the default Y, you are
+                 prompted to define line information.
+
+                 If you answer N and press <Return>, the configuration
+                 process proceeds to Part 3.
+
+              12 Enter the number of circuits to be configured for the
+                 line and press <Return>. Each circuit corresponds to a
+                 channel address on the line; specify the same number of
+                 circuits as there are channel addresses defined on the
+                 IBM side for this line. Press <Return> to accept the
+                 default 1.
+
+              13 Enter the type of channel used (byte multiplexer, block
+                 multiplexer, or selector) and press <Return>. Ask your
+                 IBM system programmer for the channel type. The default
+                 is block multiplexer.
+
+                 The following prompt appears only if you specified a
+                 byte multiplexer channel:
+
+                 Enable forced-burst operation? (Y/N) [N] :
+
+                 You can specify whether the line will operate in
+                 forced-burst mode or not. Enter Y and press <Return> to
+                 enable forced-burst mode or press <Return> to accept
+                 the default and disable forced-burst mode.
+
+              14 Enter the maximum size of buffers used to receive RUs
+                 transmitted by the IBM host and press <Return>. To
+                 determine the buffer size, add 9 bytes to the maximum
+                 RU size. The default is 8201, which allows RUs up to
+                 8192 bytes. You should set the line buffer size to be
+                 large enough to accept the largest RU (plus 9 bytes)
+                 that will be sent by the IBM host.
+
+              15 Enter the channel address of the Gateway-CT as three
+                 hexadecimal digits and press <Return>. Ask your IBM
+                 system programmer for the channel address. There is no
+                 default channel address.
+
+              16 The LU list specifies the logical units (LUs) that
+                 are defined for the PU. Enter the LUs as a list of
+                 decimal number ranges and press <Return>. DECnet SNA
+                 access routines can use only those LUs defined in the
+                 list. Any request for communication with an LU not in
+                 the list will be rejected. Also, the LUs listed must
+
+                                         Configuring the Gateway-CT 3-11
+
+ 
+
+
+
+
+
+
+              correspond with the LU addresses defined in the LOCADDR
+              parameter for the IBM ACF/VTAM LU macro. Your IBM
+              system programmer can supply you with these addresses.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     3-12 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+                            +--------------+
+                            | Access names |
+                            +--------------+
+
+        You will now be prompted for one or more access names.  17
+        Press <RETURN> when you have no more to enter.
+
+        Access name (1-16 chars) [] : NETVIEW <Return>  18
+        IBM application name (1-8 chars) [] : NETVIEW <Return>  19
+        IBM logon mode name (1-8 chars) [] : XT3278M2 <Return>  20
+        IBM user data (1-32 chars) [] : <Return>  21
+
+        You will now be prompted for one or more PU/LU pairs.
+        Press <RETURN> when you have no more to enter.
+
+        PU name (SNA-n) [] : SNA-0 <Return>  22
+        LU list (number or range) [1-255] : 1-255 <Return>  23
+
+        PU name (SNA-n) [] : <Return>
+
+        Access name (1-16 chars) [] : TSO <Return>
+        IBM application name (1-8 chars) [] : TSO1 <Return>
+        IBM logon mode name (1-8 chars) [] : MCAUTO <Return>
+        IBM user data (1-32 chars) [] : <Return>
+
+        You will now be prompted for one or more PU/LU pairs.
+        Press <RETURN> when you have no more to enter.
+
+        PU name (SNA-n) [] : SNA-0 <Return>
+        LU list (number or range) [1-255] : <Return>
+
+        PU name (SNA-n) [] : SNA-1 <Return>
+        LU list (number or range) [1-255] : 1,7 <Return>
+
+        PU name (SNA-n) [] : <Return>
+
+        Access name (1-16 chars) [] : <Return>
+
+
+
+
+
+
+
+
+                                         Configuring the Gateway-CT 3-13
+
+ 
+
+
+
+
+
+
+           17 Access names are a convenient way to pass session-type
+              information when an LU-LU session is being established.
+              DECnet SNA Gateway-CT and Gateway-ST Management
+              explains how to use access names. If you know what
+              access names your site will use, you can define them
+              now. You can define them at a later time by editing the
+              configuration command procedure created in Part 2.
+
+              When you are finished defining access names (or if you
+              do not wish to define any at this time), press <Return>
+              at the access name prompt. The configuration procedure
+              then proceeds to Part 3.
+
+           18 Enter the access name (1-16 alphanumeric characters)
+              and press <Return>.
+
+           19 Enter the name of the IBM application for the access
+              name
+              (1-8 alphanumeric characters) and press <Return>.
+              Sessions established with this access name connect to
+              the designated IBM application. If you need to specify
+              this parameter, ask your IBM system programmer for the
+              name.
+
+           20 Enter an IBM ACF/VTAM Logon Mode Table entry (1-8
+              alphanumeric characters) to use at the start of each
+              session and press <Return>. This entry can specify
+              the protocol rules for the session. If you specify no
+              logon mode name, the default entry for the LU address
+              as defined on the IBM system is used. The name should
+              correspond with the operand label of an IBM ACF/VTAM
+              MODEENT macro.
+
+           21 Enter the optional string of user data (1-32 char-
+              acters), which are passed to the session partner and
+              press <Return>. The format of the data is specific to
+              the IBM application acting as the session partner.
+              Check with your IBM systems programmer for the
+              requirements of this field.
+
+           22 You are prompted for one or more PU/LU pairs. Press
+              <Return> when you have no more to enter. The PU name
+
+
+
+     3-14 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+                 specifies the PU used to access the IBM system. Enter
+                 the PU in the format SNA-n.
+
+                 You can define more than one PU per access name. You
+                 will be prompted for further PU/LU pairs until you
+                 press <Return> in response to the PU name prompt. You
+                 must enter at least one PU per access name.
+
+              23 The LU list identifies which LUs, for a given PU, can
+                 use this access name. Enter a list of numbers and/or
+                 number ranges separated by commas and press <Return>.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                         Configuring the Gateway-CT 3-15
+
+ 
+
+
+
+
+
+
+                         +-----------+
+                         |  Servers  |
+                         +-----------+
+
+     Server SNA-ACCESS
+     No questions for this server.
+
+     Server RJE
+     No questions for this server.  24
+
+     Server DHCF
+
+     You will now be prompted for the list of LUs allocated to DHCF for each PU.
+     Press <RETURN> if you do not wish to define any LU for a given PU.  25
+
+     LU list allocated to DHCF for PU SNA-0 (number or range) [] : 31,32 <Return>
+     LU list allocated to DHCF for PU SNA-1 (number or range) [] : 21-23 <Return>  26
+
+          All questions for this section have been answered.
+
+          The following SNANCP commands will be used to set the SNA database
+          in the Gateway each time it is loaded.  27
+
+     $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     $! Start of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_STAR_SNA.COM
+     $! DECnet SNA Gateway-CT SNA configuration file
+     $! Created: dd-mmm-yyyy hh:mm:ss by CONFIGURE V2.1
+     $! Host node: MIEMAT  User: JONES
+     $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     $ v = f$verify(1)
+     $ RUN SYS$SYSTEM:SNANCP
+     SET LINE CQ-0 -
+        PROTOCOL CHANNEL BLOCK -
+        BUFFER SIZE 8201 -
+        FORCED BURST DISABLED -
+        RECEIVE BUFFERS 128 -
+        LOGGING INFORMATIONAL
+     SET CIRCUIT CHAN-0 -
+        CHANNEL ADDRESS E11 -
+        LINE CQ-0 -
+        LOGGING INFORMATIONAL
+     SET PU SNA-0 CIRCUIT CHAN-0 -
+        LU LIST 1-255 -
+        SEGMENT SIZE 8201 -
+        LOGGING WARNING
+     SET CIRCUIT CHAN-0 STATE ON
+
+     3-16 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+              24 The system automatically defines all parameters for the
+                 SNA-ACCESS and RJE servers. (After the initial
+                 configuration, use SNANCP commands to modify any server
+                 information.)
+
+              25 After you define all your lines and their associated
+                 PUs, LUs, and access names, the configuration procedure
+                 prompts you for information about the DHCF server.
+
+                 If you are not using a DHCF server, press <Return> at
+                 the prompt.
+
+              26 The configuration procedure also defines all parameters
+                 for the DHCF server except for the LU list information.
+                 The configuration procedure will prompt you for this
+                 optional DHCF information.
+
+                 Enter a list of LUs to be allocated to the DHCF server,
+                 for example, 31, 32, 21-23, and then press <Return>.
+
+                 Press <Return> if you do not wish to define any LU for
+                 a given PU.
+
+              27 The system then displays the SNANCP commands in the
+                 configuration command procedure.
+
+                 The file that is displayed contains both information
+                 you specified for the SNA components and default system
+                 information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                         Configuring the Gateway-CT 3-17
+
+ 
+
+
+
+
+
+
+     SET CIRCUIT CHAN-1 -
+        CHANNEL ADDRESS E12 -
+        LINE CQ-0 -
+        LOGGING INFORMATIONAL
+     SET PU SNA-1 CIRCUIT CHAN-1 -
+        LU LIST 1-255 -
+        SEGMENT SIZE 8201 -
+        LOGGING WARNING
+     SET CIRCUIT CHAN-1 STATE ON
+     SET LINE CQ-0 STATE ON
+     SET ACCESS NAME NETVIEW -
+        APPLICATION NETVIEW -
+        LOGON MODE XT3278M2 -
+        PU SNA-0 -
+        LU LIST 1-255
+     SET ACCESS NAME TSO -
+        APPLICATION TSO1 -
+        LOGON MODE MCAUTO -
+        PU SNA-0 -
+        LU LIST 1-255
+     SET ACCESS NAME TSO -
+        PU SNA-1 -
+        LU LIST 1,7
+     SET SERVER SNA-ACCESS -
+        LOGGING WARNING -
+        NOTE "Gateway Access Server" -
+        STATE ON
+     SET SERVER RJE -
+        LOGGING WARNING -
+        NOTE "Remote Job Entry" -
+        STATE ON
+     SET SERVER DHCF -
+        PU SNA-0 LU LIST 31,32
+     SET SERVER DHCF -
+        PU SNA-1 LU LIST 21-23 -
+        LOGGING WARNING -
+        NOTE "Host Command Facility" -
+        STATE ON
+     $ EXIT $STATUS + (0 * 'f$verify(v)')
+     $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     $! End of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_STAR_SNA.COM
+     $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+
+
+     3-18 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+        Do you wish to redo this section? (Y|N) [N] : <Return>  28
+
+            The file you have created has been saved in:
+                      SYS$COMMON:[SNA$CSV]SNAGATEWAY_STAR_SNA.COM
+                You can edit this command file to change the configuration
+                of the SNA database in the Gateway. Any changes you make will
+                take effect the next time the Gateway is reloaded.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                         Configuring the Gateway-CT 3-19
+
+ 
+
+
+
+
+
+
+           28 If you answer Y and press <Return>, Part 2 of the
+              configuration is run again. You can provide different
+              values at the prompts.
+
+              Press <Return> to accept the default N. The configura-
+              tion procedure continues as shown.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     3-20 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+        ================================================================================
+          Part 3: Create a command file to configure the DECnet database in the Gateway
+        ================================================================================
+
+        Do you wish to create this command file? (Y|N) [Y] : <Return> 29
+
+        Privileged username? (1-16 chars) [] : SYSTEM <Return>  30
+        Privileged password? (1-16 chars) [] : SECRET <Return>  31
+        DECnet service password (up to 16 hex digits) [none] : 1E3C41EAB32D3BCD <Return>  32
+
+                All questions for this section have been answered.
+
+                The following NCP commands will be used to set the DECnet
+                database on the Gateway each time the Gateway is loaded.
+
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+        $! Start of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_STAR_DNA.COM
+        $! DECnet SNA Gateway-CT DECnet configuration file
+        $! Created: dd-mmm-yyyy hh:mm:ss by CONFIGURE V2.1
+        $! Host node: MIEMAT  User: JONES
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+        $ v = 'f$verify(0)'
+        $ DEFINE/NOLOG SNAGM$GATEWAY "STAR""SYSTEM SECRET""::"
+        $ CONSOLE "SET PASSWORD 1E3C41EAB32D3BCD"
+        $ RUN SYS$SYSTEM:NCP
+        SET EXECUTOR NODE STAR
+        SET EXECUTOR PRIV USER SYSTEM PASSWORD SECRET
+        $ EXIT $STATUS + (0 * f$verify(v))
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+        $! End of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_STAR_DNA.COM
+        $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+        Do you wish to redo this section? (Y|N) [N] : <Return>  33
+
+                The file you have created has been saved in:
+
+                        SYS$COMMON:[SNA$CSV]SNAGATEWAY_STAR_DNA.COM
+
+                You can edit this command file to change the configuration
+                of the DECnet database in the Gateway. Any changes you make will
+                take effect the next time the Gateway is reloaded.
+
+        ================================================================================
+                                     *Configuration Complete*
+        ================================================================================
+
+                You have now completed the three parts of the Gateway configuration
+                procedure.  The files you have created will be used to configure
+                the Gateway each time it is loaded.
+
+        ** End of CONFIGURE V2.1         Configuring the Gateway-CT 3-21
+
+ 
+
+
+
+
+
+
+           29 Press <Return> to accept the default Y if you want the
+              system to create the command file that configures the
+              DECnet database in the Gateway.
+
+              Enter N and press <Return> if you do not want the
+              system to create this file.
+
+           30 Enter the privileged username (1-16 alphanumeric
+              characters) and press <Return>.
+
+           31 Enter the privileged password (1-16 alphanumeric
+              characters) and press <Return>.
+
+              The privileged user name and password control access to
+              the following Gateway functions:
+
+              o  NCP CLEAR, LOOP, SET, and ZERO commands
+
+              o  SNANCP CLEAR, LOOP, SET, SHOW LU (for authorization
+                 information), and ZERO commands
+
+              o  SNATRACE commands
+
+              o  NETTRACE commands
+
+           32 Enter the password that triggers the bootstrap
+              mechanism on the target node and press <Return>.
+
+              The password can be up to 16 hexadecimal digits. For
+              Ethernet circuits, the password ranges from 0 to
+              FFFFFFFFFFFFFFFF. If you choose the default, no
+              password is set.
+
+              ________________________Note ________________________
+
+              Digital Equipment Corporation recommends that
+              you select a service password that is at least 6
+              hexadecimal digits long.
+
+              _____________________________________________________
+
+           33 If you answer Y and press <Return>, Part 3 of the
+              configuration is run again; you can provide different
+              values at the prompts.
+
+              Press <Return> to accept the default N. The configura-
+              tion continues as shown.
+
+     3-22 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+        3.1 DECnet/OSI Configuration Example
+
+
+              WECAN>@sys$manager:snacsa$configure <Return>
+
+               SNACSA$CONFIGURE V2.1
+               DECnet SNA Gateway-CT configuration procedure.
+
+               Configuration is divided into three parts:
+
+               . Part 1: Define the Gateway node in the load host's
+                 DECnet database.
+
+               . Part 2: Create a command file that will be used to
+                 configure the SNA database in the Gateway
+                 each time it is loaded.
+
+               . Part 3: Create a command file that will be used to
+                 configure the DECnet database in the Gateway
+                 each time it is loaded.
+
+               This configuration procedure prompts you to see if you want
+               to run each of the three parts.  All parts must be completed
+               before the Gateway can be loaded. Enter "?" at any time for
+               help.
+
+              DECnet SNA Gateway-CT node name [] : finn <Return>
+
+              ================================================================================
+                Part 1: Define the Gateway node in the load host DECnet database
+              ================================================================================
+
+              Define the Gateway node in WECAN's DECnet database? (Y|N) [Y] : <Return>
+
+              DECnet node address of FINN (aa.nnnn) [] : 4.47 <Return>
+              Ethernet hardware address (12 hex digits) [] : 08-00-2b-13-f4-f4 <Return>
+              Load file (file-spec) [SYS$COMMON:[SNA$CSV]SNACSA021.SYS] : <Return>
+              Device and directory for dump file [SYS$COMMON:[SNA$CSV]] : <Return>
+              Host's Ethernet circuit name (circuit-id) [SVA-0] : <Return>
+                   Checksum file updated last by SILVERSTONE on 28-JUL-1993 22:00:32.87
+              %NET$CONFIGURE-I-VERCHECKSUM, verifying checksums
+
+                      The following NCL script files have been modified since being
+                      created by this procedure:
+
+                                         Configuring the Gateway-CT 3-23
+
+ 
+
+
+
+
+
+
+             SYS$SYSROOT:[SYSMGR]NET$ROUTING_STARTUP.NCL;
+             SYS$SYSROOT:[SYSMGR]NET$CSMACD_STARTUP.NCL;
+             SYS$SYSROOT:[SYSMGR]NET$EVENT_STARTUP.NCL;
+             SYS$SYSROOT:[SYSMGR]NET$MOP_CIRCUIT_STARTUP.NCL;
+
+                   This procedure may create a new version of these scripts or modify
+                   information contained within them. In all cases, any previously
+                   created NCL scripts are renamed to "file.NCL-OLD", so that you
+                   may review any of your previous changes.
+
+           %NET$CONFIGURE-I-MODCHECKSUM, checksumming NCL
+                management scripts modified by NET$CONFIGURE
+           %NET$CONFIGURE-I-CONFIGCOMPLETED, DECnet/OSI for OpenVMS configuration completed
+                Checksum file updated last by SILVERSTONE on  3-AUG-1993 11:55:28.89
+           %NET$CONFIGURE-I-VERCHECKSUM, verifying checksums
+
+                   The following NCL script files have been modified since being
+                   created by this procedure:
+
+             SYS$SYSROOT:[SYSMGR]NET$ROUTING_STARTUP.NCL;
+             SYS$SYSROOT:[SYSMGR]NET$CSMACD_STARTUP.NCL;
+             SYS$SYSROOT:[SYSMGR]NET$EVENT_STARTUP.NCL;
+             SYS$SYSROOT:[SYSMGR]NET$MOP_CIRCUIT_STARTUP.NCL;
+
+                   This procedure may create a new version of these scripts or modify
+                   information contained within them. In all cases, any previously
+                   created NCL scripts are renamed to "file.NCL-OLD", so that you
+                   may review any of your previous changes.
+
+           Node 0 MOP Client FINN
+           at 1993-08-03-11:55:49.392-04:00I0.265
+
+           Node 0 MOP Client FINN
+           at 1993-08-03-11:55:50.232-04:00I0.266
+
+           Characteristics
+
+               Circuit                           = SVA-0
+
+           Node 0 MOP Client FINN
+           at 1993-08-03-11:55:50.272-04:00I0.266
+
+           Characteristics
+
+
+     3-24 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+                  Addresses                         =
+                     {
+                        08-00-2B-13-F4-F4 ,
+                        AA-00-04-00-2F-10 (DEC:.LKG.FINN)
+                     }
+
+              Node 0 MOP Client FINN
+              at 1993-08-03-11:55:50.372-04:00I0.266
+
+              Characteristics
+
+                  System Image                      =
+                     {
+
+                        SYS$COMMON:[SNA$CSV]SNACSA021.SYS
+                     }
+
+              Node 0 MOP Client FINN
+              at 1993-08-03-11:55:50.442-04:00I0.266
+
+              Characteristics
+
+                  Dump File                         =
+                     {
+
+                        SYS$COMMON:[SNA$CSV]FINN.DMP
+                     }
+
+              Node 0 MOP Client FINN
+              at 1993-08-03-11:55:50.522-04:00I0.266
+
+              Characteristics
+
+                  Dump Address                      = 0
+
+              Node 0 MOP Client FINN
+              at 1993-08-03-11:55:50.652-04:00I0.266
+
+              Characteristics
+
+                  Verification                      = '0000000000000000'H
+
+              Node 0 MOP Client FINN
+              at 1993-08-03-11:55:50.802-04:00I0.266
+
+              Characteristics
+
+                  Phase IV Host Name                = WECAN
+
+                                         Configuring the Gateway-CT 3-25
+
+ 
+
+
+
+
+
+
+           Node 0 MOP Client FINN
+           at 1993-08-03-11:55:50.922-04:00I0.266
+
+           Characteristics
+
+               Phase IV Host Address             = 4.207
+
+           Node 0 MOP Client FINN
+           at 1993-08-03-11:55:51.062-04:00I0.266
+
+           Characteristics
+
+               Phase IV Client Name              = FINN
+
+           Node 0 MOP Client FINN
+           at 1993-08-03-11:55:51.122-04:00I0.266
+
+           Characteristics
+
+               Phase IV Client Address           = 4.47
+
+           %NET$CONFIGURE-I-MODCHECKSUM, checksumming NCL
+                management scripts modified by NET$CONFIGURE
+           %NET$CONFIGURE-I-CONFIGCOMPLETED, DECnet/OSI for OpenVMS configuration completed
+
+           Creating proxy login for FINN::SNA$GO.
+           %UAF-I-NAFADDMSG, record successfully added to network proxy data base
+
+           Do you wish to redo this section? (Y|N) [N] : n <Return>
+
+           ================================================================================
+             Part 2: Create a command file to configure the SNA database in the Gateway
+           ================================================================================
+
+           Do you wish to create this command file? (Y|N) [Y] : <Return>
+
+           This product supports a single line.
+
+                               +---------------+
+                               |   Line CQ-0   |
+                               +---------------+
+
+           Number of circuits to be configured for CQ-0 (1-4) [1] : 1 <Return>
+           What type of channel will be used? (Block/Byte/Selector) [Block] : <Return>
+           Line buffer size (maximum RU size plus 9)? (bytes) [8201] : <Return>
+
+                               +---------------+
+                               |Circuit CHAN-0 |
+                               +---------------+
+
+           Channel address? (3 hex digits) [] : e10 <Return>
+
+     3-26 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+                                  +---------------+
+                                  |   PU SNA-0    |
+                                  +---------------+
+
+              Enter the list of available LU addresses (number or range) [1-255] : <Return>
+
+                                  +--------------+
+                                  | Access names |
+                                  +--------------+
+
+              You will now be prompted for one or more access names.
+              Press <RETURN> when you have no more to enter.
+
+              Access name (1-16 chars) [] : tso <Return>
+              IBM application name (1-8 chars) [] : tsol <Return>
+              IBM logon mode name (1-8 chars) [] : mcauto <Return>
+              IBM user data (1-32 chars) [] :  <Return>
+
+              You will now be prompted for one or more PU/LU pairs.
+              Press <RETURN> when you have no more to enter.
+
+              PU name (SNA-n) [] : sna-1 <Return>
+              LU list (number or range) [1-255] : <Return>
+
+              PU name (SNA-n) [] : <Return>
+
+              Access name (1-16 chars) [] : <Return>
+
+                                  +-----------+
+                                  |  Servers  |
+                                  +-----------+
+
+              Server SNA-ACCESS
+              No questions for this server.
+
+              Server RJE
+              No questions for this server.
+
+              Server DHCF
+              You will now be prompted for the list of LUs allocated to DHCF for each PU.
+              Press <RETURN> if you do not wish to define any LU for a given PU.
+
+              LU list allocated to DHCF for PU SNA-0 (number or range) [] : <Return>
+
+               All questions for this section have been answered.
+
+               The following SNANCP commands will be used to set the SNA database
+               in the Gateway each time it is loaded.
+
+                                         Configuring the Gateway-CT 3-27
+
+ 
+
+
+
+
+
+
+           $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+           $! Start of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_FINN_SNA.COM
+           $! DECnet SNA Gateway-CT SNA configuration file
+           $! Created:  3-AUG-1993 11:57:21.81 by SNACSA$CONFIGURE V2.1
+           $! Host node: WECAN  User: SILVERSTONE
+           $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+           $ v = f$verify(1)
+           $ RUN SYS$SYSTEM:SNANCP
+           SET LINE CQ-0 -
+              PROTOCOL CHANNEL BLOCK -
+              BUFFER SIZE 8201 -
+              FORCED BURST DISABLED -
+              RECEIVE BUFFERS 128 -
+              LOGGING INFORMATIONAL
+           SET CIRCUIT CHAN-0 -
+              CHANNEL ADDRESS E10 -
+              LINE CQ-0 -
+              LOGGING INFORMATIONAL
+           SET PU SNA-0 CIRCUIT CHAN-0 -
+              LU LIST 1-255 -
+              SEGMENT SIZE 8201 -
+              LOGGING WARNING
+           SET CIRCUIT CHAN-0 STATE ON
+           SET LINE CQ-0 STATE ON
+           SET ACCESS NAME TSO -
+              APPLICATION TSOL -
+              LOGON MODE MCAUTO -
+              PU SNA-1 -
+              LU LIST 1-255
+           SET SERVER SNA-ACCESS -
+              LOGGING WARNING -
+              NOTE "Gateway Access Server" -
+              STATE ON
+           SET SERVER RJE -
+              LOGGING WARNING -
+
+           RETURN to continue <Return>
+
+
+
+
+
+
+
+
+     3-28 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+                 NOTE "Remote Job Entry" -
+                 STATE ON
+              SET SERVER DHCF -
+                 LOGGING WARNING -
+                 NOTE "Host Command Facility" -
+                 STATE OFF
+              $ EXIT $STATUS + (0 * 'f$verify(v)')
+              $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+              $! End of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_FINN_SNA.COM
+              $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+              Do you wish to redo this section? (Y|N) [N] : <Return>
+
+               The file you have created has been saved in:
+
+                SYS$COMMON:[SNA$CSV]SNAGATEWAY_FINN_SNA.COM
+
+               You can edit this command file to change the configuration
+               of the SNA database in the Gateway. Any changes you make will
+               take effect the next time the Gateway is reloaded.
+
+              ================================================================================
+                Part 3: Create a command file to configure the DECnet database in the Gateway
+              ================================================================================
+
+              Do you wish to create this command file? (Y|N) [Y] : <Return>
+
+              Privileged username? (1-16 chars) [] : system <Return>
+              Privileged password? (1-16 chars) [] : system <Return>
+              DECnet service password (up to 16 hex digits) [none] : <Return>
+
+               All questions for this section have been answered.
+
+               The following NCP commands will be used to set the DECnet
+               database on the Gateway each time the Gateway is loaded.
+
+
+
+
+
+
+
+
+
+
+                                         Configuring the Gateway-CT 3-29
+
+ 
+
+
+
+
+
+
+           $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+           $! Start of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_FINN_DNA.COM
+           $! DECnet SNA Gateway-CT DECnet configuration file
+           $! Created:  3-AUG-1993 12:00:49.33 by SNACSA$CONFIGURE V2.1
+           $! Host node: WECAN  User: SILVERSTONE
+           $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+           $ v = 'f$verify(0)'
+           $ DEFINE/NOLOG SNAGM$GATEWAY "FINN""SYSTEM SYSTEM""::"
+           $ CONSOLE "SET PASSWORD 0"
+           $ RUN SYS$SYSTEM:NCP
+           SET EXECUTOR NODE FINN
+           SET EXECUTOR PRIV USER SYSTEM PASSWORD SYSTEM
+           $ EXIT $STATUS + (0 * f$verify(v))
+           $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+           $! End of file: SYS$COMMON:[SNA$CSV]SNAGATEWAY_FINN_DNA.COM
+           $!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+           Do you wish to redo this section? (Y|N) [N] : <Return>
+
+            The file you have created has been saved in:
+
+             SYS$COMMON:[SNA$CSV]SNAGATEWAY_FINN_DNA.COM
+
+            You can edit this command file to change the configuration
+            of the DECnet database in the Gateway. Any changes you make will
+            take effect the next time the Gateway is reloaded.
+
+           ================================================================================
+                    *Configuration Complete*
+           ================================================================================
+
+            You have now completed the three parts of the Gateway configuration
+            procedure.  The files you have created will be used to configure
+            the Gateway each time it is loaded.
+
+           ** End of SNACSA$CONFIGURE V2.1
+
+
+
+
+
+
+
+
+
+     3-30 Configuring the Gateway-CT
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                         Loading the Gateway-CT Software
+
+
+
+              This chapter explains how to down-line load the Gateway-CT
+              software from the load host into the ChannelServer
+              hardware unit.
+
+                ________________________Note  ________________________
+
+                This section deals with DECnet/VAX commands and
+                examples, and these may be different for DECnet
+                /OSI. See Section 3.1 and Section 4.3 for complete
+                examples of a configuration and loading of the
+                software on a DECnet/OSI system. Also, refer to
+                the DECnet/OSI NCL Reference Manual for information
+                on NCL commands.
+
+                _____________________________________________________
+
+              After you complete the installation (see Chapter 2)
+              and configuration (see Chapter 3), load the Gateway-CT
+              software into the ChannelServer by doing one of the
+              following:
+
+              o  For the initial software load, plug in and power up the
+                 ChannelServer. As part of its power-up sequence, the
+                 hardware unit requests a software load from the load
+                 host.
+
+              o  For subsequent software loads, issue an NCP TRIGGER or
+                 remote console BOOT command on the load host. (Ensure
+                 that the ChannelServer is powered up.)
+
+              Loading should take about 3 minutes, but could vary
+              according to the type of CPU and disks on the load host,
+              the amount of other work the load host is processing, and
+              the volume of traffic on the local area network (LAN).
+
+                                     Loading the Gateway-CT Software 4-1
+
+ 
+
+
+
+
+
+
+     4.1 Before Loading the Software
+
+           Before you load the Gateway-CT software, do the following:
+
+           o  Register and Load the PAK.
+              Refer to Chapter 1 for instructions on registering and
+              loading the Product Authorization Key.
+
+           o  Install the Gateway-CT V2.1 software.
+              Chapter 2 explains how to install Gateway-CT V2.1.
+
+           o  Configure the Gateway-CT system.
+              Chapter 3 explains how to configure the Gateway-CT.
+
+           o  Inspect the Ethernet cable to the load host.
+              Check that the cable is connected.
+
+           o  Verify that the load host's Ethernet line and the
+              circuit are set properly.
+              Enter the following NCP commands to check the state and
+              characteristics of the load host's Ethernet line and
+              circuit (over which the software will be loaded):
+
+              NCP>SHOW LINE line-id CHARACTERISTICS
+              NCP>SHOW CIRCUIT circuit-id CHARACTERISTICS
+
+              where line-id is the device name of the Ethernet line
+              and circuit-id is the device name of the Ethernet
+              circuit. The parameters for the line and circuit you
+              specify will be displayed.
+
+              Table 4-1 shows the default values for several
+              parameters.
+
+           Table_4-1_Ethernet_Line_and_Circuit_Characteristics_______
+
+           LINE_CHARACTERISTICS:_Parameter_____Value_________________
+
+                                 Protocol      Ethernet
+
+                                 Service       4000 ms
+                                 Timer
+
+                                             (continued on next page)
+
+     4-2 Loading the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              Table_4-1_(Cont.)_Ethernet_Line_and_Circuit_Characteristics
+
+              CIRCUIT_CHARACTERISTICParameter_____Value_________________
+
+                                    Service       Enabled
+
+              ______________________Type__________Ethernet______________
+
+                 If the parameters for your line and circuit do not
+                 correspond to the values shown, use the appropriate NCP
+                 commands to change these values:
+
+                 -  The line and circuit must both be ON. If they are
+                    not, use the NCP SET LINE and SET CIRCUIT commands
+                    to set them to the ON state.
+
+                 -  The service timer must be set to a value that is
+                    large enough to allow the software to load. The
+                    service timer sets the maximum time that will
+                    elapse during service for the Gateway-CT before
+                    a retransmission is necessary. The default (4000 ms)
+                    should be sufficient; if it is not, use the NCP SET
+                    LINE SERVICE TIMER command to change this value.
+
+                 -  The service on the circuit must be ENABLED. If it
+                    is not, use the NCP SET CIRCUIT SERVICE command to
+                    enable service on the circuit.
+
+              o  Verify that the ChannelServer installation has been
+                 completed.
+                 See the DEC ChannelServer II Installation or the
+                 DEC ChannelServer Hardware Installation Guide for
+                 details.
+
+              o  Enable event logging at the DECnet load host.
+                 Event logging records all system and network events or
+                 errors and is used to diagnose problems that can occur
+                 with the Gateway-CT. Use the NCP SET LOGGING command
+                 to enable event logging. The OpenVMS System Manager's
+                 Manual provides additional information about DECnet
+                 event logging.
+
+              o  Enable DECnet event logging on the DECnet load host.
+                 If you enable event logging at a terminal connected to
+                 the load host, you will receive a log of the events
+                 that occur during loading. You can examine this
+                 log to verify that the Gateway-CT software loaded
+
+                                     Loading the Gateway-CT Software 4-3
+
+ 
+
+
+
+
+
+
+              successfully. If a problem appears while you are
+              loading the software, you can examine the event log
+              to determine the cause.
+
+              ________________________Note ________________________
+
+              To enable logging at a terminal connected to the
+              load host, you need OPER privilege.
+
+              _____________________________________________________
+
+              Issue the following DCL command from the terminal on
+              which you want to receive the event messages:
+
+              $ REPLY/ENABLE=NETWORK
+
+              To ensure that SNA event logging is active, use the DCL
+              SHOW SYSTEM command. You should see a process called
+              SNAEVL.
+
+     4.2 Loading the Software on DECnet/VAX
+
+           You use the NCP TRIGGER command to start loading the
+           Gateway-CT software.
+
+              ________________________Note ________________________
+
+              If you use the NCP LOAD command, a communications
+              error between the load host and the Gateway-CT will
+              result. Use the NCP TRIGGER command instead.
+
+              _____________________________________________________
+
+           If your terminal is logged into the load host, issue the
+           NCP TRIGGER NODE command using the following format:
+
+           NCP>TRIGGER NODE node-id
+
+           where node-id identifies the name of the Gateway node.
+           If a service password was defined for the Gateway node,
+           include the password in the NCP TRIGGER command.
+
+           For example:
+
+           NCP>TRIGGER NODE STAR SERVICE PASSWORD 1E3C41EAB32D3BCD
+
+     4-4 Loading the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              The NCP TRIGGER command sets off a bootstrap mechanism in
+              the ChannelServer which causes the unit to send a request-
+              to-load
+              message to all hosts on the Ethernet LAN. Gateway load
+              hosts are configured to receive the message. The first
+              load host that responds to the request-to-load message
+              loads the Gateway-CT software into the Gateway node.
+
+              If no errors occur during loading, the event-logging
+              terminal displays the following event messages; the exact
+              messages and sequence might vary:
+
+              %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc %%%%%%%%%%%
+              Message from user DECNET on MIEMAT
+              DECnet event 0.3, automatic line service
+              From node 4.576 (MIEMAT), dd-mmm-yyyy hh:mm:ss.cc
+              Circuit BNA-0, Load, Requested, Node = 4.752 (STAR)
+              File = SYS$COMMON:[SNA$CSV]SNACSA021.SYS, Operating system
+              Ethernet address = 08-00-2B-08-CC-B3
+
+              %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc  %%%%%%%%%%%
+              Message from user DECNET on MIEMAT
+              DECnet event 0.3, automatic line service
+              From node 4.576 (MIEMAT), dd-mmm-yyyy hh:mm:ss.cc
+              Circuit BNA-0, Load, Successful, Node = 4.752 (STAR)
+              File = SYS$COMMON:[SNA$CSV]SNACSA021.SYS, Operating system
+              Ethernet address = 08-00-2B-08-CC-B3
+
+              %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc  %%%%%%%%%%%
+              Message from user SYSTEM on MIEMAT
+              DECnet SNA event 266.10, Logging sink state change
+              From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+              Logging sink type = monitor,  Severity = informational
+              Sink node = 4.576 (MIEMAT)
+              New state = on, old state = off
+
+              %%%%%%%%%%%  OPCOM dd-mmm-yyyy hh:mm:ss.cc  %%%%%%%%%%%
+              Message from user SYSTEM on MIEMAT
+              DECnet SNA event 266.0, Gateway initialization
+              From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+              Management,  Severity = informational
+              Started, DECnet SNA Gateway-CT V2.1 BLn
+
+
+
+                                     Loading the Gateway-CT Software 4-5
+
+ 
+
+
+
+
+
+
+           %%%%%%%%%%%  OPCOM dd-mmm-yyyy hh:mm:ss.cc  %%%%%%%%%%%
+           Message from user SYSTEM on MIEMAT
+           DECnet SNA event 266.2, Initialization message
+           From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+           Management,  Severity = informational
+           Default node database loaded
+
+           %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc  %%%%%%%%%%%
+           Message from user SYSTEM on MIEMAT
+           DECnet SNA event 266.2, Initialization message
+           From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+           Management,  Severity = informational
+           Setting gateway DECnet configuration
+
+           %%%%%%%%%%%  OPCOM dd-mmm-yyyy hh:mm:ss.cc  %%%%%%%%%%%
+           Message from user SYSTEM on MIEMAT
+           DECnet SNA event 266.2, Initialization message
+           From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+           Management,  Severity = informational
+           Setting gateway SNA configuration
+
+           %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc %%%%%%%%%%%
+           Message from user SYSTEM on MIEMAT
+           DECnet SNA event 257.0, Circuit state change
+           From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+           Circuit CHAN-0,  Severity = informational
+           New state = on-starting, old state = off
+
+           %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc %%%%%%%%%%%
+           Message from user SYSTEM on MIEMAT
+           DECnet SNA event 257.0, Circuit state change
+           From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+           Circuit CHAN-1,  Severity = informational
+           New state = on-starting, old state = off
+
+           %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc %%%%%%%%%%%
+           Message from user SYSTEM on MIEMAT
+           DECnet SNA event 256.0, Line state change
+           From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+           Line CQ-0,  Severity = informational
+           New state = on-starting, old state = off
+
+
+
+
+     4-6 Loading the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc %%%%%%%%%%%
+              Message from user SYSTEM on MIEMAT
+              DECnet SNA event 256.0, Line state change
+              From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+              Line CQ-0,  Severity = informational
+              New state = on, old state = on-starting
+
+              After the software has been loaded and initialized without
+              errors, you should see the following display:
+
+              %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc  %%%%%%%%%%%
+              Message from user SYSTEM on MIEMAT
+              DECnet SNA event 266.0, Gateway initialization
+              From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+              Management,  Severity = informational
+              Complete, status = success
+
+              %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc %%%%%%%%%%%
+              Message from user SYSTEM on MIEMAT
+              DECnet SNA event 257.0, Circuit state change
+              From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+              Circuit CHAN-0,  Severity = informational
+              New state = on, old state = on-starting
+
+              %%%%%%%%%%%  OPCOM  dd-mmm-yyyy hh:mm:ss.cc %%%%%%%%%%%
+              Message from user SYSTEM on MIEMAT
+              DECnet SNA event 257.0, Circuit state change
+              From node 4.752 (STAR), dd-mmm-yyyy hh:mm:ss.cc
+              Circuit CHAN-1,  Severity = informational
+              New state = on, old state = on-starting
+
+        4.3 Loading the Software on DECnet/OSI
+
+              WECAN>mc ncl boot mop client finn <Return>
+
+              Node 0 MOP Client FINN
+              at 1993-08-03-12:01:42.653-04:00I0.304
+
+
+
+
+
+
+
+
+                                     Loading the Gateway-CT Software 4-7
+
+ 
+
+
+
+
+
+
+           %%%%%%%%%%%  OPCOM   3-AUG-1993 12:39:00.80  %%%%%%%%%%%
+           Message from user SYSTEM on WECAN
+           Event: Load Request Completed
+           from: Node DEC:.LKG.WECAN MOP Circuit SVA-0,
+           at: 1993-08-03-12:38:59.044-04:00I0.266
+           Client=FINN,
+           Address=08-00-2B-13-F4-F4,
+           Program Type=System,
+           File=SYS$COMMON:<SNA$CSV>SNACSA021.SYS;1
+           eventUid   67A030F7-8FEE-11CC-8028-AA000400CF10
+           entityUid  17DC1207-8FE4-11CC-8028-AA000400CF10
+           streamUid  06FE9EC0-8FE3-11CC-8027-AA000400CF10
+
+           %%%%%%%%%%%  OPCOM   3-AUG-1993 12:39:04.46  %%%%%%%%%%%
+           Message from user SYSTEM on WECAN
+           DECnet SNA event 266.10, Logging sink state change
+           From node 4.47 (FINN),  3-AUG-1993 12:38:59.78
+           Logging sink type = monitor,  Severity = informational
+           Sink node = 4.207 (WECAN)
+           New state = on, old state = off
+
+           %%%%%%%%%%%  OPCOM   3-AUG-1993 12:39:07.43  %%%%%%%%%%%
+           Message from user SYSTEM on WECAN
+           DECnet SNA event 266.0, Gateway initialization
+           From node 4.47 (FINN),  3-AUG-1993 12:39:01.93
+           Management,  Severity = informational
+           Started, DECnet SNA Gateway-CT V2.1-03
+
+           %%%%%%%%%%%  OPCOM   3-AUG-1993 12:39:15.05  %%%%%%%%%%%
+           Message from user SYSTEM on WECAN
+           DECnet SNA event 266.1, Initialization failure
+           From node 4.47 (FINN),  3-AUG-1993 12:39:13.26
+           Management,  Severity = error
+           Failed to connect, load host NML
+           %SYSTEM-F-REJECT, connect to network object rejected
+
+           %%%%%%%%%%%  OPCOM   3-AUG-1993 12:39:26.45  %%%%%%%%%%%
+           Message from user SYSTEM on WECAN
+           DECnet SNA event 266.1, Initialization failure
+           From node 4.47 (FINN),  3-AUG-1993 12:39:24.78
+           Management,  Severity = error
+           Failed to connect, load host NML
+           %SYSTEM-F-REJECT, connect to network object rejected
+
+
+     4-8 Loading the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+              %%%%%%%%%%%  OPCOM   3-AUG-1993 12:39:31.45  %%%%%%%%%%%
+              Message from user SYSTEM on WECAN
+              DECnet SNA event 266.1, Initialization failure
+              From node 4.47 (FINN),  3-AUG-1993 12:39:29.82
+              Management,  Severity = error
+              Failed to connect, load host NML
+              %SYSTEM-F-REJECT, connect to network object rejected
+
+              %%%%%%%%%%%  OPCOM   3-AUG-1993 12:40:45.95  %%%%%%%%%%%
+              Message from user SYSTEM on WECAN
+              DECnet SNA event 266.2, Initialization message
+              From node 4.47 (FINN),  3-AUG-1993 12:40:44.36
+              Management,  Severity = informational
+              Setting gateway DECnet configuration
+
+              %%%%%%%%%%%  OPCOM   3-AUG-1993 12:40:52.96  %%%%%%%%%%%
+              Message from user SYSTEM on WECAN
+              DECnet SNA event 257.0, Circuit state change
+              From node 4.47 (FINN),  3-AUG-1993 12:40:51.35
+              Circuit CHAN-0,  Severity = informational
+              New state = on-starting, old state = off
+
+              %%%%%%%%%%%  OPCOM   3-AUG-1993 12:40:54.75  %%%%%%%%%%%
+              Message from user SYSTEM on WECAN
+              DECnet SNA event 256.0, Line state change
+              From node 4.47 (FINN),  3-AUG-1993 12:40:51.40
+              Line CQ-0,  Severity = informational
+              New state = on-starting, old state = off
+
+              %%%%%%%%%%%  OPCOM   3-AUG-1993 12:40:58.12  %%%%%%%%%%%
+              Message from user SYSTEM on WECAN
+              DECnet SNA event 256.0, Line state change
+              From node 4.47 (FINN),  3-AUG-1993 12:40:51.40
+              Line CQ-0,  Severity = informational
+              New state = on, old state = on-starting
+
+              %%%%%%%%%%%  OPCOM   3-AUG-1993 12:40:58.34  %%%%%%%%%%%
+              Message from user SYSTEM on WECAN
+              DECnet SNA event 256.1, Channel reset
+              From node 4.47 (FINN),  3-AUG-1993 12:40:56.33
+              Line CQ-0,  Severity = errorType = selective
+
+
+
+
+                                     Loading the Gateway-CT Software 4-9
+
+ 
+
+
+
+
+
+
+           %%%%%%%%%%%  OPCOM   3-AUG-1993 12:40:58.73  %%%%%%%%%%%
+           Message from user SYSTEM on WECAN
+           DECnet SNA event 257.0, Circuit state change
+           From node 4.47 (FINN),  3-AUG-1993 12:40:56.33
+           Circuit CHAN-0,  Severity = informational
+           New state = on-disconnected, old state = on-starting
+
+           %%%%%%%%%%%  OPCOM   3-AUG-1993 12:41:06.53  %%%%%%%%%%%
+           Message from user SYSTEM on WECAN
+           DECnet SNA event 266.0, Gateway initialization
+           From node 4.47 (FINN),  3-AUG-1993 12:41:04.93
+           Management,  Severity = informational
+           Complete, status = success
+
+           If errors occur during loading, the event-logging terminal
+           displays any errors which were detected during loading and
+           initialization. DECnet SNA Gateway for Channel Transport
+           and Gateway for Synchronous Transport Management lists
+           the SNANCP error messages and explains how to recover from
+           them.
+
+           If any errors occur when the configuration file loads,
+           the errors are reported to the event log. DECnet SNA
+           Gateway for Channel Transport and Gateway for Synchronous
+           Transport Management lists and explains all initialization
+           messages generated by the Gateway-CT software.
+
+           If you issue an NCP TRIGGER command from any node on
+           the Ethernet LAN and the Gateway node fails to start,
+           you might try starting the load at the hardware unit.
+           DECnet SNA Gateway for Channel Transpfort Problem Solving
+           (OpenVMS and ULTRIX) should help you find the source of a
+           failure.
+
+     4.4 Checking the Connection Between the Gateway Node and the
+         Load Host
+
+           After the Gateway-CT software loads, check the connection
+           between the Gateway node and the load host. After the
+           Gateway node starts up, verify that the link from the load
+           host to the DECnet node is working properly, as follows:
+
+           o  Ensure that the load host can communicate with the
+              Gateway node; issue the NCP command SET EXECUTOR NODE
+              with the Gateway node as the node name. If you receive
+              an error message after entering this command, refer
+
+     4-10 Loading the Gateway-CT Software
+
+ 
+
+
+
+
+
+
+                 to DECnet SNA Gateway for Channel Transport Problem
+                 Solving (OpenVMS and ULTRIX) for help.
+
+              o  Check the results of the NCP SET EXECUTOR NODE command;
+                 issue the following command:
+
+                 NCP>SHOW EXECUTOR STATUS
+
+                 If you receive an error message after this command,
+                 see DECnet SNA Gateway-CT Problem Solving (OpenVMS
+                 and ULTRIX). Also, check the event log for a message
+                 showing circuit activity with the DECnet node since the
+                 Gateway-CT was booted.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    Loading the Gateway-CT Software 4-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+     A                                    Channel-attached lines
+     ___________________________           channel, type of,  3-11
+     Access names,  1-15                   forced-burst mode,  1-13,
+       IBM application name,                  3-11
+         1-15                              line buffer size,  1-13,
+       IBM logon mode name, 1-15              3-11
+       IBM user data, 1-15                 number of circuits,  1-13,
+       LU list defined for the                3-11
+         PU,  1-15                         type of channel,  1-13
+       PU name defined for the            Configuring the Gateway-CT
+         access name,  1-15                DECnet database
+     Access routines                          information,  3-1
+       required for installation           Gateway node,  3-1
+         ,  1-7                            SNA components,  3-1
+     ASTLM quota,  1-5
+
+                                          D__________________________
+     B__________________________          DECnet SNA Gateway-CT
+
+     Bill of Materials (BOM),              defined,  1-1
+        1-2                                preparing for
+     BIOLM quota,  1-5                        installation,  1-2
+     BYTLM quota,  1-5                    DECnet/SNA network
+                                           DECnet nodes in a,  1-3
+     C__________________________          Defining access names
+     Channel-attached circuits             access name,  3-14
+       defining the channel                IBM application name,
+         address,  1-14, 3-11                 3-14
+       defining the circuit                IBM user data,  3-14
+         name,  1-14                       logon mode name,  3-14
+     Channel-attached line                 PU name defined for the
+       channel, type of, 1-13                 access name,  3-15
+                                           PU/LU pairs,  3-15
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+     Defining DECnet database
+        information                       G__________________________
+       file specification, 3-1            Gateway DECnet database,
+       privileged password,                 1-16, 3-22
+         1-17, 3-22
+       privileged username,               I
+         1-17, 3-22                       ___________________________
+     Defining information in the          Initializing the Gateway
+        DECnet database, 1-16,              DECnet database,  1-16,
+        3-22                                3-22
+     Defining SNA components              Installation
+       access names, 1-14                  diagnostics,  2-6
+       channel-attached circuits           files created,  2-14
+         ,  1-14, 3-11                     Gateway management,  2-6
+       channel-attached line,              preparing the DECnet
+         1-13                                 environment,  1-3
+       channel-attached lines,             preparing the IBM
+         3-11                                 environment,  1-3
+       file specification, 3-1             procedure,  2-1
+       physical units (PUs),              Installation Verification
+         1-14, 3-12                         Procedure (IVP), running
+     Defining the Gateway node              during installation,  2-9
+
+       DECnet node address,
+         1-10, 3-3                        L__________________________
+
+       Dump file device and               Loading the Gateway -CT
+         directory,  1-12, 3-3              software
+       Ethernet hardware address           terminal logged into load
+         ,  1-11, 3-3                         host,  4-4
+       file specification, 3-1            Loading the Gateway-CT
+       Host's Ethernet service              software
+         circuit,  1-12, 3-4               NCP command lines,  4-4
+     Defining the Gateway-CT               preloading tasks,  4-2
+        node name, 3-3                     with NCP TRIGGER NODE,
+     DIOLM quota,  1-5                        4-1, 4-4
+     Disk space
+       requirements for                   O__________________________
+         installation,  1-5               OpenVMS
+     Distribution kit,  1-2                installing a new version
+
+                                              of,  1-7
+                                           system privileges,  1-5
+
+
+     Index-2
+
+ 
+
+
+
+
+
+
+                                            PUs
+        P__________________________           LUs defined for the PU,
+        Preparing the DECnet                     1-14
+
+          environment for the               U
+          installation,  1-3                ___________________________
+        Preparing the IBM                   UIC, specifying during
+          environment for the                  installation, 2-9
+          installation,  1-3
+        Privileges                          V__________________________
+
+         see OpenVMS system                 VMScluster,  1-8
+            privileges                      VMSINSTAL utility
+        Process quotas, 1-5                   running,  2-1
+                                              specifying OPTIONS N,  2-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                 Index-3

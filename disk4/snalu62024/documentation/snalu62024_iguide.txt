@@ -1,0 +1,1721 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    DIGITAL SNA APPC/LU6.2
+                    Programming Interface
+                    for_OpenVMS_________________________________________
+                    Installation
+
+
+                    Part Number: AA-EV68G-TE
+
+
+                    November 1998
+
+                    This document describes how to install the DIGITAL
+                    SNA APPC/LU6.2 Programming Interface for OpenVMS
+                    software on a VAX or Alpha system running the OpenVMS
+                    operating system.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a revised
+                                                  manual.
+
+                    Operating System and Version: OpenVMS VAX Versions
+                                                  6.2, 7.0, or 7.1
+                                                  OpenVMS Alpha Versions
+                                                  6.2, 7.0, or 7.1
+
+                    Software Version:             DIGITAL SNA APPC/LU6.2
+                                                  Programming Interface
+                                                  for OpenVMS V2.4
+
+ 
+
+
+
+
+
+
+
+          The information in this publication is subject to change
+          without notice.
+
+          COMPAQ COMPUTER CORPORATION AND ELECTRONIC DATA SYSTEMS
+          CORPORATION SHALL NOT BE LIABLE FOR TECHNICAL OR EDITORIAL
+          ERRORS OR OMISSIONS CONTAINED HEREIN, NOR FOR INCIDENTAL
+          OR CONSEQUENTIAL DAMAGES RESULTING FROM THE FURNISHING,
+          PERFORMANCE, OR USE OF THIS MATERIAL. THIS INFORMATION
+          IS PROVIDED "AS IS" AND COMPAQ COMPUTER CORPORATION
+          AND ELECTRONIC DATA SYSTEMS CORPORATION DISCLAIM ANY
+          WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, AND EXPRESSLY
+          DISCLAIM THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+          FITNESS FOR PARTICULAR PURPOSE, GOOD TITLE, AND AGAINST
+          INFRINGEMENT.
+
+          This publication contains information protected by
+          copyright. No part of this publication may be photocopied
+          or reproduced in any form without prior written consent
+          from Compaq Computer Corporation and Electronic Data
+          Systems Corporation.
+
+          Copyright © 1998 Electronic Data Systems Corporation. All
+          rights reserved.
+
+          Copyright © 1988, 1993 Compaq Computer Corporation. All
+          rights reserved.
+
+          The software described in this guide is furnished under a
+          license agreement or nondisclosure agreement. The software
+          may be used or copied only in accordance with the terms of
+          the agreement.
+
+          Compaq and the Compaq logo are registered in the United
+          States Patent and Trademark Office.
+
+          The following are trademarks of Compaq Computer
+          Corporation: DEC, DIGITAL SNA Domain Gateway, DECnet,
+          DIGITAL, OpenVMS, VAX, VAXcluster, VMS, and VMScluster.
+
+          IBM is a registered trademark of International Business
+          Machines Corporation.
+
+          Microsoft, MS-DOS, Windows, and Windows NT are registered
+          trademarks of Microsoft Corporation.
+
+          NT is a trademark of Northern Telecom Limited.
+
+          UNIX is a registered trademark of The Open Group in the
+          United States and other countries.
+
+          Other product names mentioned herein may be trademarks
+          and/or registered trademarks of their respective companies.
+
+          This document is available on CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing for Installation
+
+        Inspecting the Distribution Kit.....................    1-1
+        Preparing the IBM SNA Environment...................    1-2
+        OpenVMS System Requirements.........................    1-3
+        Verifying the Required OpenVMS Version..............    1-3
+        Verifying Necessary Privileges......................    1-4
+        Verifying Required Disk Space.......................    1-4
+        Determining Available Global Sections and Global
+        Pages...............................................    1-4
+        Registering and Loading the Product Authorization
+        Key.................................................    1-4
+        Installing the Required Gateway Software............    1-5
+        Backing Up Your System Disk.........................    1-5
+
+  2  Installing the APPC/LU6.2 Programming Interface
+     Software
+
+        The Installation Dialog.............................    2-1
+        Error Recovery......................................    2-8
+
+  3  After the Installation
+
+        Verifying the Installation..........................    3-1
+        Using the APPC/LU6.2 Software in a VMScluster.......    3-2
+        Installing the APPC/LU6.2 Programming Interface as a
+        Shareable Image.....................................    3-2
+        Adding the SNA_APPC HELP File to the HELP File of an
+        Editor..............................................    3-3
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    A  Sample Installation Dialog
+
+    B  Files Installed on Your System
+
+
+    Index
+
+
+    Tables
+
+          1-1       Installation Requirements for the
+                    APPC/LU6.2 Programming Interface..........    1-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              The DIGITAL SNA APPC/LU6.2 Programming Interface for
+              OpenVMS enables OpenVMS users to communicate with programs
+              running on IBM systems. This manual is for system managers
+              responsible for planning and installing the software.
+
+        Document Structure
+
+              This manual has the following chapters and appendices:
+
+              o  Chapter 1, "Preparing for Installation", provides
+                 instructions on what you need to do before installing
+                 the APPC/LU6.2 Programming Interface software.
+
+              o  Chapter 2, "Installing the APPC/LU6.2 Programming
+                 Interface Software", discusses using the VMSINSTAL
+                 procedure to install the software.
+
+              o  Chapter 3, "After the Installation", describes steps you
+                 must take to verify the installation of the APPC/LU6.2
+                 Programming Interface software.
+
+              o  Appendix A, "Sample Installation Dialog", contains a
+                 sample VMSINSTAL dialog.
+
+              o  Appendix B, "Files Installed on Your System", lists the
+                 files that are installed on your system when you install
+                 the APPC/LU6.2 Programming Interface software.
+
+
+
+
+
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+    Related Documents
+
+          The following is a list of documents related to the SNA
+          APPC/LU6.2 Programming Interface.
+
+          o  DIGITAL SNA APPC/LU6.2 Programming Interface for OpenVMS
+             Programming
+
+          o  DECnet SNA Gateway-ST Installation
+
+          o  DECnet SNA Gateway-ST Problem Solving (OpenVMS)
+
+          o  DECnet SNA Gateway-ST Guide to IBM Parameters
+
+          o  DECnet SNA Gateway-CT Installation
+
+          o  DECnet SNA Gateway-CT Management (OpenVMS)
+
+          o  DECnet SNA Gateway-CT Problem Solving (OpenVMS & ULTRIX)
+
+          o  DECnet SNA Gateway-CT Guide to IBM Parameters
+
+          o  OpenVMS License Management Utility Manual
+
+          o  OpenVMS System Manager's Manual
+
+          o  DIGITAL SNA Domain Gateway Installation
+
+          o  DIGITAL SNA Domain Gateway Management
+
+          o  DIGITAL SNA Domain Gateway Guide to IBM Resource
+             Definition
+
+          o  DIGITAL Peer Server Installation and Configuration
+
+          o  DIGITAL Peer Server Management
+
+          o  DIGITAL Peer Server Network Control Language Reference
+
+          o  DIGITAL Peer Server Guide to IBM Resource Definition
+
+          o  DIGITAL SNA Access Server for Windows NT Installation
+             and Configuration
+
+          o  DIGITAL SNA Access Server for Windows NT Guide to IBM
+             Resource Definition
+
+          o  OpenVMS SNA Installation-OpenVMS Version 6.1 and Version
+             6.2 only
+
+          o  OpenVMS SNA Problem Solving-OpenVMS Version 6.1 and
+             Version 6.2 only
+
+          o  OpenVMS SNA Guide to IBM Parameters-OpenVMS Version 6.1
+             and Version 6.2 only
+
+    vi
+
+ 
+
+
+
+
+
+
+
+              o  OpenVMS SNA Management -OpenVMS Version 6.1 and Version
+                 6.2 only
+
+        Conventions
+
+              This manual uses the following conventions:
+
+              Conventions         Meaning
+
+              Special type        Represents system input and output.
+
+              UPPERCASE LETTERS   Represent constant values or symbols.
+                                  Code these exactly as they are
+                                  specified.
+
+              [  ]                Square brackets enclose optional
+                                  values. Do not type the brackets in
+                                  the command line.
+
+              <Return>            Unless otherwise specified, terminate
+                                  every command line by pressing the
+                                  Return key.
+
+              <Ctrl/x>            Control characters are shown as
+                                  <Ctrl/x>, where x is an alphabetic
+                                  character. Press the Ctrl key and
+                                  the appropriate character key
+                                  simultaneously.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                               Preparing for Installation
+
+
+              This chapter tells you how to prepare for installing the
+              APPC/LU6.2 Programming Interface on systems running OpenVMS
+              SNA or connected to one of the following SNA Gateways:
+
+              o  DECnet SNA Gateway-CT
+
+              o  DECnet SNA Gateway-ST
+
+              o  DIGITAL SNA Domain Gateway
+
+              o  DIGITAL SNA Peer Server
+
+              o  DIGITAL SNA Access Server for Windows NT
+
+                ________________________ Note ________________________
+
+                Unless otherwise stated, the term SNA Gateway refers
+                to the DECnet SNA Gateway-CT, the DECnet SNA Gateway-
+                ST, the DIGITAL SNA Domain Gateway, the DIGITAL SNA
+                Peer Server, the DIGITAL SNA Access Server for Windows
+                NT, or the OpenVMS SNA (OpenVMS VAX Version 6.2 only)
+                when used in this manual.
+
+                ______________________________________________________
+
+        Inspecting the Distribution Kit
+
+              The software Bill of Materials (BOM) included with your
+              distribution kit shows the contents of the kit. Carefully
+              compare the items you received against the BOM. Report
+              any missing or damaged components to Compaq Computer
+              Corporation before continuing with the installation.
+
+
+
+
+                                           Preparing for Installation 1-1
+
+ 
+
+
+
+
+
+
+
+    Preparing the IBM SNA Environment
+
+          Before you can use the APPC/LU6.2 Programming Interface
+          Software, you must prepare certain software components in
+          the IBM environment, as follows:
+
+          o  The OpenVMS SNA Guide to IBM Parameters explains the
+             IBM parameters to define for successful communication
+             between the IBM host and OpenVMS SNA (OpenVMS VAX
+             Version 6.2 only).
+
+          o  The DECnet SNA Gateway-ST Guide to IBM Parameters
+             explains the IBM parameters to define for successful
+             communication between the IBM host and your
+             DECnet SNA Gateway-ST.
+
+          o  The DECnet SNA Gateway-CT Guide to IBM Parameters
+             explains the IBM parameters to define for successful
+             communication between the IBM host and your
+             DECnet SNA Gateway-CT.
+
+          o  The DIGITAL SNA Domain Gateway Guide to IBM Resource
+             Definition explains the IBM parameters to define for
+             successful communication between the IBM host and your
+             DIGITAL SNA Domain Gateway.
+
+          o  The DIGITAL Peer Server Guide to IBM Resource Definition
+             explains the IBM parameters to define for successful
+             communication between the IBM host and your DIGITAL SNA
+             Peer Server.
+
+          o  The DIGITAL SNA Access Server for Windows NT Guide to
+             IBM Resource Definition) explains the IBM parameters to
+             define for successful communication between the IBM host
+             and your DIGITAL SNA Access Server for Windows NT.
+
+          You should view the Compaq documentation as an adjunct
+          to the IBM documentation; the IBM documentation remains
+          the authoritative source for IBM software concepts and
+          procedures.
+
+             ________________________ Note ________________________
+
+             Since IBM system programmers generally reconfigure and
+             generate their systems according to a set schedule,
+             give them as much advance notice as possible.
+
+             ______________________________________________________
+
+    1-2 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+        OpenVMS System Requirements
+
+              Table 1-1 shows the minimum OpenVMS system requirements.
+              More detailed explanations follow the table.
+
+              Table 1-1 Installation Requirements for the APPC/LU6.2
+              __________Programming_Interface____________________________
+
+              Requirements____OpenVMS_VAX___________OpenVMS_Alpha________
+
+              Software        OpenVMS VAX Versions 6.2, 7.0, or 7.1 or
+                              OpenVMS Alpha Versions 6.2, 7.0, or 7.1
+
+                              DECnet SNA Gateway-ST, or
+                              DECnet SNA Gateway-CT, or
+                              DIGITAL SNA Domain Gateway, or
+                              DIGITAL SNA Peer Server,
+                              DIGITAL SNA Access Server for Windows NT,
+                              or
+                              OpenVMS SNA, and related management
+                              software listed in Preparing the IBM SNA
+                              Environment
+
+              Privileges      System manager level (SYSPRV)
+
+              Disk space      18,000 blocks minimum during installation
+
+                              6900 blocks after     7900 blocks after
+                              installation          installation
+
+              Global          3                     4
+              sections
+
+              Global pages    715                   1450
+
+              Approximate     5 to 30 minutes, depending on the type of
+              installation    medium used
+              time
+
+              Related         OpenVMS System Manager's Manual
+              documents__________________________________________________
+
+        Verifying the Required OpenVMS Version
+
+              Your OpenVMS system must be running one of the following:
+
+              o  OpenVMS VAX Versions 6.2, 7.0, or 7.1
+
+              o  OpenVMS Alpha Versions 6.2, 7.0, or 7.1
+
+                                           Preparing for Installation 1-3
+
+ 
+
+
+
+
+
+
+
+          Use the SHOW SYSTEM command to determine the current
+          version. If you do not have the required version, you must
+          install it before you install the APPC/LU6.2 Programming
+          Interface software. The OpenVMS System Manager's Manual
+          explains how to install OpenVMS software.
+
+    Verifying Necessary Privileges
+
+          To install the APPC/LU6.2 Programming Interface software,
+          you must be logged in to an account that has SYSPRV. Use
+          the
+          SHOW PROCESS/PRIVILEGES command to check privileges.
+
+    Verifying Required Disk Space
+
+          See Table 1-1 for the number of free blocks required on
+          the system disk during and after installation. Use the
+          SHOW DEVICE command to check available disk space.
+
+          The APPC/LU6.2 Programming Interface software supports
+          OpenVMS tailoring for installation on systems that have
+          limited system disk space. The APPC/LU6.2 Programming
+          Interface Software Product Description (SPD) explains
+          OpenVMS tailoring and lists the necessary OpenVMS system
+          classes. The OpenVMS SPD provides more information on
+          classes and OpenVMS tailoring.
+
+    Determining Available Global Sections and Global Pages
+
+          See Table 1-1 for the number of global sections and global
+          pages required on the system. To check the number of global
+          sections and global pages (pagelets) available on your
+          system, type the following command at the OpenVMS prompt
+          ($).
+
+          $ INSTALL LIST/SUMMARY/GLOBAL
+
+          The VMSINSTAL utility will display the number of global
+          sections and global pages available on your system.
+
+    Registering and Loading the Product Authorization Key
+
+          Make sure that you have registered and loaded the Product
+          Authorization Key (PAK) before your begin the installation.
+          Refer to the OpenVMS License Management Utility Manual for
+          this information.
+
+    1-4 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+        Installing the Required Gateway Software
+
+              You must install one the following gateway products before
+              you can use the APPC/LU6.2 Programming Interface software:
+
+              o  OpenVMS SNA Version 2.2 (OpenVMS VAX Version 6.1 and
+                 Version 6.2 only)
+
+              o  DECnet SNA Gateway-ST Version 1.2A
+
+              o  DECnet SNA Gateway-CT Version 2.1A
+
+              o  DIGITAL SNA Peer Server Version 1.3
+
+              o  DIGITAL SNA Domain Gateway-CT Version 2.0
+
+              o  DIGITAL SNA Domain Gateway-ST Version 2.0
+
+              o  DIGITAL SNA Access Server for Windows NT Version 1.0
+
+              Use the gateway software to communicate with the IBM
+              host. See the Software Product Description (SPD) for more
+              information.
+
+        Backing Up Your System Disk
+
+              Before you start an installation that involves writing to
+              your system disk, Compaq Computer Corporation recommends
+              that you make a backup copy of your system disk. The
+              OpenVMS System Manager's Manual explains how to back up
+              your system disk.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           Preparing for Installation 1-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                 Installing the APPC/LU6.2 Programming Interface Software
+
+
+              This chapter explains how to install the APPC/LU6.2
+              Programming Interface software.
+
+        The Installation Dialog
+
+              The APPC software installation procedure consists of
+              a series of questions and informational messages. See
+              Appendix A for a sample installation.
+
+              To abort the installation procedure at any time, press
+              <Ctrl/Y>. When you press <Ctrl/Y>, the installation
+              procedure deletes all the files it created up to that point
+              and exits. You can then start the installation again.
+
+              1. Invoke VMSINSTAL.
+
+                 $ @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                 To start the installation, invoke the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account. VMSINSTAL is in the SYS$UPDATE directory. The
+                 following list defines the parameters of the VMSINSTAL
+                 command procedure.
+
+                 saveset-name
+                 The installation name for the software component. For
+                 the APPC/LU6.2 Programming Interface software, use the
+                 name SNALU62024.
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 media. For example, MTA0: is the device name for a tape
+                 drive. It is not necessary to use the console drive for
+                 this installation. However, if you do use the console
+                 drive, you should replace any media you removed once the
+                 installation is complete.
+
+             Installing the APPC/LU6.2 Programming Interface Software 2-1
+
+ 
+
+
+
+
+
+
+
+             OPTIONS N
+             An optional parameter that indicates you want to see the
+             question about release notes. If you do not include the
+             OPTIONS N parameter, VMSINSTAL does not ask you about
+             the release notes. You should review the release notes
+             before proceeding with the installation in case they
+             contain additional information about the installation.
+             If you are restarting the installation and have already
+             reviewed the release notes, you do not need to specify
+             OPTIONS N.
+
+             Note that there are other options you can select when
+             you invoke VMSINSTAL.
+
+             o  Auto answer option (A): Initially creates a file
+                that contains your answers to VMSINSTAL questions and
+                prompts. You can then use the option (and the answer
+                file) to save time during a reinstallation (typically
+                after upgrading your system).
+
+             o  Get save set option (G): Lets you store product save
+                sets temporarily on a magnetic tape or in a disk
+                directory.
+
+             o  File log option (L): Logs all activity to the
+                terminal during installation.
+
+             o  Alternate root option (R): Lets you install the
+                product on a system root other than that of the
+                running system.
+
+             See the OpenVMS documentation for software installation
+             in the OpenVMS System Management Subkit for detailed
+             information about these options. If you specify more
+             than one option, separate the options with commas
+             (OPTIONS A,N).
+
+             The following example invokes VMSINSTAL to install the
+             APPC software from MTA0: and shows the system response.
+             This example uses the OPTIONS N release note parameter.
+
+             $ @SYS$UPDATE:VMSINSTAL SNALU62024 MTA0: OPTIONS N <Return>
+                   OpenVMS Software Product Installation Procedure V6.1
+
+             It is 10-SEP-1998 at 13:15.
+
+             Enter a question mark (?) at any time for help.
+
+    2-2 Installing the APPC/LU6.2 Programming Interface Software
+
+ 
+
+
+
+
+
+
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure. VMSINSTAL does not
+                 prompt you for any options; be sure to include OPTIONS
+                 N on the VMSINSTAL command line to access the release
+                 notes during the installation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             Installing the APPC/LU6.2 Programming Interface Software 2-3
+
+ 
+
+
+
+
+
+
+
+          2. Confirm system status.
+
+             %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                .
+                .
+                .
+             * Do you want to continue anyway [NO]? YES <Return>
+
+             VMSINSTAL displays a list of all active processes.
+             The dialog then asks whether you want to continue the
+             installation. You can install the APPC software if
+             other processes are active. If you are reinstalling
+             the software, you should verify that no one is using the
+             APPC software. If you are satisfied that no one is using
+             the APPC software, press <Return>. Otherwise, enter No
+             to discontinue the installation.
+
+          3. Confirm system backup.
+
+             * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+             VMSINSTAL asks whether or not you are satisfied with
+             your system backup. You should always back up your
+             system disk before performing an installation. If you
+             are satisfied with the backup of your system disk,
+             press <Return>. Otherwise, enter No to discontinue the
+             installation. After you back up your system disk, you
+             can restart the installation.
+
+          4. Mount the media.
+
+             Please mount the first volume of the set on MTA0:.
+             * Are you ready? YES <Return>
+             %MOUNT-I-MOUNTED, SNALU6 MOUNTED ON _MTA0:
+             The following products will be processed:
+               SNALU62 V2.4
+
+                     Beginning installation of SNALU62 V2.4 at 13:16
+
+             %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+             You should now mount the first distribution volume on
+             the device you specified when you invoked VMSINSTAL. The
+             device name appears in the line preceding the question.
+             VMSINSTAL then asks whether or not you are ready to
+             continue with the installation.
+
+    2-4 Installing the APPC/LU6.2 Programming Interface Software
+
+ 
+
+
+
+
+
+
+
+                 If you respond Yes to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 the APPC software has been mounted on the specified
+                 device and that the installation has begun.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter No
+                 in response to the "Are you ready?" question. To abort
+                 the installation for other reasons, press <Ctrl/Y>.
+
+              5. Select a release notes option.
+
+                     Release notes included with this kit are always copied to SYS$HELP.
+
+                     Additional Release Notes Options:
+
+                         1.  Display release notes
+                         2.  Print release notes
+                         3.  Both 1 and 2
+                         4.  None of the above
+
+                 * Select option [2]: <Return>
+
+                 If you specified OPTIONS N when you invoked VMSINSTAL,
+                 you are now asked to choose one of the four options for
+                 reviewing the release notes.
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on the console terminal. You can
+                 terminate the display at any time by pressing <Ctrl/C>.
+
+                 If you select option 2, VMSINSTAL prompts you for the
+                 name of the print queue that you want to use:
+
+                 * Queue name [SYS$PRINT]: <Return>
+
+                 You can press <Return> to send the file to the default
+                 output print device or you can enter another queue name.
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes immediately on the console terminal and then
+                 prompts you for a queue name for the printed version.
+
+                 Select option 4 if you have already reviewed the release
+                 notes and are restarting the installation.
+
+             Installing the APPC/LU6.2 Programming Interface Software 2-5
+
+ 
+
+
+
+
+
+
+
+             Next, VMSINSTAL displays the following question:
+
+             * Do you want to continue the installation [NO]?: YES <Return>
+             %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+             To continue the installation, enter Yes. Otherwise,
+             press <Return>. In either case, the release notes are
+             copied to a file in the SYS$HELP directory:
+
+             SYS$HELP:SNALU62024.RELEASE_NOTES
+
+             ________________________ Note ________________________
+
+             The name of the release notes file created by
+             VMSINSTAL consists of the current product name and
+             version number. Do not delete release notes for
+             previous versions of the APPC software.
+
+             ______________________________________________________
+
+          6. Respond to license registration queries. (LOAD HOST
+             ONLY)
+
+                     Product:      SNA-APPC-LU6.2
+                     Producer:     DEC
+                     Version:      2.4
+                     Release Date: 01-SEP-1998
+
+             * Does this product have an authorization key registered and loaded? Y <Return>
+
+             If you have not registered and loaded your PAK, the
+             installation dialog does not display any license
+             information. Instead, it terminates with a message
+             indicating that you should register and load your PAK
+             to complete the installation successfully.
+
+          7. Purge files.
+
+             * Do you want to purge files replaced by this installation [YES]? <Return>
+
+             You have the option of purging files from previous
+             versions of the APPC software that are superseded by
+             this installation. Compaq recommends purging; however,
+             if you need to keep files from the previous version,
+             enter No in response to the question.
+
+             If you are reinstalling the software you should verify
+             that no one is using the APPC software before you
+             request that existing files be purged.
+
+    2-6 Installing the APPC/LU6.2 Programming Interface Software
+
+ 
+
+
+
+
+
+
+
+              8. Choose the Installation Verification Procedure (IVP)
+                 option.
+
+                 * Do you want to run the IVP after the installation [YES]? <Return>
+
+                 The installation procedure now asks whether or not
+                 you want to run the IVP. The IVP for the APPC software
+                 checks to be sure that the installation is successful.
+                 Compaq recommends that you run the IVP.
+
+                 After the APPC software is installed, you can run
+                 the IVP independently to verify that the software is
+                 available on your system (see Chapter 3).
+
+              9. Read informational messages.
+
+                 %SNALU62-I-NOQUEST, no further questions will be asked
+
+                         To install the SNALU62SH.EXE and SNALU62MG.EXE images as shareable
+                         each time the system reboots, you must add the following line to
+                         your system startup procedure:
+
+                                 $ @SYS$STARTUP:SNALU62$STARTUP
+
+                         On line release notes for this product can be found in the file,
+                                 SYS$COMMON:[SYSHLP]SNALU62024.RELEASE_NOTES
+
+                 %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation. There are no further
+                 questions. If the installation procedure is successful
+                 up to this point, VMSINSTAL moves the new or modified
+                 files to their target directories.
+
+             10. Observe the Installation Verification Procedure (IVP).
+
+                 If you chose to run the IVP, VMSINSTAL runs it now.
+                 When the IVP runs successfully, you see the following
+                 display:
+
+                 ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Installation Test
+                 Beginning **
+
+                 .... Testing the APPC/LU6.2 Programming Interface V2.4
+
+                 ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Installation Test
+                 Completed Successfully **
+
+             Installing the APPC/LU6.2 Programming Interface Software 2-7
+
+ 
+
+
+
+
+
+
+
+         11. End the installation procedure.
+
+                     Installation of SNALU62 V2.4 completed at 13:23
+
+                  VMSINSTAL procedure done at 13:23
+
+             The previous messages indicate that the entire
+             installation procedure is complete.
+
+             You can now log out of the privileged account:
+
+             $ LOGOUT
+             SYSTEM     logged out at 10-SEP-1998 15:24:34.23
+
+             Note that VMSINSTAL deletes or changes entries in
+             the process symbol tables during the installation.
+             Therefore, if you are going to continue using the system
+             manager's account and you want to restore these symbols,
+             you should log out and log in again.
+
+    Error Recovery
+
+          If errors occur during the installation itself or when
+          the Installation Verification Procedure (IVP) is running,
+          VMSINSTAL displays failure messages. If the installation
+          fails, you see the following message:
+
+          %VMSINSTAL-E-INSFAIL, the installation of SNALU62 V2.4 has failed.
+
+          If the IVP fails, you see these messages:
+
+          ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Installation Test
+          Failed **
+
+          %VMSINSTAL-E-IVPFAIL, The IVP for SNALU62 V2.4 has failed.
+
+          Errors can occur during the installation for any of the
+          following reasons:
+
+          o  The operating system version is incorrect.
+
+          o  A prerequisite software version is incorrect.
+
+          o  Quotas necessary for successful installation are
+             insufficient.
+
+          o  System parameter values for successful installation are
+             insufficient.
+
+          o  The OpenVMS help library is in use.
+
+    2-8 Installing the APPC/LU6.2 Programming Interface Software
+
+ 
+
+
+
+
+
+
+
+              o  The product license has not been registered and loaded.
+
+              For descriptions of the error messages generated by these
+              conditions, see the OpenVMS documentation on system
+              messages, recovery procedures, and OpenVMS software
+              installation. If you receive a notification of any of these
+              conditions, you should take the action described in the
+              message. For information about installation requirements,
+              see Chapter 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             Installing the APPC/LU6.2 Programming Interface Software 2-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                                   After the Installation
+
+
+              This chapter describes some tasks to complete after you
+              install the Programming Interface software.
+
+        Verifying the Installation
+
+              If you have chosen the IVP option, the IVP runs
+              automatically at the end of the installation. You can
+              also run the IVP after the installation to verify that
+              the APPC/LU6.2 programming interface is installed and
+              working properly. To do so after the installation, type
+              the following command from your terminal:
+
+              $ @SYS$TEST:SNALU62$IVP.COM
+
+              The following message indicates that the software has been
+              successfully installed:
+
+        ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Installation Test Beginning **
+
+        ... Testing the APPC/LU6.2 Programming Interface V2.4
+
+        ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Test Completed Successfully **
+
+                ________________________ Note ________________________
+
+                The IVP does not verify that the APPC/LU6.2
+                Programming Interface can connect to an IBM system.
+
+                ______________________________________________________
+
+              If the software was not installed properly, error messages
+              appear. Correct the problems indicated by the messages
+              and rerun the installation procedure. If you receive
+              IVP errors, you have a damaged kit; contact your Compaq
+              representative.
+
+              For information about configuring your IBM SNA software
+              components for logical unit (LU) type 6.2 communications,
+              see the appropriate Guide to IBM Parameters manual.
+
+                                               After the Installation 3-1
+
+ 
+
+
+
+
+
+
+
+          If you have not registered APPC/LU6.2 with LMF, the
+          following text appears:
+
+    ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Installation Test Beginning **
+
+    %LICENSE-F-NOAUTH, DEC SNA-APPC-LU6.2 use is not authorized on this node
+    -LICENSE-F-NOLICENSE, no license is active for this software product
+    -LICENSE-I-SYSMGR, please see your system manager
+    %Failed to test program with shareable image
+
+    ** DIGITAL SNA OpenVMS APPC/LU6.2 Programming Interface V2.4 Test FAILED **
+
+          Stop the installation and register APPC/LU6.2 with LMF.
+
+    Using the APPC/LU6.2 Software in a VMScluster
+
+          After you have installed the APPC/LU6.2 software on one
+          node of a VMScluster, you can install it on the other nodes
+          by executing the SNALU62$STARTUP.COM procedure on each node
+          as follows:
+
+          $@SYS$STARTUP:SNALU62$STARTUP.COM
+
+          You must activate an APPC/LU6.2 license for each node in
+          the VMScluster that will execute and run the APPC/LU6.2
+          software. You can activate the license in one of the
+          following ways:
+
+          o  Log in to each VMScluster node and enter the LICENSE
+             LOAD command.
+
+          o  Invoke the OpenVMS SYSMAN Utility to execute the LICENSE
+             LOAD command on the desired VMScluster nodes. See the
+             OpenVMS SYSMAN Utility Manual for details on defining
+             your management environment, and executing commands on
+             other nodes.
+
+          For more information on the LICENSE LOAD command, refer to
+          the OpenVMS License Management Utility Manual.
+
+    Installing the APPC/LU6.2 Programming Interface as a Shareable
+    Image
+
+          SYS$STARTUP:SNALU62$STARTUP.COM contains the start-up
+          command procedure for the APPC/LU6.2 Programming Interface.
+          To install the APPC/LU6.2 Programming Interface as a
+          shareable image, execute the command procedure as follows:
+
+          $@SYS$STARTUP:SNALU62$STARTUP.COM
+
+    3-2 After the Installation
+
+ 
+
+
+
+
+
+
+
+              Include this command in your system start-up procedure to
+              automatically install the APPC/LU6.2 Programming Interface
+              as a shareable image when you boot the system.
+
+        Adding the SNA_APPC HELP File to the HELP File of an Editor
+
+              You can insert the APPC/LU6.2 Programming Interface HELP
+              information (added to the HELPLIB file during installation)
+              into the HELP file of an editor, for programmers who use
+              editors to develop DIGITAL SNA or OpenVMS SNA (OpenVMS
+              VAX Version 6.1 and Version 6.2) applications. You need
+              system manager privileges to perform this operation. Use
+              the following commands to insert the HELP information into
+              the HELP file of an editor:
+
+              $ LIBRARY/HELP/EXTRACT=SNA_APPC/OUTPUT=SNAAPPC -
+              _$ SYS$HELP:HELPLIB
+              $ LIBRARY/HELP/INSERT SYS$HELP:xxxHELP SNAAPPC
+              $ DELETE SNAAPPC.HLP;*
+
+              where xxx is the name of your editor, for example, EDT or
+              LSE.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                               After the Installation 3-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                               Sample Installation Dialog
+
+
+              This appendix contains a sample installation dialog for
+              the APPC software. The sample dialog was run on a system
+              with no previous version of the APPC software. Depending on
+              which layered products you have on your system, you might
+              see additional messages and questions when you perform your
+              installation.
+
+              The sample installation assumes that DECnet has been shut
+              down, that no users are logged on to your system, and that
+              OPTIONS N is specified to print the Release Notes. The
+              Installation Verification Procedure (IVP) runs at the end
+              of the installation.
+
+              Username: SYSTEM   <Return>
+              Password: password <Return>
+
+              $ SET DEFAULT SYS$UPDATE <Return>
+
+              $ @VMSINSTAL SNALU62024 MTA0:  [OPTIONS N] <Return>
+
+                      OpenVMS Alpha Software Product Installation Procedure V7.0
+
+              It is 10-SEP-1998 at 10:30.
+
+              Enter a question mark (?) at any time for help.
+
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                 SYSTEM
+              * Do you want to continue anyway [NO]? <Return>
+              * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+
+
+
+
+
+                                           Sample Installation Dialog A-1
+
+ 
+
+
+
+
+
+
+
+          Please mount the first volume of the set on  MUA0:.
+          * Are you ready? Y <Return>
+          %MOUNT-I-MOUNTED, SNALU6 mounted on _MUA0:
+          The following products will be processed:
+
+              SNALU62 V2.4
+
+
+                 Beginning installation of SNALU62 V2.4 at 10:31
+
+          %VMSINSTAL-I-RESTORE, Restoring product save set A...
+
+             Release notes included with this kit are always copied to SYS$HELP.
+
+             Additional Release Notes Options:
+
+                 1. Display release notes
+                 2. Print release notes
+                 3. Both 1 and 2
+                 4. None of the above
+
+          * Select option [2]: <Return>
+          * Queue name [SYS$PRINT]:<Return>
+          Job SNALU62024(queue SYS$PRINT, entry 681) started on LPA0
+
+          * Do you want to continue the installation? [NO] Y <Return>
+          %VMSINSTAL-I-RELMOVED, The products release notes have been successfully
+          moved to SYS$HELP.
+
+                  Product:      SNA-APPC-LU6.2
+                  Producer:     DEC
+                  Version:      V2.4
+                  Release Date: 1-SEP-1998
+
+          * Does this product have an authorization key registered and loaded?Y <Return>
+          * Do you want to purge files replaced by this installation [YES]? <Return>
+          * Do you want to run the IVP after the installation [YES]? <Return>
+
+          %SNALU62-I-NOQUEST, no further questions will be asked
+
+                  To install the SNALU62SH.EXE and SNALU62MG.EXE images as shareable
+                  each time the system reboots, you must add the following line to
+                  your system startup procedure:
+
+                          $ @SYS$STARTUP:SNALU62$STARTUP
+
+    A-2 Sample Installation Dialog
+
+ 
+
+
+
+
+
+
+
+                      On line release notes for this product can be found in the file,
+                              SYS$COMMON:[SYSHLP]SNALU62024.RELEASE_NOTES
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Installation Test
+                     Beginning **
+
+              .... Testing the APPC/LU6.2 Programming Interface V2.4
+
+              ** DIGITAL SNA APPC/LU6.2 Programming Interface V2.4 Test Completed
+                     Successfully **
+                      Installation of SNALU62 V2.4 completed at 10:35
+
+                      VMSINSTAL procedure done at 10:35
+
+              $ LOGOUT <Return>
+
+              SYSTEM     logged out at 10-SEP-1998 10:36
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           Sample Installation Dialog A-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                           Files Installed on Your System
+
+
+              The APPC software installation procedure installs the
+              following files on your system:
+
+              ___________________________________________________________
+              Installed_File_Name___________Meaning______________________
+
+              SYS$SHARE:SNALU62SH.EXE       APPC/LU6.2 shareable image
+
+              SYS$MESSAGE:SNALU62MG.EXE     APPC/LU6.2 message file
+
+              SYS$LIBRARY:SNALU62DF.ADA     Symbol file for ADA
+
+              SYS$LIBRARY:SNALU62DF.BAS     Symbol file for BASIC
+
+              SYS$LIBRARY:SNALU62DF.FOR     Symbol file for FORTRAN
+
+              SYS$LIBRARY:SNALU62DF.H       Symbol file for C
+
+              SYS$LIBRARY:SNALU62DF.LIB     Library file
+
+              SYS$LIBRARY:SNALU62DF.MAR     Symbol file for MACRO
+
+              SYS$LIBRARY:SNALU62DF.PAS     Symbol file for Pascal
+
+              SYS$LIBRARY:SNALU62DF.PEN     Environment file for Pascal
+
+              SYS$LIBRARY:SNALU62DF.PLI     Symbol file for PLI
+
+              SYS$LIBRARY:SNALU62DF.R32     Symbol file for BLISS
+
+              SYS$STARTUP:SNALU62$STARTUP.COStartup command procedure
+
+              SYS$TEST:SNALU62$IVP.COM      Verification command
+                                            procedure
+
+              SYS$HELP:SNALU62024.RELEASE_  Release notes
+              NOTES
+
+              SYS$LIBRARY:SNALU62SH.IIF     APPC/LU62 Shareable image
+              (OpenVMS_Alpha_only)__________information_file_____________
+
+                                       Files Installed on Your System B-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                                 Index
+
+
+
+     B______________________________   I______________________________
+
+     Bill of Materials (BOM),  1-1     Image Sections requirement,
+
+     C                                    1-4
+     _______________________________   Installation, preparing the
+     Configuring your IBM SNA             IBM environment for,  1-2
+        software components, 3-1       Installation problems,  3-1
+
+     _______________________________   O______________________________
+
+     DIGITAL SNA APPC/LU6.2            OpenVMS
+        Programming Interface            installing a new version of,
+       defined, v, 1-1                      1-3
+       preparing for installation,       system privileges,  1-4
+         1-1                             system requirement,  1-3
+
+     Disk space requirements for
+        installation, 1-4              P______________________________
+
+     Distribution kit,  1-1            Preparing the IBM environment
+
+                                          for the installation,  1-2
+     G______________________________   Privileges
+
+     Gateway-CT software,  1-5           See OpenVMS system privileges
+     Gateway-ST software,  1-5         Product Authorization Key
+     Global Pages (pagelets)              registration and loading,
+        requirement, 1-4                  1-4
+
+     H______________________________   S______________________________
+
+     Help file installation,  3-3      Shareable image installation,
+
+                                          3-2
+
+                                                               Index-1
+
+ 
+
+
+
+
+
+
+
+
+    V______________________________
+
+    Verifying the installation,
+       3-1
+    VMScluster use,  3-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Index-2

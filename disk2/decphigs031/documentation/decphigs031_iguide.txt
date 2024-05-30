@@ -1,0 +1,3546 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+                    DEC_PHIGS___________________________________________
+                    Installing DEC PHIGS for
+                    OpenVMS VAX Systems
+
+                    Order Number: AA-PBE5H-TE
+
+
+                    April 1995
+
+                    This document contains instructions for installing
+                    DEC PHIGS[TM] on an OpenVMS[TM] VAX[TM] operating
+                    system. It also explains how to read the online
+                    release notes before or after installing the product.
+                    This document applies to DEC PHIGS Version 3.1.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This revised manual
+                                                  supersedes the
+                                                  Installing DEC PHIGS
+                                                  for OpenVMS VAX
+                                                  Systems (Order Number
+                                                  AA-PBE5G-TE).
+
+                    Operating System and Version: OpenVMS VAX Version
+                                                  5.5-2 or higher.
+                                                  VAXstation[TM]
+                                                  Requirement:
+                                                  DECwindows[TM] Motif[R]
+                                                  Version 1.2 for
+                                                  OpenVMS VAX
+
+                    Software Version:             DEC PHIGS for OpenVMS
+                                                  VAX Version 3.1
+
+                    Digital Equipment Corporation
+                    Maynard, Massachusetts
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          First Printing, December 1987
+          Revised, April 1989
+          Revised, February 1990
+          Revised, September 1990
+          Revised, January 1992
+          Revised, January 1994
+          Revised, July 1994
+          Revised, October 1994
+          Revised, April 1995
+
+          Digital Equipment Corporation makes no representations
+          that the use of its products in the manner described in
+          this publication will not infringe on existing or future
+          patent rights, nor do the descriptions contained in this
+          publication imply the granting of licenses to make, use,
+          or sell equipment or software in accordance with the
+          description.
+
+          Possession, use, or copying of the software described
+          in this publication is authorized only pursuant to a
+          valid written license from Digital or an authorized
+          sublicensor.
+
+          © Digital Equipment Corporation 1987, 1989, 1990, 1992,
+          1994, 1995. All Rights Reserved.
+
+          The postpaid Reader's Comments forms at the end of this
+          document request your critical evaluation to assist in
+          preparing future documentation.
+
+          The following are trademarks of Digital Equipment
+          Corporation: DDIF, DEC, DECnet, DEC C, DEC Open3D, DEC
+          PHIGS, DECwindows, Digital, OpenVMS, VAX, VAXcluster,
+          VAXstation, VMS, and the DIGITAL Logo.
+
+          The following are third-party trademarks:
+
+          Motif is a registered trademark of Open Software
+          Foundation, Inc.
+
+          PostScript is a registered trademark of Adobe Systems,
+          Incorporated.
+
+                                                               ZK6195
+
+          This document is available on CD-ROM.
+
+          This document was prepared using VAX DOCUMENT Version 2.1.
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing for DEC PHIGS Installation
+
+        1.1   Prerequisite Software.........................    1-1
+        1.2   Online Release Notes..........................    1-2
+        1.3   Media Distribution Kit........................    1-2
+        1.4   License Registration..........................    1-3
+        1.5   Installation Procedure Requirements...........    1-3
+        1.5.1     Privileges................................    1-4
+        1.5.2     Disk Space................................    1-4
+        1.5.3     Global Pages and Global Sections System
+                  Parameters................................    1-5
+        1.5.3.1     Determining the Global Pages and Global
+                    Sections Available......................    1-6
+        1.5.3.2     Determining the Global Pages and Global
+                    Sections Used...........................    1-7
+        1.5.3.3     Modifying the Global Pages Parameter....    1-8
+        1.5.3.4     Modifying the Global Sections
+                    Parameter...............................    1-8
+        1.5.3.5     Recalculating the Global Pages and
+                    Global Sections Parameters..............    1-9
+        1.5.4     Other System Parameters...................    1-9
+        1.5.5     User Account Quotas.......................    1-9
+        1.6   Backing Up Your System Disk...................   1-10
+
+  2  Installing DEC PHIGS
+
+        2.1   Installation Procedure........................    2-1
+        2.2   Error Recovery................................   2-13
+
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    3  After Installing DEC PHIGS
+
+          3.1   Installing DEC PHIGS on an OpenVMS VAXcluster
+                Configuration.................................    3-1
+          3.2   Editing the Startup File......................    3-2
+          3.3   Running the Installation Verification
+                Procedure.....................................    3-2
+          3.4   Installing Maintenance Updates................    3-3
+          3.5   Determining and Reporting Problems............    3-4
+
+    A  Files Installed on Your System
+
+          A.1   DEC PHIGS Development Kit Files...............    A-1
+          A.2   DEC PHIGS Run-Time-Only Kit Files.............   A-11
+
+    B  Sample Installations
+
+          B.1   DEC PHIGS Development Kit Installation........    B-1
+          B.2   DEC PHIGS Run-Time-Only Kit Installation......    B-4
+
+    Figures
+
+          3-1       Sample IVP Display........................    3-3
+
+    Tables
+
+          1-1       Disk Space Requirements...................    1-4
+
+          1-2       Minimum Required System Parameter
+                    Values....................................    1-5
+
+          A-1       Installed Files for the DEC PHIGS
+                    Development Kit...........................    A-1
+
+          A-2       Installed Files for the DEC PHIGS
+                    Run-Time-Only Kit.........................   A-11
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              This guide describes how to install the DEC PHIGS Version
+              3.1 development kit and run-time-only kit on an OpenVMS
+              VAX operating system. Because this installation guide
+              is not usually revised for software maintenance updates,
+              you should read the Read Before Installing or Using 
+              DEC PHIGS for OpenVMS VAX Systems letter for a summary of 
+              the significant changes to the installation procedure.
+
+              Keep this document with your distribution kit. You will
+              need it to install maintenance updates or to reinstall DEC
+              PHIGS for any other reason.
+
+              At the back of the printed version of this document are
+              two Reader's Comments forms. If you have any comments about
+              this document, fill out one form and mail it; your comments
+              will be considered for the next revision of this document.
+
+        Intended Audience
+
+              This manual is for system managers installing DEC PHIGS for
+              OpenVMS VAX.
+
+        Structure of this Document
+
+              This manual is organized as follows:
+
+              o  Chapter 1 describes the preparations and requirements
+                 necessary for installing DEC PHIGS.
+
+              o  Chapter 2 provides the step-by-step instructions for the
+                 installation.
+
+              o  Chapter 3 describes the operations you perform after
+                 installation.
+
+              o  Appendix A lists the files installed with DEC PHIGS.
+
+              o  Appendix B contains sample development kit and run-time-
+                 only kit installations.
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+    Manuals in the DEC PHIGS Documentation Set
+
+          In addition to this manual, the DEC PHIGS documentation set
+          includes the following manuals:
+
+          o  DEC PHIGS Ada Binding Reference Manual
+
+          o  DEC PHIGS C Binding Reference Manual
+
+          o  DEC PHIGS ISO C Binding Reference Manual
+
+          o  DEC PHIGS ISO Fortran Binding Reference Manual
+
+          o  DEC PHIGS PHIGS$ Binding Reference Manual
+
+          o  Device Specifics Reference Manual for DEC GKS and
+             DEC PHIGS
+
+          o  Getting Started with DEC PHIGS
+ 
+          o  DEC PHIGS Developer's Guide
+ 
+         If you use DEC PEXlib, you may require the DEC Open3D
+         PEXlib C Binding Reference Manual, which is part of the
+         DEC Open3D[TM] documentation set.
+
+    Related Manuals
+
+          For information on OpenVMS system management, see the
+          following manuals:
+
+          o  OpenVMS System Manager's Manual
+
+          o  Guide to Maintaining a VMS System
+
+          o  OpenVMS License Management Utility Manual
+
+          o  Guide to OpenVMS Performance Management
+
+    Conventions Used in This Manual
+
+              The following conventions are used in this guide:
+
+              UPPERCASE TEXT         Uppercase letters indicate the
+                                     name of a command, file, parameter,
+                                     procedure, or utility.
+
+              bold                   Boldface text is used in interactive
+                                     examples to indicate typed user
+                                     input.
+
+    
+    vi
+
+ 
+
+
+
+
+
+
+
+          $                      The dollar sign is used to indicate
+                                 the DCL prompt. This prompt may be
+                                 different on your system.
+
+          system output          This typeface is used in interactive
+                                 and code examples to indicate system
+                                 output. In text, this typeface is
+                                 used to indicate the exact name of
+                                 a command, option, partition, path
+                                 name, directory, or file.
+
+          [logical-name]         Square brackets indicate that the
+                                 enclosed item is optional. (Square
+                                 brackets are not, however, optional
+                                 in the syntax of a directory name
+                                 in a file specification or in the
+                                 syntax of a substring specification
+                                 in an assignment statement.)
+
+          <Ctrl/x>               In procedures, a sequence such as
+                                 <Ctrl/X> indicates that you must
+                                 hold down the key labeled Ctrl while
+                                 you press another key or a pointing
+                                 device button.
+
+          <Return>               In procedures, a key name is shown
+                                 enclosed to indicate that you press
+                                 a key on the keyboard.
+
+          VMS[TM]                The terms VMS and OpenVMS refer to
+          OpenVMS                the same operating system.
+
+                                 Vertical ellipsis in an example
+              .                  means that information has been
+              .                  omitted.
+              .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      vii
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                     Preparing for DEC PHIGS Installation
+
+
+              This chapter describes the preparations and requirements
+              necessary for installing DEC PHIGS Version 3.1.
+
+              This chapter will help you determine the following:
+
+              o  Whether the system on which you will install DEC PHIGS
+                 has the prerequisite software installed
+
+              o  How to read the online release notes
+
+              o  If installing DEC PHIGS from media, whether your
+                 distribution kit includes all the components listed
+                 on the Bill of Materials (BOM)
+
+              o  How to register a software license
+
+              o  The privileges required to perform the installation
+
+              o  How much disk space you will need
+
+              o  Whether the global pages and sections parameters are
+                 defined properly
+
+              o  Whether the process account quotas are defined correctly
+
+              o  How to back up your system disk
+
+        1.1 Prerequisite Software
+
+              To install DEC PHIGS on a VAXstation workstation, you must
+              have the following products installed:
+
+              o  OpenVMS VAX Operating System Version 5.5-2 or higher
+
+              o  DECwindows Motif for OpenVMS VAX Version 1.2 or higher
+
+              o  DEC C[TM] Version 4.0 or higher
+
+                 This software must be installed if you are using OpenVMS
+                 VAX Version 5.5-2; however, no DEC C license is required
+                 to run DEC PHIGS.
+
+
+                                 Preparing for DEC PHIGS Installation 1-1
+
+ 
+
+
+
+
+
+
+
+          You must also have the following OpenVMS VAX classes:
+
+          o  OpenVMS VAX required save set
+
+          o  Network support-where full DECwindows network
+             functionality is necessary
+
+          o  Programming support-required by the DEC PHIGS
+             development kit
+
+          If you are using DEC PHIGS on a workstation, Digital
+          recommends the OpenVMS VAX class for workstation support.
+
+    1.2 Online Release Notes
+
+          DEC PHIGS provides online release notes. You can access
+          release notes during the installation procedure when you
+          invoke VMSINSTAL with the OPTIONS N parameter. This option
+          lets you read or print the release notes before installing
+          DEC PHIGS.
+
+          To obtain the DEC PHIGS release notes for the development
+          or run-time-only kit after installation, print the
+          following files:
+
+          o  SYS$HELP:DECPHIGS031.RELEASE_NOTES (ASCII format)
+
+          o  SYS$HELP:DECPHIGS031_RELEASE_NOTES.PS (PostScript[R]
+             format)
+
+          o  SYS$HELP:DECPHIGSJ031.RELEASE_NOTES
+
+          o  SYS$HELP:DECPHIGSJ031_RELEASE_NOTES.PS
+
+    1.3 Media Distribution Kit
+
+          Your bill of materials (BOM) and indented bills report
+          (BIL) specify the number and contents of your media.
+          Be sure to check the contents of your kit against this
+          information. If your kit is damaged or if you find that
+          parts of it are missing, call your Digital representative.
+          For more information on how to mount distribution media,
+          see your processor-specific installation/operations guide,
+          which also details several options for the installation
+          procedure.
+
+
+
+
+
+
+
+    1-2 Preparing for DEC PHIGS Installation
+
+ 
+
+
+
+
+
+
+
+        1.4 License Registration
+
+              Before you install and run DEC PHIGS Version 3.1 on a newly
+              licensed node or cluster, you must first register a License
+              Product Authorization Key (License PAK) using the License
+              Management Facility (LMF). The PAK is a paper certificate
+              that contains information about the license that enables
+              you to use the software. The License PAK is shipped with
+              the kit if you ordered the license and media together;
+              otherwise, the PAK is shipped separately to the location
+              specified on your license order.
+
+              If you are installing DEC PHIGS as an update on a node
+              or cluster already licensed for this software, you
+              have already completed the License PAK registration
+              requirements. If you are installing prerequisite or
+              optional software along with DEC PHIGS, review the PAK
+              status and install the PAKs for this prerequisite or
+              optional software before you install DEC PHIGS.
+
+              To register a license under the OpenVMS operating system,
+              first log in to the system manager's account, SYSTEM. You
+              can then register the license in one of two ways:
+
+              o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+                 prompts you for information, respond with the data from
+                 your License PAK.
+
+              o  Type the LICENSE REGISTER command with the qualifiers
+                 corresponding to the License PAK information.
+
+              If you plan to use DEC PHIGS on more than one node in a
+              VAXcluster[TM] configuration, you will need to perform a
+              license load on the other nodes after you complete this
+              installation. See Section 3.1 for details.
+
+              For complete information on using LMF, see the OpenVMS
+              License Management Utility Manual.
+
+        1.5 Installation Procedure Requirements
+
+              The following sections describe the various requirements
+              for installing DEC PHIGS. The installation takes
+              approximately 5 to 30 minutes, depending on your system
+              configuration.
+
+
+
+
+
+
+
+                                 Preparing for DEC PHIGS Installation 1-3
+
+ 
+
+
+
+
+
+
+
+    1.5.1 Privileges
+
+          To install DEC PHIGS, you must be logged in to an account
+          that has the SETPRV privilege, or at least the following
+          privileges:
+
+          o  CMKRNL
+
+          o  WORLD
+
+          o  SYSPRV
+
+          When you invoke VMSINSTAL to begin the installation
+          procedure, VMSINSTAL turns off the BYPASS privilege.
+
+          After installation, each user account must have at least
+          the TMPMBX and NETMBX privileges to use DEC PHIGS. Use the
+          OpenVMS Authorize Utility to determine whether users have
+          the privileges they require.
+
+    1.5.2 Disk Space
+
+          The DEC PHIGS requirements for free disk storage space
+          are different during installation and after installation.
+          Table 1-1 summarizes these requirements.
+
+          ___________________________________________________________
+          Table 1-1 Disk Space Requirements
+          ___________________________________________________________
+                                     Blocks During    Blocks After
+          Kit                        Installation     Installation
+          ___________________________________________________________
+
+          DEC PHIGS Development Kit  70,000           65,000
+          Version 3.1
+
+          With Ada option            90,000           85,000
+
+          DEC PHIGS Run-Time-Only    40,000           36,000
+          Kit Version 3.1
+          ___________________________________________________________
+
+          To determine the number of free blocks on the current
+          system disk, enter the following command at the DCL prompt:
+
+          $ SHOW DEVICE SYS$SYSDEVICE <Return>
+
+
+
+
+
+
+    1-4 Preparing for DEC PHIGS Installation
+
+ 
+
+
+
+
+
+
+
+                _______________________ Caution _______________________
+
+                You must ensure that your system has the necessary
+                global page and global section SYSGEN quotas for the
+                installation. Otherwise, the DCL tables may become
+                corrupted in certain situations.
+                ______________________________________________________
+
+        1.5.3 Global Pages and Global Sections System Parameters
+
+              The installation of DEC PHIGS requires minimum values for
+              the system parameters defining the global pages and global
+              sections. These values are shown in Table 1-2. Depending
+              on the kinds of programs and applications running at your
+              site, you may need to define larger values.
+
+              ___________________________________________________________
+              Table 1-2 Minimum Required System Parameter Values
+              ___________________________________________________________
+              System Parameter           Minimum Value
+              ___________________________________________________________
+
+              GBLPAGES[1]                n + 6500
+
+              GBLSECTIONS[1]             n + 42
+              ___________________________________________________________
+              [1]The n variable refers to the system parameter values
+              that are currently in use. To install DEC PHIGS, you must
+              increase those values by the number indicated.
+              These dynamic system parameters must be set permanently to
+              values equal to or greater than the values listed. Do not
+              decrease these values after the installation.
+              ___________________________________________________________
+
+              The following sections describe how to:
+
+              o  Determine the number of global pages and global sections
+                 available
+
+              o  Determine the global pages and global sections used
+
+              o  Modify the global pages parameter
+
+              o  Modify the global sections parameter
+
+              o  Recalculate the global pages and global sections
+                 parameters in order to take the new values into account
+
+
+
+
+
+                                 Preparing for DEC PHIGS Installation 1-5
+
+ 
+
+
+
+
+
+
+
+    1.5.3.1 Determining the Global Pages and Global Sections
+            Available
+
+          You can determine the available global pagelets and global
+          sections using the WRITE command with the F$GETSYI lexical
+          function. The following example shows how to display this
+          information on your terminal (the default for SYS$OUTPUT):
+
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES") <Return>
+          15848
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS") <Return>
+          24
+
+          If the values displayed by the system are greater than the
+          values in Table 1-2, you do not need to increase the values
+          for these parameters. If the values of free global pages
+          or global sections are less than the values in Table 1-2,
+          you must increase the parameter values, as described in the
+          following sections.
+
+          You can also determine the number of global sections
+          available using the following procedure:
+
+          1. Invoke the SYSGEN Utility:
+
+             $ RUN SYS$SYSTEM:SYSGEN <Return>
+             SYSGEN> USE CURRENT <Return>
+
+          2. Determine the number of global sections available:
+
+             SYSGEN> SHOW GBLSECTIONS <Return>
+
+      Parameter Name     Current   Default   Minimum   Maximum Unit  Dynamic
+      --------------     -------   -------   -------   ------- ----  -------
+      GBLSECTIONS         512       250        20      4095 Sections
+
+             The first number displayed is the current number of
+             global sections. Compare this number to the number of
+             global sections in use displayed by the OpenVMS Install
+             Utility (see Section 1.5.3.2).
+
+          3. Exit from the SYSGEN Utility:
+
+             SYSGEN> EXIT <Return>
+
+
+
+
+
+
+
+    1-6 Preparing for DEC PHIGS Installation
+
+ 
+
+
+
+
+
+
+
+    1.5.3.2 Determining the Global Pages and Global Sections Used
+
+          To determine the global pages and global sections used:
+
+          1. Invoke the OpenVMS Install Utility:
+
+             $ INSTALL :== $INSTALL/COMMAND_MODE <Return>
+             $ INSTALL <Return>
+
+          2. Determine the number of global pages used:
+
+             INSTALL> LIST/GLOBAL/SUMMARY <Return>
+
+                     Summary of Local Memory Global Sections
+
+             nn Global Sections Used,  nnnn/nnnn Global Pages Used/Unused
+
+             INSTALL> EXIT <Return>
+
+             The system displays a summary of the number of global
+             sections used, the number of global pages used, and the
+             number of global pages available.
+
+          3. Exit from the OpenVMS Install Utility:
+
+             INSTALL> EXIT <Return>
+
+    1.5.3.3 Modifying the Global Pages Parameter
+
+          To modify the number of global pages:
+
+          1. If there are fewer than 6500 pages available, modify the
+             GBLPAGES system parameter.
+
+             You can modify the GBLPAGES parameter by editing the
+             SYS$SYSTEM:MODPARAMS.DAT file. To change a parameter
+             value in this file, delete the current value and enter
+             the new value. (Another way of allocating space is to
+             delete an existing known image with the OpenVMS Install
+             Utility.)
+
+             To modify GBLPAGES, use ADD_GBLPAGES as shown, where n
+             is the number of global pages to add:
+
+             ADD_GBLPAGES = n
+
+             Note that when you set the page file quota, you should
+             not use a value that exceeds the amount of page file
+             space available on the system.
+
+          2. Exit the editor.
+
+                                 Preparing for DEC PHIGS Installation 1-7
+
+ 
+
+
+
+
+
+
+
+          3. Update the GBLPAGES parameter by invoking the AUTOGEN
+             command procedure described in Section 1.5.3.5.
+
+    1.5.3.4 Modifying the Global Sections Parameter
+
+          To modify the number of global sections:
+
+          1. If the number of global sections in use plus 42 exceeds
+             the current number of global sections, modify the
+             GBLSECTIONS parameter.
+
+             You can modify the GBLSECTIONS parameter by editing the
+             SYS$SYSTEM:MODPARAMS.DAT file. To change a parameter
+             value in this file, delete the current value and enter
+             the new value.
+
+             To modify GBLSECTIONS, use ADD_GBLSECTIONS as shown,
+             where n is the number of global sections to add:
+
+             ADD_GBLSECTIONS = n
+
+             Note that when you set the page file quota, you should
+             not use a value that exceeds the amount of page file
+             space available on the system.
+
+          2. Exit the editor.
+
+          3. Update the GBLSECTIONS parameter by invoking the AUTOGEN
+             command procedure described in Section 1.5.3.5.
+
+    1.5.3.5 Recalculating the Global Pages and Global Sections
+            Parameters
+             
+          To update the GBLPAGES and GBLSECTIONS parameters, invoke
+          the AUTOGEN command procedure, SYS$UPDATE:AUTOGEN.COM:
+          
+          $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT <Return>
+
+          AUTOGEN automatically recalculates the parameters with
+          the values you defined manually. When you specify REBOOT,
+          AUTOGEN performs an automatic system shutdown and then
+          reboots the system. Any users logged on to the system are
+          immediately disconnected during the shutdown.
+
+          AUTOGEN also automatically adjusts some of the SYSGEN
+          parameters, based on the consumption of resources since
+          the last reboot. If you do not want to take advantage of
+          this automatic adjustment, include the NOFEEDBACK qualifier
+          on the AUTOGEN command line.
+
+
+
+    1-8 Preparing for DEC PHIGS Installation
+
+ 
+
+
+
+
+
+
+
+              For more information about using AUTOGEN, see the OpenVMS
+              System Management Subkit.
+
+        1.5.4 Other System Parameters
+
+              The installation for DEC PHIGS requires that you increase
+              the values of the CLISYMTBL and CTLPAGES system parameters.
+              Once the installation is complete, you can decrease these
+              values to ensure efficient system performance.
+
+        1.5.5 User Account Quotas
+
+              To use DEC PHIGS, you must have an account with an open
+              file limit (FILLM) of at least 20. In addition, if you are
+              using the Ada binding, the FILLM should be set to 2000, and
+              the BYTLM should be set to 200,000.
+
+              Using the OpenVMS Authorize Utility (AUTHORIZE), you
+              can compare the current values of these quotas with
+              the requirements for DEC PHIGS. The account used in the
+              following example is the SYSTEM account:
+
+              $ SET DEFAULT SYS$SYSTEM <Return>
+              $ RUN AUTHORIZE <Return>
+              UAF> SHOW SYSTEM <Return>
+
+              To change the values of these quotas, use the MODIFY
+              command. For more information, see the OpenVMS System
+              Management Utilities Reference Manual.
+
+        1.6 Backing Up Your System Disk
+
+              Digital recommends that you back up your system disk,
+              before installing any software. Use the backup procedures
+              that are established at your site. For details on
+              performing a backup, see the section on the Backup Utility
+              in the OpenVMS System Management Subkit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                 Preparing for DEC PHIGS Installation 1-9
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                                     Installing DEC PHIGS
+
+
+              This chapter describes the DEC PHIGS installation procedure
+              and the operations you may need to perform after the
+              installation. For a list of the files and directories
+              created during the installation procedure, see Appendix A.
+              For sample development kit and run-time-only installations,
+              refer to Appendix B.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can then start the installation again.
+              Attempting to link programs against the DEC PHIGS run-time
+              library results in link errors.
+
+        2.1 Installation Procedure
+
+              Before you install DEC PHIGS, Digital recommends that
+              you back up your system disk. Once you have done so,
+              you can begin the installation. The installation takes
+              approximately 5 to 30 minutes, depending on your system
+              configuration.
+
+              You should not install DEC PHIGS run-time Version 3.1 if
+              you have already installed the full development kit of DEC
+              PHIGS Version 3.1. If you do, the installation procedure
+              will overwrite the development kit with the run-time-only
+              kit. To determine which version of DEC PHIGS is currently
+              installed, type the following DCL command:
+
+      $ ANALYZE/IMAGE/INTERACTIVE/HEADER SYS$COMMON:[SYSLIB]PHIGS$RTL <Return>
+
+              The procedure for installing DEC PHIGS is:
+
+              1. Log in to a privileged account and set your default
+                 device and directory to SYS$UPDATE.
+
+                 Digital recommends that you use the system manager's
+                 account.
+
+                 Username: SYSTEM <Return>
+                 Password:         <Return>
+                 $ SET DEFAULT SYS$UPDATE <Return>
+
+                                                 Installing DEC PHIGS 2-1
+
+ 
+
+
+
+
+
+
+
+          2. Invoke VMSINSTAL.
+
+             When you invoke VMSINSTAL, it checks the following:
+
+             o  Whether you are logged in to a privileged account.
+                You should install software from the system manager's
+                account with your default device and directory set to
+                SYS$UPDATE.
+
+             o  The installing account has adequate:
+
+                   Disk space
+                   Global pages
+                   Global sections
+                   Account quotas
+
+                 o  Whether you have adequate quotas for installation.
+                    VMSINSTAL requires the following minimum quota
+                    values:
+
+                       ASTLM = 24
+                       BIOLM = 18
+                       BYTLM = 18000
+                       DIOLM = 18
+                       ENQLM = 30
+                       FILLM = 20
+
+                 o  Whether the following conditions exist:
+
+                    -  DECnet[TM] network is up and running.
+
+                    -  Users are logged in to the system.
+
+                 If VMSINSTAL detects problems, you will be asked whether
+                 you want to continue the installation. You should
+                 correct these problems before resuming the installation
+                 procedure. If you want to continue, type YES. If you
+                 want to stop the installation, press Return.
+
+                 To invoke the VMSINSTAL command procedure, enter:
+
+          $ @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N <Return>
+
+                 The VMSINSTAL parameters are:
+
+                 saveset-name
+                 The installation name for the component. For the DEC
+                 PHIGS development kit, use the name:
+
+                 DECPHIGS031
+
+
+    2-2 Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+             For the DEC PHIGS run-time-only kit, use the name:
+
+             DECPHIGSRTO031
+
+             ddcu
+             The name of the device on which you plan to mount the
+             distribution volumes for the DEC PHIGS installation
+             media, where dd is the device code, c is the controller
+             code, and u is the unit number. For example, DKA400 is
+             the device name for a CD-ROM.
+
+             You do not have to use the console drive to install
+             DEC PHIGS. If you do use the console drive after the
+             installation, you should replace any media you removed
+             from the drive prior to the installation.
+
+             For CD-ROM media, you must also supply the directory
+             location of the DEC PHIGS save set on the CD-ROM. To
+             obtain this location, see the Software Product Library
+             CD-ROM User's Guide booklet that accompanies the CD-ROM
+             distribution kit, or complete the following steps before
+             starting the installation:
+
+             1. Determine whether the CD-ROM drive is already mounted
+                by entering the command:
+
+                $ SHOW DEVICE DKA400: <Return>
+
+                If the device is mounted, skip to the next step. If
+                it is not mounted, type the appropriate MOUNT command
+                to mount the CD-ROM, omitting the /FOREIGN qualifier.
+
+             2. Obtain the directory name by entering the command:
+
+                $ DIRECTORY DKA400:[000000]*decphigs*.dir <Return>
+
+                The directory name will be displayed; for example:
+
+                Directory DKA400:[000000]
+
+                DECPHIGS031.DIR;1          (development kit)
+
+                DECPHIGSRTO031.DIR;1       (run-time-only kit)
+
+             3. Obtain the save set name by using a DIRECTORY command
+                specifying the directory file from the previous
+                command. For example, for the development kit, enter:
+
+                $ DIRECTORY DKA400:[DECPHIGS031.KIT]*.A <Return>
+
+
+
+                                                 Installing DEC PHIGS 2-3
+
+ 
+
+
+
+
+
+
+
+                 For the run-time-only kit, enter:
+
+                 $ DIRECTORY DKA400:[DECPHIGSRTO031.KIT]*.A <Return>
+
+                 OPTIONS N
+                 An optional parameter that enables you to access the
+                 release notes. If you do not include the OPTIONS N
+                 parameter, VMSINSTAL does not ask you about the release
+                 notes. You should review the release notes before
+                 proceeding with the installation, because they contain
+                 additional information about the installation.
+
+                 Note that there are several other options you can select
+                 when you invoke VMSINSTAL:
+
+                 o  Auto_answer option (A)
+
+                    This option initially creates a file that contains
+                    your answers to VMSINSTALL questions and prompts.
+                    You can then use the option (and the answer file) to
+                    save time during a reinstallation (typically after
+                    upgrading your system).
+
+                 o  Get save set option (G)
+
+                    This option lets you temporarily store product save
+                    sets on a magnetic tape or in a disk directory.
+
+                 o  File log option (L)
+
+                    This option logs all activity to the terminal during
+                    installation.
+
+                 o  Alternate root option (R)
+
+                    This option lets you install the product to a system
+                    root other than that of the current system.
+
+                 If you do not supply the save set and device
+                 names, VMSINSTAL prompts you for them later in the
+                 installation. VMSINSTAL does not prompt you for any
+                 options, however, so be sure to include the desired
+                 options on the VMSINSTAL command line. If you specify
+                 more than one option, separate the options with commas
+                 (for instance, OPTIONS A,N). See the documentation on
+                 software installation in the OpenVMS System Management
+                 Subkit for detailed information on these options.
+
+
+
+
+
+    2-4 Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+             The following example invokes VMSINSTAL to install DEC
+             PHIGS development kit from a CD-ROM and shows the system
+             response:
+
+             $ @SYS$UPDATE:VMSINSTAL DECPHIGS031 DKA400 OPTIONS N <Return>
+
+                   OpenVMS VAX Software Product Installation Procedure V6.1
+
+             It is dd-mmm-yyyy at hh:mm.
+             Enter a question mark (?) at any time for help.
+
+             If VMSINSTAL detects any problems during the
+             installation, it notifies you and asks if you want to
+             continue the installation. In some instances, you can
+             enter YES to continue. To stop the installation process
+             and correct the situation, enter NO or press Return.
+             Then, correct the problem and restart the installation.
+
+          3. Check the status of your processes.
+
+             VMSINSTAL displays a list of all active processes and
+             asks if you want to continue the installation:
+
+             %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                    DECW$SERVER_0
+                    _FTA8:
+                    _FTA11:
+                    _FTA12:
+                       .
+                       .
+                       .
+
+             * Do you want to continue anyway [NO]? Y <Return>
+
+             You can install DEC PHIGS even if other processes
+             are running. If you do not wish to continue the
+             installation, press Return. If you wish to continue
+             installing DEC PHIGS, enter YES and press Return.
+
+          4. Confirm system backup.
+
+        * Are you satisfied with the backup of your system disk [YES]?<Return>
+
+             VMSINSTAL asks if you are satisfied with your system
+             backup. You should always back up your system disk
+             before performing an installation. If you are satisfied
+             with the backup of your system disk, press Return.
+             Otherwise, enter NO and press Return to stop the
+             installation. After you back up your system disk, you
+             can restart the installation.
+
+
+                                                 Installing DEC PHIGS 2-5
+
+ 
+
+
+
+
+
+
+
+              5. Mount the media.
+       
+                 If you omitted the device name on the VMSINSTAL command
+                 line, the following prompt appears:
+
+             * Where will the distribution volume be mounted: DKA400: <Return>
+
+                 Enter the name of the distribution media device and
+                 directory that contains the DEC PHIGS save sets. For
+                 example, if the media is contained on a CD-ROM located
+                 on unit DKA400:, and the DEC PHIGS save sets are located
+                 in the directory DECPHIGS031.KIT (for the development
+                 kit), enter:
+
+                 DKA400:[DECPHIGS031.KIT]
+
+                 Depending on the type of device and whether the device
+                 is already mounted, the following may or may not appear:
+
+                 Please mount the first volume of the set on DKA400
+                 * Are you ready? Y <Return>
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter
+                 NO in response to the "Are you ready?" question. If you
+                 respond YES to indicate that you are ready, VMSINSTAL
+                 indicates that the media containing DEC PHIGS has been
+                 mounted, and then prompts for the product name and any
+                 desired installation options:
+
+                 DEC PHIGS DEVELOPMENT KIT
+
+                 %MOUNT-I-MOUNTED, cd_name MOUNTED ON DKA400 (NODE 1)
+
+                  Enter the products to be processed from the first 
+                  distribution volume set.
+                   * Products: DECPHIGS031 <Return>
+                   * Enter installation options you wish to use (none): <Return>
+
+                 The following products will be processed:
+                   DECPHIGS V3.1
+
+                         Beginning installation of DECPHIGS V3.1 at hh:mm.
+
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+
+
+
+
+
+
+
+    2-6 Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+             DEC PHIGS RUN-TIME-ONLY KIT
+
+             %MOUNT-I-MOUNTED, DEC PHIGS MOUNTED ON DKA400 (NODE 1)
+
+              Enter the products to be processed from the first 
+              distribution volume set.
+               * Products: DECPHIGSRTO031 <Return>
+               * Enter installation options you wish to use (none): <Return>
+
+             The following products will be processed:
+               DECPHIGSRTO V3.1
+
+                     Beginning installation of DECPHIGSRTO V3.1 at hh:mm.
+
+             %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+          6. Select a release notes option.
+
+             This step applies only if you specified OPTIONS N when
+             starting the installation.
+
+             Release Notes Options:
+
+                 1.  Display release notes
+                 2.  Print release notes
+                 3.  Both 1 and 2
+                 4.  None of the above
+
+             * Select option [2]: 1 <Return>
+
+             If you select option 1, VMSINSTAL displays the release
+             notes immediately on the console terminal. You can
+             terminate the display at any time by pressing Ctrl/C.
+
+             If you select option 2, VMSINSTAL prompts you for a
+             queue name. Either type a queue name or press Return to
+             send the file to the default output print device:
+
+             * Queue name [SYS$PRINT]: <Return>
+
+             If you select option 3, VMSINSTAL displays the release
+             notes on the terminal and then prompts you for a queue
+             name for the printed version. After you type a queue
+             name or press Return to send the file to the default
+             output print device, the release notes are copied to:
+
+             o  SYS$HELP:DECPHIGS031.RELEASE_NOTES (ASCII format)
+
+             o  SYS$HELP:DECPHIGS031_RELEASE_NOTES.PS (PostScript
+                format)
+
+
+
+                                                 Installing DEC PHIGS 2-7
+
+ 
+
+
+
+
+
+
+
+                 o  SYS$HELP:DECPHIGSJ031.RELEASE_NOTES
+
+                 o  SYS$HELP:DECPHIGSJ031_RELEASE_NOTES.PS
+
+                 If you select option 4, VMSINSTAL does not display,
+                 print, or copy the release notes. This option is
+                 typically used when you wish to terminate the
+                 installation.
+
+                 ________________________ Note ________________________
+       
+                 This version of the release notes file installed by
+                 VMSINSTAL is labeled with the current product name and
+                 version number. Be sure not to delete release notes
+                 for previous versions of DEC PHIGS.
+                 ______________________________________________________
+
+                 VMSINSTAL then displays the following promp t:
+                 * Do you want to continue the installation [N]?: Y <Return>
+                 %VMSINSTAL-I-RELMOVED, Product's release notes have been 
+                 moved to SYS$HELP.
+
+                 To continue the installation, enter YES and press
+                 Return. Otherwise, press Return. In either case, the
+                 release notes are copied to files in the SYS$HELP
+                 directory.
+
+                 After the installation, you can enter the following
+                 command to review the release notes through the Help
+                 facility, for example:
+
+                 $ HELP PHIGS RELEASE_NOTES <Return>
+
+              7. Purge the old DEC PHIGS files.
+
+                 * Do you want to purge files replaced by this 
+                 installation [YES]? <Return>
+
+                 The directories SYS$COMMON:[SYSLIB] and SYS$SYSTEM may
+                 contain previous versions of DEC PHIGS files. These
+                 files are replaced during the installation with new
+                 files, but the old files are not automatically purged.
+                 Purging is recommended. In response to the purging
+                 prompt, press Return to purge the files or type NO to
+                 keep them.
+
+                 Appendix A lists the files on the system that are added
+                 or modified when you install the DEC PHIGS development
+                 kit and the run-time-only kit.
+
+
+
+    2-8 Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+          8. Respond to license registration queries.
+
+             DEC PHIGS supports the VMS License Management Facility
+             (LMF). The installation procedure displays license
+             information about your product and then asks if you have
+             registered and loaded your authorization key for DEC
+             PHIGS. The following is an example of this information:
+
+             DEC PHIGS DEVELOPMENT KIT
+
+                Product:       PHIGS
+                Producer:      DEC
+                Version:       3.1
+                Release Date:  27-JAN-1994
+
+             * Does this product have an authorization key registered 
+               and loaded? Y <Return>
+
+             DEC PHIGS RUN-TIME-ONLY KIT
+
+                Product:       PHIGS-RUNTIME
+                Producer:      DEC
+                Version:       3.1
+                Release Date:  dd-mmm-yyyy
+
+             * Does this product have an authorization key registered 
+               and loaded? Y <Return>
+
+             Your PAK must be registered and loaded for the
+             installation to complete successfully. Therefore, if
+             your PAK is not registered and loaded, you must answer
+             NO to this question, stop the installation, register and
+             load your PAK, and then restart the installation.
+
+          9. Install the ACS library containing the PHIGS Ada binding
+             (development kit only).
+
+             The DEC PHIGS Ada binding requires 20000 blocks of disk space.
+             * Do you wish to install the ACS library containing the PHIGS Ada
+             binding [NO]? <Return>
+
+             Press Return if you do not want to install the ACS
+             library. Type YES if you want to install the ACS
+             library.
+
+          10.Install the PHIGS help library (development kit only).
+
+             * Do you wish to install the help library for PHIGS [YES]? <Return>
+
+             Press Return if you want to install the PHIGS help
+             library. Type NO if you do not want to install the help
+             library.
+
+                                                 Installing DEC PHIGS 2-9
+
+ 
+
+
+
+
+
+
+
+              11.Install examples from PHIGS documentation (development
+                 kit only).
+
+                 * Do you wish to install the examples from the PHIGS
+                 documentation [YES]? <Return>
+
+                 Press Return if you want to install the example programs
+                 from the Getting Started with DEC PHIGS manual and the
+                 DEC PHIGS Developer's Guide. Type NO if you do not want
+                 to install the programs. The DEC PHIGS example programs
+                 use approximately 2200 blocks and are installed in the
+                 PHIGS$EXAMPLES:[...] directories.
+
+              12.Install PEXlib (development kit only).
+
+                 * Do you wish to have PEXlib installed [YES]? <Return>
+
+                 Press Return if you want to install PEXlib. Type NO if
+                 you do not want to install PEXlib.
+
+              13.Install the PEXlib documentation (development kit only).
+
+                 * Do you wish to have the PEXlib documentation 
+                 installed [YES]? <Return>
+
+                 Press Return if you want to install the PEXlib
+                 documentation. Type NO if you do not want to install
+                 the PEXlib documentation.
+
+              14.Install the Japanese PHIGS-related files.
+
+                       This kit contains Japanese-related files.
+                       They require Japanese OpenVMS.
+
+                 * Do you wish to install Japanese related files [NO]? <Return>
+
+                 If the Japanese version of OpenVMS is installed on your
+                 system, you will be asked if you want to install the
+                 Japanese components of DEC PHIGS. Press Return if you do
+                 not want to install the Japanese files. Type YES if you
+                 do want to install these files.
+
+              15.Reboot the system after installing DEC PHIGS.
+
+                 If you are installing DEC PHIGS on a workstation,
+                 you should reboot the system and then run 
+                 SYS$TEST:PHIGS_IVP.COM to complete the installation.
+
+                 * Do you wish to have the system reboot following the PHIGS
+                 installation [YES]? <Return>
+
+
+    2-10 Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+             Press Return if you want the system to reboot. Type NO
+             if you do not want to reboot the system.
+
+          16.Read the informational messages.
+
+             At this point, the installation procedure displays a
+             number of informational messages that report on the
+             progress of the installation; there are no further
+             questions. If the installation procedure has been
+             successful up to this point, VMSINSTAL moves the new
+             or modified files to their target directories, updates
+             help files, and updates DCL tables, if necessary. If you
+             requested that files be purged, they are purged at this
+             time.
+
+             The messages displayed are:
+
+             DEC PHIGS DEVELOPMENT KIT:
+
+                 STARTING to perform all the installation work. No additional 
+                 user actions are necessary from this point.
+
+                 The remaining part of the installation will take 5 - 20 
+                 minutes depending on your CPU.
+
+             %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+             %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+             %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+             %VMSINSTAL-I-RESTORE, Restoring product save set E ...
+             %VMSINSTAL-I-RESTORE, Restoring product save set F ...
+             %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+                   .
+                   .
+                   .
+
+             %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target 
+             directories...
+
+                 Installation of DECPHIGS V3.1 completed at hh:mm
+
+                 VMSINSTAL procedure done at hh:mm
+
+             DEC PHIGS RUN-TIME-ONLY KIT:
+
+                 STARTING to perform all the installation work. No additional 
+                 user actions are necessary from this point.
+
+                 The remaining part of the installation will take 5 - 20 
+                 minutes depending on your CPU.
+
+
+
+                                                Installing DEC PHIGS 2-11
+
+ 
+
+
+
+
+
+
+       
+                 %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+                 %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+                 %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+                       .
+                       .
+                       .
+
+                 %VMSINSTAL-I-MOVEFILES, Files will now be moved to their 
+                 target directories...
+
+                    Installation of DECPHIGSRTO V3.1 completed at hh:mm
+
+                    VMSINSTAL procedure done at hh:mm
+
+                 The installation procedure is complete. If the procedure
+                 was successful, the DEC PHIGS files were moved to their
+                 target directories.
+
+              17.Run the Installation Verification Procedure (IVP).
+
+                 After DEC PHIGS is installed, you can run the IVP
+                 independently to verify that the software is available
+                 on your system. You might also need to run the IVP after
+                 a system failure to ensure that users can access DEC
+                 PHIGS.
+
+              18.Log out of the privileged account.
+
+                 $ LOGOUT <Return>
+                 SYSTEM     logged out at dd-mmm-yyyy hh:mm:ss.ss
+
+                 VMSINSTAL deletes or changes entries in the process
+                 symbol tables during the installation. Therefore, if you
+                 are going to continue using the system manager's account
+                 and you want to restore these symbols, you should log
+                 out and log in again.
+
+        2.2 Error Recovery
+
+              If errors occur during installation, VMSINSTAL displays
+              failure messages. If the installation procedure fails, one
+              or more of the following messages may also appear:
+
+              %VMSINSTAL-E-INSFAIL, The installation of DEC PHIGS V3.1 has 
+              failed.
+
+              This kit requires OpenVMS VAX V5.5-2
+
+              System disk does not contain enough free blocks to install 
+              DECPHIGS
+
+
+
+    2-12 Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+          If the Installation Verification Procedure fails for any
+          reason, the following message is displayed:
+
+          DEC PHIGS V3.1 Installation Verification Procedure failed.
+
+          %VMSINSTAL-E-IVPFAIL, The IVP for DEC PHIGS V3.1 has failed.
+
+          If you receive this message, and all the previous
+          conditions listed are correct, contact your Digital field
+          service representative.
+
+          Errors can occur during the installation if any of the
+          following conditions exist:
+
+          o  The operating system version is incorrect.
+
+          o  A prerequisite software version is incorrect.
+
+          o  Quotas necessary for successful installation are
+             insufficient.
+
+          o  System parameter values for successful installation are
+             insufficient.
+
+          o  The OpenVMS help library is currently in use.
+
+          o  The product license has not been registered and loaded.
+
+          If you are notified that any of these conditions exist,
+          you should take the appropriate action, as described in
+          the error message. For descriptions of the error messages,
+          see the OpenVMS System Messages and Recovery Procedures
+          Reference Manual, your processor-specific installation/
+          operations guide, or the OpenVMS License Management
+          Utility Manual.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                Installing DEC PHIGS 2-13
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                               After Installing DEC PHIGS
+
+
+              The following tasks may be performed after DEC PHIGS
+              installation:
+
+              o  Installing DEC PHIGS on a cluster
+
+              o  Editing the system startup file
+
+              o  Running the Installation Verification Procedure
+
+              o  Installing maintenance updates
+
+              o  Determining and reporting problems
+
+        3.1 Installing DEC PHIGS on an OpenVMS VAXcluster Configuration
+
+              If you want to run DEC PHIGS on multiple nodes of a
+              VAXcluster configuration, first check to see that you have
+              the appropriate software license. Then, follow these steps
+              after installing DEC PHIGS:
+
+              1. Issue the LICENSE LOAD command to activate the license
+                 on each node in the cluster on which DEC PHIGS is to be
+                 executed. Issue the command as described in the OpenVMS
+                 License Management Utility Manual.
+
+              2. Run SYS$STARTUP:PHIGS$STARTUP.COM on each node of the
+                 cluster that has a software license.
+
+              Do not purge files during the installation. You can purge
+              these files after you have run the DEC PHIGS startup
+              command procedure on each node of the cluster.
+
+
+
+
+
+
+
+
+
+
+
+
+                                           After Installing DEC PHIGS 3-1
+
+ 
+
+
+
+
+
+
+
+    3.2 Editing the Startup File
+
+          To enable the automatic startup of DEC PHIGS when
+          your system is rebooted, you must include the startup
+          procedure PHIGS$STARTUP.COM in the startup file-
+          SYS$MANAGER:SYSTARTUP_V5.COM under OpenVMS Version 5.5-2,
+          or SYS$MANAGER:SYSTARTUP_VMS.COM under OpenVMS Version
+          6.1. Because DEC PHIGS cannot be started before the network
+          has been started, you must position this new command line
+          after the line that invokes the network startup command
+          procedure. The following example shows the network startup
+          command line followed by the DEC PHIGS startup command
+          line:
+
+          $ @SYS$MANAGER:STARTNET.COM
+               .
+               .
+               .
+          $ @SYS$STARTUP:PHIGS$STARTUP.COM
+
+          If you have a graphics peripheral set (dial box or button
+          box) installed on your workstation, add the line:
+
+          $ @SYS$STARTUP:PCM$STARTUP.COM
+
+          When you install DEC PHIGS on a cluster, PHIGS$STARTUP.COM
+          is automatically executed for the system node from which
+          the installation was performed. You may need to execute
+          this file for other nodes in the cluster, however, to have
+          the newest DEC PHIGS images installed on those systems.
+          This is particularly true if you purged older versions of
+          DEC PHIGS during the installation.
+
+    3.3 Running the Installation Verification Procedure
+
+          The installation copies the Installation Verification
+          Procedure (IVP) to SYS$SYSTEST. You should run this program
+          after you reboot the system to complete the installation of
+          DEC PHIGS. The IVP verifies that the installation procedure
+          was successfully completed, and ensures the integrity of
+          installed files if system problems occur. To run the IVP
+          separately, enter the following command:
+
+          $ @SYS$TEST:PHIGS_IVP.COM <Return>
+
+
+
+
+
+
+
+
+    3-2 After Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+              If the IVP runs successfully, it generates the picture
+              shown in the hardcopy documentation. If your device produces 
+              color output, the image will appear in color.
+
+        3.4 Installing Maintenance Updates
+
+              Digital periodically issues maintenance updates of DEC
+              PHIGS, each of which contains an installation kit. You
+              should install this kit as described in the documentation
+              that accompanies the maintenance update.
+
+              Each time a maintenance update is released, the version
+              number changes. For example, if the current version is 3.1,
+              the version number of the next maintenance update will be
+              3.2.
+
+              Furthermore, each maintenance update includes online
+              release notes describing the changes made to DEC PHIGS
+              since the previous release. You should read the release
+              notes when you first install DEC PHIGS; however, they are
+              accessible at any time after the product is installed. For
+              information on reading the release notes during the DEC
+              PHIGS installation, refer to the installation procedure.
+              To read the release notes after DEC PHIGS is installed,
+              display or print the files:
+
+              o  SYS$HELP:DECPHIGS031.RELEASE_NOTES (ASCII format) or
+
+              o  SYS$HELP:DECPHIGS031_RELEASE_NOTES.PS (PostScript
+                 format)
+
+              o  SYS$HELP:DECPHIGSJ031.RELEASE_NOTES
+
+              o  SYS$HELP:DECPHIGSJ031_RELEASE_NOTES.PS
+
+        3.5 Determining and Reporting Problems
+
+              If you encounter a problem while using DEC PHIGS, report it
+              to Digital. Depending on the nature of the problem and the
+              type of support you have, you can take one of the following
+              actions:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+        
+              o  Submit a Software Performance Report (SPR).
+
+
+
+
+
+
+                                           After Installing DEC PHIGS 3-3
+
+ 
+
+
+
+
+
+
+
+          o  Fill out and submit a Reader's Comments form if the
+             problem has to do with the DEC PHIGS documentation.
+             There are Reader's Comments forms at the back of each
+             printed manual. Use the form from the manual in which
+             you found the error. Be sure to include the section and
+             page number of the error.
+
+          Review the Software Product Description (SPD) and Warranty
+          Addendum for an explanation of warranty. If you encounter a
+          problem during the warranty period, report the problem as
+          described in this section, or follow alternate instructions
+          provided by Digital for reporting SPD nonconformance
+          problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    3-4 After Installing DEC PHIGS
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                           Files Installed on Your System
+
+
+              During installation, DEC PHIGS installs a number of files
+              on your system. These files are listed in Section A.1 and
+              Section A.2.
+
+        A.1 DEC PHIGS Development Kit Files
+
+              Table A-1 lists the files on the system that are added or
+              modified when you install the DEC PHIGS development kit.
+
+        _________________________________________________________________
+        Table A-1 Installed Files for the DEC PHIGS Development Kit
+        _________________________________________________________________
+        Directory        File Name                       Description
+        _________________________________________________________________
+
+        PHIGS$EXAMPLES:[ADA]:                            Ada binding
+                                                         examples
+
+                         ADEMO1.ADA
+
+                         ADEMO2.ADA
+
+                         ADEMO3.ADA
+
+                         ADEMO4.ADA
+
+                         ADEMO5.ADA
+
+                         SHUTLE.DAT
+
+        PHIGS$EXAMPLES:[BATTLEZONE]:                     DEC PHIGS
+                                                         Battlezone game
+
+                         BATTLE.HELP                     Help file
+
+                         BATTLE.MMS
+
+                         BATTLE.OPT
+
+                         BATTLE_CONFIG.H
+
+                         BATTLE_DEFS.H
+                                                 (continued on next page)
+
+                                       Files Installed on Your System A-1
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-1 (Cont.) Installed Files for the DEC PHIGS Development Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+                     BATTLE_EXTERNS.H
+
+                     BATTLE_GPR.C
+
+                     BATTLE_GRAPHICS.C
+
+                     BATTLE_MAIN.C
+
+                     BATTLE_MOVE.C
+
+                     BATTLE_PARSEOPTS.C
+
+                     BATTLE_PHIGS.C
+
+                     BATTLE_SCORES.C
+
+                     BATTLE_STRUCTS.H
+
+                     PHIGS_BATTLE.EXE
+
+                     VMS_UTIL.C
+
+    PHIGS$EXAMPLES:[DEMO]:                           DEC PHIGS demo
+                                                     files
+
+                     PHIGS_DEMO_BUILD.COM
+
+                     PHIGS_DEMO_CHANGE_OBJECT_
+                     SIZE.C
+
+                     PHIGS_DEMO_CHANGE_VIEW_ANGLE.C
+
+                     PHIGS_DEMO_CREATE_OBJECT.C
+
+                     PHIGS_DEMO_CREATE_STRUCT.C
+
+                     PHIGS_DEMO_MOVE_VIEW_PLANES.C
+
+                     PHIGS_DEMO_PHIGS.C
+
+                     PHIGS_DEMO_PHIGS.EXE
+
+                     PHIGS_DEMO_PHIGS.H
+
+                                             (continued on next page)
+
+
+    A-2 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-1 Installed Files for the DEC PHIGS Development Kit
+        _________________________________________________________________
+        Directory        File Name                       Description
+        _________________________________________________________________
+                         PHIGS_DEMO_README.TXT
+
+                         PHIGS_DEMO_README_JP.TXT        Japanese PHIGS
+                                                         demo information
+                         PHIGS_DEMO_ROTATE_OBJECT.C
+
+                         PHIGS_DEMO_TRANSLATE_OBJECT.C
+                    
+                         PHIGS$DEMO.ARC
+
+        PHIGS$EXAMPLES:[DEVELOPERS_GUIDE]:               DEC PHIGS
+                                                         Developer's
+                                                         Guide programs
+
+                         DG_ANNO_TEXT.C
+
+                         DG_BUNDLE.C
+
+                         DG_CULL_DIAMOND.C
+
+                         DG_DEPTH_CUE.C
+
+                         DG_EDIT_WHEEL.C
+
+                         DG_EXECUTE_STRUC.C
+
+                         DG_FILL_AREA.C
+
+                         DG_FILL_ATT.C
+
+                         DG_FOUR_WHEELS.C
+
+                         DG_GLOBAL_ROBOT.C
+
+                         DG_HELLO_PHIGS.C
+
+                         DG_HOUSE.C
+
+                         DG_HSV.C
+
+                         DG_INDEX_DATA.C
+
+                         DG_INHERIT.C
+
+                                                 (continued on next page)
+
+
+                                       Files Installed on Your System A-3
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-1 (Cont.) Installed Files for the DEC PHIGS Development Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+                     DG_LINE_ATTS.C
+
+                     DG_LOCAL_ROBOT.C
+
+                     DG_MULT_VIEWS.C
+
+                     DG_NURBS.C
+
+                     DG_PERSPECTIVE.C
+
+                     DG_PHIGS_DRAW.C
+
+                     DG_PICKPATH.C
+
+                     DG_QUAD_SPHERE.C
+
+                     DG_REQ_LOC.C
+
+                     DG_RGB.C
+
+                     DG_ROLL_WHEEL.C
+
+                     DG_SEE_VIEW.C
+
+                     DG_SHADE_DIAMOND.C
+
+                     DG_SPECULAR.C
+
+                     DG_STRUCT_ROBOT.C
+
+                     DG_TEXT3.C
+
+                     DG_TEXT_ATT.C
+
+                     DG_WHEEL.C
+
+    PHIGS$EXAMPLES:[GETTING_STARTED]:                Getting Started
+                                                     with DEC PHIGS
+                                                     programs
+
+                     GS_ARCS.C
+
+                     GS_FILL_AREA.C
+
+                     GS_LIGHT.C
+                                             (continued on next page)
+
+    A-4 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-1 Installed Files for the DEC PHIGS Development Kit
+        _________________________________________________________________
+        Directory        File Name                       Description
+        _________________________________________________________________
+                         GS_LINE_COLOR.C
+
+                         GS_LINE_TYPES.C
+
+                         GS_LINE_WIDTHS.C
+
+                         GS_NAME_SETS.C
+
+                         GS_NURBS.C
+
+                         GS_POLYLINES.C
+                
+                         GS_REQUEST.C
+
+                         GS_SAMPLE.FOR
+
+                         GS_SIMPLE.C
+
+                         GS_TEAPOT.C
+
+                         GS_TEXT.C
+
+        PHIGS$EXAMPLES:[MISC]:
+
+                         CREATE_PHIGS_WIDGET.C
+
+                         CREATE_PHIGS_WIDGET.H
+
+                         CREATE_PHIGS_WINDOW.C
+
+                         CREATE_PHIGS_WINDOW.H
+
+                         ESCAPE_CB.C                     C binding
+                                                         program
+
+                         ESCAPE_DB.FOR                   PHIGS$ binding
+                                                         program
+
+                         ESCAPE_FB.FOR                   Fortran binding
+                                                         program
+
+                         FONTS_HEX.C
+
+                                                 (continued on next page)
+
+
+
+                                       Files Installed on Your System A-5
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-1 (Cont.) Installed Files for the DEC PHIGS Development Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+                     JPHIGS_CHOICE_CB.C              Japanese example
+                                                         files
+
+                     JPHIGS_CHOICE_DOL.C
+
+                     JPHIGS_CHOICE_FB.FOR
+
+                     JPHIGS_STRING_CB.C
+
+                     JPHIGS_STRING_DOL.C
+
+                     JPHIGS_STRING_FB.FOR
+
+                     JPHIGS_TEXT_CB.C
+
+                     JPHIGS_TEXT_DOL.C
+
+                     JPHIGS_TEXT_FB.FOR
+
+                     MOTIF_333_343.C
+
+                     MOTIF_2X3.C
+
+                     PHIGS_PREDEF.C
+
+                     PHIGS_PREDEF.EXE
+
+                     PHIGS_PREDEF_BUILD.COM
+                    
+                     PHIGS_RINGS_3D.FOR              Sample programs
+
+                     PHIGS_XDEMO.C
+
+    PHIGS$EXAMPLES:[UTILS]:
+
+                     FORTRAN_CONVERTER.DAT           ISO Fortran
+                                                     binding
+                                                     converter file
+                          
+                     PHIGS$CONVERTER.EXE
+
+                                             (continued on next page)
+
+
+
+
+
+    A-6 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-1 Installed Files for the DEC PHIGS Development Kit
+        _________________________________________________________________
+        Directory        File Name                       Description
+        _________________________________________________________________
+        SYS$COMMON:[DECW$DEFAULTS.SYSTEM]:
+
+                         GFX_MOTIF.UID
+           
+                         GFX_MOTIF_EN.UID
+
+                         GFX_MOTIF_JP.UID
+
+        SYS$COMMON:[SYSFONT]:
+
+                         PHIGS$MARKERS.VWS$FONT
+
+                         PHIGS$MARKERS.VWS$VAFONT
+
+        SYS$COMMON:[SYSHLP.JA_JP]:
+
+                         HELPLIB.HLB
+
+        SYS$COMMON:[SYSLIB]
+
+                         C_IDL.H
+
+                         DECW$SVEXT_MULTI_BUFFERING.EXE
+
+                         DECW$SVEXT_X3D_PEX.EXE
+
+                         DECW$SVEXT_X3D_PEX_GB.EXE
+                     
+                         DECW$SVEXT_X3D_PEX_GB_
+                         UCODE.EXE
+
+                         DECW$SVEXT_X3D_PEX_GE.EXE
+
+                         DECW$SVEXT_X3D_PEX_STP.EXE
+
+                         DECW$SVEXT_X3D_PEX_STP_
+                         UCODE.EXE
+
+                         DECW$SVEXT_X3D_PEX_VCFB.EXE
+
+                         PCM$LIB.EXE
+
+                         FLOATDEF.H                      PEXlib files
+
+
+                                                 (continued on next page)
+
+                                       Files Installed on Your System A-7
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-1 (Cont.) Installed Files for the DEC PHIGS Development Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+                     MPEX.H
+
+                     MPEXLIB.H
+
+                     MPEXOC.H
+
+                     MPEXPROTO.H
+
+                     MPEXPROTOSTR.H
+
+                     PEX.H
+
+                     PEXLIB.H
+
+                     PEXLIB.OLB
+
+                     PEXLIBPROTOS.H
+                      
+                     PEXOC.H
+
+                     PEXOCBUF.H
+
+                     PEXPROTO.H
+
+                     PEXPROTOST.H
+
+                     PHIGS.H                         DEC PHIGS
+                                                     include files
+
+                     PHIGS_DEC.H                     C binding
+                                                     include file
+
+                     PHIGS_DEFS.ADA
+
+                     PHIGS_DEFS.BAS
+
+                     PHIGS_DEFS.FOR
+                     
+                     PHIGS_DEFS.H
+                       
+                     PHIGS_DEFS.PAS
+                      
+                     PHIGS_DEFS.PL2
+
+                     PHIGS_DEFS.PLI
+                                             (continued on next page)
+
+    A-8 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-1 Installed Files for the DEC PHIGS Development Kit
+        _________________________________________________________________
+        Directory        File Name                       Description
+        _________________________________________________________________
+                         PHIGS_FOR_BND_CONSTS.FOR
+
+                         PHIGS_ISO.H                     ISO C binding
+                                                         include file
+
+                         PHIGS_MSGS.ADA
+
+                         PHIGS_MSGS.BAS
+
+                         PHIGS_MSGS.FOR
+
+                         PHIGS_MSGS.H
+
+                         PHIGS_MSGS.PAS
+
+                         PHIGS_MSGS.PL2
+
+                         PHIGS_MSGS.PLI
+
+                         PHIGS$ARCHIVE_CONVERTER.EXE     Archive
+                                                         converter
+
+                         PHIGS$CGMO_DEV_HANDLER.EXE      Device handlers
+
+                         PHIGS$COLSIX_DEV_HANDLER.EXE
+
+                         PHIGS$CRTL.EXE                  DEC PHIGS
+                                                         executables
+
+                         PHIGS$DBM.EXE
+             
+                         PHIGS$DEFS.BAS
+
+                         PHIGS$DEFS.FOR
+
+                         PHIGS$DEFS.H
+
+                         PHIGS$DEFS.PAS
+
+                         PHIGS$DEFS.PL2
+
+                         PHIGS$DEFS.PLI
+
+                                                 (continued on next page)
+
+
+
+                                       Files Installed on Your System A-9
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-1 (Cont.) Installed Files for the DEC PHIGS Development Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+                     PHIGS$DDIF_DEV_HANDLER.EXE      DDIF[TM] device
+                                                     handler
+
+                     PHIGS$FOR_BND.OLB
+
+                     PHIGS$FOR_BND_CONSTS.FOR
+
+                     PHIGS$GFXRTL.EXE
+
+                     PHIGS$HPGL_DEV_HANDLER.EXE
+
+                     PHIGS$HPPCL_DEV_HANDLER.EXE
+
+                     PHIGS$I3D.EXE
+
+                     PHIGS$ISO_CRTL.EXE
+
+                     PHIGS$MOTIF_DEV_HANDLER.EXE
+
+                     PHIGS$MSGS.BAS                  Message files
+
+                     PHIGS$MSGS.FOR
+
+                     PHIGS$MSGS.H
+
+                     PHIGS$MSGS.PAS
+
+                     PHIGS$MSGS.PL2
+
+                     PHIGS$MSGS.PLI
+
+                     PHIGS$PS_DEV_HANDLER.EXE
+
+                     PHIGS$REGIS_DEV_HANDLER.EXE
+
+                     PHIGS$RTL.EXE
+
+                     PHIGS$SIXEL_DEV_HANDLER.EXE
+
+                     PHIGS$TEK_DEV_HANDLER.EXE
+
+                     PHIGS$TEK41_DEV_HANDLER.EXE
+
+                     PHIGS$TRACE.EXE                 DEC PHIGS tracer
+
+                                             (continued on next page)
+
+    A-10 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-1 Installed Files for the DEC PHIGS Development Kit
+        _________________________________________________________________
+        Directory        File Name                       Description
+        _________________________________________________________________
+                         PHIGS$UIS_DEV_HANDLER.EXE
+
+                         PHIGS$WSIM.EXE
+
+                         PHIGS$WSM.EXE
+
+                         VAXGFX$DDIF_COLOR_TABLE.DAT     DDIF device
+                                                         handler color
+                                                         table
+
+                         VAXGFX$FONT_J0102.FNT
+
+                         VAXGFX$FONT_JISX0201.FNT
+
+                         VAXGFX$FONT_JISX0208.FNT
+
+                         VAXGFX$FONT_NEG01.FNT           Stroke fonts
+
+                         VAXGFX$FONT_NEG02.FNT
+
+                         VAXGFX$FONT_NEG03.FNT
+
+                         VAXGFX$FONT_NEG04.FNT
+
+                         VAXGFX$FONT_NEG05.FNT
+
+                         VAXGFX$FONT_NEG06.FNT
+
+                         VAXGFX$FONT_NEG07.FNT
+
+                         VAXGFX$FONT_NEG08.FNT
+
+                         VAXGFX$FONT_NEG09.FNT
+
+                         VAXGFX$FONT_NEG10.FNT
+
+                         VAXGFX$FONT_NEG11.FNT
+
+                         VAXGFX$FONT_NEG12.FNT
+
+                         VAXGFX$FONT_NEG13.FNT
+
+                         VAXGFX$FONT_NEG14.FNT
+
+
+                                                 (continued on next page)
+
+                                      Files Installed on Your System A-11
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-1 (Cont.) Installed Files for the DEC PHIGS Development Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+                     VAXGFX$FONT_NEG15.FNT
+
+                     VAXGFX$FONT_NEG16.FNT
+
+                     VAXGFX$FONT_NEG17.FNT
+
+                     VAXGFX$FONT_NEG18.FNT
+
+                     VAXGFX$FONT_NEG19.FNT
+
+                     VAXGFX$FONT_NEG20.FNT
+
+                     VAXGFX$FONT_NEG21.FNT
+
+                     VAXGFX$FONT_NEG22.FNT
+
+                     VAXGFX$FONT_NEG23.FNT
+
+                     VAXGFX$FONT_NEG24.FNT
+
+    SYS$HELP:
+
+                     DECPHIGS031.RELEASE_NOTES
+
+                     DECPHIGS031_RELEASE_NOTES.PS
+
+                     DECPHIGSJ031.RELEASE_NOTES
+
+                     DECPHIGSJ031_RELEASE_NOTES.PS
+
+                     HELPLIB.HLB (modified)
+
+    SYS$MESSAGE:
+
+                     PHIGS$MSGS.EXE
+
+                     VAXGFX$MSGS.EXE
+
+    SYS$MANAGER:
+
+                     PCM$CUSTOM_SS.DAT
+
+                     PCM$STANDARD_SS.DAT
+
+
+                                             (continued on next page)
+
+    A-12 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-1 Installed Files for the DEC PHIGS Development Kit
+        _________________________________________________________________
+        Directory        File Name                       Description
+        _________________________________________________________________
+        SYS$STARTUP:
+
+                         PHIGS$STARTUP.COM
+
+                         PCM$STARTUP.COM
+
+        SYS$SYSTEM:
+
+                         PCM$SERVER.EXE
+         
+        SYS$TEST:
+
+                         PHIGS_IVP.COM
+
+                         PHIGS_IVP.EXE
+        _________________________________________________________________
+
+        A.2 DEC PHIGS Run-Time-Only Kit Files
+
+              Table A-2 lists the files on the system that are added or
+              modified when you install the DEC PHIGS run-time-only kit.
+
+        _________________________________________________________________
+        Table A-2 Installed Files for the DEC PHIGS Run-Time-Only Kit
+        _________________________________________________________________
+        Directory        File Name                       Description 
+        _________________________________________________________________
+        SYS$COMMON:[DECW$DEFAULTS.SYSTEM]:
+
+                         GFX_MOTIF.UID
+
+                         GFX_MOTIF_EN.UID
+
+                         GFX_MOTIF_JP.UID
+
+        SYS$HELP:
+
+                         DECPHIGS031.RELEASE_NOTES
+
+                         DECPHIGS031_RELEASE_NOTES.PS
+
+                         DECPHIGSJ031.RELEASE_NOTES
+
+                         DECPHIGSJ031_RELEASE_NOTES.PS
+
+
+                                                 (continued on next page)
+
+                                      Files Installed on Your System A-13
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-2 (Cont.) Installed Files for the DEC PHIGS Run-Time-Only Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+    SYS$COMMON:[SYSHLP.JA_JP]:
+
+                     HELPLIB.HLB
+                       
+    SYS$COMMON:[SYSLIB]:
+
+                     DECW$SVEXT_MULTI_BUFFERING.EXE
+
+                     DECW$SVEXT_X3D_PEX.EXE
+
+                     DECW$SVEXT_X3D_PEX_GB.EXE
+
+                     DECW$SVEXT_X3D_PEX_GB_
+                     UCODE.EXE
+
+                     DECW$SVEXT_X3D_PEX_GE.EXE
+
+                     DECW$SVEXT_X3D_PEX_STP.EXE
+
+                     DECW$SVEXT_X3D_PEX_STP_
+                     UCODE.EXE
+
+                     DECW$SVEXT_X3D_PEX_VCFB.EXE
+
+                     PCM$LIB.EXE
+
+                     PHIGS$ARCHIVE_CONVERTER.EXE     Archive
+                                                     converter
+
+                     PHIGS$CGMO_DEV_HANDLER.EXE      Device handlers
+
+                     PHIGS$COLSIX_DEV_HANDLER.EXE
+
+                     PHIGS$CRTL.EXE                  DEC PHIGS
+                                                     executables
+
+                     PHIGS$DBM.EXE
+
+                     PHIGS$DDIF_DEV_HANDLER.EXE      DDIF device
+                                                     handler
+
+                     PHIGS$FOR_BND.OLB
+
+                     PHIGS$GFXRTL.EXE
+
+                                                 (continued on next page)
+
+    A-14 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-2 (Cont.) Installed Files for the DEC PHIGS Run-Time-Only Kit
+        _________________________________________________________________
+        Directory        File Name                       Description 
+        _________________________________________________________________
+                         PHIGS$HPGL_DEV_HANDLER.EXE
+
+                         PHIGS$HPPCL_DEV_HANDLER.EXE
+
+                         PHIGS$I3D.EXE
+
+                         PHIGS$ISO_CRTL.EXE
+
+                         PHIGS$MOTIF_DEV_HANDLER.EXE
+
+                         PHIGS$PS_DEV_HANDLER.EXE
+
+                         PHIGS$REGIS_DEV_HANDLER.EXE
+
+                         PHIGS$RTL.EXE
+
+                         PHIGS$SIXEL_DEV_HANDLER.EXE
+
+                         PHIGS$TEK_DEV_HANDLER.EXE
+
+                         PHIGS$TEK41_DEV_HANDLER.EXE
+
+                         PHIGS$TRACE.EXE                 DEC PHIGS tracer
+                      
+                         PHIGS$UIS_DEV_HANDLER.EXE
+
+                         PHIGS$WSIM.EXE
+
+                         PHIGS$WSM.EXE
+
+                         VAXGFX$DDIF_COLOR_TABLE.DAT     DDIF device
+                                                         handler color
+                                                         table
+
+                         VAXGFX$FONT_J0102.FNT
+
+                         VAXGFX$FONT_JISX0201.FNT
+
+                         VAXGFX$FONT_JISX0208.FNT
+
+                         VAXGFX$FONT_NEG01.FNT           Stroke fonts
+
+                         VAXGFX$FONT_NEG02.FNT
+                                                 (continued on next page)
+
+
+
+                                      Files Installed on Your System A-15
+
+ 
+
+
+
+
+
+
+
+    _________________________________________________________________
+    Table A-2 (Cont.) Installed Files for the DEC PHIGS Run-Time-Only Kit
+    _________________________________________________________________
+    Directory        File Name                       Description 
+    _________________________________________________________________
+                     VAXGFX$FONT_NEG03.FNT
+
+                     VAXGFX$FONT_NEG04.FNT
+
+                     VAXGFX$FONT_NEG05.FNT
+
+                     VAXGFX$FONT_NEG06.FNT
+
+                     VAXGFX$FONT_NEG07.FNT
+
+                     VAXGFX$FONT_NEG08.FNT
+
+                     VAXGFX$FONT_NEG09.FNT
+
+                     VAXGFX$FONT_NEG10.FNT
+
+                     VAXGFX$FONT_NEG11.FNT
+
+                     VAXGFX$FONT_NEG12.FNT
+
+                     VAXGFX$FONT_NEG13.FNT
+
+                     VAXGFX$FONT_NEG14.FNT
+
+                     VAXGFX$FONT_NEG15.FNT
+
+                     VAXGFX$FONT_NEG16.FNT
+
+                     VAXGFX$FONT_NEG17.FNT
+
+                     VAXGFX$FONT_NEG18.FNT
+
+                     VAXGFX$FONT_NEG19.FNT
+
+                     VAXGFX$FONT_NEG20.FNT
+
+                     VAXGFX$FONT_NEG21.FNT
+
+                     VAXGFX$FONT_NEG22.FNT
+
+                     VAXGFX$FONT_NEG23.FNT
+
+                     VAXGFX$FONT_NEG24.FNT
+
+                                                 (continued on next page)
+
+
+    A-16 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        _________________________________________________________________
+        Table A-2 (Cont.) Installed Files for the DEC PHIGS Run-Time-Only Kit
+        _________________________________________________________________
+        Directory        File Name                       Description 
+        _________________________________________________________________
+        SYS$FONT:
+
+                         PHIGS$MARKERS.VWS$FONT
+
+                         PHIGS$MARKER.VWS$VAFONT
+
+
+        SYS$MANAGER:
+
+                         PCM$CUSTOM_SS.DAT
+
+                         PCM$STANDARD_SS.DAT
+
+        SYS$MESSAGE:
+
+                         PHIGS$MSGS.EXE
+
+                         VAXGFX$MSGS.EXE
+
+        SYS$STARTUP:
+
+                         PHIGS$STARTUP.COM
+
+                         PCM$STARTUP.COM
+
+        SYS$SYSTEM:
+
+                         PCM$SERVER.EXE
+
+        SYS$TEST:
+
+                         PHIGS_IVP.COM
+
+                         PHIGS_IVP.EXE
+        _________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+                                      Files Installed on Your System A-17
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                                     Sample Installations
+
+
+              This appendix provides sample installations of the
+              development and run-time-only kits.
+
+        B.1 DEC PHIGS Development Kit Installation
+
+              This section contains a sample installation of the DEC
+              PHIGS development kit.
+
+        $ @VMSINSTAL DECPHIGS031 DKA400 options N <Return>
+
+                OpenVMS VAX Software Product Installation Procedure V6.1
+
+        It is 12-APR-1995 at 13:56.
+
+        Enter a question mark (?) at any time for help.
+        VMSINSTAL-W-ACTIVE, The following processes are still active:
+               DECW$SERVER_0
+               _FTA8:
+               _FTA11:
+               _FTA12:
+               _FTA13:
+               _FTA14:
+        * Do you want to continue anyway [NO]? Y <Return>
+        * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+        The following products will be processed:
+
+          DECPHIGS V3.1
+
+                Beginning installation of DECPHIGS V3.1 at 13:56
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+          Release Notes Options:
+
+
+            1.  Display release notes
+            2.  Print release notes
+            3.  Both 1 and 2
+            4.  None of the above
+
+        * Select option [2]: <Return>
+
+
+
+
+
+                                                 Sample Installations B-1
+
+ 
+
+
+
+
+
+
+    * Queue name [sys$print]: <Return>
+    * Do you want to continue the installation [NO]? Y <Return>
+
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+    Copyright Digital Equipment Corporation 1988, 1995. All rights reserved.
+
+    Restricted Rights: Use, duplication, or disclosure by the U.S. Government
+    is subject to restrictions as set forth in subparagraph (c)(1)(ii) of
+    DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+    as applicable.
+
+    This software is proprietary to and embodies the confidential technology
+    of Digital Equipment Corporation. Possession, use, or copying of this
+    software and media is authorized only pursuant to a valid written license
+    from Digital or an authorized sublicensor.
+
+    * Do you want to purge files replaced by this installation [YES]? <Return>
+
+            Product:      PHIGS
+            Producer:     DEC
+            Version:      3.1
+            Release Date: 27-JAN-1994
+
+    * Does this product have an authorization key registered and 
+    loaded? Y <Return>
+
+    The DEC PHIGS Ada binding requires 20000 blocks of disk space.
+
+    * Do you wish to install the ACS library containing the PHIGS Ada 
+    binding [NO]?  Y <Return>
+
+    * Do you wish to install the help library for PHIGS [YES]? <Return>
+
+    * Do you wish to install the examples from the PHIGS 
+    documentation [YES]? <Return>
+
+    * Do you wish to have PEXlib installed [YES]? <Return>
+
+    * Do you wish to have the PEXlib documentation installed [YES]? <Return>
+
+            This kit contains Japanese-related files.
+            They require Japanese OpenVMS.
+
+    * Do you wish to install Japanese related files [NO]? <Return>
+
+        If you are installing DEC PHIGS on a workstation, you should reboot
+        the system and then run SYS$TEST:PHIGS_IVP.COM to complete the
+        installation.
+
+    * Do you wish to have the system reboot following the PHIGS 
+    installation [YES]? <Return>
+
+
+    B-2 Sample Installations
+
+ 
+
+
+
+
+
+
+
+            STARTING to perform all the installation work.  No additional 
+            user actions are necessary from this point.
+
+            The remaining part of the installation will take 5 - 20 minutes
+            depending on your CPU.
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set E ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set F ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+
+            WARNING:  In order to update the DEC PHIGS Ada binding, all the
+            files from the DEC PHIGS Ada ACS library in the system directory
+            [SYSLIB.PHIGS_ADA] will be deleted and replaced with files from
+            this kit.
+
+        The server extensions on your system are newer than the ones in this
+        kit.  The server extensions will not be installed.
+
+        The PEX server microcode has been updated.
+
+            PEXLIB_V5.PS has been installed in SYS$HELP:
+
+          System Manager:
+
+            Upon completion of this installation, please be sure to
+            edit the system startup file and add the following line:
+
+               $ @SYS$STARTUP:PHIGS$STARTUP.COM
+
+            If you have a button or dial box connected to your workstation,
+            edit the system file SYS$STARTUP:VMS$LPBEGIN-050_STARTUP.COM
+            (refer to the release notes for details) and add the following
+            line:
+
+               $ @SYS$STARTUP:PCM$STARTUP.COM
+
+            A copy of the Installation Verification Procedure has been put
+            in SYS$TEST:PHIGS_IVP.COM.
+
+            If you are installing DEC PHIGS on a 3D workstation and use a
+            PEX workstation type, you need to restart the DECwindows server
+            after the installation with the following line:
+
+               $ @SYS$STARTUP:DECW$STARTUP.COM RESTART
+
+            PHIGS demo programs, along with their sources have been put in:
+
+
+
+                                                 Sample Installations B-3
+
+ 
+
+
+
+
+
+
+
+            PHIGS$EXAMPLES:[DEMO] - PHIGS_DEMO_PHIGS example
+
+            PHIGS$EXAMPLES:[DEVELOPERS_GUIDE] - Examples from the DEC PHIGS
+                                    Developer's Guide
+
+            PHIGS$EXAMPLES:[GETTING_STARTED] - Examples from the "Getting 
+                                    Started with DEC PHIGS" manual
+
+            PHIGS$EXAMPLES:[MISC] - Assorted other PHIGS examples
+
+            PHIGS$EXAMPLES:[ADA] - Assorted PHIGS Ada examples
+
+            PHIGS$EXAMPLES:[UTILS] - Assorted utilities.
+
+            To complete the installation of the DEC PHIGS Ada binding, please
+            issue the following commands:
+
+            $ ACS SET LIBRARY SYS$COMMON:[SYSLIB.PHIGS_ADA]
+            $ ACS ENTER FOREIGN/REPLACE -
+                 SYS$COMMON:[SYSLIB.PHIGS_ADA]PHIGS$ADA.OLB/LIBRARY -
+                 PHIGS_INTERNALS_C
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target 
+        directories...
+            Installation of DECPHIGS V3.1 completed at 14:30
+
+            VMSINSTAL procedure done at 14:30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+
+
+
+
+
+
+
+
+
+    B-4 Sample Installations
+
+ 
+
+
+
+
+
+
+
+        B.2 DEC PHIGS Run-Time-Only Kit Installation
+
+             This section contains a sample installation of the DEC
+              PHIGS development kit.
+
+        $ @vmsinstal DECPHIGSRTO031 DKA400<Return>
+
+                OpenVMS VAX Software Product Installation Procedure V6.1
+
+        It is 12-APR-1995 at 13:51.
+
+        Enter a question mark (?) at any time for help.
+        VMSINSTAL-W-ACTIVE, The following processes are still active:
+               DECW$SERVER_0
+               _FTA8:
+               _FTA11:
+               _FTA12:
+               _FTA13:
+               _FTA14:
+        * Do you want to continue anyway [NO]? Y <Return>
+        * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+        The following products will be processed:
+
+          DECPHIGSRTO V3.1
+
+                Beginning installation of DECPHIGSRTO V3.1 at 13:52
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to 
+        SYS$HELP.
+        Copyright Digital Equipment Corporation 1988, 1995. All rights reserved.
+
+        Restricted Rights: Use, duplication, or disclosure by the U.S. 
+        Government is subject to restrictions as set forth in subparagraph (c)
+        (1)(ii) of DFARS 252.227-7013, or in FAR 52.227-19, or in 
+        FAR 52.227-14 Alt. III, as applicable.
+
+        This software is proprietary to and embodies the confidential technology
+        of Digital Equipment Corporation. Possession, use, or copying of this
+        software and media is authorized only pursuant to a valid written 
+        license from Digital or an authorized sublicensor.
+
+        * Do you want to purge files replaced by this 
+        installation [YES]? <Return>
+
+                Product:      PHIGS-RUNTIME
+                Producer:     DEC
+                Version:      3.1
+                Release Date: 27-JAN-1994
+
+
+
+                                                 Sample Installations B-5
+
+ 
+
+
+
+
+
+
+
+    * Does this product have an authorization key registered and 
+    loaded? Y <Return>
+
+            This kit contains Japanese-related files.
+            They require Japanese OpenVMS.
+
+    * Do you wish to install Japanese related files [NO]? <Return>
+
+            If you are installing DEC PHIGS on a workstation, you should 
+            reboot the system and then run SYS$TEST:PHIGS_IVP.COM to 
+            complete the installation.
+
+    * Do you wish to have the system reboot following the PHIGS 
+    installation [YES]? <Return>
+
+            STARTING to perform all the installation work.  No additional user
+            actions are necessary from this point.
+
+            The remaining part of the installation will take 5 - 20 minutes
+            depending on your CPU.
+
+    %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+    %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+    %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+
+    The server extensions on your system are newer than the ones in this
+    kit.  The server extensions will not be installed.
+
+    The PEX server microcode has been updated.
+
+      System Manager:
+
+            Upon completion of this installation, please be sure to
+            edit the system startup file and add the following line:
+
+               $ @SYS$STARTUP:PHIGS$STARTUP.COM
+
+            If you have a button or dial box connected to your workstation,
+            edit the system file SYS$STARTUP:VMS$LPBEGIN-050_STARTUP.COM
+            (refer to the release notes for details) and add the following line:
+
+               $ @SYS$STARTUP:PCM$STARTUP.COM
+
+            A copy of the Installation Verification Procedure will be put in
+            SYS$TEST:PHIGS_IVP.EXE along with SYS$TEST:PHIGS_IVP.COM.
+
+
+
+
+
+
+
+
+    B-6 Sample Installations
+
+
+
+
+
+
+            If you are installing DEC PHIGS on a 3D workstation and use a
+            PEX workstation type, you need to restart the DECwindows server
+            after the installation with the following line:
+
+               $ @SYS$STARTUP:DECW$STARTUP.COM RESTART
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target 
+        directories...
+                Installation of DECPHIGSRTO V3.1 completed at 13:56
+
+                VMSINSTAL procedure done at 13:56
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                 Sample Installations B-7
+

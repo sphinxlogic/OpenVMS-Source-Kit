@@ -1,0 +1,563 @@
+ 
+
+
+
+
+
+
+          Software
+          Product
+          Description
+
+          ___________________________________________________________________
+
+          PRODUCT NAME:  Compaq SNA 3270 Data Stream             SPD 26.87.09
+                         Programming Interface for OpenVMS, Ver-
+                         sion 1.6
+
+          This SPD describes Compaq SNA 3270 Data Stream Programming Interface
+          for OpenVMS, which is available for the OpenVMS Alpha and OpenVMS VAX
+          platforms. All information applies to both platforms unless otherwise
+          indicated.
+
+          DESCRIPTION
+
+          Compaq SNA 3270 Data Stream Programming Interface for OpenVMS (3270
+          DS) is a layered software product that allows user-written applica-
+          tions running on suitably configured OpenVMS systems within a DECnet
+          or TCP/IP network or on suitably configured OpenVMS systems within an
+          OpenVMS SNA environment to exchange messages with cooperating appli-
+          cations on an IBM host. The 3270 DS software exists in the OpenVMS sys-
+          tem as a shareable image. Access between the cooperating Compaq and
+          IBM applications is via one of the following SNA servers or gateways:
+
+          TCP/IP or DECnet Connections
+
+          o  Compaq SNA Peer Server
+
+          o  Compaq SNA Domain Gateway
+
+          o  Compaq SNA Access Server for Windows NT
+
+          o  Compaq SNA Server for OpenVMS Alpha, a layered product that sup-
+             ports local access as well as TCP/IP and DECnet clients
+
+          DECnet Only Connections
+
+          o  Compaq DECnet SNA Gateway for Synchronous Transport
+
+          o  Compaq DECnet SNA Gateway for Channel Transport
+
+                                                                   April 2001
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          o  Compaq SNA Server for OpenVMS VAX, an OpenVMS VAX layered product
+             that supports local access as well as remote DECnet clients
+
+          The 3270 DS programming interface is a collection of subroutines that
+          provides an easy-to-use interface for the SNA server or gateway ap-
+          plication programmer who has a specific need to interface to an IBM
+          application subsystem that uses the LU type 2 (LU2) protocol. The prod-
+          uct can be used with many types of applications. As an example, a cus-
+          tomized 3270 terminal emulator application can be written by a user
+          and layered on top of 3270 DS. Applications can be event driven or syn-
+          chronous in nature with no loss in available functions.
+
+          Features
+
+          The 3270 DS product is designed to insulate the OpenVMS application
+          programmer from the inner workings of the SNA network environment as
+          much as possible, thus allowing the user to concentrate on solving the
+          application problem. The product performs the following SNA functions
+          on the user's behalf:
+
+          o  Receives and interprets the bind
+
+          o  Accepts the bind and starts the session
+
+          o  Maintains the state machines for chaining, bracketing, and data flow
+             control
+
+          o  Processes an Unbind Type 2 automatically
+
+          o  Allows, on supported SNA servers and gateways, secured Logical Unit
+             (LU) access via the SNA3270$REQUEST_CONNECT procedure call.
+
+          As a result, the OpenVMS user is required to perform a minimum of SNA
+          functions, including processing the CLEAR and CANCEL functions and han-
+          dling contention.
+
+          This product is a set of subroutines used to perform such functions
+          as establishing sessions, sending data, receiving data, and discon-
+          necting sessions. In addition, the 3270 DS interface may be used to
+          interpret the 3270 data stream and build a screen image. The OpenVMS
+          application is then free to interact with the screen image.
+
+                                           2
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          The 3270 DS product allows two modes of connection: Data Stream Mode
+          and Field Mode.
+
+          Data Stream Mode
+
+          Data Stream Mode provides a means to send and receive uninterpreted
+          3270 data streams as defined by IBM. In this mode, the interface per-
+          forms all SNA-specific functions. For example, the OpenVMS applica-
+          tion is not required to handle chaining, brackets, RUs, or RHs. At the
+          same time, this mode allows the interface to provide the OpenVMS ap-
+          plication with the complete 3270 data stream. It is the OpenVMS user's
+          responsibility to interpret the outbound data stream for 3270 orders
+          and commands, and to build and manipulate a screen image (if desired).
+          Similarly, it is the OpenVMS user's responsibility to build the in-
+          bound data stream from the user's own screen image or from some other
+          data structure.
+
+          An OpenVMS application that needs to use extended attributes must use
+          a Data Stream Mode connection. Extended attributes are extensions to
+          the basic field attributes, namely:
+
+          o  Extended highlighting (blink, reverse video, underscore)
+
+          o  Color
+
+          o  Programmed symbols (selectable symbol set)
+
+          o  Screen partitions and windows
+
+          Field Mode
+
+          Field Mode performs a presentation service to provide a screen image
+          interface. The screen image may be read field by field, or accessed
+          directly. The interface interprets 3270 commands and orders in an out-
+          bound data stream to build the screen. In addition, it produces an in-
+          bound 3270 data stream from the updated screen image.
+
+          As with the Data Stream Mode, Field Mode insulates the OpenVMS user
+          from the SNA protocol. Extended attributes are not supported by the
+          Field Mode connection.
+
+                                           3
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          Asynchronous Event Notification
+
+          The 3270 DS product provides a mechanism for an OpenVMS user appli-
+          cation to receive control when an asynchronous "network event" occurs,
+          such as disconnection of a DECnet logical link, an SNA circuit fail-
+          ure, or the receipt of an Unbind Type 2 from IBM. The OpenVMS appli-
+          cation is called at a notification entry point defined by the appli-
+          cation at connection time; an indication of the event that occurred
+          is reported.
+
+          User Interface
+
+          Users of the 3270 DS product should be experienced OpenVMS applica-
+          tion programmers. They can use any of the OpenVMS programming languages
+          that conform to the OpenVMS Calling Standard to create application pro-
+          grams that interact with application programs on an IBM system. The
+          user documentation provides example segments written in the follow-
+          ing languages:
+
+          o  MACRO-32
+
+          o  BLISS-32 Implementation Language
+
+          o  C
+
+          o  COBOL
+
+          o  FORTRAN
+
+          o  PASCAL
+
+          o  PL/I
+
+          Users of the 3270 DS product are not required to have extensive knowl-
+          edge of SNA.
+
+          INSTALLATION
+
+          Installation services from Compaq are recommended for a customer's first
+          purchase of this software product. These services provide for instal-
+          lation of the software product by an experienced software specialist.
+
+                                           4
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          HARDWARE REQUIREMENTS
+
+          Processors Supported
+
+          Alpha and VAX configurations as specified in the OpenVMS Operating Sys-
+          tem for Alpha and VAX Software Product Description (SPD 25.01.xx).
+
+          Disk Space Requirements (Block Cluster Size = 1)
+
+          Disk space required for installation:
+
+          OpenVMS Alpha                18,000 blocks
+                                       (9.0 MB)
+
+          OpenVMS VAX                  17,900 blocks
+                                       (9.0 MB)
+
+          Disk space required for use (permanent):
+
+          OpenVMS Alpha                7,900 blocks
+                                       (4.0 MB)
+
+          OpenVMS VAX                  8,800 blocks
+                                       (4.4 MB)
+
+          These counts refer to the disk space required on the system disk. The
+          sizes are approximate; actual sizes may vary depending on the user's
+          system environment, configuration, and software options.
+
+          SOFTWARE REQUIREMENTS
+
+          OpenVMS Operating System for Alpha and VAX, Version 6.2, 7.1 (VAX),
+          7.1-2 (Alpha), 7.2, 7.2-1 (Alpha), or 7.3 (SPD 25.01.xx).
+
+          Using Compaq SNA 3270 Data Stream Programming Interface for OpenVMS
+          requires a networking product appropriate for the version of OpenVMS,
+          plus one of the SNA products listed below.
+
+          Networking options include:
+
+          o  TCP/IP Services for OpenVMS (SPD 46.46.xx)
+
+                                           5
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          o  DECnet for OpenVMS (Phase IV, SPD 48.48.xx)
+
+          o  DECnet-Plus (Phase V, SPD 50.45.xx for Alpha, SPD 25.03.xx for VAX).
+
+          Choose a networking option appropriate for OpenVMS Versions 6.2, 7.1
+          (VAX), 7.1-2 (Alpha), 7.2, 7.2-1 (Alpha), or 7.3 from the following
+          table:
+
+          ___________________________________________________________________
+                                  DECnet
+          OpenVMS_____TCP/IP______IV__________DECnet_V_______________________
+
+          6.2         4.2         6.2         6.3
+
+          7.1         5.1         7.1         7.1
+
+          7.1-2       5.1         7.1-2       7.1
+
+          7.2         5.1         7.2         7.2
+
+          7.2-1       5.1         7.2-1       7.2-1
+
+          7.3_________5.1_________7.3_________7.3____________________________
+
+          Choose one of the following SNA options:
+
+          o  Compaq DECnet SNA Gateway for Channel Support (SPD 29.76.xx)
+
+          o  Compaq DECnet SNA Gateway for Synchronous Transport (SPD 25.C6.xx)
+
+          o  Compaq SNA Domain Gateway (SPD 38.69.xx)
+
+          o  Compaq SNA Peer Server (SPD 51.08.xx)
+
+          o  Compaq SNA Server for OpenVMS Alpha (SPD 70.89.xx)
+
+          o  Compaq SNA Server for OpenVMS VAX (SPD 27.01.xx)
+
+          o  Compaq SNA Access Server for Windows NT (SPD 64.79.xx)
+
+          GROWTH CONSIDERATIONS
+
+          The minimum hardware and software requirements for any future version
+          of this product may be different from the requirements for the cur-
+          rent version.
+
+                                           6
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          DISTRIBUTION MEDIA
+
+          This product is available as part of the OpenVMS Alpha and VAX Soft-
+          ware Product Libraries on CD-ROM.
+
+          The software documentation for this product is available as part of
+          the OpenVMS Alpha and VAX Online Documentation Libraries on CD-ROM.
+          Documentation in hardcopy format can be ordered separately.
+
+          SOFTWARE WARRANTY
+
+          This software is provided by Compaq with a 90-day conformance to war-
+          ranty in accordance with the Compaq warranty terms applicable to the
+          license purchase.
+
+          WARRANTY LIMITATIONS
+
+          IBM Supported Configurations
+
+          This product is warranted with the IBM software configurations listed
+          in the following table.
+
+          ___________________________________________________________________
+
+          Table_1:__IBM_Software_Configurations______________________________
+
+          Software Prod-
+          uct________________Version__Release________________________________
+
+          CICS/ESA           4        1.0
+
+          CICS/VSE           2        3.0
+
+          CMS/ESA            2        All
+
+          IMS/ESA            All      All
+
+          NetView            3        1.0, 2.0
+
+          Tivoli TIME 10     1        2.0, 3.0
+          NetView
+
+                                           7
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          ___________________________________________________________________
+
+          Table_1_(Cont.):__IBM_Software_Configurations______________________
+
+          Software Prod-
+          uct________________Version__Release________________________________
+
+          Transaction        All      All
+          Server
+
+          TSO/E              All      All
+
+          z/OS_______________1________1.0____________________________________
+
+          Refer to SNA server or gateway Software Product Descriptions for ad-
+          ditional information on supported IBM operating systems, access meth-
+          ods, and communications front-end software.
+
+          Note: Compaq will support IBM software configurations, version and re-
+          lease numbers, as long as support for such configurations is gener-
+          ally available from IBM. Other configurations may have been tested since
+          this SPD was published. Please contact your local Compaq office for
+          up-to-date information regarding listed configurations.
+
+          ORDERING INFORMATION
+
+          For OpenVMS Alpha systems
+
+          Software Licenses: QL-10XA*-**
+          Software Documentation: QA-363AA-GZ
+
+          Media and documentation for this product are available on the Open-
+          VMS Alpha Software Product Library and Online Documentation Library
+          on CD-ROM. Documentation in hardcopy format can be ordered separately.
+
+          For OpenVMS VAX systems
+
+          Software Licenses: QL-363A*-**
+          Software Documentation: QA-363AA-GZ
+
+          Media and documentation for this product are available on the Open-
+          VMS VAX Software Product Library and Online Documentation Library on
+          CD-ROM. Documentation in hardcopy format can be ordered separately.
+
+                                           8
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          * Denotes variant fields. For additional information on available li-
+          censes, services, and media refer to the appropriate price book.
+
+
+          SOFTWARE LICENSING
+
+          This software is furnished only under a license. For more information
+          about Compaq's licensing terms and policies, contact your local Com-
+          paq office.
+
+          License Management Facility Support
+
+          This layered product supports the OpenVMS License Management Facil-
+          ity. License units for this product are allocated on a CPU-capacity
+          basis. For more information on the License Management Facility, re-
+          fer to the OpenVMS Operating System for Alpha and VAX Software Prod-
+          uct Description (SPD 25.01.xx) or the License Management Facility man-
+          ual of the OpenVMS Operating System documentation set.
+
+          For more information about Compaq's licensing terms and policies, con-
+          tact your local Compaq office.
+
+          SOFTWARE PRODUCT SERVICES
+
+          Installation
+
+          Installation provides comprehensive installation and of Compaq and non-
+          Compaq hardware, software, and networks products. These products in-
+          clude systems, servers, upgrades, workstations, terminals, PCs, pe-
+          ripherals, network equipment, operating systems, and layered products.
+          Optional pieces of the Installation offer include site planning and
+          preparation, orientation, and other projects which are based on the
+          installation of computer equipment (e.g. relocation services).
+
+          License Subscription
+
+          License Subscription provides the license rights to use all new ver-
+          sions of those products, which are released during the contract pe-
+          riod. Also included are the rights to use certain server-resident prod-
+          ucts whose license is included in a corresponding client license.
+
+                                           9
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+          Telephone Software Support
+
+          Software Support provides software problem identification and reso-
+          lution and operational support for system managers, technical support/helpdesk
+          personnel who manage Compaq and popular multivendor server software
+          in either a standalone or networked environment. This service provides
+          access both to technical resources to assist in problem diagnosis and
+          resolution and to Compaq's information database. This combination of
+          support resources will address system management questions and inquiries
+          on a wide variety of topics including information on the latest prod-
+          uct features, known problems and available solutions, and operational
+          advice and assistance to help the system manager, system administra-
+          tor better manage its information technology environment.
+
+          Please contact your local Compaq office for additional information on
+          specific services in your area.
+
+          © 2001 Compaq Computer Corporation
+
+          COMPAQ and the Compaq logo Registered in U.S. Patent and Trademark Of-
+          fice. DECnet and OpenVMS are trademarks of Compaq Information Tech-
+          nologies Group, L.P. in the United States and other countries.
+
+          UNIX and The Open Group are trademarks of The Open Group.
+
+          All other product names mentioned herein may be trademarks or regis-
+          tered trademarks of their respective companies.
+
+          Confidential computer software. Valid license from Compaq required for
+          possession, use, or copying. Consistent with FAR 12.211 and 12.212,
+          Commercial Computer Software, Computer Software Documentation, and Tech-
+          nical Data for Commercial Items are licensed to the U.S. Government
+          under vendor's standard commercial license.
+
+          Compaq shall not be liable for technical or editorial errors or omis-
+          sions contained herein. The information in this document is subject
+          to change without notice.
+
+
+
+
+                                           10
+
+ 
+
+
+
+          Compaq SNA 3270 Data Stream                           SPD 26.87.09
+          Programming Interface for OpenVMS, Version 1.6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           11

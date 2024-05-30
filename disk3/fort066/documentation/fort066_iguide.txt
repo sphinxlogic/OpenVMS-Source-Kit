@@ -1,0 +1,2628 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                Digital_Fortran_____________________________________
+                Installation Guide for
+                OpenVMS VAX Systems
+
+                Order Number: AA-PUYRB-TE
+
+
+                February 1996
+
+                This guide describes how to install Digital Fortran
+                (formerly DEC Fortran) on a VAX processor running the
+                OpenVMS operating system. It also describes how to
+                read the online release notes.
+
+
+
+
+
+
+
+                Revision/Update Information:  This revised guide
+                                              supersedes all
+                                              previous DEC Fortran
+                                              installation guides for
+                                              OpenVMS VAX Systems.
+
+                Operating System:             OpenVMS VAX Version
+                                              5.4 (or higher; see
+                                              Section 1.1)
+
+                Software Version:             Digital Fortran Version
+                                              6.4 (or higher)
+
+                Digital Equipment Corporation
+                Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+      ________________________________________________________________
+      First Printing, January 1993
+      Revised, February 1996
+
+      Digital Equipment Corporation makes no representations
+      that the use of its products in the manner described in
+      this publication will not infringe on existing or future
+      patent rights, nor do the descriptions contained in this
+      publication imply the granting of licenses to make, use,
+      or sell equipment or software in accordance with the
+      description.
+
+      Possession, use, or copying of the software described in
+      this publication is authorized only pursuant to a valid
+      written license from Digital or an authorized sublicensor.
+
+      © Digital Equipment Corporation 1996. All Rights Reserved.
+
+      The postpaid Reader's Comments forms at the end of this
+      document request your critical evaluation to assist in
+      preparing future documentation.
+
+      The following are trademarks of Digital Equipment
+      Corporation: Alpha AXP, AlphaGeneration, AXP, Bookreader,
+      CDD, CDD/Plus, CDD/Repository, DEC, DEC Fortran, DECnet,
+      DECset, DECsupport, DECwindows, Digital, OpenVMS,
+      POLYCENTER, VAX, VAX DOCUMENT, VMS, and the DIGITAL logo.
+
+      The following is a third-party trademark:
+
+      PostScript is a registered trademark of Adobe Systems, Inc.
+
+      All other trademarks and registered trademarks are the
+      property of their respective holders.
+
+                                                            ZK6121
+
+      This document is available on CD-ROM.
+
+      This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+______________________________________________________________
+
+                                                       Contents
+
+
+
+...................................................           v
+
+  Preparing for Digital Fortran Installation
+
+    1.1   The Software Product Library CD-ROM and
+          Installation-Related Documentation Files......    1-1
+    1.2   The Tape Media and Installation-Related
+          Documentation Files...........................    1-3
+    1.3   Required Operating System Components..........    1-3
+    1.4   Optional Software.............................    1-4
+    1.5   License Registration..........................    1-4
+    1.6   Installation Procedure Requirements...........    1-5
+    1.6.1     System Parameters.........................    1-6
+    1.6.1.1     Calculating Values for GBLPAGES and
+                GBLSECTIONS.............................    1-6
+    1.6.1.2     Changing System Parameter Values with
+                AUTOGEN.................................    1-7
+    1.6.2     POLYCENTER (PCSI) Requirements............    1-8
+    1.6.3     VMSINSTAL Requirements....................    1-9
+    1.6.4     Digital Fortran Requirements..............   1-10
+    1.7   Creating Coexisting Versions of Digital
+          Fortran.......................................   1-11
+    1.8   Backing Up Your System Disk...................   1-11
+
+  Installing Digital Fortran
+
+    2.1   Using POLYCENTER (PCSI) to Install Digital
+          Fortran.......................................    2-1
+    2.2   Using VMSINSTAL to Install Digital Fortran....    2-5
+    2.3   Recovering from Installation Errors...........   2-16
+
+
+
+
+                                                            iii
+
+ 
+
+
+
+
+
+
+
+3  After Installing Digital Fortran
+
+      3.1   Running the Installation Verification
+            Procedure Separately..........................     3-2
+      3.2   VMScluster Considerations.....................     3-2
+      3.3   Making the FORTRAN Command Available After
+            Installation..................................     3-3
+      3.4   Removing Obsolete Files.......................     3-4
+      3.5   User Account Requirements.....................     3-5
+      3.6   Enhancing Digital Fortran Performance.........     3-5
+      3.6.1     Tuning Your System........................     3-5
+      3.6.2     Installing the Digital Fortran Compiler as
+                a Shared Image............................     3-6
+      3.7   OpenVMS Upgrade Issues........................     3-7
+      3.8   Reading the Release Notes After
+            Installation..................................     3-7
+      3.9   Removing Digital Fortran......................     3-8
+      3.10  Troubleshooting Tips..........................     3-9
+      3.11  Getting Help and Reporting Problems...........     3-9
+
+Tables
+
+      1         Conventions Used in This Document.........    viii
+
+      1-1       Optional Software.........................     1-4
+
+      1-2       Required System Parameter Values..........     1-6
+
+      3-1       Obsolete Files............................     3-4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+    _________________________________________________________________
+
+                                                              Preface
+
+
+
+          This guide describes how to install Digital Fortran on
+          VAX processors that are running the OpenVMS VAX operating
+          system.
+
+          Keep this document with your distribution kit. You will
+          need it to install maintenance updates or to reinstall
+          Digital Fortran for any other reason.
+
+          This manual applies to Version 6.4 of Digital Fortran and
+          all subsequent minor releases until a revised installation
+          guide is issued. (The major version number is the digit to
+          the left of the decimal point, and the minor version number
+          is the digit to the right of the decimal point.)
+
+    Intended Audience
+
+          This guide is intended for system managers who install
+          Digital Fortran.
+
+    Structure of this Document
+
+          This guide contains the following chapters:
+
+          o  Chapter 1 describes the hardware and software
+             requirements for Digital Fortran installation. It also
+             lists related procedures that you must complete before
+             installing Digital Fortran.
+
+          o  Chapter 2 describes how to install Digital Fortran and
+             includes example installations.
+
+          o  Chapter 3 describes post-installation procedures and
+             considerations.
+
+                                                                    v
+
+ 
+
+
+
+
+
+
+
+Associated Documents
+
+      In addition to this guide, the Digital Fortran
+      documentation set includes the following books:
+
+      o  DEC Fortran Language Reference Manual
+
+      o  DEC Fortran User Manual for OpenVMS VAX Systems
+
+      o  DEC Fortran Performance Guide for OpenVMS VAX Systems
+
+      o  A letter titled Read Before Installing or Using Digital
+         Fortran Version n.n for OpenVMS VAX Systems ("read
+         first" cover letter)
+
+      o  Digital Fortran online release notes
+
+      For the location of the Digital Fortran "read first" cover
+      letter and the release notes, see Section 1.1.
+
+      Once installed, you can use Digital Fortran online HELP,
+      which describes the FORTRAN command qualifiers, explains
+      run-time messages, and provides a quick-reference summary
+      of language topics. To use online HELP, enter the command:
+
+      $ HELP FORTRAN
+
+      The following manuals in the OpenVMS VAX documentation set
+      contain information relevant to installing software:
+
+      o  OpenVMS System Manager's Manual, which includes:
+
+         -  OpenVMS System Manager's Manual: Essentials
+
+         -  OpenVMS System Manager's Manual: Tuning, Monitoring,
+            and Complex Systems
+
+      o  OpenVMS License Management Utility Manual
+
+      o  Guide to OpenVMS Performance Management
+
+      o  POLYCENTER Software Installation Utility User's Guide
+
+      For help understanding OpenVMS system error messages,
+      see the OpenVMS System Messages and Recovery Procedures
+      Reference Manual or the online HELP/MESSAGE facility.
+
+vi
+
+ 
+
+
+
+
+
+
+
+    Sending Digital Your Comments on This Manual
+
+          We welcome your comments on this or any other Digital (or
+          DEC) Fortran manual. You can send comments in the following
+          ways:
+
+          o  Internet electronic mail: fortran_docs@zko.mts.dec.com
+
+          o  FAX: 603-881-0120 Attn: Languages Documentation, ZKO2-3
+             /K35
+
+          o  A completed Reader's Comments card (postage paid, if
+             mailed in the United States) located at the back of each
+             printed Digital (or DEC) Fortran manual.
+
+          o  A letter addressed to:
+
+             Digital Equipment Corporation
+             Languages Documentation, ZK02-3/K35
+             110 Spit Brook Road
+             Nashua, NH  03062-2698
+             USA
+
+          o  The online questionnaire form. Send the form located
+             near the end of the online release notes to our Internet
+             address or send it by Internet mail, FAX, or through the
+             postal service.
+
+          If you have suggestions for improving a particular section
+          or find any errors, please indicate the title, order
+          number, and section (if available). Digital also welcomes
+          general comments.
+
+    Getting Help from Digital
+
+          If you have a customer support contract and have comments
+          or questions about Digital Fortran software, you can
+          contact Digital's Customer Support Center (CSC), preferably
+          using electronic means such as DSNlink. In the United
+          States, customers can call the CSC at 1-800-354-9000 (see
+          Section 3.11).
+
+          You can also send questions by Internet electronic mail to
+          fortran@digital.com.
+
+                                                                  vii
+
+ 
+
+
+
+
+
+
+
+Conventions
+
+      Table 1 lists the conventions used in this document.
+
+      Table_1__Conventions_Used_in_This_Document_________________
+
+      Convention____________Meaning______________________________
+
+      UPPERCASE_TEXT        Uppercase letters indicate the name
+                            of a command, a file, a parameter, a
+                            procedure, or utility.
+
+      $ RUN                 In interactive examples, prompts and
+      SYS$SYSTEM:SYSMAN     displayed text appear in a monospaced
+                            font. User input appears in bold.
+
+      $                     The dollar sign indicates the DCL
+                            prompt. This prompt may be different
+                            on your system.
+
+      Ctrl/x                In interactive examples, a sequence
+                            such as Ctrl/x indicates that you
+                            must hold down the key labeled Ctrl
+                            while you press another key or a
+                            pointing device button; for example,
+                            Ctrl/C or Ctrl/Z.
+
+      <Return>              In code examples, a boxed key name
+                            indicates that you press a key on a
+                            keyboard.
+
+      [YES]                 Square brackets indicate that the
+                            enclosed item is a default value
+                            in an installation prompt. Also,
+                            square brackets serve as delimiters
+                            for a directory name in a file
+                            specification.
+
+      VMS, OpenVMS          These terms refer to the OpenVMS VAX
+                            operating system unless otherwise
+      ______________________specified.___________________________
+
+      In this manual, some version numbers are given as "Vn.n".
+      When you install Digital Fortran, the actual version
+      numbers appear on your screen.
+
+viii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                    1
+    _________________________________________________________________
+
+                           Preparing for Digital Fortran Installation
+
+
+          This chapter contains information that should be read,
+          and procedures that should be performed before starting
+          the installation (described in Chapter 2). This chapter
+          contains the following topics:
+
+          o  Files that are on the installation CD-ROM (Section 1.1)
+
+          o  Files that are on the installation tape media
+             (Section 1.2)
+
+          o  Required operating system version and components
+             (Section 1.3)
+
+          o  Optional software (Section 1.4)
+
+          o  License registration (Section 1.5)
+
+          o  Installation procedure requirements; such as account
+             privileges, disk space, and so forth (Section 1.6)
+
+          o  Creating coexisting versions of Digital Fortran
+             (Section 1.7)
+
+          o  Backing up your system disk (Section 1.8)
+
+    1.1 The Software Product Library CD-ROM and Installation-Related
+        Documentation Files
+
+          The OpenVMS Alpha Software Product Library CD-ROM (media
+          CD-ROM) set provides the following files:
+
+          o  Digital Fortran installation kit files
+
+          o  Digital Fortran documentation files, including a "read
+             first" cover letter, this installation guide, and other
+             files
+
+          o  Online CD-ROM documentation files in the [README]
+             directory on the first media CD-ROM, including a CD-ROM
+             user guide and master list of CD-ROM products
+
+                       Preparing for Digital Fortran Installation 1-1
+
+ 
+
+
+
+
+
+
+
+      o  A CDMENU utility
+
+      To determine whether the appropriate media CD-ROM is
+      already mounted on your system, contact the appropriate
+      system manager.
+
+      Digital Fortran provides online release notes and an online
+      "read first" cover letter:
+
+      o  You can read the online "read first" cover letter
+         provided on the media CD-ROM set or read the published
+         hardcopy letter.
+
+      o  You can extract the Digital Fortran release notes to
+         a file and type or print them before starting Digital
+         Fortran installation. The Digital Fortran release notes
+         are also installed on your system after installation.
+
+      The media CD-ROM user guide and CD-ROM master index file
+      are provided as online files in the [README] directory on
+      the first media CD-ROM in the distribution kit. The index
+      file will show the location of the Digital Fortran cover
+      letter.
+
+      Once the appropriate media CD-ROM has been mounted and
+      the appropriate Digital Fortran documentation directory
+      located, do one of the following:
+
+      o  Use a TYPE command to display the ASCII version of the
+         Digital Fortran cover letter (on your screen).
+
+      o  Use a PRINT command to print the ASCII or PostScript
+         version of the Digital Fortran cover letter to a
+         printer.
+
+      For information about reading the online release notes
+      before installation, see step 6 in Section 2.1 if you are
+      using POLYCENTER (PCSI), or step 5 in Section 2.2 if you
+      are using VMSINSTAL.
+
+      Digital strongly recommends that you read the release notes
+      and the cover letter before installing Digital Fortran.
+      They contain information about changes to the installation
+      and use of Digital Fortran, such as the minimum version of
+      the OpenVMS VAX operating system required for this release
+      of Digital Fortran.
+
+1-2  Preparing for Digital Fortran Installation
+
+ 
+
+
+
+
+
+
+
+          After installation, the release notes are installed in:
+
+           SYS$HELP:FORT06n.RELEASE_NOTES
+
+          Other forms of the release notes (PostScript and
+          Bookreader) are also provided after installation in the
+          following files:
+
+            SYS$HELP:FORT06n_RELEASE_NOTES.PS
+            SYS$HELP:FORT06n_RELEASE_NOTES.DECW$BOOK
+
+    1.2 The Tape Media and Installation-Related Documentation Files
+
+          Digital Fortran tape media includes the following files:
+
+          o  Digital Fortran installation kit files
+
+          o  The following Digital Fortran documentation files, which
+             are provided in both PostScript form (file type .PS) and
+             ASCII form (file type .TXT):
+
+             -  The Digital Fortran installation guide, file name
+                FORTnnn_IGUIDE
+
+             -  The "read first" letter, file name FORTnnn_COVER
+
+             -  The Digital Fortran SPD, file name FORTnnn_SPD
+
+             For example, you might use the following commands to
+             copy the Digital Fortran SPD from the Digital Fortran
+             Version 6.4 media tape physically loaded on drive MUA0:
+
+             $ MOUNT MUA0: FORT
+             $ COPY/LOG MUA0:FORT064_SPD.TXT *.*
+
+    1.3 Required Operating System Components
+
+          Digital Fortran Version 6.4 requires OpenVMS VAX Version
+          5.4 or higher.
+
+          Future Digital Fortran releases may require higher versions
+          of the operating system, as described in the online release
+          notes or the Read Before Installing or Using Digital
+          Fortran Version n.n for OpenVMS VAX Systems (cover) letter.
+
+          The OpenVMS VAX (formerly VAX VMS) operating system
+          comes with a variety of support options, or components.
+          Components include features such as networking. To use
+          Digital Fortran, your system should be running a version of
+
+                       Preparing for Digital Fortran Installation 1-3
+
+ 
+
+
+
+
+
+
+
+      OpenVMS that includes the base component and the following
+      components:
+
+      o  Programming support
+
+      o  Utilities
+
+      For a complete list of the required components, see the
+      Digital Fortran Software Product Description (SPD) on the
+      media CD-ROM or tape.
+
+1.4  Optional Software
+
+      Table 1-1 shows information about optional software that
+      you can use with Digital Fortran. The media CD-ROM and
+      tape contain a complete list of prerequisite and optional
+      software and their required version numbers.
+
+Table_1-1__Optional_Software_____________________________________
+
+Product Name and Minimum
+Version_Number________________Provided_FORTRAN_Feature___________
+
+Common Data Dictionary        DICTIONARY statement support
+(CDD) Version 3.4,
+CDD/Plus Version 4.0, or
+CDD/Repository Version 5.0
+
+Digital Extended Math         High-performance mathematical
+Library (DXML) Version 1.0    routines
+
+Language-Sensitive Editor     Display of data dependence
+/Source Code Analyzer         diagnostics, program design and
+(LSE/SCA) Version 3.1[1]      analysis
+
+Performance Coverage          Program performance analysis
+Analyzer (PCA) Version
+3.0[1]
+[1]LSE,_SCA,_and_PCA_are_components_of_DECset____________________
+
+_________________________________________________________________
+
+1.5  License Registration
+
+      Before you install and run Digital Fortran Version 6.4 on a
+      newly-licensed node or cluster, you must first register a
+      License Product Authorization Key (License PAK) using the
+      License Management Facility (LMF).
+
+1-4  Preparing for Digital Fortran Installation
+
+ 
+
+
+
+
+
+
+
+          The License PAK may be shipped along with the kit if you
+          ordered the license and media together; otherwise, it is
+          shipped separately to a location based on your license
+          order. If you are installing Digital Fortran as an update
+          on a node or cluster already licensed for this software,
+          you have already completed the License PAK registration
+          requirements.
+
+          If you are installing prerequisite or optional software
+          along with Digital Fortran, review the PAK status and
+          install the PAKs for any prerequisite or optional software
+          before you install Digital Fortran.
+
+          You must register and load your license for Digital Fortran
+          before you start the installation in order to run the
+          Installation Verification Procedure (IVP) and use the
+          software.
+
+          Log in to a privileged account, such as the system
+          manager's account, SYSTEM. You now have a choice of two
+          ways to register a license:
+
+          o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+             prompts you for information, respond with data from your
+             License PAK.
+
+          o  At the DCL prompt, enter the LICENSE REGISTER command
+             with the appropriate qualifiers that correspond to
+             License PAK information.
+
+          If you plan to use Digital Fortran on more than one node
+          in a cluster, you need to perform a license load on the
+          other nodes after you complete this installation (see
+          Section 3.2).
+
+          For complete information on using LMF, see the OpenVMS
+          License Management Utility Manual.
+
+    1.6 Installation Procedure Requirements
+
+          The installation takes approximately 5 to 40 minutes,
+          depending on your type of media, your system configuration,
+          and the kit components chosen.
+
+          Installing Digital Fortran and running the Installation
+          Verification Procedure (IVP) on a standalone VAXstation
+          4000-60 system takes approximately 15 minutes.
+
+                       Preparing for Digital Fortran Installation 1-5
+
+ 
+
+
+
+
+
+
+
+1.6.1  System Parameters
+
+      Digital Fortran installation requires certain system
+      parameter settings. Table 1-2 lists the minimum values
+      for these parameters:
+
+      Table_1-2__Required_System_Parameter_Values________________
+
+      System_Parameter____Minimum_Value__________________________
+
+      Contiguous free     1,800, plus the size in blocks for the
+      GBLPAGES            file
+                          SYS$LIBRARY:DCLTABLES.EXE (see
+                          Section 1.6.1.1)
+
+      Free_GBLSECTIONS____6______________________________________
+
+      These values represent the number of free global pagelets
+      and global sections required for the installation, not
+      the total number you need to run your system and other
+      software.
+
+         ________________________ Note ________________________
+
+         If you do not ensure your system has the necessary
+         global pagelet and global section parameters for
+         installation, the DCL tables may become corrupted
+         under certain conditions.
+
+         ______________________________________________________
+
+1.6.1.1  Calculating Values for GBLPAGES and GBLSECTIONS
+
+      To install and run Digital Fortran, you must have
+      sufficient contiguous free global pagelets and free global
+      sections.
+
+      To determine the number of global pagelets required by
+      SYS$LIBRARY:DCLTABLES.EXE, enter the following DCL command:
+
+      $ DIRECTORY/SIZE SYS$LIBRARY:DCLTABLES.EXE
+
+      This command returns the size (in blocks) of
+      SYS$LIBRARY:DCLTABLES.EXE. As an approximation, use this
+      figure as the number of global pagelets for the file (and
+      add it to the number shown in Table 1-2).
+
+1-6  Preparing for Digital Fortran Installation
+
+ 
+
+
+
+
+
+
+
+          You can use the WRITE command with the F$GETSYI lexical
+          function to find the current number of contiguous free
+          global pagelets and free global sections. The following
+          example shows how to get this information at your terminal
+          (the default for SYS$OUTPUT):
+
+          $ WRITE SYS$OUTPUT F$GETSYI("CONTIG_GBLPAGES")
+          15848
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+          24
+
+          If the value of free global pagelets or free global
+          sections is less than the required value (see Table 1-2),
+          you must increase the system parameter setting.
+
+          Section 1.6.1.2 describes how to increase these values.
+
+    1.6.1.2 Changing System Parameter Values with AUTOGEN
+
+          If you do not have enough free global pagelets or free
+          global sections to install Digital Fortran, you can do
+          either of the following:
+
+          o  Delete an existing known image by using the VMSINSTAL
+             Utility
+
+          o  Use the AUTOGEN command procedure to increase the
+             GBLPAGES or GBLSECTIONS system parameters
+
+          AUTOGEN automatically adjusts values for parameters that
+          are associated with the values you reset manually. To
+          change system parameters with AUTOGEN, edit the following
+          file:
+
+          SYS$SYSTEM:MODPARAMS.DAT
+
+          To change a parameter value listed in this file, delete the
+          current value associated with that parameter and enter the
+          new value.
+
+          To add a new parameter, add a line to the file that
+          includes both the name of the parameter and its value.
+          For example:
+
+          WSMAX = 8096
+
+                       Preparing for Digital Fortran Installation 1-7
+
+ 
+
+
+
+
+
+
+
+      To modify incremental parameters such as GBLPAGES and
+      GBLSECTIONS, use the ADD_ prefix. For example, the
+      following increases the global pagelet setting by 2000:
+
+      ADD_GBLPAGES = 2000
+
+      After you make all your changes, exit from the editor.
+      Then execute the AUTOGEN procedure at the DCL prompt to
+      recalculate your system parameters, as follows:
+
+      $ @SYS$UPDATE:AUTOGEN SAVPARAMS REBOOT
+
+      When you specify REBOOT, AUTOGEN does an automatic system
+      shutdown and then reboots the system. Any users logged
+      on to the system are immediately disconnected during the
+      shutdown. The automatic reboot puts the new parameter
+      values into effect.
+
+      The AUTOGEN Utility automatically adjusts some of the
+      SYSGEN parameters based on the consumption of resources
+      since the last reboot. If you do not want to take advantage
+      of this automatic adjustment, include the NOFEEDBACK
+      qualifier on the AUTOGEN command line.
+
+      For more information about using AUTOGEN and its command-
+      line parameters, see the OpenVMS System Manager's Manual:
+      Tuning, Monitoring, and Complex Systems.
+
+1.6.2  POLYCENTER (PCSI) Requirements
+
+      The POLYCENTER Software Installation (PCSI) Utility can
+      only be used on systems running OpenVMS VAX Version 6.1 or
+      higher. PCSI has the following advantages:
+
+      o  It has a shorter installation time than VMSINSTAL.
+
+      o  It keeps track of what software versions are installed
+         on the system.
+
+      o  Digital Fortran is easily removed by using the PRODUCT
+         REMOVE command.
+
+      The compiler, command line, and help text are identical
+      between the PCSI and VMSINSTAL versions of the kit.
+      However, the PCSI kit differs in the following areas:
+
+      o  The Math Run-Time Library is not provided (since it is
+         included in OpenVMS VAX Version 6.1).
+
+1-8  Preparing for Digital Fortran Installation
+
+ 
+
+
+
+
+
+
+
+          o  The PCSI kit includes a prebuilt FORSYSDEF.TLB that
+             is based on OpenVMS VAX Version 7.0; the VMSINSTAL
+             kit builds FORSYSDEF.TLB during installation, from
+             definitions provided by OpenVMS VAX.
+
+          o  The PCSI kit does not offer the choice of installing the
+             compiler or FORSYSDEF.TLB separately.
+
+          o  The PCSI kit does not provide the option of preserving
+             the previous version of the compiler. If you wish to do
+             this, make a copy of SYS$SYSTEM:FORTRAN$MAIN.EXE using a
+             new name before installing the new version.
+
+          To install Digital Fortran using PCSI, you must be logged
+          in to an account that has either the SETPRV privilege or
+          the following privileges enabled:
+
+          o  BYPASS
+
+          o  CMKRNL
+
+          o  SYSLCK
+
+          Digital Fortran requires 9,000 blocks of free disk
+          storage both during and after installation. Disk space
+          requirements may vary depending on the size of your
+          system's DCLTABLES.EXE, and which OpenVMS VAX version is
+          running on your system.
+
+          To determine the number of free disk blocks on the current
+          system disk, enter the following DCL command:
+
+          $ SHOW DEVICE SYS$SYSDEVICE
+
+          For information on installing Digital Fortran using PCSI,
+          see Section 2.1.
+
+    1.6.3 VMSINSTAL Requirements
+
+          To install Digital Fortran using VMSINSTAL, you must
+          be logged in to an account that has either the SETPRV
+          privilege or the following privileges enabled:
+
+          o  CMKRNL
+
+          o  WORLD
+
+          o  SYSPRV
+
+          VMSINSTAL turns off BYPASS privilege at the start of the
+          installation.
+
+                       Preparing for Digital Fortran Installation 1-9
+
+ 
+
+
+
+
+
+
+
+      Digital Fortran requires 16,000 blocks of free disk storage
+      during installation, and 11,000 blocks after installation.
+      Disk space requirements may vary depending on the size of
+      your system's DCLTABLES.EXE, and which OpenVMS VAX version
+      is running on your system.
+
+      To determine the number of free disk blocks on the current
+      system disk, enter the following DCL command:
+
+      $ SHOW DEVICE SYS$SYSDEVICE
+
+      When you invoke VMSINSTAL, it checks the following:
+
+      o  Whether you are logged in as SYSTEM
+
+      o  Whether you have adequate privileges and quotas for
+         installation
+
+      o  Whether any other users are logged in to the system
+
+      VMSINSTAL requires that the installation account have a
+      minimum of the following quotas:
+
+      ASTLM = 24     DIOLM = 18
+
+      BIOLM = 18     ENQLM = 200
+
+      BYTLM =        FILLM = 100
+      32,768
+
+      If VMSINSTAL detects any problems during the installation,
+      it notifies you and asks if you want to continue the
+      installation. In some instances, you can enter YES to
+      continue. To stop the installation process and correct
+      the situation, enter NO or press Return. Then correct the
+      problem and restart the installation.
+
+      For information on installing Digital Fortran using
+      VMSINSTAL, see Section 2.2.
+
+1.6.4  Digital Fortran Requirements
+
+      The VAX Vector Instruction Emulation Facility (VVIEF)
+      is a programming development tool that lets you execute
+      vectorized applications on VAX systems that do not have
+      vector hardware.
+
+      Vector instructions in a vectorized application are
+      automatically executed either in vector hardware or by
+      the VVIEF, depending on the vector processing capabilities
+      of the VAX system being used.
+
+1-10  Preparing for Digital Fortran Installation
+
+ 
+
+
+
+
+
+
+
+          For information on how to enable VVIEF on your system, see
+          the OpenVMS System Manager's Manual: Tuning, Monitoring,
+          and Complex Systems; for systems running OpenVMS Version
+          5, consult the New and Changed Features manual for OpenVMS
+          Version 5.4.
+
+    1.7 Creating Coexisting Versions of Digital Fortran
+
+          If you install Digital Fortran using VMSINSTAL, you will
+          be offered an option of preserving the previously installed
+          version of Digital Fortran. If this option is selected, the
+          earlier version is renamed to FORTRAN$MAIN-Vnn.EXE, where
+          Vnn is the previous version number with the period removed.
+
+          If you install Digital Fortran using POLYCENTER (PCSI), you
+          will not be offered an option of preserving the previous
+          version of the compiler. If you wish to preserve a previous
+          version, make a copy of SYS$SYSTEM:FORTRAN$MAIN.EXE using a
+          new name before installing the new version.
+
+          In either case, to use the saved version of the compiler,
+          define the logical name FORTRAN$MAIN to point to the
+          saved version. For example, the following command defines
+          FORTRAN$MAIN to point to the Digital Fortran Version 6.4
+          compiler:
+
+          $ DEFINE FORTRAN$MAIN FORTRAN$MAIN-V64
+
+          For more information, see the online release notes.
+
+    1.8 Backing Up Your System Disk
+
+          Digital recommends that you do a system disk backup before
+          installing any software.
+
+          Use the backup procedures that are established at your
+          site. For details on performing a system disk backup, see
+          the Using VMS BACKUP manual.
+
+
+
+
+
+
+
+                      Preparing for Digital Fortran Installation 1-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                    2
+    _________________________________________________________________
+
+                                           Installing Digital Fortran
+
+
+          Before you start the installation, read Chapter 1,
+          which describes the general options and requirements for
+          installing Digital Fortran.
+
+          The installation procedure loads Digital Fortran files
+          on to the system disk on the system where you perform the
+          installation.
+
+          To abort the installation procedure at any time, press
+          Ctrl/Y. When you press Ctrl/Y, the installation procedure
+          deletes all files it has created up to that point and
+          exits. You can then start the installation again.
+
+          Defaults appear in brackets ([]) throughout the
+          installation procedure.
+
+          This chapter contains the following topics:
+
+          o  How to use POLYCENTER (PCSI) to install Digital Fortran
+             (Section 2.1)
+
+          o  How to use VMSINSTAL to install Digital Fortran
+             (Section 2.2)
+
+          o  How to recover from installation errors (Section 2.3)
+
+    2.1 Using POLYCENTER (PCSI) to Install Digital Fortran
+
+          PCSI software is bundled with the OpenVMS operating system
+          and can only be used on OpenVMS VAX Version 6.1 or higher.
+
+          For general information on required system parameters and
+          disk space for installation, see Section 1.6. For specific
+          POLYCENTER installation requirements, see Section 1.6.2.
+
+          For information on saving a previous version of Digital
+          Fortran before installing the newest version, see
+          Section 1.7.
+
+                                       Installing Digital Fortran 2-1
+
+ 
+
+
+
+
+
+
+
+      To install Digital Fortran using PCSI, follow these steps:
+
+      1. Log in to a privileged account, such as SYSTEM. You
+         can use a different privileged account if it has the
+         necessary privileges and quotas.
+
+         You must have BYPASS, CMKRNL, and SYSLCK privileges
+         enabled to install using PCSI. To check whether you have
+         these privileges, enter the following command:
+
+         $ SHOW PROCESS/PRIVILEGES
+
+         If you do not have these privileges, but you have the
+         SETPRV privilege, you can enable the BYPASS, CMKRNL, and
+         SYSLCK privileges by entering the following command:
+
+         $ SET PROCESS/PRIVILEGE=(BYPASS,CMKRNL,SYSLCK)
+
+      2. If your version of OpenVMS VAX is later than Version
+         6.1, you can skip this step and proceed to step 3.
+
+         Verify that the current OpenVMS product version is
+         registered with PCSI by entering the following command:
+
+         $ PRODUCT SHOW PRODUCT VMS
+         PRODUCT
+         -------
+         DEC VAXVMS VMS V6.n
+
+         1 item found
+
+         If the OpenVMS product is not found, then register the
+         OpenVMS product with PCSI; for example:
+
+         $ PRODUCT REGISTER PRODUCT VMS /VERSION=V6.n -
+         $_ /SOURCE=SYS$UPDATE:
+         The following product has been selected:
+         DEC VAXVMS VMS V6.n     [Available]
+
+         Do you want to continue? [YES] <Return>
+         The following product will be registered:
+         DEC VAXVMS VMS V6.n
+         Portion Done: 0%...10%...20%...30%...40%...50%...60%...
+                           70%...100%
+         The following product has been registered:
+         DEC VAXVMS VMS V6.n
+
+2-2  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+          3. Determine whether the appropriate distribution media
+             is already mounted on your system. For example, if the
+             appropriate media CD-ROM is mounted at device DKA400,
+             enter the following command:
+
+             $ SHOW DEVICE DKA400
+
+             If the media CD-ROM containing the Digital Fortran
+             installation files is not mounted, insert (load) the
+             appropriate media (CD-ROM or tape) in the CD-ROM or tape
+             drive. Enter the following command to mount the media
+             device (do not use the /FOREIGN qualifier):
+
+             $ MOUNT DKA400 label
+
+             The label is the volume label of the media CD-ROM or
+             tape drive in the device named.
+
+             For information about using the CDMENU utility and the
+             CD-ROM files on the media CD-ROM set, see the Software
+             Product Library CD-ROM User's Guide (media CD-ROM user
+             guide), which accompanies the media CD-ROM distribution
+             kit. The media CD-ROM user guide and CD-ROM master
+             index file are provided as online files in the [README]
+             directory on the first media CD-ROM.
+
+          4. Set your process default disk and directory to the
+             device and directory where the Digital Fortran product
+             installation files are located. For example:
+
+             $ SET DEFAULT DKA400:[dir.subdir]
+
+          5. To check that you have located the correct CD-ROM device
+             and directory, enter the following DIRECTORY command:
+
+             $ DIRECTORY
+
+             Directory DKA400:[dir.subdir]
+
+             DEC-VAXVMS-FORTRAN-Vnnnn-x-1.PCSI
+
+             Total of 1 file.
+
+          6. To extract the Digital Fortran online release notes
+             before you install Digital Fortran, enter the following
+             command:
+
+             $ PRODUCT EXTRACT RELEASE_NOTES FORTRAN/FILE=SYS$LOGIN:FORT.RELNOTES
+
+                                       Installing Digital Fortran 2-3
+
+ 
+
+
+
+
+
+
+
+         You should view or print the file FORT.RELNOTES before
+         you continue with the installation. For example:
+
+         $ TYPE/PAGE SYS$LOGIN:FORT.RELNOTES
+
+         You can also read the release notes after installation
+         (see Section 3.8).
+
+      7. To install Digital Fortran, enter the following command:
+
+         $ PRODUCT INSTALL FORTRAN
+
+         A prompt asks you to verify that the correct product was
+         selected:
+
+         The following product has been selected:
+
+           DEC VAXVMS Fortran Vv.v-nnn
+
+         Do you want to continue? [YES]<Return>
+
+         Press Return (default value YES) to continue installing
+         Digital Fortran.
+
+         *** DEC VAXVMS FORTRAN Vv.v-nnn: Digital Fortran for
+              OpenVMS VAX Systems
+
+             Copyright © Digital Equipment Corporation yyyy,yyyy -
+              All rights reserved.
+
+             This software product is sold by Digital Equipment
+              Corporation
+
+             This product uses the PAKs: FORTRAN, FORTRAN-USER or
+              FORTRAN-G
+
+             Do you want all the default values for this product?
+               [YES]<Return>
+
+         Press Return (default value YES) to accept the product
+         defaults. (There are no options that you can select for
+         this product).
+
+             Please ignore any PCSI-E-FILNOTPUR messages
+
+             Do you want to view the values? [NO]<Return>
+
+2-4  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+             Press Return (default value NO) to skip displaying of
+             the values and continue installation.
+
+             Execution phase starting ...
+             The following product will be installed:
+                 DEC VAXVMS FORTRAN Vv.v-nnn
+             %PCSI-I-VOLINFO, estimated space information for
+               volume DISK$xxxxxxx
+             -PCSI-I-VOLSPC, nnnn required; nnnnnn available; nnnnnn net
+             Portion Done: 0%...10%...20%...30%...40%...50%...90%...100%
+             The following product has been installed:
+                 DEC VAXVMS FORTRAN Vv.v-nnn
+             %PCSI-I-EXETSTSTART, start of test procedure
+             %PCSI-I-EXETSTOK, end of test procedure; completed with
+               no errors
+
+             *** DEC VAXVMS FORTRAN Vv.v-nnn: Digital Fortran for OpenVMS VAX Systems
+
+                 Type HELP FORTRAN Release_Notes for release notes
+                   location
+
+                 Be sure to @SYS$UPDATE:FORTRAN$POST_INSTALL on other
+                   cluster nodes
+
+             $
+
+          8. If this installation was performed on a VMScluster,
+             enter the following command on all other cluster nodes:
+
+             $ @SYS$UPDATE:FORTRAN$POST_INSTALL
+
+          For information on other PCSI utility features, see the
+          POLYCENTER Software Installation Utility User's Guide.
+
+    2.2 Using VMSINSTAL to Install Digital Fortran
+
+          For general information on required system parameters and
+          disk space for installation, see Section 1.6. For specific
+          VMSINSTAL installation requirements, see Section 1.6.3 .
+
+          For information on saving a previous version of Digital
+          Fortran before installing the newest version, see
+          Section 1.7.
+
+
+                                       Installing Digital Fortran 2-5
+
+ 
+
+
+
+
+
+
+
+      To install Digital Fortran using VMSINSTAL, follow these
+      steps:
+
+      1. Log in to a privileged account, such as SYSTEM. You
+         can use a different privileged account if it has the
+         necessary privileges and quotas.
+
+         You must have CMKRNL, SYSPRV, and WORLD privileges
+         enabled to install using VMSINSTAL. To check whether
+         you have these privileges, enter the following command:
+
+         $ SHOW PROCESS/PRIVILEGES
+
+         If you do not have these privileges, but you have the
+         SETPRV privilege, you can enable the CMKRNL, SYSPRV, and
+         WORLD privileges by entering the following command:
+
+         $ SET PROCESS/PRIVILEGE=(CMKRNL,SYSPRV,WORLD)
+
+      2. To start the installation, invoke VMSINSTAL as follows:
+
+         @SYS$UPDATE:VMSINSTAL saveset-name device-name options-list
+
+         saveset_name
+         Is the installation name for the component. For Digital
+         Fortran, use the following installation name:
+
+         FORT06n
+
+         Where n represents the maintenance update of Digital
+         Fortran. Refer to the label on the Digital Fortran
+         distribution kit or the Digital Fortran BOM or BIL for
+         the maintenance update number of your kit.
+
+         device-name
+         Is the name of the device on which you plan to mount
+         the media. For example, MUA0: is the device name used in
+         examples in this document.
+
+         If you are installing Digital Fortran from a CD-ROM,
+         specify the device of the CD device and also the
+         directory that contains the Digital Fortran save set.
+
+         options-list
+         Is the word OPTIONS followed by one or more of the
+         following options designators: G, L, N, R.
+
+         o  Get save set option (G)
+
+2-6  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+                Lets you store product save sets temporarily on a
+                magnetic tape or in a disk directory.
+
+             o  File log option (L)
+
+                Logs all activity to the terminal during
+                installation.
+
+             o  Display or print release notes (N)
+
+                Indicates you want to see the installation question
+                on release notes. If you do not include the OPTIONS
+                N parameter, VMSINSTAL does not ask you about
+                the release notes. You should review the release
+                notes before proceeding with the installation in
+                case they contain additional information about the
+                installation.
+
+                If you are restarting the installation and have
+                already reviewed the release notes, you do not need
+                to specify OPTIONS N.
+
+             o  Alternate root option (R)
+
+                Lets you install the product to a system root other
+                than that of the running system.
+
+             To specify more than one option, separate the options
+             with commas; for example OPTIONS L,R.
+
+             For detailed information on these options, see the
+             OpenVMS documentation on software installation.
+
+             The following example invokes VMSINSTAL to install
+             Digital Fortran and shows the system response. This
+             example uses the OPTIONS N release note parameter.
+
+             $ @SYS$UPDATE:VMSINSTAL FORT06n MUA0: OPTIONS N
+
+                   OpenVMS VAX Software Product Installation Procedure Vn.n
+
+             It is dd-mmm-yyyy at hh:mm.
+             Enter a question mark (?) at any time for help.
+
+             If you do not supply either the product name or the
+             device name, VMSINSTAL prompts you for this information
+             later in the installation procedure. VMSINSTAL does
+             not prompt you for any options, so be sure to include
+
+                                       Installing Digital Fortran 2-7
+
+ 
+
+
+
+
+
+
+
+         OPTIONS N on the VMSINSTAL command line to access the
+         release notes during the installation.
+
+         When you invoke VMSINSTAL, it checks to see whether you
+         have adequate privileges and quotas for installation
+         (see Section 1.6.3).
+
+         VMSINSTAL then checks to determine whether any users
+         are logged in to the system. If users are logged in,
+         you will be asked whether you want to continue the
+         installation. If you want to continue, enter Yes. If
+         you want to stop the installation, press Return.
+
+      3. VMSINSTAL asks if you are satisfied with your system
+         backup, as follows:
+
+         * Are you satisfied with the backup of your system disk [YES]?
+
+         You should always back up your system disk before
+         performing an installation. If you are satisfied with
+         the backup of your system disk, press Return. Otherwise,
+         enter No to discontinue the installation. After you back
+         up your system disk, you can restart the installation.
+
+      4. You are now asked to mount the first distribution volume
+         on the device you specified when you invoked VMSINSTAL:
+
+         Please mount the first volume of the set on MUA0:.
+         * Are you ready? YES
+         %MOUNT-I-MOUNTED, FORT MOUNTED ON MUA0:
+         The following products will be processed:
+           FORT V6.n
+
+             Beginning installation of FORT V6.n at 20:01
+
+         %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+         The device name appears in the line preceding the
+         question. VMSINSTAL then asks you if you are ready to
+         continue with the installation.
+
+         If you respond Yes to indicate that you are ready,
+         VMSINSTAL displays a message that the media containing
+         Digital Fortran has been mounted on the specified device
+         and that the installation has begun.
+
+2-8  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+             If you entered the wrong device name when you invoked
+             VMSINSTAL and need to restart the installation, enter No
+             in response to the "Are you ready?" question. To abort
+             the installation for other reasons, press Ctrl/Y.
+
+          5. If you specified OPTIONS N when you invoked VMSINSTAL,
+             you are now asked to choose one of the following options
+             for reviewing the release notes:
+
+             Release Notes Options:
+
+                 1.  Display release notes
+                 2.  Print release notes
+                 3.  Both 1 and 2
+                 4.  None of the above
+
+             * Select option [2]:
+
+             If you press Return (select option 2), VMSINSTAL sends
+             the file to the default output print device unless you
+             enter a different queue name:
+
+             * Queue name [SYS$PRINT]:
+
+             If you choose another option, the following occurs:
+
+             o  Option 1 causes VMSINSTAL to immediately display
+                the release notes on the console terminal. You can
+                terminate the display at any time by pressing Ctrl/C.
+
+             o  Option 3 causes VMSINSTAL to immediately display
+                the release notes on the console terminal and then
+                prompts you for a queue name for the printed version.
+
+             o  Option 4 prevents VMSINSTAL from displaying or
+                printing the release notes. This option should be
+                selected if you have already reviewed the release
+                notes and are restarting the installation.
+
+             You are now asked the following question:
+
+             * Do you want to continue the installation [N]?: YES
+             %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                    successfully moved to SYS$HELP.
+
+             To continue the installation, enter Yes. Otherwise,
+             press Return. In either case, the text form of the
+             release notes is copied to a file in the SYS$HELP
+
+                                       Installing Digital Fortran 2-9
+
+ 
+
+
+
+
+
+
+
+         directory. After installation, you can read these
+         release notes (see Section 3.8).
+
+      6. You are asked if you want to purge files replaced by the
+         installation, as follows:
+
+         * Do you want to purge files replaced by this installation [YES]?
+
+         The directories SYS$HELP, SYS$LIBRARY, SYS$MESSAGE,
+         SYS$SYSTEM, SYS$TEST and SYS$UPDATE may contain previous
+         versions of Digital Fortran files. These files are
+         replaced during the installation with new files, but
+         the old files are not automatically purged. Purging is
+         recommended. In response to the purging prompt, press
+         Return to purge the files or enter No to keep them.
+
+      7. Select the components of the kit that you want to
+         install. The choices are as follows:
+
+         o  Compiler (includes help text, command definition, and
+            IVP)
+
+         o  Enhanced Run-Time Libraries (required if Compiler is
+            selected)
+
+         o  FORSYSDEF.TLB (OpenVMS system symbol definition
+            library)
+
+         Select the components you want to install by answering
+         Yes or No to the prompts. If you want a more detailed
+         description of any component, enter a question mark (?).
+         After the explanation is displayed, you will be prompted
+         again for a response.
+
+         * Do you want to install the compiler [YES]?
+
+         The compiler component includes the Digital Fortran
+         compiler, compiler message files, help text,
+         installation verification procedure, post-installation
+         procedure, deinstallation procedure, and command line
+         definition.
+
+         If this is a new installation, you should select
+         installation of the compiler component by pressing
+         Return (or entering Yes). Choosing the compiler
+         component automatically selects the Run-Time Library
+         component as well; this is indicated by the message:
+
+2-10  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+             %FORT06n-I-RTLREQ, The Run-Time Library support will also be
+                                installed
+
+             If you do not want to install the compiler component,
+             enter No. The the installation procedure will then ask:
+
+             * Do you want to install the Run-Time Library support [YES]?
+
+             If you have installed a new version of OpenVMS since
+             the last time you installed Digital Fortran, or if
+             you want to install the Run-Time Library support on
+             a system where Digital Fortran programs will be run,
+             press Return. If you do not wish to install the Run-Time
+             Library support, enter No.
+
+             You are now asked the following:
+
+             * Do you want to create a new FORSYSDEF.TLB [YES]?
+
+             SYS$LIBRARY:FORSYSDEF.TLB is a library of OpenVMS system
+             interface definitions that can be used by FORTRAN
+             programs. FORSYSDEF.TLB is built from a master set of
+             definitions that is provided with OpenVMS; it contains
+             declarations of OpenVMS system services, Run-Time
+             Library routines, structures, and constants.
+
+             Because FORSYSDEF.TLB is generated from OpenVMS
+             definitions, you do not need to rebuild it unless
+             this is a new installation or you have installed a new
+             version of OpenVMS since the last time you installed
+             Digital Fortran. (The installation procedure will make
+             a recommendation on whether FORSYSDEF.TLB should be
+             rebuilt.)
+
+             If you press Return, the installation procedure builds a
+             new system definition file, FORSYSDEF.TLB, based on the
+             system definitions for the version of OpenVMS installed
+             on your system.
+
+             The installation procedure then displays the components
+             you selected and displays the following prompt:
+
+             * Is this correct [YES]?
+
+             If you enter No, the installation procedure reissues the
+             prompts for selecting components.
+
+                                      Installing Digital Fortran 2-11
+
+ 
+
+
+
+
+
+
+
+         ________________________ Note ________________________
+
+         If you answered No to the first prompt in this step
+         (``Do you want to install the compiler?''), steps
+         8 and 9 are omitted. If you also answered No to the
+         prompt ``Do you want to install the Run-Time Library
+         Support?'', step 10 is omitted.
+
+         ______________________________________________________
+
+      8. Digital Fortran supports the OpenVMS License Management
+         Facility (LMF). The installation procedure displays
+         license information about Digital Fortran. It
+         asks whether you have registered and loaded your
+         authorization key for the product. The following is
+         an example of the information and the queries presented
+         by the installation procedure:
+
+               Product:      FORTRAN
+               Producer:     Digital
+               Version:      6.n
+               Release Date: dd-mmm-yyyy
+
+         * Does this product have an authorization key registered and loaded?: YES
+
+         If you have not registered and loaded your PAK, you
+         must answer No to this question; the installation will
+         continue but the Installation Verification Procedure
+         (IVP) will not run. To successfully complete the
+         IVP, you must first register and load your PAK (see
+         Section 1.5).
+
+      9. Unless you answered No to the license registration
+         question, the installation procedure now asks if you
+         want to run the IVP:
+
+         * Do you want to run the IVP after the installation [YES]?
+
+         The IVP for Digital Fortran checks that the installation
+         is successful. It is recommended that you run the IVP.
+
+         After Digital Fortran is installed, you can run the IVP
+         independently to verify that the software is available
+         on your system (see Section 3.1). You might need to run
+         the IVP after a system failure to make sure that users
+         can access Digital Fortran.
+
+      10.You can now respond to Run-Time Library queries.
+
+2-12  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+             The Digital Fortran kit includes enhancements that
+             may not exist in your current version of the OpenVMS
+             operating system. (See the release notes for information
+             on these enhancements.)
+
+             If the installation procedure determines that the
+             installing system's version of OpenVMS does not include
+             the enhanced support, the existing Run-Time Library
+             images are replaced with the new versions (equivalent to
+             those provided by OpenVMS VAX Version 7.0).
+
+            _______________________ Warning _______________________
+
+            Programs linked against the new Math Library images
+            will not run on OpenVMS systems (earlier than Version
+            6.1) where the new versions of these images are not
+            installed. The existing versions supplied by OpenVMS
+            will be saved as FORTRAN$MTHRTL-VMS, FORTRAN$UVMTHRTL-
+            VMS, and FORTRAN$VMTHRTL-VMS in SYS$LIBRARY:.
+
+            Fortran programs that do not use the Math library
+            will run on older OpenVMS system versions V5.0-1 or
+            higher as long as they do not use the nonnative data
+            in I/O feature or the /ASSUME=BYTERECL command line
+            qualifier. Please make sure that all users, even those
+            not using Digital Fortran, read the explanatory text
+            in the release notes.
+
+            In addition, if you update the system version of
+            OpenVMS, the enhanced versions of the Math and
+            Fortran Run-Time Library images may be overwritten
+            with versions that lack the enhanced support. Be
+            sure to reinstall the Digital Fortran kit after each
+            OpenVMS system update. Please also read Chapter 3 for
+            important post-installation tasks.
+
+            ______________________________________________________
+
+             The installation procedure displays informational text
+             describing these changes; press Return when prompted,
+             to view the next screen of text. After the information
+             related to run-time library support has been displayed,
+             the installation procedure asks if you want to continue
+             the installation:
+
+             Do you want to continue with the installation (N)? YES
+
+             To continue with the installation, enter Yes.
+
+                                      Installing Digital Fortran 2-13
+
+ 
+
+
+
+
+
+
+
+      11.Read informational messages.
+
+         At this point, the installation procedure displays a
+         number of informational messages that report on the
+         progress of the installation. There are no further
+         questions. If the installation procedure has been
+         successful up to this point, VMSINSTAL moves the new
+         or modified files to their target directories, updates
+         help files, and updates DCL tables, if necessary. The
+         new and modified files consist of the following:
+
+             SYS$HELP:FORT06n.RELEASE_NOTES                  [new]
+             SYS$HELP:FORT06n_RELEASE_NOTES.DECW$BOOK        [new]
+             SYS$HELP:FORT06n_RELEASE_NOTES.PS               [new]
+             SYS$HELP:FORTRAN$MSGHLP.MSGHLP$DATA             [new]
+             SYS$HELP:HELPLIB.HLB                            [modified]
+             SYS$LIBRARY:DCLTABLES.EXE                       [modified]
+             SYS$LIBRARY:FORDEF.FOR                          [new]
+             SYS$LIBRARY:FORIOSDEF.FOR                       [new]
+             SYS$LIBRARY:FORRTL.EXE                          [new]
+             SYS$LIBRARY:FORSYSDEF.TLB                       [new]
+             SYS$LIBRARY:FORTRAN$FORRTL-VMS.EXE              [saved old file]
+             SYS$LIBRARY:FORTRAN$MTHRTL-VMS.EXE              [saved old file]
+             SYS$LIBRARY:FORTRAN$UVMTHRTL-VMS.EXE            [saved old file]
+             SYS$LIBRARY:FORTRAN$VMTHRTL-VMS.EXE             [saved old file]
+             SYS$LIBRARY:MTHRTL.EXE                          [new]
+             SYS$LIBRARY:STARLET.OLB                         [modified]
+             SYS$LIBRARY:STARLETSD.TLB                       [modified]
+             SYS$LIBRARY:UVMTHRTL.EXE                        [new]
+             SYS$LIBRARY:VMSRTL.EXE                          [new]
+             SYS$LIBRARY:VMTHRTL.EXE                         [new]
+             SYS$MESSAGE:FORTRAN$COMPILER_MSG.EXE            [new]
+             SYS$MESSAGE:FORTRAN$DICTIONARY_MSG.EXE          [new]
+             SYS$SYSTEM:FORTRAN$MAIN.EXE                     [new]
+             SYS$TEST:FORTRAN$IVP.COM                        [new]
+             SYS$UPDATE:FORTRAN$DEINSTALL.COM                [new]
+             SYS$UPDATE:FORTRAN$POST_INSTALL.COM             [new]
+
+         The SYS$HELP:HELPLIB.HLB and SYS$LIBRARY:DCLTABLES.EXE
+         files are updated to include the new versions of the
+         Digital Fortran help text and the FORTRAN command line
+         definition.
+
+         Also, if you answered Yes in response to the prompt that
+         requests a file purge at step 6, previous versions of
+         the Digital Fortran files are now purged.
+
+2-14  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+             The end of the installation is indicated by the
+             following message:
+
+             %VMSINSTAL-I-MOVEFILES, files will now be moved to their
+                                     target directories...
+
+          12.If you chose to run the IVP (step 8), VMSINSTAL now
+             invokes the IVP to verify that Digital Fortran was
+             installed successfully.
+
+             Beginning Digital Fortran Installation Verification Procedure
+
+             Compiler image identification is FORT V6.n-eee
+
+             Test compiler operation and error messages...
+
+             Compile, link, and run program with parallel processing features...
+
+             Test FORSYSDEF.TLB system definitions...
+
+             Test I/O and Run-Time Library operation...
+
+             If Digital Fortran was installed successfully, the IVP
+             displays the following:
+
+             Digital Fortran V6.n-eee IVP PASSED
+
+             End of Digital Fortran Installation Verification Procedure
+
+          13.The installation procedure ends as follows:
+
+                Installation of FORT V6.n completed at hh:mm
+
+                VMSINSTAL procedure done at hh:mm
+
+             $
+
+          If you installed the compiler component, proceed to
+          Chapter 3 to perform necessary post-installation tasks.
+          Otherwise, you can choose to install more products or to
+          log out.
+
+          VMSINSTAL deletes or changes entries in the process symbol
+          tables during the installation. So, if you are going to
+          continue using the system manager's account and you want to
+          restore these symbols, you should log out and log in again.
+
+                                      Installing Digital Fortran 2-15
+
+ 
+
+
+
+
+
+
+
+      If the installation fails, you see the following message:
+
+      %VMSINSTAL-E-INSFAIL, The installation of Digital Fortran V6.n has failed.
+
+      If the IVP fails, you see these messages:
+
+      The FORT V6.n Installation Verification Procedure failed.
+
+      %VMSINSTAL-E-IVPFAIL, The IVP for FORT V6.n has failed.
+
+      If the installation fails, you must restart the
+      installation procedure from step 2. If the installation
+      fails due to an IVP failure, contact a Digital field
+      service representative.
+
+2.3  Recovering from Installation Errors
+
+      Errors can occur during the installation if any of the
+      following conditions occur:
+
+      o  The operating system version is incorrect.
+
+      o  The product license has not been registered and loaded.
+
+      o  A prerequisite software version is incorrect.
+
+      o  Privileges and quotas for successful installation are
+         insufficient.
+
+      o  The OpenVMS help library is currently in use.
+
+      For descriptions of the error messages generated by these
+      conditions, see the OpenVMS documentation on system
+      messages, recovery procedures, and OpenVMS software
+      installation; or use the online HELP/MESSAGE command. Take
+      the appropriate action described in the message.
+
+      For information on system requirements for installing
+      Digital Fortran, see Section 1.6.
+
+      To report a problem to Digital, see Section 3.11.
+
+
+
+
+2-16  Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                    3
+    _________________________________________________________________
+
+                                     After Installing Digital Fortran
+
+
+          This chapter discusses the following post-installation
+          tasks and considerations:
+
+          o  How to run the Installation Verification Procedure
+             separately (Section 3.1)
+
+          o  How to make the product usable on a VMScluster
+             (Section 3.2)
+
+          o  How to make the newly installed FORTRAN compiler
+             available to users who are currently logged in
+             (Section 3.3)
+
+          o  Which older files may now be obsolete (Section 3.4)
+
+          o  How to set user account quotas (Section 3.5)
+
+          o  How to enhance performance by tuning your system
+             and installing Digital Fortran as a shared image
+             (Section 3.6)
+
+          o  Issues concerning OpenVMS upgrades (Section 3.7)
+
+          o  How to read the release notes after installation
+             (Section 3.8)
+
+          o  How to remove Digital Fortran from your system
+             (Section 3.9)
+
+          o  Troubleshooting tips (Section 3.10)
+
+          o  How to get help and report problems (Section 3.11)
+
+
+
+
+                                 After Installing Digital Fortran 3-1
+
+ 
+
+
+
+
+
+
+
+3.1  Running the Installation Verification Procedure Separately
+
+      The Digital Fortran Installation Verification Procedure
+      (IVP) runs automatically during Digital Fortran
+      installation.
+
+      If system problems occur, you should run the IVP separately
+      to ensure the integrity of the installed files. To run the
+      IVP, enter the following command:
+
+      $ @SYS$TEST:FORTRAN$IVP.COM
+
+      If any problems are encountered, a message such as the
+      following appears:
+
+      Digital Fortran Installation Verification Procedure Failed
+
+3.2  VMScluster Considerations
+
+      If you want to run Digital Fortran on multiple nodes
+      of a VMScluster, first check to see that you have the
+      appropriate software license (see Section 1.5). Then
+      perform the following steps after you install Digital
+      Fortran:
+
+      1. Issue the LICENSE LOAD command, as described in the
+         OpenVMS License Management Utility Manual, to activate
+         the license on each node in the VMScluster on which
+         Digital Fortran is to be executed.
+
+      2. The commands in this step should be executed on all
+         cluster nodes, whether or not they are licensed to use
+         Digital Fortran; failure to do so may cause unexpected
+         errors for users.
+
+         ________________________ Note ________________________
+
+         If you are using a dual-architecture (VAX and Alpha
+         systems) heterogeneous cluster, before executing these
+         commands, make sure the appropriate logical names
+         have been set to define the scope of the SYSMAN DO
+         commands. For more information, see the OpenVMS System
+         Manager's Manual.
+
+         ______________________________________________________
+
+3-2  After Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+             While logged in as SYSTEM, or as another username that
+             has the CMKRNL and SYSPRV privileges enabled, use the
+             OpenVMS SYSMAN utility to set your environment, as
+             follows:
+
+             $ RUN SYS$SYSTEM:SYSMAN
+             SYSMAN> SET ENVIRONMENT/CLUSTER
+             %SYSMAN-I-ENV, current command environment:
+                     Clusterwide on local cluster
+                     Username SYSTEM       will be used on nonlocal nodes
+
+          3. Update the active DCL command tables (DCLTABLES.EXE) and
+             Run-Time Library (DEC$FORRTL.EXE), as follows:
+
+             SYSMAN> DO @SYS$UPDATE:FORTRAN$POST_INSTALL.COM
+             %SYSMAN-I-OUTPUT, command execution on node NODE1
+             %SYSMAN-I-OUTPUT, command execution on node NODE2
+
+            _______________________ Warning _______________________
+
+            If you do not execute the SYS$UPDATE:FORTRAN$POST_
+            INSTALL procedure on all nodes of the cluster
+            immediately after installation, run-time errors
+            can occur (such as SHRIDMISMAT: "ident mismatch with
+            shareable image").
+
+            ______________________________________________________
+
+          4. Then EXIT from SYSMAN, as follows:
+
+             SYSMAN> EXIT
+             $
+
+             The SYSMAN utility will cause the post-installation
+             procedure to be executed on each node of the local
+             cluster.
+
+    3.3 Making the FORTRAN Command Available After Installation
+
+          The installation procedure modifies the DCL command table
+          so that the FORTRAN command is recognized and processed.
+
+          After the new Digital Fortran compiler is installed, this
+          command table is available to all users who log in after
+          installation. However, the previous command table is still
+          in effect for those users who are currently logged in.
+
+                                 After Installing Digital Fortran 3-3
+
+ 
+
+
+
+
+
+
+
+      All logged-in users who want to use the FORTRAN command and
+      the new command table must log out and log in again, or use
+      the DCL command:
+
+      $ SET COMMAND /TABLES=SYS$LIBRARY:DCLTABLES
+
+3.4  Removing Obsolete Files
+
+      If you have installed previous versions of VAX FORTRAN or
+      VAX FORTRAN-HPO, there may be some obsolete files remaining
+      on your system that are no longer used by the current
+      version of Digital Fortran.
+
+      Table 3-1 lists these obsolete files:
+
+      Table_3-1__Obsolete_Files__________________________________
+
+      File_Specification___________Description___________________
+
+      SYS$SYSTEM:FORTRAN.EXE       VAX FORTRAN Version 5.n
+                                   compiler
+
+      SYS$SYSTEM:FORTRAN-HPO.EXE   VAX FORTRAN-HPO compiler
+
+      SYS$HELP:FORTRAN$DWCI.HLB    DECwindows Compiler Interface
+
+      SYS$LIBRARY:FORTV5CLD.CLD    VAX FORTRAN Version 5 command
+                                   definition
+
+      SYS$MESSAGE:FORTERR1.EXE     VAX FORTRAN Version 5 message
+                                   file
+
+      SYS$MESSAGE:FORTERR2.EXE     VAX FORTRAN Version 5 message
+                                   file
+
+      VUE$LIBRARY:FORTRAN$DWCI.EXE DECwindows Compiler Interface
+
+      VUE$LIBRARY:FORTRAN$DWCI.UID_DECwindows_Compiler_Interface_
+
+      You can delete these files if you are certain that they are
+      no longer needed and you do not need a previous version of
+      the compiler to coexist with the new compiler.
+
+
+
+3-4  After Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+    3.5 User Account Requirements
+
+          No special privileges are needed to use Digital Fortran.
+          There is no benefit from installing the compiler with
+          privileges.
+
+          To use Digital Fortran, a user account does not need
+          to meet any special quota requirements. However, for
+          parallel-processing applications or very large programs
+          (many program units compiled together), consider adjusting
+          the working set (WSDEF, WSQUOTA, WSEXTENT) and page file
+          (PGFLQUOTA) account quotas to improve performance.
+
+          Use the OpenVMS Authorize Utility from a suitably
+          privileged account to change the process quotas in the
+          user authorization file (UAF). Some sites may restrict the
+          use of the Authorize Utility to certain accounts or people.
+
+          After the quotas for the account have been changed, the
+          user should log out of the account and log in again for the
+          new quotas to take effect.
+
+          For information on using the Authorize Utility, see the
+          OpenVMS System Manager's Manual: Essentials.
+
+    3.6 Enhancing Digital Fortran Performance
+
+          This section contains information on system tuning and
+          explains how to install Digital Fortran as a shared image.
+
+    3.6.1 Tuning Your System
+
+          After installing Digital Fortran, you can adjust your
+          system to enhance performance and lower the use of some
+          system resources.
+
+          If users will be compiling parallel-processing applications
+          or very large programs (many program units compiled
+          together), consider the following:
+
+          o  Adequate page file space must exist. Large programs
+             (such as those using parallel processing) need more
+             virtual memory during compilation and execution than
+             small programs. Use the INSTALL command to extend an
+             existing page file or create one or more new page files.
+
+                                 After Installing Digital Fortran 3-5
+
+ 
+
+
+
+
+
+
+
+      o  The SYSGEN parameter virtual page count is related to
+         the total amount of page file space. If you create more
+         page file space, be sure to review the virtual page
+         count parameter and increase it if necessary.
+
+      o  The SYSGEN parameter working set maximum (WSMAX) can
+         also be checked if a larger process working set is
+         needed.
+
+      For more information about tuning your system, see the DEC
+      Fortran Performance Guide for OpenVMS VAX Systems and the
+      Guide to OpenVMS Performance Management.
+
+3.6.2  Installing the Digital Fortran Compiler as a Shared Image
+
+      If you expect the Digital Fortran compiler to be used
+      extensively on your system, you can reduce the system
+      overhead and memory requirements by installing it as a
+      shared image. This is done by using the OpenVMS Install
+      Utility (INSTALL).
+
+      To install the compiler as a shared image on a system that
+      is currently running, use a system that has been rebooted
+      recently, because the available space in the global page
+      table is less likely to be fragmented.
+
+      Before installing the compiler as a shared image, you must
+      first determine the number of available global pagelets
+      and global sections on your system. See Section 1.6.1.1
+      for information on how to verify and modify the number of
+      global pagelets and global sections. Section 1.6.1 contains
+      the guidelines for setting these parameters.
+
+      Once you reset the system parameter values, invoke the
+      Install Utility from a privileged account and then install
+      Digital Fortran as a shared image, as follows:
+
+      $ INSTALL
+      INSTALL> ADD SYS$SYSTEM:FORTRAN$MAIN.EXE/OPEN/SHARED/HEADER_RESIDENT
+      INSTALL> EXIT
+
+      Add the following lines to the appropriate system startup
+      command file so that the Digital Fortran compiler is
+      available as a shared image each time the system is
+      started:
+
+3-6  After Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+          $ INSTALL
+          ADD SYS$SYSTEM:FORTRAN$MAIN.EXE/OPEN/SHARED/HEADER_RESIDENT
+          EXIT
+
+          If your site has modularized its startup procedures, be
+          sure you add the lines to the correct file. The default
+          startup command file for OpenVMS is SYS$MANAGER:SYSTARTUP_
+          V5.COM.
+
+          When you install Digital Fortran as a shared image, you may
+          need to increase the global pagelets and global sections
+          parameters (see Section 1.6.1).
+
+    3.7 OpenVMS Upgrade Issues
+
+          You should always use the most recent version of the
+          Digital Fortran Run-Time Library available.
+
+          When you are preparing for an upgrade of the OpenVMS
+          operating system, be aware that the Digital Fortran Run-
+          Time Library ships with the OpenVMS operating system. This
+          means that an OpenVMS upgrade may install an older version
+          of the Digital Fortran Run-Time Library.
+
+          The Run-Time Library provided with the most recent version
+          of Digital Fortran contains changes that are not included
+          in the version provided with OpenVMS VAX Version 5.4 and
+          earlier; these changes will be included in a future version
+          of OpenVMS VAX.
+
+          If you install a new version of OpenVMS (earlier than
+          Version 7.0), it may overwrite the existing Digital Fortran
+          Run-Time Library, replacing it with an earlier version. So,
+          after every OpenVMS installation, reinstall Digital Fortran
+          to keep the Run-Time Library current.
+
+    3.8 Reading the Release Notes After Installation
+
+          During installation, the text form of the release notes is
+          copied to the following file in the SYS$HELP directory:
+
+          SYS$HELP:FORT06n.RELEASE_NOTES
+
+          The n is replaced by the minor version of Digital Fortran,
+          such as 4 (for Version 6.4).
+
+                                 After Installing Digital Fortran 3-7
+
+ 
+
+
+
+
+
+
+
+      After installation, you can enter the following command to
+      review the release notes:
+
+      $ TYPE/PAGE SYS$HELP:FORT06n.RELEASE_NOTES
+
+      The Digital Fortran kit also provides the release notes in
+      PostScript and DECwindows Bookreader forms. These forms of
+      the release notes can be accessed after the installation
+      has completed by using the following file names:
+
+      SYS$HELP:FORT06n_RELEASE_NOTES.PS
+      SYS$HELP:FORT06n_RELEASE_NOTES.DECW$BOOK
+
+         ________________________ Note ________________________
+
+         Note that the name of the newly installed release
+         notes file consists of the current product name
+         and version number. Do not delete release notes for
+         previous versions of Digital Fortran (if any).
+
+         ______________________________________________________
+
+3.9  Removing Digital Fortran
+
+      From a process that has SYSPRV and CMKRNL or SETPRV
+      privileges, use one of the following methods to remove
+      Digital Fortran from the system:
+
+      o  If POLYCENTER (PCSI) was used to install Digital Fortran
+
+         You can use PCSI to remove Digital Fortran by entering
+         the following command:
+
+         $ PRODUCT REMOVE FORTRAN
+
+      o  If VMSINSTAL was used to install Digital Fortran
+
+         You can use a SYS$UPDATE command procedure to remove
+         Digital Fortran, by entering the following command:
+
+         $ @SYS$UPDATE:FORTRAN$DEINSTALL
+
+         This procedure removes all compiler-related files,
+         modules, images and DCL commands from the system.
+
+         The procedure also provides an option to remove the
+         Digital Fortran-provided Run-Time Library images and
+         replace them with those provided by OpenVMS. Digital
+         does not recommend selecting this option, because any
+         images linked against the newer Run-Time Library images
+
+3-8  After Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+             may fail. Do not select this option unless you are
+             willing to relink any applications that have been linked
+             since Digital Fortran was installed.
+
+          If your system is a member of a VMScluster, you must then
+          execute the following command on all other cluster members:
+
+          $ INSTALL REPLACE SYS$LIBRARY:DCLTABLES
+
+          The OpenVMS utility SYSMAN can be used for this purpose;
+          see Section 3.2 for an example of using SYSMAN.
+
+    3.10 Troubleshooting Tips
+
+          If your installation is not successful, check for the
+          following possible problems:
+
+          o  The appropriate PAK must be available to the user
+             performing the installation. The PAK must be registered
+             and loaded before you can install Digital Fortran; for
+             information about registering a PAK, see Section 1.5.
+             Then reinstall Digital Fortran.
+
+          o  The DCLTABLES.EXE file should be in the
+             SYS$COMMON:[SYSLIB] directory. There should not be a
+             copy of DCLTABLES.EXE in SYS$SPECIFIC:[SYSLIB].
+
+             If a copy of DCLTABLES.EXE is found in a SYS$SPECIFIC
+             root, rename it to DCLTABLES.OLD, do an INSTALL REPLACE
+             SYS$LIBRARY:DCLTABLES, then reinstall Digital Fortran.
+
+          o  The system logical name SYS$SYSROOT should not be
+             modified from the preset definition provided by the
+             OpenVMS VAX operating system.
+
+    3.11 Getting Help and Reporting Problems
+
+          If you encounter a problem while using Digital Fortran,
+          report it to Digital.
+
+          If an error occurs while Digital Fortran is in use and
+          you believe the error is caused by a problem with Digital
+          Fortran, take one of the following actions:
+
+          o  If you have a Software Product Services Support
+             Agreement, consider contacting your Customer Support
+             Center (CSC) by telephone (in the United States, 1-800-
+             354-9000) or by using the electronic means provided with
+
+                                 After Installing Digital Fortran 3-9
+
+ 
+
+
+
+
+
+
+
+         your support agreement. You can use DSNlink or other
+         electronic means to report the problem to the CSC.
+
+      o  If you do not have a service contract, you can arrange
+         for per-call CSC support.
+
+      When you initially contact the CSC, please indicate the
+      following:
+
+      o  The name and version number of the operating system
+         (OpenVMS VAX) you are using
+
+      o  The name (Digital Fortran) and version number of Digital
+         Fortran you are using
+
+      o  The hardware system you are using (such as a model
+         number)
+
+      o  How critical the problem is
+
+      o  A very brief description of the problem (one sentence if
+         possible)
+
+      When you submit information electronically or are speaking
+      on the phone to the appropriate support specialist, you can
+      provide more detailed information, such as:
+
+      o  The specific commands used to compile and link the
+         program
+
+      o  The error messages displayed
+
+      o  Relevant detailed information (possibly including source
+         program listings)
+
+      Please try to narrow the cause of the problem to a specific
+      source module or lines of code.
+
+      CSC personnel may ask for additional information, such as:
+
+      o  Listings of any command files
+
+      o  INCLUDE files
+
+      o  Relevant data files
+
+      If the program is longer than 50 lines, submit a copy of
+      it electronically or provide machine-readable media (floppy
+      diskette or magnetic tape).
+
+3-10  After Installing Digital Fortran
+
+ 
+
+
+
+
+
+
+
+          Experience shows that problem reports sometimes do not
+          contain enough information to duplicate or identify the
+          problem. Concise, complete information helps Digital give
+          accurate and timely service to software problems.
+
+          To obtain information about purchasing Digital support
+          services, please contact your local Digital sales
+          representative.
+
+          You can also send comments and questions about Digital
+          Fortran to the following Internet mail address:
+          fortran@digital.com.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                After Installing Digital Fortran 3-11

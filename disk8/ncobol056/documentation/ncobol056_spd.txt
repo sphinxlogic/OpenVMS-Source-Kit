@@ -1,0 +1,593 @@
+ 
+
+
+
+
+
+
+Software
+Product
+Description
+
+_____________________________________________________________________________
+
+日本語Compaq COBOL Version 5.6 for OpenVMS VAX
+ソフトウェア仕様書                                               SPD 25.B9.09
+
+仕様書の包含する範囲
+
+この文書は，日本語Compaq COBOL for OpenVMS VAX (以下，日本語Compaq COBOLと記
+す)のソフトウェア機能仕様を述べたものです。
+
+1  日本語Compaq COBOLの概要
+
+日本語Compaq COBOL(以前のVAX COBOL)は，システム機能を最大限に利用した日本語
+OpenVMS VAXオペレーティング・システムで稼動する事務処理業務のための高級言語
+です。日本語Compaq COBOLは，X.23a-1989改訂版によって修正された1985年のANSI
+COBOL規格( X3.23-1985)に準拠しています。
+
+日本語Compaq COBOLは，米国の連邦標準COBOL (FIPS PUB 21-3)の上位レベルに準拠す
+るためにNBS (連邦標準局)によって検証されています。
+
+ユーザはDMLを使用すると，Oracle DBMS (Oracleデータベース管理システム)を介して
+DBMSデータベースにアクセスするプログラムを書くことができます。この機能を使用
+するには，Oracle DBMSをインストールしておく必要があります。
+
+日本語Compaq COBOLは様々な業界標準およびCompaq COBOL拡張機能を含んでいます。
+拡張機能には，ソース言語レベルで可能な画面処理，ファイル共有およびレコード・
+ロック機能があります。
+
+1.1  拡張機能
+
+o  画面処理は，DISPLAYおよびACCEPT文を使用して実行します。プログラマはDISPLAY
+   文により，情報またはプロンプトを画面のどこにでも表示することができます。
+   ACCEPT文は，画面上の任意の場所で入力された情報を受け取り，実行中の日本語
+   Compaq COBOLプログラムにその値を返します。DISPLAY文は，データを内部数値形
+   式から「ASCII表示形式」に変換します。ACCEPT WITH CONVERSION文は「ASCII表
+   示」で入力された文字を適切な内部数値形式に変換します。端末の種類は，実行中
+   にオペレーティング・システムの情報により認識されます。
+
+o  RMSを使用して複合キー，降順キー，および重複主キーに関する処理の拡張など多
+   くのファイル処理機能を利用できます。
+
+o  RMS-STSおよびRMS-STV特殊レジスタは，デバッグを支援するために参照されます。
+   これらのレジスタは，OpenVMS RMS (レコード管理システム)からの状態値を持って
+   います。
+
+                                    Compaq                               1999
+
+ 
+
+
+ 日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+o  ファイルの共有およびレコード・ロック機能を使用することにより，複数のユーザ
+   が１つのデータに同時にアクセスできます。
+
+o  条件翻訳によりデバッグが容易になります。
+
+o  /INSTRUCTION_SET修飾子は，クラスの異なるVAXプロセッサに対してオブジェク
+   ト・コード生成を最適化し，特殊な全プロセッサ機能を有効にします。
+
+o  COPY FROM DICTIONARY文は，もう一つの拡張機能です。ユーザは，この文を使用し
+   てOracle CDD/Repository for OpenVMS VAX (以下，CDD/Repositoryと記す)に格納
+   された共通レコード定義にアクセスできます。この機能を使用するには，Oracle
+   CDD/Repositoryをインストールしておく必要があります。
+
+o  原始プログラムでターミナル正書法を使用できます。
+
+o  ACCEPT format 2では4桁年月日をサポートします。
+
+o  CURRENCY SIGN節がユーザのプログラム内に指定されていない場合には，
+   SYS$CURRENCY論理名を自動コンパイル-タイムにアクセスします。
+
+本バージョンの特定情報の詳細については，日本語Compaq COBOL V5.6 for日本語
+OpenVMS VAXのリリース・ノートを参照してください。主な特徴は次の通りです。
+
+o  日本語VAX/VMS V5.5-2と日本語OpenVMS VAX V6.1またはそれ以降のサポート
+
+o  Y2Kに対する組み込み関数の追加
+
+1.2  プログラミングを簡単にする文
+
+日本語Compaq COBOLは，日本語OpenVMS for VAX環境でのプログラミングを簡単にする
+ための文および拡張機能を提供します。
+
+o  CALL文の拡張
+
+   -  BY VALUE
+
+   -  BY DESCRIPTOR
+
+   -  OMITTED
+
+   -  GIVING
+
+o  VALUE IS EXTERNAL (実行時定数アクセス)
+
+o  USAGE IS POINTER (アドレス・データ・タイプ)
+
+o  VALUE IS REFERENCE (コンパイル時アドレス評価)
+
+o  SET TO REFERENCE (リンク時アドレス評価)
+
+o  SUCCESS/FAILURE (字類条件)
+
+o  31文字までのユーザ名が指定できる(日本語ユーザ名は15文字まで)。
+
+o  ACCEPT AT END文
+
+o  文字定数に単一引用符( ' )が使用できる。
+
+                                       2
+
+ 
+
+
+日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+o  ユーザ名では，ハイフン( - )とアンダースコア( _ )は同等。
+
+o  文字定数引数受け渡しが可能。
+
+日本語Compaq COBOLコンパイラは，原始プログラムからオブジェクト・モジュールを
+生成します。また，様々な情報を含むソース・リストも生成できます。このソース・
+リストに取り込める情報は，ソース・コード・エラーの行と位置，機械語リスト，フ
+ァイル名マップ，データ名マップ，手続き名マップ，外部プログラム名マップ，サブ
+スキーマ情報，および相互参照表などの診断表示です。相互参照表およびマップは，
+アルファベット順または定義された順に出力できます。相互参照表は，書込み可能な
+データと読込み専用のデータを区別します。
+
+日本語Compaq COBOLは, LSE/SCA (Language-
+Sensitive Editor/Source Code Analyzer)に対するエラー・メッセージおよび相
+互参照情報をサポートします。さらに日本語Compaq COBOLは，低レベルのプログラム
+設計のためにLSE/SCAで使用される擬似コードおよび設計注記の処理をサポートしま
+す。
+
+コンパイラで生成したオブジェクト・モジュールは，
+Compaq's BASICおよびFortranを含む他の言語で生成されたオブジェクト・モジュ
+ールとリンクすることができます。日本語Compaq COBOLは，OpenVMS VAX RTL (実行時
+ライブラリ)とOpenVMS forシンボリック・デバッガの両方で使用できます。
+
+日本語Compaq COBOLには，COBOLコンパイラおよびREFORMATユーティリティが含まれて
+います。REFORMATユーティリティは，ソース・プログラムをDIGITALターミナル正書法
+からANSI規格COBOL正書法に変換します。また，その逆も可能です。
+
+1.3  日本語機能
+
+日本語Compaq COBOLでは，次の日本語機能を提供しています。
+
+o  日本語データ項目の定義
+
+o  日本語定数の定義
+
+o  日本語利用者語の定義
+
+o  日本語COBOL原始プログラム登録集(ただし，COPY文による)
+
+o  CDD/Repositoryで定義した日本語フィールド名，レコード名をCOPY FROM
+   DICTIONARY文で指定可能。
+
+o  CDD/Repositoryで文字セットをKANJIとして定義した項目をCOBOLの日本語データ項
+   目として使用可能。
+
+o  日本語データ項目を使用した関係条件，条件名条件(EVALUATE，IF，PERFORM，
+   SEARCH文で使用)
+
+o  日本語データ項目の転記(MOVE文)，初期化(INITIALIZE文)
+
+o  日本語文字列操作(INSPECT，STRING，
+   UNSTRING文)
+
+                                       3
+
+ 
+
+
+ 日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+o  日本語データ項目を使用したEVALUATE文
+
+o  かな漢字変換ACCEPT/DISPLAY文
+
+o  日本語報告書作成
+
+o  日本語注釈
+
+o  日本語コンパイル・エラー・メッセージ
+
+o  日本語DCLヘルプ
+
+o  英数字定数へのSS2付き半角カナ指定
+
+o  注釈でのSS2付き半角カナ指定
+
+o  英数字項目ACCEPT/DISPLAYでのSS2付き半角カナ入力／出力
+
+o  日本語機能構文のDEC拡張としての検出
+
+o  Multivendor Integration Architecture (以下，MIAと記す) 仕様でサポートされ
+   ない機能構文の検出
+
+日本語Compaq COBOLプログラムはVT282 (またはVT80)，VT284，VT286，VT382端末から
+作成できます。
+
+日本語Compaq COBOLは，JIS X 3002-1988 COBOLおよびMIA V1.2アプリケーション・プ
+ログラム・インターフェイス仕様プログラミング言語COBOLに準拠しています。
+
+2  必要なハードウェアの最小構成
+
+2.1  適用プロセッサ
+
+VAXft:      VAXftモデル110,
+            VAXftモデル310,
+            VAXftモデル410,
+            VAXftモデル610,
+            VAXftモデル612
+
+VAX:        VAX 4000モデル50
+            VAX 4000モデル100, 100A, 105A
+            VAX 4000モデル200
+            VAX 4000モデル300
+            VAX 4000モデル500, 500A, 505A
+            VAX 4000モデル600, 606A
+            VAX 4000モデル700A, 705A
+
+            VAX 6000モデル210, 220, 230, 240
+            VAX 6000モデル310, 320, 330, 340, 360
+            VAX 6000モデル400, 410, 420, 430, 440, 450, 460
+
+                                       4
+
+ 
+
+
+日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+
+            VAX 6000モデル510, 520, 530, 540, 550, 560
+            VAX 6000モデル600, 610, 620, 630, 640, 650, 660
+
+            VAX 7000モデル610, 620, 630, 640, 650, 660
+            VAX 7000モデル710, 720, 730, 740, 750, 760
+
+            VAX 8200, VAX 8250
+            VAX 8300, VAX 8350
+            VAX 8500, VAX 8530, VAX 8550
+            VAX 8600, VAX 8650
+            VAX 8700
+            VAX 8800, VAX 8810, VAX 8820,
+            VAX 8830, VAX 8840
+
+            VAX 9000モデル110, 110VP
+            VAX 9000モデル210, 210VP
+            VAX 9000モデル310, 310VP
+            VAX 9000モデル320, 320VP
+            VAX 9000モデル330, 330VP
+            VAX 9000モデル340, 340VP
+            VAX 9000モデル410, 410VP
+            VAX 9000モデル420, 420VP
+            VAX 9000モデル430, 430VP
+            VAX 9000モデル440, 440VP
+
+            VAX 10000モデル610, 620, 630, 640, 650, 660
+
+            VAX-11/730, VAX-11/750,
+            VAX-11/780, VAX-11/785
+
+MicroVAX:   MicroVAX II
+            MicroVAX 2000
+
+            MicroVAX 3100モデル10/10E, 20/20E, 30, 40,
+            MicroVAX 3100モデル80, 85, 90, 95, 96
+            MicroVAX 3200, MicroVAX 3300
+            MicroVAX 3400, MicroVAX 3500
+            MicroVAX 3600, MicroVAX 3800
+            MicroVAX 3900
+
+VAXstation: VAXstation II/GPX, VAXstation II/QVSS
+            VAXstation 2000/GPX, VAXstation 2000/MFB
+
+            VAXstation 3100/GPXモデル38, 48, 76
+
+
+
+                                       5
+
+ 
+
+
+ 日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+
+            VAXstation 3100/SPXモデル38, 48, 76
+            VAXstation 3100モデル30, 38, 40, 48, 76
+            VAXstation 3200
+            VAXstation 3500, VAXstation 3520
+            VAXstation 3540
+
+            VAXstation 4000モデル60, 90, 95, 96, VLC
+
+VAXserver:  VAXserver 3100モデル10, 10E, 20, 20E
+            VAXserver 3200, 3300, 3400
+            VAXserver 3500, 3600, 3800, 3900
+
+            VAXserver 4000モデル200, 300, 400, 500,600
+
+            VAXserver 6000モデル210, 220
+            VAXserver 6000モデル310, 320
+            VAXserver 6000モデル410, 420
+            VAXserver 6000モデル510, 520
+
+            VAXserver 8200, 8250
+            VAXserver 8300, 8350
+            VAXserver 8530, 8550
+            VAXserver 8600, 8650
+            VAXserver 8700
+            VAXserver 8800, 8810, 8820, 8830, 8840
+
+
+2.2  適用されないプロセッサ
+
+MicroVAX I，VAXstation I，VAX-11/725，
+VAX-11/782，VAXstation 8000
+
+2.3  プロセッサ制限事項
+
+スタンドアロンのMicroVAX 2000およびVAXstation 2000システムでは，TK50テープ駆
+動装置が必要です。
+
+2.4  必要なディスク容量(Block Cluster Size=1の場合)
+
+インストレーション時    約12,000ブロック
+に必要なディスク容         (6,300Kバイト)
+量：
+
+
+
+
+
+                                       6
+
+ 
+
+
+日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+
+インストレーション後    約3,000ブロック
+に必要なディスク容         (1,600Kバイト)
+量：
+
+これらのディスク容量はシステム・ディスク上で必要となる数値を示したものであ
+り，概数です。実際の値はシステムの環境，構成，ソフトウェア・オプションに応じ
+て異なります。
+
+3  オプション・ハードウェア
+
+
+o  日本語定数，日本語利用者語，日本語注釈，かな漢字変換，ACCEPT/DISPLAY文を使
+   用するためには，以下のハードウェアが必要です。
+
+   -  VT282 (またはVT80), VT284，VT286，VT382端末などの漢字ディスプレイ装置
+
+o  日本語データのプリントをするためには，以下のハードウェアが必要です。
+
+   -  LA80またはLA84，LA86，LN03PLUS，LA280，日本語プリント・サーバなどのプリ
+      ンタ
+
+4  必須ソフトウェア
+
+ターミナル対応のシステムの場合(日本語DECwindowsインターフェイスなし)
+
+o  日本語VAX/VMS V5.5-2と日本語OpenVMS VAXオペレーティング・システムV6.1〜
+   V7.2
+
+日本語VWSが動作しているワークステーションの場合
+
+o  日本語VAX/VMS V5.5-2と日本語OpenVMS VAXオペレーティング・システムV6.1〜
+   V7.2
+
+o  日本語VMSワークステーション・ソフトウェアV4.4〜V4.5
+
+日本語DECwindowsが動作しているワークステーションの場合
+
+o  日本語VAX/VMS V5.5-2と日本語OpenVMS VAXオペレーティング・システムV6.1〜
+   V7.2
+
+日本語Compaq COBOLは次のいずれかの方法でも実行できます。
+
+o  スタンドアロン実行
+
+   X11ディスプレイ・サーバとクライアント・アプリケーションを同一マシン上で実
+   行します。
+
+                                       7
+
+ 
+
+
+ 日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+o  リモート実行
+
+   X11ディスプレイ・サーバとクライアント・アプリケーションを別のマシン上で実
+   行します。
+
+
+5  ソフトウェア・ライセンス
+
+本ソフトウェアは日本Compaq標準販売約款中のライセンス規定に基づいて提供されま
+す。
+
+日本Compaqのライセンス条件とその方針についての詳細は，最寄りの日本Compaqの各
+支店/営業所にお問い合わせください。
+
+ライセンス管理機能
+
+本ソフトウェアはOpenVMSライセンス管理機能(LMF)をサポートしています。
+
+ライセンス単位には無制限ユーザ・システム，パーソナル・ユース，およびコンカレ
+ント・ユースがあります。
+
+コンカレント・ユースでは，規定された人数内で同時にだれでも利用できます。パー
+ソナル・ユースでは，登録された1人のみが利用できます。
+
+ライセンス管理機能についての詳細は，『OpenVMS Operating System for VAX and
+Alpha Software Product Description』(SPD 25.01.xx)またはOpenVMS VAXオペレー
+ティング・システムのドキュメント・セットの中の『License Management Facility
+Manual』を参照してください。
+
+6  クラスタ環境
+
+本レイヤード・プロダクトは，正規のライセンスを持つVAXcluster構成*の上にインス
+トールされている場合，機能上の制限は受けません。本ソフトウェアで必要とされる
+ハードウェアについては，本書の「必要なハードウェアの最小構成」の項に記述され
+ているとおりです。
+
+*  バージョン5.xのVAXcluster構成については『OpenVMS Cluster Software Product
+   Description』(SPD 29.78.xx)に詳しく説明されています。また，この構成にはCI,
+   EthernetおよびMixed Interconnect構成が含まれます。
+
+OpenVMSテーラリング
+
+OpenVMS VAXシステムで本レイヤード・プロダクトの全機能を得るには，次のOpenVMS
+構成要素が必要です。
+
+o  OpenVMS Required Save Set
+
+o  Programming Support
+
+                                       8
+
+ 
+
+
+日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+OpenVMSのクラスおよびテーラリングについては，
+『OpenVMS Operating System for VAX and Alpha Software Product Description』
+(SPD 25.01.xx)を参照してください。
+
+
+7  オプション・ソフトウェア
+
+日本語OpenVMS V5.5で以下の機能を使用するためには，DEC Language-Sensitive
+Editor/Source Code Analyzer V4.3が必要です。
+
+o  /DESIGN修飾子
+
+o  /ANALYSIS_DATA修飾子
+
+o  日本語VAX LSE
+
+ 注意: LSE/SCA V4.3は別に入手可能か，またはDECset Release 12.0に含まれていま
+す。また，日本語VAX LSE/SCA V3.1は，日本語VAXset V10.0に含まれています。ま
+た，LSE/SCA V4.0はDECset V11.0に含まれています。詳しくは，SPD 27.07.xxを参照
+してください。
+
+DML (Data Manipulation Language)機能を使用するために
+
+日本語OpenVMS VAXオペレーティング・システムV5.4が動作している場合
+
+o  Oracle CODASYL DMBS
+
+o  Oracle CDD/Repository
+
+日本語OpenVMS VAXオペレーティング・システムV5.5が動作している場合
+
+o  Oracle CODASYL DBMS
+
+o  Oracle CDD/Repository
+
+日本語Compaq COBOL COPY FROM DICTIONARY機能を使用するために
+
+日本語OpenVMS VAXオペレーティング・システムV5.4が動作している場合
+
+o  Oracle CDD/Repository
+
+日本語OpenVMS VAXオペレーティング・システムV5.5〜V6.0が動作している場合
+
+o  Oracle CDD/Repository
+
+注意: COPY FROM DICTIONARYの日本語機能を使用するためには，日本語CDD
+/Repository for OpenVMS VAXの日本語機能が必要です。
+
+日本語Compaq COBOL Vertical Forms Printing (VFP)機能を使用するために
+
+o  日本語OpenVMS VAXオペレーティング・システムV5.4〜V6.2
+
+                                       9
+
+ 
+
+
+ 日本語Compaq COBOL Version 5.6 for OpenVMS VAX   ソフトウェア仕様書D 25.B9.09
+
+
+
+8  バージョンアップの考慮
+
+本製品の将来のバージョンでは，必要なハードウェアおよびソフトウェアの最小構成
+が変更されることがあります。
+
+9  提供媒体
+
+テープ:     9トラック1600BPI磁気テープ
+
+            TK50ストリーム・テープ
+
+
+10  注文情報
+
+最寄りの日本Compaqの各支店/営業所にお問い合わせください。
+
+11  2000年対応
+
+"Year 2000 Ready"（2000年対応）製品はCompaqに定義されています。この類の製品
+は、関連の製品文書により使用される場合、またはCompaq製品と正確な日付データを
+正しく交換できるハードウェア、ファームウェアとソフトウェアの組合せが使用され
+る場合には、20世紀と21世紀、また1999年と2000年（閏年の計算も含む）の間の日付
+データを正確に処理・提供・受取することができます。詳しい情報については、下記
+のCompaq's DIGITAL Products Year 2000 Readyウェブ・サイトをご覧ください。
+http://wwl.digital.com/year2000/warranty.asp.
+
+12  ソフトウェア製品サービス
+
+日本Compaqでは，様々なサービス・オプションを提供しています。詳細については，
+最寄りの日本Compaq各支店/営業所にお問い合わせください。
+
+13  保証
+
+本ソフトウェアについては，日本Compaq所定のソフトウェア保証基準に定められた保
+証が提供されます。
+
+[TM] DIGITAL Logo, CI, DECset,日本語DECwindows, Digital, MicroVAX,日本語
+     OpenVMS, TK, VAX, VAXcluster, VAXft, VAXserver, VAXset, VAXstation,
+     VAX BASIC,日本語VAX COBOL, DEC Fortran, OpenVMS RMS, VMS, VT52, VT100,
+     VT220, VT300はDigital Equipment Corporationの商標です。
+
+[TM] OracleはOracle Corporationの登録商標，Oracle CODASYL DBMS, Oracle CDD
+     /RepositoryはOracle Corporationの商標です。
+
+
+
+
+
+                                      10

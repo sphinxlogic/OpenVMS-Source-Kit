@@ -1,0 +1,3851 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    BASEstar_Open_Client_for_OpenVMS____________________
+                    Installation and Management Guide
+
+                    Order Number: XX-YYYYY-ZZ
+
+
+                    April 1999
+
+                    This manual contains instructions for installing and
+                    setting up the BASEstar Open Client product.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a new document
+                                                  for the current
+                                                  release.
+
+                    Operating System and Version: OpenVMS Alpha Version
+                                                  V6.1 or higher
+                                                  OpenVMS VAX Version
+                                                  V6.1 or higher
+
+                    Software Version:             BASEstar Open Client
+                                                  Version 3.2
+
+                    Compaq Computer Corporation Huston, Texas
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          First printing, May 1998, revised April 1999
+
+          © Digital Equipment Corporation 1999. All Rights Reserved.
+
+          The software described in this guide is furnished under a
+          license agreement or nondisclosure agreement. The software
+          may be used or copied only in accordance with the terms of
+          the agreement.
+
+          Compaq Computer Corporation makes no representations
+          that the use of its products in the manner described in
+          this publication will not infringe on existing or future
+          patent rights, nor do the descriptions contained in this
+          publication imply the granting of licenses to make, use,
+          or sell equipment or software in accordance with the
+          description.
+
+          COMPAQ,the Compaq logo and the Digital logo are registered
+          in the U.S. Patent and Trademark Office.
+
+          Tru64 is a trademark of Compaq Computer Corporation.
+
+          The following are trademarks of Digital Equipment
+          Corporation: Alpha AXP, BASEstar, DEC, DECmessageQ,
+          DECnet, DECnet-DOS, DECosap, DEComni, DIGITAL, DIGITAL
+          UNIX, FMS, LN03, MicroVAX, NAS, OpenVMS, OpenVMS Alpha,
+          PATHWORKS, PDAS, Rdb/VMS, ReGIS, ThinWire, TK, ULTRIX, VAX,
+          VAXcluster, VAX COBOL, VAX FORTRAN, VAX Pascal, VAX RMS,
+          VMS/ULTRIX Connection, and VT.
+
+          Microsoft and Windows NT are registered trademarks of
+          Microsoft Corporation. The following are third-party
+          trademarks:
+
+          Other product names mentioned herein may be the trademarks
+          of their respective companies.
+
+          This document was prepared using VAX DOCUMENT, Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................     ix
+
+  1  BASEstar Open's Client-Server Architecture
+
+     1.1  BASEstar Open Servers and Clients................     1-1
+     1.1.1   Roles of BASEstar Open Servers and Clients ....    1-2
+     1.1.2   Configuration Differences .....................    1-3
+     1.1.3   Product Differences ...........................    1-3
+
+  2  Preparing to Install BASEstar Open Client on an OpenVMS
+     System
+
+     2.1  Pre-Installation Checklist.......................     2-1
+     2.2  Checking the Contents of the Distribution Kit....     2-1
+     2.3  Required Operating System Components.............     2-2
+     2.4  Pre-requisite Hardware...........................     2-2
+     2.5  Pre-requisite Software...........................     2-3
+     2.6  Pre-requisite Licenses...........................     2-4
+     2.7  Backing Up Your System Disk......................     2-4
+     2.8  Preparing Your System............................     2-4
+     2.8.1   Account Privileges ............................    2-4
+     2.8.2   Disk Space Requirements .......................    2-5
+     2.8.3   Account Quotas for Installation ...............    2-5
+     2.8.4   OpenVMS SYSGEN Parameters and Minimum Values ..    2-7
+
+  3  Installing BASEstar Open Client on an OpenVMS System
+
+     3.1  Installation Procedure...........................     3-1
+     3.2  VMSINSTAL Checks.................................     3-1
+     3.3  Installation Steps...............................     3-2
+     3.4  Error Recovery...................................     3-6
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    4  Completing the Installation of BASEstar Open Client on
+       an OpenVMS System
+
+        4.1  Post-Installation Checklist......................    4-1
+        4.2  Running the Installation Verification Procedure
+             Separately.......................................    4-1
+        4.2.1  Running the BASEstar Open Client Installation
+               Verification Procedure.........................    4-2
+        4.3  Setting and Starting up the BASEstar Open Client
+             Environment......................................    4-2
+        4.4  Determining and Reporting Problems...............    4-2
+
+    5  Configuring and Managing BASEstar Open Client on a
+       OpenVMS System
+
+        5.1  Setting Up and Starting the BASEstar Open Client
+             Environment......................................    5-1
+        5.1.1  Configuring the BASEstar Open Client
+               Environment....................................    5-2
+        5.1.2  Starting Up BASEstar Open Client ..............    5-4
+        5.1.3  Shutting Down BASEstar Open Client ............    5-4
+        5.1.4  Unsetting BASEstar Open Client ................    5-5
+        5.2  Getting Help and Reporting Problems..............    5-5
+
+    6  Environment Management Command Reference
+
+        6.1  Executing Environment Commands...................    6-1
+        6.1.1  Requirements and Constraints ..................    6-1
+        6.1.1.1   Users and Commands..........................    6-1
+        6.1.1.2   Executing a Command.........................    6-2
+        6.2  Privileges for Running Environment Management
+             Procedures.......................................    6-3
+
+             cli_bstr.........................................    6-4
+
+             bstr_node_setup..................................    6-6
+
+             bstr_node_shut...................................   6-11
+
+             bstr_node_start..................................   6-12
+
+             bstr_node_unset..................................   6-14
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+        7  Log Services Features
+
+           7.1  Saving Copies of Log Files.......................     7-1
+           7.1.1   Purging Log Files .............................    7-2
+           7.2  Log File Record Format...........................     7-2
+           7.2.1   Displaying Log Files ..........................    7-4
+           7.2.1.1   Displaying a Save Copy......................     7-5
+           7.2.1.2   Displaying a Working Copy...................     7-5
+           7.3  Log Services Server Activities...................     7-5
+
+        8  Log Services Command Reference
+
+                DISPLAY LOG......................................     8-2
+
+                OPEN LOG.........................................     8-4
+
+        A  Sample Installation Log Files for BASEstar Open Client
+           on OpenVMS
+
+           A.1  Installation of BASEstar Open Client for OpenVMS
+                Alpha............................................     A-1
+
+        Index
+
+        Examples
+
+           7-1     Node Log File Example .........................    7-3
+
+           7-2     Realm Log File Example ........................    7-4
+
+        Tables
+
+           1       Conventions Used in BASEstar Open .............     xi
+
+           2-1     Pre-Installation Checklist ....................    2-1
+
+           2-2     Hardware Requirements for Installing BASEstar
+                   Open Client....................................    2-3
+
+           2-3     Minimum Quotas for Installing BASEstar Open
+                   Client on OpenVMS..............................    2-5
+
+           2-4     Minimum Required System Parameter Values -
+                   OpenVMS Alpha..................................    2-7
+
+           4-1     Post-Installation Checklist ...................    4-1
+
+           6-1     OpenVMS Relationship Between Environment
+                   Management Commands and Users..................    6-2
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+        6-2    Environment Management Privileges .............    6-3
+
+        7-1    Log Services CLI Commands .....................    7-1
+
+        7-2    Log File Component Identifier .................    7-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    vi
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              This guide describes how to install the BASEstar Open
+              Client software, and how to manage the BASEstar Open Client
+              environment and make it available to end users.
+
+        Intended Audience
+
+              This manual is addressed to system managers responsible for
+              installing and setting up BASEstar Open Client software.
+
+        Prerequisites
+
+              Any user responsible for installing and managing the
+              BASEstar Open Client environment must know how to manage
+              the native operating system. A basic knowledge of BASEstar
+              Open features is also recommended.
+
+        Structure of this Document
+
+              This document consists of the following chapters and
+              appendices:
+
+              o  Chapter 1 provides a product overview.
+
+              o  Chapter 2 describes the procedures that you must
+                 complete before installing BASEstar Open Client on
+                 OpenVMS Alpha and OpenVMS VAX systems.
+
+              o  Chapter 3 describes the BASEstar Open Client
+                 installation procedure for OpenVMS Alpha and OpenVMS
+                 VAX systems.
+
+              o  Chapter 4 describes the Installation Verification
+                 Procedure (IVP) and the post-installation procedures
+                 that you must complete in order to use BASEstar Open
+                 Client on OpenVMS Alpha and OpenVMS VAX systems.
+
+                                                                       ix
+
+ 
+
+
+
+
+
+
+
+          o  Chapter 5 describes the environment management commands
+             on OpenVMS systems.
+
+          o  Chapter 6 contains a reference section that provides
+             full details of each environment management command.
+
+          o  Chapter 7 describes the log system and the log
+             management commands on OpenVMS systems.
+
+          o  Chapter 8 contains a reference section that provides
+             full details of each log management command.
+
+          o  Appendix A contains a listing of a sample BASEstar Open
+             Client installation.
+
+    BASEstar Open Documentation Set
+
+          This manual describes a software component or aspects of
+          the BASEstar Open family of products. The complete set
+          of documents relating to the BASEstar Open family is as
+          follows:
+
+          o  BASEstar Open:
+
+             -  BASEstar Open Introduction
+
+             -  BASEstar Open Reference Guide
+
+             -  BASEstar Open Command Language Interface
+
+             -  BASEstar Open Application Programming Interface
+
+             -  BASEstar Open Messages
+
+             -  Platform-specific installation and management guides
+
+             -  BASEstar Open Guide to DCM-Modeled Device
+                Connectivity (for supported platforms)
+
+          o  BASEstar CIMfast (for supported platforms):
+
+             -  BASEstar CIMfast User's Guide
+
+             -  BASEstar CIMfast Programmer's Reference Guide
+
+             -  BASEstar CIMfast Guide to DECmessageQ Support (not
+                available on Windows NT platforms)
+
+             -  BASEstar CIMfast Guide to SQL Support
+
+          o  DEComni API:
+
+             -  DEComni API and MMS User Guide
+
+    x
+
+ 
+
+
+
+
+
+
+
+                 -  DEComni API Guide to Using Omni Directory Services
+                    (for supported platforms)
+
+                 -  DEComni API Guide to Using OmniView (for supported
+                    platforms)
+
+                 -  DEComni API Omni Definition Facility User Guide (for
+                    supported platforms)
+
+              o  Device Access Software documentation
+
+                 -  Specific manuals for each supported device
+
+        Conventions
+
+              Table 1 lists the conventions used in the BASEstar Open
+              documentation set.
+
+        Table_1_Conventions_Used_in_BASEstar_Open________________________
+
+        %                 The default user prompt is your system name
+                          followed by a right angle bracket (>). In the
+                          BASEstar Open docset, a percent sign (%) is
+                          used to represent this prompt.
+
+        <Ctrl>/<x>        Indicates that you must hold down the Ctrl key
+                          while you press another key.
+
+        <Return>          In examples, a key name enclosed in a box
+                          indicates that you press a key on the keyboard.
+                          (In text, a key name is not enclosed in a box.)
+
+        .                 A vertical ellipsis indicates the omission of
+        .                 items from a code example or sample command;
+        .                 the items are omitted because they are not
+                          important to the topic being discussed.
+
+                                                 (continued on next page)
+
+
+
+
+
+
+
+                                                                       xi
+
+ 
+
+
+
+
+
+
+
+    Table_1_(Cont.)_Conventions_Used_in_BASEstar_Open________________
+
+     . . .            A horizontal ellipsis in format descriptions
+                      or in examples indicates one of the following
+                      possibilities:
+
+                      o  Additional optional arguments in a statement
+                         have been omitted.
+
+                      o  The preceding item or items can be repeated
+                         one or more times.
+
+                      o  Additional parameters, values, or other
+                         information can be entered.
+
+    []                In format descriptions, brackets indicate
+                      optional elements; you can select none, one,
+                      several, or all of the choices. (Brackets
+                      are not optional, however, in the syntax
+                      of a directory name in an OpenVMS file
+                      specification, or in the syntax of a substring
+                      specification in an assignment statement.)
+
+    ( )               In format descriptions, parentheses indicate
+                      that, if you choose more than one option, you
+                      must enclose the choices in parentheses.
+
+    boldface text     Boldface text represents one of the following
+                      cases:
+
+                      o  user input
+
+                      o  the introduction of a new term
+
+                      o  the status values true or false
+
+    italic type       Indicates titles of manuals, variables,
+                      arguments, data structures, fields, callable
+                      functions, operands, and utilities. Italic
+                      text also represents information that can
+                      vary in system messages (for example, Internal
+                      error number), command lines (for example,
+                      /PRODUCER=name), and command operands in text.
+
+                                             (continued on next page)
+
+    xii
+
+ 
+
+
+
+
+
+
+
+        Table_1_(Cont.)_Conventions_Used_in_BASEstar_Open________________
+
+        code type         Indicates information that is part of the code
+                          for a program or application.
+
+        numbers           Unless otherwise noted, all numbers in the text
+                          are assumed to be decimal. Nondecimal radixes-
+                          binary, octal, or hexadecimal-are explicitly
+                          indicated.
+
+        UPPERCASE TEXT    Uppercase text indicates a command, the name of
+                          a file, the name of a file protection code, the
+                          abbreviation for a system privilege, the name
+                          of a field, or the value of an attribute where
+                          attributes are chosen from a list.
+
+        "point_a +        Literal string. Using quotation marks is
+        point_b"          optional unless there is a space, slash (/),
+                          or parenthesis in the string.
+
+        BASEstar Open     Valid characters for the names of BASEstar Open
+        names             objects are the alphanumeric characters (A-Z)
+                          and (0-9), the underscore (_),  the dollar
+                          sign ($), and the following multinational
+        __________________characters:_ÅÀÁÂÃÄÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÆÑ@Øß._____
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     xiii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                               BASEstar Open's Client-Server Architecture
+
+
+        1.1 BASEstar Open Servers and Clients
+
+              BASEstar Open provides a range of services that are
+              typically required by industrial automation applications
+              and not normally available from the underlying operating
+              systems. These services include the possibility of
+              responding to or generating asynchronous plant occurrences
+              (Events), connecting to industrial automation devices,
+              and distributing device data and information plantwide.
+              In BASEstar Open, these services are provided by specific
+              processes (BASEstar Open servers) such as the following:
+
+              o  Event Services server
+
+              o  Data & Device Services server
+
+              o  Application Management Services server
+
+              o  Packet Services server
+
+              There are several ways in which user applications can
+              access these services:
+
+              o  C language programs, which use the BASEstar Open
+                 Application Program Interface (API)
+
+              o  BASEstar Open's Command Line Interface (CLI)
+
+              o  BASEstar Open's high level language, CIMFAST
+
+              From a purely BASEstar Open architectural point of view,
+              these user applications can be considered clients of the
+              requested BASEstar Open service provider (server). This
+              client/server relationship exists regardless of whether
+              the application resides on the same physical node as the
+              server or on a different BASEstar Open network node. In
+              fact, from a functionality point of view, the location of
+              the requested BASEstar Open server has no impact on the
+              application.
+
+                                                                      1-1
+
+ 
+
+
+
+    BASEstar Open's Client-Server Architecture
+    1.1 BASEstar Open Servers and Clients
+
+
+          However, the application may be impacted in other ways
+          depending on whether its node is a BASEstar Open Server
+          node or a BASEstar Open Client node, for example in
+          the level of system management support available. This
+          consideration is fundamental to an analysis of the
+          different roles of BASEstar Open Server nodes and Client
+          nodes, as outlined in Section 1.1.1.
+
+    1.1.1 Roles of BASEstar Open Servers and Clients
+
+          Server nodes represent the robust computing engine for
+          industrial automation applications where plant data
+          is collected, managed and made available throughout
+          the network. On these nodes, which may be dual host to
+          maximise reliability, you can activate and manage mission-
+          critical applications under the control of BASEstar Open's
+          Application Management Services (AMS). (AMS provides
+          system management services for monitoring the status
+          of applications and managing their orderly startup and
+          shutdown). These server nodes also manage the connections
+          to automation devices such as PLCs or Numeric Controllers.
+          This environment may be part of the controlled computer
+          room environment with all the procedures necessary for
+          starting up applications and their recovery in the event of
+          a failure.
+
+          Client nodes, on the other hand, provide a less
+          sophisticated, easier to use, "plug & play" environment
+          for any application anywhere in the network which needs
+          to access the services provided by BASEstar Open. For
+          example, it is common practice to use PC-based and
+          workstation client nodes as visualization stations
+          distributed throughout the enterprise for providing up-to-
+          date graphical or reporting information regarding the state
+          of the plant, production status, etc. This type of node is
+          often the typical desktop environment, with its suite of
+          personal productivity tools and mail system, which, with
+          the incorporation of the BASEstar Open Client software,
+          becomes a viewing/reporting station providing real-time
+          plant information.
+
+          From a system management point of view, client nodes
+          also provide several advantages with respect to a server
+          nodes. It is easier to set them up and "plug them in" to a
+          BASEstar Open network.
+
+    1-2
+
+ 
+
+
+
+                               BASEstar Open's Client-Server Architecture
+                                    1.1 BASEstar Open Servers and Clients
+
+
+        1.1.2 Configuration Differences
+
+              BASEstar Open configuration is the process by which
+              BASEstar Open objects are described and defined. These
+              objects like Data_Points, Devices, BASEstar Open services
+              etc., once defined become part of one or more Realms
+              and are physically located on one or more BASEstar Open
+              Server Nodes. BASEstar Open Client nodes instead do not
+              physically contain any BASEstar Open objects so are not
+              part of a Realm but do provide access to Realms in support
+              of BASEstar Open Client-based applications.
+
+              Even though the BASEstar Open Client nodes are not impacted
+              (modified), by the BASEstar Open configuration process the
+              PC-based BASEstar Open Client can have an important role
+              in this process. In fact, the PC-based client is often used
+              as a configuration station on those PCs where the BASEstar
+              Open Graphic Configuration utility is installed.
+
+        1.1.3 Product Differences
+
+              All BASEstar Open services, including Event management,
+              data Management and device management, are part of the
+              BASEstar Open Server product. This product comes in two
+              flavours: Development and Runtime.
+
+              With a development license, you can link compiled C
+              language programs which make calls to the BASEstar Open
+              API against the BASEstar Open Runtime Library. You can then
+              deploy these applications on server or client nodes. The
+              Runtime License does not allow you to develop programs, but
+              permits all developed applications to be deployed on the
+              BASEstar Open Runtime Server product which includes all the
+              BASEstar Open services.
+
+              The BASEstar Open Client product does not offer the
+              BASEstar Open services directly, but provides a means for
+              BASEstar Open applications to obtain transparent access to
+              these services, which are located on servers anywhere in
+              the network. BASEstar Open has its own communication system
+              for allowing client applications, regardless of where they
+              are located, to access BASEstar Open services.
+
+
+
+                                                                      1-3
+
+ 
+
+
+
+    BASEstar Open's Client-Server Architecture
+    1.1 BASEstar Open Servers and Clients
+
+
+          As a general indication, it is possible to summarise
+          the differences between the BASEstar Open Server and the
+          BASEstar Open Client product as follows:
+
+          o  BASEstar Open Server only
+
+             -  Device connection
+
+             -  Repository for BASEstar Open objects (Data_Points,
+                Events etc.)
+
+             -  Application management via Application Management
+                Services (AMS)
+
+             -  Trace troubleshooting facility
+
+             -  Execution of invoked BASEstar Open services
+
+          o  Available on both BASEstar Open Server and BASEstar Open
+             Client
+
+             -  Ability to access BASEstar Open services
+
+          PC-based clients and servers support some features which
+          are specific to the PC environment. These include:
+
+          o  A graphic configuration tool for configuring BASEstar
+             Open objects
+
+          o  DDE bridge for communicating with DDE-compliant PC
+             applications.
+
+             ________________________ Note ________________________
+
+             The discussion in this chapter is of a generic nature;
+             its aim is to clarify the conceptual differences
+             between BASEstar Open Server nodes and BASEstar Open
+             Client nodes. The availability of a given feature
+             on a specific BASEstar Open platform depends on the
+             released version of the product. For information
+             regarding specific functionalities, consult the
+             detailed product documentation (SPD, release notes).
+
+             ______________________________________________________
+
+    1-4
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+           Preparing to Install BASEstar Open Client on an OpenVMS System
+
+
+
+
+
+        2.1 Pre-Installation Checklist
+
+              Table 2-1 summarizes the tasks you must perform before
+              installing BASEstar Open Client on an OpenVMS system.
+              Make sure that you have performed all these tasks before
+              proceeding with the installation.
+
+              Table_2-1_Pre-Installation_Checklist_______________________
+
+              Task____________________________For_More_Information_______
+
+              Check that you have the         See Section 2.2
+              complete kit
+
+              Check that you have the pre-    See Section 2.4,
+              requisite hardware, software,   Section 2.5, and
+              and license                     Section 2.6
+
+              Back up your system disk        See Section 2.7
+
+              Check that you have the         See Section 2.8.1
+              required privileges
+
+              Check that you have enough      See Section 2.8.2
+              disk space
+
+              Check account quotas            See Section 2.8.3
+
+              Check_system_parameters_________See_Section_2.8.4__________
+
+        2.2 Checking the Contents of the Distribution Kit
+
+              Your Bill of Materials (BOM) and indented bills report
+              (BIL) specify the number and contents of your media.
+              Be sure to verify the contents of your kit with this
+              information. If your kit is damaged or if you find
+
+                                                                      2-1
+
+ 
+
+
+
+    Preparing to Install BASEstar Open Client on an OpenVMS System
+    2.2 Checking the Contents of the Distribution Kit
+
+
+          that parts of it are missing, contact your COMPAQ
+          representative.
+
+          COMPAQ provides a BASEstar Open Client cover letter with
+          the kit, and online release notes in the following files:
+
+          o  SYS$HELP:BSTROCVA032.RELEASE_NOTES (OpenVMS Alpha)
+
+          o  SYS$HELP:BSTROCVV032.RELEASE_NOTES (OpenVMS VAX)
+
+          COMPAQ strongly recommends that you read both the cover
+          letter and the release notes before proceeding with the
+          installation.
+
+    2.3 Required Operating System Components
+
+          Both the OpenVMS Alpha and the OpenVMS VAX operating
+          systems come with a variety of support options, or classes.
+          Classes include such features as networking and RMS
+          Journaling.
+
+          For a complete list of the required classes, refer to the
+          BASEstar Open Software Product Description (SPD).
+
+    2.4 Pre-requisite Hardware
+
+          Table 2-2 lists the hardware items needed to install
+          BASEstar Open Client.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    2-2
+
+ 
+
+
+
+           Preparing to Install BASEstar Open Client on an OpenVMS System
+                                               2.4 Pre-requisite Hardware
+
+
+              Table 2-2 Hardware Requirements for Installing BASEstar
+              __________Open_Client______________________________________
+
+              Item_________________________________Purpose_______________
+
+              RRD40 CD Reader[1]                   To install from media
+              RRD40 CD Reader, nine-track
+              magnetic tape drive, TK50 or TK70
+              as appropriate for distribution kit
+              media[2]
+
+              ANSI-compatible video display        To communicate
+              terminal such as the VT300 or VT400  with the operating
+              series                               system and respond to
+                                                   prompts.
+
+              Any VAXstation[2] or terminal that   For graphic screen
+              supports the X Window System         development.
+              [1]For_OpenVMS_Alpha_only._________________________________
+
+              [2]For OpenVMS VAX only.
+              ___________________________________________________________
+
+        2.5 Pre-requisite Software
+
+              You can install BASEstar Open Client Version 3.2 on:
+
+              o  OpenVMS Alpha Version 6.1 or higher
+
+              o  OpenVMS VAX Version 6.1 or higher
+
+              The pre-requisite software also includes the following
+              layered products:
+
+              o  DEC TCP/IP Services for OpenVMS
+
+              For further details of these products, including the
+              currently supported version numbers, refer to the BASEstar
+              Open Client Software Product Description (SPD 47.87.xx).
+
+              To displays the OpenVMS operating system version that you
+              are running, execute the following command:
+
+              $ WRITE SYS$OUTPUT F$GETSYI("VERSION")
+
+                                                                      2-3
+
+ 
+
+
+
+    Preparing to Install BASEstar Open Client on an OpenVMS System
+    2.6 Pre-requisite Licenses
+
+
+    2.6 Pre-requisite Licenses
+
+          BASEstar Open Client Version 3.2 does not need any kind
+          of registration, so you do NOT have to register a License
+          Product Authorization Key (License PAK) using the License
+          Management Facility (LMF). The registration must be
+          performed on BASEstar Open Server Version 3.2. Refer to
+          BASEstar Open Server and Client Release Notes for further
+          details of the licenses available.
+
+          If you are installing pre-requisite or optional software
+          along with BASEstar Open Client, review the PAK status and
+          install the PAKs for any pre-requisite or optional software
+          before you install BASEstar Open Client.
+
+    2.7 Backing Up Your System Disk
+
+          At the beginning of the installation, the procedure asks if
+          you have backed up your system disk. COMPAQ recommends that
+          you do a system disk backup before installing any software.
+          If a system failure occurs at a critical point during the
+          installation, some of the files could be corrupted. For
+          further information about backing up your system disk,
+          refer to the section on the Backup Utility in the OpenVMS
+          System Manager's Manual.
+
+          In addition, make sure that the VMS Help library is
+          not used during the course of the BASEstar Open Client
+          installation.
+
+    2.8 Preparing Your System
+
+          This section outlines the necessary disk space, privileges,
+          and parameter values that are required for installing
+          BASEstar Open Client for OpenVMS Alpha and VAX).
+
+          VMSINSTAL checks for the required values and reports any
+          errors before deciding if to fail.
+
+    2.8.1 Account Privileges
+
+          To install BASEstar Open Client, you must be logged in
+          to the system management account SYSTEM, and have ALL
+          privileges set. Note that the installation procedure,
+          VMSINSTAL, disactivates the BYPASS privilege at the start
+          of the installation.
+
+    2-4
+
+ 
+
+
+
+           Preparing to Install BASEstar Open Client on an OpenVMS System
+                                                2.8 Preparing Your System
+
+
+        2.8.2 Disk Space Requirements
+
+              To install BASEstar Open Client, there must be at least
+              10,000 blocks of free disk space (peak block count) on the
+              system disk. Once you have installed BASEstar Open Client,
+              the BASEstar Open Client environment requires 9,000 blocks
+              of free disk space.
+
+              To determine the number of free disk blocks, enter the
+              following command at the DCL prompt:
+
+              $ SHOW DEVICE device_name
+
+              where device_name refers to the device on which you intend
+              to install BASEstar Open Client for OpenVMS.
+
+        2.8.3 Account Quotas for Installation
+
+              The account from which BASEstar Open Client is installed
+              must have certain minimum quotas. Before attempting to
+              install BASEstar Open Client, verify that the account has
+              the correct quotas.
+
+              Table 2-3 summarizes the minimum quotas required for the
+              installation of BASEstar Open Client on OpenVMS Alpha and
+              OpenVMS VAX.
+
+              Table 2-3 Minimum Quotas for Installing BASEstar Open
+              __________Client_on_OpenVMS________________________________
+
+              User Account
+              Parameter_____________Minimum_Values_______________________
+
+              ASTLM                 20
+
+              BIOLM                 18
+
+              DIOLM                 20 (Alpha)
+                                    18 (VAX)
+
+              ENQLM                 20
+
+              FILLM                 20
+
+              JTQUOTA               1024
+
+              PGFLQUOTA             10,000
+
+                                                 (continued on next page)
+
+                                                                      2-5
+
+ 
+
+
+
+    Preparing to Install BASEstar Open Client on an OpenVMS System
+    2.8 Preparing Your System
+
+
+          Table 2-3 (Cont.) Minimum Quotas for Installing BASEstar
+          __________________Open_Client_on_OpenVMS___________________
+
+          User Account
+          Parameter_____________Minimum_Values_______________________
+
+          PRCLM                 4 (Alpha)
+                                10 (VAX)
+
+          TQELM                 6 (Alpha)
+                                20 (VAX)
+
+          WSDEFAULT             512 (Alpha)
+                                256 (VAX)
+
+          WSQUOTA               1024 (Alpha)
+                                512 (VAX)
+
+          WSEXTENT______________2048_________________________________
+
+          Use the Authorize utility to display the process quotas, as
+          follows:
+
+          $ SET DEFAULT SYS$SYSTEM
+          $ RUN AUTHORIZE
+          UAF> SHOW SYSTEM
+
+          If no changes are necessary, enter the EXIT command to
+          leave the Authorize utility.
+
+          To modify system account quotas (for example, BYTLM), use
+          the following command line:
+
+          UAF> MODIFY SYSTEM/BYTLM=32768
+
+          The utility responds with a message confirming the change.
+          You can then enter the EXIT command to exit from the
+          utility. You must log out and then log in again to reset
+          the system account quotas.
+
+          The Authorize utility is described in the OpenVMS System
+          Manager's Manual.
+
+
+
+    2-6
+
+ 
+
+
+
+           Preparing to Install BASEstar Open Client on an OpenVMS System
+                                                2.8 Preparing Your System
+
+
+        2.8.4 OpenVMS SYSGEN Parameters and Minimum Values
+
+              In order to install BASEstar Open Client successfully, you
+              must set a series of System Generation Utility (SYSGEN)
+              parameters before attempting the installation. Table 2-4
+              and lists the minimum required values for the system
+              parameters.
+
+              To install and run BASEstar Open Client, you must have
+              sufficient free global pages and global sections. You must
+              first determine how many free global pages and sections
+              you have on your system. Then use AUTOGEN if you need to
+              increase the values of the GBLPAGES and GBLSECTIONS system
+              parameters.
+
+              Table 2-4 Minimum Required System Parameter Values -
+              __________OpenVMS_Alpha____________________________________
+
+              System_Parameter______Minimum_Values[1]____________________
+
+              Available GBLPAGES    4000 (Alpha)
+                                    4000 (VAX)
+
+              Available             4 (Alpha)
+              GBLSECTIONS           4 (VAX)
+              [1]The_values_listed_for_these_system_parameters_represent_
+
+              the minimum number of free global pages and global sections
+              required to run BASEstar Open Client in addition to the
+              requirements of your current system and other software.
+              These values are not the total number you need to run your
+              system and other software.
+              ___________________________________________________________
+
+              Checking System Parameter Values
+
+              To check the values of your system parameters, use either
+              of the following methods:
+
+              o  For the number of remaining free pages and free sections
+
+                 Use the DCL lexical F$GETSYI with a system parameter
+                 item (for example, FREE_GBLPAGES and FREE_GBLSECTS) as
+                 follows:
+
+                 $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+                 5680
+                 $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+                 128
+
+                                                                      2-7
+
+ 
+
+
+
+    Preparing to Install BASEstar Open Client on an OpenVMS System
+    2.8 Preparing Your System
+
+
+             If the values for the free global pages or global
+             sections displayed by the system are greater than the
+             values in Table 2-4, you do not need to increase them.
+             If the values are lower, you must increase the system
+             parameter settings.
+
+          o  For the static number of free pages and free sections
+
+             Invoke the System Generation Utility (SYSGEN):
+
+             $
+             RUN SYS$SYSTEM:SYSGEN
+             SYSGEN>
+
+             At the SYSGEN> prompt, enter the SHOW command to
+             display the value of a system parameter. The values
+             displayed should equal or exceed the value of each
+             system parameter listed in Table 2-4. The following
+             example displays the value for the GBLPAGES system
+             parameter:
+
+             SYSGEN>
+             SHOW GBLPAGES
+
+             After checking the parameters with the SHOW command,
+             enter the EXIT command at the SYSGEN> prompt to return
+             to DCL level.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    2-8
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                     Installing BASEstar Open Client on an OpenVMS System
+
+
+
+
+
+        3.1 Installation Procedure
+
+              Before you begin installing BASEstar Open Client, make
+              sure that your system meets the requirements outlined in
+              Chapter 2 and that you have completed all the tasks listed
+              in Table 2-1.
+
+              The BASEstar Open Client installation procedure consists of
+              a series of questions and informational messages. To abort
+              the installation procedure at any time, press <Ctrl>/<Y>.
+              If you press <Ctrl>/<Y>, the installation procedure deletes
+              all files it has created up to that point and exits. You
+              can then start the installation again.
+
+              The approximate time required for the full installation of
+              BASEstar Open is as follows:
+
+              o  1 to 3 minutes, for OpenVMS Alpha
+
+              o  1 to 5 minutes, for OpenVMS VAX
+
+              However, the exact time depends largely on the type of
+              media you are using and your system configuration.
+
+        3.2 VMSINSTAL Checks
+
+              When you invoke VMSINSTAL, it checks whether:
+
+              o  You have set your default device and directory to
+                 SYS$UPDATE
+
+              o  You are logged in to the system management account
+                 SYSTEM
+
+              o  DECnet is running
+
+              o  Any users are logged in to the system
+
+                                                                      3-1
+
+ 
+
+
+
+    Installing BASEstar Open Client on an OpenVMS System
+    3.2 VMSINSTAL Checks
+
+
+          If VMSINSTAL detects any problems during the installation,
+          it notifies you and asks if you want to continue the
+          installation. In some instances, you can enter YES to
+          continue. To stop the installation process and correct
+          the situation, enter NO or press <Return>. Then correct the
+          problem and restart the installation.
+
+    3.3 Installation Steps
+
+          The following steps describe how to install BASEstar Open
+          on OpenVMS Alpha:
+
+          1. Start the installation
+
+             To start the installation, invoke the
+             SYS$UPDATE:VMSINSTAL.COM procedure from a privileged
+             account (for example, SYSTEM). Use the kit name
+             BSTROCVA032 (for OpenVMS Alpha) or BSTROCVV032 (for
+             OpenVMS VAX) as the first parameter to the command
+             VMSINSTAL. Use the device or directory on which the
+             installation kit is located as the second parameter.
+
+             For example, if the media containing the BASEstar Open
+             Client software is on device mua0, then you must issue
+             the following command to install BASEstar Open Client:
+
+             $ @SYS$UPDATE:VMSINSTAL BSTROCVA032 MUA0:
+
+                     OpenVMS AXP Software Product Installation Procedure V7.1
+
+             It is 13-MAY-1998 at 14:05.
+
+             Enter a question mark (?) at any time for help.
+
+             If you do not supply either the product name or the
+             device name, VMSINSTAL prompts you for this information
+             later in the installation procedure.
+
+          2. Confirm system backup
+
+               * Are you satisfied with the backup of your system disk [YES]?
+
+             VMSINSTAL asks if you are satisfied with your system
+             backup. You should always back up your system disk
+             before performing an installation. If you are satisfied
+             with the backup of your system disk, press Return.
+             Otherwise, enter NO to discontinue the installation.
+
+    3-2
+
+ 
+
+
+
+                     Installing BASEstar Open Client on an OpenVMS System
+                                                   3.3 Installation Steps
+
+
+                 After you back up your system disk, you can restart the
+                 installation.
+
+              3. Installation begins
+
+                 At this point VMSINSTAL continues with the installation
+                 as follows:
+
+                 The following products will be processed:
+
+                   BSTROCVA V3.2
+
+                         Beginning installation of BSTROCVA V3.2 at 14:05
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+                 %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                 ************************************************************************
+
+                 (C) Digital Equipment Corporation. 1997, 1999 All Rights Reserved.
+
+                    Restricted Rights: Use, duplication, or disclosure by the U.S.
+                    Government is subject to restrictions as set forth in subparagraph
+                    (c) (1) (ii) of DFARS 252.227-7013, or in FAR 52.227-19, or in FAR
+                    52.227-14 Alt. III, as applicable.
+
+                    This software is proprietary to and embodies the confidential
+                    technology of Digital Equipment Corporation. Possession, use, or
+                    copying of this software and media is authorized only pursuant to a
+                    valid written license from Digital or an authorized sublicensor.
+
+                              - BASEstar Open V3.2-0 Installation Procedure -
+
+                 ************************************************************************
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+                 BASEstar Open Client option will be installed
+
+                 For more information on the license requirement for the
+                 installation of BASEstar Open, refer to Section 2.6.
+
+              4. Installing on target disk
+
+                 VMSINSTAL asks you where you would like to have BASEstar
+                 Open installed. If your system is a VAXcluster and you
+                 would like to have BASEstar Open available on all or a
+                 set of nodes in the cluster you must install BASEstar
+                 Open on a disk that is visible to those nodes in the
+                 cluster.
+
+                                                                      3-3
+
+ 
+
+
+
+    Installing BASEstar Open Client on an OpenVMS System
+    3.3 Installation Steps
+
+
+                 BASEstar Open can be installed on any disk of your system.
+                 There is no default disk: you must enter a disk name.
+                 The following disks are available on the system.
+
+             VIGGIU$DKA0:            Mounted              0  SWAP           1250586     3   1
+             VIGGIU$DKA100:          Mounted              0  USER1           219015     3   1
+             VIGGIU$DKA200:          Mounted              0  GRZ200          215400     2   1
+             VIGGIU$DKA300:          Mounted              0  VMS020          128664   433   1
+             VIGGIU$DNFS1:           Mounted              0  BODDS                0     1   0
+             VIGGIU$DNFS2:           Mounted              0  BINTEGR              0     1   0
+             VIGGIU$DNFS4:           Mounted              0  BMACCHI              0     1   0
+             VIGGIU$DNFS5:           Mounted              0  BODDS310             0     1   0
+
+             * Target disk:  VIGGIU$DKA100:
+
+             * BSTROCVA V3.2 root directory [[BSTROCVA032]]:  [BSTRCLT]
+
+                 You are going to install BSTROCVA V3.2 on
+
+                 Target disk:    VIGGIU$DKA100:
+                 Root directory: [BSTRCLT]
+
+             * Is this correct [Y]?
+
+          5. Running the BASEstar Open IVP following the installation
+
+             The installation procedure now asks if you wish to run
+             the BASEstar Open Installation Verification Procedure
+             (IVP) after the installation is complete, as follows:
+
+             * Do you want to run the IVP after the installation [YES]?
+
+             For more information on the IVP, refer to Section 4.2.
+
+             There are no further questions concerning the
+             installation of BASEstar Open.
+
+          6. Continue with the installation?
+
+             You are now asked if you wish to continue with the
+             installation, as follows:
+
+
+
+
+    3-4
+
+ 
+
+
+
+                     Installing BASEstar Open Client on an OpenVMS System
+                                                   3.3 Installation Steps
+
+
+                 ************************************************************************
+
+                    All the questions regarding the installation of BASEstar Open Client
+                    have been answered. The installation will take from 1 to 3 minutes,
+                    and the IVP about 1 minutes, depending on the CPU type and
+                    the system workload.
+
+                 ************************************************************************
+
+                 * Do you want to continue [Y]?  y
+
+              7. Read informational messages.
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation.
+
+              8. Creating Files
+
+                 If the installation procedure has been successful up to
+                 this point, VMSINSTAL moves the new or modified files
+                 to their target directories, updates help files, and
+                 updates DCL tables, if necessary.
+
+                 The following messages are displayed:
+
+                 %VMSINSTAL-I-MOVEFILES, files will now be moved to their target
+                                                    directories...
+
+              9. Running BASEstar Open IVP
+
+                 At this point, BASEstar Open verifies that:
+
+                 -  A valid license for BASEstar Open has been installed
+
+                 -  The installation procedure has been successful
+
+                 -  You have responded yes during installation of
+                    BASEstar Open to the question about running the IVP.
+
+                 If all the above requirements are met, it runs the
+                 BASEstar Open IVP:
+
+                 a. Running the BASEstar Open IVP
+
+                    The installation procedure:
+
+                    o  Checks that all the installation files are in the
+                       correct locations
+
+                    For more information on running the BASEstar Open IVP
+                    separately, refer to Section 4.2.1.
+
+                                                                      3-5
+
+ 
+
+
+
+    Installing BASEstar Open Client on an OpenVMS System
+    3.3 Installation Steps
+
+
+          For an example of a complete log of an installation, refer
+          to Appendix A .
+
+    3.4 Error Recovery
+
+          If errors occur during the installation, VMSINSTAL displays
+          failure messages. If the installation itself fails, you see
+          the following message:
+
+          %VMSINSTAL-E-INSFAIL, The installation of BSTROCVA032 V3.2
+          has failed.
+
+          Errors can occur during the installation if any of the
+          following conditions exist:
+
+          o  The operating system version is incorrect.
+
+          o  A prerequisite software version is incorrect.
+
+          o  Quotas necessary for successful installation are
+             insufficient.
+
+          o  System parameter values for successful installation are
+             insufficient.
+
+          o  The OpenVMS Help library is currently in use.
+
+          For descriptions of the error messages generated by these
+          conditions, see the OpenVMS documentation on system
+          messages, recovery procedures, and OpenVMS software
+          installation. If you are notified that any of these
+          conditions exist, you should take the appropriate action as
+          described in the message. For information on installation
+          requirements, see Chapter 2.
+
+          If GBLPAGES and GBLSECTIONS are insufficient, the
+          installation continues but displays warning messages that
+          BASEstar Open may fail during the IVP or during runtime.
+
+
+
+
+
+
+
+    3-6
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        4
+        _________________________________________________________________
+
+        Completing the Installation of BASEstar Open Client on an OpenVMS
+                                                                   System
+
+
+
+
+
+        4.1 Post-Installation Checklist
+
+              Table 4-1 summarizes the tasks you must perform after
+              installing BASEstar Open Client on a OpenVMS system. Make
+              sure that you have performed all these tasks before using
+              BASEstar Open Client.
+
+              Table_4-1_Post-Installation_Checklist______________________
+
+              Task____________________________Notes______________________
+
+              Run the Installation            See Section 4.2
+              Verification Procedure (IVP)
+
+              Setting up and start the        See Section 4.3
+              BASEstar Open Client
+              environment________________________________________________
+
+        4.2 Running the Installation Verification Procedure Separately
+
+              After BASEstar Open Client is installed, COMPAQ recommends
+              that you run the Installation Verification Procedure (IVP)
+              to verify that the software on your system is accessible.
+              You might also want to run the IVP after a system failure
+              to make sure that users can access BASEstar Open Client.
+              The approximate duration of the IVP is as follows:
+
+              o  1 minute (OpenVMS Alpha)
+
+              o  1 minute (OpenVMS VAX)
+
+
+                                                                      4-1
+
+ 
+
+
+
+    Completing the Installation of BASEstar Open Client on an OpenVMS System
+    4.2 Running the Installation Verification Procedure Separately
+
+
+    4.2.1 Running the BASEstar Open Client Installation Verification
+          Procedure
+
+          To run the BASEstar Open Client IVP, you must issue the
+          following command from an account that has all privileges
+          set:
+
+          $ @BSTR$KITCLT:[ETC]BSTR_IVP BSTR$KITCLT CLIENT
+
+          You are not asked any questions during the IVP. If the
+          IVP has completed successfully, a message similar to the
+          following is displayed:
+
+          BASEstar Open Client V3.2 IVP completed successfully
+
+    4.3 Setting and Starting up the BASEstar Open Client Environment
+
+          After the BASEstar Open Client installation, you must
+          perform procedures which set up and start up the node.
+
+    4.4 Determining and Reporting Problems
+
+          If you encounter a problem while using BASEstar Open
+          Client, report it to COMPAQ. Depending on the nature of
+          the problem and the type of support you have, you can take
+          one of the following actions:
+
+          o  Call COMPAQ if your software contract or warranty
+             agreement entitles you to telephone support.
+
+          o  Submit a Software Performance Report (SPR).
+
+          o  Fill out and submit a Reader's Comments form if the
+             problem has to do with the BASEstar Open Client
+             documentation. There are Reader's Comments forms at
+             the back of each manual. Use the form from the manual in
+             which you found the error. Include the section and page
+             number.
+
+          Review the BASEstar Open Client Software Product
+          Description (SPD) and Warranty Addendum for an explanation
+          of warranty. If you encounter a problem during the warranty
+          period, report the problem as indicated above or follow
+          alternate instructions provided by COMPAQ for reporting SPD
+          non-conformance problems.
+
+    4-2
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        5
+        _________________________________________________________________
+
+        Configuring and Managing BASEstar Open Client on a OpenVMS System
+
+
+              This chapter describes the operations that you have to
+              perform after installing BASEstar Open Client on a OpenVMS
+              system, in order to ensure that it is ready for use.
+
+        5.1 Setting Up and Starting the BASEstar Open Client Environment
+
+              After installing BASEstar Open Client, you must execute
+              a series of procedures to configure and start/stop the
+              product:
+
+              o  bstr_node_setup
+
+                 When you execute this procedure, BASEstar Open Client
+                 creates the file directories and data files that store
+                 in a permanent way the configuration attributes; among
+                 the permanent data, there are the node names to be
+                 contacted to set up a connection with the BASEstar Open
+                 realms to be accessed.
+
+              o  bstr_node_start
+
+                 When you execute this procedure, BASEstar Open Client
+                 starts the watchdog process and the log process.
+
+                 The watchdog process manages the connections between the
+                 BASEstar Open Client applications and the server sides.
+                 The log process records the basic operations and the
+                 failures reported by the watchdog process and BASEstar
+                 Open applications.
+
+              o  bstr_node_shut
+
+                 When you execute this procedure, BASEstar Open Client
+                 stops the watchdog and log processes.
+
+              o  bstr_node_unset
+
+                 When you execute this procedure, BASEstar Open Client
+                 deletes the data files and directories created by bstr_
+                 node_setup.
+
+                                                                      5-1
+
+ 
+
+
+
+    Configuring and Managing BASEstar Open Client on a OpenVMS System
+    5.1 Setting Up and Starting the BASEstar Open Client Environment
+
+
+    5.1.1 Configuring the BASEstar Open Client Environment
+
+          The DCL procedure BSTR_NODE_SETUP is stored in the ETC
+          directory of the directory where BASEstar Open Client was
+          installed. It must be run with at least the specification
+          of the installation directory.
+
+          It prompts the user by requesting the location of the work
+          directory where it will create the file directories and
+          data files for the configuration), and the name(s) of the
+          nodes to be contacted for BASEstar Open Servers.
+
+          o  Run the procedure by specifying the location of the
+             installation kit.
+
+             $  @DKA200:[BSTRCLT.ETC]BSTR_NODE_SETUP -L DKA200:[BSTRCLT] [-V]
+
+          o  The procedure prompts for the name of the work directory
+             it is going to create.
+
+                Name of the work directory. You must introduce the path name (according to
+                the rules of VAX/VMS - .e.g. "DISK:[SUBD1.SUBD2]" )
+                of an UNEXISTING directory :
+
+                BSTR.Spool_Work_Dir:  []
+
+          o  At the above request, you must enter the name of the
+             BASEstar Open work root. Type the pathname of the
+             directory where you want BASEstar Open Client to keep
+             its run-time work tree:
+
+             BSTR.Spool_Work_Dir:  []   DKA200:[BSTRCLT.WORK]
+
+          o  You may decide to abort the set-up procedure; the
+             procedures creates the configuration directories.
+
+             If you are not satisfied with the settings of installation parameters
+             you can terminate the procedure and run it again:
+             Do you want to continue ? [Y] :  y
+             @@@ Working on configuration parameters, please wait
+
+             @@@ creating BSTR_ETC:bstrusers_MYNODE.com file
+
+
+
+    5-2
+
+ 
+
+
+
+        Configuring and Managing BASEstar Open Client on a OpenVMS System
+         5.1 Setting Up and Starting the BASEstar Open Client Environment
+
+
+                 @@@ creating BSTR_ETC:bstrcom_MYNODE.cfg file
+
+              o  To configure BASEstar Open Client you must specify at
+                 least one name of a host where BASEstar Open Server is
+                 (or will be) installed. The LNS server(s) of the host(s)
+                 you specify will be contacted sequentially to locate the
+                 Communication Server to connect to for a given realm.
+                 You can specify up to eight LNS servers. WARNING: you
+                 will be able to access only the realms that are (or will
+                 be) served by one of the LNS servers you specify.
+
+                     This file will contain a list of one of more LNS nodes.
+                     BASEstar Open Client will attempt the connection to the
+                     Server environment by scanning this list.
+                     Please provide at least one host name; you will be prompted
+                     for additional names until an empty line is entered.
+
+                     The BSTR_ETC:bstrcom_MYNODE.cfg file can be modified by means
+                     of a common text editor.
+
+              o  The system prompts you for the name of at least one
+                 host on which BASEstar Open Server is installed; When
+                 finished entering LNS server(s), press the RETURN key
+                 only.
+
+                 Host name of a BASEstar Open LNS Server node:  ninfea
+                 Host name of a BASEstar Open LNS Server node:
+
+              o  The procedures creates the work directories and files.
+
+                 @@@ creating SYS$STARTUP:BSTR$STARTUPCLT.COM;1 file
+
+                 @@@ Creating dka200:[bstrclt.work] ...
+                 @@@ Creating dka200:[bstrclt.work.node] ...
+                 @@@ Creating dka200:[bstrclt.work.node.com] ...
+                 @@@ Creating dka200:[bstrclt.work.node.fdb] ...
+                 @@@ Creating dka200:[bstrclt.work.node.trc] ...
+                 @@@ Creating dka200:[bstrclt.work.node.tmp] ...
+                 @@@ Creating dka200:[bstrclt.work.node.log] ...
+                 @@@ Creating dka200:[bstrclt.work.realm] ...
+                 Going to create trace db...
+                 $
+
+
+
+                                                                      5-3
+
+ 
+
+
+
+    Configuring and Managing BASEstar Open Client on a OpenVMS System
+    5.1 Setting Up and Starting the BASEstar Open Client Environment
+
+
+    5.1.2 Starting Up BASEstar Open Client
+
+          You cannot start up BASEstar Open Client unless you have
+          the necessary authorization (see Section 5.1.1).
+
+          To perform the startup procedure, execute the following
+          commands:
+
+          $  bstr$kitclt:[etc]bstrusers
+          $  bstr_node_start
+
+          After executing the bstr_node_start command, you can run
+          BASEstar Open Client applications. To do so, follow these
+          steps:
+
+          1. Include the following statement in your login.com file:
+
+             $  @bstr$kitclt:[etc]bstrusers
+
+          2. Set the environment variable BSTR_REALM to the name of
+             the Realm that you wish to use on the system(s) running
+             BASEstar Open servers. You cannot perform any BASEstar
+             Open Client operations on these systems until you have
+             configured and started the Realm.
+
+          Example:
+
+          $  DEFINE BSTR_RLM R2
+          $  cli_bstr
+
+    5.1.3 Shutting Down BASEstar Open Client
+
+          Shutting down the BASEstar Open Client means to stop the
+          processes that manage the connections between the client
+          and the server sides.
+
+          You cannot shut down BASEstar Open Client unless you have
+          the necessary authorization (see Section 5.1.1).
+
+          To perform the shutdown procedure, execute the following
+          commands:
+
+          $  @bstr$kitclt:[etc]bstrusers
+          #  bstr_node_shut [-v]
+
+          The bstr_node_shut procedure shuts down BASEstar
+          Open Client without checking to see whether any
+          client applications are running. Therefore, it is the
+          responsibility of the user to ensure that no client
+          applications are running before executing bstr_node_shut.
+
+    5-4
+
+ 
+
+
+
+        Configuring and Managing BASEstar Open Client on a OpenVMS System
+         5.1 Setting Up and Starting the BASEstar Open Client Environment
+
+
+        5.1.4 Unsetting BASEstar Open Client
+
+              Unsetting BASEstar Open means to delete the files and
+              directories created by bstr_node_setup.
+
+              You must shut down BASEstar Open Client before you perform
+              the unset procedure. Execute the following commands:
+
+              $  @bstr$kitclt:[etc]bstrusers
+              $  bstr_node_unset [-v]
+
+        5.2 Getting Help and Reporting Problems
+
+              If an error occurs while you are using BASEstar Open
+              Client, and you believe the error is the result of a
+              problem associated with the product, take one of the
+              following actions:
+
+              o  If you have a basic or COMPAQ support Software
+                 Agreement, call your Customer Support Center (CSC). The
+                 CSC provides telephone support for high-level advisory
+                 and remedial assistance.
+
+              o  If you have a Self-Maintenance Software Agreement, you
+                 can submit a Software Performance Report (SPR).
+
+              o  If you purchased BASEstar Open Client within the last 90
+                 days and you think the problem is caused by a software
+                 error, you can submit an SPR.
+
+              If you submit an SPR, please take the following steps:
+
+              1. Describe as accurately as possible the circumstances and
+                 state of the system when the problem occurred. Include
+                 the description and version number of BASEstar Open
+                 Client that you were using. Demonstrate the problem with
+                 specific examples.
+
+              2. Reduce the problem to as small a size as possible.
+
+              3. Remember to include listings of any command files,
+                 include files, relevant data files, and so forth.
+
+              4. Provide a listing of the program.
+
+              5. If the program is longer than 50 lines, submit a copy
+                 of it on machine-readable media (floppy diskette or
+                 magnetic tape). If necessary, also submit a copy of the
+                 program library used to build the application.
+
+                                                                      5-5
+
+ 
+
+
+
+    Configuring and Managing BASEstar Open Client on a OpenVMS System
+    5.2 Getting Help and Reporting Problems
+
+
+          6. Report only one problem per SPR. This will facilitate a
+             faster response.
+
+          7. Mail the SPR package to COMPAQ.
+
+          Experience shows that many SPRs do not contain enough
+          information to duplicate or identify the problem. Concise,
+          complete information helps COMPAQ give accurate and timely
+          service to software problems.
+
+          If you find an error in the BASEstar Open Client
+          documentation, send an electronic mail message to
+          manufacturing@compaq.com.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    5-6
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        6
+        _________________________________________________________________
+
+                                 Environment Management Command Reference
+
+
+
+
+
+        6.1 Executing Environment Commands
+
+              This section outlines the general requirements for
+              executing environment commands successfully. The
+              description of each individual command includes specific
+              command requirements.
+
+              If you execute a command successfully, BASEstar Open
+              returns the following exit status:
+
+              1 (one)
+
+              If a command fails, it returns a different value in the
+              command exit status. It also displays one or more messages
+              that provide information about the error(s) that occurred
+              during execution of the command. The log file often
+              contains additional information about the components used
+              to execute the command (see Chapter 7).
+
+        6.1.1 Requirements and Constraints
+
+              This section explains which users can execute specific
+              environment management commands, and specifies the rules
+              that you must follow when executing a command.
+
+        6.1.1.1 Users and Commands
+
+              Not all OpenVMS users can execute all the environment
+              management commands. Table 6-1 identifies which user can
+              execute a given command, where
+
+              o  Root indicates the SYSTEM user or any user with all
+                 privileges.
+
+                                                                      6-1
+
+ 
+
+
+
+    Environment Management Command Reference
+    6.1 Executing Environment Commands
+
+
+          o  Spool user indicates the user responsible for managing
+             a given Node. For a given Node, the spool user is
+             the SYSTEM user (default) or the user whose name was
+             specified when the bstr_node_setup command was executed
+             for that Node.
+
+             The spool user must have all the privileges.
+
+             ________________________ Note ________________________
+
+             If root or spool user is specified for a command, it
+             means that only that particular user can execute the
+             command.
+
+             ______________________________________________________
+
+          Table 6-1 OpenVMS Relationship Between Environment
+          __________Management_Commands_and_Users____________________
+
+          Command_______________Type_of_User_________________________
+
+          _______________________Managing_Nodes______________________
+
+          bstr_node_setup       Root
+
+          bstr_node_start       Spool user
+
+          bstr_node_shut        Spool user
+
+          bstr_node_unset       Root
+
+          ___________________________________________________________
+          ______________________Invoking_the_CLI_____________________
+
+          cli_bstr______________Any_user_____________________________
+
+    6.1.1.2 Executing a Command
+
+          You must follow the rules listed below when executing
+          an environment command (except for bstr_node_setup, for
+          which refer to the instructions given in the command
+          description):
+
+          o  Log in as the appropriate user, as specified in
+             Table 6-1.
+
+          o  Ensure that the installation-dependent global variables
+             have been correctly set by executing the bstrusers.com
+             command procedure.
+
+    6-2
+
+ 
+
+
+
+                                 Environment Management Command Reference
+                                       6.1 Executing Environment Commands
+
+
+              For specific information on command requirements and
+              constraints, refer to the description of each individual
+              command.
+
+        6.2 Privileges for Running Environment Management Procedures
+
+              Table 6-2 lists the privileges required to run the various
+              BASEstar Open Server environment management commands.
+
+              Table_6-2_Environment_Management_Privileges________________
+
+                                                     Privileges Required
+              Phase_________________Procedure________for_Execution_______
+
+              Set up BASEstar Open  bstr_node_setup  All
+
+              Start up BASEstar     bstr_node_start  All
+              Open
+
+              Shut down BASEstar    bstr_node_shut   CHKRNL
+              Open
+
+              Unset BASEstar Open   bstr_node_unset  All
+
+              Invoke_the_CLI________cli_bstr_________None________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      6-3
+
+ 
+
+
+
+    cli_bstr
+
+
+
+    _________________________________________________________________
+
+    cli_bstr
+
+          Invokes the BASEstar Open CLI.
+
+    Syntax
+
+          cli_bstr [-c] [-e "command1" "command2"..."command10"] [-f command_file] [-i startup_file] [-v]
+
+    Description
+
+          The cli_bstr command allows you to invoke the BASEstar Open
+          CLI. You can execute CLI commands either interactively, or
+          in batch mode by specifying the name of a command file from
+          the command interpreter prompt.
+
+    Options
+
+          -c
+
+          This option allows you to check the syntax and semantics of
+          a CLI command file without executing the file.
+
+          -e "command1" "command2"..."command10"
+
+          This option allows you to execute up to ten CLI commands
+          without leaving the platform-dependent command interpreter.
+          After executing the specified commands, the command
+          interpreter redisplays the CLI prompt. Enclose each CLI
+          command between double quotes, and make sure that the
+          commands are separated by at least one blank.
+
+          -f command_file
+
+          Pathname of a CLI command file that BASEstar Open executes
+          at the shell prompt.
+
+          -i startup_file
+
+          An optional startup command file that you can request the
+          CLI to execute. If you fail to specify the -i option,
+          BASEstar Open does not execute a startup command file
+          unless the following CLI command file exists in your home
+          directory:
+
+          cli_init.ini
+
+    6-4
+
+ 
+
+
+
+                                                                 cli_bstr
+
+
+
+              -v
+
+              This option displays additional information on execution of
+              the command.
+
+        Examples
+
+              1. $ cli_bstr<Return>
+
+                BSTR>
+
+                 This command invokes the CLI so that you can execute
+                 commands in interactive mode.
+
+              2. $ cli_bstr -e "SET SCOPE VOLATILE" "SHOW DATA_POINT /DOM1/DP3"<Return>
+                $
+
+                 This command sequence sets the VODB scope and displays
+                 the /DOM1/DP3 Data_Point.
+
+              3. $ cli_bstr -f exec2.com<Return>
+                $
+
+                 This command executes the exec2.com CLI command file at
+                 the shell prompt.
+
+        See Also
+
+              None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      6-5
+
+ 
+
+
+
+    bstr_node_setup
+
+
+
+    _________________________________________________________________
+
+    bstr_node_setup
+
+          This command creates a series of directories and
+          configuration files on the Node on which you execute it.
+          It allows you to define configuration parameters relative
+          to the Name Services and BASEstar Open working directories.
+
+    Syntax
+
+          bstr_node_setup -l  location [-adv] [-v]
+
+    Description
+
+          You must execute the bstr_node_setup command for the Node
+          on which you installed BASEstar Open Client and you want to
+          tun it.
+
+          Before running the bstr_node_setup command, you must log
+          in as SYSTEM. The bstr_node_setup command is in the ETC
+          directory, under the BASEstar Open Client installation
+          directory.
+
+          You cannot execute the bstr_node_setup command if there are
+          BASEstar Open processes currently active (all environment
+          and application components must be shut down first).
+
+          The bstr_node_setup command performs the following
+          operations:
+
+          o  Creates the configuration files for the Node-specific
+             environment components.
+
+          o  Creates the command procedures that can be used to set
+             the values of the installation-dependent BASEstar Open
+             global variables .
+
+          o  Creates the subtree that stores the BASEstar Open
+             temporary files created at run-time.
+
+    Options
+
+          -l location
+          The pathname of the directory where the BASEstar Open
+          Client kit is installed. It must be an absolute OpenVMS
+          file specification.
+
+    6-6
+
+ 
+
+
+
+                                                          bstr_node_setup
+
+
+
+              -adv
+              Advanced Node setup. You can change the name and
+              characteristics of the subtree under which the BASEstar
+              Open temporary files are stored at run-time.
+
+              -v
+              This option displays additional information on execution of
+              the command.
+
+        Usage Notes
+
+              While executing the bstr_node_setup command, press <Return>
+              to accept the default value displayed between square
+              brackets. Press <Ctrl/C> at any time to abort the bstr_
+              node_setup command.
+
+              The lines displayed by the bstr_node_setup command
+              start with different character strings, depending on the
+              operation being performed. The following character strings
+              can be displayed:
+
+              o  The @@@ string identifies a message that describes the
+                 operation in progress.
+
+              o  The &&& string identifies an error message (error or
+                 fatal error).
+
+              Lines that are displayed without any of the above character
+              strings are input requests.
+
+                ________________________ Note ________________________
+
+                The name of the less extensive option that displays a
+                given parameter is specified within brackets.
+
+                ______________________________________________________
+
+              Changing Configuration Parameters
+
+              The bstr_node_setup command allows you to display and
+              change the values of some configuration parameters. All
+              the bstr_node_setup command prompts and displays are listed
+              below.
+
+              BSTR.Spool_Work_Dir []:
+
+                                                                      6-7
+
+ 
+
+
+
+    bstr_node_setup
+
+
+
+          Enter a file specification for the Node-specific BASEstar
+          Open Client working directory (for example disk3:[work_
+          naxos]). The directory in question must not already exist.
+          You must specify a dedicated working directory for each
+          Node. You cannot specify a snapshot directory (see next
+          prompt) or a descendant directory of a snapshot directory.
+
+          This parameter is mandatory.
+
+          BSTR.Spool_Owner [current_user]:
+
+          Available with the -adv option. Name of the user who owns
+          the working and snapshot directory trees. The specified
+          user must exist.
+
+          BSTR.Spool_Protection_Mode "(S:rwed,O:rwed,G:rwed,O:rwed)
+
+          Available with the -adv option. Protection mask applied
+          to the working and snapshot directory trees. The
+          default value restricts directories access to the owner
+          (BSTR.Spool_Owner) and the group (BSTR.Spool_Group).
+
+          Host name of a BASEstar Open LNS Server node:
+
+          Name of the Node on which BASEstar Open Client is to
+          contact the LNS name server. This question will be repeated
+          until the user types an empty line. When a realm is to be
+          accessed, BASEstar Open Client will contact the LNS name
+          servers in the specified order until it reaches one that
+          manages the realm.
+
+          Complete or Abort Command Execution
+
+          The following prompt allows you to interrupt execution of
+          the command:
+
+          Do you want to continue ? [Y]:
+
+          Enter y to terminate command execution by leaving the
+          system unaltered, enter n to continue.
+
+          Creating Configuration and Command Procedures
+
+          After displaying the values of the configuration parameters
+          (and allowing you to modify them if necessary), the bstr_
+          node_setup command displays a series of messages informing
+          you that configuration and script files are being created
+          or edited. The files created by bstr_node_setup are:
+
+          o  The bstrusers_<node_name>.com command procedure, which
+             allows users to set installation-dependent global
+             variables.
+
+    6-8
+
+ 
+
+
+
+                                                          bstr_node_setup
+
+
+
+              o  The bstrcom_<node_name>.cfg text file that stores the
+                 names of the host names where the LNS name servers are
+                 to be contacted. This text file can be modified directly
+                 by the user.
+
+              o  The SYS$STARTUP:BSTR$STARTUPCLT.COM command procedure,
+                 which performs the following operations:
+
+                 -  Defines the BSTR$KITCLT logical name with the file
+                    specification of the installation directory.
+
+                 -  Executes the bstrusers.com command file.
+
+                 -  Executes the bstr_node_start command.
+
+              Creating BASEstar Open Work Directories
+
+              Finally, the bstr_node_setup command creates the basic
+              BASEstar Open work directories using the specified values.
+
+              On completion, the bstr_node_setup command returns you to
+              the DCL prompt.
+
+        Examples
+
+              1.$ @DKA200:[BSTRCLT.ETC]bstr_node_setup -L DKA200:[BSTRCLT] <Return>
+
+                Name of the work directory. You must introduce the path name
+                    (according to  the rules of VAX/VMS - .e.g. "DISK:[SUBD1.SUBD2]" )
+                    of an UNEXISTING directory :
+
+                If you are not satisfied with the settings of installation
+                parameters you can terminate the procedure and run it again:
+
+                Do you want to continue ? [Y] :<Return>
+
+                @@@ creating BSTR_ETC:bstrusers_VIGGIU.com file
+
+                @@@ creating BSTR_ETC:bstrcom_VIGGIU.cfg file
+
+                    This file will contain a list of one of more LNS nodes.
+                    BASEstar Open Client will attempt the connection to the
+                    Server environment by scanning this list.
+                    Please provide at least one host name; you will be prompted
+                    for additional names until an empty line is entered.
+
+                    The BSTR_ETC:bstrcom_VIGGIU.cfg file can be modified by means
+                    of a common text editor.
+
+                                                                      6-9
+
+ 
+
+
+
+    bstr_node_setup
+
+
+
+             Host name of a BASEstar Open LNS Server node:  ninfea(<Return>)
+             Host name of a BASEstar Open LNS Server node:  <Return>
+             $)
+
+             @@@ creating SYS$STARTUP:BSTR$STARTUPCLT.COM;1 file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    6-10
+
+ 
+
+
+
+                                                           bstr_node_shut
+
+
+
+        _________________________________________________________________
+
+        bstr_node_shut
+
+              Shuts down the Node-specific environment components.
+
+        Syntax
+
+              bstr_node_shut [-v]
+
+        Description
+
+              The bstr_node_shut command shuts down the Node-specific
+              components.
+
+              To issue the bstr_node_shut command:
+
+              o  Log in as SYSTEM or priviledged user on the selected
+                 Node.
+
+              o  Ensure that the installation-dependent global variables
+                 have been correctly set by executing the bstrusers.com
+                 command file.
+
+        Options
+
+              -v
+
+              This option displays additional information on the
+              execution of the command.
+
+        Examples
+
+              1. $ bstr_node_shut<Return>
+
+        See Also
+
+              bstr_node_start
+
+
+
+
+
+
+
+                                                                     6-11
+
+ 
+
+
+
+    bstr_node_start
+
+
+
+    _________________________________________________________________
+
+    bstr_node_start
+
+          Starts up the Node-specific environment components.
+
+    Syntax
+
+          bstr_node_start [-v] [-c]
+
+    Description
+
+          The bstr_node_start command starts up the Node-specific
+          environment components and checks for license and
+          environment integrity on the Node.
+
+          Execute the bstr_node_start command for each Node on which
+          you want to start up BASEstar Open Client. Before running
+          the bstr_node_start command, execute the bstr_node_setup
+          command to set up the Node.
+
+          Starting up a Node does not affect operations on other
+          Nodes.
+
+          On completion, the bstr_node_start command outputs messages
+          notifying you of its successful completion (all the Node-
+          specific components have been started up), or unsuccessful
+          completion (no components have been started up).
+
+    Options
+
+          -v
+
+          This option displays additional information on execution of
+          the command.
+
+          -c
+
+          If you specify this option, the bstr_node_start command
+          performs a cleanup of all the temporary files for the
+          current Node and all the Realms that have been set up on
+          it. For example, it deletes working files and purges the
+          Log Services files.
+
+
+    6-12
+
+ 
+
+
+
+                                                          bstr_node_start
+
+
+
+
+        Examples
+
+              1. $ bstr_node_start<Return>
+
+                 If you are logged in to NODE1, the bstr_node_start
+                 command starts up the Node-specific components on that
+                 Node.
+
+        See Also
+
+
+              bstr_node_setup
+
+              bstr_node_shut
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     6-13
+
+ 
+
+
+
+    bstr_node_unset
+
+
+
+    _________________________________________________________________
+
+    bstr_node_unset
+
+          Deletes the directories and configuration files previously
+          created using the bstr_node_setup command.
+
+    Syntax
+
+          bstr_node_unset [-l  location ] [-v]
+
+    Description
+
+          You cannot issue the bstr_node_unset command if there
+          are BASEstar Open processes active (all environment and
+          application components must be shut down first).
+
+          Before issuing the bstr_node_unset command, shut down
+          the Node itself. The bstr_node_unset command performs the
+          following actions:
+
+          o  Deletes the Node-specific BASEstar Open working
+             directory.
+
+    Options
+
+          -l location
+          Pathname of the directory where the BASEstar Open kit is
+          installed. It must be the same pathname as that specified
+          while setting up BASEstar Open.
+
+          -v
+
+          This option displays additional information on the
+          execution of the command.
+
+    Examples
+
+          1. $ bstr_node_unset  <Return>
+
+
+
+
+
+
+    6-14
+
+ 
+
+
+
+                                                          bstr_node_unset
+
+
+
+
+        See Also
+
+
+              bstr_node_setup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     6-15
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        7
+        _________________________________________________________________
+
+                                                    Log Services Features
+
+
+              The Log Services collect and record information regarding
+              general events and error conditions detected by the Node
+              components. BASEstar Open Client activates a Log Services
+              server process on the Node. The Log Services server
+              process:
+
+              o  Collects log records sent from the other Node-specific
+                 components and writes them to the Node log file
+
+              o  Creates a log file for each Realm that has been accessed
+
+              o  Collects log records from the components operating with
+                 the Realms that are accessed from the Node and writes
+                 them to the Realm log file.
+
+              The information collected in the log files is intended
+              primarily to help COMPAQ support personnel. However,
+              you can also use it to monitor the behavior of actions
+              performed by your environment components.
+
+        7.1 Saving Copies of Log Files
+
+              The Log Services operator interface consists of the CLI
+              commands shown in Table 7-1 (see Chapter 8 for a complete
+              description).
+
+              Table_7-1_Log_Services_CLI_Commands________________________
+
+              Command_Name________________Description____________________
+
+              OPEN LOG                    Swaps the contents of a log
+                                          file working copy into a save
+                                          copy.
+
+              DISPLAY LOG                 Displays the contents of a log
+              ____________________________file_working_copy._____________
+
+                                                                      7-1
+
+ 
+
+
+
+    Log Services Features
+    7.1 Saving Copies of Log Files
+
+
+          You can swap the contents of a working copy log file into a
+          save copy by using the OPEN LOG command which also empties
+          up the log file working copy. The OPEN LOG command appends
+          a user-specified string at the end of the just created save
+          copy, and inserts the same string at the top of the emptied
+          log file working copy.
+
+          Working and save copies of the log files are assigned
+          the following names, where N is a number that is assigned
+          sequentially:
+
+          o  The name of the log file working copy for the current
+             Node is BASESTARNODE.log, whereas the name of the save
+             copies is BASESTARNODE_N.log.
+
+          o  The name of the working copy log file for a Realm log
+             file is realm_name.log, whereas the name of the save
+             copies is realm_name_N.log.
+
+          BASEstar Open stores the log files in the following
+          directory:
+
+          BSTR_WORK_ROOT:[node.log]
+
+    7.1.1 Purging Log Files
+
+          With the exception of the working copies, you can delete
+          all the log files that have been created on a Node. To do
+          so, specify the -c option when executing the bstr_node_
+          start command for the Node.
+
+    7.2 Log File Record Format
+
+          Log files are ASCII files containing log records whose
+          format is defined by BASEstar Open and consists of:
+
+          o  The sequence number associated with a log message
+             generated by the Log Services server. This number is
+             reset to 0 when the Log Services server is started up
+             (that is, when you execute the bstr_node_start command),
+             and is incremented by 1 for each message generated.
+
+             The Log Services server writes each log message to a log
+             file. Each message therefore has a sequence number that
+             does not depend on the log file to which it is written.
+             The message number is unique for each message logged on
+             the Node.
+
+    7-2
+
+ 
+
+
+
+                                                    Log Services Features
+                                               7.2 Log File Record Format
+
+
+              o  The date and time when the log record was written to the
+                 log file
+
+              o  The process identifier of the component that generated
+                 the log record
+
+              o  An identifier (see Table 7-2) that indicates the
+                 environment component responsible for generating the
+                 log message.
+
+              o  The text of the log record message.
+
+              Table_7-2_Log_File_Component_Identifier____________________
+
+              BASEstar_Open_Component____Identifier______________________
+
+              Node-Specific Environment Components
+              _____________(Started_by_Environment_Commands)_____________
+
+              Watchdog                   WATCHDOG
+
+              Log Server                 LOG_CONTROL
+
+              ___________________________________________________________
+              _________________Miscellaneous_Components__________________
+
+              CLI_instances______________CLI_BSTR________________________
+
+              Example 7-1 illustrates a sample Node log file.
+
+        Example 7-1 Node Log File Example
+
+                                                 (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      7-3
+
+ 
+
+
+
+    Log Services Features
+    7.2 Log File Record Format
+
+
+    Example 7-1 (Cont.) Node Log File Example
+
+    0000000 98/05/12 17:18:39        5507 WATCHDOG    : Watchdog (BASEstar Open Clie
+    nt V3.2, Apr 28 1998, 19:31:42) started; lns_retry=3; lns_timeout=2; lns_name=co
+    m_srv_table-4.0; poll_timeout=5
+    0000001 98/05/12 17:18:39        5507 WATCHDOG    : Watchdog (BASEstar Open Clie
+    nt V3.2, Apr 28 1998, 19:31:42) started; lns_retry=3; lns_timeout=2; lns_name=co
+    m_srv_table-4.0; poll_timeout=5
+    0000002 98/05/12 17:20:48        52a3 LOG_CONTROL : message n. 0 for basestar
+    0000000 98/05/13 10:37:04        582c WATCHDOG    : Watchdog (BASEstar Open Clie
+    nt V3.2, Apr 28 1998, 19:31:42) started; lns_retry=3; lns_timeout=2; lns_name=co
+    m_srv_table-4.0; poll_timeout=5
+    0000003 98/05/13 11:08:48        582c WATCHDOG    : Sending request for Com serv
+    ers table to LNS server ninfea.mln.dec.com(16.192.64.91) at UDP port 6101 ...
+    0000004 98/05/13 11:08:48        582c WATCHDOG    : Received answer from LNS ser
+    ver ninfea.mln.dec.com(16.192.64.91) at UDP port 6101
+    0000005 98/05/13 11:08:48        582c WATCHDOG    : Received answer from LNS ser
+    ver ninfea.mln.dec.com(16.192.64.91) at UDP port 6101
+    0000006 98/05/13 11:08:48        582c WATCHDOG    : The connection was successfu
+    l: continuing
+
+          Example 7-2 shows an example of a Realm log file:
+
+    Example 7-2 Realm Log File Example
+
+    0000001 98/05/13 11:08:48        52a3 BSTR_CLI    : Initialize BASEstar environm
+    ent for DKA200:[BSTRCLT.][BIN]CLI_BSTR.EXE;2
+    0000002 98/05/13 11:08:48        52a3 BSTR_CLI    : Initialize BASEstar environm
+    ent for DKA200:[BSTRCLT.][BIN]CLI_BSTR.EXE;2
+
+    7.2.1 Displaying Log Files
+
+          The log files are ASCII files that can be displayed by
+          using any platform-dependent tool or editor. You must
+          perform different operations depending on whether you want
+          to display a working copy or save copy of a log file.
+
+          See Section 7.1 to know about where log files are stored
+          and about log file naming conventions.
+
+
+
+
+
+
+    7-4
+
+ 
+
+
+
+                                                    Log Services Features
+                                               7.2 Log File Record Format
+
+
+        7.2.1.1 Displaying a Save Copy
+
+              To display a save copy of a log file, use any command or
+              utility that can display an ASCII file.
+
+        7.2.1.2 Displaying a Working Copy
+
+              The working copy log files are opened by the Log Services
+              server and thus they cannot be displayed by using the
+              standard tools when the Node is started up. Thus, the
+              DISPLAY LOG command has been provided to allow the display
+              of log file working copies. This command also can display
+              the last lines of a log file automatically refreshing them
+              as soon as a new record is inserted in the displayed log
+              file. This allows you to monitor record insertion in the
+              selected log file.
+
+        7.3 Log Services Server Activities
+
+              The Log Services server process is a Node-specific
+              component which is started up when you execute the bstr_
+              node_start command.
+
+              In turn, the Log Services server logs some record
+              information regarding general events and unrecoverable
+              errors detected during execution in the platform-dependent
+              system log.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      7-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        8
+        _________________________________________________________________
+
+                                           Log Services Command Reference
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      8-1
+
+ 
+
+
+
+    DISPLAY LOG
+
+
+
+    _________________________________________________________________
+
+    DISPLAY LOG
+
+          Displays the contents of a log file working copy.
+
+    Format
+
+          DISPLAY LOG
+
+          Command Qualifier              Default
+
+          [-REALM realm_name]            Current Realm
+          [-NODE]                        Current Node
+          [-HEAD head_lines]              10
+          [-TAIL tail_lines]              10
+          [-CONTINUE]
+
+    Description
+
+          The DISPLAY LOG command allows you to display records from
+          both Realm and Node log file working copies.
+
+          The -REALM and -NODE qualifiers are mutually exclusive:
+
+          o  If you specify the -REALM qualifier, the realm_name
+             argument indicates the name of the Realm.
+
+          o  If you specify the -NODE qualifier, BASEstar Open
+             displays the log file for the Node that you are
+             addressing.
+
+          o  If you do not specify either the -REALM or the -NODE
+             qualifier, BASEstar Open assumes the value of the -NODE
+             qualifier by default.
+
+          If you provide a value for the head_lines (tail_lines)
+          argument, the DISPLAY LOG command displays the requested
+          lines starting from the top (bottom) of the selected log
+          file.
+
+          If you specify both the -CONTINUE and -TAIL qualifiers,
+          the DISPLAY LOG command displays the last tail_lines
+          and refresh them automatically as soon as a new record
+          is inserted in the displayed log file. This allows you
+          to monitor record insertion in the selected log file. To
+          terminate execution of a command, press
+
+    8-2
+
+ 
+
+
+
+                                                              DISPLAY LOG
+
+
+
+
+        Qualifiers
+
+              -REALM realm_name
+              The realm_name argument specifies the local name of the
+              Realm whose log file you want to display. The Realm in
+              question already be started on the current Node.
+
+              This qualifier and the -NODE qualifier are mutually
+              exclusive.
+
+              -NODE
+              Directs the DISPLAY LOG command to display the log file of
+              the current Node.
+
+              This qualifier and the -NODE qualifier are mutually
+              exclusive. If you do not specify either the -REALM or the
+              -NODE qualifier, BASEstar Open assumes the value of the
+              -NODE qualifier by default.
+
+              -HEAD head_lines
+              Directs the command to display the number of lines
+              specified by the head_lines argument starting from the top
+              of the selected log file. The -TAIL and -HEAD qualifiers
+              are mutually exclusive.
+
+              -TAIL tail_lines
+              Directs the command to display the number of lines
+              specified by the tail_lines argument starting from the
+              bottom of the selected log file. The -TAIL and -HEAD
+              qualifiers are mutually exclusive.
+
+              -CONTINUE
+              Directs the DISPLAY LOG command to display the last tail_
+              lines and to refresh them as soon as a new record is
+              inserted in the displayed log file. This allows you to
+              monitor record insertion in the selected log file. When
+              specified, the -CONTINUE qualifier must be specified
+              together with the -TAIL qualifier.
+
+
+
+
+
+
+                                                                      8-3
+
+ 
+
+
+
+    OPEN LOG
+
+
+
+    _________________________________________________________________
+
+    OPEN LOG
+
+          Swaps the contents of a log file working copy into a save
+          copy.
+
+    Format
+
+          OPEN LOG
+
+          Command Qualifier              Default
+
+          [-REALM realm_name]            Current Realm
+          [-NODE]                        Current Node
+          [-DESCRIPTION string]          No Description
+
+    Description
+
+          The OPEN LOG command performs the following actions for the
+          current Node or the specified Realm:
+
+          1. Closes the working copy log file and renames it into a
+             save copy.
+
+          2. Appends the string specified by the -DESCRIPTION
+             qualifier at the end of the just created save copy.
+
+          3. Creates and opens a new empty working copy log file and
+             inserts the same string specified by the -DESCRIPTION
+             qualifier.
+
+          The -REALM and -NODE qualifiers are mutually exclusive. If
+          neither the -REALM nor the -NODE qualifier is specified,
+          the -NODE qualifier is assumed by default. Assuming that N
+          is a progressively assigned number:
+
+          o  The name of the log file for the current Node is
+             BASESTARNODE.log, while save copies have name
+             BASESTARNODE_N.log.
+
+          o  The name of the log file for a Realm log file is realm_
+             name.log, while save copies have name BASESTARNODE-
+             N.log.
+
+          Log files are stored under the following directory:
+
+    8-4
+
+ 
+
+
+
+                                                                 OPEN LOG
+
+
+
+
+        Qualifiers
+
+              -REALM realm_name
+              Tells the OPEN LOG command to address the working copy
+              of the log file for the realm_name. If you do not specify
+              this qualifier, BASEstar Open assumes by default the Realm
+              specified by the BSTR_REALM global variable. The Realm in
+              question must already be started on the current Node.
+
+              This qualifier and the -NODE qualifier are mutually
+              exclusive.
+
+              -NODE
+              Tells the OPEN LOG command to address the working copy of
+              the log file for the current Node.
+
+              This qualifier and the -NODE qualifier are mutually
+              exclusive. If you do not specify either the -REALM or the
+              -NODE qualifier, BASEstar Open assumes the -NODE qualifier
+              by default.
+
+              -DESCRIPTION string
+              User-defined information that appears at the end of a save
+              copy and at the top of the working copy log file.
+
+              The description need not conform to any format and must
+              be enclosed between quotation marks (" "). The string
+              argument is a string of maximum 128 characters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      8-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+        Sample Installation Log Files for BASEstar Open Client on OpenVMS
+
+
+              This appendix contains a complete sample log relative to
+              the installation of BASEstar Open Client for OpenVMS on
+              Alpha platform.
+
+        A.1 Installation of BASEstar Open Client for OpenVMS Alpha
+
+
+        $ @sys$update:vmsinstal
+
+                OpenVMS AXP Software Product Installation Procedure V7.1
+
+        It is 13-MAY-1998 at 16:36.
+
+        Enter a question mark (?) at any time for help.
+
+        * Are you satisfied with the backup of your system disk [YES]?  y
+        * Where will the distribution volumes be mounted:  DKA100:[KITS.BSTR]
+
+        Enter the products to be processed from the first distribution volume set.
+        * Products:  BSTROCVA032
+
+        * Enter installation options you wish to use (none):
+
+        The following products will be processed:
+
+          BSTROCVA V3.2
+
+                Beginning installation of BSTROCVA V3.2 at 16:36
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+        ************************************************************************
+
+        (C) Digital Equipment Corporation. 1997, 1999 All Rights Reserved.
+
+                                                                      A-1
+
+ 
+
+
+
+    Sample Installation Log Files for BASEstar Open Client on OpenVMS
+    A.1 Installation of BASEstar Open Client for OpenVMS Alpha
+
+
+       Restricted Rights: Use, duplication, or disclosure by the U.S.
+       Government is subject to restrictions as set forth in subparagraph
+       (c) (1) (ii) of DFARS 252.227-7013, or in FAR 52.227-19, or in FAR
+       52.227-14 Alt. III, as applicable.
+
+       This software is proprietary to and embodies the confidential
+       technology of Digital Equipment Corporation. Possession, use, or
+       copying of this software and media is authorized only pursuant to a
+       valid written license from Digital or an authorized sublicensor.
+
+                 - BASEstar Open V3.2-0 Installation Procedure -
+
+    ************************************************************************
+
+    %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+    BASEstar Open Client option will be installed
+
+        BASEstar Open can be installed on any disk of your system.
+        There is no default disk: you must enter a disk name.
+        The following disks are available on the system.
+
+    VIGGIU$DKA0:            Mounted              0  SWAP           1250586     3   1
+    VIGGIU$DKA100:          Mounted              0  USER1           210780     3   1
+    VIGGIU$DKA200:          Mounted              0  GRZ200          215175     2   1
+    VIGGIU$DKA300:          Mounted              0  VMS020          128652   433   1
+    VIGGIU$DNFS1:           Mounted              0  BODDS                0     1   0
+    VIGGIU$DNFS2:           Mounted              0  BINTEGR              0     1   0
+    VIGGIU$DNFS4:           Mounted              0  BMACCHI              0     1   0
+    VIGGIU$DNFS5:           Mounted              0  BODDS310             0     1   0
+
+    * Target disk:  VIGGIU$DKA200:
+
+    * BSTROCVA V3.2 root directory [[BSTROCVA032]]: [BSTRCLT]
+
+        You are going to install BSTROCVA V3.2 on
+
+        Target disk:    VIGGIU$DKA200:
+        Root directory: [BSTRCLT]
+
+    * Is this correct [Y]?
+    * Do you want to purge files replaced by this installation [YES]?
+    * Do you want to run the IVP after the installation [YES]?
+
+    ************************************************************************
+
+    A-2
+
+ 
+
+
+
+        Sample Installation Log Files for BASEstar Open Client on OpenVMS
+               A.1 Installation of BASEstar Open Client for OpenVMS Alpha
+
+
+           All the questions regarding the installation of BASEstar Open Client
+           have been answered. The installation will take from 1 to 3 minutes,
+           and the IVP about 1 minutes, depending on the CPU type and
+           the system workload.
+
+        ************************************************************************
+
+        * Do you want to continue [Y]?
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                   +------------------------------------------------+
+                   |             Starting the IVP for               |
+                   |              BASEstar Open V3.2                |
+                   +------------------------------------------------+
+
+
+        BASEstar Open Client V3.2
+
+        Copyright © Digital Equipment Corporation 1993,1999 All Rights Reserved.
+
+        Restricted Rights: Use, duplication, or disclosure by the U.S.
+        Government is subject to restrictions as set forth in subparagraph
+        (c) (1) (ii) of DFARS 252.227-7013, or in FAR 52.227-19, or in FAR
+        52.227-14 Alt. III, as applicable.
+
+        This software is proprietary to and embodies the confidential
+        technology of Digital Equipment Corporation. Possession, use, or
+        copying of this software and media is authorized only pursuant to a
+        valid written license from Digital or an authorized sublicensor.
+
+        IVP TERMINATED SUCCESSFULLY
+
+                Installation of BSTROCVA V3.2 completed at 16:38
+
+            Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+            Creating installation data file: VMI$ROOT:[SYSUPD]BSTROCVA032.VMI_DATA
+
+        $
+
+
+
+
+
+
+                                                                      A-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                                 Index
+
+
+
+     A______________________________   D______________________________
+
+     Account quota requirements        DIOLM quota
+       for OpenVMS systems, 2-5          for installation,  2-5
+     ASTLM quota                       Disk space requirements
+       for installation, 2-5             for installation on OpenVMS
+
+     B                                      systems, 2-5
+     _______________________________   Displaying
+     Backup                              environment information,  7-1
+       before installation, 3-2          log files
+     Bill of Materials (BOM),  2-1          save copies,  7-4
+     BIOLM quota                            working copies,  7-4
+       for installation, 2-5
+     bstr_node_shut,  6-11             E______________________________
+     bstr_node_start,  6-12            ENQLM quota
+     bstr_node_unset,  6-14              for installation,  2-5
+     BYTLM quota                       Environment
+       for installation, 2-5             Log Services,  7-1
+
+     C                                 Error Recovery,  3-6
+     _______________________________   Executing environment commands
+     CLI Commands                        OpenVMS,  6-1
+       DISPLAY                              general operations,  6-2
+          LOG, 7-1, 7-5, 8-2                privileges,  6-1
+       OPEN                                 quotas,  6-1
+          LOG, 7-1, 8-4
+     cli_bstr,  6-4                    F______________________________
+     Cover letter                      FILLM quota
+       for OpenVMS, 2-2                  for installation,  2-5
+
+
+
+
+                                                               Index-1
+
+ 
+
+
+
+
+
+
+
+                                       Log Services (cont'd)
+    H______________________________     starting up the server,  7-5
+
+    Hardware pre-requisites
+      OpenVMS,  2-2                    N______________________________
+
+                                       Nodes
+    I______________________________     starting,  4-2
+
+    Installation
+      errors during,  3-6              O______________________________
+      for OpenVMS systems,  3-1 to     Operating system requirements
+         3-6                            for OpenVMS,  2-2
+
+    Installation Verification
+       Procedure                       P______________________________
+
+      for OpenVMS systems              Parameters
+
+                                        insufficient for installation
+    J______________________________        , 3-6
+
+    JTQUOTA quota                      PGLFQUOTA quota
+      for installation,  2-5            for installation,  2-5
+                                       Post-installation checklist
+    K______________________________     for OpenVMS systems,  4-1
+    Kit contents                       PRCLM quota
+      OpenVMS,  2-1                     for installation,  2-5
+                                       Pre-installation checklist
+    L                                   OpenVMS,  2-1
+    _______________________________    Pre-installation tasks
+    License                             OpenVMS,  2-1 to 2-8
+      OpenVMS,  2-4                    Privileges
+    Log files                           for installation on OpenVMS
+      component identifier,  7-2           systems, 2-4
+      displaying save copies,  7-4     Purging
+      displaying working copies,        log files save copies,  7-2
+         7-4
+      location directory,  7-2         R______________________________
+      purging save copies,  7-2        Release notes
+      record format,  7-2               for BASEstar Open Client,
+      saving copies,  7-1                  2-2
+      working copies,  7-1             Reporting problems, 5-5
+    Logging                             OpenVMS,  4-2
+      environment information,  7-1
+    Log Services
+      CLI commands,  7-1
+      server,  7-1
+      server activities,  7-5
+      shutting down the server,
+         7-5
+
+    Index-2
+
+ 
+
+
+
+
+
+
+
+
+        S______________________________   T______________________________
+
+        Setting up BASEstar Open          TQELM quota
+         on OpenVMS systems,  4-2           for installation, 2-5
+        Software pre-requisites
+         OpenVMS,  2-3                    W______________________________
+        System parameters                 WSDEFAULT quota
+         for installation on OpenVMS,       for installation, 2-5
+            2-7                           WSEXTENT quota
+
+                                            for installation, 2-5
+                                          WSQUOTA quota
+                                            for installation, 2-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                  Index-3

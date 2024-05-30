@@ -1,0 +1,1573 @@
+ 
+
+
+
+
+
+
+
+
+                    ____________________________________________________
+                    DECram for OpenVMS Installation Guide
+
+
+                    January 1999
+
+                    This guide describes the installation procedure for
+                    DECram for OpenVMS.
+
+
+
+
+
+
+
+                    Revision/Update Information   This guide
+                                                  supersedes the
+                                                  DECram for OpenVMS
+                                                  Installation Guide
+                                                  Version 2.2.
+
+                    Operating System and Version: OpenVMS VAX Version
+                                                  6.2 or higher
+                                                  OpenVMS Alpha Version
+                                                  6.2 or higher
+
+                    Software Version:             DECram for OpenVMS
+                                                  Version 2.3
+
+
+
+
+
+
+
+
+
+
+
+
+                    Compaq Computer Corporation
+                    Houston, Texas
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          January 1999
+
+          Compaq Computer Corporation makes no representations
+          that the use of its products in the manner described in
+          this publication will not infringe on existing or future
+          patent rights, nor do the descriptions contained in this
+          publication imply the granting of licenses to make, use,
+          or sell equipment or software in accordance with the
+          description.
+
+          Possession, use, or copying of the software described in
+          this publication is authorized only pursuant to a valid
+          written license from Compaq or an authorized sublicensor.
+
+          Compaq conducts its business in a manner that conserves
+          the environment and protects the safety and health of its
+          employees, customers, and the community.
+
+          © Compaq Computer Corporation 1999. All rights reserved.
+
+          The following are trademarks of Compaq Computer
+          Corporation: Alpha, Compaq, DECdirect, DIGITAL, OpenVMS,
+          VAX, VAX DOCUMENT, VAXcluster, VMS, and the Compaq logo.
+
+          All other trademarks and registered trademarks are the
+          property of their respective holders.
+
+                                                               ZK6397
+
+          The DECram documentation set is available on CD-ROM.
+
+          This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing to Install DECram for OpenVMS
+
+        License Registration................................    1-1
+        Installation Procedure Requirements.................    1-2
+        Privileges and Disk Space...........................    1-2
+        System Parameters ..................................    1-3
+        Increasing System Page Table Entries (SPTEs)(VAX
+        Only)...............................................    1-3
+        Increasing the System Parameter SPTREQ (VAX Only)...    1-4
+        VMSINSTAL Requirements..............................    1-4
+        Backing Up Your System Disk.........................    1-5
+
+  2  Installing DECram for OpenVMS
+
+        Installation Procedure..............................    2-1
+        DECram Installation Messages........................    2-6
+
+  3  After Installing DECram for OpenVMS
+
+        Running the Installation Verification Procedure
+        Separately..........................................    3-1
+        Determining and Reporting Problems..................    3-2
+        DECram Documentation................................    3-2
+
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    A   Supplementary Information
+
+          Error Recovery......................................    A-1
+          Installed Files.....................................    A-3
+          Sample Installation.................................    A-5
+
+    Tables
+
+          1-1       Disk Space Requirements...................    1-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              This guide describes the installation procedure for the
+              DECram for OpenVMS Device Driver (MDDRIVER).
+
+        Intended Audience
+
+              This guide is intended for system managers who should be
+              familiar with managing the OpenVMS VAX and the OpenVMS
+              Alpha operating systems.
+
+        Document Structure
+
+              This guide consists of three chapters and one appendix, as
+              follows:
+
+              o  Chapter 1 describes how to prepare for installation.
+
+              o  Chapter 2 describes the steps to use when installing
+                 DECram for OpenVMS.
+
+              o  Chapter 3 contains postinstallation tasks.
+
+              o  Appendix A contains supplementary information on error
+                 recovery, a list of installed files, and a sample
+                 installation.
+
+        Related Documents
+
+              See the following documents for information on installation
+              and upgrading OpenVMS VAX or OpenVMS Alpha systems:
+
+              o  OpenVMS VAX Upgrade and Installation Manual
+
+              o  OpenVMS Alpha Upgrade and Installation Manual
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+          For additional information on the Open Systems Software
+          Group (OSSG) products and services, access the following
+          OpenVMS World Wide Web address:
+
+          http://www.openvms.digital.com
+
+    Reader's Comments
+
+          Compaq welcomes your comments on this manual.
+
+          Print or edit the online form SYS$HELP:OPENVMSDOC_
+          COMMENTS.TXT and send us your comments by:
+
+          Internet    openvmsdoc@zko.mts.dec.com
+
+          Fax         603 881-0120, Attention: OSSG Documentation,
+                      ZKO3-4/U08
+
+          Mail        Compaq Computer Corporation
+                      OSSG Documentation Group, ZKO3-4/U08
+                      110 Spit Brook Rd.
+                      Nashua, NH 03062-2698
+
+    How To Order Additional Documentation
+
+          Use the following World Wide Web address to order
+          additional documentation:
+
+          http://www.openvms.digital.com:81/
+
+          If you need help deciding which documentation best meets
+          your needs, call 800-DIGITAL (800-344-4825).
+
+    Conventions
+
+          The following conventions are used in this manual:
+
+          Ctrl/x           A sequence such as Ctrl/x indicates that
+                           you must hold down the key labeled Ctrl
+                           while you press another key or a pointing
+                           device button.
+
+          PF1 x            A sequence such as PF1 x indicates that
+                           you must first press and release the key
+                           labeled PF1 and then press and release
+                           another key or a pointing device button.
+
+    vi
+
+ 
+
+
+
+
+
+
+
+
+              <Return>         In examples, a key name enclosed in a
+                               box indicates that you press a key on
+                               the keyboard. (In text, a key name is not
+                               enclosed in a box.)
+
+                               In the HTML version of this document, this
+                               convention appears as brackets, rather
+                               than a box.
+
+               . . .           A horizontal ellipsis in examples
+                               indicates one of the following
+                               possibilities:
+
+                               o  Additional optional arguments in a
+                                  statement have been omitted.
+
+                               o  The preceding item or items can be
+                                  repeated one or more times.
+
+                               o  Additional parameters, values, or other
+                                  information can be entered.
+
+              .                A vertical ellipsis indicates the omission
+              .                of items from a code example or command
+              .                format; the items are omitted because
+                               they are not important to the topic being
+                               discussed.
+
+              ( )              In command format descriptions,
+                               parentheses indicate that you must enclose
+                               the options in parentheses if you choose
+                               more than one.
+
+              [ ]              In command format descriptions, brackets
+                               indicate optional elements. You can
+                               choose one, none, or all of the options.
+                               (Brackets are not optional, however, in
+                               the syntax of a directory name in an
+                               OpenVMS file specification or in the
+                               syntax of a substring specification in
+                               an assignment statement.)
+
+              [|]              In command format descriptions, vertical
+                               bars separating items inside brackets
+                               indicate that you choose one, none, or
+                               more than one of the options.
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+          { }              In command format descriptions, braces
+                           indicate required elements; you must
+                           choose one of the options listed.
+
+          bold text        This text style represents the
+                           introduction of a new term or the name
+                           of an argument, an attribute, or a reason.
+
+          italic text      Italic text indicates important
+                           information, complete titles of
+                           manuals, or variables. Variables include
+                           information that varies in system output
+                           (Internal error number), in command
+                           lines (/PRODUCER=name), and in command
+                           parameters in text (where dd represents
+                           the predefined code for the device type).
+
+          UPPERCASE TEXT   Uppercase text indicates a command, the
+                           name of a routine, the name of a file, or
+                           the abbreviation for a system privilege.
+
+          Monospace text   Monospace type indicates code examples and
+                           interactive screen displays.
+
+                           In the C programming language, monospace
+                           type in text identifies the following
+                           elements: keywords, the names of
+                           independently compiled external functions
+                           and files, syntax summaries, and
+                           references to variables or identifiers
+                           introduced in an example.
+
+          -                A hyphen at the end of a command format
+                           description, command line, or code line
+                           indicates that the command or statement
+                           continues on the following line.
+
+          numbers          All numbers in text are assumed to be
+                           decimal unless otherwise noted. Nondecimal
+                           radixes-binary, octal, or hexadecimal-are
+                           explicitly indicated.
+
+
+
+    viii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                  Preparing to Install DECram for OpenVMS
+
+
+              This guide describes how to install DECram for OpenVMS. You
+              can install DECram for OpenVMS on OpenVMS Alpha Version 6.1
+              and subsequent versions, and on OpenVMS VAX Version 6.1 and
+              subsequent versions.
+
+              Your bill of materials (BOM) and indented bills report
+              (BIL) specify the contents of your kit. Be sure to verify
+              the contents of your kit with this information. If your
+              kit is damaged or if parts of it are missing, contact your
+              Compaq representative.
+
+              DECram for OpenVMS provides online release notes. Compaq
+              recommends that you read the release notes before
+              proceeding with the installation. To access the online
+              release notes, see Chapter 2.
+
+        License Registration
+
+              You must register and load your license for DECram for
+              OpenVMS before you start the installation. This will allow
+              you to run the Installation Verification Procedure (IVP)
+              and use the software after the installation completes.
+
+              Log in to the system manager's account, SYSTEM, to register
+              a license. You then have a choice of two ways to perform
+              the registration:
+
+              o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+                 prompts you for information, respond with data from your
+                 License Product Authorization Key (PAK).
+
+              o  At the DCL prompt, enter the LICENSE REGISTER command
+                 with the appropriate qualifiers that correspond to
+                 License PAK information.
+
+
+                              Preparing to Install DECram for OpenVMS 1-1
+
+ 
+
+
+
+        Preparing to Install DECram for OpenVMS
+        License Registration
+
+
+                ________________________ Note ________________________
+
+                If you plan to use DECram for OpenVMS on more than one
+                node in an OpenVMS Cluster system, you will need to
+                load a license, register it, and install DECram for
+                OpenVMS on the other nodes as well.
+
+                ______________________________________________________
+
+              For complete information on using the License Management
+              Facility (LMF), see the OpenVMS License Management Utility
+              Manual.
+
+        Installation Procedure Requirements
+
+              This section and those that follow discuss various
+              requirements for installing DECram for OpenVMS. The
+              installation takes approximately 15 minutes, depending
+              on your type of media and your system configuration.
+
+        Privileges and Disk Space
+
+              To install DECram for OpenVMS, you must be logged in
+              to an account that has SETPRV or at least the following
+              privileges enabled:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              Note that VMSINSTAL disables BYPASS privilege at the start
+              of the installation.
+
+              The requirements of DECram for OpenVMS for free disk
+              storage space are different during installation and
+              after installation. Table 1-1 summarizes the storage
+              requirements.
+
+
+
+
+
+
+        1-2 Preparing to Install DECram for OpenVMS
+
+ 
+
+
+
+                                  Preparing to Install DECram for OpenVMS
+                                      Installation Procedure Requirements
+
+
+              Table_1-1_Disk_Space_Requirements__________________________
+
+                               Blocks During         Blocks After
+              Kit______________Installation__________Installation________
+
+              DECram for       2500                  1655
+              OpenVMS Version
+              2.3________________________________________________________
+
+              To determine the number of free disk blocks on the system
+              disk, enter the following command at the DCL prompt:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+        System Parameters
+
+              To install DECram for OpenVMS on an OpenVMS Alpha or on an
+              OpenVMS VAX operating system, you do not need to change the
+              default system parameter settings.
+
+                ________________________ Note ________________________
+
+                Using DECram for OpenVMS on an OpenVMS VAX system
+                requires that you increase the number of System Page
+                Table Entries (SPTEs) and also increase the system
+                parameter SPTREQ. The following sections contain
+                information on how to perform these functions.
+
+                ______________________________________________________
+
+        Increasing System Page Table Entries (SPTEs)(VAX Only)
+
+              The number of SPTEs is determined by the size of the
+              DECram disk to be created. All SPTEs must be available
+              contiguously or the configuration procedure will fail.
+
+              Additional SPTEs for a DECram disk can be created by
+              increasing the size of the system parameter SPTREQ. Use
+              the following algorithm to determine the SPTREQ increase:
+
+              (Size of DECram disk in blocks + 127)/128 + 128 = SPTREQ
+              increase
+
+              For example, the following algorithm determines that an
+              SPTREQ increase of 207 is required for a DECram disk of
+              10,000 blocks:
+
+              ((10,000+127)/128)+128 = 207
+
+                              Preparing to Install DECram for OpenVMS 1-3
+
+ 
+
+
+
+        Preparing to Install DECram for OpenVMS
+        Installation Procedure Requirements
+
+
+        Increasing the System Parameter SPTREQ (VAX Only)
+
+              If the current value of SPTREQ is inadequate for a given
+              disk, the system must be rebooted to allow for a larger
+              value. Therefore, Compaq recommends that you increase
+              the SPTREQ value to a multiple of 128. Consequently, the
+              increase for this example should be 256; the amount of
+              memory wasted would be negligible.
+
+              To increase SPTREQ by 256, edit the file
+              SYS$SYSROOT:[SYSEXE]MODPARAMS.DAT and add the following
+              line:
+
+              ADD_SPTREQ 256
+
+              You must then run the command procedure AUTOGEN.COM using
+              the following command:
+
+              $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+              The SPTREQ value now includes the increase required for the
+              DECram disk.
+
+              If more than one DECram disk is created, use the algorithm
+              to determine the initial SPTREQ increase for each disk,
+              then increase each initial value to a multiple of 128. The
+              sum of the individual SPTREQ increases is the total amount
+              required to accommodate all the disks.
+
+        VMSINSTAL Requirements
+
+              When you invoke the VMSINSTAL command procedure, it
+              verifies the following, all of which are transparent:
+
+              o  The default device and directory are set to SYS$UPDATE.
+
+              o  The installer is logged in to a privileged account.
+
+              o  Adequate quotas for installation have been set.
+                 VMSINSTAL requires that the installation account has
+                 a minimum of the following quotas:
+
+                    ASTLM = 24
+                    BIOLM = 18
+                    BYTLM = 18,000
+                    DIOLM = 18
+                    ENQLM = 30
+                    FILLM = 20
+
+                 Use the OpenVMS Authorize utility (AUTHORIZE) to check
+                 the values of these quotas for the installation account.
+
+        1-4 Preparing to Install DECram for OpenVMS
+
+ 
+
+
+
+                                  Preparing to Install DECram for OpenVMS
+                                      Installation Procedure Requirements
+
+
+              o  No other users are logged in to the system.
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can enter YES and
+              press Return to continue. To stop the installation process
+              and correct the situation, enter NO or press Return. Then
+              correct the problem and restart the installation.
+
+        Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if
+              you have backed up your system disk. Compaq recommends
+              that you perform a system disk backup before installing any
+              software.
+
+              Use the backup procedures that are established at your
+              site.
+
+              For details on performing an OpenVMS Alpha system disk
+              backup, see the OpenVMS Alpha Upgrade and Installation
+              Manual.
+
+              For details on performing an OpenVMS VAX system disk
+              backup, see the processor-specific upgrade and installation
+              supplement for your system.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              Preparing to Install DECram for OpenVMS 1-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                            Installing DECram for OpenVMS
+
+
+              This chapter explains how to install DECram for OpenVMS,
+              and includes information on the Installation Verification
+              Procedure (IVP) and installation messages.
+
+        Installation Procedure
+
+              The DECram for OpenVMS installation procedure consists of
+              a series of questions and informational messages. See the
+              sample installation in Appendix A.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can start the installation again at a later
+              time.
+
+              1. Invoke VMSINSTAL.
+
+                 To start the installation, invoke the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account. VMSINSTAL is in the SYS$UPDATE directory.
+
+                 $ @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                 The following list defines the elements of the VMSINSTAL
+                 command procedure:
+
+                 saveset-name
+                 The installation name for the component. For DECram for
+                 OpenVMS, use the following installation name:
+
+                 DECRAM
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 installation media. For example, MTA0: is the device
+                 name for some tape drives. It is not necessary to use
+                 the console drive for this installation. However, if
+                 you do use the console drive, once the installation
+
+                                        Installing DECram for OpenVMS 2-1
+
+ 
+
+
+
+        Installing DECram for OpenVMS
+        Installation Procedure
+
+
+                 is complete you should return the console media to the
+                 console drive.
+
+                 OPTIONS N
+                 An optional parameter that indicates you want to see
+                 the question on release notes. If you do not include the
+                 OPTIONS N parameter, VMSINSTAL does not ask you about
+                 the release notes. You should review the release notes
+                 before proceeding with the installation. If you are
+                 restarting the installation and have already reviewed
+                 the release notes, you do not need to specify OPTIONS N.
+
+                 There are several other options you can select when you
+                 invoke VMSINSTAL:
+
+                 o  Auto_answer option (A): Initially creates a file
+                    that contains your answers to VMSINSTAL questions and
+                    prompts. You can then use the option (and the answer
+                    file) to save time during a reinstallation.
+
+                 o  Get save-set option (G): Lets you store product save
+                    sets temporarily on a magnetic tape or in a disk
+                    directory.
+
+                 o  File log option (L): Logs all activity to the
+                    terminal during installation.
+
+                 o  Alternate root option (R): Lets you install the
+                    product to a system root other than that of the
+                    running system.
+
+                 If you specify more than one option, separate the
+                 options with commas and no spaces.
+
+                 The following example invokes VMSINSTAL to install
+                 DECram for OpenVMS from tape drive MTA0: and shows
+                 the system response. This example uses the OPTIONS A
+                 auto-answer and the OPTIONS N release notes parameters.
+
+                 $ @SYS$UPDATE:VMSINSTAL DECRAM MTA0: OPTIONS A,N
+
+                       VAX/VMS Software Product Installation Procedure V5.3
+
+                 It is 15-Jul-1995 at 09:10.
+                 Enter a question mark (?) at any time for help.
+
+        2-2 Installing DECram for OpenVMS
+
+ 
+
+
+
+                                            Installing DECram for OpenVMS
+                                                   Installation Procedure
+
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure.
+
+              2. Confirm system disk backup.
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 disk backup. You should back up your system disk before
+                 performing an installation. If you are satisfied with
+                 the backup of your system disk, press Return. Otherwise,
+                 enter NO to discontinue the installation. After you back
+                 up your system disk, you can restart the installation.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+              3. Mount the media.
+
+                 You should now mount the distribution volume on the
+                 device you specified when you invoked VMSINSTAL. The
+                 device name appears in the line preceding the question.
+                 VMSINSTAL then asks you if you are ready to continue
+                 with the installation.
+
+                 If you respond YES to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 DECram for OpenVMS has been mounted on the specified
+                 device and that the installation has begun.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter NO
+                 in response to the "Are you ready?" question. To abort
+                 the installation for other reasons, press Ctrl/Y.
+
+                 Please mount the first volume of the set on MTA0:.
+                 * Are you ready? YES
+                 %MOUNT-I-MOUNTED, DECRAM MOUNTED ON _$$MTA0:  (NODE 1)
+                 The following products will be processed:
+                   DECRAM
+
+                     Beginning installation of DECRAM V2.2B at 09:12
+
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+
+
+                                        Installing DECram for OpenVMS 2-3
+
+ 
+
+
+
+        Installing DECram for OpenVMS
+        Installation Procedure
+
+
+              4. Select a release notes option.
+
+                 If you specified OPTIONS N, VMSINSTAL asks a question
+                 on release notes. You have four options for handling the
+                 release notes:
+
+                 Release notes included with this kit are always copied to
+                 SYS$HELP.
+
+                 Additional Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  None of the above
+
+                 * Select option [2]:
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on the console terminal. You can
+                 terminate the display at any time by pressing Ctrl/C.
+
+                 If you select option 2, VMSINSTAL prompts you for the
+                 name of the print queue:
+
+                 * Queue name [SYS$PRINT]:
+
+                 You can press Return to send the file to the default
+                 output print device or you can enter another queue name.
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes immediately on the console terminal and then
+                 prompts you for a queue name for the printed version.
+
+                 Select option 4 if you have already reviewed the release
+                 notes and are restarting the installation.
+
+                 Next, VMSINSTAL displays the following question:
+
+                 * Do you want to continue the installation [N]?: YES
+                 %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                        successfully moved to SYS$HELP.
+
+                 To continue the installation, enter YES. Otherwise,
+                 press Return. In either case, the release notes are
+                 copied to a file in the SYS$HELP directory:
+
+                 SYS$HELP:DECRAM.RELEASE_NOTES
+
+              5. Purge files.
+
+        2-4 Installing DECram for OpenVMS
+
+ 
+
+
+
+                                            Installing DECram for OpenVMS
+                                                   Installation Procedure
+
+
+                 You can purge files from previous versions of DECram
+                 for OpenVMS that are superseded by this installation.
+                 Purging is recommended because it saves disk space;
+                 however, if you need to keep files from the previous
+                 version, enter NO in response to the question.
+
+                 * Do you want to purge files replaced by this installation [YES]?
+
+              6. Choose the Installation Verification Procedure (IVP)
+                 option.
+
+                 * Do you want to run the IVP after the installation [YES]?
+
+                 The installation procedure now asks if you want to run
+                 the IVP. The IVP for DECram for OpenVMS checks to verify
+                 that the installation is successful. Compaq recommends
+                 that you run the IVP.
+
+                ________________________ Note ________________________
+
+                The IVP creates a DECram disk MDA0 that remains after
+                the IVP completes. If you do not want this disk, do
+                not run the IVP.
+
+                ______________________________________________________
+
+                 After DECram for OpenVMS is installed, you can run
+                 the IVP independently to verify that the software is
+                 available on your system. You may also need to run the
+                 IVP after a system failure to make sure that users can
+                 access DECram for OpenVMS.
+
+              7. Observe the Installation Verification Procedure.
+
+                 If you chose to run the IVP, VMSINSTAL runs it now.
+                 When the IVP runs successfully, you see the following
+                 display:
+
+                    Successful Termination of DECram V2.2 IVP.
+
+              8. The installation procedure ends.
+
+
+
+
+                                        Installing DECram for OpenVMS 2-5
+
+ 
+
+
+
+        Installing DECram for OpenVMS
+        Installation Procedure
+
+
+                    Installation of DECRAM V2.2B completed at 09:27
+
+                    Enter the products to be processed from the next distribution
+                     volume set.
+                  * Products: exit
+
+                    VMSINSTAL procedure done at 09:27
+
+                 The previous messages indicate that the installation
+                 procedure is complete.
+
+                 You can now log out of the privileged account:
+
+                 $ LOGOUT
+                 SYSTEM     logged out at 15-Jul-1995 13:21.13
+
+                 Note that VMSINSTAL deletes or changes entries in the
+                 process symbol tables during the installation. Log out
+                 and then log in to restore these symbols if you want to
+                 continue using the account from which you performed the
+                 installation.
+
+                ________________________ Note ________________________
+
+                If you plan to use DECram for OpenVMS on more than one
+                node in an OpenVMS Cluster, you must install DECram
+                for OpenVMS on the other nodes as well.
+
+                ______________________________________________________
+
+        DECram Installation Messages
+
+              The following messages may be generated by the DECram for
+              OpenVMS installation procedure.
+
+              Missing License Message
+
+              The installation procedure checks for the presence of the
+              license to use DECram for OpenVMS. If the license is not
+              found, the following message is sent:
+
+              A license for DECRAM has not been registered
+              and loaded. DECRAM will not be installed.
+
+              License Registration describes how to register the DECram
+              for OpenVMS license.
+
+        2-6 Installing DECram for OpenVMS
+
+ 
+
+
+
+                                            Installing DECram for OpenVMS
+                                             DECram Installation Messages
+
+
+              DECram for OpenVMS Driver Already Installed Message
+
+              If the installation procedure determines that the DECram
+              for OpenVMS driver is already installed on the system, the
+              following message is sent:
+
+              A DECRAM Driver is already installed on the system.
+
+              Compaq recommends that you reboot your system, rather than
+              perform a SYSGEN RELOAD, to invoke DECram for OpenVMS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        Installing DECram for OpenVMS 2-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                      After Installing DECram for OpenVMS
+
+
+              This section describes how to perform the following
+              postinstallation optional tasks:
+
+              o  Run the IVP after installation (see Running the
+                 Installation Verification Procedure Separately).
+
+              o  Determine and report problems (see Determining and
+                 Reporting Problems).
+
+              o  Print out DECram for OpenVMS documentation (see DECram
+                 Documentation).
+
+        Running the Installation Verification Procedure Separately
+
+              You usually run the Installation Verification Procedure
+              (IVP) during installation. If you want to run the IVP
+              separately to ensure the integrity of installed files
+              should system problems occur, execute the following command
+              procedure:
+
+              $ @SYS$UPDATE:DECRAM$IVP
+
+                ________________________ Note ________________________
+
+                The IVP creates a DECram disk MDA0 that remains after
+                the IVP completes. If you do not want this disk, do
+                not run the IVP.
+
+                ______________________________________________________
+
+
+
+
+
+
+
+                                  After Installing DECram for OpenVMS 3-1
+
+ 
+
+
+
+        After Installing DECram for OpenVMS
+        Determining and Reporting Problems
+
+
+        Determining and Reporting Problems
+
+              If you encounter a problem while using DECram for OpenVMS,
+              report it to Compaq. Depending on the nature of the problem
+              and the type of support you have, you can take one of the
+              following actions:
+
+              o  Call your Compaq support center if your software
+                 contract or warranty agreement entitles you to telephone
+                 support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of your warranty. If you
+              encounter a problem during the warranty period, report the
+              problem as indicated above or follow alternate instructions
+              provided by Compaq for reporting SPD nonconformance
+              problems.
+
+        DECram Documentation
+
+              Print the DECram for OpenVMS User's Manual, which is
+              contained in the following files:
+
+                 SYS$HELP:DECRAM_DRIVER_MANUAL.PS
+                 SYS$HELP:DECRAM_DRIVER_MANUAL.TXT
+
+              Print the release notes, if you have not already done so.
+              The release notes are contained in the following file:
+
+                 SYS$HELP:DECRAM.RELEASE_NOTES
+
+
+
+
+
+
+
+
+
+
+
+
+
+        3-2 After Installing DECram for OpenVMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                                Supplementary Information
+
+
+              This appendix contains the following information:
+
+              o  Error recovery and failure messages (see Error Recovery)
+
+              o  Listing of installed files (see Installed Files)
+
+              o  Sample installation of DECram for OpenVMS (see Sample
+                 Installation)
+
+        Error Recovery
+
+              If errors occur during the installation or when the
+              Installation Verification Procedure (IVP) is running,
+              VMSINSTAL displays failure messages. If the installation
+              fails, you see the following message:
+
+              %VMSINSTAL-E-INSFAIL, The installation of DECRAM V2.3 has failed.
+
+              If the IVP fails, you will see two messages: either of the
+              first two messages that follow, and the third message:
+
+              Problem encountered attempting to create a DECram disk.
+
+              Problem encountered initializing a DECram disk.
+
+              Unsuccessful termination of DECram V1.1 IVP.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  The operating system is a version prior to OpenVMS VAX
+                 Version 5.5-2.
+
+              o  Installation account quotas necessary for successful
+                 installation are insufficient.
+
+              o  System parameter values for successful installation are
+                 insufficient.
+
+              o  The VMS help library is currently in use.
+
+                                            Supplementary Information A-1
+
+ 
+
+
+
+         Supplementary Information
+        Error Recovery
+
+
+              o  The product license has not been registered and loaded.
+
+              For descriptions of the error messages generated by these
+              conditions, see the OpenVMS documentation on system
+              messages, recovery procedures, and OpenVMS software
+              installation. If you are notified that any of these
+              conditions exist, you should take the appropriate action as
+              described in the message. For information on installation
+              requirements, see Chapter 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-2  Supplementary Information
+
+ 
+
+
+
+                                                Supplementary Information
+                                                          Installed Files
+
+
+        Installed Files
+
+              The DECram for OpenVMS installation procedure installs a
+              number of files on your system. The following list contains
+              the names of all files changed or created on your system
+              during installation:
+
+              o  SYS$LIBRARY:DCLTABLES.EXE
+
+                 This file is changed when you install DECram Version 2.2
+                 on OpenVMS VAX Versions 5.2 and 5.3.
+
+              o  SYS$SPECIFIC:[SYS$LDR]MDDRIVER.EXE (used on OpenVMS VAX
+                 systems)
+                 SYS$SPECIFIC:[SYS$LDR]SYS$MDDRIVER.EXE (used on OpenVMS
+                 Alpha systems)
+
+                 These files are the DECram for OpenVMS device driver
+                 (MDDRIVER).
+
+              o  SYS$SPECIFIC:[SYS$LDR]EXECLET.EXE (used on OpenVMS VAX
+                 systems)
+
+              o  SYS$SPECIFIC:[SYSMGR]DECRAM$RECOVER.DAT
+
+              o  SYS$SPECIFIC:[SYSMGR]DECRAM$SETRAM.COM
+
+              o  SYS$SPECIFIC:[SYSMGR]DECRAM$SETSHAD.COM
+
+              o  SYS$SPECIFIC:[SYSMGR]DECRAM$REC_INIT.EXE
+
+              o  SYS$SPECIFIC:[SYSEXE]DECRAM$RECOVER.EXE
+
+              o  SYS$SPECIFIC:[SYSEXE]DECRAM$SETRAM.EXE
+
+              o  SYS$SPECIFIC:[SYSEXE]DECRAM$SETSHAD.EXE
+
+                 These files are applicable to OpenVMS VAX Versions 5.5
+                 or higher, and OpenVMS Alpha Version 6.1.
+
+              o  SYS$SPECIFIC:[SYSEXE]DECRAM$SIZE.EXE
+
+                 This file is applicable to OpenVMS VAX Versions 5.2 and
+                 5.3 only.
+
+              o  SYS$HELP:DECRAM.RELEASE_NOTES
+
+                 This file contains the release notes for DECram for
+                 OpenVMS Version 2.3.
+
+              o  SYS$HELP:DECRAM_DRIVER_MANUAL.PS
+                 SYS$HELP:DECRAM_DRIVER_MANUAL.TXT
+
+                                            Supplementary Information A-3
+
+ 
+
+
+
+         Supplementary Information
+        Installed Files
+
+
+                 These files contain the DECram for OpenVMS User's
+                 Manual. This manual describes the features of the DECram
+                 for OpenVMS driver and includes information on how to
+                 configure the device and use the device driver.
+
+              o  SYS$HELP:DECRAM_INSTAL_GUIDE.PS
+                 SYS$HELP:DECRAM_INSTAL_GUIDE.TXT
+
+                 These files contain the instructions for installing
+                 DECram for OpenVMS. (This is the document you are now
+                 reading.)
+
+              o  SYS$TEST:DECRAM$IVP.COM
+
+                 This file is the Installation Verification Procedure
+                 (IVP).
+
+              o  SYS$EXAMPLES:DECRAM$CONFIG.COM
+
+                 This command procedure is used to automatically create
+                 and initialize a DECram disk. The DECram for OpenVMS
+                 User's Manual shows an example of using this procedure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-4  Supplementary Information
+
+ 
+
+
+
+                                                Supplementary Information
+                                                          Installed Files
+
+
+              o  SYS$EXAMPLES:RAMDISK$STARTUP.COM
+
+                 This procedure is used to build a read-only DECram disk.
+
+              o  SYS$EXAMPLES:RAMDISK$NODE.DAT
+
+                 This data file is used by RAMDISK$STARTUP.COM.
+
+              o  SYS$EXAMPLES:SCRATCHRAM$STARTUP.COM
+
+                 This procedure is used to build a read/write DECram
+                 disk.
+
+              o  SYS$EXAMPLES:SCRATCHRAM$NODE.DAT
+
+                 This data file is used by SCRATCHRAM$STARTUP.COM.
+
+        Sample Installation
+
+              This section contains a sample installation of DECram
+              for OpenVMS. This sample was run on a system that had
+              no previous version of DECram for OpenVMS installed.
+              Depending on which layered products you have on your
+              system, you might see additional messages and questions
+              when you perform your installation. The sample installation
+              assumes that no users are logged in to your system, and
+              that OPTIONS N is specified not to print or display the
+              release notes. The Installation Verification Procedure
+              (IVP) runs at the end of the installation.
+
+              $ @SYS$UPDATE:VMSINSTAL
+
+                      VAX/VMS Software Product Installation Procedure V7.2
+
+              It is 15-Jul-1998 at 08:01.
+
+              Enter a question mark (?) at any time for help.
+              * Are you satisfied with the backup of your system disk [YES]? y
+              * Where will the distribution volumes be mounted: MUA0:
+
+              Enter the products to be processed from the first distribution volume set.
+              * Products: decram
+              * Enter installation options you wish to use (none): N
+              The following products will be processed:
+                DECRAM
+
+               Beginning installation of DECRAM V2.3 at 08:02
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+                  Release notes included with this kit are always copied to SYS$HELP.
+
+                                            Supplementary Information A-5
+
+ 
+
+
+
+         Supplementary Information
+        Sample Installation
+
+
+                  Additional Release Notes Options:
+
+               1.  Display release notes
+               2.  Print release notes
+               3.  Both 1 and 2
+               4.  None of the above
+
+              * Select option [2]: 4
+              * Do you want to continue the installation [NO]? Y
+
+              $!  Copyright (c) 1998 Digital Equipment Corporation.  All rights reserved.
+
+              %DECRAM-I-VMSOK, Installing DECRam V2.3 on VMS Version V7.2
+              * Do you want to purge files replaced by this installation [YES]?
+              * Do you want to run the IVP after the installation [YES]?
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+              %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+              %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+              %SYSTEM-W-NOSUCHDEV, no such device available
+
+              Device              Device           Error    Volume         Free  Trans Mnt
+               Name               Status           Count     Label        Blocks Count Cnt
+              MDA0:               Online               0
+
+              Device              Device           Error    Volume         Free  Trans Mnt
+               Name               Status           Count     Label        Blocks Count Cnt
+              MDA0:               Online               0
+              %MOUNT-I-MOUNTED, MDTST        mounted on _JONAS$MDA0:
+              Successful Termination of DECram V2.3 IVP.
+               Installation of DECRAM V2.3 completed at 08:04
+
+              Enter the products to be processed from the next distribution volume set.
+              * Products: exit
+               VMSINSTAL procedure done at 08:04
+
+              $
+
+
+
+
+
+
+
+        A-6  Supplementary Information

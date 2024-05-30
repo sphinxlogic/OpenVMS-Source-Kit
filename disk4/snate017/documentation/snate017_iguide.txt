@@ -1,0 +1,1811 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital_SNA_3270_Terminal_Emulator_for_OpenVMS
+                     Installation
+
+                     Part Number: AA-EZ31F-TE
+
+
+                     January 1996
+
+                     This manual describes how to install the Digital
+                     SNA 3270 Terminal Emulator for OpenVMS software.
+                     It also explains how to read the on-line release
+                     notes before or after installing the product.
+                     This document applies to the Digital SNA 3270
+                     Terminal Emulator for OpenVMS, Version 1.6 and
+                     all maintenance releases throughout that version.
+
+
+
+
+
+                     Revision/Update Information: This is a revised
+                                                  manual.
+
+                     Operating System and Version: OpenVMS VAX Versions
+                                                  6.1, 6.2, or 7.0
+                                                  OpenVMS Alpha
+                                                  Versions 6.1, 6.2,
+                                                  or 7.0
+
+                     Software Version:            Digital SNA 3270
+                                                  Terminal Emulator for
+                                                  OpenVMS, Version 1.6
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           January 1996
+
+           The information in this document is subject to change
+           without notice and should not be construed as a commitment
+           by Digital Equipment Corporation. Digital Equipment
+           Corporation assumes no responsibility for any errors that
+           may appear in this document.
+
+           The software described in this document is furnished under
+           a license and may be used or copied only in accordance
+           with the terms of such license.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           Digital conducts its business in a manner that conserves
+           the environment.
+
+           Restricted Rights: Use, duplication, or disclosure by the
+           U.S. Government is subject to restrictions as set forth in
+           subparagraph (c)(1)(ii) of the Rights in Technical Data
+           and Computer Software clause at DFARS 252.227-7013.
+
+            Copyright © 1989, 1996 1996 Digital Equipment Corporation
+                              All Rights Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: Alpha, DEC, DECmate, DECnet, DECUS,
+           DECwriter, DIBOL, MASSBUS, OpenVMS, PDP, P/OS, Professional,
+           Rainbow, RSTS, RSX, RT, UNIBUS, VAX, VAXcluster, VMS, VT,
+           Work Processor, and the Digital logo.
+
+           IBM is a registered trademark of International Business
+           Machines Corporation.
+
+           This manual was produced by Telecommunications and
+           Networks Publications.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing for Installation
+
+         1.1   Required Operating System Components.........    1-1
+         1.2   Prerequisite Software Requirements...........    1-1
+         1.2.1     Accessing the On-line Release Notes......    1-2
+         1.3   OpenVMS License Management Facility..........    1-2
+         1.4   Installation Procedure Requirements..........    1-3
+         1.4.1     System Parameters........................    1-4
+         1.4.1.1     Checking System Parameter Values.......    1-5
+         1.4.1.2     Calculating the Values for GBLPAGES and
+                     GBLSECTIONS............................    1-6
+         1.4.1.3     Changing System Parameter Values with
+                     AUTOGEN................................    1-7
+         1.4.2     VMSINSTAL Requirements...................    1-8
+         1.4.3     Backing Up Your System Disk..............    1-8
+         1.4.4     License Management Utility
+                   Requirements.............................    1-8
+
+   2  Installation
+
+         2.1   General Information..........................    2-2
+         2.1.1     Determining the Files Added to the
+                   System...................................    2-2
+         2.1.2     Running the Installation Verification
+                   Procedure (IVP)..........................    2-2
+         2.2   The Installation Procedure...................    2-2
+         2.2.1     Steps to Install the Digital SNA 3270
+                   TE.......................................    2-3
+         2.2.2     Installation Questions...................    2-5
+         2.2.3     Informational Messages...................    2-8
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+           2.2.4     Running the Installation Verification
+                     Procedure................................    2-9
+           2.2.5     Completing the Installation Procedure....    2-9
+           2.3   Error Recovery...............................    2-9
+
+
+     3  After the Installation
+
+           3.1   Editing System Files.........................    3-1
+           3.2   Running the Installation Verification
+                 Procedure (IVP)..............................    3-2
+           3.3   Rebooting the System.........................    3-2
+           3.4   User Account Requirements....................    3-2
+           3.4.1     Privileges...............................    3-2
+           3.5   Installing the TE on a VMScluster System.....    3-3
+           3.6   Determining and Reporting Problems...........    3-3
+
+     A  Sample Installation
+
+     B  Files Installed on Your System
+
+           B.1   File Names...................................    B-1
+
+
+     Tables
+
+           1-1       Required Resources.......................    1-4
+
+           1-2       Required System Parameter Values.........    1-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              The Digital SNA 3270 Terminal Emulator (TE) is a software
+              product that lets OpenVMS operating system users
+              interactively communicate with programs running on an
+              IBM host computer using one of Digital's interconnect
+              systems.
+
+              This document tells you how to install the Digital SNA
+              3270 Terminal Emulator software on the OpenVMS operating
+              system. It is intended primarily for system managers
+              or anyone else who is responsible for installing and
+              maintaining application software.
+
+              Keep this document with your distribution kit. You will
+              need it to install maintenance updates or to reinstall the
+              software.
+
+              For more information on installing the Digital SNA
+              3270 TE software on OpenVMS systems, refer to the
+              installation/operations guide for your particular
+              processor.
+
+              This guide describes the installation procedure step by
+              step. The system prompts you to answer questions and to
+              perform tasks, such as changing volumes, and waits for you
+              to tell it to continue.
+
+              Default values appear in brackets ([]) throughout the
+              installation procedure. This means that if you simply
+              press return in response to any of the installation
+              questions where an answer or value appears in brackets,
+              the system uses that answer or value.
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+     Associated Documents
+
+           The following documents make up the manual set for TE:
+
+           o  Digital SNA 3270 Terminal Emulator for OpenVMS
+              Installation
+
+           o  Digital SNA 3270 Terminal Emulator for OpenVMS Use
+
+           You should have the following Digital documents available
+           for reference when you use the TE:
+
+           o  Digital SNA Domain Gateway Guide to IBM Resource
+              Definition
+
+           o  Digital SNA Domain Gateway Installation
+
+           o  Digital SNA Domain Gateway Management
+
+           o  Digital SNA Gateway-CT Installation Guide
+
+           o  Digital SNA Gateway Problem Determination Guide
+
+           o  Digital SNA Gateway-CT Problem Solving (OpenVMS &
+              ULTRIX)
+
+           o  Digital SNA Gateway-CT Guide to IBM Parameters
+
+           o  Digital SNA Gateway-CT Management (OpenVMS)
+
+           o  Digital SNA Gateway-ST Installation Guide
+
+           o  Digital SNA Gateway-ST Guide to IBM Parameters
+
+           o  Digital SNA Gateway-ST Problem Solving (OpenVMS)
+
+           o  Digital SNA OpenVMS Gateway Management Guide
+
+           o  Digital SNA Peer Server Installation and Configuration
+
+           o  Digital SNA Peer Server Management
+
+           o  Digital SNA Peer Server Network Control Language
+              Reference
+
+           o  Digital SNA Peer Server Guide to IBM Resource
+              Definition
+
+           See the following documents for more information about the
+           IBM 3270 Information Display System:
+
+           o  ACF for VTAM Version 2, Messages and Codes (IBM Order
+              No. SC27-0614)
+
+     vi
+
+ 
+
+
+
+
+
+
+              o  IBM 3270 Information Display System and 3274 Control
+                 Unit Description and Programmer's Guide (IBM Order No.
+                 GA23-0061)
+
+              o  IBM 3287 Printer Models 1 and 2 Component Description
+                 (IBM Order No. GA27-3153)
+
+              o  MVS/TSO/VTAM Data Set Print Program Description/Operations
+                 Manual (IBM Order No. SB21-2070)
+
+              o  IBM 3270 Information Display System, Order No. GA23-
+                 0060
+
+              o  IBM 3270 Information Display System Data Stream
+                 Programmer's Reference, Order No. GA23-0059
+
+              o  Systems Network Architecture-Introduction to Sessions
+                 Between Logical Units, Order No. GC20-1869
+
+              o  Systems Network Architecture-Sessions Between Logical
+                 Units, Order No. GC20-1868
+
+              o  IBM 3270 Information Display System: Operator's Guide,
+                 Order No. GA27-2742
+
+              Terminology
+
+              Interconnect System     Refers the Digital SNA Gateway-ST,
+                                      the Digital SNA Gateway-CT,
+                                      the Digital SNA Domain Gateway-CT,
+                                      the Digital SNA Domain Gateway-ST,
+                                      Digital SNA Peer Server, or
+                                      OpenVMS/SNA (OpenVMS VAX Version
+                                      6.1 only.)
+
+              Interconnect Products   Refers to the Digital SNA Gateway-
+                                      ST,
+                                      the Digital SNA Gateway-CT,
+                                      the Digital SNA Domain Gateway,
+                                      the Digital SNA Peer Server,
+                                      the Digital SNA 3270 Terminal
+                                      Emulator for OpenVMS
+                                      and OpenVMS/SNA (OpenVMS VAX
+                                      Version 6.1 only.)
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+           Interconnect Manager    Refers to the person responsible
+                                   for the installation and
+                                   management of an interconnect
+                                   product.
+
+
+     Acronyms
+
+           The following acronyms appear throughout this manual:
+
+           ACF/NCP               Advanced Communications Function/Network
+                                 Control Program
+
+           ACF/VTAM              Advanced Communications Function/Virtual
+                                 Telecommunications Access Method
+
+           CICS/VS               Customer Information Control
+                                 System/Virtual Storage
+
+           LU                    Logical unit
+
+           LU2                   Logical unit type 2
+
+           PLU                   Primary logical unit
+
+           PU                    Physical unit
+
+           SLU                   Secondary logical unit
+
+           SNA                   IBM's Systems Network Architecture
+
+           SSCP                  System services control point
+
+           SPR                   Software Performance Report
+
+           TE                    Digital SNA 3270 Terminal Emulator
+                                 for OpenVMS software
+
+           TSO                   IBM's Time Sharing Option
+
+           VTAM                  Virtual Telecommunications Access
+                                 Method
+
+     Graphic Conventions
+
+           The following graphic conventions are used throughout this
+           manual:
+
+     viii
+
+ 
+
+
+
+
+
+              __________________________________________________________
+              Convention____________Meaning_____________________________
+
+              UPPERCASE LETTERS     Uppercase letters in a command line
+                                    represent the commands that you must
+                                    enter.
+
+              lowercase italics     Italics in a command indicate that
+                                    you must supply a precise value.
+
+              Special type          This special type in command
+                                    examples indicates system output
+                                    and user input.
+
+              <Ctrl/x>              The expression <Ctrl/x> refers to a
+                                    control character keying sequence.
+                                    When you see this symbol, press the
+                                    key labeled Ctrl and the appropriate
+                                    character key simultaneously.
+
+              <KP x>                The expression <KP x> refers to a
+                                    key on the application keypad. When
+                                    you see this notation, press the
+                                    appropriate key on the application
+                                    keypad.
+
+              <EXT> + <x>           The expression <EXT> + <x> refers to
+                                    a special combination of two keys.
+                                    When you see this notation, first
+                                    press the EXT key (<KP .>), then
+                                    press the appropriate character key.
+
+              []                    Brackets enclose values that either
+                                    are separated by a vertical bar or
+                                    listed vertically.
+
+              |                     Vertical bar indicates that you must
+                                    choose between the values separated
+                                    by the bar. Do not type the vertical
+                                    bar in the command line.
+
+              <Return>              Unless otherwise specified, every
+                                    command line is terminated by
+              ______________________pressing_the_Return_key.____________
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                              Preparing for Installation
+
+
+
+              Before you install the Digital SNA 3270 Terminal Emulator
+              (TE) for OpenVMS software, you must prepare your system,
+              its communications components, and the remote system to
+              ensure proper operation of the software.
+
+              This chapter describes the preparations and requirements
+              necessary for installing the Digital SNA 3270 TE.
+
+              Your bill of materials (BOM) specifies the number and
+              contents of your media. Be sure to check the contents of
+              your kit against this information. If your kit is damaged
+              or if you find that parts of it are missing, contact your
+              Digital representative before continuing the installation.
+
+        1.1 Required Operating System Components
+
+              The Digital SNA 3270 TE requires the following OpenVMS
+              versions:
+
+              o  OpenVMS Alpha Versions 6.1, 6.2, or 7.0
+
+              o  OpenVMS VAX Versions 6.1, 6.2, or 7.0
+
+        1.2 Prerequisite Software Requirements
+
+              Version 1.6 of the TE requires OpenVMS VAX, Versions
+              6.1, 6.2, or 7.0, or OpenVMS Alpha, Versions 6.1, 6.2,
+              or 7.0, and the corresponding version of DECnet or TCP/IP.
+              The Terminal Emulator software also requires one of the
+              following system configurations for proper operation:
+              Either the Digital SNA Gateway-ST, Digital SNA Gateway-CT,
+              Digital SNA Domain Gateway-CT, Digital SNA Domain Gateway-
+              ST, Digital SNA Peer Server, or OpenVMS/SNA (OpenVMS VAX
+              Version 6.1 only) systems must be part of your DECnet or
+              TCP/IP network . For more information on these products,
+              see the following documentation:
+
+                                          Preparing for Installation 1-1
+
+ 
+
+
+
+
+
+
+           o  Digital SNA Guide to Gateway Management
+
+           o  Digital SNA Gateway-ST Installation
+
+           o  Digital SNA Gateway-CT Installation
+
+           o  Digital SNA Domain Gateway-CT Installation
+
+           o  Digital SNA Domain Gateway-ST Installation
+
+           o  OpenVMS/SNA (OpenVMS VAX Version 6.1 only) Installation
+
+           o  Digital SNA Peer Server Installation and Configuration
+
+           o  Digital SNA Peer Server Management
+
+           o  Digital SNA Peer Server Network Control Language
+              Reference
+
+           o  Digital SNA Peer Server Guide to IBM Resource
+              Definition
+
+     1.2.1 Accessing the On-line Release Notes
+
+           The Digital SNA 3270 TE provides on-line release notes.
+           You should read the release notes before you install
+           the product. The release notes contain the latest
+           enhancements to the product, which may include changes
+           to the installation procedure. The installation procedure
+           asks you if you want to display or print the release notes
+           during step five of the installation procedure, if you
+           executed the VMSINSTAL command procedure with the OPTIONS
+           N parameter.
+
+           After you have installed the product, you can read the
+           release notes by either typing or printing the file
+           SYS$HELP:SNATE016.RELEASE_NOTES. Do not delete the release
+           notes for previous versions of the Terminal Emulator.
+
+     1.3 OpenVMS License Management Facility
+
+           The license registration information you need is contained
+           in the Product Authorization Key (PAK) that is shipped
+           with the Digital SNA 3270 TE for OpenVMS software. The PAK
+           is a paper certificate that contains information about the
+           license you have to run a particular piece of software.
+
+     1-2 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              It is best to register your Digital SNA 3270 TE license
+              before you perform the installation. During the instal-
+              lation, VMSINSTAL asks you if you have registered the
+              Digital SNA 3270 TE license and loaded the appropriate
+              authorization key. If you have not already done so, you
+              can complete the installation procedure, although you will
+              not be able to run the TE software. Once you perform the
+              license registration and have loaded an authorization key,
+              you will be able to run the TE software.
+
+              To register a license, first log in to the system
+              manager's account, SYSTEM. You then have a choice of two
+              ways to perform the registration:
+
+              o  Execute the SYS$UPDATE:VMSLICENSE.COM command
+                 procedure. When it prompts you for information,
+                 respond with the information that is on your Product
+                 Authorization Key (PAK) form.
+
+              o  Issue the LICENSE REGISTER DCL command with the
+                 appropriate qualifiers that correspond to information
+                 on the PAK.
+
+              For complete information on using LMF, see the manual
+              on the OpenVMS License Management Utility in the OpenVMS
+              documentation set.
+
+        1.4 Installation Procedure Requirements
+
+              The following sections detail the various requirements for
+              installing the Digital SNA 3270 TE for OpenVMS software.
+
+              The installation should take approximately 5 to 15
+              minutes, depending on the type of media and your system
+              configuration. Before installing the Terminal Emulator
+              software, you must have the following privileges:
+
+              o  SETPRV privilege, or CMKRNL, WORLD, and SYSPRV
+                 privileges. Note that VMSINSTAL disables BYPASS
+                 privilege at the start of the installation.
+
+              Table 1-1 shows the OpenVMS VAX and OpenVMS Alpha
+              resources required for installation.
+
+
+                                          Preparing for Installation 1-3
+
+ 
+
+
+
+
+
+
+           Table_1-1_Required_Resources______________________________
+
+           Operating
+           System______Required_Resources____________________________
+
+           OpenVMS     A minimum of 1200 blocks of free disk space
+           VAX         during installation
+
+                       A minimum of 700 blocks of free space after
+                       installation
+
+                       A minimum of 300 free global pages
+
+                       A minimum of 4 free global sections at
+                       installation
+
+           OpenVMS     A minimum of 2000 blocks of free disk space
+           Alpha       during installation
+
+                       A minimum of 1100 blocks of free space after
+                       installation
+
+                       A minimum of 500 free global pages
+
+                       A minimum of 4 free global sections at
+           ____________installation__________________________________
+
+           To determine the number of free disk blocks on the current
+           system disk, enter the following command at the DCL
+           prompt:
+
+           $ SHOW DEVICE SYS$SYSDEVICE
+
+     1.4.1 System Parameters
+
+           Table 1-2 lists the minimum required system parameter
+           values for the installation. Depending on the kinds of
+           programs and applications running at your site, you might
+           need higher values for some settings.
+
+
+
+
+
+
+     1-4 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              Table_1-2_Required_System_Parameter_Values________________
+
+              System_Parameter______VAX_Value_____________Alpha_Value___
+
+              GBLPAGES[1]           n + 300               n + 500
+
+              GBLSECTIONS[1]        n + 4                 n + 4
+              [1]The_n_variable_refers_to_the_system_parameter_values___
+
+              that are currently in use. To install the Digital SNA 3270
+              TE, you must raise those values by the number indicated.
+              (See Section 1.4.1.2.)
+              __________________________________________________________
+
+              The following sections show you how to check system
+              parameter values, with the OpenVMS System Generation
+              Utility (SYSGEN), and calculate values for the GBLPAGES
+              and GBLSECTIONS system parameters, and change parameter
+              values with the OpenVMS AUTOGEN command procedure.
+
+        1.4.1.1 Checking System Parameter Values
+
+              To check the values of your system parameters, enter the
+              following command at the DCL prompt to invoke the SYSGEN
+              utility:
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN>
+
+              At the SYSGEN> prompt, enter the SHOW command to display
+              the value of each system parameter. The values displayed
+              should equal or exceed the value of each parameter listed
+              in Table 1-2. The following command displays the value for
+              the WSMAX system parameter:
+
+              SYSGEN> SHOW WSMAX
+
+              After you finish checking the parameters with the SHOW
+              command, you can enter the EXIT command at the SYSGEN>
+              prompt to return to DCL level.
+
+              Dynamic parameters changed with the SYSGEN utility become
+              active immediately without any need to reboot your system.
+              In fact, rebooting returns dynamic system parameter values
+              to their previous settings, so you should complete the
+              installation before rebooting the system.
+
+                                          Preparing for Installation 1-5
+
+ 
+
+
+
+
+
+
+     1.4.1.2 Calculating the Values for GBLPAGES and GBLSECTIONS
+
+           To install and run the Digital SNA 3270 TE, you must set
+           the correct values for the GBLPAGES and GBLSECTIONS system
+           parameters.
+
+           The n + nnn values for GBLPAGES and GBLSECTIONS in
+           Table 1-2 indicates the required number of unused global
+           pages or global sections available on your system for the
+           installation to process successfully. To calculate how
+           many unused global pages and global sections your system
+           has, perform the following steps:
+
+           1. Run the OpenVMS Install Utility (INSTALL) using the
+              following DCL commands:
+
+              $ INSTALL LIST /GLOBAL /SUMMARY
+
+              The INSTALL utility displays a summary of global pages
+              and global sections used by your system, as well as the
+              current number of unused global pages. For example:
+
+                               Summary of Local Memory Global Sections
+
+              258 Global Sections Used,  22580/3420 Global Pages Used/Unused
+
+           2. Determine if the number of unused pages (3420 in
+              the example) is equal to or greater than the number
+              specified in Table 1-2. If the number of unused pages
+              is less than the number listed in the table, you need
+              to increase the value for GBLPAGES.
+
+           3. Note the amount shown for "Global Sections Used" (258
+              in the example).
+
+           4. Run the SYSGEN utility and use the SHOW command to
+              determine the number of global sections that have been
+              allocated:
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN> SHOW GBLSECTIONS
+
+              Parameter Name  Current  Defaul  Minimum   Maximum Unit  Dynamic
+              --------------  ------- -------  -------   ------- ----  -------
+              GBLSECTIONS        512     250       20      4095 Sections
+
+     1-6 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              5. Subtract the amount shown in the summary (258 in the
+                 example) from the amount allocated. If the difference
+                 is less than the number required in Table 1-2, you need
+                 to increase the value of the GBLSECTIONS parameter.
+
+              Section 1.4.1.3 describes the procedures for increasing
+              these values as well as those of other system parameters.
+              Refer to the OpenVMS documentation on system management
+              and operations for more information.
+
+        1.4.1.3 Changing System Parameter Values with AUTOGEN
+
+              You use the AUTOGEN command procedure to change system
+              parameters. AUTOGEN automatically adjusts values for
+              parameters that are associated with the ones you reset
+              manually. To change system parameters with AUTOGEN, you
+              must edit the following file:
+
+              SYS$SYSTEM:MODPARAMS.DAT
+
+              For example, to change the setting for the WSMAX system
+              parameter, add this line to the file:
+
+              WSMAX = 1024
+
+              Or for incremental SYSGEN parameters:
+
+              ADD_GBLPAGES = 2000
+
+              Now, run the AUTOGEN procedure to recalculate your system
+              parameters. Enter the following command at the DCL prompt:
+
+              $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+              AUTOGEN performs an automatic system shutdown and reboots
+              when it has finished. Rebooting your system makes the
+              new parameter values active. Also on OpenVMS Version 6.1
+              systems you may wish to add the [NO]FEEDBACK parameter
+              to the AUTOGEN command line. For more information
+              about using AUTOGEN, see the instructions on modifying
+              system parameters in the OpenVMS documentation on System
+              Management and Operations.
+
+
+
+                                          Preparing for Installation 1-7
+
+ 
+
+
+
+
+
+
+     1.4.2 VMSINSTAL Requirements
+
+           When you run the VMSINSTAL command procedure, it checks
+           the following criteria:
+
+           o  Whether you have set your default device and directory
+              to SYS$UPDATE
+
+           o  Whether you are logged in to a privileged account
+
+           o  Whether you have adequate quotas for the installation
+
+           o  Whether any users are logged in to the system
+
+           If VMSINSTAL detects any problems during the installation,
+           it notifies you of the problem and asks if you want to
+           continue the installation. In some instances, you can
+           enter YES to continue. To stop the installation process
+           and correct the situation, enter NO or press RETURN. Then
+           correct the problem and restart the installation.
+
+     1.4.3 Backing Up Your System Disk
+
+           At the beginning of the installation, VMSINSTAL asks if
+           you have backed up your system disk. Digital recommends
+           that you do a system disk backup before installing any
+           software on top of the operating system.
+
+           Use the backup procedures that have been established at
+           your site. For details on performing a system disk backup,
+           see the section on the Backup Utility in the OpenVMS
+           documentation set.
+
+     1.4.4 License Management Utility Requirements
+
+           You will need to register and load your license for the
+           Digital SNA 3270 TE before you start the installation in
+           order to run the Installation Verification Procedure.
+
+           Refer to the OpenVMS documentation on the License
+           Management Utility for information about registering your
+           license.
+
+
+
+     1-8 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                            Installation
+
+
+
+              This chapter describes how to install the Digital SNA 3270
+              Terminal Emulator (TE) for OpenVMS. It contains a step-by-
+              step description of the installation procedure and tasks
+              you must perform after the installation. The final section
+              contains an actual system log of an installation using PAK
+              information and VMSINSTAL.
+
+              Note that throughout the installation default values
+              appear in brackets. To abort the installation procedure
+              at any time, press <Ctrl/Y>. Doing this causes the
+              installation procedure to delete all files it has created
+              up to that point, and returns to DCL. If you want to retry
+              the installation after aborting it, you must proceed from
+              step two.
+
+                ________________________Note  ________________________
+
+                You can install the TE software from two locations:
+                the Consolidated Software Distribution CD-ROM or
+                a remote node in your local area network using the
+                Remote Installation Service (RIS). The VMSINSTAL
+                procedure presented in this chapter assumes the TE
+                software is being installed from your local area
+                network.
+
+                To install the TE software from the Consolidated
+                Software Distribution CD-ROM, see the master
+                index table in the document Consolidated Software
+                Distribution Disk User's Guide for the directory
+                containing the TE files.
+
+                _____________________________________________________
+
+
+
+                                                        Installation 2-1
+
+ 
+
+
+
+
+
+
+     2.1 General Information
+
+           This section includes information about accessing release
+           notes, determining what files are added to your system,
+           running the Installation Verification Procedure (IVP), and
+           aborting the installation.
+
+           On-line help also directs you to the release notes file.
+           After the installation, you can enter the following
+           command to review them through the help facility:
+
+           $ HELP SNA_TERMINALS RELEASE_NOTES
+
+     2.1.1 Determining the Files Added to the System
+
+           The TE installation procedure adds a number of new files
+           to your system. Appendix B contains a complete listing of
+           all files the installation procedure adds.
+
+     2.1.2 Running the Installation Verification Procedure (IVP)
+
+           The Installation Verification Procedure (IVP) for the
+           Digital SNA 3270 TE verifies that the installation
+           was performed correctly. During the installation, you
+           are asked if you want to run the IVP as part of the
+           installation procedure. If you respond YES, VMSINSTAL
+           runs the IVP. It is recommended that you run the IVP to be
+           sure that the Digital SNA 3270 TE is installed correctly.
+
+           After the Digital SNA 3270 TE is installed, you can run
+           the IVP independently to verify that the software is
+           available on your system. You might also want to run the
+           IVP after a system failure to be sure that users can use
+           the Digital SNA 3270 TE software. See Section 3.2 for
+           information on how to run the IVP.
+
+     2.2 The Installation Procedure
+
+           The Digital SNA 3270 TE installation process consists
+           of a series of questions and informational messages.
+           The installation procedure takes between ten and fifteen
+           minutes to complete.
+
+           Digital recommends that you use a hardcopy terminal to
+           install the Terminal Emulator if you want a copy of the
+           installation process. If you do not have a hard-copy
+
+     2-2 Installation
+
+ 
+
+
+
+
+
+
+              terminal, you can produce a copy of the installation
+              procedure by using the following command:
+
+              $  SET HOST 0/LOG=file-name
+
+              where file-name is the name of the file in which you wish
+              to store the installation procedure log information.
+              After the installation completes, you can log off from
+              the current session, and print the file that contains the
+              log of the installation procedure. If you do not specify a
+              file name, the system automatically creates a file called
+              SETHOST.LOG.
+
+        2.2.1 Steps to Install the Digital SNA 3270 TE
+
+              To start the installation, execute the VMSINSTAL command
+              procedure from a privileged account, such as the SYSTEM
+              account. Use the following command to start VMSINSTAL:
+
+              @SYS$UPDATE:VMSINSTAL product-name device-name OPTIONS N
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        Installation 2-3
+
+ 
+
+
+
+
+
+
+           where
+
+           product-name
+           is the installation name for the component. For the
+           Digital SNA 3270 TE, use the following installation name:
+
+           SNATE016
+
+           device-name
+           is the name of the device on which you plan to mount the
+           media. For example, MTA0: is the device name for a tape
+           drive. It is not necessary to use the console tape drive
+           for this installation. However, if you do use the console
+           tape drive, you should replace any media you removed once
+           the installation is completed.
+
+           OPTIONS N
+           is an optional parameter that indicates you want to be
+           prompted to display or print the release notes. If you do
+           not include the OPTIONS N parameter, VMSINSTAL does not
+           prompt you to display or print the release notes. You are
+           advised to read the release notes before proceeding with
+           the installation.
+
+           VMSINSTAL has several other options. For further
+           information, see the OpenVMS documentation on software
+           installation.
+
+           The following example displays the command to invoke
+           VMSINSTAL to install the Digital SNA 3270 TE from tape
+           drive MTA0: and the system response. This example uses
+           the OPTIONS N parameter for printing or displaying release
+           notes.
+
+           $ @SYS$UPDATE:VMSINSTAL SNATE016 MTA0: OPTIONS N
+
+                 OpenVMS VAX Software Product Installation Procedure V6.1
+
+           It is dd-mmm-yyyy at hh:mm.
+           Enter a question mark (?) at any time for help.
+
+           If you do not supply either the product name or the device
+           name, VMSINSTAL prompts you for this information later on
+           in the installation procedure. VMSINSTAL also prompts you
+           for any options you want to use with the installation.
+
+     2-4 Installation
+
+ 
+
+
+
+
+
+
+        2.2.2 Installation Questions
+
+              This section describes the questions that appear during
+              the installation. See Appendix A for a sample installation
+              procedure.
+
+              Each question in the installation is marked with an
+              asterisk (*) at the beginning of the line. Some questions
+              show the default response in brackets, for example [YES].
+              If you want to give the default response for a particular
+              question, simply press <Return>.
+
+              1. System backup
+
+                 VMSINSTAL asks you if you have made a backup copy of
+                 your system disk. You should always back up your system
+                 disk before performing an installation.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 If you are satisfied with the backup of your system
+                 disk, press <Return>. Otherwise, enter NO to discon-
+                 tinue the installation. After you back up your system
+                 disk, you can restart the installation.
+
+              2. Mounting the media
+
+                 You should now mount the first distribution volume on
+                 the device you specified when you invoked VMSINSTAL.
+                 The device name appears in the line preceding the
+                 question. VMSINSTAL then asks you if you are ready
+                 to continue with the installation.
+
+                 If you respond YES to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 the Digital SNA 3270 TE has been mounted on the
+                 specified device and that the installation has begun.
+                 For example:
+
+                 Please mount the first volume of the set on MUA0:.
+                 * Are you ready? YES
+                 %MOUNT-I-MOUNTED, SNATE016 MOUNTED ON _MUA0:  (NODE 1)
+                 The following products will be processed:
+                   SNATE V1.6
+
+                     Beginning installation of SNATE V1.6 at hh:mm
+
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                                                        Installation 2-5
+
+ 
+
+
+
+
+
+
+              If you entered the wrong device name when you invoked
+              VMSINSTAL and need to restart the installation, enter
+              NO in response to the "Are you ready?" question. To
+              abort the installation for any other reason, press
+              <Ctrl/Y>.
+
+           3. Release Notes
+
+              If you specified OPTIONS N when you invoked VMSINSTAL,
+              you are now given five options for reviewing the
+              release notes:
+
+              Release Notes Options:
+
+                  1. Display release notes
+                  2. Print release notes
+                  3. Both 1 and 2
+                  4. Copy release notes to SYS$HELP
+                  5. Do not display, print or copy release notes
+
+              * Select option [2]:
+
+              If you select option 1, VMSINSTAL displays the release
+              notes immediately on the console terminal. You can
+              terminate the display at any time by pressing <Ctrl/C>.
+
+              If you select option 2, VMSINSTAL prompts you for the
+              name of the print queue to which you want to send the
+              file:
+
+              * Queue name [SYS$PRINT]:
+
+              Either type in a queue name or press <Return> to send
+              the file to the default output print device.
+
+              If you select option 3, VMSINSTAL displays the release
+              notes immediately on the console terminal and then
+              prompts you for a queue name for the printed version.
+
+              If you choose option 4, VMSINSTAL copies the release
+              notes to the file SYS$HELP:SNATE016.RELEASE_NOTES.
+
+              If you select option 5, VMSINSTAL does not display,
+              print, or copy the release notes.
+
+           4. Continuing the installation
+
+     2-6 Installation
+
+ 
+
+
+
+
+
+
+                 Regardless of the option you choose, the installation
+                 procedure now asks if you want to continue the
+                 installation. To continue the installation, enter YES.
+                 Otherwise, press <Return> to terminate the installation
+                 procedure.
+
+                 * Do you want to continue the installation [N]?: YES
+
+                 The release notes are located in the following file:
+
+                 SYS$HELP:SNATE016.RELEASE_NOTES.
+
+                ________________________Note  ________________________
+
+                The name of the release notes file VMSINSTAL copies
+                consists of the current product name and version
+                number. Do not delete release notes for previous
+                versions of the TE software.
+
+                _____________________________________________________
+
+              5. License Registration
+
+                 The installation procedure asks if you have registered
+                 and loaded your product authorization key for the TE
+                 and displays information specific to the product, for
+                 example:
+
+                 Product:          SNA-3270-TE
+                 Producer:         DEC
+                 Version:          1.6
+                 Release Date:     dd-mmm-yyyy
+
+                 The installation inquires:
+
+                 *Does this product have an authorization key registered and loaded?
+
+                 If you have not registered and loaded your authoriza-
+                 tion key, you must answer "NO" to this question. You
+                 can still complete the installation procedure at this
+                 time, although you will not be able to run the TE
+                 software. See Section 1.3 for more information.
+
+              6. Choosing to run the Installation Verification Procedure
+                 (IVP)
+
+                                                        Installation 2-7
+
+ 
+
+
+
+
+
+
+              The installation procedure now asks if you want to
+              run the Installation Verification Procedure. The IVP
+              for the Digital SNA 3270 TE checks to be sure that the
+              installation is successful. It is recommended that you
+              run the IVP.
+
+              * Do you want to run the IVP after the installation [YES]?
+
+           7. Choosing to purge files
+
+              You have the option to purge files from previous
+              versions of the Digital SNA 3270 TE that this
+              installation supersedes. Purging is recommended,
+              although if you need to keep files from previous
+              versions, enter NO in response to this question.
+
+              *Do you want to purge files replaced by this installation[YES]?
+
+     2.2.3 Informational Messages
+
+           At this point, the installation procedure displays a
+           number of informational messages that report on the
+           progress of the installation. There are no further
+           questions, except for any that apply to the IVP. If the
+           installation procedure has been successful up to this
+           point, VMSINSTAL moves the new or modified files to their
+           target directories, updates help files, and updates DCL
+           tables, if necessary. If you asked for files to be purged,
+           that work is done now. The following message is displayed:
+
+           To make the terminal emulator shareable each time the system
+           reboots, you must add the following line to your system startup
+           procedure:
+
+            @SYS$STARTUP:SNATE$STARTUP
+
+           This command installs the TE software as a shareable
+           image. If you are installing the TE software on a
+           VAXcluster, you must execute this command file on each
+           node in the cluster. See the chapter on post-installation
+           consideration for more information. The installation
+           procedure also displays the following message:
+
+           %VMSINSTAL-I-MOVEFILES, files will now be moved to their target
+           directories...
+
+     2-8 Installation
+
+ 
+
+
+
+
+
+
+        2.2.4 Running the Installation Verification Procedure
+
+              If you chose to run the IVP, VMSINSTAL runs it now. When
+              the IVP runs successfully, you see the following display:
+
+              Starting Digital SNA 3270 TE V1.6 IVP
+              Digital SNA 3270 TE V1.6 IVP completed successfully
+
+        2.2.5 Completing the Installation Procedure
+
+              The following messages indicate that the entire installa-
+              tion procedure is complete:
+
+                 Installation of SNATE V1.6 completed at hh:mm
+
+              Enter the products to be processed from the next distribution
+                  volume set.
+              * Products: EXIT
+
+                 VMSINSTAL procedure done at hh:mm
+
+              The installation procedure also asks you if there are
+              any more products you want to install. If there are more
+              products to install, enter the name of the next software
+              product. If there are no more products to install, type
+              EXIT and press <Return>.
+
+              The installation of the Terminal Emulator is now complete,
+              and you can log out of the privileged account:
+
+              $ LOGOUT
+              SYSTEM     logged out at dd-mmm-yyyy hh:mm:ss.ss
+
+              Note that VMSINSTAL deletes or changes entries in the
+              process symbol table during the installation. Therefore,
+              if you are going to continue using the system manager's
+              account and you want to restore these symbols, you should
+              log out and then log back in again.
+
+        2.3 Error Recovery
+
+              If errors occur during the installation itself or when
+              the IVP is running, VMSINSTAL displays failure messages.
+              If the installation fails, the following message is
+              displayed:
+
+              %VMSINSTAL-E-INSFAIL, The installation of SNATE V1.6 has failed.
+
+                                                        Installation 2-9
+
+ 
+
+
+
+
+
+
+           If the IVP fails, the following messages are displayed:
+
+           Digital SNA 3270 TE V1.6 IVP failed.
+
+           Errors can occur during the installation if any of the
+           following conditions exist:
+
+           o  The operating system version is incorrect.
+
+           o  A prerequisite software version is incorrect.
+
+           o  Quotas necessary for successful installation are
+              insufficient.
+
+           o  System parameter values for successful installation are
+              insufficient.
+
+           o  The OpenVMS help library is currently in use.
+
+           o  The product is not properly licensed.
+
+           For descriptions of the error messages generated by these
+           conditions, see the OpenVMS documentation on system
+           messages, recovery procedures, and OpenVMS software
+           installation. If you are notified that any of these
+           conditions exist, you should take the appropriate action
+           as described in the message. (You might need to change a
+           system parameter or increase an authorized quota value.)
+           For information on installation requirements, see Chapter
+           1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-10 Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                                  After the Installation
+
+
+
+              After installing the Digital SNA 3270 Terminal Emulator
+              (TE) for OpenVMS, you may need to perform some or all of
+              the following tasks:
+
+              o  Edit the system startup file
+
+              o  Run the IVP
+
+              o  Reboot the system
+
+              o  Set user account quotas
+
+              o  Install the TE on a VMScluster
+
+        3.1 Editing System Files
+
+              You must edit the system startup file to provide for
+              automatic startup of the Digital SNA 3270 TE when your
+              system is rebooted.
+
+              Add the command line that starts the Digital SNA 3270 TE
+              to the system startup file, SYS$STARTUP:SYSTARTUP_VMS.COM.
+
+              @SYS$STARTUP:SNATE$STARTUP
+
+              You must position this new command line after the line
+              that invokes the network startup command procedure for
+              DECnet Phase IV. The following example shows the network
+              startup command line followed by the startup command line
+              for the Digital SNA 3270 TE:
+
+              $ @SYS$STARTUP:STARTNET.COM
+                   .
+                   .
+                   .
+              $ @SYS$STARTUP:SNATE$STARTUP
+
+                                              After the Installation 3-1
+
+ 
+
+
+
+
+
+
+     3.2 Running the Installation Verification Procedure (IVP)
+
+           The Installation Verification Procedure (IVP) for the
+           Digital SNA 3270 TE verifies the installation. During the
+           installation, you are asked if you want to run the IVP as
+           part of the installation. If you respond YES, VMSINSTAL
+           runs the IVP. It is recommended that you run the IVP to be
+           sure that the TE software is installed correctly.
+
+           After the Digital SNA 3270 TE is installed, you can run
+           the IVP independently to verify that the software is
+           available on your system.
+
+           The IVP for the Digital SNA 3270 TE is a command procedure
+           that is stored in the directory SYS$TEST after you install
+           the software. To run the IVP interactively after the
+           installation, issue the following command:
+
+           $ @SYS$TEST:SNATE$IVP
+
+           Executing this command procedure runs the IVP indepen-
+           dently of the installation procedure.
+
+     3.3 Rebooting the System
+
+           You can reboot your system after you have installed the
+           Digital SNA 3270 TE, edited the system startup file,
+           and reset the system parameters (if necessary). A system
+           reboot verifies that Digital SNA 3270 TE is ready for use,
+           and ensures that the edits to the system startup command
+           file are correct, and establishes any new parameter
+           settings. Note, however, that rebooting is optional.
+
+     3.4 User Account Requirements
+
+           To use the Digital SNA 3270 TE, user accounts on your
+           system must have certain privileges and quotas. The next
+           two sections contain information on these requirements.
+
+     3.4.1 Privileges
+
+           To use the Digital SNA 3270 TE, each account must have
+           at least TMPMBX and NETMBX privileges. Use the OpenVMS
+           Authorize Utility to determine whether users have the
+           privileges they require.
+
+     3-2 After the Installation
+
+ 
+
+
+
+
+
+
+        3.5 Installing the TE on a VMScluster System
+
+              If you want to run the TE software on multiple nodes of a
+              VMScluster system, first check to see that you have the
+              appropriate software license. Then, follow these steps
+              after installing the software:
+
+              Issue the following commands on each node of the cluster:
+
+              $ LICENSE LOAD SNA-3270-TE
+              $ @SYS$STARTUP:SNATE$STARTUP.COM
+
+        3.6 Determining and Reporting Problems
+
+              If an error occurs while the Digital SNA 3270 TE is being
+              used and you believe that the error is caused by a problem
+              with the Digital SNA 3270 TE software, you should take one
+              of the following actions:
+
+              o  If you have a BASIC or DECsupport Software Agreement,
+                 you should call your Customer Support Center. (With
+                 these services, you receive telephone support that
+                 provides high-level advisory and remedial assistance.)
+
+              If you find an error in the Digital SNA 3270 TE documenta-
+              tion, you should fill out and submit the Reader's Comments
+              form at the back of the document in which the error was
+              found. Include the section and page number where the error
+              was found.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                              After the Installation 3-3
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                     Sample Installation
+
+
+
+              This appendix contains a sample installation of the
+              Digital SNA 3270 Terminal Emulator for OpenVMS. This
+              sample was run on a system that had no previous version of
+              the TE installed.
+
+              You should assume that in the sample installation, no
+              users are logged on to the system, and that OPTIONS N is
+              specified to print the release notes. The Installation
+              Verification Procedure (IVP) runs at the end of the
+              installation.
+
+        Username: SYSTEM
+        Password:
+         Welcome to VAX/VMS version V6.1 on node LIVY
+            Last interactive login on day, dd-mmm-yyyy hh:ss
+            Last non-interactive login on day, dd-mmm-yyyy hh:ss
+
+        $ SET DEF SYS$UPDATE
+        $ @VMSINSTAL
+         OpenVMS VAX Software Product Installation Procedure V6.1
+
+        It is dd-mmm-yyyy at hh:ss.
+        Enter a question mark (?) at any time for help.
+
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+         DECW$WM_1
+         DECW$TE_1
+         DECW$SERVER_0
+        * Do you want to continue anyway [NO]? Y
+        * Are you satisfied with the backup of your system disk [YES]? Y
+        * Where will the distribution volumes be mounted: MTA0
+
+        Enter the products to be processed from the first distribution
+        volume set.
+        * Products: SNATE
+        * Options: N
+
+                                                 Sample Installation A-1
+
+ 
+
+
+
+
+
+
+     The following products will be processed:
+       SNATE V1.6
+      Beginning installation of SNATE V1.6 at hh:ss
+
+     %VMSINSTAL-I-RESTORE, Restoring product saveset A ...
+     %VMSINSTAL-I-RELMOVED, The product's release notes have been successfully
+     moved to SYS$HELP.
+         Release Notes Options:
+
+      1.  Display release notes
+      2.  Print release notes
+      3.  Both 1 and 2
+      4.  Copy release notes to SYS$HELP
+      5.  Do not display, print or copy release notes
+
+     * Select option [2]:
+     * Do you want to continue the installation? Y
+     Product:      SNA-3270-TE
+     Producer:     DEC
+     Version:      1.6
+     Release Date: dd-mmm-yyyy
+
+     * Does this product have an authorization key registered and loaded? Y
+     * Do you want to run the IVP after the installation [YES]?
+     * Do you want to purge files replaced by this installation [YES]? Y
+
+      To make the terminal emulator shareable each time the system
+      reboots, you must add the following line to your system startup
+      procedure:
+
+       $ @SYS$STARTUP:SNATE$STARTUP
+
+     %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories.
+      Digital SNA 3270 TE V1.6 installation completed successfully
+      Installation of SNATE V1.6 completed at hh:ss
+
+     Enter the products to be processed from the next distribution volume set.
+     * Products: EXIT
+      VMSINSTAL procedure done at hh:ss
+
+     $ LOGOUT
+         SYSTEM logged out at dd-mmm-yyyy hh:ss
+
+
+
+     A-2 Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                          Files Installed on Your System
+
+
+
+              The Digital SNA 3270 Terminal Emulator for OpenVMS
+              installation procedure installs a number of files on your
+              system. Section B.1 tells where you can find the installed
+              files.
+
+        B.1 File Names
+
+              The installation procedure creates the following files
+              on your system when you install the Digital SNA 3270 TE
+              software.
+
+              o  SYS$SYSTEM:[SYSEXE]SNATERM.EXE
+
+              o  SYS$MESSAGE:[SYSMSG]SNATERMMSG.EXE
+
+              o  SYS$EXAMPLES:[SYSHLP.EXAMPLES]SNATEDEF.MAR
+
+              o  SYS$EXAMPLES:[SYSHLP.EXAMPLES]SNATEFRE.MAR
+
+              o  SYS$EXAMPLES:[SYSHLP.EXAMPLES]SNATENUMPAD.MAR
+
+              o  SYS$STARTUP:[SYSTARTUP]SNATE$STARTUP.COM
+
+              o  SYS$COMMON:[SYSTEST.SNATE]SNATE$IVP.COM
+
+
+
+
+
+
+
+
+
+
+
+                                      Files Installed on Your System B-1

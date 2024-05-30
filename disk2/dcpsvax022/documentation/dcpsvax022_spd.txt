@@ -1,0 +1,1019 @@
+ 
+
+Software
+Product
+Description
+
+___________________________________________________________________
+
+PRODUCT NAME:  hp DECprint Supervisor (DCPS) for hp OpenVMS,    SPD
+44.15.13                Version 2.2
+
+DESCRIPTION
+
+HP DECprint Supervisor (DCPS) for HP OpenVMS is a layered software ap-
+plication that runs on OpenVMS Alpha and OpenVMS VAX systems to pro-
+vide access to selected PostScript Level 1, Level 2 and Level 3 print-
+ers.
+
+DCPS drives selected PostScript printers and supports these printers'
+special features, such as tray and media selection and two-sided print-
+ing. File formats supported include PostScript, ANSI-Compliant DIGITAL
+Printing Protocol Level 3 (DEC PPL3) and HP PCL. DCPS also includes
+features such as number-up, layup, automatic data type detection and
+high speed image printing, plus translators for a number of printer
+languages. See the Other Hardware Required section of the SPD for the
+list of supported printer models.
+
+DECprint Supervisor software consists of the following components:
+
+o  A print symbiont that processes print requests for the host on which
+   it resides.
+
+o  Software to transmit the request and associated data over the fol-
+   lowing protocols:
+
+   -  Ethernet via TCP/IP to a printer connected to a print server or
+      a terminal server that supports the bidirectional raw TCP/IP socket
+      protocol
+
+   -  Ethernet via TCP/IP to a printer with a network interface card
+      (NIC) that supports the bidirectional raw TCP/IP socket proto-
+      col
+
+                                                       January 2003
+
+ 
+
+   -  Ethernet to a PrintServer printer via DECnet or TCP/IP using Com-
+      mon Printer Access Protocol (CPAP)
+
+   -  Local Area Transport (LAT)
+
+   -  Serial line
+
+o  Translators to convert various non-PostScript files into the PostScript
+   language for printing.
+
+o  Page formatting capabilities such as the ability to print multi-
+   ple page images on a single side of a sheet of paper and to spec-
+   ify borders, margins and page offsets.
+
+o  A series of PostScript tools for application developers. These in-
+   clude a PostScript error handler and Font Encoding Vectors for the
+   ISO Latin Alphabet Number 1 (ISO 8859/1) and DIGITAL Multinational
+   Character Set for use with all the PostScript text fonts that are
+   built into DIGITAL and selected Compaq PostScript printers.
+
+Install DECprint Supervisor software on each node that has print queues
+for PostScript printers.
+
+A system running DECprint Supervisor software can transmit print re-
+quests to printers on a TCP/IP, DECnet or LAT network. Note that not
+all printers support all these protocols.
+
+To communicate with a printer on a TCP/IP network, HP TCP/IP Services
+for HP OpenVMS software, or Process Software MultiNet for OpenVMS or
+TCPware for OpenVMS software must be installed on your system.
+
+For DIGITAL PrintServer printers, whether using the TCP/IP or DECnet
+protocol, PrintServer Software must be installed on at least one sys-
+tem in your network.
+
+Printing Features
+
+o  PostScript printing. The print symbiont passes PostScript files di-
+   rectly to the printer. DECprint Supervisor does not interpret or
+   translate PostScript files. Therefore, they must be created using
+   standard PostScript Level 1, Level 2 or Level 3 operators as de-
+   fined within the printer itself.
+
+                                 2
+
+ 
+
+o  ANSI (DEC PPL3) printing. DECprint Supervisor translates ANSI files
+   into PostScript for printing on the output device. These ANSI files
+   may contain ASCII text, sixel graphics and other features of HP's
+   ANSI-compliant Printing Protocol Level 3.
+
+o  Selection of input tray via INPUT_TRAY, SHEET_SIZE, or PAGE_SIZE
+   parameters and output tray via OUTPUT_TRAY, within the limitations
+   of the printer and the tray-naming conventions to provide such fea-
+   tures.
+
+o  Rotation of the page via the PAGE_ORIENTATION parameter for non-
+   PostScript files only.
+
+o  Selection of single-sided, double-sided, or tumble printing when
+   available on the printer, via the SIDES parameter.
+
+o  Formatting of ANSI text files via the /HEADER, /FORM, /SPACE and
+   /FEED qualifiers and the TAB parameter.
+
+o  Control of ANSI file margins, page setup and wrap or truncate op-
+   tions as specified by the DEFINE/FORM command.
+
+o  Status and error messages sent to the user's terminal, may be printed
+   on the job trailer page or job log page, written to a log file, or
+   displayed on the operator's console.
+
+o  Use of device control modules for basic data types via the /SETUP
+   qualifier. PostScript modules may contain any PostScript operators
+   supported by the printer in the printing context.
+
+o  Collection of accounting information for each print job as follows:
+   sheets of paper printed, the number of RMS Gets and the number of
+   QIO Writes. All Compaq, DIGITAL and GENICOM printers support this
+   feature except where noted in the Other Hardware Required section
+   of the SPD. This feature may not be available with other printers.
+
+o  Access to the PCL interpreter native to selected printers. Print-
+   ers for which the native PCL interpreter is supported are listed
+   in the Other Hardware Required section of the SPD.
+
+o  Support for printers via network interface cards, print servers and
+   terminal servers that support bidirectional raw TCP/IP sockets.
+
+                                 3
+
+ 
+
+o  Support for PrintServer printers on DECnet or TCP/IP interconnects
+   using CPAP protocol.
+
+o  Automatic data type detection and switching. The software attempts
+   to determine the data type of the file. If successful, it will au-
+   tomatically translate, if necessary, and print the file. If it can-
+   not determine the file data type, it will use the default data type
+   defined by DATA_TYPE=AUTOMATIC.
+
+   If the file is printed using the data type defined by DATA_TYPE=AUTOMATIC,
+   the symbiont will look for a switch to PostScript command (%!) and
+   continue to process the rest of the file as PostScript. This switch
+   may occur only once per file. The switch to PostScript feature is
+   not available when DCPS uses a printer's native PCL interpreter to
+   process the file.
+
+o  Printing non-PostScript data types on the PostScript printer. Trans-
+   lators are provided to translate the following data types into PostScript
+   for printing:
+
+   -  DDIF (bitonal Image subset only; requires DECwindows Motif soft-
+      ware)
+
+   -  PCL Level 4 (as implemented on the HP LaserJet IID)
+
+   -  IBM Proprinter XL24
+
+   -  ReGIS (monochrome output only)
+
+   -  Tektronix 4010/4014
+
+   -  ASCII LIST translator that formats and numbers ASCII files. This
+      translator numbers each line of text, creates alternating bars
+      of gray and white in the background and creates a running head
+      of the file name and page number.
+
+o  Printing two or more page images on a single side of a sheet via
+   the NUMBER_UP parameter.
+
+
+                                 4
+
+ 
+
+o  Specifying page layup features via the LAYUP_DEFINITION parameter.
+   Page layup features include Borders, Margins, Margin Alternation,
+   Pages Per Sheet, First Page, Page Order and Page Grid. Layup def-
+   inition options may be provided directly, as arguments to the LAYUP_
+   DEFINITION parameter, or indirectly, as the contents of a file spec-
+   ified by that parameter.
+
+o  Specifying a range of pages of the file to be printed via the PAGE_
+   LIMIT parameter.
+
+o  Printing jobs with finishing options such as stapling and punch-
+   ing, on supported printers equipped with such options.
+
+o  Automatically scaling a page created for one paper size so that it
+   fits on a different paper size via use of both the PAGE_SIZE and
+   SHEET_SIZE parameters on the same print command.
+
+o  Printing multiple uncollated copies of each sheet via the SHEET_
+   COUNT parameter.
+
+o  Use of device control modules for all data types via the /SETUP qual-
+   ifier. ANSI modules may include control sequences. PCL modules may
+   include binary font data.
+
+o  Support for OpenVMS autostart queues, simplifying startup and en-
+   suring high availability of print queues.
+
+ANSI (DEC PPL3) Emulation
+
+Printing of ANSI text and sixel graphics is compatible with DIGITAL's
+ANSI-compliant PPL3 printers.
+
+Note: PostScript printers differ in the amount of virtual memory they
+have available for printing and font storage. Files that require down-
+loading of fonts may be printed differently, may print more slowly or
+may fail to print on some printers.
+
+
+
+
+                                 5
+
+ 
+
+INSTALLATION STATEMENT
+
+HP recommends that a customer's first purchase of this software prod-
+uct include HP Installation Services. These services provide for in-
+stallation of the software product by an experienced HP Software Spe-
+cialist.
+
+For subsequent purchases of this product, only customers with knowl-
+edge of OpenVMS generic and execution print queues in clustered and
+non-clustered environments and, if operating in a DECserver environ-
+ment, knowledge of DECserver management, should attempt installation
+of this software product. HP recommends that all other customers pur-
+chase HP's Installation Services.
+
+These services provide for the installation of the software product
+and HP PostScript Printer hardware by an experienced HP Specialist.
+
+Before installation of the software by HP Installation Services, the
+customer must:
+
+o  Obtain, install and demonstrate as operational any equipment and
+   facilities necessary to interface to HP's communication equipment.
+
+o  Make available for a reasonable period of time, as mutually agreed
+   upon by HP and the customer, all hardware, communication facili-
+   ties and terminals that are to be used during installation.
+
+o  For verification of installation and connectivity in a multi-node
+   node network, designate and provide access to a host that has pre-
+   viously been installed by HP.
+
+o  Assure that a valid OpenVMS operating system license is installed.
+
+Delays caused by any failure to meet these responsibilities will be
+charged at the then prevailing rate for time and materials.
+
+Installation of DECprint Supervisor software will consist of the fol-
+lowing:
+
+o  Verification that all prerequisite software and hardware has been
+   installed.
+
+                                 6
+
+ 
+
+o  Verification that a complete set of DCPS software media and doc-
+   umentation has been received.
+
+o  Verification that all hardware and software prerequisites have been
+   met and the equipment is operational.
+
+o  Installation of DCPS software on one system.
+
+o  Verification that DCPS software has been correctly installed by run-
+   ning the Installation Verification Procedure (IVP).
+
+o  Modification of the DECnet database or TCP/IP hosts file to add printer
+   node names and addresses.
+
+o  Modification of the OpenVMS start-up files to automate the start-
+   up of print queues.
+
+HARDWARE REQUIREMENTS
+
+Processors Supported
+
+For information about support processors, refer to the Software Prod-
+uct Description for the OpenVMS Operating System for Alpha and VAX (SPD
+25.01.xx and 41.87.xx).
+
+Other Hardware Required
+
+At least one PostScript printer, as follows:
+
+o  Apple
+
+      LaserWriter IIg
+      LaserWriter IIf [1]
+      LaserWriter II NT [1]
+      LaserWriter II NTR [1]
+      LaserWriter II NTX [1]
+      LaserWriter Plus [1]
+      LaserWriter Pro 600 [1]
+      LaserWriter Pro 630 [1]
+
+____________________
+
+ Printer  does not have native PCL interpreter
+
+                                 7
+
+ 
+
+o  Compaq
+
+      Laser Printer LN16 [2]
+      Laser Printer LN32
+      Laser Printer LNC02 [3]
+      Laser Printer LNM40
+
+o  DIGITAL
+
+      Colormate PS (LF01R) [1]
+      Colorwriter LSR 2000 and 2000[+] (LNC01) [1]
+      DECcolorwriter 1000 (LF02) [1]
+      DEClaser 1150 (LN07R) [1]
+      DEClaser 1152 (LN07C) [1]
+      DEClaser 2150 (LN05R) [1]
+      DEClaser 2250 (LN06R) [1]
+      DEClaser 3250 (LN08R) [1]
+      DEClaser 3500 (LN14) [4]
+      DEClaser 5100 (LN09) [4]
+      Laser Printer LN15 [2]
+      Laser Printer LN15+ [2]
+      Laser Printer LN17+ps
+      Laser Printer LN20 [3]
+      Laser Printer LN40 [3]
+      Laser Printer LNC02 [3]
+      LN17ps
+      PrintServer 17 (LPS17)
+      PrintServer 17/600
+      PrintServer 20 (LPS20) [1]
+      turbo PrintServer 20 [1]
+      PrintServer 32 (LPS32) [1]
+      PrintServer 32 plus
+      PrintServer 40 (LPS40) [1]
+      PrintServer 40 Plus [1]
+
+____________________
+
+ Supported  only when the printer is in PostScript mode
+
+ Does  not support DCPS accounting feature
+ Includes  support for direct printing to native PCL interpreter only
+
+  when printer is in autosensing mode
+
+                                 8
+
+ 
+
+      ScriptPrinter (LN03R) [1]
+
+o  GENICOM
+
+      Intelliprint cL160
+      Intelliprint mL260
+      Intelliprint mL402
+      Intelliprint mL450
+      LN21
+      LN28
+      LN45
+      LNM40
+      microLaser 170 [2]
+      microLaser 210
+      microLaser 280
+      microLaser 320
+      microLaser 401
+
+o  HP
+
+      Color LaserJet 2500
+      Color LaserJet 4500
+      Color LaserJet 4550
+      Color LaserJet 4600
+      Color LaserJet 5500
+      LaserJet III with PostScript (Level 1) cartridge [1]
+      LaserJet III with PostScript-Plus (Level 2) cartridge [1]
+      LaserJet IIID with PostScript (Level 1) cartridge [1]
+      LaserJet IIID with PostScript-Plus (Level 2) cartridge [1]
+      LaserJet IIISi with PostScript (Level 1) option
+      LaserJet IIISi with PostScript (Level 2) option
+      LaserJet 4M
+      LaserJet 4M Plus
+      LaserJet 4ML
+      LaserJet 4MP
+      LaserJet 4SiMX
+      LaserJet 4MV
+      LaserJet 5SiMX
+      LaserJet 5M (monochrome version)
+      LaserJet 2100
+
+                                 9
+
+ 
+
+      LaserJet 2200
+      LaserJet 4000
+      LaserJet 4050
+      LaserJet 4100
+      LaserJet 4100 MFP
+      LaserJet 4200
+      LaserJet 4300
+      LaserJet 5000
+      LaserJet 5100
+      LaserJet 8000
+      LaserJet 8100
+      LaserJet 8150
+      LaserJet 9000
+      LaserJet 9000 MFP
+      PaintJet XL300 [1]
+
+o  IBM
+
+      Infoprint 21
+      InfoPrint 32
+      InfoPrint 40
+
+o  Lexmark
+
+      C720
+      C750
+      C910
+      Optra C710
+      Optra Rt+ [1]
+      Optra S 1250
+      Optra S 1255
+      Optra S 1620
+      Optra S 1625
+      Optra S 1650
+      Optra S 1855
+      Optra S 2420
+      Optra S 2450
+      Optra S 2455
+      Optra Se 3455
+      Optra T610
+
+                                10
+
+ 
+
+      Optra T612
+      Optra T614
+      Optra T616
+      Optra W810
+      T520
+      T522
+      T620
+      T622
+      W820
+
+o  Tektronix
+
+      Phaser 200e [1]
+      Phaser 200i [1]
+      Phaser 220e [1]
+      Phaser 740 [1]
+      Phaser 750 [1]
+      Phaser 780 [1]
+      Phaser 850 [1]
+
+o  Xerox
+
+      DocuPrint N24
+      DocuPrint N32
+      DocuPrint N40
+      DocuPrint N2025
+      DocuPrint N2125
+      DocuPrint N2825
+      DocuPrint N3225
+      DocuPrint N4025
+
+A supported printer must be equipped with one or more of the follow-
+ing supported interconnects:
+
+o  EIA-232 (RS-232) serial port
+
+o  EIA-422 (RS-422) serial port
+
+o  Ethernet port or Network Interface Card (NIC) supporting CPAP, LAT
+   or bidirectional raw TCP/IP socket protocol
+
+                                11
+
+ 
+
+o  Bidirectional Centronics parallel port connected through a print
+   server or terminal server
+
+Note: DCPS does not support the following types of printer connections:
+
+ -  A unidirectional connection (for example, a parallel or raw TCP/IP
+   port that is unidirectional)
+
+ -  The parallel port on an OpenVMS system
+
+ -  The Telnet or LPD network protocols
+
+The following notes apply when using the above interconnects:
+
+o  EIA-232 serial interfaces are optional with some printers and may
+   need to be purchased separately.
+
+o  EIA-422 serial interfaces, such as that employed on the HP Paint-
+   Jet XL300, require an EIA-422/EIA-232 converter/adapter.
+
+o  The HP LaserJet 4SiMX is supported for serial communication when
+   equipped with the Extend Systems ESI-2633A interface card.
+
+o  Ethernet interfaces may require an adapter to connect the printer's
+   Ethernet hardware to that of the local area network.
+
+o  Ethernet protocols supported for certain Desktop and Workgroup print-
+   ers (not including PrintServer printers) are raw TCP/IP socket and
+   LAT.
+
+o  Ethernet protocols supported for DIGITAL PrintServer printers are
+   DECnet CPAP and TCP/IP CPAP.
+
+For Serial Line configurations, the following are required
+
+o  At least one printer listed above
+
+o  Serial interface and cable for EIA-232 or EIA-422 with converter/adapter
+
+o  One of the following serial interfaces or servers:
+
+   -  CVAX serial interface (CXA16, CXB16, CX08, DZQ-11; 9600 baud)
+
+   -  DHV11 (9600 baud; serial interface)
+
+   -  DZQ11 (9600 baud; serial interface)
+
+                                12
+
+ 
+
+   -  DLV11 (9600 baud; serial interface)
+
+   -  DHU11 (9600 baud; serial interface)
+
+   -  DMZ32 (4800 baud; serial interface)
+
+   -  DMF32 (9600 baud; serial interface)
+
+   -  DMB32 (9600 baud; serial interface)
+
+   -  DECserver 90L and 90L+ (38.4K baud; LAT)
+
+   -  DECserver 90M (57.6K baud; LAT and raw TCP/IP socket)
+
+   -  DECserver 90TL (57.6K baud; LAT and raw TCP/IP socket)
+
+   -  DECserver 100 (9600 baud; LAT)
+
+   -  DECserver 200/MC (19.2K baud; LAT)
+
+   -  DECserver 250 (19.2K baud; LAT)
+
+   -  DECserver 300 (19.2K baud; LAT
+
+   -  DECserver 500 (9600 baud; LAT)
+
+   -  DECserver 550 (9600 baud; LAT)
+
+   -  DECserver 700 series (115.2K baud; LAT and raw TCP/IP socket)
+
+   -  DECserver 900 series (115.2K baud; LAT and raw TCP/IP socket)
+
+   -  MUXserver 100 (19.2K baud; LAT)
+
+   -  MUXserver 300 (19.2K baud; LAT)
+
+   -  NetRider 90 - see DECserver 90M
+
+   -  NetRider 900 - see DECserver 900 series
+
+   -  LATprint (38.4K baud; LAT)
+
+   -  RapidPrint 200 (115.2K baud; LAT)
+
+A DECserver or NetRider configuration requires DECserver Network Ac-
+cess Software (DNAS) V2.0 or later and a minimum of 4 Mbytes of mem-
+ory to support raw TCP/IP sockets.
+
+                                13
+
+ 
+
+All of the interfaces above support EIA-232 and some support EIA-422.
+The customer must select an appropriate combination of host serial in-
+terface, cable and printer serial interface. In some cases, an exter-
+nal adapter may be required. Also:
+
+o  The printer's communications interface must be set for 8-bit, no
+   parity communication.
+
+o  The interface baud rate must be set to a value less than or equal
+   to the value specified above for the chosen host interface.
+
+o  Flow control should be set to XON/XOFF for PostScript-only print-
+   ers or DTR/CTS (hardware handshake) for PostScript/PCL 5 printers.
+
+For parallel port configurations, the following are required
+
+o  At least one printer (listed above)
+
+o  Bidirectional Centronics parallel port interface
+
+o  One of the following print servers:
+
+   -  DIGITAL RapidPrint 200 (LAT)
+
+   -  DIGITAL RapidPrint 500 (Raw TCP/IP socket and LAT)
+
+   -  GENICOM MPS100 (Raw TCP/IP socket and LAT)
+
+A parallel cable may also be required to connect the printer to the
+print server.
+
+For Raw TCP/IP configurations, the following are required
+
+o  At least one printer (listed above)
+
+o  A NIC, print server, or terminal server that provides bidirectional
+   raw TCP/IP sockets.
+
+A cable may also be required to connect the printer to a print server
+or terminal server.
+
+For PrintServer configurations, the following are required
+
+o  A DIGITAL PrintServer printer
+
+                                14
+
+ 
+
+o  An Ethernet Controller Interface for the client system
+
+o  An Ethernet physical channel for the printer, and one of the fol-
+   lowing:
+
+   -  Ethernet Transceiver (H4000 or H4004)
+
+   -  Local Network Interconnect (DELNI)
+
+   -  ThinWire Ethernet Station Adapter (DESTA)
+
+   -  ThinWire Interconnect (DEMPR)
+
+Disk Space Requirements:
+
+DECprint Supervisor for
+OpenVMS Alpha
+Disk space required for      7,400 blocks
+installation:                (3.7 Mbytes)
+Disk space required for      6,900 blocks
+use (permanent):             (3.5 Mbytes)
+
+DECprint Supervisor for
+OpenVMS VAX
+Disk space required for      5,900 blocks
+installation:                (3.0 Mbytes)
+Disk space required for      5,500 blocks
+use (permanent):             (2.8 Mbytes)
+
+These counts refer to the disk space required on the system disk. The
+sizes are approximate; actual sizes may vary depending on the user's
+system environment, system disk cluster size, configuration and soft-
+ware options.
+
+SOFTWARE REQUIREMENTS
+
+DECprint Supervisor (DCPS) for OpenVMS Version 2.2 software runs on
+the following versions of the OpenVMS operating system:
+
+o  OpenVMS Alpha V6.2, V7.2-2, V7.3 and V7.3-1
+
+                                15
+
+ 
+
+o  OpenVMS VAX V5.5-2, V7.2 and V7.3
+
+However, only specific versions of networking software are supported
+for each version of the operating system. See the following sections
+for the supported versions.
+
+Raw TCP/IP Configurations
+
+For Raw TCP/IP configurations, you need one of the following TCP/IP
+products:
+
+o  HP TCP/IP Services for HP OpenVMS
+
+o  Process Software MultiNet for OpenVMS
+
+o  Process Software TCPware for OpenVMS
+
+See Table 1 for supported versions.
+
+___________________________________________________________________
+
+Table_1:_Supported_Network_Software_Versions_______________________
+
+              TCP/IP
+OpenVMS_______Services____DECnet____DECnet-Plus____________________
+
+Alpha V6.2    V4.2        V6.2      V6.3
+
+Alpha         V5.1,       V7.2-2    V7.2-1
+V7.2-2        V5.3
+
+Alpha V7.3    V5.1,       V7.3      V7.3
+              V5.3
+
+Alpha         V5.3        V7.3-1    V7.3-1
+V7.3-1
+
+VAX V5.5-2    V4.0        V5.5-2    --
+
+VAX V7.2      V5.1,       V7.2      V7.2
+              V5.3
+
+VAX V7.3      V5.1,       V7.3      V7.3
+______________V5.3_________________________________________________
+
+                                16
+
+ 
+
+PrintServer Printer Configurations
+
+For PrintServer printer configurations, you need a supporting host and
+PrintServer Software V4.0 or later.[5] Refer to the PrintServer Soft-
+ware SPD 48.09.xx for more information.
+
+You also need one of the following products:
+
+o  hp DECnet for hp OpenVMS
+
+o  hp DECnet-Plus for hp OpenVMS
+
+o  hp TCP/IP Services for hp OpenVMS
+
+o  Process Software MultiNet for OpenVMS
+
+o  Process Software TCPware for OpenVMS
+
+See Table 1 for supported versions.
+
+DDIF image printing
+
+o  DECwindows Motif software
+
+SOFTWARE LICENSING
+
+This software is furnished under the licensing provisions of Hewlett-
+Packard Company's Standard Terms and Conditions. For more information
+about HP's licensing terms and policies, contact your reseller, VAR
+or local HP office.
+
+DECprint Supervisor for OpenVMS
+
+The right to use DECprint Supervisor for OpenVMS is included with the
+license for the OpenVMS Alpha and OpenVMS VAX operating systems.
+
+This right permits execution of the DECprint Supervisor for OpenVMS
+software on any Alpha or VAX processor for purposes of controlling and
+providing basic printing features for all PostScript printers controlled
+by the licensed node.
+____________________
+
+ This  product has been retired.
+
+                                17
+
+ 
+
+The Hardware Requirements section of this SPD lists the supported print-
+ers. Supported printers have been tested and verified to work. HP makes
+no representation relative to the use of this product with PostScript
+devices not listed in the SPD. Customers' use of the product with PostScript
+devices not listed in the SPD is at their own risk.
+
+CLUSTER ENVIRONMENT
+
+This layered product is fully supported when installed on any valid
+and licensed VMScluster[6] configuration without restrictions. The Hard-
+ware Requirements section of this product's Software Product Descrip-
+tion and System Support Addendum detail any special hardware required
+by this product.
+
+OpenVMS Tailoring
+
+The following OpenVMS classes are required for full functionality of
+this layered product:
+
+o  OpenVMS Required Saveset
+
+o  Network Support (for PrintServer support) [7]
+
+o  Secure User's Environment
+
+o  Utilities (for support of DECserver connected printers) [7]
+
+o  DECwindows Application Files (for printing DDIF encoded bitonal im-
+   ages) [7]
+
+For more information on OpenVMS classes and tailoring, refer to the
+appropriate OpenVMS Operating System Software Product Description.
+
+____________________
+ VMScluster  configurations are fully described in the VMScluster Soft-
+  ware Product Description (42.18.xx) and include CI, Ethernet, DSSI
+
+  and SCSI configurations.
+ These  are optional features.  Installations that do not use these fea-
+
+  tures do not need to install the tailoring classes indicated.
+
+                                18
+
+ 
+
+OPTIONAL SOFTWARE
+
+o  Distributed Queuing Service for OpenVMS (DQS) (SPD 28.80.xx)
+
+o  DECnet-Plus for OpenVMS Alpha (SPD 50.45.xx) or DECnet-Plus for OpenVMS
+   VAX (SPD 25.03.xx) when DECnet is used as the communication pro-
+   tocol to PrintServer printers.
+
+o  HP TCP/IP Services for HP OpenVMS (SPD 46.46.xx) when TCP/IP is used
+   as the communication protocol to PrintServer printers and to print-
+   ers with NICs and print servers and terminal servers that support
+   raw TCP/IP socket protocol.
+
+o  Process Software MultiNet for OpenVMS when TCP/IP is used as the
+   communication protocol to PrintServer printers and to printers with
+   NICs and print servers and terminal servers that support raw TCP/IP
+   socket protocol.
+
+o  Process Software TCPware for OpenVMS when TCP/IP is used as the com-
+   munication protocol to PrintServer printers and to printers with
+   NICs and print servers and terminal servers that support raw TCP/IP
+   socket protocol.
+
+GROWTH CONSIDERATIONS
+
+The minimum hardware/software requirements for any future version of
+this product may be different from the requirements for the current
+version.
+
+DISTRIBUTION MEDIA
+
+DCPS software is available on CD-ROM as described below, and as part
+of the OpenVMS Alpha and VAX Software Product Libraries.
+
+DCPS documentation is available on CD-ROM and in hardcopy as described
+below, and as part of the OpenVMS Alpha and VAX Online Documentation
+Libraries.
+
+
+
+                                19
+
+ 
+
+ORDERING INFORMATION
+
+Software Documentation:
+   QA-09NAA-GZ (hardcopy)
+
+Software Media and Documentation:
+   QA-09NAB-H8 (CD-ROM)
+
+This CD-ROM contains DCPS software for Alpha and VAX, and documenta-
+tion in various formats.
+
+o  Documentation
+   Software Product Description (SPD)
+   Release Notes
+   Installation Guide
+   System Manager's Guide
+   User's Guide
+
+o  Formats
+   Text
+   PostScript (PS)
+   Adobe Acrobat Portable Document Format (PDF)
+   HyperText Markup Language (HTML)
+   Bookreader
+
+SOFTWARE PRODUCT SERVICES
+
+A variety of service options are available from HP. For more infor-
+mation, contact your HP reseller or local HP office.
+
+SOFTWARE WARRANTY
+
+This software is provided by HP with a ninety-day comformance warranty
+in accordance with the HP warranty terms applicable to the license pur-
+chase.
+
+© Copyright 1992-2003 Hewlett-Packard Development Company, L.P.
+
+
+
+                                20
+
+ 
+
+Confidential computer software. Valid license from HP and/or its sub-
+sidiaries required for possession, use or copying. Consistent with FAR
+12.211 and 12.212, Commercial Computer Software, Computer Software Doc-
+umentation, and Technical Data for Commercial Items are licensed to
+the U.S. Government under vendor's standard commercial license.
+
+Neither HP nor any of its subsidiaries shall be liable for technical
+or editorial errors or omissions contained herein. The information in
+this document is provided "as is" without warranty of any kind and is
+subject to change without notice. The warranties for HP products are
+set forth in the express limited warranty statements accompanying such
+products. Nothing herein should be construed as constituting an ad-
+ditional warranty.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                21
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                22

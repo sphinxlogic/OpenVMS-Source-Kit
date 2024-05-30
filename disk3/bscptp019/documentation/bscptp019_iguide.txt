@@ -1,0 +1,2110 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    ____________________________________________________
+                    VAX 2780/3780 Protocol Emulator
+                    Installation Guide
+
+                    Order Number: AA-MK30C-TE
+
+
+                    August 1998
+
+                    This document describes how to install the VAX
+                    2780/3780 Protocol Emulator, Version 1.9. The
+                    document also explains how to read the online release
+                    notes before and after installing the product.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a revised
+                                                  manual.
+
+                    Operating System and Version: OpenVMS VAX Version
+                                                  6.2, 7.1
+
+                    Network Version:              DECnet/OSI V6.3 for
+                                                  OpenVMS VAX
+                                                  Version 6.2
+                                                  DECnet-Plus V7.1 for
+                                                  OpenVMS VAX
+                                                  Version 7.1
+
+                    Software Version:             VAX 2780/3780 Protocol
+                                                  Emulator
+                                                  Version 1.9
+
+ 
+
+
+
+
+
+
+
+          Electronic Data Systems Corporation and Digital Equipment
+          Corporation make no representations that the use of their
+          products in the manner described in this publication will
+          not infringe on existing or future patent rights, nor do
+          the descriptions contained in this publication imply the
+          granting of licenses to make, use, or sell equipment or
+          software in accordance with the description.
+
+          Possession, use, or copying of the software described in
+          this publication is authorized only pursuant to a valid
+          written license from DIGITAL or an authorized sublicensor.
+
+          The information in this document is subject to change
+          without notice and should not be construed as a commitment
+          from Electronic Data Systems Corporation or Digital
+          Equipment Corporation. Electronic Data Systems Corporation
+          and Digital Equipment Corporation assume no responsibility
+          for any errors that may appear in this document.
+
+          DIGITAL conducts its business in a manner that conserves
+          the environment and protects the safety and health of its
+          employees, customers, and the community.
+
+          Copyright © 1998 Electronic Data Systems Corporation. All
+          Rights Reserved.
+
+          Copyright © 1989, 1994 Digital Equipment Corporation. All
+          Rights Reserved.
+
+          The following are trademarks of Digital Equipment
+          Corporation:
+
+          DEC, DECnet, DIGITAL, OpenVMS, VAX, VAXcluster, VMS,
+          VMScluster, the AlphaGeneration logo, and the DIGITAL logo.
+
+          The following are third-party trademarks:
+
+             IBM is a registered trademark of International Business
+             Machines Corporation.
+             PostScript is a registered trademark of Adobe Systems,
+             Inc.
+
+          This document is available on CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing for Installation
+
+        1.1   VAX System Requirements.......................    1-1
+        1.1.1     VAX Supported Processors..................    1-1
+        1.1.2     Checking the Distribution Kit.............    1-1
+        1.1.3     Accessing the Online Release Notes........    1-1
+        1.1.4     VAX Communications Device Requirements....    1-2
+        1.1.5     OpenVMS Version Support...................    1-3
+        1.1.6     VAXcluster Considerations.................    1-4
+        1.1.7     Prerequisite Software.....................    1-4
+        1.1.8     OpenVMS License Management Facility
+                  Requirements..............................    1-5
+        1.1.9     OpenVMS Tailor Requirements...............    1-5
+        1.1.10    VMSINSTAL Requirements....................    1-6
+        1.1.11    Backing Up Your System Disk...............    1-6
+        1.1.12    Privileges................................    1-6
+        1.1.13    Disk Space................................    1-7
+        1.1.14    Preparing DPV11 Configuration.............    1-7
+        1.2   Communications Equipment......................    1-7
+        1.2.1     Modem Requirements........................    1-8
+        1.2.2     Cable Information - DMB32, DSF32, DSH32,
+                  DSV11, and DSW21/41/42....................    1-9
+        1.3   Remote System Requirements....................   1-10
+
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    2  Installing
+
+          2.1   The Installation Procedure....................    2-1
+          2.1.1     Invoking VMSINSTAL........................    2-1
+          2.1.2     Installation Questions....................    2-3
+          2.1.3     Installation Verification Procedure
+                    Message...................................   2-10
+          2.1.4     Completing the Installation Procedure.....   2-10
+          2.2   Postinstallation Considerations...............   2-11
+          2.2.1     Running the Installation Verification
+                    Procedure.................................   2-11
+          2.2.2     Loading the Protocol Emulator.............   2-11
+          2.2.3     Cluster Setups............................   2-12
+          2.2.4     Diagnostic Loopback Tests.................   2-12
+          2.2.5     Files and Logical Names Added to the
+                    System....................................   2-12
+          2.3   Error Recovery................................   2-14
+          2.3.1     Installation Verification Procedure
+                    Errors....................................   2-14
+          2.4   Sample Installation on a MicroVAX System......   2-16
+
+    Index
+
+
+    Tables
+
+          1-1       Prerequisite Device Drivers Software......    1-4
+
+          1-2       Device Driver Images......................    1-5
+
+          1-3       Disk Space Requirements for Protocol
+                    Emulator..................................    1-7
+
+          1-4       Modems Used by the Protocol Emulator......    1-8
+
+          2-1       Files Added by the Installation...........   2-13
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              The VAX 2780/3780 Protocol Emulator, referred to as the
+              Protocol Emulator, allows a VAX or a MicroVAX system to
+              communicate with other systems that are using the Binary
+              Synchronous Communications protocol.
+
+        Manual Objectives
+
+              This manual tells you how to install and load the Protocol
+              Emulator software on a VAX or MicroVAX system. Use this
+              manual in conjunction with the VAX 2780/3780 Protocol
+              Emulator User's Guide and other Digital Equipment
+              Corporation and IBM documentation.
+
+        Intended Audience
+
+              This manual is for system managers and network managers
+              responsible for the installation of the Protocol Emulator
+              software.
+
+        Document Structure
+
+              Chapter 1   Provides introductory information about the
+                          Protocol Emulator. Hardware and software
+                          requirements are outlined in this chapter.
+
+              Chapter 2   Describes the installation process including
+                          the Product Authorization Key (PAK) and
+                          Installation Verification Procedure (IVP). It
+                          also contains a sample installation procedure.
+
+
+
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+    Associated Documents
+
+          o  VAX 2780/3780 Software Product Description
+
+          o  VAX 2780/3780 Protocol Emulator User's Guide
+
+          o  OpenVMS I/O User's Reference Manual
+
+          o  OpenVMS System Services Reference Manual
+
+          o  OpenVMS System Messages and Recovery Procedures
+             Reference Manual
+
+          o  DPV11 Serial Synchronous Interface User Guide
+
+          o  DMF32 Technical Manual
+
+          o  DMB32 Technical Description
+
+          o  DMB32 User's Guide
+
+          o  DSV11 User's Guide
+
+          o  DSH32 User Information
+
+          o  DEC WANcontroller 620 Configuration Card
+
+          o  Site Management Guide (provided by DIGITAL with your VAX
+             or MicroVAX system)
+
+          o  WANDD Failover Set Manager Manual (provided with the
+             DSF32 installation kit)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    vi
+
+ 
+
+
+
+
+
+
+
+        Conventions_Used_in_This_Manual__________________________________
+
+              Convention__Meaning________________________________________
+
+              Special     This special type indicates an example of
+              type        system output or user input. In interactive
+
+                          examples, system output is in plain type, and
+                          user input is in bold type.
+
+              UPPERCASE   Uppercase letters in command syntax indicate
+                          words that you enter. You can enter these words
+                          in either uppercase or lowercase.
+
+              Lowercase   Lowercase italics in command syntax or examples
+              italics     indicate variables for which either the user or
+                          the system supplies a value.
+
+              [ ]         Square brackets in command syntax statements
+                          indicate that the enclosed value(s) are
+                          optional. Default values apply for unspecified
+                          options. (Do not type the brackets.)
+
+                          In the installation procedure, square brackets
+                          enclose the default answer for a question.
+                          Simply press <RET> to choose the default.
+
+              ( )         In the installation procedure, parentheses
+                          enclose the possible options or range of values
+                          that you can specify in response to a question.
+
+              hh:mm:ss    Indicates hours, minutes, and seconds.
+
+              <key>       This symbol indicates a key that you should
+                          press. For example, <RET> means that you should
+                          press the RETURN key.
+
+              <CTRL/x>    This notation means that you should hold down
+                          the CTRL key and press the key specified by x
+                          at the same time. (Your screen displays this
+              ____________key_combination_as_^x.)________________________
+
+              You must press <RET> to enter all commands.
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                               Preparing for Installation
+
+
+              Before you install the VAX 2780/3780 Protocol Emulator
+              software, referred to as the Protocol Emulator, you should
+              prepare your system, the communication components, and the
+              remote system to ensure proper software operation.
+
+        1.1 VAX System Requirements
+
+              This section discusses the VAX system features you need for
+              the Protocol Emulator.
+
+        1.1.1 VAX Supported Processors
+
+              Refer to the Software Product Description (SPD) for the
+              latest official list of supported processors.
+
+        1.1.2 Checking the Distribution Kit
+
+              Your bill of materials (BOM) specifies the number and
+              contents of your media. Compare the items listed in the
+              BOM with the items in your distribution list. If your kit
+              is damaged or if parts are missing, contact your Digital
+              Equipment Corporation representative before continuing the
+              installation.
+
+        1.1.3 Accessing the Online Release Notes
+
+              Online release notes are provided with this product. You
+              should review the release notes before installing the
+              product. They contain the latest enhancements to the
+              product, which may include changes to the installation
+              procedure. If you specify OPTIONS N with VMSINSTAL, you are
+              prompted for how you would like to see the release notes.
+              After installing the product, you can read the release
+              notes in the file SYS$HELP:BSCPTPvvu.RELEASE_NOTES , where
+              vv is the major version number, and u is the minor version
+              number.
+
+                                           Preparing for Installation 1-1
+
+ 
+
+
+
+    Preparing for Installation
+    1.1 VAX System Requirements
+
+
+    1.1.4 VAX Communications Device Requirements
+
+          Your VAX or MicroVAX system is attached to the IBM
+          environment through a Digital Equipment Corporation
+          communications device, a line, a modem, and an IBM
+          communications controller. Your system must have one or
+          more of the following DIGITAL communications hardware
+          devices installed.
+
+          o  DMB32
+
+             The DMB32 is an asynchronous/synchronous communications
+             device that supports one synchronous communications
+             line at speeds from 1.2 Kbps to 9.6 Kbps for bisync
+             communication. It supports either half-duplex or full-
+             duplex lines. The Protocol Emulator uses the synchronous
+             port. The DMB32 transmits and receives whole blocks of
+             characters without processor intervention and is based
+             on the VAX BI system.
+
+          o  DMF32
+
+             The DMF32 is an asynchronous/synchronous communications
+             device that supports one synchronous communications
+             line at speeds from 1.2 Kbps to 9.6 Kbps. It supports
+             either half-duplex or full-duplex lines. The DMF32
+             transmits whole blocks of characters without processor
+             intervention. The DMF32 does require some processor
+             intervention when receiving data. It is based on the VAX
+             UNIBUS system.
+
+          o  DSV11
+
+             The DSV11 is a block-buffered synchronous communication
+             device that supports two synchronous communications
+             lines at speeds from 1.2 Kbps to 19.2 Kbps. Protocol
+             Emulator communication can occur at speeds up to 9.6
+             Kbps. The DSV11 supports either half-duplex or full-
+             duplex lines. The DSV11 is based on the VAX Q-bus
+             system.
+
+          o  DPV11
+
+             The DPV11 is a character-buffered, synchronous, serial-
+             line interface that supports either half-duplex or full-
+             duplex lines. This device supports one communications
+             line at speeds from 1.2 Kbps to 9.6 Kbps. The DPV11 is
+             based on the VAX Q-bus system.
+
+    1-2 Preparing for Installation
+
+ 
+
+
+
+                                               Preparing for Installation
+                                              1.1 VAX System Requirements
+
+
+              o  DSF32
+
+                 The DSF32 (or DEC WANcontroller 620) is a dual-line,
+                 synchronous communications controller specific to
+                 the VAXft processor. The controller supports either
+                 half-duplex or full-duplex lines. Protocol Emulator
+                 communication can occur at speeds up to 9.6 Kbps.
+
+              o  DSH32
+
+                 The DSH32 (or DEC Multicontroller 581) is a dual-
+                 function communications controller. It consists of
+                 an 8-line, asynchronous multiplexer and a single-
+                 line synchronous interface. The synchronous interface
+                 supports speeds up to 19.2 Kbps. Protocol Emulator
+                 communication can occur at speeds up to 9.6 Kbps.
+
+              o  DSW21/41
+
+                 The DSW21 and DSW41 are single-line synchronous devices
+                 for MicroVAX 3100 and VAXstation 4000 systems. Protocol
+                 Emulator communication can occur at speeds up to 9.6
+                 Kbps.
+
+              o  DSW42
+
+                 The DSW42 is a dual-line synchronous device for the
+                 MicroVAX 3100. Protocol Emulator communication can occur
+                 at speeds up to 9.6 Kbps per line.
+
+              Transmission characteristics (such as speed and mode of
+              operation) can vary to satisfy different performance
+              requirements. For additional information about supported
+              communications devices, see the SPD for the Protocol
+              Emulator.
+
+        1.1.5 OpenVMS Version Support
+
+              Refer to the SPD for the OpenVMS versions required to run
+              the product.
+
+
+
+
+
+                                           Preparing for Installation 1-3
+
+ 
+
+
+
+    Preparing for Installation
+    1.1 VAX System Requirements
+
+
+    1.1.6 VAXcluster Considerations
+
+          This layered product is fully supported when installed on
+          any valid and licensed VAXcluster configuration with the
+          following restrictions:
+
+          o  The VAX 2780/3780 Protocol Emulator must be installed
+             and run on each node in the VAXcluster containing a
+             synchronous communications interface connected to an IBM
+             system.
+
+          o  When you run the Protocol Emulator in interactive mode,
+             you must run it from a node with a synchronous device
+             interface and the product locally installed.
+
+          o  When you run the Protocol Emulator in shared mode, the
+             batch queue must reside on a node with a synchronous
+             device interface and the product locally installed.
+             However, jobs can be submitted to this queue from any
+             node in the cluster.
+
+          Refer to the VAXcluster documentation for information on
+          setting up queues across a cluster and using cluster batch
+          queues.
+
+    1.1.7 Prerequisite Software
+
+          Depending on the configuration of the system where you
+          are installing the Protocol Emulator, it may be necessary
+          to first install the Wide Area Network Device Drivers
+          (WANDDs). Table 1-1 shows the WANDD software required for
+          different versions of OpenVMS and DECnet.
+
+          Table_1-1_Prerequisite_Device_Drivers_Software_____________
+
+          OpenVMS
+          Version_______DECnet/OSI___________________________________
+
+          Version 6.2   WANDD for DECnet/OSI
+
+          Version_7.1___WANDD_for_DECnet-Plus________________________
+
+          Table 1-2 shows the names of the device driver images.
+
+
+    1-4 Preparing for Installation
+
+ 
+
+
+
+                                               Preparing for Installation
+                                              1.1 VAX System Requirements
+
+
+              Table_1-2_Device_Driver_Images_____________________________
+
+              Device___________Device_Driver_____________________________
+
+              DMF32            XGDRIVER
+
+              DMB32            SIDRIVER
+
+              DPV11            UFDRIVER
+
+              DSF32            SFDRIVER
+
+              DSH32            ZSDRIVER
+
+              DSV11            SJDRIVER
+
+              DSW21/41/42______ZTDRIVER__________________________________
+
+        1.1.8 OpenVMS License Management Facility Requirements
+
+              Before you install this product, you should register your
+              Product Authorization Key (PAK) with the License Management
+              Facility (LMF). The PAK, which contains information about
+              the license, is a paper certificate shipped with the
+              product.
+
+              During the installation, you are asked if you have
+              registered the Protocol Emulator license and loaded the
+              appropriate authorization key (PAK). If you have not
+              already done so, you can complete the installation and
+              run the Installation Verification Procedure (IVP). The
+              Protocol Emulator will not run if you have not registered
+              the license or loaded the PAK. Once you perform the license
+              registration and load the PAK, you will be able to run the
+              Protocol Emulator.
+
+              To register and load the license, log in to the system
+              manager's account. Then type the following command:
+
+               @SYS$UPDATE:VMSLICENSE.COM
+
+              When you are prompted for information, enter the data from
+              your PAK. For more information on LMF, see the OpenVMS
+              License Management Utility Manual.
+
+        1.1.9 OpenVMS Tailor Requirements
+
+              The required classes are: OpenVMS Required Save Set and
+              Utilities. Be certain these classes are installed on your
+              system before installing the product. Refer to OpenVMS
+              Tailor documentation in the OpenVMS documentation set for
+              more information.
+
+                                           Preparing for Installation 1-5
+
+ 
+
+
+
+    Preparing for Installation
+    1.1 VAX System Requirements
+
+
+    1.1.10 VMSINSTAL Requirements
+
+          Installing the Protocol Emulator on an OpenVMS system
+          involves running the VMSINSTAL procedure. The dialogue is
+          self-explanatory. The system tells you to answer questions
+          and waits for you to tell it to continue.
+
+          When you invoke VMSINSTAL, it checks that:
+
+          o  You are logged in to a privileged account.
+
+          o  You have adequate quotas for installation. The Protocol
+             Emulator installation requires the OpenVMS default
+             minimum quotas.
+
+          o  All users are logged off.
+
+          If VMSINSTAL detects any violations to these conditions
+          at the beginning of the installation, it notifies you and
+          asks if you want to continue the installation. In some
+          instances, you can enter YES to continue. To stop the
+          installation process, enter NO or press <RETURN>. Then
+          change the condition and restart the installation.
+
+    1.1.11 Backing Up Your System Disk
+
+          At the beginning of the installation, VMSINSTAL asks if you
+          have backed up your system disk. DIGITAL recommends that
+          you back up your system disk before installing any software
+          on top of the operating system.
+
+          Use the backup procedures that have been established at
+          your site. For details on performing a system disk backup,
+          see the section on the Backup Utility in the OpenVMS
+          documentation set.
+
+    1.1.12 Privileges
+
+          To install the Protocol Emulator, you must be logged in
+          to an account that has SETPRV or at least the following
+          privileges:
+
+          o  CMKRNL
+
+          o  WORLD
+
+          o  SYSPRV
+
+          Note that VMSINSTAL turns off BYPASS privilege at the start
+          of the installation.
+
+    1-6 Preparing for Installation
+
+ 
+
+
+
+                                               Preparing for Installation
+                                              1.1 VAX System Requirements
+
+
+        1.1.13 Disk Space
+
+              DECnet Phase V means DECnet/OSI or DECnet-Plus. DECnet-Plus
+              is recommended.
+
+              The VAX WANDD option requires 4600 blocks beyond the
+              DECnet Phase V base installation requirements. See DECnet
+              installation and configuration documentation. Table 1-3
+              summarizes the storage requirements for the Protocol
+              Emulator.
+
+              Table_1-3_Disk_Space_Requirements_for_Protocol_Emulator____
+
+              OpenVMS and DECnet  Blocks Needed    Blocks Needed
+              Versions____________to_Install_______to_Run________________
+
+              OpenVMS Version     650              600
+              6.2 or 7.1 and
+              DECnet_Phase_V_____________________________________________
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL prompt:
+
+               $ SHOW DEVICE SYS$SYSDEVICE
+
+        1.1.14 Preparing DPV11 Configuration
+
+              If you are using a DPV11 line interface, make sure you know
+              the following:
+
+              o  Controller designation
+
+              o  Interrupt vector address
+
+              o  Command and status register address (CSR address)
+
+        1.2 Communications Equipment
+
+              Each communications link connecting a remote system to the
+              Protocol Emulator consists of the following:
+
+              o  A pair of synchronous modems with an RS-232-C or CCITT
+                 V.24 interface (or hardware performing the function of
+                 two modems if the two systems are in close proximity).
+
+              o  A full- or half-duplex point-to-point communications
+                 line running between the modems.
+
+                                           Preparing for Installation 1-7
+
+ 
+
+
+
+    Preparing for Installation
+    1.2 Communications Equipment
+
+
+          The connection can be switched (dial-up) or nonswitched
+          (leased or private). Multipoint (multidrop) operations are
+          not supported.
+
+             ________________________ Note ________________________
+
+             Although the Protocol Emulator does operate in half-
+             duplex mode, a full-duplex line is recommended for
+             faster line turnaround.
+
+             ______________________________________________________
+
+          Up to four lines can be connected to the Protocol
+          Emulator, depending upon processor type. The transmission
+          characteristics - speed, mode of operation and so on - can
+          vary as necessary among the lines to satisfy different
+          transmission requirements. The Protocol Emulator can
+          support transmission speeds from 1200 bits/second to 9600
+          bits/second. Depending on the data transfer rate selected,
+          you need a pair of the following modems or equivalent for
+          each line. Table 1-4 shows compatible modems.
+
+          Table_1-4_Modems_Used_by_the_Protocol_Emulator_____________
+
+          MODEM_______SPEED__________________________________________
+
+          Bell 201C   2400 bits/second (half duplex, switched line)
+
+          Bell 208A   4800 bits/second (full duplex, leased line)
+
+          Bell 208B   4800 bits/second (full duplex, switched line)
+
+          Bell_209A___9600_bits/second_(full_duplex,_leased_line)____
+
+    1.2.1 Modem Requirements
+
+          If you use modems from manufacturers other than DIGITAL or
+          Bell, be sure that they meet the following "handshaking"
+          requirements.
+
+          o  When the user issues a command to allocate and activate
+             a line, the line interface sets on the data terminal
+             ready (DTR) signal. It does this regardless of whether
+             the connection is established by dialing or by auto-
+             answering. The Protocol Emulator looks for data set
+             ready (DSR) and does not consider the line active until
+             the modem presents the DSR signal.
+
+    1-8 Preparing for Installation
+
+ 
+
+
+
+                                               Preparing for Installation
+                                             1.2 Communications Equipment
+
+
+              o  Before starting to transfer data (either by placing
+                 data in a send buffer or by taking data out of a receive
+                 buffer) the Protocol Emulator checks DSR to determine
+                 whether the line is up. If the DSR signal is not set,
+                 the operation is abnormally terminated, and a message is
+                 sent to SYS$OUTPUT.
+
+              o  Whenever a transmission is attempted, request to send
+                 (RTS) is set by the Protocol Emulator and pads (hex FFs)
+                 are transmitted until the clear to send (CTS) signal
+                 is given. If CTS is not set, the transmission times out
+                 and appropriate actions (error logging, retries, posting
+                 fatal error messages) are taken. If the transmission
+                 completes normally, RTS is cleared if the line is half
+                 duplex; or if the line is full duplex it is left active
+                 to avoid CTS delays.
+
+              o  Receive operations look for character synchronization;
+                 they do not monitor any modem signals except DSR.
+
+              o  When the user issues a command to shut down a line,
+                 DTR is dropped. (See the description of the Protocol
+                 Emulator's SET command in Chapter 3 of the VAX 2780/3780
+                 Protocol Emulator User's Guide.)
+
+        1.2.2 Cable Information - DMB32, DSF32, DSH32, DSV11, and
+              DSW21/41/42
+
+              If you are using a DMB32, DSF32, DSH32, DSV11, or
+              DSW21/41/42 with a local modem eliminator designed prior
+              to the EIA RS-232-D standard, you must upgrade the BC19D-02
+              adapter cable with a BS19D-02 adapter cable kit. Failure to
+              do so can result in the modem eliminator failing to signal
+              CTS, resulting in blocked data. The problem is not known to
+              occur with voiceband (long haul) modems.
+
+              The function of pin 21 is described differently by the
+              EIA RS-232-C and CCITT V.24 standards. The DMB32 interface
+              implements the pin function as described by EIA RS-232-D
+              and CCITT V.24. The BS19D-02 adapter cable kit opens pin 21
+              (SQ/RL), avoiding the discrepancy. The same effect can be
+              achieved by using a "breakout box" between the device and
+              the modem eliminator, but this is not a permanent solution.
+              If the BS19D-02 adapter cable kit was not supplied with the
+              hardware, consult your DIGITAL field service representative
+              for information on obtaining the necessary part.
+
+                                           Preparing for Installation 1-9
+
+ 
+
+
+
+    Preparing for Installation
+    1.2 Communications Equipment
+
+
+          The BS19D-02 is an adapter cable kit option and comprises:
+
+          o  V.24 adapter cable, DIGITAL option number BC19D-02,
+             DIGITAL part number 17-0110-01
+
+          o  V.24 to RS-232-C adapter connector, DIGITAL part number
+             12-27591-01
+
+          o  Information sheet describing why the adapter connector
+             is required for connecting to some RS-232 equipment.
+             Information sheet document number EK-BS19D-IS-0001
+
+          BC19D-02 is the adapter cable; BS19D-02 is a kit including
+          the cable, adapter connector, and information sheet.
+
+    1.3 Remote System Requirements
+
+          The Protocol Emulator is designed to communicate with IBM
+          or other systems that communicate with IBM 2780/3780 Remote
+          Job Entry Stations. Some examples of these systems are:
+
+          o  An IBM System/360 or System/370 computer set up to
+             communicate with an IBM 2780 or 3780 Remote Job Entry
+             Station.
+
+          o  An IBM 2780 or 3780 remote job entry station (RJE
+             station).
+
+          o  A computer system, other than an OpenVMS system, that
+             is operating a standard 2780/3780 point-to-point BSC
+             protocol emulator.
+
+                                     IMPORTANT
+
+             The Protocol Emulator is only certified against remote
+             systems listed in the SPD.
+
+
+
+
+
+
+
+
+
+    1-10 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                                               Installing
+
+
+              This chapter describes how to install the VAX 2780/3780
+              Protocol Emulator, referred to in this chapter as the
+              Protocol Emulator. It contains a step-by-step description
+              of the installation procedure and covers postinstallation
+              considerations. The final section contains an actual system
+              log of an installation using PAK information and VMSINSTAL.
+
+        2.1 The Installation Procedure
+
+              The Protocol Emulator installation process consists of a
+              series of questions and informational messages; the process
+              takes between 5 and 15 minutes to complete.
+
+        2.1.1 Invoking VMSINSTAL
+
+              Digital Equipment Corporation recommends that you use a
+              hard-copy terminal for installing the Protocol Emulator if
+              you would like a copy of the installation process. If you
+              do not have a hard-copy terminal, you can produce a copy of
+              the installation procedure in a file by typing:
+
+               $ SET HOST 0/LOG=filename
+
+              where filename is the name of the file in which you want
+              the log file stored.
+
+              To start the installation, invoke the VMSINSTAL command
+              procedure from a privileged account, such as the SYSTEM
+              account. Next, invoke VMSINSTAL. Use the following syntax
+              to invoke VMSINSTAL:
+
+              @SYS$UPDATE:VMSINSTAL product-name device-name OPTIONS N
+
+
+
+
+                                                           Installing 2-1
+
+ 
+
+
+
+    Installing
+    2.1 The Installation Procedure
+
+
+          where
+
+          product-name
+
+          is the installation name for the component. For the
+          Protocol Emulator, type BSCPTOvvu, where BSCPTP is the
+          name of the product you are installing, vv is the major
+          version number (2 digits), and u is the update number (1
+          digit). For example:
+
+              BSCPTP019
+
+          is the name for Version 1.9 of the product.
+
+          device-name
+
+          is the name of the device on which you plan to mount the
+          media. For example, MTA0: is the device name for a tape
+          drive.
+
+          OPTIONS N
+
+          is an optional parameter that indicates you want to be
+          prompted to display or print the release notes, or copy
+          them to SYS$HLP. If you do not include the OPTIONS N
+          parameter, VMSINSTAL does not prompt you to display, print,
+          or copy the release notes. Please read the release notes
+          before proceeding with this installation.
+
+          Command Example
+
+          The following example displays the command to invoke
+          VMSINSTAL to install the Protocol Emulator from tape
+          drive MTA0: and the system response. This example uses
+          the OPTIONS N parameter for printing or displaying release
+          notes.
+
+           $ @SYS$UPDATE:VMSINSTAL BSCPTP019 MTA0: OPTIONS N
+
+                 OpenVMS Software Product Installation Procedure V7.1
+
+           It is 15-AUG-1998 at 15:06.
+           Enter a question mark (?) at any time for help.
+
+
+    2-2 Installing
+
+ 
+
+
+
+                                                               Installing
+                                           2.1 The Installation Procedure
+
+
+        2.1.2 Installation Questions
+
+              This section discusses the questions that appear during
+              the installation. See Section 2.4 for a sample installation
+              procedure.
+
+              Each question in the installation is marked with an
+              asterisk (*) at the beginning of the line. Some questions
+              show the default response in brackets, for example, [YES].
+              If you want the default response, press <RETURN>. You must
+              press <RETURN> to enter any response. For help, enter a
+              question mark as your response.
+
+                ______________ Aborting the Installation ______________
+
+                To abort the installation procedure at any time, press
+                <CTRL/Y>. When you press <CTRL/Y>, the installation
+                procedure deletes all the files it created up to that
+                point and exits. You can then start the installation
+                again.
+
+                ______________________________________________________
+
+              1. DECnet status
+
+                 VMSINSTAL notifies you only if your DECnet is running
+                 and displays a list of all active processes. You
+                 should shut down DECnet on your cluster, or install
+                 the Protocol Emulator on a standalone system. VMSINSTAL
+                 asks if you want to continue the installation; [NO] is
+                 the default answer.
+
+                  %VMSINSTAL-W-DECNET, Your DECnet network is up and running.
+                     .
+                     .
+                     .
+                  * Do you want to continue anyway [NO]?
+
+              2. System backup
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. You should always back up your system disk
+                 before performing an installation. If you are satisfied
+                 with the backup of your system disk, press RETURN. If
+                 not, enter NO to stop the installation. After you back
+                 up your system disk, you can restart the installation.
+
+                                                           Installing 2-3
+
+ 
+
+
+
+    Installing
+    2.1 The Installation Procedure
+
+
+              * Are you satisfied with the backup of your system disk [YES]?
+
+          3. Mounting the media
+
+             You should now mount the first distribution volume on
+             the device you specified when you invoked VMSINSTAL.
+             The device name appears in the line preceding the
+             question. VMSINSTAL then asks you if you are ready
+             to continue with the installation. If you respond YES
+             to indicate that you are ready, VMSINSTAL displays a
+             message that the media containing the Protocol Emulator
+             has been mounted on the specified device and that the
+             installation has begun. For example:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    2-4 Installing
+
+ 
+
+
+
+                                                               Installing
+                                           2.1 The Installation Procedure
+
+
+                  Please mount the first volume of the set on MTA0:.
+                  * Are you ready? YES
+
+                  %MOUNT-I-MOUNTED, BSCPTP019 MOUNTED ON _MTA0:
+
+                  The following products will be processed:
+
+                    BSCPTP V1.9
+
+                      Beginning installation of BSCPTP V1.9 at 15:07
+
+                  %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter
+                 NO in response to "Are you ready?". To abort the
+                 installation for other reasons, press <CTRL/Y>.
+
+              4. Release Notes
+
+                 If you specified OPTIONS N when you invoked VMSINSTAL,
+                 the installation procedure prompts you for a release
+                 notes option. Release notes included with the kit are
+                 always copied to SYS$HELP.
+
+                  Additional Release Notes Options:
+
+                      1. Display release notes
+                      2. Print release notes
+                      3. Both 1 and 2
+                      4. None of the above
+
+                  * Select option [2]:
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on your terminal. You can terminate
+                 the display at any time by pressing <CTRL/C>.
+
+                 If you select option 2 or 3, VMSINSTAL prompts you for a
+                 print queue name:
+
+                  * Queue name [SYS$PRINT]:
+
+                 Enter a queue name or press RETURN to send the file to
+                 the default output print device, SYS$PRINT.
+
+                                                           Installing 2-5
+
+ 
+
+
+
+    Installing
+    2.1 The Installation Procedure
+
+
+             If you did not specify OPTIONS N when you invoked
+             VMSINSTAL, the release notes are automatically placed
+             in SYS$HLP upon conclusion of the installation.
+
+             No matter which option you select, VMSINSTAL then asks
+             you if you want to continue the installation. Answer YES
+             to continue or NO to exit VMSINSTAL.
+
+              * Do you want to continue the installation ?: YES
+             %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HLP.
+
+          5. WANDD Installation
+
+             The Wide Area Network Device Drivers are no longer
+             included in the PE kit, but are now installed as a
+             component of DECnet V. The installation procedure gives
+             you the opportunity to quit and install the WANDDs.
+
+                 The DMB32, DMF32, DSF32, DSV11, DSH32  and DSW21/41/42 device
+                 drivers are shipped in the WAN Device Drivers (WANDD for VAX)
+                 component of DECnet V (DECnet/OSI or DECnet-Plus) for OpenVMS.
+
+                 If you are using any of these devices, please install and configure
+                 DECnet V for OpenVMS with WANDD for VAX before loading this product,
+                 even when not connected to a network.
+
+                 Consult DECnet installation and configuration guides for details.
+
+             * Quit this installation in order to install WANDD [NO]:
+
+          6. License registration
+
+             The installation procedure prints out information
+             specific to the particular license and asks if you
+             have registered and loaded your PAK for the Protocol
+             Emulator, for example:
+
+              Product:             VAX-2780-3780PE
+              Producer:            DEC
+              Version:             1.9
+              Release Date:        1-AUG-1998
+
+              * Does this product have an authorization key registered and loaded?
+
+             If you have not registered and loaded your PAK, answer
+             NO to this question. The installation reminds you
+             to register the PAK before you run the product. The
+             installation continues.
+
+    2-6 Installing
+
+ 
+
+
+
+                                                               Installing
+                                           2.1 The Installation Procedure
+
+
+              7. Choosing to purge files
+
+                 You have the option to purge files from previous
+                 versions of the Protocol Emulator that are superseded
+                 by this installation. Purging is recommended because it
+                 saves disk space.
+
+                  * Do you want to purge files replaced by this installation [YES]?
+
+              8. Choosing to run the Installation Verification Procedure
+                 (IVP)
+
+                 The system now asks if you want to have the IVP run
+                 automatically at the end of the installation. The IVP
+                 for the Protocol Emulator checks to be sure that the
+                 installation is successful. You should run the IVP
+                 immediately after installation.
+
+                  * Do you want to run the IVP after the installation [YES]?
+
+              9. Creating a log file directory
+
+                 The system needs a directory to store detached process
+                 log files. Either specify a directory, or press <RETURN>
+                 for the default. A directory is created if it does not
+                 already exist, and the logical BSC$MANAGER is defined to
+                 point to it.
+
+                  * Directory for log files [SYS$COMMON:[BSC$MGR]]:
+
+             10. Selecting the alternative translation table
+
+                 If you answer NO, the Protocol Emulator uses the
+                 standard OpenVMS translation table. If you answer YES,
+                 the Protocol Emulator uses the alternative translation
+                 table. See Appendix H of the VAX 2780/3780 Protocol
+                 Emulator User's Guide for more information on the
+                 translation table supplied with the Protocol Emulator.
+
+                  * Do you want the alternative translation table [NO]?
+
+             11. Altering the default timeout
+
+                 When the Protocol Emulator is receiving a file, it
+                 waits a specified time for successive blocks of data
+                 to arrive. If no data is received within that time, it
+                 assumes that the connection with the remote system is
+                 lost, and exits. If the remote system frequently pauses
+                 for longer than 50 seconds (the default value), you can
+
+                                                           Installing 2-7
+
+ 
+
+
+
+    Installing
+    2.1 The Installation Procedure
+
+
+             change the default value. The system prompts you with
+             the following:
+
+              * Do you want to alter the default timeout value of 50 seconds [NO]?
+
+             If you enter yes, specify one of the following to change
+             the default timeout value:
+
+             o  5M - for 5 minutes
+
+             o  1H - for 1 hour
+
+             o  1D - for 1 day
+
+             o  NONE - if you want the Protocol Emulator to wait as
+                long as necessary for the next block of data.
+
+         12. Please note the differences between installing on VAX
+             and MicroVAX systems. This documentation shows you the
+             messages you see while installing on a MicroVAX system.
+             The system displays the following at this point:
+
+             To load the Protocol Emulator you will need to invoke the command file
+             SYS$STARTUP:RJELOAD.COM.  To set up this file, you must specify
+             the maximum number of communications lines the Protocol Emulator will
+             use, and how many of these will be DPV synchronous line
+             interfaces.
+
+              * How many communications lines will the Protocol Emulator use [1]:
+              * How many of these will be DPV11 synchronous line interfaces [0]
+
+             If the DMF32, DMB32, DSF32, DSH32, DSW21/41/42, and
+             DSV11 are installed properly, the device drivers are
+             loaded automatically at system startup. If they are not
+             automatically loaded, consult the WAN Device Drivers kit
+             for information on loading these devices manually.
+
+             If you are using the DPV11 (a device for MicroVAXs other
+             than the MicroVAX 3100), answer the following questions
+             for each DPV11 you are using. You need to know the
+             controller designation, the interrupt vector, and the
+             CSR address for each DPV11 you are using. You can find
+             these values in your system's Site Management Guide.
+
+             The system displays the following if a DPV is selected:
+
+    2-8 Installing
+
+ 
+
+
+
+                                                               Installing
+                                           2.1 The Installation Procedure
+
+
+                      AUTOCONFIGURE does not load the UFDRIVER used by the Protocol
+                      Emulator to access a DPV11.  Therefore you must specify some
+                      configuration details for each DPV11 you intend to use with
+                      the Protocol Emulator.  You need to specify:
+
+                       o  controller designation
+                       o  nexus number of the Q-BUS adapter
+                       o  interrupt vector address
+                       o  CSR address
+
+                     The information you specify must be correct; otherwise, fatal
+                     system errors will occur when the Protocol Emulator is loaded.
+
+                       Configuration details for the first DPV11
+
+                 * What is the controller designation of this DPV11 (A-Z):
+
+                 * What is the adapter number (0-48):
+
+                 * What is the interrupt vector address (0300-770):
+
+                 * What is the control & status register address (760010-764770):
+
+             13. The screen displays the values you entered, along with
+                 the question:
+
+                       * Do you want to alter the information for this DPV11 [NO]?
+
+                 If you answer YES, you are prompted for the DPV11
+                 configuration details again. If you specified more than
+                 one DPV11 device, then the questions are repeated for
+                 each of those devices.
+
+                 The system displays the following messages while the
+                 installation is completing:
+
+                 Support for x DPV devices and y non-DPV devices will be included.
+
+                 You are now done answering questions for this installation.
+
+                             Installation continuing, please wait 10 to 20 minutes ...
+
+                 The system displays the following messages:
+
+                     *** VAX 2780/3780 Protocol Emulator Installation Successful ***
+                         (pending successful IVP)
+
+                                                           Installing 2-9
+
+ 
+
+
+
+    Installing
+    2.1 The Installation Procedure
+
+
+             If you are using DECnet/OSI, the system displays the
+             following message:
+
+                 The DMB32, DMF32, DSF32, DSV11, DSH32 and DSW21/41/42 device
+                 drivers are shipped in the WAN Device Drivers kit. Please install
+                 this WANDD V2.0 software from DECnet/OSI before loading the
+                 product if you are using any of these devices.
+
+             The system displays the following messages:
+
+                    If a previous copy of the VAX 2780/3780 Protocol Emulator is
+                    already loaded, then reboot the system before running the
+                    load procedure SYS$STARTUP:RJELOAD.COM
+
+                    See the VAX 2780/3780 Protocol Emulator User's Guide
+                    for details of tests you should run to check the physical
+                    communications links and verify that lines and modems are
+                    working correctly.
+
+          There are no further questions, except for any that
+          apply to the IVP. If the installation procedure has been
+          successful up to this point, VMSINSTAL moves the new or
+          modified files to their target directories and updates the
+          help files. If you asked for files to be purged, that is
+          done now. The following message is displayed:
+
+          %VMSINSTAL-I-MOVEFILES, files will now be moved to their target
+              directories...
+
+    2.1.3 Installation Verification Procedure Message
+
+          If you chose to run the IVP, VMSINSTAL runs it now. When
+          the IVP runs successfully, you see the following display:
+
+              Starting the VAX 2780/3780 PE V1.9 IVP
+              VAX 2780/3780 PE V1.9 IVP Successful
+
+    2.1.4 Completing the Installation Procedure
+
+          The following messages indicate that the entire
+          installation procedure is complete:
+
+             Installation of BSCPTP V1.9 completed at 15:20
+
+              VMSINSTAL procedure done at 15:20
+
+    2-10 Installing
+
+ 
+
+
+
+                                                               Installing
+                                           2.1 The Installation Procedure
+
+
+              Note that VMSINSTAL deletes or changes entries in the
+              process symbol tables during the installation. Therefore,
+              if you are going to continue using the system manager's
+              account and you want to restore these symbols, you should
+              log out and log in again. At this point, you should load
+              the Protocol Emulator and test the communication link.
+
+        2.2 Postinstallation Considerations
+
+              This section shows files and logical names added to the
+              system, information on loading the Protocol Emulator,
+              running the IVP, and configuring for cluster operation.
+
+        2.2.1 Running the Installation Verification Procedure
+
+              The Installation Verification Procedure (IVP) verifies the
+              success of the installation. It checks that the new files
+              were transferred to their proper locations and that files
+              are not in the wrong location. If you encounter problems
+              using the Protocol Emulator, you should run the IVP as a
+              first step in finding a solution. The IVP is designed to
+              catch problems with missing and old files left on your
+              system. To run the IVP after you install the product,
+              invoke the command:
+
+               @SYS$TEST:BSCPTP$IVP.COM
+
+              If the IVP fails, correct the situation, and run the IVP
+              again. Section Section 2.3.1 describes IVP failures in more
+              detail.
+
+        2.2.2 Loading the Protocol Emulator
+
+              This section discusses loading the Protocol Emulator
+              into the OpenVMS system. Before loading, you should have
+              completed the following:
+
+              o  Installed any drivers from the WAN Device Drivers Kit
+                 (if needed)
+
+              o  Installed this product
+
+              o  Run the IVP successfully
+
+              o  Rebooted the system if the drivers or product was
+                 already installed
+
+                                                          Installing 2-11
+
+ 
+
+
+
+    Installing
+    2.2 Postinstallation Considerations
+
+
+          To make the Protocol Emulator available to users, you must
+          invoke the RJELOAD command procedure each time the OpenVMS
+          system is set in operation. This can be done automatically
+          by adding the command:
+
+           @SYS$STARTUP:RJELOAD
+
+          to the file SYS$MANAGER:SYSTARTUP.COM. This file is
+          executed each time the OpenVMS system is set in operation.
+
+    2.2.3 Cluster Setups
+
+          Install and load the product on each node that has
+          communications devices; then test the physical links to
+          each communications device. Refer to Section 1.1.6 of
+          this manual for specific information on how to set up your
+          cluster for Protocol Emulator use.
+
+    2.2.4 Diagnostic Loopback Tests
+
+          After installing and initializing (loading) the Protocol
+          Emulator, refer to Chapter 4 of the VAX 2780/3780 Protocol
+          Emulator User's Guide for the procedure to test the
+          physical links.
+
+    2.2.5 Files and Logical Names Added to the System
+
+          Table 2-1 lists files added during the installation and
+          their directories.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    2-12 Installing
+
+ 
+
+
+
+                                                               Installing
+                                      2.2 Postinstallation Considerations
+
+
+              Table_2-1_Files_Added_by_the_Installation__________________
+
+              File_Name________________Location__________________________
+
+              BSCPTP$IVP.COM           SYS$COMMON:[SYSTEST]
+
+              BSCPTP019.RELEASE_NOTES  SYS$COMMON:[SYS$HLP]
+
+              BSCPTPDET.EXE            SYS$COMMON:[SYSEXE]
+
+              BSCPTPGBL.EXE            SYS$COMMON:[SYSEXE]
+
+              BSCTRAN.COM              SYS$COMMON:[SYSLIB]
+
+              EBCDEF.MAR               SYS$COMMON:[SYSLIB]
+
+              NYACP.EXE[1]             SYS$COMMON:[SYSEXE]
+
+              NYDRIVER.EXE[1]          SYS$COMMON:[SYSEXE]
+
+              REMOTE.EXE               SYS$COMMON:[SYSEXE]
+
+              RJEDEF.FOR               SYS$COMMON:[SYSLIB]
+
+              RJEDEF.MAR               SYS$COMMON:[SYSLIB]
+
+              RJELOAD.COM              SYS$SPECIFIC:[SYS$STARTUP]
+
+              RJEGLOBAL.EXE            SYS$COMMON:[SYSLIB]
+
+              SETDEF.FOR               SYS$COMMON:[SYSLIB]
+
+              SETDEF.MAR               SYS$COMMON:[SYSLIB]
+
+              UFDRIVER.EXE[2]          SYS$COMMON:[SYS$LDR]
+
+              XJDEF.FOR                SYS$COMMON:[SYSLIB]
+
+              XJDEF.MAR                SYS$COMMON:[SYSLIB]
+
+              XJTEST.EXE               SYS$COMMON:[SYSEXE]
+              [1]Provided_only_when_non-DPV_device_selected______________
+
+              [2]Provided only when DPV device selected
+              ___________________________________________________________
+
+              The system logical names added during installation
+              are BSC$MANAGER, which points to a detached process
+              log files directory, and RJEGLOBAL, which points to
+              SYS$LIBRARY:RJEGLOBAL.EXE. These files are defined when
+              RJELOAD is run.
+
+                                                          Installing 2-13
+
+ 
+
+
+
+    Installing
+    2.3 Error Recovery
+
+
+    2.3 Error Recovery
+
+          If errors occur during the installation itself or when the
+          IVP is running, VMSINSTAL displays error messages.
+
+          Errors can occur during the installation if any of the
+          following conditions exist:
+
+          o  The operating system version is incorrect.
+
+          o  A prerequisite software version is incorrect.
+
+          o  Quotas necessary for successful installation are
+             insufficient.
+
+          o  System parameter values for successful installation are
+             insufficient.
+
+          o  The OpenVMS help library is currently in use.
+
+          o  The product is not properly licensed.
+
+          o  Your system has insufficient disk space.
+
+          For descriptions of the error messages generated by these
+          conditions, see the OpenVMS documentation on system
+          messages, recovery procedures, and OpenVMS software
+          installation. If any of these conditions exist, you should
+          take the appropriate action as described in the message.
+          (You might need to change a system parameter or increase an
+          authorized quota value.) These requirements are part of the
+          installation requirements in Chapter 1 of this manual.
+
+    2.3.1 Installation Verification Procedure Errors
+
+          This section is designed to help you if your IVP fails.
+          When an error is detected, a message is displayed telling
+          you how to correct the situation.
+
+          IVP error messages can be divided into these categories:
+
+          File is in the wrong directory
+
+          In this case, a file or files are in the wrong directories.
+          To avoid problems where incompatible versions of the
+          same file reside in different directories, delete the
+          file specified in the error message and rerun the IVP.
+          Be sure you delete the specified file; note the directory
+          specification, such as SYS$COMMON: or SYS$SPECIFIC:. After
+          deleting the file, run the IVP again to check for further
+          errors.
+
+    2-14 Installing
+
+ 
+
+
+
+                                                               Installing
+                                                       2.3 Error Recovery
+
+
+              The format for these error messages is:
+
+               BSCPTP$IVP-E, filename is in directory.  Please
+               delete this file and rerun the IVP.
+
+              The following is an example of these messages:
+
+               BSCPTP$IVP-E, NYDRIVER.EXE is in SYS$SPECIFIC:[SYSEXE].  Please delete
+               this file and rerun the IVP.
+
+              File does not exist
+
+              In this case, a file or files do not exist. You must
+              reinstall the product to correct the situation.
+
+              The format for these error messages is:
+
+               BSCPTP$IVP-E, filename does not exist.  Please reinstall the product.
+
+              The following is an example of these messages:
+
+               BSCPTP$IVP-E, SYS$COMMON:[SYSEXE]XJTEST.EXE does not exist.  Please
+               reinstall the product.
+
+              Console output of IVP that failed
+
+              The following is a sample of an IVP that shows errors.
+
+               $ @sys$test:bscptp$ivp
+
+               BSCPTP$IVP-S, Starting VAX 2780/3780 PE V1.9 IVP
+
+               BSCPTP$IVP-E, SYS$COMMON:[SYSEXE]BSCPTPDET.EXE does not exist.  Please
+               reinstall the product.
+               BSCPTP$IVP-E, SYS$COMMON:[SYSEXE]BSCPTPGBL.EXE does not exist.  Please
+               reinstall the product.
+               BSCPTP$IVP-E, SYS$COMMON:[SYSEXE]REMOTE.EXE does not exist.  Please
+               reinstall the product.
+               BSCPTP$IVP-E, SYS$COMMON:[SYSEXE]RJEGLOBAL.EXE does not exist.  Please
+               reinstall the product.
+               BSCPTP$IVP-E, SYS$SPECIFIC:[SYS$STARTUP]RJELOAD.COM does not exist.  Please
+               reinstall the product.
+               BSCPTP$IVP-E, SYS$COMMON:[SYSEXE]XJTEST.EXE does not exist.  Please
+               reinstall the product.
+
+               BSCPTP$IVP-E, NYDRIVER and UFDRIVER do not exist.  Please
+               reinstall the product.
+               BSCPTP$IVP-E, VAX 2780/3780 PE V1.9 IVP Failed with 7 errors.
+
+               $
+
+                                                          Installing 2-15
+
+ 
+
+
+
+    Installing
+    2.4 Sample Installation on a MicroVAX System
+
+
+    2.4 Sample Installation on a MicroVAX System
+
+          This section contains a sample installation of the VAX
+          2780/3780 Protocol Emulator Version 1.9 on a MicroVAX
+          system equipped with a DPV11. The example assumes you
+          are running OpenVMS Version 7.1 with DECnet-Plus. The
+          installation will vary under different configurations (see
+          Chapter 1).
+
+          $ @sys$update:vmsinstal BSCPTP019 SYS$MANAGER: OPTIONS N
+
+           OpenVMS VAX Software Product Installation Procedure V7.1
+
+          It is 5-AUG-1998 at 11:34.
+
+          Enter a question mark (?) at any time for help.
+
+          * Are you satisfied with the backup of your system disk [YES]? y
+
+          The following products will be processed:
+
+            BSCPTP V1.9
+
+           Beginning installation of BSCPTP V1.9 at 11:34
+
+          %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+              Release notes included with this kit are always copied to SYS$HELP.
+
+              Additional Release Notes Options:
+
+           1.  Display release notes
+           2.  Print release notes
+           3.  Both 1 and 2
+           4.  None of the above
+
+          * Select option [2]: 4
+          * Do you want to continue the installation [NO]? y
+          %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+              The DMB32, DMF32, DSF32, DSV11, DSH32  and DSW21/41/42 device
+              drivers are shipped in the WAN Device Drivers (WANDD for VAX)
+              component of DECnet V (DECnet/OSI or DECnet-Plus) for OpenVMS.
+
+              If you are using any of these devices, please install and configure
+              DECnet V for OpenVMS with WANDD for VAX before loading this product,
+              even when not connected to a network.
+
+              Consult DECnet installation and configuration guides for details.
+
+    2-16 Installing
+
+ 
+
+
+
+                                                               Installing
+                             2.4 Sample Installation on a MicroVAX System
+
+
+              * Quit this installation in order to install WANDD [NO]: n
+
+                      Product:      VAX-2780-3780PE
+                      Producer:     DEC
+                      Version:      1.9
+                      Release Date: 01-AUG-98
+
+              * Does this product have an authorization key registered and loaded? y
+
+               During this installation, new files will be provided to replace
+               existing versions. You may purge older versions to save disk space,
+               or keep them if you feel they may be of use.
+               Purging is strongly recommended!
+
+              * Do you want to purge files replaced by this installation [YES]? y
+              * Do you want to run the IVP after the installation [YES]? y
+              * Directory for log files [SYS$COMMON:[BSC$MGR]]:
+              * Do you want the alternative translation table [NO]? n
+              * Do you want to alter the default receive timeout of 50 seconds [NO]? n
+
+                  To load the Protocol Emulator you will need to invoke the command file
+                  SYS$STARTUP:RJELOAD.COM. To set up this file, you must specify
+                  the maximum number of communication lines the Protocol Emulator will
+                  use, and how many of these will be DPV11 synchronous line
+                  interfaces.
+
+              * How many communication lines will the Protocol Emulator use [1]: 1
+              * How many of these will be DPV11 synchronous line interfaces [0]: 1
+
+                  Installation continuing, please wait 10 to 20 minutes ...
+
+                               VAX 2780/3780 Protocol Emulator V1.9
+
+                  *** VAX 2780/3780 Protocol Emulator Installation Successful ***
+               (pending successful IVP)
+
+                  The DMB32, DMF32, DSF32, DSV11, DSH32 and DSW21/41/42 device
+                  drivers are shipped in the WAN Device Drivers (WANDD for VAX)
+                  component of DECnet V (DECnet/OSI or DECnet-Plus) for OpenVMS.
+
+                  If you are using any of these devices, please install and configure
+                  DECnet V for OpenVMS with WANDD for VAX before loading this product,
+                  even when not connected to a network.
+
+                  Consult DECnet installation and configuration guides for details.
+
+                                                          Installing 2-17
+
+ 
+
+
+
+    Installing
+    2.4 Sample Installation on a MicroVAX System
+
+
+              If a previous copy of the VAX 2780/3780 Protocol Emulator is
+              already loaded, then reboot the system before running the
+              load procedure SYS$STARTUP:RJELOAD.COM.
+
+              See the VAX 2780/3780 Protocol Emulator User's Guide for
+              details of tests that should be run to check the physical
+              communications links and verify that the lines and modems
+              are working correctly.
+
+          %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+          %PURGE-W-FILNOTPUR, error deleting
+                     $3$DUA4:[SYS0.SYSCOMMON.][SYSEXE]BSCPTPGBL.EXE;37
+          -RMS-E-FLK, file currently locked by another user
+
+          BSCPTP$IVP-S, Starting VAX 2780/3780 Protocol Emulator IVP
+          BSCPTP$IVP-S, VAX 2780/3780 Protocol Emulator IVP Successful
+
+           Installation of BSCPTP V1.9 completed at 11:40
+
+           VMSINSTAL procedure done at 11:40
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    2-18 Installing
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                                 Index
+
+
+
+     A                                 DMF32
+     _______________________________     description of,  1-2
+     Aborting the Installation,  2-3     device driver,  1-4
+                                       DPV11
+     B______________________________     description of,  1-2
+     Backup copy of system disk,         device driver,  1-4
+        1-6                              special requirements,  1-7
+                                       DSF32
+     C                                   description of,  1-3
+     _______________________________     device driver,  1-4
+     Cables - DMB32, DSF32, DSH32,     DSH32
+        DSV11, DSW21/41/42, 1-9          description of,  1-3
+     CMKRNL privilege,  1-6              device driver,  1-4
+     Communications devices            DSV11
+       descriptions of, 1-2              description of,  1-2
+       drivers for, 1-4                  device driver,  1-4
+     Connectors,  1-9                  DSW21/41
+     Conventions used in this            description of,  1-3
+        manual, vii                    DSW21/41/42
+                                         device driver,  1-4
+     D                                 DSW42
+     _______________________________     description of,  1-3
+     DECnet
+       status, 2-3                     F______________________________
+     Default time,  2-7                Files added to system (table),
+
+     Devices                              2-12
+
+       see Communications devices
+     Disk space,  1-7                  H
+       requirements, 1-7               _______________________________
+     Distribution kit, checking,       Hardware requirements
+        1-1                              cables,  1-9
+     DMB32                               devices,  1-2
+
+       description of, 1-2
+       device driver, 1-4
+
+                                                               Index-1
+
+ 
+
+
+
+
+
+
+
+
+    I______________________________    P______________________________
+
+    IBM system requirements for        Postinstallation
+       Protocol Emulator, 1-10          cluster setups,  2-12
+    Installation                        files and logical names added
+      aborting,  2-3                       , 2-12
+      disk space requirements,  1-7     IVP failure message,  2-14
+      invoking VMSINSTAL,  2-1          loading the Protocol Emulator
+      preparing for,  1-1                  , 2-11
+      processor support,  1-1           Loopback tests,  2-12
+      release notes,  1-1              Printer queue name, 2-5
+      required communications          Privileges required for
+         devices, 1-2                    Protocol Emulator
+      step-by-step,  2-1                 installation,  1-6
+      VAX system requirements,  1-1    Purging files, 2-7
+    IVP
+      error messages,  2-14            R______________________________
+      invoking,  2-11                  Release Notes
+      running after installation,       accessing,  1-1
+         2-10                           to display or print,  2-5
+
+    L______________________________    S
+    License Management Facility,       _______________________________
+       1-5                             Sample installation, 2-16
+    License registration,  2-6         Software registration, 2-6
+    Log files - Directory,  2-7        SYS$UPDATE, as default, 1-6
+    Logicals added to system           SYSPRV privilege, 1-6
+
+       (table), 2-12                   T
+    Loopback test,  2-12               _______________________________
+                                       Tailor Requirements, 1-5
+    M______________________________    Testing, 2-12
+
+    Memory requirements,  1-7          V
+    Modems                             _______________________________
+      characteristics of,  1-7         VMSINSTAL
+      requirements,  1-8                command line,  2-2
+      table of,  1-8                    general requirements,  1-6
+                                        privileges,  1-6
+
+    O______________________________
+    OpenVMS                            W______________________________
+
+      VAXcluster Support,  1-4         WAN device driver kit, 1-4
+      version support,  1-3            WORLD privilege, 1-6
+
+    Index-2

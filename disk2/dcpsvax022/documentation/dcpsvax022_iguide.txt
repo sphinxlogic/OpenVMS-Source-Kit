@@ -1,0 +1,2360 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     hp_DECprint_Supervisor_(DCPS)_for_hp_OpenVMS__
+                     Software Installation Guide
+
+                     Order Number: AA-PSVDH-TE
+
+
+                     January 2003
+
+                     This guide describes how to install the DECprint
+                     Supervisor software.
+
+
+
+
+
+                     Revision/Update Information: This manual super-
+                                                  sedes AA-PSVDG-TE.
+
+                     Software Version:            hp DECprint Supervisor
+                                                  (DCPS) for hp
+                                                  OpenVMS, Version
+                                                  2.2
+
+                     Operating System:            hp OpenVMS Alpha,
+                                                  Version 6.2, 7.2-2,
+                                                  7.3 or 7.3-1
+                                                  hp OpenVMS VAX,
+                                                  Version 5.5-2, 7.2
+                                                  or 7.3
+
+
+
+
+                     Hewlett-Packard Company
+                     Palo Alto, California
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+
+           © Copyright 1992-2003 Hewlett-Packard Development Company,
+           L.P.
+
+           Confidential computer software. Valid license from HP
+           and/or its subsidiaries required for possession, use or
+           copying. Consistent with FAR 12.211 and 12.212, Commercial
+           Computer Software, Computer Software Documentation, and
+           Technical Data for Commercial Items are licensed to
+           the U.S. Government under vendor's standard commercial
+           license.
+
+           Neither HP nor any of its subsidiaries shall be liable
+           for technical or editorial errors or omissions contained
+           herein. The information in this document is provided
+           "as is" without warranty of any kind and is subject to
+           change without notice. The warranties for HP products
+           are set forth in the express limited warranty statements
+           accompanying such products. Nothing herein should be
+           construed as constituting an additional warranty.
+
+           The DECprint Supervisor documentation set is available on
+           CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Before Installing the Software
+
+         1.1   Operating System Version.....................    1-1
+         1.2   Disk Space...................................    1-1
+         1.3   Related Software.............................    1-2
+         1.3.1     DEC C Run-Time Library...................    1-2
+         1.3.2     PrintServer Software.....................    1-3
+         1.3.3     TCP/IP Networks..........................    1-3
+         1.3.4     AppleTalk Networks.......................    1-3
+         1.3.5     DDIF Printing............................    1-4
+         1.3.6     DEC Image Print-PLUS (ICPS)..............    1-4
+         1.4   Mismatched Components........................    1-4
+
+   2  Installing the Software
+
+         2.1   Overview.....................................    2-1
+         2.2   VMSINSTAL Conventions........................    2-2
+         2.3   Installing the Software......................    2-2
+
+   A  Sample Installation Sessions
+
+   B  System Messages
+
+         B.1   System Message Overview......................    B-1
+         B.1.1     Message Format...........................    B-1
+         B.1.2     Severity Level...........................    B-2
+         B.2   DCPS Installation Messages...................    B-2
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     C  Ordering Additional Documentation
+
+           C.1   hp DECprint Supervisor (DCPS) for hp
+                 OpenVMS......................................    C-1
+           C.2   DIGITAL ANSI-Compliant Level 3 Printing
+                 Protocol.....................................    C-2
+           C.3   PostScript Programming.......................    C-2
+
+     Index
+
+
+     Examples
+
+           A-1       Sample Installation on an OpenVMS Alpha
+                     System...................................    A-1
+
+           A-2       Sample Upgrade on an OpenVMS VAX
+                     System...................................    A-5
+
+     Tables
+
+           1         DECprint Supervisor Documentation........     vi
+
+           1-1       Disk Space Requirements..................    1-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+        Intended Audience
+
+              This manual is for system managers responsible for
+              installing the DECprint Supervisor (DCPS) for OpenVMS
+              printing software. To install the printing software, it is
+              necessary to have some experience with:
+
+              o  OpenVMS DCL command language and system management
+                 procedures
+
+              o  Procedures and commands in the DCPS System Manager's
+                 Guide
+
+              o  VMSINSTAL utility for installing OpenVMS software
+
+              o  Network addressing and protocols at your site
+
+        Document Structure
+
+              This manual contains the following chapters and appen-
+              dices:
+
+              o  Chapter 1 describes what must be done before installing
+                 the software.
+
+              o  Chapter 2 describes how to install the software.
+
+              o  Appendix A shows sample installations.
+
+              o  Appendix B lists messages that can be received while
+                 installing the software.
+
+              o  Appendix C lists available DCPS-related documentation.
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+     Related Documents
+
+           The primary source of information about DCPS is the
+           following set of software manuals:
+
+           Table_1_DECprint_Supervisor_Documentation_________________
+
+           Software Installation Describes how to install DCPS
+           Guide
+
+           System Manager's      Describes how system managers, data
+           Guide                 center operators and application
+                                 programmers can create and manage
+                                 DCPS print queues and solve printing
+                                 problems.
+
+           User's Guide          Describes how to use DCPS to print
+                                 to PostScript printers.
+
+           Software Product      Contains the full list of printers
+           Description (SPD      supported by DCPS and additional
+           44.15.xx)             information about the features and
+           ______________________requirements_of_DCPS_V2.2.__________
+
+           For additional information about HP OpenVMS products and
+           services, visit the following World Wide Web address:
+
+           http://www.openvms.compaq.com/
+
+     Reader's Comments
+
+           HP welcomes your comments on this manual. Please send
+           comments to either of the following addresses:
+
+           Internet    openvmsdoc@hp.com
+
+           Mail        Hewlett-Packard Company
+                       OSSG Documentation Group, ZKO3-4/U08
+                       110 Spit Brook Road
+                       Nashua NH 03062-2698
+
+
+
+
+
+     vi
+
+ 
+
+
+
+
+
+
+        How to Order Additional Documentation
+
+              For information about how to order additional documenta-
+              tion, visit the following World Wide Web address:
+
+              http://www.openvms.compaq.com/
+
+              Part numbers for DCPS-related documentation are listed
+              in the Ordering Additional Documentation appendix of the
+              Software Installation Guide, System Manager's Guide and
+              User's Guide.
+
+        Conventions
+
+              The following conventions are used in this manual:
+
+              Ctrl/x           A sequence such as Ctrl/x indicates that
+                               you must hold down the key labeled Ctrl
+                               while you press another key or a pointing
+                               device button.
+
+              <Return>         In examples, a key name enclosed in a
+                               box indicates that you press a key on
+                               the keyboard. (In text, a key name is not
+                               enclosed in a box.)
+
+                               In the HTML version of this document,
+                               this convention appears as brackets,
+                               rather than a box.
+
+               . . .           A horizontal ellipsis in examples indi-
+                               cates one of the following possibilities:
+
+                               o  Additional optional arguments in a
+                                  statement have been omitted.
+
+                               o  The preceding item or items can be
+                                  repeated one or more times.
+
+                               o  Additional parameters, values, or
+                                  other information can be entered.
+
+              ( )              In command format descriptions,
+                               parentheses indicate that you must
+                               enclose choices in parentheses if you
+                               specify more than one.
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+           [ ]              In command format descriptions, brackets
+                            indicate optional choices. You can choose
+                            one or more items or no items. Do not
+                            type the brackets on the command line.
+                            However, you must include the brackets
+                            in the syntax for OpenVMS directory
+                            specifications and for a substring
+                            specification in an assignment statement.
+
+           |                In command format descriptions, vertical
+                            bars separate choices within brackets
+                            or braces. Within brackets, the choices
+                            are optional; within braces, at least
+                            one choice is required. Do not type the
+                            vertical bars on the command line.
+
+           { }              In command format descriptions, braces
+                            indicate required choices; you must
+                            choose at least one of the items listed.
+                            Do not type the braces on the command
+                            line.
+
+           bold text        This typeface represents the introduction
+                            of a new term. It also represents the
+                            name of an argument, an attribute or a
+                            reason.
+
+           italic text      Italic text indicates important
+                            information, complete titles of
+                            manuals or variables. Variables include
+                            information that varies in system output
+                            (Internal error number), in command
+                            lines (/PRODUCER=name) and in command
+                            parameters in text (where dd represents
+                            the predefined code for the device type).
+
+           UPPERCASE TEXT   Uppercase text indicates a command, the
+                            name of a routine, the name of a file, or
+                            the abbreviation for a system privilege.
+
+           Monospace text   Monospace type indicates code examples
+                            and interactive screen displays.
+
+
+     viii
+
+ 
+
+
+
+
+
+
+
+              -                A hyphen at the end of a command format
+                               description, command line or code line
+                               indicates that the command or statement
+                               continues on the following line.
+
+              numbers          All numbers in text are assumed to
+                               be decimal unless otherwise noted.
+                               Nondecimal radixes-binary, octal or
+                               hexadecimal-are explicitly indicated.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                          Before Installing the Software
+
+
+
+              DCPS runs on OpenVMS Alpha and OpenVMS VAX systems. The
+              files that are installed on the two systems differ. See
+              the Release Notes for a full list of the files.
+
+                ________________________Note  ________________________
+
+                Starting with DCPS V2.0, the need for DCPS-OPEN and
+                DCPS-PLUS licenses has been eliminated. The right
+                to use all features of DCPS is now included with the
+                OpenVMS operating system license.
+
+                _____________________________________________________
+
+        1.1 Operating System Version
+
+              DCPS V2.2 is fully supported on currently-supported
+              versions of the OpenVMS operating system:
+
+              o  OpenVMS Alpha V6.2, V7.2-2, V7.3 and V7.3-1
+
+              o  OpenVMS VAX V5.5-2, V7.2 and V7.3
+
+              Although DCPS V2.2 will install on systems running OpenVMS
+              Alpha V6.1 or later, or OpenVMS VAX V5.5-2 or later,
+              customers running OpenVMS versions that are not currently
+              supported do so at their own risk.
+
+        1.2 Disk Space
+
+              Depending on whether DCPS is installed on an Alpha or VAX
+              processor, disk space requirements may vary. Table 1-1
+              lists the disk space requirements.
+
+
+
+                                      Before Installing the Software 1-1
+
+ 
+
+
+
+
+
+
+           Table_1-1_Disk_Space_Requirements_________________________
+
+           Disk space required   Alpha
+           for_._._._____________system______VAX_system______________
+
+           Installation          7400        5900 blocks
+                                 blocks
+
+           Permanent use         6900        5500 blocks
+           ______________________blocks______________________________
+
+           These disk space requirements are approximate, and
+           depend on your system environment, disk cluster size,
+           configuration and software options.
+
+     1.3 Related Software
+
+           DECprint Supervisor works with other software to create
+           a fully functional printing system. Before installing
+           DECprint Supervisor, make sure the other application and
+           printing software is compatible.
+
+           The following sections detail the software you need. Refer
+           to the DECprint Supervisor Software Product Description
+           (SPD) for specific version requirements.
+
+     1.3.1 DEC C Run-Time Library
+
+           DCPS requires that the DEC C run-time library is installed
+           on your system. This library is included with the OpenVMS
+           operating system starting with OpenVMS V6.1, and in the
+           DEC C/C++ Run-Time Components kit. Therefore:
+
+           o  To run on any OpenVMS V6.1 or later system, no
+              installation of the DEC C Run-Time Library is required.
+
+           o  To run on OpenVMS VAX V5.5-2 and V6.0 systems, the DEC
+              C/C++ Run-Time Components kit must be installed before
+              installing DCPS.
+
+              To determine if the DEC C run-time library exists
+              on your system, check for the existence of the file
+              SYS$STARTUP:CRT$STARTUP.COM. If this file exists, the
+              DEC C/C++ Run-Time Components kit has already been
+              installed. If it does not, you must install the DEC C
+              /C++ Run-Time Components kit before installing DECprint
+              Supervisor.
+
+     1-2 Before Installing the Software
+
+ 
+
+
+
+
+
+
+                 The DEC C/C++ Run-Time Components kit is included
+                 on the DCPS CD-ROM starting with V1.6, and is also
+                 available on the OpenVMS VAX Software Product Library
+                 CD-ROM distributed by HP. Please refer to the DEC C
+                 /C++ Run-Time Components documentation for information
+                 about installing the kit, starting with Read Before
+                 Installing or Using DEC C/C++ Run-Time Components
+                 Version 6.0 for OpenVMS VAX Systems.
+
+        1.3.2 PrintServer Software
+
+              To print to a DIGITAL PrintServer printer, the printing
+              environment must contain a supporting host system running
+              the PrintServer software product.
+
+        1.3.3 TCP/IP Networks
+
+              TCP/IP connections to PrintServer printers using Common
+              Printer Access Protocol (CPAP), and connections to other
+              printers using the raw TCP/IP socket protocol, require one
+              of the following:
+
+              o  HP TCP/IP Services for HP OpenVMS
+
+              o  Process Software MultiNet for OpenVMS
+
+              o  Process Software TCPware for OpenVMS
+
+        1.3.4 AppleTalk Networks
+
+              Printers connected to AppleTalk networks can be accessed
+              by the DCPS software, and thus be made available to
+              OpenVMS system users as shared network printers. This
+              printing system configuration requires PATHWORKS for
+              OpenVMS (Macintosh) software.
+
+                ________________________Note  ________________________
+
+                PATHWORKS for OpenVMS (Macintosh) has been retired
+                and is no longer supported.
+
+                _____________________________________________________
+
+
+
+                                      Before Installing the Software 1-3
+
+ 
+
+
+
+
+
+
+     1.3.5 DDIF Printing
+
+           To print DDIF encoded bitonal images, DCPS requires that
+           either DECwindows or DECimage Application Services (DAS)
+           be installed on your system. DAS is only available on
+           OpenVMS VAX systems.
+
+     1.3.6 DEC Image Print-PLUS (ICPS)
+
+           DCPS V1.1 and later versions cannot coexist with ICPS
+           V1.x software. Installing DCPS replaces the image
+           SYS$LIBRARY:TRN$DDIF_IMAGE.EXE. This new image is not
+           compatible with the ICPS software.
+
+     1.4 Mismatched Components
+
+           All DCPS executable components attempt to ensure they are
+           a matched set. If a mismatch occurs, DCPS reports an error
+           when the queue starts. This error occurs when a component
+           of a prior (incompatible) software version exists in the
+           SYS$SPECIFIC area and newer components are installed in
+           the SYS$COMMON area. The error that occurs depends on
+           which versions of which components are executing. For
+           example:
+
+           o  If the executing version of DCPS$SMB.EXE is V1.1A, and
+              all other components are from Version 1.2, then the
+              following error occurs on an OpenVMS VAX V5.5-2 system:
+
+              $ start/que atk_1152
+              %%%%%%%%%%%  OPCOM  13-FEB-1995 21:38:08.66  %%%%%%%%%%%
+              Message from user QUEUE_MANAGE on DAHLIA
+              %QMAN-E-SYMDEL, unexpected symbiont process termination
+
+              %%%%%%%%%%%  OPCOM  13-FEB-1995 21:38:08.67  %%%%%%%%%%%
+              Message from user QUEUE_MANAGE on DAHLIA
+              -SYSTEM-F-ACCVIO, access violation, reason mask=00,
+              virtual address=00000000, PC=0001A9B8, PSL=03C00000
+
+           o  If the executing version of DCPS$SMBSHR.EXE is V1.1A,
+              and all other components are from Version 1.2, then the
+              following error occurs on an OpenVMS VAX system:
+
+
+
+     1-4 Before Installing the Software
+
+ 
+
+
+
+
+
+
+                 %%%%%%%%%%%  OPCOM  13-FEB-1995 21:44:42.40  %%%%%%%%%%%
+                 Message from user SYSTEM on DAHLIA
+                 Process SYMBIONT_98: %SMBSHRMISMTCH2, Wrong version of
+                 DCPS$SMBSHR.EXE
+
+                 %%%%%%%%%%%  OPCOM  13-FEB-1995 21:44:42.51  %%%%%%%%%%%
+                 Message from user QUEUE_MANAGE on DAHLIA
+                 %QMAN-E-SYMDEL, unexpected symbiont process termination
+
+                 %%%%%%%%%%%  OPCOM  13-FEB-1995 21:44:42.52  %%%%%%%%%%%
+                 Message from user QUEUE_MANAGE on DAHLIA
+                 -NONAME-F-NOMSG, Message number 064BE124
+
+              o  If the executing version of DCPS$SMBSHR.EXE is V1.1A,
+                 and all other components are from Version 1.2, then the
+                 following error occurs on an OpenVMS Alpha system:
+
+                 %%%%%%%%%%%  OPCOM   1-FEB-1995 12:20:35.02  %%%%%%%%%%%
+                 Message from user QUEUE_MANAGE on DNGBAT
+                 %QMAN-E-SYMDEL, unexpected symbiont process termination
+
+                 %%%%%%%%%%%  OPCOM   1-FEB-1995 12:20:35.03  %%%%%%%%%%%
+                 Message from user QUEUE_MANAGE on DNGBAT
+                 -IMGACT-F-SYMVECMIS, shareable image's symbol vector table
+                 mismatch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                      Before Installing the Software 1-5
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                 Installing the Software
+
+
+
+              This chapter describes how to install DECprint Supervisor
+              software using the VMSINSTAL utility. If you are not
+              familiar with the VMSINSTAL utility, refer to the OpenVMS
+              System Manager's Manual.
+
+        2.1 Overview
+
+              Follow these steps to install the DECprint Supervisor
+              (DCPS) for OpenVMS software:
+
+              1. Review all release notes.
+
+              2. Stop each DCPS queue using STOP/QUEUE/NEXT or STOP
+                 /QUEUE/RESET if you have existing DCPS queues and
+                 do not want the DCPS installation procedure to
+                 automatically stop them, or you have DCPS executables
+                 in the SYS$SPECIFIC system areas, or you need to apply
+                 OpenVMS or other patches that impact DCPS.
+
+              3. Remove any DCPS executables from the SYS$SPECIFIC
+                 system areas.
+
+              4. Apply OpenVMS or other patches that impact DCPS,
+                 as determined from the DCPS release notes or other
+                 sources. If the patches require that you reboot your
+                 system, do so after applying the patches.
+
+              5. Install DCPS.
+
+              6. Create or update DCPS$STARTUP.COM, as described in
+                 the DCPS System Manager's Guide. For example, add
+                 queue definitions to the file and set the value of
+                 the DCPS$MAX_STREAMS logical following the examples
+                 provided in the procedure.
+
+                                             Installing the Software 2-1
+
+ 
+
+
+
+
+
+
+           7. Start your DCPS print queues by invoking DCPS$STARTUP.COM.
+              The DCPS installation procedure may have restarted
+              DCPS queues that it stopped, if you chose to allow
+              it to do so. If you changed your DCPS environment or
+              DCPS$STARTUP.COM after the DCPS installation procedure
+              automatically restarted some queues, you may need
+              to stop all DCPS queues and restart them before your
+              changes will take effect.
+
+
+     2.2 VMSINSTAL Conventions
+
+           VMSINSTAL will prompt you for site-specific information.
+           Questions are preceded by an asterisk (*) and may be
+           followed by default responses enclosed in brackets ([]).
+           Enter your response followed by <Return>.
+
+           Press <Return> to enter the default response. If you
+           are not sure of the response, enter a question mark
+           (?). VMSINSTAL displays explanatory text and repeats the
+           prompt.
+
+           Messages specific to the installation of DECprint
+           Supervisor software are listed in Appendix B.
+
+     2.3 Installing the Software
+
+              ________________________Note ________________________
+
+              This section does not reproduce all of the text you
+              may see on your screen during the installation of
+              the DCPS software. Sample VMSINSTAL installation
+              scripts are shown in Appendix A.
+
+              _____________________________________________________
+
+           To install the software, use the following procedure:
+
+           1. Invoke the VMSINSTAL procedure.
+
+              Enter the following command:
+
+              $ @SYS$UPDATE:VMSINSTAL DCPSpppnnn device-id [OPTIONS N]
+
+              You supply the following information:
+
+              o  DCPSpppnnn is the save set name, with ppp desig-
+                 nating the platform (AXP (Alpha) or VAX) and nnn
+                 designating the version (for example, 022 for V2.2).
+
+     2-2 Installing the Software
+
+ 
+
+
+
+
+
+
+                 o  device-id is the name of the device on which you
+                    want to mount the media, such as DQA0:.
+
+                 o  OPTIONS N allows you to request release notes.
+                    If you do not include the OPTIONS N parameter,
+                    VMSINSTAL does not ask you about the release notes.
+                    Review the release notes before proceeding with the
+                    installation. If you are restarting the installation
+                    and have already reviewed the release notes, you do
+                    not need to specify OPTIONS N.
+
+                 First, VMSINSTAL displays a banner line with the date
+                 and time, and instructions for running the dialog.
+                 You may receive one or more of the following warning
+                 messages when VMSINSTAL starts up. Exit from the
+                 procedure, correct the cause of the warning message,
+                 and start the VMSINSTAL procedure again.
+
+                 o  If you are not currently logged in to the SYSTEM
+                    account, the following message is displayed:
+
+                    %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+
+                 o  If processes are running while VMSINSTAL is running,
+                    the following message is displayed:
+
+                    %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                            process-name
+
+                 Other processes may cause the installation of HELP
+                 to fail. When any of these messages are displayed,
+                 the following question is displayed to allow you to
+                 terminate VMSINSTAL and correct the situation:
+
+                 * Do you want to continue anyway [NO]?
+
+                 Enter YES to continue. If you answer NO, the VMSINSTAL
+                 procedure is terminated immediately.
+
+                 You can enter a question mark (?) at this time to
+                 display advice from the VMSINSTAL software. For
+                 example:
+
+                 The above conditions may cause VMSINSTAL to function improperly.
+                 In particular, problems may occur with file ownership if you are not
+                 logged into the SYSTEM account.
+
+              2. Ensure that existing software is saved.
+
+                                             Installing the Software 2-3
+
+ 
+
+
+
+
+
+
+              VMSINSTAL then asks the following question:
+
+              * Are you satisfied with the backup of your system disk [YES]?
+
+              Enter YES to continue, or enter NO to exit VMSINSTAL to
+              make a backup and run VMSINSTAL again.
+
+              If you enter a question mark (?) in response to this
+              question, VMSINSTAL displays the following explanation:
+
+              VMSINSTAL attempts to ensure that a power failure or system crash
+              will not corrupt your system disk.  However, for absolute safety we
+              recommend that you back it up before installing new products.  Please
+              see the documentation for more information on crashes during
+              installation.
+
+           3. Confirm that distribution media is loaded.
+
+              VMSINSTAL asks for confirmation that the distribution
+              media has been mounted.
+
+               Please mount the first volume of the set on device-id:
+              * Are you ready?
+
+           4. Announce products to be installed.
+
+              VMSINSTAL then announces the products to be installed
+              where ppp designates the platform and n.n designates
+              the version.
+
+              The following products will be processed:
+
+              DCPSppp Vn.n
+
+                      Beginning installation of DCPSppp Vn.n at 13:45
+
+              %VMSINSTAL-I-RESTORE, Restoring product saveset A
+
+           5. Obtain the release notes.
+
+              If you specified OPTIONS N in the VMSINSTAL command
+              line, the following Release Notes options are
+              displayed:
+
+              Release notes included with this kit are always copied to SYS$HELP.
+
+              Additional Release Notes Options:
+
+     2-4 Installing the Software
+
+ 
+
+
+
+
+
+
+                    Release Notes Options:
+                           (1) Display release notes
+                           (2) Print release notes
+                           (3) Both 1 and 2
+                           (4) None of the above
+
+                 After you enter the release note option, VMSINSTAL
+                 asks whether you want to continue the installation
+                 procedure:
+
+                 Do you want to continue the installation [NO]?
+
+                 If you did not include the OPTIONS N portion of the
+                 VMSINSTAL command line, VMSINSTAL does not display this
+                 question. Instead, the following message is displayed:
+
+                 %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP
+
+              6. Check for active DCPS queues.
+
+                 If DCPS print queues are active while VMSINSTAL
+                 is running, messages similar to the following are
+                 displayed:
+
+                 %DCPSVAX-W-QUEACTIVE, The following DCPS queues are still active:
+
+                 Queue                     Device                                    Status
+                 -----                     ------                                    ------
+                 LN09                      DAN::LTA9000:                             IDLE
+                 LN17                      DAN::"AppleTalk/Dan's LN17+ps"            IDLE
+                 LN40                      DAN::"IP_RawTCP/ln40:6869"                IDLE
+                 LPS32                     DAN::"IP_CPAP/lps32.office.genicom.com"   IDLE
+
+                 %DCPSVAX-I-NUMQUEUES, 4 existing DCPS queues, with 4 active
+
+                         Previously installed DCPS queues are still running.
+                         Continuing this installation without entering
+                         STOP/QUEUE/RESET for each such queue can cause
+                         inconsistent behavior among queues and can cause
+                         the IVP to fail.
+
+                         Note that if you choose to have this installation
+                         procedure automatically stop such queues, and the
+                         installation subsequently aborts, this procedure
+                         will not automatically restart them.
+
+                 * Do you want these queues automatically stopped and restarted [YES]?
+
+                                             Installing the Software 2-5
+
+ 
+
+
+
+
+
+
+              If you do not want the installation procedure to
+              automatically stop them, you are given the options
+              of aborting the installation or continuing with the
+              queues active. Continuing is not recommended.
+
+           7. Check for sufficient disk space.
+
+              VMSINSTAL checks to see if the amount of disk space
+              required for the installation is available. If the
+              space is not available, a message indicates the amount
+              of disk space that is required, and the installation
+              is aborted. You must allocate sufficient disk space
+              and then start the VMSINSTAL procedure again. However,
+              if you have already provided enough disk space, the
+              installation procedure continues.
+
+           8. Purge extraneous versions of files.
+
+              VMSINSTAL asks if you want to purge any files that are
+              being replaced.
+
+              * Do you want to purge files replaced by this installation [YES]?
+
+              Enter YES if you want to save disk space or NO if you
+              think the files may still be of use.
+
+              If you enter a question mark (?) in response to this
+              query, the following message is displayed:
+
+              During this installation, new files will be provided to replace
+              existing versions.  You may purge these older versions to save disk
+              space, or keep them if you feel they may be of use.  Purging is
+              recommended.
+
+           9. Define DCPS$LAYUP.
+
+              Next, the installation procedure looks for a definition
+              of the logical name DCPS$LAYUP in the system table in
+              executive mode.
+
+              o  If a definition exists, the following message is
+                 displayed:
+
+                 %DCPSppp-I-LAYUPDEF, DCPS$LAYUP is already defined
+                 -DCPSppp-I-LAYUPDEF, This installation will use its value
+
+     2-6 Installing the Software
+
+ 
+
+
+
+
+
+
+                 o  If a definition does not exist, the procedure asks
+                    you for a definition. Press <Return> to select the
+                    default, SYS$SYSROOT:[SYSHLP.EXAMPLES.DCPS], or
+                    enter a directory specification where the system
+                    layup definition files should be stored.
+
+                    * Full definition for DCPS$LAYUP [SYS$SYSROOT:[SYSHLP.EXAMPLES.DCPS]]:
+
+                    The procedure will validate the definition you
+                    provide. If you do not accept the default location
+                    and the specified directory does not exist, the
+                    procedure will ask you if you want to create it:
+
+                    DISK$USER:[MY-LAYUP-DIR] does not exist.
+
+                    * Create it? [N]?
+
+                    If you answer NO, the procedure will ask again for a
+                    definition.
+
+             10. Create directories.
+
+                 VMSINSTAL then attempts to create several directories.
+                 If they already exist, it displays additional messages
+                 indicating this:
+
+                 %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                      VMI$ROOT:[SYSTEST.DCPS].
+                 %CREATE-I-EXISTS, VMI$ROOT:[SYSTEST.DCPS] already exists
+                 %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                      VMI$ROOT:[SYSHLP.EXAMPLES.DCPS].
+                 %CREATE-I-EXISTS, VMI$ROOT:[SYSHLP.EXAMPLES.DCPS] already exists
+                 %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                      VMI$ROOT:[SYSHLP.EXAMPLES.DCPS.NETPRINT].
+                 %CREATE-I-EXISTS, VMI$ROOT:[SYSHLP.EXAMPLES.DCPS.NETPRINT] already exists
+
+             11. Make sure the queue manager is running.
+
+                 VMSINSTAL checks to see if the queue manager is running
+                 on your system.
+
+                 If the queue manager is not present, the Installation
+                 Verification Procedure (IVP) does not run, and the
+                 following messages are displayed on your screen:
+
+                 %DCPSppp-I-NOQUEMGR, System queue manager is not running
+                 -DCPSppp-I-NOQUEMGR, IVP will NOT run.  Installation continuing ...
+
+                 The queue manager must be running if you want the
+                 installation to run the IVP.
+
+                                             Installing the Software 2-7
+
+ 
+
+
+
+
+
+
+          12. Stop queues.
+
+              At this point, VMSINSTAL displays the following message
+              on your screen:
+
+              %DCPSppp-I-NOQUEST, No further questions will be asked.
+
+              VMSINSTAL stops active DCPS queues, if any and if
+              desired.
+
+              %DCPSppp-I-STOPQUEUES, Stopping queues previously reported as active.
+
+          13. Restore the remaining save sets. As it restores each
+              save set, VMSINSTAL reports on its progress:
+
+              VMSINSTAL-I-RESTORE, Restoring product saveset B ...
+              VMSINSTAL-I-RESTORE, Restoring product saveset C ...
+
+              This operation may require up to 10 minutes to
+              complete.
+
+              When all the save sets have been restored, VMSINSTAL
+              instructs you to perform postinstallation procedures.
+              Refer to the DCPS System Manager's Guide for full
+              instructions.
+
+              Next, VMSINSTAL moves the files from the temporary
+              locations used during installation to their permanent
+              directories.
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+              directories...
+
+          14. Verify a successful software loading procedure.
+
+              The IVP verifies that the software was loaded properly.
+              If the system queue manager is running, the IVP runs
+              automatically and VMSINSTAL performs the following:
+
+              1. Creates a temporary print queue
+
+              2. Queues the test files in [SYSTEST.DCPS] to the
+                 temporary print queue DCPS$IVP_TEST
+
+              3. Displays messages similar to the following:
+
+     2-8 Installing the Software
+
+ 
+
+
+
+
+
+
+                 Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43) started on DCPS$IVP_TEST
+                 %DCPS-I-JOBSTART, Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43)
+                       started on DCPS$IVP_TEST
+
+                 Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43) completed
+                 Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44) started on DCPS$IVP_TEST
+                 %DCPS-I-JOBSTART, Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44)
+                       started on DCPS$IVP_TEST
+
+                 Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44) completed
+                 Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45) started on DCPS$IVP_TEST
+                 %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45)
+                       started on DCPS$IVP_TEST
+
+                 Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45) completed
+                 Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46) started on DCPS$IVP_TEST
+                 %DCPS-I-JOBSTART, Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46)
+                       started on DCPS$IVP_TEST
+
+                 Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46) completed
+                 Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47) started on DCPS$IVP_TEST
+                 %DCPS-I-JOBSTART, Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47)
+                       started on DCPS$IVP_TEST
+
+                 Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47) completed
+                 Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48) started on DCPS$IVP_TEST
+                 %DCPS-I-JOBSTART, Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48)
+                       started on DCPS$IVP_TEST
+
+                 Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48) completed
+                 Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49) started on DCPS$IVP_TEST
+                 %DCPS-I-JOBSTART, Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49)
+                       started on DCPS$IVP_TEST
+
+                 Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49) completed
+
+                ________________________Note  ________________________
+
+                The IVP does not produce any hardcopy output.
+
+                _____________________________________________________
+
+                 The IVP procedure automatically deletes the temporary
+                 queue when the IVP completes. You can print the IVP
+                 test files to a real printer later. (Refer to the DCPS
+                 System Manager's Guide.)
+
+                                             Installing the Software 2-9
+
+ 
+
+
+
+
+
+
+              You can also manually invoke the IVP after the
+              installation by entering:
+
+              $ @SYS$TEST:DCPS$IVP
+
+              VMSINSTAL issues an informational message when the IVP
+              is completed:
+
+                      IVP successful for OpenVMS DECprint Supervisor Software
+
+          15. Restart queues.
+
+              VMSINSTAL restarts previously stopped queues if
+              the installation is successful and issues its final
+              messages:
+
+              %DCPSppp-I-STARTQUEUES, Restarting queues previously reported as active.
+
+                      Installation of DCPSppp Vn.n completed at 14:04
+
+                      VMSINSTAL procedure done at 14:08
+              $
+
+          16. Where to go from here.
+
+              Refer to the DCPS System Manager's Guide for instruc-
+              tions on how to create print queues and customize your
+              printing environment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-10 Installing the Software
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                            Sample Installation Sessions
+
+
+
+
+              This appendix shows sample installations of the DECprint
+              Supervisor software on both OpenVMS Alpha and VAX systems,
+              with and without the DCPS software already present on the
+              system.
+
+              Example A-1 shows a sample of an initial installation
+              of the DECprint Supervisor software on an OpenVMS Alpha
+              system. Example A-2 shows a sample upgrade of the DECprint
+              Supervisor software on an OpenVMS VAX system.
+
+        Example A-1 Sample Installation on an OpenVMS Alpha System
+
+        $ @SYS$UPDATE:VMSINSTAL DCPSAXP CDROM: OPTIONS N
+
+                OpenVMS AXP Software Product Installation Procedure V7.3-1
+
+        It is 15-JAN-2003 at 23:02.
+
+        Enter a question mark (?) at any time for help.
+
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                ANDERSON
+                KAMATH
+                SCHULLMAN
+        * Do you want to continue anyway [NO]? Y
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          DCPSAXP V2.2
+
+                Beginning installation of DCPSAXP V2.2 at 23:02
+
+                                                     Cont'd on next page
+
+                                        Sample Installation Sessions A-1
+
+ 
+
+
+
+
+
+
+     Example A-1 (Cont.) Sample Installation on an OpenVMS Alpha
+                         System
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+         Release notes included with this kit are always copied to SYS$HELP.
+
+         Additional Release Notes Options:
+
+             1.  Display release notes
+             2.  Print release notes
+             3.  Both 1 and 2
+             4.  None of the above
+
+     * Select option [2]: 4
+
+     * Do you want to continue the installation [NO]? Y
+     %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+          -------------------------------------------------------------------
+          hp DECprint Supervisor (DCPS) for hp OpenVMS
+          V2.2 Installation Procedure
+
+          -------------------------------------------------------------------
+          © Copyright 1992-2003 Hewlett-Packard Development Company, L.P.
+
+          Confidential computer software.  Valid license from HP and/or its
+          subsidiaries required for possession, use or copying.  Consistent
+          with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+          Software Documentation, and Technical Data for Commercial Items are
+          licensed to the U.S. Government under vendor's standard commercial
+          license.
+          -------------------------------------------------------------------
+
+     * Do you want to purge files replaced by this installation [YES]?
+
+     * Full definition for DCPS$LAYUP [SYS$SYSROOT:[SYSHLP.EXAMPLES.DCPS]]:
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+         VMI$ROOT:[SYSTEST.DCPS].
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+         VMI$ROOT:[SYSHLP.EXAMPLES.DCPS].
+     %DCPSAXP-I-ESTTIME, This installation will take between 1 and 10 minutes.
+     %DCPSAXP-I-NOQUEST, No further questions will be asked.
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+
+                                                  Cont'd on next page
+
+     A-2 Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+        Example A-1 (Cont.) Sample Installation on an OpenVMS Alpha
+                            System
+
+        Software installer:
+
+                Starting with DCPS V2.0, the need for DCPS-OPEN and DCPS-PLUS
+                licenses has been eliminated.  The right to use all features of
+                DCPS is now included with the OpenVMS operating system license.
+
+                Please remember to copy SYS$STARTUP:DCPS$STARTUP.TEMPLATE to
+                SYS$STARTUP:DCPS$STARTUP.COM.  Then edit the resulting copy,
+                following the instructions contained within it, to define
+                your DCPS environment and queue characteristics.  When done,
+                execute the file to establish and start the DCPS queues.
+                Also remember to edit SYS$MANAGER:SYSTARTUP_VMS.COM so that
+                DCPS$STARTUP.COM is automatically run at system startup time.
+
+                DCPS$STARTUP.COM should be executed after all printer devices
+                and interconnects are running.  Below is a summary list:
+
+                  printers via TCP/IP:      after TCP is started
+                  printers via LAT:         after LAT devices are created
+                  printers via AppleTalk:   after the AppleTalk driver is loaded
+                  PrintServers via DECnet:  after DECnet is started
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+        %DCPS-I-IVP, Beginning IVP...
+
+             -------------------------------------------------------------------
+             hp DECprint Supervisor (DCPS) for hp OpenVMS
+             V2.2 Installation Procedure
+
+             -------------------------------------------------------------------
+             © Copyright 1992-2003 Hewlett-Packard Development Company, L.P.
+
+             Confidential computer software.  Valid license from HP and/or its
+             subsidiaries required for possession, use or copying.  Consistent
+             with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+             Software Documentation, and Technical Data for Commercial Items are
+             licensed to the U.S. Government under vendor's standard commercial
+             license.
+             -------------------------------------------------------------------
+
+             IVP using Version V2.2 of DECprint Supervisor
+
+                                                     Cont'd on next page
+
+                                        Sample Installation Sessions A-3
+
+ 
+
+
+
+
+
+
+     Example A-1 (Cont.) Sample Installation on an OpenVMS Alpha
+                         System
+
+     Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 104) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 104)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 104) completed
+     Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 105) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 105)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 105) completed
+     Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 106) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 106)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 106) completed
+     Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 107) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 107)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 107) completed
+     Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 108) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 108)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 108) completed
+     Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 109) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 109)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 109) completed
+     Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 110) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 110)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 110) completed
+
+          IVP successful for DECprint Supervisor V2.2
+
+             Installation of DCPSAXP V2.2 completed at 23:04
+
+         Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+         Creating installation data file: VMI$ROOT:[SYSUPD]DCPSAXP014.VMI_DATA
+
+                                                  Cont'd on next page
+
+     A-4 Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+        Example A-1 (Cont.) Sample Installation on an OpenVMS Alpha
+                            System
+
+                VMSINSTAL procedure done at 23:05
+
+        $
+
+
+        Example A-2 Sample Upgrade on an OpenVMS VAX System
+
+        $ @SYS$UPDATE:VMSINSTAL DCPSVAX CDROM: OPTIONS N
+
+                OpenVMS VAX Software Product Installation Procedure V7.3
+
+        It is 13-JAN-2003 at 12:24.
+
+        Enter a question mark (?) at any time for help.
+
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          DCPSVAX V2.2
+
+                Beginning installation of DCPSVAX V2.2 at 12:24
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+            Release notes included with this kit are always copied to SYS$HELP.
+
+            Additional Release Notes Options:
+
+                1.  Display release notes
+                2.  Print release notes
+                3.  Both 1 and 2
+                4.  None of the above
+
+        * Select option [2]: 4
+        * Do you want to continue the installation [NO]? Y
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                                                     Cont'd on next page
+
+
+
+                                        Sample Installation Sessions A-5
+
+ 
+
+
+
+
+
+
+     Example A-2 (Cont.) Sample Upgrade on an OpenVMS VAX System
+
+          -------------------------------------------------------------------
+          hp DECprint Supervisor (DCPS) for hp OpenVMS
+          V2.2 Installation Procedure
+
+          -------------------------------------------------------------------
+          © Copyright 1992-2003 Hewlett-Packard Development Company, L.P.
+
+          Confidential computer software.  Valid license from HP and/or its
+          subsidiaries required for possession, use or copying.  Consistent
+          with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+          Software Documentation, and Technical Data for Commercial Items are
+          licensed to the U.S. Government under vendor's standard commercial
+          license.
+          -------------------------------------------------------------------
+
+     %DCPSVAX-W-QUEACTIVE, The following DCPS queues are still active:
+
+     Queue                     Device                                    Status
+     -----                     ------                                    ------
+     LN09                      DAN::LTA9000:                             IDLE
+     LN17                      DAN::"AppleTalk/Dan's LN17+ps"            IDLE
+     LN40                      DAN::"IP_RawTCP/ln40:6869"                IDLE
+
+     %DCPSVAX-I-NUMQUEUES, 4 existing DCPS queues, with 3 active
+
+             Previously installed DCPS queues are still running.
+             Continuing this installation without entering
+             STOP/QUEUE/RESET for each such queue can cause
+             inconsistent behavior among queues and can cause
+             the IVP to fail.
+
+             Note that if you choose to have this installation
+             procedure automatically stop such queues, and the
+             installation subsequently aborts, this procedure
+             will not automatically restart them.
+
+     * Do you want these queues automatically stopped and restarted [YES]?
+
+     * Do you want to purge files replaced by this installation [YES]?
+
+                                                  Cont'd on next page
+
+
+     A-6 Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+        Example A-2 (Cont.) Sample Upgrade on an OpenVMS VAX System
+
+        %DCPSVAX-I-LAYUPDEF, DCPS$LAYUP is already defined
+        -DCPSVAX-I-LAYUPDEF, This installation will use its value
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+             VMI$ROOT:[SYSTEST.DCPS].
+        %CREATE-I-EXISTS, VMI$ROOT:[SYSTEST.DCPS] already exists
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+             VMI$ROOT:[SYSHLP.EXAMPLES.DCPS].
+        %CREATE-I-EXISTS, VMI$ROOT:[SYSHLP.EXAMPLES.DCPS] already exists
+        %DCPSVAX-I-ESTTIME, This installation will take between 1 and 10 minutes,
+        -DCPSVAX-I-ESTTIME,  excluding time needed to stop and restart active queues.
+        %DCPSVAX-I-NOQUEST, No further questions will be asked.
+        %DCPSVAX-I-STOPQUEUES, Stopping queues previously reported as active.
+        %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+
+        Software installer:
+
+                Starting with DCPS V2.0, the need for DCPS-OPEN and DCPS-PLUS
+                licenses has been eliminated.  The right to use all features of
+                DCPS is now included with the OpenVMS operating system license.
+
+                Please remember to copy SYS$STARTUP:DCPS$STARTUP.TEMPLATE to
+                SYS$STARTUP:DCPS$STARTUP.COM.  Then edit the resulting copy,
+                following the instructions contained within it, to define
+                your DCPS environment and queue characteristics.  When done,
+                execute the file to establish and start the DCPS queues.
+                Also remember to edit SYS$MANAGER:SYSTARTUP_VMS.COM so that
+                DCPS$STARTUP.COM is automatically run at system startup time.
+
+                DCPS$STARTUP.COM should be executed after all printer devices
+                and interconnects are running.  Below is a summary list:
+
+                  printers via TCP/IP:      after TCP is started
+                  printers via LAT:         after LAT devices are created
+                  printers via AppleTalk:   after the AppleTalk driver is loaded
+                  PrintServers via DECnet:  after DECnet is started
+
+                                                     Cont'd on next page
+
+
+
+
+
+                                        Sample Installation Sessions A-7
+
+ 
+
+
+
+
+
+
+     Example A-2 (Cont.) Sample Upgrade on an OpenVMS VAX System
+
+             If you are converting CPS queues to DCPS, you may want to run
+             the utility SYS$STARTUP:CPS_TO_DCPS_STARTUP.COM instead of
+             editing the startup template.  This utility will read your
+             CPS startup file, change the queue definitions to use DCPS$SMB
+             and its library and logical names, and write out a new DCPS
+             startup file.
+
+     %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+     %DCPS-I-IVP, Beginning IVP...
+
+          -------------------------------------------------------------------
+          hp DECprint Supervisor (DCPS) for hp OpenVMS
+          V2.2 Installation Procedure
+
+          -------------------------------------------------------------------
+          © Copyright 1992-2003 Hewlett-Packard Development Company, L.P.
+
+          Confidential computer software.  Valid license from HP and/or its
+          subsidiaries required for possession, use or copying.  Consistent
+          with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+          Software Documentation, and Technical Data for Commercial Items are
+          licensed to the U.S. Government under vendor's standard commercial
+          license.
+          -------------------------------------------------------------------
+
+          IVP using Version V2.2 of DECprint Supervisor
+
+     Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43) completed
+     Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44)
+           started on DCPS$IVP_TEST
+
+     Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44) completed
+     Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45)
+           started on DCPS$IVP_TEST
+
+                                                  Cont'd on next page
+
+     A-8 Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+        Example A-2 (Cont.) Sample Upgrade on an OpenVMS VAX System
+
+        Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45) completed
+        Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46)
+              started on DCPS$IVP_TEST
+
+        Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46) completed
+        Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47)
+              started on DCPS$IVP_TEST
+
+        Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47) completed
+        Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48)
+        started on DCPS$IVP_TEST
+
+        Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48) completed
+        Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49)
+              started on DCPS$IVP_TEST
+
+        Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49) completed
+
+             IVP successful for DECprint Supervisor V2.2
+
+        %DCPSVAX-I-STARTQUEUES, Restarting queues previously reported as active.
+
+                Installation of DCPSVAX V2.2 completed at 12:27
+
+                VMSINSTAL procedure done at 12:27
+
+        $
+
+
+
+
+
+
+
+
+
+
+
+
+                                        Sample Installation Sessions A-9
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                                         System Messages
+
+
+
+              This appendix describes the DECprint Supervisor messages
+              in the following sections:
+
+              o  Overview of messages, Section B.1
+
+              o  DCPS Installation Messages, Section B.2
+
+        B.1 System Message Overview
+
+        B.1.1 Message Format
+
+              DCPS system messages have one of the following formats:
+
+              %fac-s-ident, text
+              -fac-s-ident, text
+
+              __________________________________________________________
+              Code___Meaning____________________________________________
+
+              %      The prefix for all primary messages
+
+              -      The prefix for all continuation messages
+
+              fac    The facility code, which should be DCPS
+
+              s      The severity level of the message
+
+              ident  An abbreviation of the message text
+
+              text___The_expanded_text_of_the_message___________________
+
+
+
+
+
+                                                     System Messages B-1
+
+ 
+
+
+
+
+
+
+     B.1.2 Severity Level
+
+           The severity levels of DECprint Supervisor system messages
+           are defined as follows:
+
+           __________________________________________________________
+           Code_Meaning______________________________________________
+
+           S    Success - successful completion of the request
+
+           I    Informational - may require user action
+
+           W    Warning - request may not have completed and may
+                require user action
+
+           E    Error - system encountered an error that may be
+                recoverable
+
+           F    Fatal - system encountered a fatal error and cannot
+           _____continue_processing_this_request_____________________
+
+     B.2 DCPS Installation Messages
+
+           The following DCPS message descriptions are alphabetized
+           by the ident portion of the message. The message severity
+           level and text are also shown, while the prefix and
+           facility designation (DCPSppp are omitted. If you receive
+           a message from a facility other than DCPS, refer to the
+           OpenVMS System Messages: Companion Guide for Help Message
+           Users for the message description or use the online help
+           message utility with the command HELP /MESSAGE.
+
+       E-BADSPEC, File spec LPS$SINGLEHOLES.LUP cannot be parsed
+
+         Explanation: The current definition of the logical name
+         DCPS$LAYUP is invalid, possibly because of an incorrect
+         answer given to the question about the location of layup
+         files in an earlier DCPS installation. (DCPS V1.6 and later
+         now validate such responses; see the Release Notes for more
+         information.)
+
+         User Action: Deassign the logical name with the command:
+
+         $ DEASSIGN /SYSTEM /EXECUTIVE_MODE DCPS$LAYUP
+
+         Then start the DCPS installation again and you will be
+         prompted for the location for the layup files.
+
+     B-2 System Messages
+
+ 
+
+
+
+
+
+
+         E-BADVMSVER, This product requires OpenVMS version version or
+            later to install
+
+            Explanation: The DCPS software requires a later version of
+            the OpenVMS operating system.
+
+            User Action: Upgrade your operating system to the correct
+            version.
+
+         I-ESTTIME, This installation will take between 1 and 10
+            minutes,
+         I-ESTTIME, excluding time needed to stop and restart active
+            queues.
+
+            Explanation: This informational message estimates the time
+            it will take to install the software.
+
+            User Action: No action is required.
+
+         W-HIDES, If these files remain, they will be used instead of
+            the
+         W-HIDES, DCPS product files you are installing now, and the
+            IVP
+
+            Explanation: DCPS warns you that the existing DCPS files in
+            SYS$SPECIFIC directories will be used instead of the latest
+            ones.
+
+            User Action: Remove or rename the listed DCPS files from
+            the SYS$SPECIFIC directories.
+
+         E-INVDIRSPE, invalid directory specification
+
+            Explanation: The syntax of the directory specified is not
+            correct.
+
+            User Action: Specify a directory with correct syntax.
+
+         I-LAYUPDEF, DCPS$LAYUP is already defined.
+         I-LAYUPDEF, This installation will use its value.
+
+            Explanation: The installation uses the existing logical
+            name for DCPS$LAYUP.
+
+            User Action: No action is required.
+
+                                                     System Messages B-3
+
+ 
+
+
+
+
+
+
+       I-NOHELP, There is no help in this install procedure.
+       I-NOHELP, Please refer to the Software Installation Guide.
+
+         Explanation: This informational messages states that no
+         help is available.
+
+         User Action: Refer to the DCPS Software Installation Guide
+         for more information.
+
+       I-NOQUEMGR, System queue manager is not running.
+       I-NOQUEMGR, IVP will NOT be run. Installation continuing.
+
+         Explanation: The queue manager is not running on your sys-
+         tem. The installation will continue, but the Installation
+         Verification Procedure cannot run.
+
+         User Action: After the installation, start the queue man-
+         ager and then manually invoke the IVP (@SYS$TEST:DCPS$IVP).
+
+       I-NOQUEST, No further questions will be asked
+
+         Explanation: The VMSINSTAL procedure will continue from
+         this point without requiring further input from you.
+
+         User Action: No action is required.
+
+       W-NORSTRT, Automatically stopped queues have not been
+         restarted
+
+         Explanation: VMSINSTAL has not restarted queues that it
+         automatically stopped.
+
+         User Action: Resolve the problem that caused the instal-
+         lation to terminate abnormally, and then manually restart
+         the queues that the DCPS installation procedure previously
+         listed as active.
+
+       E-NOSUCHDEV, no such device available
+
+         Explanation: The device specified does not exist.
+
+         User Action: Specify a device that exists on your system.
+
+       E-NO_DECC_RTL, DEC C run-time library is not installed.
+
+         Explanation: There is no DEC C run-time library on your
+         system.
+
+         User Action: Install the DEC C/C++ Run-Time Components kit.
+
+     B-4 System Messages
+
+ 
+
+
+
+
+
+
+         E-NO_QUEMAN, This product requires the queue management
+            facility to install.
+
+            Explanation: The queue manager could not be found. The
+            installation procedure is aborted.
+
+            User Action: Start the queue manager. For information
+            refer to the OpenVMS System Management Utilities Reference
+            Manual.
+
+         E-NO_SPACE, This product requires number blocks of disk space
+            to install.
+
+            Explanation: There are not enough free disk blocks
+            to install this software. The installation procedure
+            terminates.
+
+            User Action: Ensure that you have at least the specified
+            number of free disk blocks and restart the installation.
+
+         I-NUMQUEUES, existing-number existing DCPS queues, with
+            active-number active.
+
+            Explanation: This message informs you of the number of DCPS
+            queues you have and how many of them are active (that is,
+            not stopped).
+
+            User Action: No action is required.
+
+         W-PURGW, Purging files may leave running queues with no image
+            file and the IVP may fail.
+
+            Explanation: Purging DCPS files while multistream DCPS
+            symbionts are still active can cause problems.
+
+            User Action: Avoid purging existing files, or stop all
+            active queues before proceeding with the installation.
+
+         I-QSCANNING, Looking for existing DCPS print queues...
+
+            Explanation: This informational message tells you that the
+            installation procedure is checking for print queues that
+            already exist.
+
+            User Action: No action is required.
+
+                                                     System Messages B-5
+
+ 
+
+
+
+
+
+
+       W-QUEACTIVE, The following queues are still active:
+
+         Explanation: The installation procedure found some DCPS
+         queues still active, as listed in subsequent lines. If you
+         do not stop the active queues, the installation may fail or
+         interfere with jobs that are currently printing.
+
+         User Action: When subsequently asked, allow VMSINSTAL
+         to automatically stop the queues, or manually stop them
+         yourself and restart the installation procedure. If some of
+         the queues are not in an idle state, you may wish to wait
+         until all jobs have finished printing.
+
+       I-STARTQUEUES, Restarting queues previously reported as active
+
+         Explanation: VMSINSTAL is currently restarting all queues
+         it had previously reported as active.
+
+         Explanation: No action is required.
+
+       I-STOPQUEUES, Stopping queues previously reported as active
+
+         Explanation: VMSINSTAL is currently stopping all queues it
+         had previously reported as active.
+
+         User Action: No action is required.
+
+       W-SYSPF, This system contains DCPS images in SYS$SPECIFIC
+         areas:
+
+         Explanation: Your system has one or more DCPS executable
+         images in a SYS$SPECIFIC directory, as listed in subsequent
+         lines. The new images that you are about to install will
+         not be used because of the presence of the SYS$SPECIFIC
+         versions.
+
+         User Action: Delete or rename the DCPS files in the
+         SYS$SPECIFIC directories, so that new ones in SYS$COMMON
+         will be used.
+
+       F-WRONGARCH, This product will only install on OpenVMS
+         platform.
+
+         Explanation: You have attempted to install the kit on the
+         wrong platform.
+
+         User Action: Install the kit on either an Alpha or VAX
+         platform, as indicated by the message, or use a different
+         kit for the current platform.
+
+     B-6 System Messages
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       C
+        ________________________________________________________________
+
+                                       Ordering Additional Documentation
+
+
+
+              This appendix lists HP software documents and documenta-
+              tion kits associated with PostScript printers and their
+              order numbers.
+
+        C.1 hp DECprint Supervisor (DCPS) for hp OpenVMS
+
+              o  Hardcopy documentation (order number: QA-09NAA-GZ)
+
+                    Software Installation Guide
+                    System Manager's Guide
+                    User's Guide
+
+              o  CD-ROM documentation and software (order number: QA-
+                 09NAB-H8)
+
+                 -  Software
+
+                       HP DECprint Supervisor (DCPS) for HP OpenVMS
+                       Alpha V2.2
+                       HP DECprint Supervisor (DCPS) for HP OpenVMS VAX
+                       V2.2
+
+                 -  Documentation
+
+                       Release Notes
+                       Software Installation Guide
+                       Software Product Description (SPD)
+                       System Manager's Guide
+                       User's Guide
+
+                    Documentation is provided in the following formats:
+
+                       Bookreader
+                       HTML (Hypertext Markup Language)
+                       PDF (Acrobat Portable Document Format)
+                       PS (PostScript)
+                       Text
+
+                                   Ordering Additional Documentation C-1
+
+ 
+
+
+
+
+
+
+     C.2 DIGITAL ANSI-Compliant Level 3 Printing Protocol
+
+           Documentation (order number: EK-PPLV3-DK)
+
+           o  DIGITAL ANSI-Compliant Printing Protocol Level 3
+              Programming Reference Manual
+              (order number: EK-PPLV3-PM)
+
+           o  DIGITAL ANSI-Compliant Printing Protocol Level 3
+              Programming Supplement
+              (order number: EK-PPLV3-PS)
+
+     C.3 PostScript Programming
+
+           The following books are published by Adobe Systems
+           Incorporated and are among numerous books published about
+           the PostScript language.
+
+           o  PostScript Language Reference
+
+           o  PostScript Language Tutorial and Cookbook
+
+           o  PostScript Language Program Design
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     C-2 Ordering Additional Documentation
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+     A                                    IVP
+     ___________________________           how to manually invoke,
+     AppleTalk network printing,              2-10
+        1-3                                may fail if purging files
+
+                                              ,  B-5
+     C__________________________           may fail with
+     CPAP,  1-3                               SYS$SPECIFIC files,
+                                              B-3
+     D__________________________           requires queue manager to
+     DCPS$LAYUP logical,  2-6                 be running,  B-4
+
+     DDIF printing,  1-4                  M
+     DEC C Run-time library,              ___________________________
+        1-2                               Messages, B-1
+     Disk space requirements,              descriptions,  B-2 to B-6
+        1-1                                format,  B-1
+     Documentation                         severity level of,  B-2
+
+       Compaq/DIGITAL PostScript
+         printers,  C-1                   N__________________________
+
+                                          Network printing
+     E__________________________           using AppleTalk,  1-3
+     Error messages                        using TCP/IP,  1-3
+
+       See Messages                       O
+                                          ___________________________
+     I__________________________          OpenVMS VAX V5.5-2 systems,
+     Installation procedure                 1-2
+
+       questions, 2-2
+       sample session, A-1
+
+     Installation Verification
+        Procedure
+
+       See IVP
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+                                           for other software,  1-2
+     P__________________________           for printers on AppleTalk
+     Printer documentation,  C-1              networks,  1-3
+     Printers                              for printers on TCP/IP
+       on AppleTalk networks,                 networks,  1-3
+         1-3                               operating system version,
+       on TCP/IP networks, 1-3                1-1
+
+     PrintServer printers
+       requirements, 1-3                  S__________________________
+
+                                          System messages
+     Q__________________________           See Messages
+
+     Queues
+       for printers on AppleTalk          T__________________________
+         networks,  1-3                   TCP/IP
+       for printers on TCP/IP              printer connections,  1-3
+         networks,  1-3                    requirements,  1-3
+
+     R__________________________          V__________________________
+
+     Raw TCP/IP,  1-3                     VMSINSTAL
+     Requirements                          conventions,  2-2
+       DEC C Run-time library,             installation questions,
+         1-2                                  2-2
+       disk space, 1-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Index-2

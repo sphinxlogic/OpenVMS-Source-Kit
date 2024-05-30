@@ -1,0 +1,2565 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Digital_Extended_Math_Library_______________________
+                    InstallationVGuide
+
+
+                    Part Number: AA-PBLJB-TE
+
+
+                    July 1992
+
+                    This document contains instructions for installing
+                    the Digital Extended Math Library on the OpenVMS
+                    operating system running on VAX architectures.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a revised
+                                                  document.
+
+                    Operating System and Version:  OpenVMS VAX Version
+                                                  5.4 or higher
+
+                    Software Version:             Digital Extended Math
+                                                  Library
+                                                  Version 2.0
+
+                    Digital Equipment Corporation
+                    Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          First Printing, August 1990
+          Revised, July 1992
+
+          The information in this document is subject to change
+          without notice and should not be construed as a commitment
+          by Digital Equipment Corporation. Digital Equipment
+          Corporation assumes no responsibility for any errors that
+          may appear in this document.
+
+          The software described in this document is furnished under
+          a license and may be used or copied only in accordance with
+          the terms of such license.
+
+          No responsibility is assumed for the use or reliability
+          of software on equipment that is not supplied by Digital
+          Equipment Corporation or its affiliated companies.
+
+          Restricted Rights: Use, duplication, or disclosure by the
+          U.S. Government is subject to restrictions as set forth in
+          subparagraph (c)(1)(ii) of the Rights in Technical Data and
+          Computer Software clause at DFARS 252.227-7013.
+
+          © Digital Equipment Corporation 1990, 1992.
+
+          All rights reserved.
+
+          The postpaid Reader's Comments forms at the end of this
+          document request your critical evaluation to assist in
+          preparing future documentation.
+
+          The following are trademarks of Digital Equipment
+          Corporation: Bookreader, DEC, DECnet, Micro/VAX, OpenVMS,
+          VAX, VAX C, VAX DOCUMENT, VAX MACRO, VAXcluster,
+          VAXstation, VMS, and the DIGITAL logo.
+
+          This document is available on CD-ROM.
+
+
+          This document was prepared using VAX DOCUMENT, Version 2.0.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing to Install DXML
+
+     1.1  Required Operating System Components.............     1-1
+     1.2  Prerequisite Hardware............................     1-1
+     1.3  Prerequisite Software............................     1-2
+     1.4  Optional Hardware................................     1-2
+     1.5  License Registration.............................     1-2
+     1.6  Installation Requirements........................     1-3
+     1.6.1   Time ..........................................    1-3
+     1.6.2   Privileges ....................................    1-3
+     1.6.3   Disk Space ....................................    1-3
+     1.6.4   System Parameters .............................    1-4
+     1.6.4.1   Checking System Parameter Values............     1-4
+     1.6.4.2   Checking Values for GBLPAGES and
+               GBLSECTIONS.................................     1-6
+     1.6.4.3   Changing System Parameter Values with
+               AUTOGEN.....................................     1-6
+     1.6.4.4   Changing Dynamic System Parameter Values
+               with SYSGEN.................................     1-7
+     1.6.5   Process Account Quotas ........................    1-8
+     1.6.6   VMSINSTAL Requirements ........................    1-9
+     1.7  Backing Up Your System Disk......................     1-9
+
+  2  Installing DXML
+
+     2.1  Installation Procedure...........................     2-1
+     2.2  Error Recovery...................................    2-10
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    3  After Installing DXML
+
+        3.1  Defining the Link Library........................    3-1
+        3.2  Installing DXML as a Known Shared Image..........    3-1
+        3.3  Starting DXML....................................    3-2
+        3.4  Running DXML on a VAXcluster.....................    3-5
+        3.5  Running the IVP..................................    3-6
+        3.6  Reviewing Release Notes..........................    3-6
+        3.7  Reporting Problems...............................    3-6
+
+    A  Sample Installation
+
+    B  Installed Files
+
+
+    Tables
+
+        1-1    Required Disk Space  ..........................    1-4
+
+        1-2    Suggested Values for System Parameters ........    1-4
+
+        1-3    Required Values for Dynamic Parameters ........    1-7
+
+        1-4    Process Account Quotas ........................    1-8
+
+        2-1    Error Messages for DXML .......................   2-11
+
+        3-1    Required Global Pages and Global Sections for
+               DXML Components................................    3-3
+
+        B-1    Files Installed by Development and Run-Time
+               Kits...........................................    B-1
+
+        B-2    Files Installed by Development Kit Only .......    B-4
+
+        B-3    Files Installed by Run-Time Kit Only ..........    B-5
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              This manual describes how to install the Digital Extended
+              Math Library (DXML) on processors running the OpenVMS
+              operating system on VAX platforms.
+
+              For information on the compatibility of other software
+              products with this version of DXML, refer to the System
+              Support Addendum (SSA) that comes with the Software Product
+              Description (SPD). You can use the SPD and SSA to verify
+              which versions of your operating system are compatible with
+              this version of DXML.
+
+        Intended Audience
+
+              This manual is intended for anyone who is responsible for
+              any of the following tasks:
+
+              o  Planning the installation of DXML and preparing the
+                 system
+
+              o  Installing DXML
+
+              o  Tuning the system that is running DXML
+
+              To install the software, you must:
+
+              o  Be familiar with VMSINSTAL, the command procedure used
+                 to install software products. To locate the description
+                 of VMSINSTAL, see the master index of the system
+                 documentation set.
+
+              o  Have access to the SYSTEM account on your machine or to
+                 an account with the user privilege SETPRV.
+
+              This manual helps you understand the procedures necessary
+              for installing DXML as a shareable library. Please read
+              this manual before you begin the installation.
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+    Structure of This Manual
+
+          This manual includes three chapters and two appendixes:
+
+          o  Chapter 1, Preparing to Install DXML, explains how to
+             plan the installation and prepare your system for the
+             installation.
+
+          o  Chapter 2, Installing DXML, explains how to install the
+             software.
+
+          o  Chapter 3, After Installing DXML, explains how to adjust
+             your system for the best performance of the software.
+
+          o  Appendix A, Sample Installation, presents the log of a
+             sample installation of DXML.
+
+          o  Appendix B, Installed Files, lists the files that make
+             up the DXML product.
+
+    Associated Documents
+
+          Please read the release notes before installing the
+          software, in case important information missing from
+          this document has been added to the notes. Application
+          developers should also check the release notes before using
+          the product, in case corrections have been made to the
+          documented performance of the product.
+
+          The documentation for DXML also includes the following
+          books:
+
+          o  Digital Extended Math Library for OpenVMS VAX User Guide
+
+          o  Digital Extended Math Library Reference Manual
+
+          For general information on installing software, refer to
+          the following manuals:
+
+          o  Guide to VAX/VMS Software Installation
+
+          o  VAX/VMS System Manager's Reference Manual
+
+
+
+    vi
+
+ 
+
+
+
+
+
+
+
+        Conventions Used in This Manual
+
+              This manual uses the following conventions:
+
+              ___________________________________________________________
+              Convention____Meaning______________________________________
+
+              Ctrl/x        The slash in the key name indicates that you
+                            press the two keys simultaneously. In this
+                            sequence, hold down the Ctrl key and then
+                            press the character key.
+
+              .             Vertical ellipses in an example indicate that
+              .             irrelevant information has been omitted.
+              .
+
+              $             The dollar sign is used to indicate the DCL
+              ______________prompt,_which_can_differ_on_your_system._____
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                                Preparing to Install DXML
+
+
+              Chapter 1 discusses the preparations and requirements for
+              installing DXML.
+
+              Your bill of materials (BOM) and indented bills report
+              (BIL) specify the contents of your kit. If your kit is
+              damaged or if you find that parts of it are missing,
+              contact your Digital representative.
+
+        1.1 Required Operating System Components
+
+              The OpenVMS VAX operating system comes with a variety of
+              support options, or classes. Classes include such features
+              as networking and RMS journaling. To use DXML, your system
+              must be running a version of OpenVMS VAX that includes the
+              following classes:
+
+              o  VMS Required Saveset
+
+              o  Programming Support
+
+        1.2 Prerequisite Hardware
+
+              DXML runs on most VAX, Micro/VAX, VAXstation, and VAXserver
+              processors. For a complete list of supported processors,
+              see the DXML System Support Addendum.
+
+              DXML does not run on the VAX-11/725, VAX-11/782, Micro/VAX
+              I, VAXstation I, and VAXstation 8000 processors.
+
+              Installing DXML requires at least 8 megabytes of memory on
+              your system. DXML applications provide better response if
+              given additional memory.
+
+
+
+
+                                            Preparing to Install DXML 1-1
+
+ 
+
+
+
+
+
+
+
+    1.3 Prerequisite Software
+
+          DXML requires Version 5.4 or higher of the OpenVMS VAX
+          operating system.
+
+          To compile, link, and run a DXML application program
+          written in a high-level language, you also need the
+          programming language compiler.
+
+          The System Support Addendum (SSA) contains a complete list
+          of prerequisite software and required version numbers.
+
+    1.4 Optional Hardware
+
+          To use vector processing, you need either VAX vector
+          hardware or the the VAX Vector Instruction Emulator
+          Facility (VVIEF), available with the operating system,
+          which executes vector instructions on a scalar VAX
+          processor. DXML supports the vector processing hardware
+          on either the VAX 9000 and the VAX 6000 processors. See
+          the Guide to Maintaining a VMS System for more information
+          about VVIEF.
+
+    1.5 License Registration
+
+          Before you install and run DXML Version 2.0 on a newly-
+          licensed node, you must first register a License Product
+          Authorization Key (License PAK) using the License
+          Management Facility (LMF). The License PAK may be shipped
+          along with the kit if you ordered the license and media
+          together; otherwise, it is shipped separately to a location
+          based on your license order.
+
+          You must register and load your license for DXML before you
+          start the installation procedure. Register your License PAK
+          in one of the following ways:
+
+          o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When the
+             procedure prompts you for information, respond with data
+             from your License PAK.
+
+          o  At the DCL prompt, enter the LICENSE REGISTER command
+             with the qualifiers that correspond to your License PAK
+             information.
+
+    1-2 Preparing to Install DXML
+
+ 
+
+
+
+
+
+
+
+              Load the PAK using the LICENSE LOAD command. If previous
+              versions of the PAK have been loaded on the system, remove
+              the current license from system memory using the following
+              command:
+
+              $ LICENSE UNLOAD lmf-name
+
+              Then load the new license, using the following command:
+
+              $ LICENSE LOAD lmf-name
+
+              where:
+
+              o  lmf-name = EXT-MATH-LIB for the Development Kit
+
+              o  lmf-name = EXT-MATH-LIB_RT for the Run-time Kit
+
+        1.6 Installation Requirements
+
+              This section describes the minimum requirements for
+              installing DXML: time, privileges, disk storage space,
+              system parameters, process account quotas, and VMSINSTAL
+              requirements.
+
+        1.6.1 Time
+
+              The installation takes less than 30 minutes, depending on
+              your type of media and your system configuration.
+
+        1.6.2 Privileges
+
+              The account you use to install DXML must have the user
+              privilege SETPRV. As one of the first actions, the
+              VMSINSTAL command procedure grants all privileges (except
+              BYPASS) to the process that invokes it. This command
+              succeeds only if the account has SETPRV. The procedures
+              described in this installation guide refer to the SYSTEM
+              account, but they are the same for any account with SETPRV.
+
+        1.6.3 Disk Space
+
+              DXML's requirements for free disk storage space are
+              summarized in Table 1-1. To display the number of free
+              disk blocks on the current system disk, enter the following
+              command at the DCL prompt:
+
+                                            Preparing to Install DXML 1-3
+
+ 
+
+
+
+
+
+
+
+          $ SHOW DEVICE SYS$SYSDEVICE
+
+          Table_1-1_Required_Disk_Space______________________________
+
+                      Blocks During
+          Kit         Installation         Blocks After Installation
+          ________________________________with_vector___scalar_only__
+
+          Development 110000              110000        65000
+
+          Run-time_____90000_______________90000________50000________
+
+    1.6.4 System Parameters
+
+          The installation of DXML requires the default system
+          parameter settings. After installation, and depending
+          on whether known shared images are used, lower settings
+          of these parameters are possible. Table 1-2 lists the
+          suggested settings for the installation and execution of
+          DXML.
+
+          Table_1-2_Suggested_Values_for_System_Parameters___________
+
+          System_Parameter___________Minimum_Value___________________
+
+          CLISYMTBL                    250
+          GBLPAGES                   35000
+          GBLPAGFIL                   1024
+          GBLSECTIONS                   20
+          LOCKIDTBL                    200
+          LOCKIDTBL_MAX              65535
+          RESHASHTBL                    64
+          VIRTUALPAGECNT______________8192___________________________
+
+    1.6.4.1 Checking System Parameter Values
+
+          To check the values of your system parameters, enter the
+          following command at the DCL prompt to invoke the System
+          Generation Utility (SYSGEN):
+
+          $ RUN SYS$SYSTEM:SYSGEN
+          SYSGEN>
+
+
+
+    1-4 Preparing to Install DXML
+
+ 
+
+
+
+
+
+
+
+              At the SYSGEN> prompt, enter the SHOW command to display
+              the value of a system parameter. The values displayed
+              should equal or exceed the value of each system parameter
+              listed in Table 1-2. The following example displays the
+              value for the VIRTUALPAGECNT system parameter:
+
+              SYSGEN> SHOW VIRTUALPAGECNT
+
+              After checking the parameters with the SHOW command, enter
+              the EXIT command at the SYSGEN> prompt to return to DCL
+              level.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Preparing to Install DXML 1-5
+
+ 
+
+
+
+
+
+
+
+    1.6.4.2 Checking Values for GBLPAGES and GBLSECTIONS
+
+          To install and run DXML, you must have sufficient free
+          global pages and global sections. You must first check the
+          free global pages and sections you have on your system.
+          Then use AUTOGEN if you need to increase the GLBPAGES and
+          GBLSECTIONS system parameters.
+
+          To display the number of free global pages and global
+          sections, use the WRITE command with the F$GETSYI lexical
+          function. The following example shows how to display this
+          information on the SYS$OUTPUT device:
+
+          $ WRITE SYS$OUTPUT F$GETSYI("CONTIG_GBLPAGES")
+          15848
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+          24
+
+          If the values of free global pages or global sections are
+          greater than the values in Table 1-2, you do not need to
+          increase the values. If a value is less than the value in
+          Table 1-2, you must increase the system parameter.
+
+          Use the AUTOGEN command procedure to change system
+          parameters.
+
+    1.6.4.3 Changing System Parameter Values with AUTOGEN
+
+          Use the AUTOGEN command procedure to change system
+          parameters. AUTOGEN automatically adjusts values for
+          parameters that are associated with the values you reset
+          manually. To change system parameters with AUTOGEN, edit
+          the following file:
+
+          SYS$SYSTEM:MODPARAMS.DAT
+
+          Use an editor to access the file. To change a parameter
+          value listed in this file, delete the current value
+          associated with that parameter and enter the new value. To
+          add a new parameter, add a line to the file that includes
+          both the name of the parameter and its value. For example:
+
+          VIRTUALPAGECNT = 19000
+
+          To modify incremental parameters such as GBLPAGES and
+          GBLSECTS, use ADD_. The following example increases the
+          global page setting by 2000:
+
+          ADD_GBLPAGES = 2000
+
+    1-6 Preparing to Install DXML
+
+ 
+
+
+
+
+
+
+
+              After you make all your changes, exit from the editor and
+              execute the AUTOGEN procedure to recalculate your system
+              parameters. Enter the following command at the DCL prompt:
+
+              $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+              When you specify REBOOT, AUTOGEN performs an automatic
+              system shutdown and then reboots the system. Any users
+              logged on to the system are immediately disconnected during
+              the shutdown. The automatic reboot puts the new parameter
+              values into effect.
+
+              The AUTOGEN Utility automatically adjusts some of the
+              SYSGEN parameters based on the consumption of resources
+              since the last reboot. If you do not want to take advantage
+              of this automatic adjustment, include the NOFEEDBACK
+              qualifier on the AUTOGEN command line.
+
+        1.6.4.4 Changing Dynamic System Parameter Values with SYSGEN
+
+              Use the System Generation Utility (SYSGEN) to set dynamic
+              parameters. Dynamic parameters changed with the SYSGEN
+              WRITE ACTIVE command become active immediately without
+              any need to reboot your system. In fact, rebooting returns
+              dynamic system parameter values to their previous settings.
+
+              If you change dynamic parameter values, complete the
+              DXML installation before rebooting the system. After the
+              installation, you can reset the dynamic parameters to their
+              previous values or leave them to be reset automatically
+              the next time you reboot your system. Table 1-3 shows the
+              required dynamic parameter values.
+
+              Table_1-3_Required_Values_for_Dynamic_Parameters___________
+
+              Dynamic
+              Parameter________Value_____________________________________
+
+              CLISYMTBL        250
+              LOCKIDTBL________200_______________________________________
+
+              If the dynamic parameter values on your system are less
+              than the values listed, use the following series of
+              commands to change the values. This example changes the
+              CLISYMTBL value to 250.
+
+                                            Preparing to Install DXML 1-7
+
+ 
+
+
+
+
+
+
+
+          $ RUN SYS$SYSTEM:SYSGEN
+          SYSGEN> USE ACTIVE
+          SYSGEN> SET CLISYMTBL 250
+          SYSGEN> WRITE ACTIVE
+          SYSGEN> EXIT
+
+    1.6.5 Process Account Quotas
+
+          The account you use to install DXML must have sufficient
+          quotas to enable you to perform the installation. Table 1-4
+          shows the process quotas required for the installing
+          account. Except for PGFLQUOTA, all the process quotas are
+          the default values.
+
+          Table_1-4_Process_Account_Quotas___________________________
+
+          Account_Quota____Minimum_for_DXML__________________________
+
+          BYTLM             32768
+          ENQLM               200
+          FILLM                40
+          WSQUOTA             512
+          WSEXTENT           2048
+          PGFLQUOTA________110000____________________________________
+
+          For more information on modifying account quotas, see the
+          description of the Authorize Utility in the documentation
+          for system management.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-8 Preparing to Install DXML
+
+ 
+
+
+
+
+
+
+
+        1.6.6 VMSINSTAL Requirements
+
+              When you invoke VMSINSTAL, it checks whether you have done
+              the following:
+
+              o  Set your default device and directory to SYS$UPDATE
+
+              o  Logged in to a privileged account
+
+              o  Set adequate quotas for installation
+
+              o  Backed up the system disk
+
+              VMSINSTAL also checks to see whether DECnet is running and
+              whether any users are logged in to the system. VMSINSTAL
+              requires that the installation account have a minimum of
+              the following quotas:
+
+                 ASTLM = 24
+                 BIOLM = 18
+                 BYTLM = 18000
+                 DIOLM = 18
+                 ENQLM = 30
+                 FILLM = 20
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can type Yes to
+              continue. To stop the installation process and correct
+              the situation, type No or press Return. Then, correct the
+              problem and restart the installation.
+
+        1.7 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if you
+              have backed up your system disk. Digital recommends that
+              you do a system disk backup before installing any software.
+
+              Use the backup procedures that are established at your
+              site. For details on performing a system disk backup, see
+              the section on the Backup Utility in the System Management
+              Subkit.
+
+
+
+                                            Preparing to Install DXML 1-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                                          Installing DXML
+
+
+              Chapter 2 explains how to install the Digital Extended Math
+              Library. Section 2.1 contains a step-by-step description of
+              the installation procedure.
+
+                ________________________ Note ________________________
+
+                DXML provides online release notes. Digital strongly
+                recommends that you read the release notes before
+                performing the installation. For information on
+                accessing the online release notes, see Section 2.1.
+
+                ______________________________________________________
+
+        2.1 Installation Procedure
+
+              The VMSINSTAL command procedure moves the DXML software
+              from the distribution media to your system disk.
+              The procedure consists of a series of questions and
+              informational messages. Appendix A shows a sample
+              installation.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can then start the installation again.
+
+              To install DXML Version 2.0 on your VMS system, take the
+              following steps:
+
+              1. Invoke VMSINSTAL.
+
+                 To start the installation, run the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account.
+
+                 @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                                                      Installing DXML 2-1
+
+ 
+
+
+
+
+
+
+
+             where:
+
+             o  saveset-name is one of the following:
+
+                   DXMLDVVV020 (Development Kit)
+                   DXMLRTVV020 (Run-time Kit)
+
+             o  device-name is the name of the device on which you
+                plan to mount the media. For example, MTA0: is the
+                device name for a tape drive.
+
+             o  OPTIONS N is an optional but recommended parameter
+                that causes VMSINSTAL to prompt you about the release
+                notes during the installation procedure. If you do
+                not include the OPTIONS N parameter, VMSINSTAL does
+                not ask you about the release notes. If you have
+                already reviewed the release notes or are restarting
+                the installation, you do not need to specify OPTIONS
+                N. In addition to the N option, you can invoke
+                VMSINSTAL with the following options:
+
+                -  Auto_answer option (A): Initially creates a file
+                   that contains your answers to VMSINSTAL questions
+                   and prompts. You can then use the option (and the
+                   answer file) to save time during a reinstallation
+                   (typically after upgrading your system).
+
+                -  Get save set option (G): Lets you store product
+                   save sets temporarily on a magnetic tape or in a
+                   disk directory.
+
+                -  File log option (L): Logs all activity to the
+                   terminal during installation.
+
+                -  Alternate root option (R): Lets you install the
+                   product to a system root other than that of the
+                   running system.
+
+                If you specify more than one option, separate the
+                options with commas (OPTIONS A,N).
+
+             If you do not supply the product name or the device
+             name, VMSINSTAL prompts you for this information later
+             in the installation procedure. VMSINSTAL does not prompt
+             you for any options.
+
+          2. Confirm other processes.
+
+    2-2 Installing DXML
+
+ 
+
+
+
+
+
+
+
+                 VMSINSTAL checks for other active processes. If there
+                 are other users on the system, VMSINSTAL displays the
+                 following inquiry:
+
+                 %VMSINSTAL-W-ACTIVG, The following processes are still active:
+                        ...
+                 * Do you want to continue anyway? [NO]?
+
+                 The DXML software does not affect other users of the
+                 system. Type YES to continue.
+
+              3. Confirm system backup.
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 You should always back up your system disk before
+                 performing an installation. If you are satisfied with
+                 the backup of your system disk, press Return. Otherwise,
+                 type NO to stop the installation. After you back up your
+                 system disk, you can restart the installation.
+
+              4. Mount the media.
+
+                 VMSINSTAL prompts you to mount the distribution volume
+                 on the device you specified when you invoked VMSINSTAL.
+                 You should now load the distribution volume. VMSINSTAL
+                 then asks you if you are ready to continue with the
+                 installation.
+
+                 Please mount the first volume of the set on MTA0:.
+                 * Are you ready? YES
+
+                 When you respond YES, VMSINSTAL displays a message
+                 that the media containing DXML has been mounted on the
+                 specified device and that the installation has begun.
+
+                 The following products will be processed:
+                   DXMLDVVV V2.0
+
+                         Beginning installation of  DXMLDVVV V2.0 at 14:37
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set A...
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, type NO
+                 in response to the "Are you ready?" question. To abort
+                 the installation for other reasons, press Ctrl/Y.
+
+                                                      Installing DXML 2-3
+
+ 
+
+
+
+
+
+
+
+          5. Select a release notes option.
+
+             If you specified OPTIONS N when you invoked VMSINSTAL,
+             you are now asked to choose one of the four options for
+             reviewing the release notes.
+
+             Release notes included with this kit are always copied to SYS$HELP.
+
+             Additional Release Notes Options:
+
+                 1.  Display release notes
+                 2.  Print release notes
+                 3.  Both 1 and 2
+                 4.  None of the above
+
+             * Select option [2]:
+
+             If you select option 1, VMSINSTAL displays the release
+             notes immediately on the console terminal. You can
+             terminate the display at any time by pressing Ctrl/Y.
+
+             If you select option 2, VMSINSTAL prompts you for the
+             name of the print queue that you want to use:
+
+             * Queue name [SYS$PRINT]:
+
+             You can press Return to send the file to the default
+             output print device or you can enter another queue name.
+
+             If you select option 3, VMSINSTAL displays the release
+             notes immediately on the console terminal and then
+             prompts you for a queue name for the printed version.
+
+             Select option 4 if you have already reviewed the release
+             notes and are restarting the installation.
+
+             Next, VMSINSTAL displays the following question:
+
+             * Do you want to continue the installation [NO]?:
+             %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                                 successfully moved to SYS$HELP.
+
+             To continue the installation, type YES. Otherwise, press
+             Return. In either case, the release notes are copied to
+             the file SYS$HELP:DXML020_VV.RELEASE_NOTES.
+
+             If you chose to continue the installation, VMSINSTAL
+             begins to access the remaining files in the kit.
+
+    2-4 Installing DXML
+
+ 
+
+
+
+
+
+
+
+                 %DXMLDVVV-I-INTRO, Beginning the Installation/Verification Procedure for
+                 -DXMLDVVV-I-INTRO, Product Name:  Digital Extended Math Library V2.0
+                 -DXMLDVVV-I-INTRO, Product Option: Development Library for OpenVMS VAX
+
+              6. Choose the Installation Verification Procedure (IVP)
+                 option.
+
+                 The installation procedure asks if you want to run the
+                 IVP during the installation procedure. The IVP for DXML
+                 links each component of the product.
+
+                 * Do you want to run the DXML installation verification procedure [YES]?
+
+                 Digital recommends that you run the IVP during the
+                 installation. You can also run the IVP at any time after
+                 DXML is installed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                      Installing DXML 2-5
+
+ 
+
+
+
+
+
+
+
+          7. Purge files.
+
+             You now have the option to purge files from previous
+             versions of DXML that are superseded by this
+             installation.
+
+             * Do you want to purge files replaced by this installation [YES]?
+
+             Purging is recommended; however, if you need to keep
+             files from the previous version, type NO in response to
+             the question.
+
+          8. Install the vector library.
+
+             You now have the option to include the vector library in
+             the installation.
+
+             * Do you want the vector library installed? [YES]?
+
+             DXML contains the option of supporting vector
+             processing. If your system does not have vector
+             hardware, or a need for the vector object files, type
+             NO.
+
+          9. Read informational messages.
+
+             VMSINSTAL tells you that there are no more questions.
+
+             %DXMLDVVV-I-NOQUEST, No more questions will be asked. Approximately 30
+             -DXMLDVVV-I-NOQUEST, minutes remain to complete this procedure.
+
+             At this point, VMSINSTAL verifies the license
+             registration for DXML. The installation procedure stops
+             if the Product Authorization Key (PAK) is not loaded.
+             If you have not done so, stop the installation, register
+             and load your PAK, and then restart the installation.
+
+             Next, VMSINSTAL checks for installation requirements,
+             such as the minimum values for system parameters. If any
+             value does not meet the minimum requirement, VMSINSTAL
+             stops the installation. Correct the problem and restart
+             the installation.
+
+             At the installation proceeds, VMSINSTAL displays a
+             number of informational messages that report on the
+             progress of the installation.
+
+    2-6 Installing DXML
+
+ 
+
+
+
+
+
+
+
+                 %VMSINSTAL-I-SYSDIR, This product creates system directory [SYSTEST.DXML]
+
+                     If you intend to execute this layered product on other nodes in your
+                     cluster, and you have the appropriate software license, you must
+                     prepare the system-specific roots on the other nodes by issuing the
+                     following command on each node (using a suitably privileged account):
+
+                     $ CREATE /DIRECTORY SYS$SPECIFIC:[SYSTEST.DXML]
+
+                 %DXMLDVVV-I-EOINST, The primary installation phase has completed.
+                 %DXMLDVVV-I-EOINST, Be sure to read the release notes.
+
+                 When the files for the product are transferred from
+                 the distribution medium to your system, you see the
+                 following message:
+
+                 %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                 At this time, files in [SYSTEST.DXML] are purged if that
+                 directory already exists and if you chose that option.
+                 If this is a new installation, VMSINSTAL creates the
+                 directory and moves the files into it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                      Installing DXML 2-7
+
+ 
+
+
+
+
+
+
+
+          10.Observe the Installation Verification Procedure (IVP).
+
+             %DXML-I-IVP> Beginning Installation Verification Procedures for
+                    Product Name: DXML V2.0
+                    Product Option: Development Library for OpenVMS VAX
+
+             If you chose to install the vector library, VMINSTAL
+             displays the following message:
+
+             %DXML-I-Inf> The vector libraries are installed on the system.
+             %DXML-I-Inf> If the system is not provided with vector support
+             %DXML-I-Inf> or vector emulation, the installation verification
+             %DXML-I-Inf> will fail.
+
+             When the IVP runs successfully, you see the following
+             display:
+
+             %DXML-I-Inf> Beginning link test verifications of the DXML Development Library
+               The link test verification of SPARSE has completed successfully
+               The link test verification of BLAS has completed successfully
+               The link test verification of LAPACK has completed successfully
+               The link test verification of Signal Processing has completed successfully
+
+             The link test verifications of DXML have completed successfully
+
+             %DXML-I-Inf> Beginning regression test verifications of the DXML Development Library
+             ivp_test> Regression tests of BLAS scalar completed successfully.
+             ivp_test> Regression tests of Sparse BLAS scalar completed successfully.
+             ivp_test> Regression tests of Signal Processing scalar completed successfully.
+             ivp_test> Regression tests of LAPACK scalar completed successfully.
+             ivp_test> Regression tests of Sparse Iterative Solver scalar completed successfully.
+             ivp_test> Regression tests of BLAS vector completed successfully.
+             ivp_test> Regression tests of Sparse BLAS vector completed successfully.
+             ivp_test> Regression tests of Signal Processing vector completed successfully.
+             ivp_test> Regression tests of LAPACK vector completed successfully.
+             ivp_test> Regression tests of Sparse Iterative Solver vector completed successfully.
+
+             DXML-Inf> The regression test verifications of DXML have completed successfully
+
+             DXML-I-IVP> Completed DXML V2.0 Installation Verification Procedure
+
+          11.End the installation procedure.
+
+             The following messages indicate that the entire
+             installation procedure is complete.
+
+    2-8 Installing DXML
+
+ 
+
+
+
+
+
+
+
+                 DXML-I-Inf>Finished the Installation / Verification Procedure for
+                     Product Name:   DXML V2.0
+                     Product Option: Development Library for OpenVMS VAX
+
+                 Be sure to read the release notes.
+                   Installation of DXMLDVVV V2.0 completed at 15:03
+
+                 VMSINSTAL procedure done at 15:03
+
+                 You can now log out of the privileged account.
+
+                 VMSINSTAL deletes or changes entries in the process
+                 symbol tables during the installation. Therefore, if you
+                 are going to continue using the system manager's account
+                 and you want to restore these symbols, log out and log
+                 in again.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                      Installing DXML 2-9
+
+ 
+
+
+
+
+
+
+
+    2.2 Error Recovery
+
+          If an error occurs during the installation, VMSINSTAL
+          displays the following message:
+
+          %VMSINSTAL-E-INSFAIL, The installation of
+          DXML V2.0 has failed.
+
+          If an error occurs when the Installation Verification
+          Procedure (IVP) is running, you see these messages:
+
+          The DXML V2.0
+          Installation Verification Procedure failed.
+
+          %VMSINSTAL-E-IVPFAIL, The IVP for DXML V2.0 has failed.
+
+          Errors can occur if any of the following conditions exist:
+
+          o  The operating system version is incorrect.
+
+          o  A prerequisite software version is incorrect.
+
+          o  Quotas necessary for successful installation are
+             insufficient.
+
+          o  System parameter values for successful installation are
+             insufficient.
+
+          o  The product license has not been registered and loaded.
+
+          o  The vector library was installed on a system without
+             support for vector processing.
+
+          If any of these conditions exist, check the software
+          requirements and the system prerequisites. Table 2-1
+          lists the error messages, preceded by the kit name (for
+          example, DXMLDVVV020-I-), that are specific to the DXML
+          installation.
+
+
+
+
+
+
+
+    2-10 Installing DXML
+
+ 
+
+
+
+
+
+
+
+              Table_2-1_Error_Messages_for_DXML__________________________
+
+              Error
+              Message_______Meaning______________________________________
+
+              -VMSBAD       Wrong version of VMS
+
+              -NOSPACE      System disk contains too few free blocks
+
+              -PGFLQ        Process does not have a large enough Paging
+                            File Quota
+
+              -LICFAIL      Improper license
+
+              -NOGBLPG      GBLPAGES parameter is set below required
+                            minimum
+
+              -NOGSECT      GBLSECTIONS parameter is set below required
+              ______________minimum______________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     Installing DXML 2-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                                    After Installing DXML
+
+
+              Chapter 3 describes the tasks you perform after installing
+              DXML:
+
+              o  Starting DXML
+
+              o  Making the product usable on a VAXcluster, if necessary
+
+              o  Checking the installation by running the IVP
+
+              o  Reviewing the release notes
+
+              o  Reporting problems
+
+        3.1 Defining the Link Library
+
+              DXML's startup command procedure defines the link library
+              for DXML and adds the new definition to the system logical
+              name table. If a definition already exists, the procedure
+              adds to it.
+
+              The LNK$LIBRARY logical name directs the linker to the
+              appropriate image library. The default definition of
+              LNK$LIBRARY is the image libary SYS$LIBRARY:DXML$IMAGELIB_
+              DS.OLB, indicating the D_floating data type and scalar
+              processing.
+
+              Whether you use the default definition or change the
+              definition, see Section 3.3 for instructions on starting
+              DXML.
+
+        3.2 Installing DXML as a Known Shared Image
+
+              If you expect all or some of DXML's components to be used
+              extensively, you can reduce the system overhead and memory
+              requirements by installing the components as known shared
+              images.
+
+                                                After Installing DXML 3-1
+
+ 
+
+
+
+
+
+
+
+          By default, none of the components are known shared images.
+          DXML provides a startup command procedure which you can
+          edit to specify the components you want installed as known
+          shared images. See Section 3.3 for instructions on how to
+          edit and invoke the startup procedure.
+
+    3.3 Starting DXML
+
+          This section describes how to edit the startup command
+          procedure and start the DXML software.
+
+          If you want to use the default startup installation, start
+          at step 5.
+
+          If you want to change the link library but do not want to
+          install known shared images, start at step 4B.
+
+          If you want to install known shared images, use the
+          following procedure. Digital recommends using this
+          procedure on a system that has been rebooted recently to
+          avoid having fragmented available space in the global page
+          table.
+
+          1. Identify the DXML components that are likely to be used
+             by more than one user at a time and would therefore
+             benefit from being installed as known shared images.
+
+          2. Refer to Table 3-1 for the required global sections
+             and global pages for each component of DXML. Add the
+             requirements for the components you selected.
+
+          3. Verify that the number of available global pages and
+             global sections on your system is adequate, as described
+             in Section 1.6.4.2. If necessary, change the values, as
+             described in Section 1.6.4.3.
+
+          4. Edit the DXML command procedure,
+             SYS$STARTUP:DXML$STARTUP.COM.
+
+             A. Remove the comment character from the procedure call
+                statements for the components you want installed as
+                known shared images.
+
+             B. To specify a new default link library, substitute one
+                of the listed parameters for the parameter DS in the
+                following command:
+
+    3-2 After Installing DXML
+
+ 
+
+
+
+
+
+
+
+                     $  @SYS$LIBRARY:DXML$SET_LIB DS /SYSTEM
+
+                       DV for D_float and vector processing
+                       GS for G_float and scalar processing
+                       GV for G_float and vector processing
+
+              5. Invoke the command procedure:
+
+                 $ @SYS$STARTUP:DXML$STARTUP.COM
+
+                 Any component you selected is now available as a known
+                 shared image and the system logical name is defined.
+
+              6. Add the following line to the appropriate system startup
+                 command file to ensure that DXML is started whenever the
+                 system is started:
+
+                 $ @SYS$STARTUP:DXML$STARTUP.COM
+
+                 The default startup command file is
+                 SYS$MANAGER:SYSTARTUP_V5.COM.
+
+              Table 3-1 Required Global Pages and Global Sections for
+              __________DXML_Components__________________________________
+
+              ______________________GBLPAGES____GBLSECTIONS______________
+
+              D_floating_data,_scalar_processing_________________________
+
+              DXML$FDS_BLAS1          30         2
+
+              DXML$FDS_BLAS1E         32         1
+
+              DXML$FDS_BLAS2         244         2
+
+              DXML$FDS_BLAS3        1330         2
+
+              DXML$FDS_COMMON         16         2
+
+              DXML$FDS_LAPACK       2920         2
+
+              DXML$FDS_SIG_PROC     1754         2
+
+              DXML$FDS_SIG_PROC_V1    12         1
+
+              DXML$FDS_SIG_PROC_V2     0         0
+
+              DXML$FDS_SPARSE        178         2
+
+              TOTAL:                6516        16
+
+                                                 (continued on next page)
+
+                                                After Installing DXML 3-3
+
+ 
+
+
+
+
+
+
+
+          Table 3-1 (Cont.) Required Global Pages and Global Sections
+          __________________for_DXML_Components______________________
+
+          ______________________GBLPAGES____GBLSECTIONS______________
+
+          D_floating_data,_vector_processing_________________________
+
+          DXML$FDV_BLAS1          30         2
+
+          DXML$FDV_BLAS1E         32         1
+
+          DXML$FDV_BLAS2         250         2
+
+          DXML$FDV_BLAS3        1352         2
+
+          DXML$FDV_COMMON         16         2
+
+          DXML$FDV_LAPACK       2944         2
+
+          DXML$FDV_SIG_PROC     1800         2
+
+          DXML$FDV_SIG_PROC_V1    12         1
+
+          DXML$FDV_SIG_PROC_V2     0         0
+
+          DXML$FDV_SPARSE        182         2
+
+          TOTAL:                6618        16
+
+          ___________________________________________________________
+          G_floating_data,_scalar_processing_________________________
+
+          DXML$FGS_BLAS1           58        2
+
+          DXML$FGS_BLAS1E          76        1
+
+          DXML$FGS_BLAS2         1162        2
+
+          DXML$FGS_BLAS3         2886        2
+
+          DXML$FGS_COMMON          16        2
+
+          DXML$FGS_LAPACK        2920        2
+
+          DXML$FGS_SIG_PROC      2940        2
+
+          DXML$FGS_SIG_PROC_V1     14        1
+
+          DXML$FGS_SIG_PROC_V2      0        0
+
+          DXML$FGS_SPARSE         296        2
+
+          TOTAL:                10364       16
+
+                                             (continued on next page)
+
+    3-4 After Installing DXML
+
+ 
+
+
+
+
+
+
+
+              Table 3-1 (Cont.) Required Global Pages and Global Sections
+              __________________for_DXML_Components______________________
+
+              ___________________________________________________________
+
+              G_floating_data,_vector_processing_________________________
+
+              DXML$FGV_BLAS1           58        2
+
+              DXML$FGV_BLAS1E          78        1
+
+              DXML$FGV_BLAS2         1164        2
+
+              DXML$FGV_BLAS3         2900        2
+
+              DXML$FGV_COMMON          16        2
+
+              DXML$FGV_LAPACK        2944        2
+
+              DXML$FGV_SIG_PROC      2942        2
+
+              DXML$FGV_SIG_PROC_V1     14        1
+
+              DXML$FGV_SIG_PROC_V2      0        0
+
+              DXML$FGV_SPARSE         296        2
+
+              TOTAL:________________10412_______16_______________________
+
+        3.4 Running DXML on a VAXcluster
+
+              If you want to run DXML on multiple nodes of a VAXcluster,
+              first check to see that you have the appropriate software
+              license. Then repeat the following procedure on each node
+              in the cluster licensed to run DXML:
+
+              1. Log in to the SYSTEM account or an account that has the
+                 SYSPRV privilege.
+
+              2. Make sure that the SYSGEN parameters listed in Table 1-2
+                 are properly set.
+
+              3. Load the license, as described in Section 1.5. If
+                 previous versions of the PAK are still loaded on the
+                 system, remove the current license and then load the new
+                 license.
+
+              4. Start DXML by invoking DXML$STARTUP.COM, as descibed in
+                 Section 3.3.
+
+              5. Edit the system startup file to include
+                 DXML$STARTUP.COM, as described in Section 3.3.
+
+                                                After Installing DXML 3-5
+
+ 
+
+
+
+
+
+
+
+          6. Create the SYSTEST account:
+
+             $ CREATE/DIRECTORY SYS$SPECIFIC:[SYSTEST.DXML]
+
+          7. Execute the IVP:
+
+             $ @SYS$TEST:DXML$IVP.COM
+
+    3.5 Running the IVP
+
+          You usually run the IVP (Installation Verification
+          Procedure) during installation. To run the IVP after
+          installation to ensure the integrity of installed files
+          if system problems occur, execute the following command
+          procedure:
+
+          $  @SYS$TEST:DXML$IVP.COM
+
+          The IVP takes a few minutes to run because it must
+          link test programs with the library. When the IVP runs
+          successfully, you see the following display:
+
+          The installation verification of DXML Version 2.0 has completed successfully
+
+          When you install DXML, test programs are transferred to
+          your system. For the Development Kit, the IVP checks the
+          DXML installation by linking these test programs with the
+          DXML library. For the Run-time Kit, the IVP does not link
+          the test programs; the IVP merely attempts to execute the
+          programs.
+
+          Do not attempt to create executable images from these
+          programs.
+
+    3.6 Reviewing Release Notes
+
+          At any time after the installation, you can enter the
+          following command to review the release notes:
+
+          $ TYPE [SYS$HELP]DXML020_VV.RELEASE_NOTES/PAGE
+
+    3.7 Reporting Problems
+
+          If you encounter a problem while using Digital Extended
+          Math Library, report it to Digital. Depending on the nature
+          of the problem and the type of support you have, you can
+          take one of the following actions:
+
+          o  Call Digital if your software contract or warranty
+             agreement entitles you to telephone support.
+
+    3-6 After Installing DXML
+
+ 
+
+
+
+
+
+
+
+              o  Submit a Software Performance Report (SPR).
+
+              o  Fill out and submit a Reader's Comments form if the
+                 problem has to do with the Digital Extended Math Library
+                 documentation. There are Reader's Comments forms at the
+                 back of each manual. Use the form from the manual in
+                 which you found the error. Include the section and page
+                 number.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                After Installing DXML 3-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                                      Sample Installation
+
+
+              This appendix contains a log of a complete installation
+              of the DXML Development Kit. Your own installation might
+              differ from this example because you can make different
+              choices during the procedure.
+
+              $ @sys$update:vmsinstal dxmldvvv020 disk$dxml:[dxml.kits]
+
+               VAX/VMS Software Product Installation Procedure V5.5
+
+              It is 19-JUN-1992 at 14:37.
+
+              Enter a question mark (?) at any time for help.
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+               BATCH_479
+               BATCH_480
+              * Do you want to continue anyway [NO]? y
+              * Are you satisfied with the backup of your system disk [YES]?
+
+              The following products will be processed:
+
+                DXMLDVVV V2.0
+
+               Beginning installation of DXMLDVVV V2.0 at 14:37
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+              %DXMLDVVV-I-INTRO, Beginning the Installation / Verification Procedure for
+              -DXMLDVVV-I-INTRO, Product Name:   Digital Extended Math Library V2.0
+              -DXMLDVVV-I-INTRO, Product Option: Development Library for OpenVMS VAX
+              * Do you want to run the DXML installation verification procedure (IVP) [Y]? y
+              * Do you want to purge files replaced by this installation [YES]? y
+              * Do you want the vector library installed? [Y]? y
+              %DXMLDVVV-I-NOQUEST, No more questions will be asked.  Approximately 30
+              -DXMLDVVV-I-NOQUEST, minutes remain to complete this procedure
+              %VMSINSTAL-I-SYSDIR, This product creates system directory [SYSTEST.DXML].
+              %CREATE-I-EXISTS, VMI$COMMON:[SYSTEST.DXML] already exists
+              %CREATE-I-EXISTS, VMI$SPECIFIC:[SYSTEST.DXML] already exists
+
+                                                  Sample Installation A-1
+
+ 
+
+
+
+
+
+
+
+              If you intend to execute this layered product on other nodes in your
+              VAXcluster, and you have the appropriate software license, you must
+              prepare the system-specific roots on the other nodes by issuing the
+              following command on each node (using a suitably privileged account):
+
+           $ CREATE /DIRECTORY SYS$SPECIFIC:[SYSTEST.DXML]
+          %DXMLDVVV-I-EOINST, The primary installation phase has completed.
+          -DXMLDVVV-I-EOINST, Be sure to read the release notes.
+          %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+          DXML-I-IVP> Beginning Installation Verification Procedures for
+                Product Name:   Digital Extended Math Library V2.0
+                Product Option: Development Library for OpenVMS VAX
+
+          DXML-Inf>   The vector libraries are installed on the system.
+          -DXML-Inf>  If the system is not provided with vector support
+          -DXML-Inf>  or vector emulation the installation verification
+          -DXML-Inf>  will fail
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    A-2 Sample Installation
+
+ 
+
+
+
+
+
+
+
+              DXML-Inf>  Beginning link test verifications of the DXML Developement Library
+                The link test verification of SPARSE has completed successfully
+                The link test verification of BLAS has completed successfully
+                The link test verification of LAPACK has completed successfully
+                The link test verification of Signal Processing has completed successfully
+
+                The link test verifications of DXML have completed successfully
+
+              DXML-Inf>  Beginning regression test verifications of the DXML Developement Library
+
+              ivp_test> Regression tests of BLAS scalar completed successfully
+              ivp_test> Regression tests of Sparse BLAS scalar completed successfully
+              ivp_test> Regression tests of Signal Processing scalar completed successfully
+              ivp_test> Regression tests of Lapack scalar completed successfully
+              ivp_test> Regression tests of Sparse Iterative Solver scalar completed successfully
+              ivp_test> Regression tests of BLAS vector completed successfully
+              ivp_test> Regression tests of Sparse BLAS vector completed successfully
+              ivp_test> Regression tests of Signal Processing vector completed successfully
+              ivp_test> Regression tests of Lapack vector completed successfully
+              ivp_test> Regression tests of Sparse Iterative Solver vector completed successfully
+
+              DXML-Inf> The regression test verifications of DXML have completed successfully
+
+              DXML-I-IVP> Completed DXML V2.0 Installation Verification Procedure
+              DXML-Inf> Finished the Installation / Verification Procedure for
+                  Product Name:   Digital Extended Math Library V2.0
+                  Product Option: Development Library for OpenVMS VAX
+
+                  Be sure to read the release notes.
+               Installation of DXMLDVVV V2.0 completed at 15:03
+
+               VMSINSTAL procedure done at 15:03
+
+              $ logout
+
+
+
+
+
+
+
+
+
+
+
+                                                  Sample Installation A-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                                          Installed Files
+
+
+              Tables B-1, B-2, and B-3 list the files on your system
+              after you install DXML.
+
+              Table_B-1_Files_Installed_by_Development_and_Run-Time_Kits_
+
+              SYS$STARTUP:_______________________________________________
+
+              DXML$STARTUP.COM           Startup command procedure
+              ___________________________________________________________
+              SYS$HELP:__________________________________________________
+
+              DXML020_VV.RELEASE_NOTES   Online release notes
+
+              DXML$HELP.HLB              Help library
+              ___________________________________________________________
+              SYS$TEST:__________________________________________________
+
+              DXML$IVP.COM               IVP command procedure
+              ___________________________________________________________
+              SYS$LIBRARY:_______________________________________________
+
+              DXMLDEF.FOR                Definition file
+
+              DXML$SET_LIB.COM           Library selection procedure
+
+              DXML$EMACS.ML              Editor support
+
+              DXML$EVE.TPU
+
+              DXML$IMAGELIB_DS.OLB       Scalar library
+
+              DXML$IMAGELIB_DS_V1.OLB
+
+              DXML$IMAGELIB_GS.OLB
+
+              DXML$IMAGELIB_GS_V1.OLB
+
+              DXML$FDS_BLAS1.EXE
+
+              DXML$FDS_BLAS1E.EXE
+
+                                                 (continued on next page)
+
+                                                      Installed Files B-1
+
+ 
+
+
+
+
+
+
+
+          Table B-1 (Cont.) Files Installed by Development and Run-
+          __________________Time_Kits________________________________
+
+          SYS$LIBRARY:_______________________________________________
+
+          DXML$FDS_BLAS2.EXE
+
+          DXML$FDS_BLAS3.EXE
+
+          DXML$FDS_COMMON.EXE
+
+          DXML$FDS_LAPACK.EXE
+
+          DXML$FDS_SIG_PROC.EXE
+
+          DXML$FDS_SIG_PROC_V1.EXE
+
+          DXML$FDS_SIG_PROC_V2.EXE
+
+          DXML$FDS_SPARSE.EXE
+
+          DXML$FGS_BLAS1.EXE
+
+          DXML$FGS_BLAS1E.EXE
+
+          DXML$FGS_BLAS2.EXE
+
+          DXML$FGS_BLAS3.EXE
+
+          DXML$FGS_COMMON.EXE
+
+          DXML$FGS_LAPACK.EXE
+
+          DXML$FGS_SIG_PROC.EXE
+
+          DXML$FGS_SIG_PROC_V1.EXE
+
+          DXML$FGS_SIG_PROC_V2.EXE
+
+          DXML$FGS_SPARSE.EXE
+
+          DXML$IMAGELIB_DV.OLB       Vector library
+
+          DXML$IMAGELIB_DV_V1.OLB
+
+          DXML$IMAGELIB_GV.OLB
+
+          DXML$IMAGELIB_GV_V1.OLB
+
+          DXML$FDV_BLAS1.EXE
+
+          DXML$FDV_BLAS1E.EXE
+
+          DXML$FDV_BLAS2.EXE
+
+          DXML$FDV_BLAS3.EXE
+
+          DXML$FDV_COMMON.EXE
+
+                                             (continued on next page)
+
+    B-2 Installed Files
+
+ 
+
+
+
+
+
+
+
+              Table B-1 (Cont.) Files Installed by Development and Run-
+              __________________Time_Kits________________________________
+
+              SYS$LIBRARY:_______________________________________________
+
+              DXML$FDV_LAPACK.EXE
+
+              DXML$FDV_SIG_PROC.EXE
+
+              DXML$FDV_SIG_PROC_V1.EXE
+
+              DXML$FDV_SIG_PROC_V2.EXE
+
+              DXML$FDV_SPARSE.EXE
+
+              DXML$FGV_BLAS1.EXE
+
+              DXML$FGV_BLAS1E.EXE
+
+              DXML$FGV_BLAS2.EXE
+
+              DXML$FGV_BLAS3.EXE
+
+              DXML$FGV_COMMON.EXE
+
+              DXML$FGV_LAPACK.EXE
+
+              DXML$FGV_SIG_PROC.EXE
+
+              DXML$FGV_SIG_PROC_V1.EXE
+
+              DXML$FGV_SIG_PROC_V2.EXE
+
+              DXML$FGV_SPARSE.EXE
+              ___________________________________________________________
+              SYS$COMMON:[SYSTEST.DXML]__________________________________
+
+              SBLAT1.IN                  IVP routines
+
+              CBLAT1X.IN
+
+              DBLAT1X.IN
+
+              SBLAT2.IN
+
+              ZBLAT2.IN
+
+              CBLAT3.IN
+
+              DBLAT3.IN
+
+              SBLAT3E.IN
+
+              ZBLAT3E.IN
+
+              CBLASI.IN
+
+              DBLASI.IN
+
+              2DFFT_OLD_TEST.IN
+
+                                                 (continued on next page)
+
+                                                      Installed Files B-3
+
+ 
+
+
+
+
+
+
+
+          Table B-1 (Cont.) Files Installed by Development and Run-
+          __________________Time_Kits________________________________
+
+          SYS$COMMON:[SYSTEST.DXML]__________________________________
+
+          FFT_TEST.IN
+
+          GFFT_TEST.IN
+
+          3DFFT_TEST.IN
+
+          CONV_EXT_TEST.IN
+
+          CORRP_EXT_TEST.IN
+
+          SLIN_TEST.IN
+
+          ZLIN_TEST.IN
+
+          CEIG_TEST.IN
+
+          DEIG_TEST.IN
+
+          INPUT_TEST_ITSOL.DATA
+
+          SUMM.PROT
+
+          ZBLAT1.IN__________________________________________________
+
+          Table_B-2_Files_Installed_by_Development_Kit_Only__________
+
+          SYS$COMMON:[SYSTEST.DXML]__________________________________
+
+          IVP_TEST_DV.COM            Scalar and Vector IVP
+
+          BLAS_BUILD_TEST.OBJ        IVP routines
+
+          SIG_PROC_BUILD_TEST.OBJ
+
+          LAPACK_BUILD_TEST.OBJ
+
+          SPARSE_BUILD_TEST.OBJ
+
+          2DFFT_OLD_TEST.GOBJ
+
+          FFT_TEST.DOBJ
+
+          GFFT_TEST.DOBJ
+
+          3DFFT_TEST.GOBJ
+
+          BLAS_AUXD.OLB
+
+          BLAS_AUXG.OLB
+
+          SIG_TEST_AUXD.OLB
+
+          SIG_TEST_AUXG.OLB
+
+                                             (continued on next page)
+
+    B-4 Installed Files
+
+ 
+
+
+
+
+
+
+
+              Table_B-2_(Cont.)_Files_Installed_by_Development_Kit_Only__
+
+              SYS$COMMON:[SYSTEST.DXML]__________________________________
+
+              LAPAUXD.OLB
+
+              LAPAUXG.OLB
+
+              TEST_ITSOL_AUXD.OLB
+
+              SBLAT1.DOBJ
+
+              ZBLAT1.GOBJ
+
+              CBLAT1X.DOBJ
+
+              DBLAT1X.GOBJ
+
+              SBLAT2.DOBJ
+
+              ZBLAT2.GOBJ
+
+              CBLAT3.DOBJ
+
+              DBLAT3.GOBJ
+
+              SBLAT3E.DOBJ
+
+              ZBLAT3E.GOBJ
+
+              CBLASI.DOBJ
+
+              DBLASI.GOBJ
+
+              CONV_EXT_TEST.DOBJ
+
+              CORRP_EXT_TEST.GOBJ
+
+              SLIN_TEST.DOBJ
+
+              ZLIN_TEST.GOBJ
+
+              CEIG_TEST.DOBJ
+
+              DEIG_TEST.GOBJ
+
+              TEST_ITSOL.DOBJ____________________________________________
+
+              Table_B-3_Files_Installed_by_Run-Time_Kit_Only_____________
+
+              SYS$COMMON:[SYSTEST.DXML]__________________________________
+
+              IVP_TEST_RT.COM            IVP
+
+              SBLAT1.SDEXE               IVP scalar routines
+
+                                                 (continued on next page)
+
+                                                      Installed Files B-5
+
+ 
+
+
+
+
+
+
+
+          Table_B-3_(Cont.)_Files_Installed_by_Run-Time_Kit_Only_____
+
+          SYS$COMMON:[SYSTEST.DXML]__________________________________
+
+          ZBLAT1.SDEXE
+
+          CBLAT1X.SDEXE
+
+          DBLAT1X.SGEXE
+
+          SBLAT2.SDEXE
+
+          ZBLAT2.SGEXE
+
+          CBLAT3.SDEXE
+
+          DBLAT3.SGEXE
+
+          SBLAT3E.SDEXE
+
+          ZBLAT3E.SGEXE
+
+          CBLASI.SDEXE
+
+          DBLASI.SGEXE
+
+          2DFFT_OLD_TEST.SGEXE
+
+          FFT_TEST.SDEXE
+
+          GFFT_TEST.SDEXE
+
+          3DFFT_TEST.SGEXE
+
+          CONV_EXT_TEST.SDEXE
+
+          CORRP_EXT_TEST.SGEXE
+
+          SLIN_TEST.SDEXE
+
+          ZLIN_TEST.SGEXE
+
+          CEIG_TEST.SDEXE
+
+          DEIG_TEST.SGEXE
+
+          TEST_ITSOL.SDEXE
+
+          SBLAT1.VDEXE               IVP vector routines
+
+          ZBLAT1.VGEXE
+
+          CBLAT1X.VDEXE
+
+          DBLAT1X.VGEXE
+
+          SBLAT2.VDEXE
+
+          ZBLAT2.VGEXE
+
+                                             (continued on next page)
+
+    B-6 Installed Files
+
+ 
+
+
+
+
+
+
+
+              Table_B-3_(Cont.)_Files_Installed_by_Run-Time_Kit_Only_____
+
+              SYS$COMMON:[SYSTEST.DXML]__________________________________
+
+              CBLAT3.VDEXE
+
+              DBLAT3.VGEXE
+
+              SBLAT3E.VDEXE
+
+              ZBLAT3E.VGEXE
+
+              CBLASI.VDEXE
+
+              DBLASI.VGEXE
+
+              2DFFT_OLD_TEST.VGEXE
+
+              FFT_TEST.VDEXE
+
+              GFFT_TEST.VDEXE
+
+              3DFFT_TEST.VGEXE
+
+              CONV_EXT_TEST.VDEXE
+
+              CORRP_EXT_TEST.VGEXE
+
+              SLIN_TEST.VDEXE
+
+              ZLIN_TEST.VGEXE
+
+              CEIG_TEST.VDEXE
+
+              DEIG_TEST.VGEXE
+
+              TEST_ITSOL.VDEXE___________________________________________
+
+
+
+
+
+
+
+
+                                                      Installed Files B-7

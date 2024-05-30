@@ -1,0 +1,399 @@
+ 
+
+
+                               COMPAQ
+
+ Software
+ Product
+ Description
+
+ ___________________________________________________________________
+
+ PRODUCT NAME:  Compaq RAID Software                    SPD 46.49.08
+                for OpenVMS, Version 2.5
+
+ DESCRIPTION
+
+ Compaq RAID Software for OpenVMS[R] is a software product that uses
+ RAID technology to manage groups of disk drives as arrays. The prod-
+ uct supports RAID Level 0 arrays (Disk striping) for enhanced I/O per-
+ formance and RAID Level 5 arrays (Disk striping with parity) for en-
+ hanced data availability on both VAX and Alpha platforms. RAID Soft-
+ ware also allows partitioning or segmentation of a RAID Array into mul-
+ tiple virtual devices.
+
+  RAID Software for OpenVMS Capabilities and Features
+
+ RAID Software for OpenVMS manages groups of between 1 and 32 physi-
+ cal disks (between 3 and 32 for RAID Level 5) as arrays. Applications
+ use a virtual disk as if it were a physical disk.
+
+ A maximum of 50 such arrays per VMScluster system are supported, in
+ any mixture of RAID Level 0 and RAID Level 5.
+
+ RAID virtual disks may be accessed directly from any member of a VM-
+ Scluster system for which a valid license is in effect. (All VMSclus-
+ ter systems may access virtual disks created using the Storage Con-
+ current Use license QL-0MGAA-3B.) Virtual disks may not be MSCP[R] served.
+
+ The disks in a RAID Software for OpenVMS array may be of different types,
+ although disks of a single type are recommended for consistent per-
+ formance and optimal use of storage capacity.
+
+                                                        October 2001
+
+                                                         AE-Q1GDK-TE
+
+ 
+
+ RAID Software for OpenVMS virtual disks may not be used to boot the
+ OpenVMS Operating System, nor may they serve as VMScluster quorum disks.
+ They may, however, contain OpenVMS page and swap files.
+
+ RAID Software for OpenVMS may be used in conjunction with OpenVMS Vol-
+ ume Shadowing (Phase II only). OpenVMS shadow sets may be made up of
+ RAID Software for OpenVMS array members (RAID Level 0 only), however,
+ virtual disks may not be members of OpenVMS shadow sets.
+
+ A RAID Level 0 array whose members are shadow sets is a high perfor-
+ mance, high data availability storage solution for most applications.
+
+ Partitioning is the process of dividing a RAID array into one or more
+ RAID virtual devices. The RAID Software allows you to specify how many
+ partitions are to be used in a given RAID array and how large each par-
+ tition should be. One or more partitions can be created on a single-
+ member RAID Level 0 array or multiple-member RAID Level 0 or RAID Level
+ 5 arrays. The maximum number of partitions for any array is 64. The
+ maximum size of one array is 1 TB.
+
+ Features Applicable to RAID Level 0 Arrays
+
+ The usable capacity of RAID Level 0 array is approximately given by:
+
+    Usable Capacity = N * 0.99 * CS
+    Where N is the number of physical disks in the array.
+    CS is the storage capacity of the smallest disk in the array.
+
+ The purpose of RAID Level 0 technology is to provide I/O intensive ap-
+ plications with greater I/O performance from a given I/O hardware con-
+ figuration than would normally be achieved by using the disks as in-
+ dividual volumes. This is also referred to as Disk Striping. Depend-
+ ing on the application, enhanced I/O performance may be delivered as:
+
+ o  more I/O requests serviced per unit time due to probabilistic load
+    balancing, or
+
+ o  higher data transfer rate due to concurrent transfer of data to or
+    from more than one disk to satisfy a single request.
+
+                                  2
+
+ 
+
+ Features Applicable to RAID Level 5 Arrays
+
+ The usable capacity of RAID Level 5 array is approximately given by:
+
+    Usable Capacity = (N-1) * 0.99 * CS
+    Where N is the number of physical disks in the array.
+    CS is the capacity of the smallest disk in the array.
+
+ RAID Software for OpenVMS protects against loss of data and loss of
+ data accessibility due to the failure of any single disk in a RAID Level
+ 5 array. If a disk in a RAID Level 5 array fails, RAID Software for
+ OpenVMS provides continued service to applications by regenerating the
+ failed disk's data using information from the array's remaining disks.
+ (For full protection against loss of data availability due to single
+ hardware failures, RAID Software for OpenVMS software can be used in
+ conjunction with redundant hardware and supporting software through-
+ out the system.)
+
+ While a RAID Level 5 array is reduced by a failed disk, data can be
+ read and written, but no redundancy is provided. A second disk fail-
+ ure while an array is reduced prevents application access to the data
+ stored on the array, and may result in data loss.
+
+ RAID Software for OpenVMS reconstructs the contents of a failed disk
+ if a replacement disk is assigned to it. Reconstruction does not in-
+ terrupt application access to data on the array, although performance
+ may be affected. Replacement disks may either be assigned to RAID Soft-
+ ware for OpenVMS by the storage administrator (using a DCL command)
+ or they may be placed in a spareset associated with one or more RAID
+ Level 5 arrays. If a disk in a RAID Level 5 array with an associated
+ spareset fails, RAID Software for OpenVMS automatically acquires a re-
+ placement disk from the spareset and performs reconstruction without
+ storage administrator intervention.
+
+ Using RAID Software for OpenVMS
+
+
+
+
+
+                                  3
+
+ 
+
+ To use RAID Software for OpenVMS, the storage administrator first cre-
+ ates an array using DCL functions supplied with the software. This de-
+ stroys any data previously stored on the disks and creates the data
+ structures required to manage the array. The member disks of a RAID
+ Software for OpenVMS array are ODS-2 structured volumes, so OpenVMS
+ mechanisms protect against inadvertent misuse of members for the life
+ of the array. However, the virtual disk units created by RAID Soft-
+ ware can be initialized as FILES-11 ODS2 or ODS5 or any other volume
+ structure.
+
+ Each virtual disk created by RAID Software for OpenVMS is a single man-
+ agement entity. The storage administrator should use appropriate stor-
+ age management procedures (e.g., backups) with virtual disks, which
+ can be considerably larger than typical physical disks. Once a col-
+ lection of physical disks is bound into an array, it is not possible
+ to retrieve data directly from the array's individual member disks.
+
+ Performance of RAID Software for OpenVMS
+
+ The primary purpose of RAID for OpenVMS RAID Level 0 arrays is to en-
+ hance application performance by improving I/O request processing and
+ /or data transfer rate. RAID Level 0 technology normally implies a re-
+ duction in data reliability. The storage administrator can improve data
+ reliability by increasing backup frequency or using RAID Software for
+ OpenVMS in conjunction with Volume Shadowing for OpenVMS.
+
+ The primary purpose of RAID Software for OpenVMS RAID Level 5 arrays
+ is to improve data reliability. It may provide the secondary benefit
+ of improved performance (due to load balancing) for applications whose
+ I/O workload consists largely of reading data. For applications with
+ mostly write I/O workloads, RAID Software for OpenVMS RAID Level 5 ar-
+ rays may provide lower I/O performance than conventional disks because
+ it must update redundant information each time an application writes
+ data.
+
+ The storage administrator should understand application I/O charac-
+ teristics and weigh the relative priorities of performance, equipment
+ cost, and data reliability to determine whether RAID Software for Open-
+ VMS is appropriate for use with a given application.
+
+                                  4
+
+ 
+
+ HARDWARE REQUIREMENTS
+
+ RAID Software for OpenVMS is supported when used with the VAX and Al-
+ pha processors and VMScluster systems supported by OpenVMS. See the
+ Software Requirements section for the qualified OpenVMS versions. RAID
+ Software may be installed in a VMScluster configuration of any size
+ supported by OpenVMS Software, but the RAID Software has been qual-
+ ified to run on a maximum of 20 nodes within a single VMScluster con-
+ figuration.
+
+ RAID Software for OpenVMS requires a minimum of 1 (for RAID Level 0)
+ or 3 (for RAID Level 5) and a maximum of 32 physical disks for each
+ array. Up to 50 arrays may be created in a single VMScluster system.
+ Disks, storage elements, (and the subsystem configurations that con-
+ tain them) are supported by the OpenVMS Operating System Versions listed
+ above through the following device drivers shown in Table 1.
+
+ ___________________________________________________________________
+
+ Table_1:_Supporting_Device_Drivers_________________________________
+
+ Device
+ Drivers___Description______________________________________________
+
+ DUDRIVER  For Digital Storage Architecture (DSA) disks, including
+           MSCP-served Disks.
+
+ DKDRIVER  For SCSI disks
+
+ DRDRIVER  For StorageWorks RAID Array 200 series controllers, also
+           known as SWXCR
+
+ DKQDRIVER_For_HGx_connected_disks__________________________________
+
+
+
+
+
+
+
+                                  5
+
+ 
+
+ ___________________________________________________________________
+
+ Table_2:_Disk_Space_Requirements___________________________________
+
+ Disk_Space_______VAX-based_________Alpha-based_____________________
+
+ During instal-   3500 blocks       5000 blocks (2.44 megabytes)
+ lation           (1.70 megabytes)
+
+ For permanent    2500 blocks       4000 blocks (1.85 megabytes)
+ use______________(1.22_megabytes)__________________________________
+
+ SOFTWARE REQUIREMENTS
+
+ RAID Software for OpenVMS requires the OpenVMS VAX Operating System
+ (Version 5.5-2, 6.2, 7.1, 7.2 and 7.3) or OpenVMS Alpha (Versions 6.2,
+ 7.1-2, 7.2-1, 7.2-2 and 7.3) as a prerequisite. No other prerequisite
+ software is required. RAID Software Version V2.5 will be the last ver-
+ sion to qualify OpenVMS VAX version 5.5-2.
+ Mixed-architecture VMScluster systems (i.e. containing both VAX and
+ Alpha systems) are supported as long as all VMScluster members are run-
+ ning compatible versions of the OpenVMS operating system qualified by
+ RAID Software. For a chart of the compatible versions of the operat-
+ ing systems, refer to the VAXcluster Software for OpenVMS VAX Soft-
+ ware Product Description (SPD 29.78.xx) and the VMScluster Software
+ for OpenVMS Alpha Software Product Description (SPD 42.18.xx).
+
+ RAID Software for OpenVMS is compatible with OpenVMS 7.2-* and 7.3 with
+ the following restrictions:
+
+ SYSGEN Parameter MSCP_SERVE_ALL bit 3 must be set to prevent the serv-
+ ing of Host Based Raidsets to other members of the cluster. Bit 3 en-
+ ables the pre-V7.2 behavior of not serving Raidsets to other cluster
+ members.
+
+ In order to bind RAID arrays, all physical disks that comprise the RAID
+ arrays must be accessible, (local or MSCP served), on all nodes in a
+ VMScluster having the RAID software running.
+
+
+                                  6
+
+ 
+
+ If RAID Level 0 arrays with OpenVMS shadow sets as members are required,
+ a valid OpenVMS Volume Shadowing license must be in effect on every
+ VMScluster node running the RAID Software. Shadow sets may not be used
+ as members of RAID Level 5 arrays.
+
+ DISTRIBUTION MEDIA
+
+ This layered product is only available as part of the OpenVMS Consol-
+ idated Software Distribution on CD-ROM for VAX (QA-VWJ8A-A8) and on
+ the Digital CD-ROM Software Library for OpenVMS Alpha (QA-03XAA-H8).
+
+ ORDERING INFORMATION
+
+ Three licensing options are available:
+
+ RAID Array Access License:
+
+    VAX: QL-0MHA*-AA
+    Alpha: QL-2YFA*-AA
+
+ This license option provides the purchaser with the right to use the
+ RAID Software for OpenVMS on a single VAX or Alpha system to create
+ and use up to the supported number (50) of RAID arrays. One RAID Ar-
+ ray Access License is required for each VAX or Alpha system in a VM-
+ Scluster system on which RAID Software for OpenVMS is to execute.
+
+ Storage Concurrent Use License:
+    QL-0MGAA-3B
+
+ This license option provides the purchaser with the right to include
+ a single disk, storage element, or shadow set in an array. One Stor-
+ age Concurrent Use License is required for each disk, storage element,
+ or shadow set to be included in a RAID Software for OpenVMS array. Once
+ an array is created, it may be accessed by any VMScluster VAX or Al-
+ pha system.
+
+
+
+
+
+                                  7
+
+ 
+
+ For purposes of the Storage Concurrent Use License, the measure of use
+ is equal to a single disk, storage element, or shadow set to be in-
+ cluded in an array, no matter how many VMScluster CPUs have access to
+ that array. Each shadow set used as a member of a RAID Level 0 array
+ requires a single Concurrent Use License, regardless of the number of
+ physical disks in the shadow set.
+
+ Disks, storage elements, and shadow sets that are members of spare-
+ sets do not require Storage Concurrent Use Licenses.
+
+ Documentation:
+
+    VAX: QA-0MGAA-GZ
+    Alpha: QA-0MGAA-GZ
+
+ Software Product Services:
+
+    Array Access (VAX): QT-0MHA*-**
+    Array Access (Alpha): QT-2YFA*-**
+    Storage: QT-0MGA*-**
+
+ SOFTWARE LICENSING
+
+ This software is furnished only under a license.
+
+ For more information about Compaq licensing terms and conditions, con-
+ tact your local Compaq office.
+
+ License Management Facility Support
+
+ RAID Software for OpenVMS software uses the OpenVMS License Manage-
+ ment Facility.
+
+ License Units for the RAID Software for OpenVMS RAID Array Access Li-
+ cense are allocated on a CPU-capacity basis.
+
+ License Units for the RAID Software for OpenVMS Storage Concurrent Use
+ License are independent of CPU capacity. One Storage Concurrent Use
+ License is required for each disk, storage element, or shadow set in-
+ cluded in an array, no matter how many VMScluster CPUs have access to
+ the array.
+
+                                  8
+
+ 
+
+ For more information on the License Management Facility, refer to the
+ OpenVMS Operating System Software Product Description (SPD 25.01.xx)
+ or the OpenVMS Operating System documentation.
+
+ SOFTWARE PRODUCT SERVICES
+
+ A variety of software product service options are available from Com-
+ paq. For more information, contact your local Compaq office.
+
+ SOFTWARE WARRANTY
+
+ This software is provided by Compaq with a 90 day conformance warranty
+ in accordance with the Compaq warranty terms applicable to the license
+ purchase.
+
+ Compaq, the Compaq logo, VAX and VMS Registered in U.S. Patent and trade-
+ mark Office. OpenVMS and Tru64 are trademarks of Compaq Information
+ Technologies Group, L.P. in the United States and other countries.
+
+ Motif and UNIX are trademarks of The Open Group in the United States
+ and other countries. All other product names mentioned herein may be
+ trademarks of their respective companies.
+
+ Confidential computer software. Valid license from Compaq required for
+ possession, use or copying. Consistent with FAR 12.211 and 12.212, Com-
+ mercial Computer Software, Computer Software Documentation, and Tech-
+ nical Data for Commercial Items are licensed to the U.S. government
+ under vendor's standard commercial license.
+
+ Compaq shall not be liable for technical or editorial errors or omis-
+ sions contained herein. The information in this document is provided
+ "as is" without warranty of any kind and is subject to change with-
+ out notice. The warranties for Compaq products are set forth in the
+ express limited warranty statements accompanying such products. Noth-
+ ing herein should be construed as constituting an additional warranty.
+
+ © 2001 Compaq Computer Corporation.
+
+ All rights reserved.
+
+                                  9

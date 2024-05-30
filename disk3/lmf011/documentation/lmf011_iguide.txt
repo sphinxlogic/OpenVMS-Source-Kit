@@ -1,0 +1,1808 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    ____________________________________________________
+                    VMS License Management Facility Installation
+                    Guide
+
+                    Order Number: AA-PHGRA-TE
+
+
+                    September 1991
+
+                    This document contains instructions for installing
+                    the VMS License Management Facility, Version 1.1,
+                    on VMS systems running VMS Version 5.2 to 5.4,
+                    inclusive. It also explains how to read the online
+                    release notes before or after installing the product.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a new manual.
+
+                    Operating System & Version:   VMS Version 5.2 to 5.4,
+                                                  inclusive.
+
+                    Software Version:             VMS LMF Version 1.1
+
+                    Digital Equipment Corporation
+                    Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+              ________________________________________________________________
+              First Printing, September 1991
+
+              The information in this document is subject to change
+              without notice and should not be construed as a commitment
+              by Digital Equipment Corporation. Digital Equipment
+              Corporation assumes no responsibility for any errors that
+              may appear in this document.
+
+              The software described in this document is furnished under
+              a license and may be used or copied only in accordance with
+              the terms of such license.
+
+              No responsibility is assumed for the use or reliability
+              of software on equipment that is not supplied by Digital
+              Equipment Corporation or its affiliated companies.
+
+              Restricted Rights: Use, duplication, or disclosure by the
+              U.S. Government is subject to restrictions as set forth in
+              subparagraph (c)(1)(ii) of the Rights in Technical Data
+              and Computer Software clause at DFARS 252.227-7013.
+
+              © Digital Equipment Corporation September 1991.
+
+              All Rights Reserved.
+
+              The postpaid Reader's Comments forms at the end of this
+              document request your critical evaluation to assist in
+              preparing future documentation.
+
+              The following are trademarks of Digital Equipment
+              Corporation: DEC, DECnet, DECset, DECwrite, Digital,
+              Micro/VAX, Micro/VAX II, VAX, VAXcluster, VAXinfo,
+              VAXstation, VAX 8200, VAX BASIC, VAX COBOL, VAX DOCUMENT,
+              VAX FORTRAN, VAX RMS, VAX Volume Shadowing, VMS, and the
+              DIGITAL logo.
+
+                                                                   ZK5798
+
+              This document was prepared using VAX DOCUMENT, Version 2.0.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                              Contents
+
+
+
+     Preface...................................................      v
+
+     1  Release Notes
+
+         1.1  New Features of the LMF..........................    1-1
+         1.1.1  Moving and Copying Licenses ...................    1-1
+         1.1.2  Deleting Licenses .............................    1-1
+         1.1.3  Automating License Registration ...............    1-2
+         1.1.4  Creating License Reservation Lists ............    1-2
+         1.1.5  Support for PAKs with the RESERVE_UNITS
+                Option.........................................    1-2
+         1.1.6  Ease of Use Features ..........................    1-3
+         1.1.7  Revised SYS$UPDATE:VMSLICENSE.COM .............    1-3
+         1.2  Reinstallation of LMF Version 1.1................    1-3
+         1.2.1  Reinstallation Without VMS Upgrade
+                (Optional).....................................    1-4
+         1.2.2  Reinstallation After VMS Upgrade (Mandatory) ..    1-4
+         1.3  Increasing License Capacity......................    1-5
+         1.3.1  Replacement PAKs ..............................    1-5
+         1.3.2  Additive PAKs .................................    1-5
+         1.3.3  PAKs with the NOSHARE option ..................    1-6
+         1.4  List Size Restrictions...........................    1-6
+         1.4.1  The Per PAK Limit .............................    1-6
+         1.4.2  The Per Product Limit .........................    1-7
+         1.5  Logical Name LMF$DISPLAY_OPCOM_MESSAGE...........    1-8
+         1.5.1  Determining the LMF Version Number ............    1-8
+         1.6  Installation Considerations for VAXclusters......    1-9
+
+
+
+
+
+
+
+                                                                   iii
+
+ 
+
+
+
+
+
+
+
+        2  Preparing for LMF Installation
+
+           2.1  Required Operating System Components.............     2-1
+           2.2  VAXcluster Considerations........................     2-1
+           2.3  Installation Procedure Requirements..............     2-2
+           2.3.1   Privileges and Disk Space .....................    2-2
+           2.3.2   VMSINSTAL Requirements ........................    2-2
+           2.3.3   Backing Up Your System Disk ...................    2-3
+
+        3  Installing the LMF
+
+           3.1  The Installation Procedure.......................     3-1
+           3.2  Error Recovery...................................     3-6
+
+        4  After Installing the LMF
+
+           4.1  Running the Installation Verification Procedure..     4-1
+           4.2  User Account Requirements........................     4-2
+           4.3  Determining and Reporting Problems...............     4-2
+
+        A  Sample Installation
+
+        B  Files Installed on Your System
+
+
+        Tables
+
+           B-1     Files Installed on Your System ................    B-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+        Purpose of This Guide
+
+              This guide describes how to install an update to the
+              VMS[TM] License Management Facility (LMF) on VAX[TM]
+              processors that are running an earlier version of the VMS
+              operating system. It also provides a summary of new LMF
+              features and release notes.
+
+              Keep this document with your distribution kit in case you
+              ever need to reinstall the LMF.
+
+              At the back of this document are two Reader's Comments
+              forms. If you have any comments about this document, fill
+              out one form and mail it; your comments will be considered
+              for the next revision of the installation guide.
+
+        Intended Audience
+
+              The audience for this guide is the system manager who
+              wishes to install LMF Version 11 on a VMS system currently
+              running one of the following versions: 5.2, 5.3, or 5.4,
+              including any "dashed release" versions such as 5.4-2, and
+              so on.
+
+        Structure of This Document
+
+              This guide is organized as follows:
+
+              o  Chapter 1 contains the release notes and provides a
+                 summary of new LMF features; be sure to read the release
+                 notes before installing the LMF.
+
+              o  Chapter 2 describes the operating system and hardware
+                 requirements for the LMF installation and related
+                 procedures that you complete before beginning the
+                 installation.
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+              o  Chapter 3 contains the step-by-step installation
+                 instructions.
+
+              o  Chapter 4 describes actions to take and considerations
+                 to make after the installation.
+
+              o  Appendix A documents a sample LMF installation.
+
+              o  Appendix B lists the files installed during this
+                 installation.
+
+        Manuals in the VMS LMF Documentation Set
+
+              In addition to this guide, the VMS LMF documentation set
+              includes the VMS License Management Utility Manual.
+
+        Associated Documents
+
+              The following documents may also prove helpful:
+
+              o  VMS Install Utility Manual
+
+              o  Introduction to VMS System Management
+
+              o  Guide to Setting Up a VMS System
+
+              o  VMS SYSMAN Utility Manual
+
+              o  VMS VAXcluster Manual
+
+              For information on how to install software, see the VMS
+              Upgrade and Installation Manual for your version of VMS,
+              and the upgrade and installation supplement for your VAX
+              computer. Also, see the release notes and Software Product
+              Descriptions (SPDs) for any software products you install.
+
+        Conventions
+
+              The following conventions are used in this manual:
+
+              UPPERCASE TEXT         Uppercase letters indicate the
+                                     name of a command, a file, a file
+                                     protection code, a parameter, a
+                                     procedure, the abbreviation of a
+                                     system privilege, or a utility.
+
+        vi
+
+ 
+
+
+
+
+
+
+
+
+              red ink                In interactive examples in the
+                                     hardcopy manual, user input is
+                                     printed in red. In online versions,
+                                     user input appears in boldface type.
+
+              $                      The dollar sign indicates the DCL
+                                     prompt. This prompt may be different
+                                     on your system.
+
+              Ctrl/x                 In procedures, a sequence such as
+                                     Ctrl/x indicates that you must hold
+                                     down the key labeled Ctrl while
+                                     you press another key or a pointing
+                                     device button.
+
+              .                      A vertical ellipsis indicates the
+              .                      omission of items from a code
+              .                      example or command format; the
+                                     items are omitted because they are
+                                     not important to the topic being
+                                     discussed.
+
+              file-spec, . . .       Horizontal ellipsis indicates that
+                                     additional parameters, values, or
+                                     information can be entered.
+
+              []                     Square brackets indicate that the
+                                     enclosed item is optional. (Square
+                                     brackets are not, however, optional
+                                     in the syntax of a directory name
+                                     in a file specification or in the
+                                     syntax of a substring specification
+                                     in an assignment statement.)
+
+
+
+
+
+
+
+
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                                            Release Notes
+
+
+
+
+
+        1.1 New Features of the LMF
+
+              The VMS License Management Facility (LMF) has been enhanced
+              to include a number of new features. This section briefly
+              describes most of these enhancements, but the reader should
+              consult the VMS License Management Utility Manual for
+              complete, detailed information.
+
+        1.1.1 Moving and Copying Licenses
+
+              The new LICENSE COPY and LICENSE MOVE commands allow the
+              transfer of licenses between databases.
+
+              The LICENSE MOVE command creates a new license registration
+              in the target license database and then deletes the license
+              record and its history records from the source database.
+
+              The LICENSE COPY command creates a new license registration
+              in the target license database, disables the license record
+              in the source database, and retains the history records in
+              the source database.
+
+              Note that the LICENSE MOVE and LICENSE COPY commands do not
+              transfer to the target database any user supplied data such
+              as reservation lists; modified termination dates; modified
+              units; include or exclude node lists; or comments.
+
+        1.1.2 Deleting Licenses
+
+              The new LICENSE DELETE command allows you to delete a
+              license and its history records from a license database.
+
+
+                                                        Release Notes 1-1
+
+ 
+
+
+
+
+
+
+
+        1.1.3 Automating License Registration
+
+              The LICENSE ISSUE command now accepts the /PROCEDURE
+              qualifier. This qualifier causes the LICENSE ISSUE command
+              to produce output formatted such that it can be invoked as
+              a DCL command procedure to register a license in another
+              license database.
+
+        1.1.4 Creating License Reservation Lists
+
+              The LICENSE MODIFY command now accepts the /RESERVE
+              qualifier, which allows system managers or privileged users
+              to attach a list of names to a product license. This list
+              of names, called a reservation list, restricts use of the
+              product to the names in the list.
+
+              You can add a reservation list to any Product Authorization
+              Key (PAK).
+
+              The following example shows how to add a reservation list
+              to a product license using the MODIFY/RESERVE command:
+
+              $ LICENSE MODIFY FORTRAN/RESERVE=(DOE,SMITH,JONES)
+              $ LICENSE UNLOAD FORTRAN
+              $ LICENSE LOAD FORTRAN
+
+              This command example restricts the use of VAX FORTRAN[TM]
+              to the users named Doe, Smith, and Jones.
+
+        1.1.5 Support for PAKs with the RESERVE_UNITS Option
+
+              The LMF now allows software vendors to issue PAKs with the
+              RESERVE_UNITS option. This option may be used by license
+              issuers whose terms and conditions require that use of the
+              product be restricted to a specified number of named users.
+
+              When registering a PAK that makes use of the RESERVE_UNITS
+              option, a customer must specify a reservation list and the
+              number of names in this list must be no larger than that
+              allowed by the product license. Use the LICENSE MODIFY
+              /RESERVE command to associate this reservation list with
+              the product license.
+
+              Note that at this time PAKs making use of this option
+              can be registered and used only on systems that both are
+              running VMS Versions 5.2 to 5.4-3, inclusive, and have
+              installed LMF Version 1.1 (this kit).
+
+        1-2 Release Notes
+
+ 
+
+
+
+
+
+
+
+        1.1.6 Ease of Use Features
+
+              To ease license management, license managers can now
+              perform operations on groups of licenses. For example,
+              to disable five different VAX FORTRAN licenses on a single
+              machine, you can now issue a single command instead of five
+              separate commands.
+
+              The ability to operate on groups of licenses is provided by
+              support for the following:
+
+              o  Standard VMS wildcard characters (* and %), which may be
+                 used with most parameters and qualifiers
+
+              o  Lists of product names in the product-name parameter of
+                 most commands
+
+              o  A new /ALL qualifier that expands the command operation
+                 to affect all licenses that match the specification
+                 provided
+
+        1.1.7 Revised SYS$UPDATE:VMSLICENSE.COM
+
+              The command procedure SYS$UPDATE:VMSLICENSE.COM has been
+              significantly expanded to include support for most of the
+              new features available.
+
+              For information about this command procedure, issue the
+              following command:
+
+              $ @SYS$UPDATE:VMSLICENSE
+
+        1.2 Reinstallation of LMF Version 1.1
+
+              Reinstalling the LMF means installing the LMF on a system
+              where it has already been installed. LMF reinstallation
+              occurs in two situations, which the following sections
+              describe.
+
+              Note that the messages displayed during reinstallation may
+              vary slightly from the messages documented in this manual.
+              This variation is not a problem and occurs only because
+              the installation procedure detects the presence of the
+              previously installed LMF environment.
+
+                                                        Release Notes 1-3
+
+ 
+
+
+
+
+
+
+
+        1.2.1 Reinstallation Without VMS Upgrade (Optional)
+
+              You can reinstall LMF Version 1.1 on a system where it has
+              already been installed and where the VMS operating system
+              has not been upgraded since the previous installation of
+              LMF Version 1.1. In other words, with everything else
+              remaining constant, you can reinstall LMF Version 1.1 on
+              top of itself.
+
+              Users might decided to reinstall the LMF when, for example,
+              a failure was encountered during a previous installation
+              attempt, or the integrity of already installed LMF
+              components was in question.
+
+        1.2.2 Reinstallation After VMS Upgrade (Mandatory)
+
+              Once you install LMF Version 1.1, you must reinstall LMF
+              Version 1.1 whenever you upgrade your VMS operating system
+              to a higher version number.
+
+              This reinstallation is required because the old LMF Version
+              1.0 has been an integral component of VMS since VMS Version
+              5.0, and when you upgrade your VMS operating system, you
+              are overlaying the new LMF Version 1.1 with the old LMF
+              Version 1.0.
+
+              However, a future release of VMS will contain as an
+              integral component the new LMF Version 1.1, with its new
+              technical features and support for new business practices.
+              Once you install this future release of VMS, you will never
+              again need to reinstall LMF Version 1.1 as a separate
+              component, since it will be included with the operating
+              system.
+
+                ________________________ Note ________________________
+
+                After the normal system shutdown following a VMS
+                operating system installation, you will be required
+                to reboot the system. At this point in time, LMF
+                Version 1.0 has been installed over LMF Version
+                1.1; so when you attempt to reboot, you could receive
+                error messages and be unable to log in to the system
+                (because LMF Version 1.0 is confronted with an
+                LMF Version 1.1 license database that it does not
+                understand). If this situation occurs, simply go to
+
+        1-4 Release Notes
+
+ 
+
+
+
+
+
+
+
+                the operator's console, log in, install LMF Version
+                1.1, reboot the system, and then install your layered
+                products.
+
+                Also, it is very important that you reinstall LMF
+                Version 1.1 immediately, even before you reinstall any
+                layered products. License database corruption could
+                occur if you fail to follow this instruction.
+
+                ______________________________________________________
+
+        1.3 Increasing License Capacity
+
+              At times you may need to increase the license capacity
+              of a product. Vendors issue two kinds of PAKs to increase
+              license capacity: replacement PAKs and additive PAKs.
+
+              This section describes what to do when you receive these
+              "upgrade" PAKs. However, always check with your software
+              vendor to be sure you are complying with the terms and
+              conditions of the license you have been granted.
+
+        1.3.1 Replacement PAKs
+
+              For certain products, some vendors have chosen to issue
+              replacement (noncombinable) PAKs. Replacement PAKs are PAKs
+              whose size (in license units) reflects the new level of
+              license usage for which you are authorized. If you receive
+              a replacement PAK, you typically delete or disable the
+              older PAK before registering the replacement PAK, since the
+              replacement PAK already reflects the license authorization
+              contained in the older PAK plus the additional number of
+              new license units.
+
+        1.3.2 Additive PAKs
+
+              Vendors of other products may choose to issue additive
+              (combinable) PAKs. If you receive an additive PAK,
+              you should leave the older PAK enabled because the LMF
+              automatically adds (or combines) the license usage of the
+              additive PAK to the license usage of the older PAK in order
+              to establish your new level of license authorization.
+
+              In most cases, additive PAKs represent new, independent
+              licenses, which work with your old license to provide a
+              higher level of license authorization; whereas replacement
+              PAKs represent an upgrade to an existing license.
+
+                                                        Release Notes 1-5
+
+ 
+
+
+
+
+
+
+
+        1.3.3 PAKs with the NOSHARE option
+
+              With this release of the LMF, the behavior of the NOSHARE
+              option has changed. PAKS issued with the NOSHARE option can
+              now be combined by the LMF; previously they could not be
+              combined.
+
+              Previously, all NOSHARE PAKs were replacement PAKs;
+              however, now vendors may choose to issue additive NOSHARE
+              PAKs, as well as replacement NOSHARE PAKs. If you are
+              unsure what kind of PAK you have, contact the vendor who
+              issued the PAK to you.
+
+        1.4 List Size Restrictions
+
+              Due to a limitation in the LMF, two restrictions apply to
+              the size of lists (reserve lists, include lists, or exclude
+              lists). These restrictions apply to PAKs of all license
+              types (availability, activity, and reserved user licenses).
+
+        1.4.1 The Per PAK Limit
+
+              On any single PAK, the sum of characters contained in all
+              lists must not exceed 5000.
+
+              Because the length of names vary and some overhead is
+              used for each name, this 5000 character limit cannot be
+              expressed as an exact number of permissible names. However,
+              Digital guarantees that at least 400 names, in total, can
+              be specified in the various types of list. For example,
+              each of the following represents the minimally guaranteed
+              number of names:
+
+              o  Reserve list with up to 400 user names
+
+              o  Reserve list with up to 200 user names plus an include
+                 list with up to 200 node names (totalling up to 400)
+
+              o  Reserve list with up to 200 user names plus an exclude
+                 list with up to 200 node names (totalling up to 400)
+
+              o  Include list with up to 400 node names
+
+              o  Exclude list with up to 400 node names
+
+                ________________________ Note ________________________
+
+                If you enter more names than are permitted, the
+                LICENSE LIST command may not be able to display all
+
+        1-6 Release Notes
+
+ 
+
+
+
+
+
+
+
+                names entered. In this case, you will receive the
+                error message LICENSE-F-CORRUP. However, the license
+                database is not actually corrupt and the PAKs may
+                still be loaded in memory (though the names are not
+                displayed).
+
+                ______________________________________________________
+
+        1.4.2 The Per Product Limit
+
+              The LICENSE LOAD and LICENSE START commands can load into
+              memory a reserve list with no more 30,000 characters.
+              (Include and exclude lists, which are not loaded into
+              memory, are irrelevant to the 30,000 character limit.)
+
+              Because the length of names vary and some overhead is
+              used for each name, this 30,000 character limit cannot
+              be expressed as an exact number of permissible names. But
+              Digital guarantees that, for each product, at least 2000
+              user names may appear on reserve lists. In the case of a
+              VAXcluster[TM], this is a per-node limit.
+
+              Note that, because 2000 user names is a per-product limit,
+              and because there may be more than one PAK per product, the
+              number of user names on a per-product basis is the sum of
+              the user names specified on each PAK.
+
+              For example, if three activity PAKs for the product
+              DECwrite[TM] were registered on a system, and each PAK
+              specified a reserve list with 200 user names, the total
+              number of user names for that product is 600. This is
+              safely below the 30,000 character (2000 user name) limit,
+              and below the 5,000 character limit (400 user name) limit
+              described in Section 1.4.1.
+
+                _______________________ Caution _______________________
+
+                If the 30,000 character limit is exceeded, the LMF
+                truncates the reserve list that is loaded into memory;
+                no error message is issued.
+
+                ______________________________________________________
+
+              See Section 9, License Combination, in the VMS License
+              Management Utility Manual for more information on how the
+              LMF combines PAKs for the same product.
+
+                                                        Release Notes 1-7
+
+ 
+
+
+
+
+
+
+
+        1.5 Logical Name LMF$DISPLAY_OPCOM_MESSAGE
+
+              A previous version of the VMS License Management Utility
+              Manual incorrectly stated that you must define LMF$DISPLAY_
+              OPCOM_MESSAGE in order for messages to appear. This
+              statement has been removed from the new version of the
+              VMS License Management Utility Manual.
+
+              However, many users may have already defined this logical
+              name. If you did, you should delete the definition of this
+              logical name.
+
+              Define the LMF$DISPLAY_OPCOM_MESSAGE logical name only if
+              you are explicitly directed by Digital[TM] to do so (for
+              debugging purposes). When defined, this logical name causes
+              many "noise" messages to be displayed on the operator's
+              console; some of these messages may be confusing and
+              misleading to the point of suggesting that a product is
+              not licensed, when in fact it is.
+
+              To see if this logical name has been defined on your
+              system, issue the following command:
+
+              $ SHOW LOGICAL LMF$DISPLAY_OPCOM_MESSAGE
+
+        1.5.1 Determining the LMF Version Number
+
+              To determine which version of the LMF is installed on your
+              system, issue the following command:
+
+              $ LICENSE COPY
+
+              If LMF Version 1.1 (the new LMF) is installed on your
+              system, you will be prompted for the name of the product
+              you want copied. If the old LMF (LMF Version 1.0) is
+              installed on your system, you will receive an error message
+              stating that COPY is an unrecognized keyword.
+
+                ________________________ Note ________________________
+
+                Do not use the LICENSE LIST command to determine which
+                version of the LMF is running on the system. This
+                command produces a display of information, one field
+                of which is the LMF Version. But this LMF version
+                number is the version number of the LMF that was
+                running on the system at the time the license database
+
+        1-8 Release Notes
+
+ 
+
+
+
+
+
+
+
+                was created, not the version number of the LMF that is
+                running now.
+
+                ______________________________________________________
+
+        1.6 Installation Considerations for VAXclusters
+
+              Digital recommends that you install LMF Version 1.1 on all
+              system disks in a VAXcluster. Doing this ensures that all
+              nodes in the VAXcluster are running the latest version of
+              the LMF.
+
+              If you upgrade some but not all system disks in a
+              VAXcluster, you will be running what is called a "mixed
+              version VAXcluster". Some nodes in the VAXcluster are
+              running the old LMF Version 1.0, and some are running the
+              new LMF Version 1.1.
+
+              In this case, you must separate your license databases in
+              such a way that LMF Version 1.0 can never read or write to
+              a license database that has been modified by LMF Version
+              1.1. However, you can use the LICENSE MOVE and LICENSE COPY
+              features of LMF Version 1.1 to move and copy PAKs among all
+              license databases and still access those databases with LMF
+              Version 1.0.
+
+              Figure 1-1 depicts a mixed version VAXcluster in which
+              one node is running LMF Version 1.1 and the other node is
+              running LMF Version 1.0. Since the license databases (LDBs)
+              used by each node are separate, no problems should arise.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        Release Notes 1-9
+
+ 
+
+
+
+
+
+
+
+ Figure 1-1  Valid Mixed Version Vaxcluster with Separate License Databases
+
+                      +------------+                           +------------+
+                      |    Node    |                           |    Node    |
+                      |  Running   |---------------------------|  Running   |
+                      |VMS LMF 1.0 |                           |VMS LMF 1.1 |
+                      +------------+                           +------------+
+                            |                                          |
+                            |                                          |
+                      (-----------)                            (------------)
+                      (System Disk)                            (System Disk )
+                      (-----------)                            (------------)
+                      ( License   )                            ( License    )
+                      ( Database  )                            ( Database   )
+                      (-----------)                            (------------)
+
+              On the other hand, Figure 1-2 depicts a mixed version
+              VAXcluster in which two nodes running different versions
+              of the LMF are sharing the same license database. This
+              configuration could bring about corruption of the license
+              database (LDB), as well as instances of denial of service.
+
+ Figure 1-2  Invalid Mixed Version Vaxcluster with Shared License Database
+
+                      +------------+                           +------------+
+                      |    Node    |                           |    Node    |
+                      |  Running   |---------------------------|  Running   |
+                      |VMS LMF 1.0 |                           |VMS LMF 1.1 |
+                      +------------+                           +------------+
+                             |      \                          /        |
+                             |       \                        /         |
+                       (-----------)  \                      /  (------------)
+                       (System Disk)   \                    /   (System Disk )
+                       (-----------)    \                  /    (------------)
+                                         \                /
+                                          (--------------)
+                                          ( Shared Disk  )
+                                          (--------------)
+                                          ( License      )
+                                          ( Database     )
+                                          (--------------)
+
+
+
+
+        1-10 Release Notes
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                           Preparing for LMF Installation
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing the LMF.
+
+              Your bill of materials (BOM) and indented bills report
+              (BIL) specify the number and contents of your media.
+              Be sure to verify the contents of your kit with this
+              information. If your kit is damaged or if you find
+              that parts of it are missing, contact your Digital
+              representative.
+
+              Release notes are provided both online and in hardcopy
+              format (see Chapter 2). Digital strongly recommends that
+              you read the release notes before proceeding with the
+              installation. For information on accessing the online
+              release notes, see Section 3.1.
+
+        2.1 Required Operating System Components
+
+              The VMS operating system comes with a variety of support
+              options, or classes. Classes include such features as
+              networking and VAX RMS[TM] journaling. None of these
+              support options or classes are required for installation
+              of the LMF.
+
+              To install VMS LMF Version 1.1, your system must be running
+              VMS Version 5.2, 5.3, or 5.4, or any dash release of one of
+              these versions (for example 5.3-1).
+
+        2.2 VAXcluster Considerations
+
+              Install the LMF on all system disks and reboot all nodes.
+
+              If you must defer the rebooting of some nodes, avoid
+              issuing license commands until all nodes have been
+              rebooted.
+
+                                       Preparing for LMF Installation 2-1
+
+ 
+
+
+
+
+
+
+
+              If your VAXcluster has multiple system disks, you must
+              install the LMF on each system disk before rebooting the
+              nodes attached to those system disks.
+
+        2.3 Installation Procedure Requirements
+
+              This section and those that follow discuss various
+              requirements for installing the LMF.
+
+              The installation takes approximately 5 to 10 minutes,
+              depending on your type of media and your system
+              configuration.
+
+              Installing the LMF and running the Installation
+              Verification Procedure (IVP) on a standalone VAX 3100
+              system takes approximately 5 minutes.
+
+        2.3.1 Privileges and Disk Space
+
+              To install the LMF, you must be logged in to an account
+              that has SETPRV or at least the following privileges:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              Note that VMSINSTAL turns off the BYPASS privilege at the
+              start of the installation.
+
+              The LMF installation requires 1000 blocks of disk space.
+              After installation, the LMF requires 1000 blocks of disk
+              space to run.
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL prompt:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+        2.3.2 VMSINSTAL Requirements
+
+              When you invoke VMSINSTAL, it checks the following:
+
+              o  Whether you are logged in to a privileged account
+
+              o  Whether you have adequate quotas for installation
+
+              o  Whether DECnet is running
+
+              o  Whether any users are logged in to the system
+
+        2-2 Preparing for LMF Installation
+
+ 
+
+
+
+
+
+
+
+              Note that the VMSINSTAL requires that the installation
+              account have a minimum of the following quotas:
+
+                 ASTLM = 24
+                 BIOLM = 18
+                 BYTLM = 18,000
+                 DIOLM = 18
+                 ENQLM = 30
+                 FILLM = 20
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can enter YES to
+              continue. To stop the installation process and correct
+              the situation, enter NO or press Return. Then correct the
+              problem and restart the installation.
+
+        2.3.3 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if you
+              have backed up your system disk. Digital recommends that
+              you do a system disk backup before installing any software.
+
+              Use the backup procedures that are established at your
+              site. For details on performing a system disk backup,
+              see the section on the Backup Utility in the VMS System
+              Management Subkit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       Preparing for LMF Installation 2-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                                       Installing the LMF
+
+
+              This chapter explains how to install the VMS License
+              Management Facility. The following sections provide a
+              step-by-step description of the installation procedure
+              and describe what to do if you encounter an error during
+              installation.
+
+        3.1 The Installation Procedure
+
+              The VMS License Management Facility installation procedure
+              consists of a series of questions and informational
+              messages. (See Appendix A for a sample installation.)
+
+              To abort the installation procedure at any time, press
+              CTRL/Y. When you press CTRL/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can then start the installation again.
+
+              1. Invoke VMSINSTAL.
+
+                 @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                 To start the installation, invoke the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account. VMSINSTAL is in the SYS$UPDATE directory. The
+                 following list defines the elements of the VMSINSTAL
+                 command procedure:
+
+                 saveset-name
+                 The installation name for the component. For the
+                 VMS License Management Facility, use the following
+                 installation name:
+
+                 LMF011
+
+
+
+                                                   Installing the LMF 3-1
+
+ 
+
+
+
+
+
+
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 media. For example, MTA0: is the device name for a tape
+                 drive. It is not necessary to use the console drive for
+                 this installation. However, if you do use the console
+                 drive, you should replace any media you removed once the
+                 installation is complete.
+
+                 OPTIONS N
+                 An optional parameter that indicates you want to see
+                 the question on release notes. If you do not include the
+                 OPTIONS N parameter, VMSINSTAL does not ask you about
+                 the release notes. You should review the release notes
+                 before proceeding with the installation in case they
+                 contain additional information about the installation.
+                 If you are restarting the installation and have already
+                 reviewed the release notes, you do not need to specify
+                 OPTIONS N.
+
+                 Note that there are several other options you can select
+                 when you invoke VMSINSTAL:
+
+                 o  Auto_answer option (A): Initially creates a file
+                    that contains your answers to VMSINSTAL questions and
+                    prompts. You can then use the option (and the answer
+                    file) to save time during a reinstallation (typically
+                    after upgrading your system).
+
+                 o  Get save set option (G): Lets you store product save
+                    sets temporarily on a magnetic tape or in a disk
+                    directory.
+
+                 o  File log option (L): Logs all activity to the
+                    terminal during installation.
+
+                 o  Alternate root option (R): Lets you install the
+                    product to a system root other than that of the
+                    running system.
+
+                 See the VMS documentation on software installation
+                 in the VMS System Management Subkit for detailed
+                 information on these options. If you specify more than
+                 one option, separate the options with commas (OPTIONS
+                 A,N).
+
+        3-2 Installing the LMF
+
+ 
+
+
+
+
+
+
+
+                 The following example invokes VMSINSTAL to install the
+                 VMS License Management Facility from tape drive MTA0:
+                 and shows the system response. This example uses the
+                 OPTIONS N release note parameter.
+
+                 $ @SYS$UPDATE:VMSINSTAL LMF011 MTA0: OPTIONS N
+
+                       VAX/VMS Software Product Installation Procedure V5.2
+
+                 It is 08-OCT-1991 at 06:12.
+                 Enter a question mark (?) at any time for help.
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure. VMSINSTAL does
+                 not prompt you for any options, so be sure to include
+                 OPTIONS N on the VMSINSTAL command line to access the
+                 release notes during the installation.
+
+              2. Confirm system backup.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. You should always back up your system disk
+                 before performing an installation. If you are satisfied
+                 with the backup of your system disk, press RETURN.
+                 Otherwise, enter NO to discontinue the installation.
+                 After you back up your system disk, you can restart the
+                 installation.
+
+              3. Mount the media.
+
+                 Please mount the first volume of the set on MTA0:.
+                 * Are you ready? YES
+                 %MOUNT-I-MOUNTED, LMF011 MOUNTED ON _$$MTA0:  (NODE 1)
+                 The following products will be processed:
+                   LMF V1.1
+
+                     Beginning installation of LMF V1.1 at 06:13
+
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                 You should now mount the first distribution volume on
+                 the device you specified when you invoked VMSINSTAL. The
+                 device name appears in the line preceding the question.
+
+                                                   Installing the LMF 3-3
+
+ 
+
+
+
+
+
+
+
+                 VMSINSTAL then asks you if you are ready to continue
+                 with the installation.
+
+                 If you respond YES to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 the LMF has been mounted on the specified device and
+                 that the installation has begun.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter NO
+                 in response to the "Are you ready?" question. To abort
+                 the installation for other reasons, press CTRL/Y.
+
+              4. Select a release notes option.
+
+                 Release notes included with this kit are always copied to SYS$HELP.
+
+                 Additional Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  None of the above
+
+                 * Select option [2]:
+
+                 If you specified OPTIONS N when you invoked VMSINSTAL,
+                 you are now asked to choose one of the four options for
+                 reviewing the release notes.
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on the console terminal. You can
+                 terminate the display at any time by pressing CTRL/C.
+
+                 If you select option 2, VMSINSTAL prompts you for the
+                 name of the print queue that you want to use:
+
+                 * Queue name [SYS$PRINT]:
+
+                 You can press RETURN to send the file to the default
+                 output print device or you can enter another queue name.
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes immediately on the console terminal and then
+                 prompts you for a queue name for the printed version.
+
+                 Select option 4 if you have already reviewed the release
+                 notes and are restarting the installation.
+
+        3-4 Installing the LMF
+
+ 
+
+
+
+
+
+
+
+                 Next, VMSINSTAL displays the following question:
+
+                 * Do you want to continue the installation [N]?: YES
+                 %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                                    successfully moved to SYS$HELP.
+
+                 To continue the installation, enter YES. Otherwise,
+                 press RETURN. In either case, the release notes are
+                 copied to a file in the SYS$HELP directory:
+
+                 SYS$HELP:LMF011.RELEASE_NOTES
+
+                 After the installation, you can enter the following
+                 command to read the release notes.
+
+                 $ TYPE SYS$HELP:LMF011.RELEASE_NOTES
+
+              5. Purge files.
+
+                 * Do you want to purge files replaced by this installation [YES]?
+
+                 You have the option to purge files from previous
+                 versions of the LMF that are superseded by this
+                 installation. Purging is recommended; however, if you
+                 need to keep files from the previous version, enter NO
+                 in response to the question.
+
+              6. State if you wish to continue.
+
+                 The installation procedure states that the system will
+                 be automatically shut down as part of the installation.
+                 It then states that you will need to reboot the system
+                 after shutdown.
+
+                 If you answer yes, the installation proceeds and the
+                 system is shut down. If you answer no, the installation
+                 procedure exits.
+
+              7. Read informational messages.
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation. There are no further
+                 questions. If the installation procedure has been
+                 successful up to this point, VMSINSTAL moves the new
+                 or modified files to their target directories, updates
+                 help files, and updates DCL tables, if necessary. If you
+                 chose to have files purged, that work is done now.
+
+                                                   Installing the LMF 3-5
+
+ 
+
+
+
+
+
+
+
+              8. End the installation procedure.
+
+                    Installation of LMF V1.1 completed at 6:15
+
+                    VMSINSTAL-I-SHUTDOWN, This product requires that the system be rebooted.
+
+                 The installation procedure has now finished, and the
+                 system is starting an orderly shutdown.
+
+                ________________________ Note ________________________
+
+                After system shutdown, you must reboot the system.
+                Then you can run the Installation Verification
+                Procedure (IVP). The IVP cannot be run before the
+                system is rebooted. Section 4.1 explains how to run
+                the IVP.
+
+                ______________________________________________________
+
+        3.2 Error Recovery
+
+              If an error occurs during installation, VMSINSTAL displays
+              an error message. If the installation fails, you see the
+              following message:
+
+              %VMSINSTAL-E-INSFAIL, The installation of LMF V1.1 has failed.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  The operating system version is incorrect.
+
+              o  A prerequisite software version is incorrect.
+
+              o  Quotas necessary for successful installation are
+                 insufficient.
+
+              o  System parameter values for successful installation are
+                 insufficient.
+
+              o  The VMS help library is currently in use.
+
+              For descriptions of the error messages generated by these
+              conditions, see the VMS documentation on system messages,
+              recovery procedures, and VMS software installation. If
+              you are notified that any of these conditions exist, you
+              should take the appropriate action as described in the
+              message. For information on installation requirements, see
+              Chapter 2.
+
+        3-6 Installing the LMF
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        4
+        _________________________________________________________________
+
+                                                 After Installing the LMF
+
+
+              This chapter discusses how to run the IVP to determine if
+              the installation was successful, the privileges required to
+              use the LMF, and what to do if you have a problem running
+              the LMF.
+
+                ________________________ Note ________________________
+
+                After system shutdown, you must reboot the system.
+                Then you should run the Installation Verification
+                Procedure (IVP). The IVP cannot be run before the
+                system is rebooted.
+
+                ______________________________________________________
+
+        4.1 Running the Installation Verification Procedure
+
+              You should run the Installation Verification Procedure
+              (IVP) to ensure that the LMF was installed successfully.
+
+              VMSINSTAL does not execute the Installation Verification
+              Procedure (IVP) as part of the LMF installation. Therefore,
+              you must execute the IVP separately.
+
+              To run the IVP, issue the following command:
+
+              $  @SYS$TEST:LMF011IVP.COM
+
+              If the IVP succeeds, you see these messages:
+
+              The LMF V1.1 Installation Verification Procedure passed.
+
+              %LMF-S-IVPPASS, the LMF installation has passed the IVP.
+
+              If the IVP fails, you see these messages:
+
+              The LMF V1.1 Installation Verification Procedure failed.
+
+              %LMF-E-IVPFAIL, the LMF installation has failed its IVP.
+
+                                             After Installing the LMF 4-1
+
+ 
+
+
+
+
+
+
+
+              If the IVP fails, issue the DCL command SET VERIFY and then
+              run the IVP again. The messages displayed while the IVP
+              runs will indicate the cause of the failure. You will then
+              be able to take corrective action.
+
+        4.2 User Account Requirements
+
+              When an ordinary user requests use of a licensed product,
+              the LMF checks if use is permitted under license terms and
+              conditions. The user requires no special privileges to have
+              this check performed.
+
+              System managers or license administrators require SYSNAM
+              and CMKRNL privileges to execute various LICENSE commands
+              such as LOAD, UNLOAD, and START.
+
+              No special account quota values are required by either
+              category of user.
+
+              The following LICENSE commands require read access to the
+              license database: LOAD and LIST.
+
+              The following LICENSE commands require write access to the
+              license database: ISSUE, ENABLE, DISABLE, MODIFY, CANCEL,
+              DELETE, REGISTER, AMEND.
+
+              The following LICENSE commands require write access to both
+              the source and target databases: MOVE and COPY.
+
+        4.3 Determining and Reporting Problems
+
+              If you are unable to run a software product that calls
+              the LMF for product license verification, a Product
+              Authorization Key (PAK) for that product may not be
+              registered in the license database. If you need a PAK
+              or information about a PAK, you should call the business
+              office of the software vendor from whom you purchased the
+              product.
+
+              If you have a PAK for your software product, but the
+              product is unable to run due to miscommunication between
+              the product and the LMF you should call the technical
+              office of the software vendor from whom you purchased the
+              product.
+
+              If you are unable to issue LMF commands or to perform
+              license management using the VMS License Management
+              Facility, you should contact Digital.
+
+        4-2 After Installing the LMF
+
+ 
+
+
+
+
+
+
+
+              Depending on the nature of the problem and the type of
+              support you have, you can take one of the following actions
+              when communicating with Digital:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              o  Fill out and submit a Reader's Comments form if the
+                 problem has to do with the VMS License Management
+                 Facility documentation. There are Reader's Comments
+                 forms at the back of each manual. Use the form from the
+                 manual in which you found the error. Include the section
+                 and page number.
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter a
+              problem during the warranty period, report the problem as
+              indicated above or follow alternate instructions provided
+              by Digital for reporting SPD nonconformance problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                             After Installing the LMF 4-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                                      Sample Installation
+
+
+              This appendix contains a sample installation of the VMS
+              License Management Facility.
+
+              The sample installation assumes that DECnet has been shut
+              down, that no users are logged on to your system, and that
+              OPTIONS N is specified to print the release notes. The
+              Installation Verification Procedure (IVP) runs at the end
+              of the installation.
+
+
+               Welcome to VAX/VMS V5.4
+
+              Username: SYSTEM
+              Password:
+                      Welcome to VAX/VMS version V5.4 on node GODOT
+                  Last interactive login on Tuesday, 10-SEP-1991 09:41
+                  Last non-interactive login on Monday, 22-JUL-1991 16:30
+
+              $ @SYS$UPDATE:VMSINSTAL LMF011 SYS$MANAGER OPTIONS N
+
+              VAX/VMS Software Product Installation Procedure V5.4
+
+              It is 10-SEP-1991 at 10:22.
+
+              Enter a question mark (?) at any time for help.
+
+              * Are you satisfied with the backup of your system disk [YES]? YES
+
+              The following products will be processed:  LMF V1.1
+               Beginning installation of LMF V1.1 at 10:23
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+                  Release notes included with this kit are always copied to SYS$HELP.
+
+                  Additional Release Notes Options:
+
+                                                  Sample Installation A-1
+
+ 
+
+
+
+
+
+
+
+               1.  Display release notes
+               2.  Print release notes
+               3.  Both 1 and 2
+               4.  None of the above
+
+              * Select option [2]: 2
+
+              * Do you want to continue the installation [NO]? YES
+
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+               © Digital Equipment Corporation. 1991. All Rights Reserved.
+
+               You are now installing VMS LMF V1.1
+
+               This product installation requires a System reboot to become
+               effective.
+
+              Enter a Question mark (?) to get a detailed description of any option.
+
+              * Do you want to purge files replaced by this installation [YES]? NO
+
+              This installation of LMF V1.1 will automatically shutdown this system.
+
+              You will then need to reboot the system.
+
+              Other nodes in a VAXcluster will continue to run but will not be able
+              to use LMF V1.1 features until they too are rebooted.
+
+              * Do you wish to continue with the installation [YES]? YES
+
+              %PATCH-I-NOLCL, image does not contain local symbols
+              %PATCH-I-WRTFIL, updating image file $1$DKB700:[SYS0.SYSUPD.LMF011]SYSMSG.EXE;1
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+               Installation of LMF V1.1 completed at 10:25
+
+              %VMSINSTAL-I-SHUTDOWN, This product requires that the system be rebooted.
+
+                 .
+                 .
+                 .
+              [installer reboots the system and logs in]
+                 .
+                 .
+                 .
+              $  @SYS$TEST:LMF011IVP.COM
+                 .
+                 .
+                 .
+
+        A-2 Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                           Files Installed on Your System
+
+
+              The VMS License Management Facility installation procedure
+              installs a number of files on your system. Table B-1 lists
+              these files and specifies whether the file was modified,
+              replaced, or new.
+
+
+
+              Table_B-1_Files_Installed_on_Your_System___________________
+
+              File_Name____________________________Status________________
+
+              SYS$HELP:HELPLIB.HLB                 Modified
+
+              SYS$HELP:LMF011.RELEASE_NOTES        New
+
+              SYS$LIBRARY:DCLTABLES.EXE            Modified
+
+              SYS$LOADABLE_IMAGES:SYSLICENSE.EXE   Replaced
+
+              SYS$MESSAGE:LMF_MESSAGE.EXE          Replaced
+
+              SYS$MESSAGE:SYSMSG.EXE               Modified
+
+              SYS$MESSAGE:VMSLICENSE_LANGUAGE.COM  Replaced
+
+              SYS$SYSTEM:LMF.EXE                   Replaced
+
+              SYS$TEST:LMF011IVP.COM               New
+
+              SYS$UPDATE:VMSLICENSE.COM____________Replaced______________
+
+
+
+
+
+
+                                       Files Installed on Your System B-1
+    

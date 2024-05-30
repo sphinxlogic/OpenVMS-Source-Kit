@@ -1,0 +1,410 @@
+ 
+
+ Software
+ Product
+ Description
+
+ ___________________________________________________________________
+
+ PRODUCT NAME:  MicroVAX/DRQ3B Device Driver, Version 1.4        SPD
+ 29.25.05
+
+ DESCRIPTION
+
+ The MicroVAX/DRQ3B Device Driver V1.4 (HXDRIVER) supports the DRQ3B
+ interface, which is a general purpose 16 bit parallel interface be-
+ tween the MicroVAX Q-bus and a user's peripheral. The DRQ3B, under driver
+ control, is capable of performing double buffered direct memory ac-
+ cess (DMA) using the block mode capabilities of the Q-bus to provide
+ high bandwidth data transfers. The DRQ3B interface also has 512 word
+ FIFO (First In, First Out) buffers on both the input and output ports
+ to allow data to be transferred while an interrupt service routine is
+ setting up the next buffer.
+
+ Driver Features
+
+ o  Double buffering of I/O requests
+
+ o  Buffer termination via an external event (EOP)
+
+ o  External interrupt
+
+ o  Function bit setting/clearing
+
+ o  DMA operations directly to Q-bus memory
+
+ o  Error handling
+
+ Double Buffering of I/O Requests
+
+ As long as two or more buffers are queued to the driver it will au-
+ tomatically try to double buffer the I/O requests. A function modi-
+ fier IO$M_HX_HOLD_DMA allows an application to queue up multiple buffers
+ before starting I/O, so that all of those queued buffers can be dou-
+ ble buffered.
+
+ Buffer Termination Via an External Event (EOP)
+
+                               DIGITAL                      May 1994
+
+                                                         AE-KV48F-TE
+
+ 
+
+ The hardware has a line on the input connector that is handled like
+ a 17th data bit but will cause a DMA operation to terminate and a new
+ one to start when asserted and read out of the FIFO by the DMA con-
+ troller. The driver supports this condition and returns the number of
+ words transferred including the last one transferred with the exter-
+ nal event asserted as well as the success code SS$_WASSET rather than
+ the conventional SS$_NORMAL so that an application can test for the
+ occurrence of this condition.
+
+ External Interrupt
+
+ A line separate from the external event line allows an interrupt to
+ be generated. The driver allows the detection of this condition in an
+ AST routine.
+
+ Function Bit Setting/Clearing
+
+ The driver provides SETMODE functions that will set/clear the func-
+ tion bits for a given port, and allows the function bits to be read
+ with a SENSEMODE function.
+
+ DMA Operations Directly to Q-bus Memory
+
+ The driver supports two forms of I/O, logical and physical.
+
+ o  Physical I/O transfers allow the transfer of data directly to Q-bus
+    memory and specialized I/O subsystems such as those found in some
+    types of array processors.
+
+ o  The driver also allows MicroVAX memory to be used for physical I/O
+    transfers to reduce overhead.
+
+ o  Logical I/O supports the more traditional mechanisms for perform-
+    ing DMA. As a result, it is easier to program but is a little less
+    efficient.
+
+ Error Handling
+
+ The driver will report nonexistent memory conditions (NXMs), FIFO over-
+ runs and FIFO underruns in case the interface logic stops handshak-
+ ing correctly.
+
+                                  2
+
+ 
+
+ INSTALLATION
+
+ Only experienced customers should attempt installation of this prod-
+ uct. Digital recommends that all other customers purchase Digital's
+ Installation Services. These services provide for installation of the
+ software product by an experienced Digital Software Specialist.
+
+ HARDWARE REQUIREMENTS
+
+ Processors Supported
+
+ VAX:      VAX 4000 Model 100,
+           VAX 4000 Model 100A,
+           VAX 4000 Model 200,
+           VAX 4000 Model 300,
+           VAX 4000 Model 400,
+           VAX 4000 Model 500,
+           VAX 4000 Model 600,
+           VAX 4000 Model 500A,
+           VAX 4000 Model 600A,
+           VAX 4000 Model 700A
+
+ MicroVAX: MicroVAX II,
+           MicroVAX 3300, MicroVAX 3400,
+           MicroVAX 3500, MicroVAX 3600,
+           MicroVAX 3800, MicroVAX 3900
+
+ VAXstation:VAXstation II, VAXstation 3200,
+           VAXstation 3500
+
+ Processors Not Supported
+
+ VAX:      VAX 10000 Model 600 Series
+
+           VAX 9000 Model 110,
+           VAX 9000 Model 210,
+
+
+
+
+                                  3
+
+ 
+
+
+           VAX 9000 Model 310,
+           VAX 9000 Model 400 Series,
+
+           VAX 7000 Model 600 Series
+
+           VAX 6000 Model 200 Series,
+           VAX 6000 Model 300 Series,
+           VAX 6000 Model 400 Series,
+           VAX 6000 Model 500 Series,
+           VAX 6000 Model 600 Series
+
+           VAX 8200, VAX 8250, VAX 8300,
+           VAX 8350, VAX 8600, VAX 8650
+
+           VAX 8500, VAX 8530, VAX 8550,
+           VAX 8700, VAX 8800, VAX 8810,
+           VAX 8820, VAX 8830, VAX 8840,
+           VAX 8842, VAX 8974, VAX 8978
+
+           VAX-11/730, VAX-11/750,
+           VAX-11/780, VAX-11/785
+
+           VAXft Model 110, VAXft Model 310,
+           VAXft Model 410, VAXft Model 610,
+           VAXft Model 612, VAXft Model 810
+ MicroVAX: MicroVAX 2000,
+           MicroVAX 3100 Model 10/10E,
+           MicroVAX 3100 Model 20/20E,
+           MicroVAX 3100 Model 30,
+           MicroVAX 3100 Model 40,
+           MicroVAX 3100 Model 80,
+           MicroVAX 3100 Model 90
+
+ VAXstation:VAXstation 2000,
+           VAXstation 3100,
+
+
+
+
+                                  4
+
+ 
+
+
+           VAXstation 3100 Model 30,
+           VAXstation 3100 Model 38,
+           VAXstation 3100 Model 40,
+           VAXstation 3100 Model 48,
+           VAXstation 3100 Model 76,
+           VAXstation 3520,
+           VAXstation 3540
+           VAXstation 4000 Model 60,
+           VAXstation 4000 VLC,
+           VAXstation 4000 Model 90
+
+ VAXserver: VAXserver 3100, VAXserver 3300, VAXserver 3400,
+           VAXserver 3500, VAXserver 3600, VAXserver 3800,
+           VAXserver 3900
+
+ Processor Restrictions
+
+ The following restrictions apply to support the MicroVAX/DRQ3B Device
+ Driver on the VAX 4000 processor family:
+
+ o  Only one (1) DRQ3B module is supported.
+
+ o  For VAX 4000-100 and VAX 4000-100A systems, a Q-bus expansion chas-
+    sis is required.
+
+ o  Only Single Cycle and Block Mode transfers are supported.
+
+ o  Extended Block Mode transfers are not supported and should be dis-
+    abled on the module by setting switch position 8 on Switch Pack 1
+    to OFF/0.
+
+ o  Burst Mode transfers are not supported.
+
+ o  The DRQ3B module must have jumper W5 installed (factory default)
+    to select a 2.7 microsecond holdoff time between transfers.
+
+ o  It is recommended that the DRQ3B module be placed as the last de-
+    vice on the Q-bus.
+
+ o  Use of hardware features such as memory-to-memory transfers, transfer-
+    with-compare, and chaining are not supported.
+
+                                  5
+
+ 
+
+ Refer to the DRQ3B Parallel DMA I/O MODULE User's Guide for additional
+ information.
+
+ Other Hardware Required
+
+ DRQ3B-AA/SA/SF Parallel DMA Input/Output Module
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  6
+
+ 
+
+ Block Space Requirements (Block Cluster Size = 1):
+
+ Disk space required for    700 blocks
+ installation:
+                            (0.3 MB)
+
+ Disk space required for    500 blocks
+ use (permanent):
+                            (0.25 MB)
+
+ These counts refer to the disk space required on the system disk. The
+ sizes are approximate; actual sizes may vary depending on the user's
+ system environment, configuration, and software options.
+
+ OPTIONAL HARDWARE
+
+ Up to 3 additional DRQ3B interfaces may be added to MicroVAX and VAXs-
+ tation systems for a total of 4 maximum. The maximum number of inter-
+ faces that can be installed in a BA23 or BA123 system may be limited
+ by the number of available A-size I/O panel openings.
+
+ CLUSTER ENVIRONMENT
+
+ This layered product is fully supported when installed on any valid
+ and licensed VAXcluster* configuration. It must be installed once on
+ each MicroVAX or VAXstation processor from which usage is planned.
+
+ In order to configure some product specific attributes that must re-
+ main unique to each system, certain components of the product are stored
+ in the system specific environment, SYS$SPECIFIC:[SYSxxx], of the Mi-
+ croVAX or VAXstation processor on which the installation is performed.
+ The remaining components of the product, including some or all of the
+ executable images will be installed common to all accessing systems.
+
+ The HARDWARE REQUIREMENTS section of this product's Software Product
+ Description detail any special hardware required by this product.
+
+
+
+
+                                  7
+
+ 
+
+ *  V5.x VAXcluster configurations are fully described in the VAXclus-
+    ter Software Product Description (29.78.xx) and include CI, Eth-
+    ernet and Mixed Interconnect configurations.
+
+ SOFTWARE REQUIREMENTS
+
+ OpenVMS VAX V5.5-2H4 for VAX 4000-x00A models and OpenVMS VAX V5.5 -
+ V6.0 for all other supported Q-bus processors. OpenVMS Tailoring
+
+ For OpenVMS and OpenVMS Operating Systems, the following OpenVMS classes
+ are required for full functionality of this layered product:
+
+ o  OpenVMS Required Saveset
+
+ o  Programming Support
+
+ o  System Programming Support
+
+ o  Utilities
+
+ For more information on OpenVMS classes and tailoring, refer to the
+ OpenVMS Operating System Software Product Description (SPD 25.01.xx).
+
+ GROWTH CONSIDERATIONS
+
+ The minimum hardware/software requirements for any future version of
+ this product may be different from the minimum requirements for the
+ current version.
+
+ DISTRIBUTION MEDIA
+
+ TK50 Streaming Tape
+
+ This product is also available as part of the OpenVMS Consolidated Soft-
+ ware Distribution on CD-ROM.
+
+ ORDERING INFORMATION
+
+ Software Licenses: QL-0APA9-**
+ Software Media: QA-0APA*-**
+ Software Documentation: QA-0APAA-GZ
+ Software Product Services: QT-0APA*-**
+
+                                  8
+
+ 
+
+ *  Denotes variant fields. For additional information on available li-
+    censes, services and media refer to the appropriate price book.
+
+ The above information is valid at time of release. Please contact your
+ local Digital office for the most up-to-date information.
+
+ SOFTWARE LICENSING
+
+ This software is furnished only under a license. For more information
+ about Digital's licensing terms and policies, contact your local Dig-
+ ital office.
+
+ License Management Facility Support
+
+ This layered product supports the OpenVMS License Management Facil-
+ ity.
+
+ License units for this product are allocated on an Unlimited System
+ Use basis.
+
+ For more information on the License Management Facility, refer to the
+ OpenVMS Operating System Software Product Description (SPD 25.01.xx)
+ or the License Management Facility manual of the OpenVMS Operating Sys-
+ tem documentation set.
+
+ For more information about Digital's licensing terms and policies, con-
+ tact your local Digital office.
+
+ SOFTWARE PRODUCT SERVICES
+
+ A variety of service options are available from Digital. For more in-
+ formation, contact your local Digital office.
+
+ [TM] The DIGITAL Logo, CI, Digital, MicroVAX, OpenVMS, Q-bus, TK,
+     VAX, VAX-11/750, VAX-11/780, VAXcluster, VAXft, VAXserver,
+     VAXstation, and VAXstation 4000 VLC are trademarks of Digital
+     Equipment Corporation.
+
+ ©1994 Digital Equipment Corporation. All Rights Reserved.
+
+                                  9

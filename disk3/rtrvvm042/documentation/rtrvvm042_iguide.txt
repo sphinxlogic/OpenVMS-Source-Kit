@@ -1,0 +1,5007 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     hp_Reliable_Transaction_Router
+                     ________________
+                     Installation Guide
+
+                     Order Number: AA-Q88DG-TE
+
+
+
+
+                     February 2003
+
+
+
+
+
+                     This guide describes how to install Reliable
+                     Transaction Router for all operating systems on
+                     which RTR is supported.
+
+
+
+
+
+                     Revision/Update Information: This manual super-
+                                                  sedes the Reliable
+                                                  Transaction Router
+                                                  Installation Guide,
+                                                  Version 4.1.
+
+                     Software Version:            Reliable Transaction
+                                                  Router Version 4.2
+
+                     Hewlett-Packard Company
+                     Palo Alto, California
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+
+           © 2003 Hewlett-Packard Development Company, L.P.
+
+           Microsoft, MS-DOS, Windows, and Windows NT are US
+           registered trademarks of Microsoft Corporation.
+
+           Intel is a US registered trademark of Intel Corporation.
+
+           UNIX is a registered trademark of The Open Group.
+
+           Confidential computer software. Valid license from HP
+           and/or its subsidiaries required for possession, use, or
+           copying. Consistent with FAR 12.211 and 12.212, Commercial
+           Computer Software, Computer Software Documentation, and
+           Technical Data for Commercial Items are licensed to the
+           U.S. Government under vendor's commercial license.
+
+           Neither HP nor any of its subsidiaries shall be liable
+           for technical or editorial errors or omissions contained
+           herein. The information in this document is provided
+           "as is" without warranty of any kind and is subject to
+           change without notice. The warranties for HP products
+           are set forth in the express limited warranty statements
+           accompanying such products. Nothing herein should be
+           construed as constituting an additional warranty.
+
+           This document was prepared using DECdocument, Version
+           3.3-1B.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................     ix
+
+
+   1  Quick Installation
+
+         1.1   Installing RTR for OpenVMS...................    1-1
+         1.1.1     Disk and Time Requirements...............    1-1
+         1.1.2     Installation Procedure...................    1-2
+         1.1.3     Sample OpenVMS Installation..............    1-2
+         1.2   Installing RTR for Tru64 UNIX................    1-4
+         1.2.1     Disk and Time Requirements...............    1-4
+         1.2.2     Installation Procedure...................    1-5
+         1.2.3     Sample Tru64 UNIX Installation...........    1-6
+         1.2.4     Sample IVP Output........................    1-8
+         1.3   Installing RTR for Windows Systems...........   1-10
+         1.3.1     Disk and Time Requirements...............   1-10
+         1.3.2     Installation Procedure...................   1-10
+         1.4   Installing RTR for Sun Solaris...............   1-11
+         1.4.1     Disk and Time Requirements...............   1-11
+         1.4.2     Installation Procedure...................   1-11
+         1.4.3     Sample Sun Solaris Installation..........   1-14
+         1.4.4     Sample IVP Output........................   1-16
+
+   2  Upgrade Process
+
+         2.1   Rolling Upgrade Restrictions.................    2-1
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     3  Full Installation on OpenVMS
+
+           3.1   Prepare for Installation.....................    3-1
+           3.1.1     Check Software Distribution Kit..........    3-2
+           3.1.2     Check Required Hardware..................    3-2
+           3.1.3     Check Required Software..................    3-2
+           3.1.4     Check Required Disk Space................    3-3
+           3.1.5     Check System Parameters..................    3-4
+           3.1.5.1     Size Global Pages and Sections
+                       Appropriately..........................    3-4
+           3.1.5.2     Size Virtual Memory Appropriately......    3-4
+           3.2   Install RTR..................................    3-5
+           3.2.1     Installation Example.....................    3-5
+           3.2.2     Read Release Notes.......................    3-7
+           3.3   Complete RTR Setup ..........................    3-7
+           3.3.1     Edit System Files........................    3-8
+           3.3.1.1     Establishing Protocol Preference.......    3-8
+           3.3.2     Verify User Account Requirements.........   3-10
+           3.3.2.1     Check User Account Quotas..............   3-10
+           3.3.2.2     Check User Account Privileges..........   3-10
+           3.3.2.3     Check System Manager Account
+                       Privileges.............................   3-11
+           3.3.3     Check Installed Files ...................   3-11
+           3.3.4     Enable RTR Remote Commands...............   3-11
+           3.3.5     Display CONOLD Documentation.............   3-11
+           3.3.6     Run RTR..................................   3-12
+           3.3.6.1     Configure RTR Facilities and
+                       Partitions.............................   3-12
+           3.3.7     Install and Run Applications.............   3-12
+
+     4  Full Installation on Tru64 UNIX
+
+           4.1   Prepare for Installation ....................    4-1
+           4.1.1     Check Software Distribution Kit..........    4-1
+           4.1.2     Register Your Software License ..........    4-2
+           4.1.3     Check Login Privileges...................    4-3
+           4.1.4     Check Required Hardware .................    4-3
+           4.1.5     Check Required Software .................    4-3
+           4.1.6     Determine Which Subsets to Load..........    4-4
+           4.1.7     Check Required Disk Space ...............    4-4
+           4.1.7.1     Check Current Disk Space...............    4-5
+           4.1.7.2     Increase Disk Space ...................    4-6
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+              4.1.8     Check System Parameters..................    4-6
+              4.1.8.1     Check Shared Memory Requirements.......    4-6
+              4.1.8.2     Check Virtual Memory Requirements......    4-7
+              4.1.8.3     TCP Services File......................    4-7
+              4.1.9     Back Up Your System Disk.................    4-7
+              4.2   Install RTR .................................    4-7
+              4.2.1     Install from Media or RIS................    4-7
+              4.2.1.1     Install from CD-ROM....................    4-9
+              4.2.1.2     Install from RIS ......................   4-10
+              4.2.2     Read the Online Release Notes............   4-10
+              4.2.3     Installation Example.....................   4-11
+              4.2.3.1     Select Subsets.........................   4-11
+              4.2.4     Run the Installation Verification
+                        Procedure ...............................   4-14
+              4.2.5     Stop the Installation....................   4-15
+              4.2.6     Delete RTR from Your System..............   4-15
+              4.2.7     Display Documentation from CD-ROM........   4-15
+              4.3   Complete RTR Setup ..........................   4-16
+              4.3.1     Check Installed Files ...................   4-16
+              4.3.2     Enable Remote RTR Commands...............   4-16
+              4.3.3     Run RTR..................................   4-17
+              4.3.3.1     Configure RTR Facilities and
+                          Partitions.............................   4-17
+              4.3.4     Install and Run Applications.............   4-17
+
+
+        5  Full Installation on Windows
+
+              5.1   Prepare for Installation.....................    5-1
+              5.1.1     Check Required Hardware..................    5-1
+              5.1.2     Check Required Software .................    5-2
+              5.1.3     Check Required Disk Space................    5-2
+              5.1.4     Check System Parameters..................    5-2
+              5.1.4.1     Check Memory-Mapped I/O Requirements...    5-2
+              5.1.4.2     Check Virtual Memory Requirements......    5-2
+              5.2   Install RTR..................................    5-2
+              5.2.1     Read the Readme File.....................    5-4
+              5.3   Complete RTR Setup...........................    5-4
+              5.3.1     Check Installed Files....................    5-5
+              5.3.2     Enable RTR Remote Commands...............    5-5
+              5.3.3     Display Documentation....................    5-5
+              5.3.4     Run RTR..................................    5-5
+              5.3.4.1     Configure RTR Facilities and
+                          Partitions.............................    5-6
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+           5.3.5     Install and Run Applications.............    5-6
+
+
+     6  Full Installation on Sun Solaris
+
+           6.1   Prepare for Installation ....................    6-1
+           6.1.1     Check Software Distribution Kit..........    6-1
+           6.1.2     Check Login Privileges...................    6-1
+           6.1.3     Check Required Hardware..................    6-1
+           6.1.4     Check Required Software .................    6-2
+           6.1.5     Determine Which Subsets to Load..........    6-2
+           6.1.6     Check Required Disk Space ...............    6-2
+           6.1.7     Check System Parameters..................    6-3
+           6.1.7.1     Check Shared Memory Requirements.......    6-3
+           6.1.7.2     Check Virtual Memory Requirments.......    6-3
+           6.1.7.3     TCP Services File......................    6-3
+           6.1.8     Back Up Your System Disk.................    6-3
+           6.2   Install RTR..................................    6-4
+           6.2.1     Read the Release Notes...................    6-5
+           6.2.2     Installation Example.....................    6-5
+           6.2.2.1     Select Package.........................    6-5
+           6.2.2.2     Output During Package Loading .........    6-6
+           6.2.3     Stop the Installation....................   6-11
+           6.2.4     Run the Installation Verification
+                     Procedure ...............................   6-11
+           6.2.4.1     Sample IVP Output......................   6-12
+           6.2.5     Delete RTR from Your System..............   6-12
+           6.2.6     Display Documentation from CD-ROM........   6-13
+           6.3   Complete RTR Setup ..........................   6-13
+           6.3.1     Check Installed Files....................   6-13
+           6.3.2     Run RTR..................................   6-14
+           6.3.2.1     Configure RTR Facilities and
+                       Partitions.............................   6-14
+           6.3.3     Install and Run Applications.............   6-14
+
+     A  Recovering from Errors
+
+           A.1   Problems During Product Installation ........    A-1
+           A.2   Problems After Installation .................    A-2
+
+
+
+
+
+
+     vi
+
+ 
+
+
+
+
+
+
+        B  Uninstalling RTR
+
+              B.1   Uninstalling on OpenVMS......................    B-1
+              B.2   Uninstalling on Windows Systems..............    B-2
+              B.3   Uninstalling on Tru64 UNIX...................    B-3
+              B.4   Uninstalling on Sun..........................    B-4
+
+        Index
+
+
+        Figures
+
+              1         RTR Reading Path.........................    xiv
+
+        Tables
+
+              1         RTR Documents............................      x
+
+              2         Conventions Used in this Guide ..........   xiii
+
+              3-1       Required Software........................    3-2
+
+              3-2       Disk Space Requirements for OpenVMS......    3-3
+
+              3-3       System Parameter Values Used by the RTR
+                        Installation.............................    3-4
+
+              3-4       RTR Protocol Preference..................    3-8
+
+              3-5       Preferred Protocol Values................    3-9
+
+              3-6       User Account Quotas for Using Reliable
+                        Transaction Router.......................   3-10
+
+              4-1       RTR Subset Size (in Kilobytes) for Tru64
+                        UNIX.....................................    4-4
+
+              6-1       RTR Subset Size (in Kilobytes) for Sun
+                        Solaris..................................    6-2
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              This guide explains how to install HP Reliable Transaction
+              Router (RTR) on supported platforms. If you are installing
+              RTR on only one platform, you need only read the sections
+              that apply to that platform.
+
+              Keep this guide with your distribution kit. You may need
+              it to install maintenance updates or to reinstall RTR for
+              some other reason.
+
+        Structure of this Document
+
+              This guide contains the following chapters and appendixes:
+
+              o  Chapter 1 gives brief installation instructions for
+                 RTR on OpenVMS, Tru64 UNIX, Windows, and Sun Solaris.
+                 For a complete list of versions for each supported
+                 operating system, refer to the relevant Software
+                 Product Description (SPD). The brief installation
+                 instructions include sample installation output.
+
+              o  Chapter 2 includes instructions on how to perform an
+                 upgrade to RTR.
+
+              o  Chapter 3 describes a full installation for OpenVMS VAX
+                 and OpenVMS Alpha, including:
+
+                 -  Preparing for installation
+
+                 -  Installing RTR and reading the Release Notes
+
+                 -  Completing RTR setup
+
+              o  Chapter 4 describes a full installation for Tru64 UNIX
+                 including:
+
+                 -  Preparing for installation
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+              -  Installing RTR and reading the Release Notes
+
+              -  Completing RTR setup
+
+           o  Chapter 5 describes a full installation for Windows
+              including:
+
+              -  Preparing for installation
+
+              -  Installing RTR and reading the Readme
+
+              -  Completing RTR setup
+
+           o  Chapter 6 describes a full installation for Sun Solaris
+              including:
+
+              -  Preparing for installation
+
+              -  Installing RTR and reading the Release Notes
+
+              -  Completing RTR setup
+
+           o  Appendix A provides information on recovering from
+              errors.
+
+           o  Appendix B provides instructions on how to remove
+              (uninstall) RTR from your system.
+
+     Related Documentation
+
+           Table 1 describes RTR documents and groups them by
+           audience.
+
+           Table_1_RTR_Documents_____________________________________
+
+           Document______________Content_____________________________
+
+           For all users:
+
+           Reliable Transaction  Describes new features, changes, and
+           Router Release        known restrictions for RTR.
+           Notes[1]
+
+           [1]Distributed_on_software_kit.___________________________
+
+                                             (continued on next page)
+
+     x
+
+ 
+
+
+
+
+
+
+              Table_1_(Cont.)_RTR_Documents_____________________________
+
+              Document______________Content_____________________________
+
+              Reliable Transaction  Provides an overview of RTR
+              Router Getting        technology and solutions, and
+              Started               includes the glossary that defines
+                                    all RTR terms.
+
+              Reliable Transaction  A pocket-sized handbook that lists
+              Router Commands       all RTR commands, their qualifiers
+                                    and defaults.
+
+              Reliable Transaction  Describes product features.
+              Router Software
+              Product Description
+
+              For the system
+              manager:
+
+              Reliable Transaction  Describes how to install RTR on all
+              Router Installation   supported platforms.
+              Guide
+
+              Reliable Transaction  Describes how to configure, manage,
+              Router System         and monitor RTR.
+              Manager's Manual
+
+              Reliable Transaction  Explains how to migrate from RTR
+              Router Migration      Version 2 to RTR Version 3 or 4
+              Guide[2]              (OpenVMS only).
+
+              For the application
+              programmer:
+
+              Reliable Transaction  Describes how to design application
+              Router Application    programs for use with RTR, with both
+              Design Guide          C++ and C interfaces.
+
+              Reliable Transaction  Describes the object-oriented
+              Router C++            C++ interface that can be used
+              Foundation Classes    to implement RTR object-oriented
+                                    applications.
+
+              [2]Softcopy_only._________________________________________
+
+                                                (continued on next page)
+
+                                                                      xi
+
+ 
+
+
+
+
+
+
+           Table_1_(Cont.)_RTR_Documents_____________________________
+
+           Document______________Content_____________________________
+
+           Reliable Transaction  Explains how to design and code RTR
+           Router C Application  applications using the C programming
+           Programmer's          language and the RTR C API. Contains
+           Reference Manual      full descriptions of the basic RTR
+           ______________________API_calls.__________________________
+
+           You can find additional information about RTR, including
+           the Software Product Descriptions, on the RTR website
+           found through http://www.hp.com links to middleware
+           products or at http:://www.hp.com/go/rtr.
+
+     Conventions
+
+           Table 2 describes the conventions used in this guide.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     xii
+
+ 
+
+
+
+
+
+
+              Table_2_Conventions_Used_in_this_Guide____________________
+
+              Convention_____Meaning____________________________________
+
+              #              A number sign (#) is the default superuser
+                             prompt.
+
+              %              A percent sign (%) is the default user
+                             prompt for many UNIX systems.
+
+              $              A dollar sign ($) is the default user
+                             prompt for OpenVMS systems.
+
+              <Return>       In examples, a boxed symbol indicates
+                             that you must press the named key on the
+                             keyboard.
+
+              Ctrl/C         This symbol indicates that you must press
+                             the Ctrl key while you simultaneously press
+                             another key (in this case, C).
+
+              user input     In interactive examples, this typeface
+                             indicates input entered by the user.
+
+              filesystem     In text, this typeface indicates the exact
+                             name of a command, routine, partition,
+                             pathname, directory, or file. This typeface
+                             is also used in interactive examples and
+                             other screen displays.
+
+              UPPERCASE      The UNIX operating system differentiates
+              lowercase      between lowercase and uppercase characters.
+                             Examples, syntax descriptions, function
+                             definitions, and literal strings that
+                             appear in text must be typed exactly as
+                             shown. Commands typed to the RTR CLI are
+                             not case sensitive unless enclosed in
+                             quotation marks.
+
+              [y]            In a prompt, square brackets indicate that
+                             the enclosed item is the default response.
+                             For example, [y] means the default response
+              _______________is_Yes.____________________________________
+
+
+                                                                    xiii
+
+ 
+
+
+
+
+
+
+     Reading Path
+
+           The reading path to follow when using the Reliable
+           Transaction Router information set is shown in Figure 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     xiv
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                                      Quick Installation
+
+
+
+              This chapter gives brief instructions for installing
+              Reliable Transaction Router on the following platforms:
+
+              o  OpenVMS
+
+              o  Windows 2000, Windows NT, Windows 98, Windows ME,
+                 Windows XP
+
+              o  Tru64 UNIX
+
+              o  Sun Solaris
+
+                _____________User-Changed  Monitor Files _____________
+
+                If you have changed any RTR monitor (*.mon) files,
+                you must rename them or they will be overwritten
+                during installation. To avoid this, always work
+                from renamed copies of RTR monitor files when making
+                local modifications.
+
+                _____________________________________________________
+
+        1.1 Installing RTR for OpenVMS
+
+              Your Reliable Transaction Router for OpenVMS kit is
+              supplied on CD-ROM. After installation, the Release Notes
+              are located in the directory SYS$COMMON:[SYSHLP]; you are
+              advised to read the Release Notes before using RTR.
+
+        1.1.1 Disk and Time Requirements
+
+              The installation of the RTR base product requires about
+              53000 blocks during installation, and about 36000 blocks
+              after installation is done. The installation takes
+              less than five minutes to complete. For more detailed
+              instructions, see Chapter 3.
+
+                                                  Quick Installation 1-1
+
+ 
+
+
+
+     Quick Installation
+     1.1 Installing RTR for OpenVMS
+
+     1.1.2 Installation Procedure
+
+           1. If RTR is already installed on your system, see
+              Section B.1, Uninstalling on OpenVMS, for information
+              on uninstalling RTR and removing related processes.
+
+              ___________Retaining the RTR V2 Help File ___________
+
+              If you plan to keep the RTR V2 help file in addition
+              to the help file for the current release, see
+              Chapter 3 for instructions.
+
+              _____________________________________________________
+
+           2. Log on to the System Manager's account.
+
+           3. Define the logical name for the location of the
+              software kit, for example:
+
+              $ DEFINE PCSI$SOURCE DISK1:[KITS]
+
+           4. Check disk space and system parameters GBLPAGES and
+              GBLSECTIONS.
+
+           5. Start the installation with the following command:
+
+              $ PRODUCT INSTALL RTR
+
+     1.1.3 Sample OpenVMS Installation
+
+           This sample installation includes running the IVP.
+
+           $ product install rtr
+
+           The following product has been selected:
+               DEC AXPVMS RTR V4.2-320               Layered Product
+
+           Do you want to continue? [YES] y
+
+           Configuration phase starting ...
+
+           You will be asked to choose options, if any, for each
+           selected product and for
+           any products that may be installed to satisfy software
+           dependency requirements.
+
+           DEC AXPVMS RTR V4.2-320: Reliable Transaction Router for OpenVMS
+
+             Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+     1-2 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                          1.1 Installing RTR for OpenVMS
+
+              Do you want the defaults for all options? [YES] n
+
+                  Have all RTR processes on the system been stopped? [YES] y
+                  Run installation verification procedure [NO] y
+                  DECnet users: Have you read the Release Note regarding
+                  minimum version?
+                  [YES] y
+                  Do you want the V2 programming kit Installed? [NO] yes
+
+              Do you want to review the options? [NO] y
+
+              DEC AXPVMS RTR V42-320: Reliable Transaction Router for OpenVMS
+                  Have all RTR processes on the system been stopped?: YES
+                  Run installation verification procedure: YES
+                  DECnet users: Have you read the Release Note regarding
+                  minimum version?: YES
+                  Do you want the V2 programming kit Installed ?: YES
+
+              Are you satisified with these options? [YES]
+
+              Execution phase starting ...
+
+              The following product will be installed to destination:
+                  DEC AXPVMS RTR V4.2-320
+                 <logical for SYS$COMMON>
+
+              Portion done: 0%
+              ...10%
+              ...20%
+              ...30%
+              ...40%
+              ...50%
+              ...60%
+              ...70%
+              ...80%
+              ...90%
+              ...100%
+
+              The following product has been installed:
+                  DEC AXPVMS RTR V4.2-320                Layered Product
+
+              %PCSI-I-IVPEXECUTE, executing test procedure for DEC AXPVMS RTR V4.2-320 ...
+              %PCSI-I-IVPSUCCESS, test procedure completed successfully
+
+              DEC AXPVMS RTR V4.2-320: Reliable Transaction Router for OpenVMS
+
+                                                  Quick Installation 1-3
+
+ 
+
+
+
+     Quick Installation
+     1.1 Installing RTR for OpenVMS
+
+               Insert the following lines in SYS$MANAGER:SYSTARTUP_VMS.COM:
+                   @sys$startup:rtr$startup.com
+               Insert the following lines in SYS$MANAGER:SYSHUTDWN.COM:
+                   @sys$manager:rtr$shutdown
+
+            See the Release Notes and documentation for use of the optional
+            rtr$startup.com P1 parameter. 1
+           $
+
+           1  For information on the optional preferred protocol (P1)
+              parameter, see Section 3.3.1.1.
+
+           For additional information, see Chapter 3, Full Installation
+           on OpenVMS .
+
+     1.2 Installing RTR for Tru64 UNIX
+
+           Your Reliable Transaction Router for Tru64 UNIX kit is
+           supplied on CD-ROM. After installation, the Release Notes
+           are located in the directory /usr/opt/RTR420/hlp; you are
+           advised to read the Release Notes before using RTR.
+
+              _____________User-Changed Monitor Files _____________
+
+              If you have changed any RTR monitor (*.mon) files,
+              you must rename them or they will be over-written
+              during installation. To avoid this, always work
+              from renamed copies of RTR monitor files when making
+              local modifications.
+
+              _____________________________________________________
+
+              ______________ TruCluster Restrictions ______________
+
+              To install RTR on a TruCluster, see the description
+              in Section 4.2.1.
+
+              _____________________________________________________
+
+     1.2.1 Disk and Time Requirements
+
+           The installation requires about 23 MB (megabytes), 5.6
+           MB for the /rtr area, and 2 MB for the RTR journal.
+           The installation procedure takes about two minutes to
+           complete.
+
+     1-4 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                       1.2 Installing RTR for Tru64 UNIX
+
+        1.2.2 Installation Procedure
+
+              1. Log in as user root or su to root.
+
+              2. Use the setld utility to check if you have a version of
+                 RTR already installed:
+
+                 # setld -i | grep RTR
+
+              3. If RTR is already installed on your system, see
+                 Section B.3, Uninstalling on Tru64 UNIX, for in-
+                 formation on uninstalling RTR and removing related
+                 processes.
+
+              4. Install from the directory (disk or CD-ROM) where the
+                 kit is located, for example:
+
+                 # setld -l /cdrom/rtr4xx/kit
+
+                 Where "xx" is the version number, for example, rtr420.
+
+              5. Answer "1" and "y" to the questions from setld.
+
+              6. To run the IVP (Installation Verification Procedure)
+                 use the following command:
+
+                ______________________ Caution ______________________
+
+                Do not run the IVP program on a production system,
+                as it may alter the RTR journal or interrupt
+                processing of transactions. You will be prompted to
+                abort the IVP before it can do any damage. Consider
+                your situation carefully before running the IVP.
+
+                _____________________________________________________
+
+                 # setld -v RTRBASE4xx
+
+                 Where "xx" is the kit number, for example, RTRBASE420.
+
+                 Note that the Installation Verification Procedure
+                 requires a working C language compiler to run.
+
+                ______Requirements  for Application Permissions ______
+
+                If the RTR executable is modified after installation
+                to no longer be suid root or the mode of the /rtr
+                directory is changed, an application process (for
+                example a client) can encounter a fatal error
+                (Unable to locate a socket) when the client process
+
+                                                  Quick Installation 1-5
+
+ 
+
+
+
+     Quick Installation
+     1.2 Installing RTR for Tru64 UNIX
+
+              finds it cannot create an rtr_ipc_sock_* file for
+              the process ID (pid) in the /rtr directory.
+
+              To avoid this, ensure that application processes run
+              with user and group IDs that have access permission
+              to create and remove files in this directory.
+
+              _____________________________________________________
+
+     1.2.3 Sample Tru64 UNIX Installation
+
+
+           # setld -l RTRBASE420
+
+             Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+             Confidential computer software. Valid license from HP and/or its
+             subsidiaries required for possession, use or copying. Consistent
+             with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+             Software Documentation, and Technical Data for Commercial Items
+             are licensed to the U.S. Government under vendor's standard
+             commercial license.
+
+           The subsets listed below are optional:
+
+                There may be more optional subsets than can be presented on a
+                single
+                screen. If this is the case, you can choose subsets screen by
+                screen
+                or all at once on the last screen. All of the choices you make
+                will
+                be collected for your confirmation before any subsets are
+                installed.
+
+                1) RTR API & Management Utility
+
+           Or you may choose one of the following options:
+
+                2) ALL of the above
+                3) CANCEL selections and redisplay menus
+                4) EXIT without installing any subsets
+
+           Estimated free diskspace(MB) in root:67.7 usr:198.8
+
+           Press RETURN to display the next screen.
+
+           Enter your choices or press RETURN to redisplay menus.
+
+     1-6 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                       1.2 Installing RTR for Tru64 UNIX
+
+              Choices (for example, 1 2 4-6): 1
+
+              You are installing the following optional subsets:
+
+                      RTR API & Management Utility
+
+              Estimated free diskspace(MB) in root:67.7 usr:177.9
+
+              Is this correct? (y/n): y
+
+              Checking file system space required to install selected subsets:
+
+              File system space checked OK.
+
+              1 subsets will be installed.
+
+              Loading subset 1 of 1 ...
+
+                Reliable Transaction Router V4.2 for Tru64 UNIX
+
+                Installation started at Wed Apr 10 16:08:17 EDT 2002.
+
+                Installation proceeds automatically, and should complete in
+                approximately
+                1 minute.
+
+              RTR API & Management Utility
+                 Copying from . (disk)
+                      Working....Wed Apr 10 16:08:29 EDT 2002
+                 Verifying
+
+              1 of 1 subsets installed successfully.
+              reusing existing /usr/doc/rtr directory
+              /usr/doc/rtr//rtr_relnotes.txt: File exists
+              /usr/doc/rtr//rtr_relnotes.ps: File exists
+              mkdir: cannot create /var/opt/rtrjnl.
+              /var/opt/rtrjnl: File exists
+
+              Configuring "RTR API & Management Utility" (RTRBASE420)
+
+                directory /var/run/rtr created
+
+                reusing existing /rtr directory
+
+                Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+                                                  Quick Installation 1-7
+
+ 
+
+
+
+     Quick Installation
+     1.2 Installing RTR for Tru64 UNIX
+
+             Confidential computer software. Valid license from HP and/or its
+             subsidiaries required for possession, use or copying. Consistent
+             with FAR 12.211 and 12.212, Commercial Computer Software,
+             Computer
+             Software Documentation, and Technical Data for Commercial Items
+             are licensed to the U.S. Government under vendor's standard
+             commercial license.
+
+             Reliable Transaction Router V4.2 for Tru64 UNIX
+
+             Installation completed at Wed Apr 10 16:09:31 EDT 2002.
+
+             You can run the Installation Verification Procedure using this
+             command:
+                              setld -v RTRBASE420
+
+             Release Notes are available in: /usr/opt/RTR420/hlp/rtr_relnotes.*
+           #
+
+     1.2.4 Sample IVP Output
+
+           # setld -v RTRBASE420
+           RTR API & Management Utility (RTRBASE420)
+
+             Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+             Confidential computer software. Valid license from HP and/or its
+             subsidiaries required for possession, use or copying. Consistent
+             with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+             Software Documentation, and Technical Data for Commercial Items
+             are licensed to the U.S. Government under vendor's standard
+             commercial license.
+
+             Starting     Reliable Transaction Router V4.2  for Tru64 UNIX
+             Installation Verification Procedure
+           WARNING: This is not a first time install.
+           WARNING: Please ensure that you have terminated *all* existing
+           WARNING: rtr processes and rtr applications before continuing.
+
+           Rtr will find and reuse any existing rtr journal files in the
+           top level rtrjnl directory on each suitable filesystem, and will
+           reuse any existing shared memory segment associated with
+           /rtr/RTRENVPS
+           Normally this is intended and should not cause any problems.
+
+     1-8 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                       1.2 Installing RTR for Tru64 UNIX
+
+              WARNING: Any existing journal will be used and modified,
+              otherwise
+              WARNING: a new journal will be created on the default filesystem.
+              WARNING: Facilities RTR_IVP_FACILITY and RTR$DEFAULT_FACILITY
+              will be created.
+              WARNING: Result may be affected by size and contents of any
+              existing journal.
+              WARNING: The sample client and server do not necessarily complete
+              if they
+              WARNING: encounter previously journalled transactions for their
+              facilities.
+
+              Would you like to abort the IVP? (y/n)
+              n
+              IVP continuing ...
+
+                keeping any existing log file settings (RTR_DBG not set)
+                starting RTR . . .
+                creating a journal, if not already created  . . .
+                creating test facility . . .
+                stopping RTR.
+
+                [OPTIONAL] attempting to compile and link rtr test applications . . .
+
+                If this system is not configured with an application development
+                environment, or the platform does not support threads, then some
+                messages about application compilation not succeeding are normal.
+
+                multithreaded server rtr application compiled
+                single-threaded client rtr application compiled
+                applications rtrreq and rtrsrv available
+                starting rtr and creating default facility
+              %RTR-I-NOLOGSET, logging not set
+              %RTR-S-RTRSTART, RTR started on node nodea in group "root"
+              %RTR-S-RTRSTOP, RTR stopped on node nodea in group "root"
+
+                Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+                    Reliable Transaction Router V4.2  for Tru64 UNIX
+
+                Installation Verification Procedure successful
+
+
+
+
+                                                  Quick Installation 1-9
+
+ 
+
+
+
+     Quick Installation
+     1.3 Installing RTR for Windows Systems
+
+     1.3 Installing RTR for Windows Systems
+
+           Your Reliable Transaction Router for Windows kit is
+           supplied on CD-ROM. After installation, the Readme file is
+           located in the directory where you installed RTR; you are
+           advised to read the Readme file before using RTR.
+
+              _____________User-Changed Monitor Files _____________
+
+              If you have changed any RTR monitor (*.mon) files,
+              you must rename them or they will be over-written
+              during installation. To avoid this, always work
+              from renamed copies of RTR monitor files when making
+              local modifications.
+
+              _____________________________________________________
+
+     1.3.1 Disk and Time Requirements
+
+           The installation of the RTR base product requires about 22
+           MB (megabytes) of disk space. The installation procedure
+           takes about two minutes to complete.
+
+     1.3.2 Installation Procedure
+
+           1. If RTR is already installed on your system, see
+              Section B.2, Uninstalling on Windows Systems, for
+              information on uninstalling RTR and removing related
+              processes.
+
+           2. If you are installing on Windows NT or Windows 2000,
+              log in as the Administrator, or with administrator
+              privileges.
+
+           3. Insert the RTR CD-ROM into the drive.
+
+           4. From Windows Explorer, choose the drive letter of your
+              CD-ROM and open the directory RTRV42.
+
+           5. Double click on SETUP.EXE to start the InstallShield
+              that takes you through the setup process.
+
+
+
+
+     1-10 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                      1.4 Installing RTR for Sun Solaris
+
+        1.4 Installing RTR for Sun Solaris
+
+              Your Reliable Transaction Router for Sun Solaris kit is
+              supplied on CD-ROM. After installation, the Release Notes
+              are located in the directory /opt/rtr/RTR420/hlp; you are
+              advised to read the Release Notes before using RTR.
+
+                _____________User-Changed  Monitor Files _____________
+
+                If you have changed any RTR monitor (*.mon) files,
+                you must rename them or they will be over-written
+                during installation. To avoid this, always work
+                from renamed copies of RTR monitor files when making
+                local modifications.
+
+                _____________________________________________________
+
+        1.4.1 Disk and Time Requirements
+
+              The installation requires about 15.5 MB (megabytes)
+              on the partition on /opt, the package base directory,
+              about 8 MB on /rtr and about 2 MB for the RTR journal.
+              The installation procedure takes about two minutes to
+              complete.
+
+              Note that the Installation Verification Procedure (IVP)
+              requires a working C language compiler to run.
+
+        1.4.2 Installation Procedure
+
+                ________________________Note  ________________________
+
+                There are both an rtr and an rtr_r; (rtr_r is
+                installed only on SunOS 5.6/Solaris 2.6 systems).
+                A soft link is established to the appropriate one
+                from /usr/bin/rtr.
+
+                RTR provides both librtr_r.so and librtr.so for
+                SunOS 5.6 in case you need to link your application
+                with the threaded version. On SunOS 5.6, RTR
+                uses librtr_r.so to enable asynchronous I/O (aio)
+                support.
+
+                _____________________________________________________
+
+              1. Log in as user root or su to root.
+
+                                                 Quick Installation 1-11
+
+ 
+
+
+
+     Quick Installation
+     1.4 Installing RTR for Sun Solaris
+
+           2. Use the pkginfo utility to check if you have a version
+              of RTR already installed:
+
+              # pkginfo -l rtr
+
+           3. If RTR is already installed on your system, see
+              Section B.4, Uninstalling on Sun, for information on
+              uninstalling RTR and removing related processes.
+
+           4. Insert the CD-ROM and mount the volume at a convenient
+              mount point (for example, /cdrom).
+
+           5. Decide if you want to run the IVP after installation.
+              By default, the installation process will not run the
+              IVP (see the Caution in the Running the IVP section).
+              To run the IVP after installation is done, you must
+              define the NONABI_SCRIPTS environment variable when
+              starting the installation. To define this variable, use
+              the following commands:
+
+              # sh
+              # NONABI_SCRIPTS=TRUE
+
+           6. Install RTR from the CD-ROM directory where the kit is
+              located. For example, use the following commands:
+
+              # cd /cdrom/rtr_kit
+              # pkgadd -d .
+
+              o  You can accept the defaults for most questions from
+                 the pkgadd utility.
+
+              o  When asked "This package contains scripts which will
+                 be executed with super-user permission during the
+                 process of installing this package. Do you want to
+                 continue with the installation of <rtr> [y,n,?]",
+                 answer "y".
+
+           7. RTR is then installed in /opt/rtr.
+
+              ______Requirements for Application Permissions ______
+
+              If the RTR executable is modified after installation
+              to no longer be suid root or the mode of the /rtr
+              directory is changed, an application process (for
+              example a client) can encounter a fatal error
+              (Unable to locate a socket) when the client process
+
+     1-12 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                      1.4 Installing RTR for Sun Solaris
+
+                finds it cannot create an rtr_ipc_sock_* file for
+                the process ID (pid) in the /rtr directory.
+
+                To avoid this, ensure that application processes run
+                with user and group IDs that have access permission
+                to create and remove files in this directory.
+
+                _____________________________________________________
+
+              Section 1.4.3 shows an example of an RTR intallation for
+              the Sun Solaris.
+
+              Running the IVP
+
+              The Installation Verification Procedure (IVP) requires a
+              working C language compiler to run.
+
+                ______________________ Caution ______________________
+
+                Do not run the IVP program on a production system as
+                it may alter the RTR journal or interrupt processing
+                of transactions. You will be prompted to abort
+                the IVP before it can do any damage. Consider your
+                situation carefully before running the IVP.
+
+                _____________________________________________________
+
+              You may run the IVP separately from the installation
+              procedure. If you are not using the C shell, start it
+              by typing /usr/bin/csh and run the IVP by typing the
+              following:-
+
+              # setenv BASEDIR /opt
+
+              and then executing the file
+
+              opt/rtr/RTRxxx/examples/IVP/rtr_ivp_osf.sh
+
+              where xxx = 420 for RTR V4.2.
+
+              Section 1.4.4 shows an example of IVP output for RTR on
+              the Sun Solaris.
+
+
+
+                                                 Quick Installation 1-13
+
+ 
+
+
+
+     Quick Installation
+     1.4 Installing RTR for Sun Solaris
+
+     1.4.3 Sample Sun Solaris Installation
+
+
+           # pkgadd -d .
+
+           The following packages are available:
+
+             1  rtr     Reliable Transaction Router
+                        (sun4u) 420
+
+           Select package(s) you wish to process (or all to process
+           all packages). (default: all) [?,??,q]:
+
+           Processing package instance <rtr> from
+           </CDROM/rtr420/rtrkit>
+
+           Reliable Transaction Router
+           (sun4u) 420
+           Hewlett-Packard Development Company, L.P.
+
+           Using </opt> as the package base directory.
+           ## Processing package information.
+           ## Processing system information.
+           ## Verifying disk space requirements.
+           ## Checking for conflicts with packages already installed.
+           ## Checking for setuid/setgid programs.
+
+           This package contains scripts which will be executed with super-user
+           permission during the process of installing this package.
+
+           Do you want to continue with the installation of <rtr> [y,n,?] y
+
+           Installing Reliable Transaction Router as <rtr>
+
+           ## Executing preinstall script.
+
+             Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+             Confidential computer software. Valid license from HP and/or its
+             subsidiaries required for possession, use or copying. Consistent
+             with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+             Software Documentation, and Technical Data for Commercial Items
+             are licensed to the U.S. Government under vendor's standard
+             commercial license.
+
+           This kit will only run on Sun Solaris 2.6 and higher.
+           Installation should complete in approximately 1 minute.
+           ## Installing part 1 of 1.
+
+     1-14 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                      1.4 Installing RTR for Sun Solaris
+
+              [All installed files are listed in the output. See Chapter 6,
+              "Full Installation on Sun Solaris" for the list.]
+
+                 .
+                 .
+                 .
+
+              [ verifying class <none> ]
+              ## Executing postinstall script.
+
+                Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+                Confidential computer software. Valid license from HP and/or
+                its
+                subsidiaries required for possession, use or copying.
+                Consistent
+                with FAR 12.211 and 12.212, Commercial Computer Software,
+                Computer
+                Software Documentation, and Technical Data for Commercial Items
+                are licensed to the U.S. Government under vendor's standard
+                commercial license.
+
+                  directory /rtr -> /var/opt/rtr created
+
+                Starting     Reliable Transaction Router V4.2  for SunOS
+                Installation Verification Procedure
+
+              WARNING: This is not a first time install.
+              WARNING: Please ensure that you have terminated *all* existing
+              WARNING: rtr processes and rtr applications before continuing.
+              See man fuser or lsof to identify processes using
+              /usr/*lib/librtr*.so
+
+              Rtr will find and reuse any existing journal files in the
+              top level rtrjnl directory on each suitable filesystem, and will
+              reuse any existing shared memory segment associated with
+              /rtr/RTRENVPS
+              Normally this is intended and should not cause any problems.
+
+
+
+
+
+
+
+                                                 Quick Installation 1-15
+
+ 
+
+
+
+     Quick Installation
+     1.4 Installing RTR for Sun Solaris
+
+           WARNING: Any existing journal will be used and modified, otherwise
+           WARNING: a new journal will be created on the default filesystem.
+           WARNING: Facilities RTR_IVP_FACILITY and RTR$DEFAULT_FACILITY
+           will be created.
+           WARNING: Result may be affected by size and contents of any
+           existing journal.
+           WARNING: The sample client and server do not necessarily complete
+           if they
+           WARNING: encounter previously journalled transactions for these
+           facilities.
+
+           NOTE: The following question is ignored in a non-interactive
+           install
+           NOTE: unless NONABI_SCRIPTS=TRUE, see man pkgadd for details...
+
+           You may run the IVP separately from the installation
+           procedure by executing the file:
+           /opt/rtr/RTRxxx/examples/IVP/rtr_ivp_osf.sh
+
+           Would you like to abort the IVP? (y/n) [y] IVP aborted
+
+           Installation of <rtr> was successful.
+
+           The following packages are available:
+
+             1  rtr     Reliable Transaction Router
+                        (sun4u) 420
+
+           Select package(s) you wish to process (or all to process
+           all packages). (default:all) q
+           #
+
+     1.4.4 Sample IVP Output
+
+              .
+              .
+              .
+
+           Would you like to abort the IVP? (y/n) n
+           IVP continuing ...
+
+             keep any existing log file settings (RTR_DBG not set)
+             starting RTR . . .
+             creating a journal, if not already created . . .
+             creating test facility . . .
+             stopping RTR.
+
+     1-16 Quick Installation
+
+ 
+
+
+
+                                                      Quick Installation
+                                      1.4 Installing RTR for Sun Solaris
+
+                    Reliable Transaction Router V4.2 for SunOS
+
+                Installation Verification Procedure successful
+
+              The following packages are available:
+
+                1 rtr      Reliable Transaction Router
+                           (sun4u) 420
+
+              Select package(s) you wish to process (or 'all' to process
+              all packages). (default: all) [?,??,q]: q
+              #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                 Quick Installation 1-17
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                         Upgrade Process
+
+
+
+              To upgrade RTR, use the following process:
+
+              1. Shutdown RTR
+
+              2. Upgrade to new version
+
+              3. Run the IVP (optional)
+
+              4. Start RTR
+
+        2.1 Rolling Upgrade Restrictions
+
+              Take note of the following restrictions if upgrading an
+              RTR environment from RTR V3.2 to Version 4.2.
+
+                _________________ Migrating from V2 _________________
+
+                See Chapter 3 for how to retain the V2 help file
+                when migrating to a later version of RTR. Refer to
+                the Reliable Transaction Router Migration Guide for
+                information on performing this migration.
+
+                _____________________________________________________
+
+              The RTR recovery protocol consists of messages sent from
+              one backend, via a router, to the target backend. If
+              either of the RTR backends is upgraded to RTR Version
+              4.2, then the router that will be used for recovery must
+              also be running RTR Version 4.2. This generally means that
+              any RTR router nodes should be upgraded to RTR Version 4.2
+              before any RTR backend nodes. There is no restriction in
+              the order that RTR backends should be upgraded to Version
+              4.2.
+
+
+                                                     Upgrade Process 2-1
+
+ 
+
+
+
+     Upgrade Process
+     2.1 Rolling Upgrade Restrictions
+
+           The order in which RTR nodes should be upgraded for a
+           rolling upgrade from V3.2 to Version 4.2 is as follows:
+
+           1. Frontend-only nodes can be upgraded at any time
+
+           2. Router-only and mixed frontend/router nodes
+
+           3. Mixed router/backend nodes
+
+           4. Router-only nodes
+
+           5. Backend-only nodes
+
+           For more complex configurations, where a node may have
+           combinations of facilities with different backend/router
+           groupings, use the command SET NODE/RECOVERY=V32 to set
+           the recovery protocol to the V3.2 algorithm.
+
+           Once RTR has been upgraded on all nodes, the recovery
+           protocol can be reset to its default value (V4.0), and
+           RTR restarted at a convenient time on each node. This
+           need not be a simultaneous restart on all nodes. RTR can
+           be restarted on each node one by one after resetting the
+           default recovery protocol, so that continuous application
+           availability is maintained.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-2 Upgrade Process
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                           Full Installation on OpenVMS
+
+
+
+              This chapter describes how to install Reliable Transaction
+              Router on OpenVMS Alpha systems. It includes steps for:
+
+              o  Preparing for installation
+
+              o  Installing RTR
+
+              o  Completing RTR setup
+
+        3.1 Prepare for Installation
+
+              Before you start the installation, complete the prepara-
+              tion tasks outlined in this section.
+
+                _____________User-Changed  Monitor Files _____________
+
+                If you have changed any RTR monitor (*.mon) files,
+                you must rename them or they will be overwritten
+                during installation. To avoid this, always work
+                from renamed copies of RTR monitor files when making
+                local modifications.
+
+                _____________________________________________________
+
+                ____________RTR  V2 Command-line API Help ____________
+
+                To retain RTR V2 help when installing later versions
+                of RTR, before uninstalling RTR make a copy of the
+                RTR V2 help file that is on SYS$COMMON:[SYSHLP]RTRHLP.HLB.
+                Rename it, for example, RTRHLPV2.HLB. After
+                completing installation of the later version
+                of RTR with its current help file, copy the old
+                RTRHLPV2.HLB file back. You can then access the old
+                file from the DCL command line with the DCL command
+                HELP @RTRHLPV2.
+
+                _____________________________________________________
+
+                                       Full Installation on OpenVMS  3-1
+
+ 
+
+
+
+     Full Installation on OpenVMS
+     3.1 Prepare for Installation
+
+     3.1.1 Check Software Distribution Kit
+
+           Reliable Transaction Router is distributed on CD-ROM.
+           Use the Bill of Materials (BOM) received with your kit to
+           verify the contents of your software distribution kit.
+
+     3.1.2 Check Required Hardware
+
+           To install RTR, you need the following minimum hardware:
+
+           o  Software distribution device such as a CD-ROM
+
+           o  Terminal
+
+              You can use a character-cell or video terminal or a
+              workstation when installing RTR.
+
+           o  An AlphaServer that runs OpenVMS
+
+           See the Reliable Transaction Router Software Product
+           Description for additional hardware requirements.
+
+     3.1.3 Check Required Software
+
+           Table 3-1 provides information on the software that must
+           be installed on your system before installing Reliable
+           Transaction Router. The table also includes information
+           about optional software that you can use with Reliable
+           Transaction Router. See the Reliable Transaction Router
+           Software Product Description (SPD) for the list of
+           prerequisite and optional software and their required
+           version numbers.
+
+           Table_3-1_Required_Software_______________________________
+
+           Prerequisite_Products______Purpose________________________
+
+           OpenVMS Alpha Version      System Software
+           6.2,7.2-2,7.3
+
+           One of the following must
+           be present on your system
+           to use RTR:
+
+                                             (continued on next page)
+
+     3-2 Full Installation on OpenVMS
+
+ 
+
+
+
+                                           Full Installation on OpenVMS
+                                            3.1 Prepare for Installation
+
+              Table_3-1_(Cont.)_Required_Software_______________________
+
+              Networking_Products________Purpose________________________
+
+              TCP/IP Services for        Network Transport
+              OpenVMS (Version 4.2
+              or higher, depending on
+              OpenVMS version)
+
+              DECnet (Version 6.2        Network Transport
+              or higher, depending
+              on OpenVMS version) or
+              DECnet-Plus (Version 6.3
+              ECO5 or higher, depending
+              on_OpenVMS_version)_______________________________________
+
+              The Installation Verification Procedure (IVP) will
+              complete successfully only if at least one of the
+              supported network protocols (DECnet or TCP/IP) is
+              installed.
+
+              There is no requirement that you must register a software
+              license for RTR for OpenVMS.
+
+        3.1.4 Check Required Disk Space
+
+              Reliable Transaction Router's requirements for free
+              disk storage space are different during installation
+              and after installation. Table 3-2 summarizes the storage
+              requirements.
+
+              Table_3-2_Disk_Space_Requirements_for_OpenVMS_____________
+
+                                    Blocks During   Blocks After
+              Kit___________________Installation____Installation________
+
+              Reliable Transaction  53000           36000
+              Router for OpenVMS
+              Alpha_____________________________________________________
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL
+              prompt:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+                                       Full Installation on OpenVMS  3-3
+
+ 
+
+
+
+     Full Installation on OpenVMS
+     3.1 Prepare for Installation
+
+     3.1.5 Check System Parameters
+
+           Installing Reliable Transaction Router for OpenVMS may
+           mean that you have to increase the values for some system
+           parameters. For more details, see the Reliable Transaction
+           Router System Manager's Manual.
+
+              ________________ Value of CHANNELCNT ________________
+
+              In rare instances and only as directed by HP, you
+              may need to change the value of CHANNELCNT, which
+              is typically set at 256. CHANNELCNT specifies the
+              number of permanent I/O channels available to the
+              system. For details on how to set this, see the
+              Reliable Transaction Router System Manager's Manual.
+
+              _____________________________________________________
+
+     3.1.5.1 Size Global Pages and Sections Appropriately
+
+           Size global pages and global sections appropriately.
+           (Refer to Reliable Transaction Router System Manager's
+           Manual, Section 2.10, RTR Shared Memory Sizing, for
+           information on sizing.) Table 3-3 lists the minimum free
+           amount of global pages and global sections required for
+           the installation.
+
+           Table 3-3 System Parameter Values Used by the RTR
+           __________Installation____________________________________
+
+           System_Parameter___________Required_Amount________________
+
+           GBLPAGES                   4000
+
+           GBLSECTIONS________________4______________________________
+
+     3.1.5.2 Size Virtual Memory Appropriately
+
+           RTR has basic memory requirements. For information on
+           how much virtual memory to allocate, refer to Reliable
+           Transaction Router System Manager's Manual, Section 2.11,
+           RTR ACP Virtual Memory Sizing.
+
+
+
+     3-4 Full Installation on OpenVMS
+
+ 
+
+
+
+                                           Full Installation on OpenVMS
+                                                         3.2 Install RTR
+
+        3.2 Install RTR
+
+              If RTR is already installed on your system, see Section B.1,
+              Uninstalling on OpenVMS, for information on uninstalling
+              RTR and removing related processes.
+
+              Log on to the System Manager's account to do the
+              installation.
+
+              The Reliable Transaction Router installation procedure
+              uses the POLYCENTER Software Installation Utility (PCSI).
+              For details on using PCSI, refer to the OpenVMS System
+              Manager's Manual, Section "Installing with the POLYCENTER
+              Software Installation Utility."
+
+              The logical name PCSI$SOURCE is used to define the
+              location of the software kits you want to install. For
+              example, if the Reliable Transaction Router software is
+              located in DISK1:[KITS], enter the following at the DCL
+              prompt (or include the line in the system manager's login
+              command file):
+
+              $ DEFINE PCSI$SOURCE DISK1:[KITS]
+
+        3.2.1 Installation Example
+
+              The installation prompts you with questions. Enter your
+              response to each question and press the <Return> key.
+              Defaults are shown in square brackets, for example, [YES].
+
+              To start the installation, enter the command:
+
+              $ PRODUCT INSTALL RTR
+
+              A display similar to the following appears:
+
+              The following product has been selected:
+                  DEC AXPVMS RTR V4.2-xxx  1             Layered Product
+
+              Do you want to continue? [YES] yes
+
+              Configuration phase starting ...
+
+              You will be asked to choose options, if any, for each
+              selected product and for
+              any products that may be installed to satisfy software dependency
+              requirements.
+
+              DEC AXPVMS RTR V4.2-xxx: Reliable Transaction Router for OpenVMS
+
+                                       Full Installation on OpenVMS  3-5
+
+ 
+
+
+
+     Full Installation on OpenVMS
+     3.2 Install RTR
+
+             Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+           Do you want the defaults for all options? [YES] no
+
+             Have all RTR processes on the system been stopped? [YES] yes 2
+             Run installation verification procedure [NO] yes 3
+             DECnet users:Have you read the Release Note regarding
+             minimum version? [YES] yes
+             Do you want the V2 programming kit installed? [NO] yes 4
+
+           Do you want to review the options? [NO] yes
+
+           DEC AXPVMS RTR V4.2-xxx: Reliable Transaction Router for OpenVMS
+               Have all RTR processes on the system been stopped?: YES
+               Run installation verification procedure: YES
+               DECnet users: Have you read the Release Note regarding
+               minimum version?: YES
+               Do you want the V2 programming kit Installed ?: YES
+
+           Are you satisfied with these options? [yes]
+
+           Execution phase starting ...
+
+           The following product will be installed to destination:
+               DEC AXPVMS RTR V4.2-xxx                <logical for SYS$COMMON> 5
+
+           Portion done: 0%
+           ...10%
+           ...20%
+           ...30%
+           ...40%
+           ...50%
+           ...60%
+           ...70%
+           ...80%
+           ...90%
+           ...100%
+
+           The following product has been installed:
+               DEC AXPVMS RTR V4.2-xxx                 Layered Product
+
+           %PCSI-I-IVPEXECUTE, executing test procedure for
+           DEC AXPVMS RTR V4.2-xxx ...6
+           %PCSI-I-IVPSUCCESS, test procedure completed successfully
+
+           DEC AXPVMS RTR V4.2-xxx: Reliable Transaction Router for OpenVMS
+
+     3-6 Full Installation on OpenVMS
+
+ 
+
+
+
+                                           Full Installation on OpenVMS
+                                                         3.2 Install RTR
+
+                  Insert the following lines in SYS$MANAGER:SYSTARTUP_VMS.COM: 7
+                      @sys$startup:rtr$startup.com
+                  Insert the following lines in SYS$MANAGER:SYSHUTDWN.COM:
+                      @sys$manager:rtr$shutdown
+
+                  See the Release Notes and documentation for use of the
+                  optional
+                  rtr$startup P1 parameter. 8
+              $
+
+              1  Kit name, version and number.
+
+              2  All RTR processes must be stopped before a successful
+                 installation.
+
+              3  Optional request to run IVP after installation.
+
+              4  Answer yes if you need definition files required for
+                 programming to the V2 API. Otherwise, answer no.
+
+              5  The destination defaults to the logical defined for
+                 SYS$COMMON.
+
+              6  Indicates that the installation verification procedure
+                 (IVP) has started.
+
+              7  Add the indicated lines for automatic startup and
+                 shutdown of RTR.
+
+              8  See Section 3.3.1.1 for information on use of the
+                 optional P1 parameter.
+
+        3.2.2 Read Release Notes
+
+              To access the Reliable Transaction Router Release Notes,
+              type the command:
+
+              $ PRODUCT EXTRACT RELEASE_NOTES RTR /file=rtr_relnotes.txt
+
+              You should read the Release Notes before using Reliable
+              Transaction Router.
+
+        3.3 Complete RTR Setup
+
+              After completing the installation, you can:
+
+              o  Edit system files
+
+              o  Verify user account requirements
+
+                                       Full Installation on OpenVMS  3-7
+
+ 
+
+
+
+     Full Installation on OpenVMS
+     3.3 Complete RTR Setup
+
+     3.3.1 Edit System Files
+
+           You must edit the system startup and shutdown files to
+           provide for automatic startup and the installation of
+           Reliable Transaction Router images when your system is
+           rebooted.
+
+           Add the command line that starts Reliable Transaction
+           Router to the system startup file, SYS$MANAGER:SYSTARTUP_
+           VMS.COM. Reliable Transaction Router cannot start until
+           after the network has started. You must position this
+           new command line after the lines that invoke the network
+           startup command procedures.
+
+           Add the command line that stops Reliable Transaction
+           Router to the system shutdown file, SYS$MANAGER:SYSHUTDWN.COM.
+
+     3.3.1.1 Establishing Protocol Preference
+
+           In RTR$STARTUP.COM, the symbol RTR_PREF_PROT defines the
+           preferred network protocol. There are four choices:
+
+              RTR_DNA_FIRST (DECnet first)
+              RTR_DNA_ONLY (DECnet only)
+              RTR_TCP_FIRST (TCP first)
+              RTR_TCP_ONLY (TCP only)
+
+           By default, protocol preference depends on whether DECnet
+           has been installed as follows:
+
+           Table_3-4_RTR_Protocol_Preference_________________________
+
+           If SYS$NODE is defined
+           (DECnet installed), the    If SYS$NODE is not defined, the
+           default_is:________________default_is:____________________
+
+           RTR_DNA_FIRST______________RTR_TCP_ONLY___________________
+
+           This default behavior is the same as in previous versions
+           of RTR and is backwards compatible with previous versions
+           of RTR.
+
+           Previously the RTR system manager could override this de-
+           fault behavior by removing the comment character (!) from
+           the appropriate DEFINE statement in RTR$STARTUP.COM. This
+           is no longer valid or supported. To override the default
+
+     3-8 Full Installation on OpenVMS
+
+ 
+
+
+
+                                           Full Installation on OpenVMS
+                                                 3.3 Complete RTR Setup
+
+              behavior, add the following line to SYS$MANAGER:SYSTARTUP_
+              VMS.COM:
+
+              @sys$startup:rtr$startup.com preferred_protocol (P1)
+
+              Set the optional preferred protocol to one of the values
+              in Table 3-5.
+
+              Table_3-5_Preferred_Protocol_Values_______________________
+
+              To use the following
+              protocol:_____________Set_the_value_as:___________________
+
+              DECnet first          RTR_DNA_FIRST
+
+              DECnet only           RTR_DNA_ONLY
+
+              TCP/IP first          RTR_TCP_FIRST
+
+              TCP/IP_only___________RTR_TCP_ONLY________________________
+
+              For example, the following line in SYS$SYSMANAGER:SYSTARTUP_
+              VMS.COM sets the preferred protocol as TCP/IP first:
+
+               @sys$startup:rtr$startup.com RTR_TCP_FIRST
+
+              Setting the prefered protocol eliminates the need to
+              change the RTR$STARTUP.COM file on every system after
+              each RTR upgrade or install. In addition, RTR$SHUTDOWN.COM
+              internally detects the preferred protocol and shuts
+              down RTR accordingly. In the unlikely event that
+              RTR$SHUTDOWN.COM does not correctly detect the preferred
+              protocol, the RTR system manager can explictly pass the
+              value by adding the following line to
+              SYS$MANAGER:SYSHUTDWN.COM:
+
+               @sys$startup:rtr$shutdown.com preferred_protocol
+
+              where the optional preferred protocol is taken from
+              Table 3-5. For example, the following command would ensure
+              that RTR detects the preferred protocol:
+
+               @sys$startup:rtr$shutdown.com RTR_TCP_FIRST
+
+
+                                       Full Installation on OpenVMS  3-9
+
+ 
+
+
+
+     Full Installation on OpenVMS
+     3.3 Complete RTR Setup
+
+     3.3.2 Verify User Account Requirements
+
+           To work with Reliable Transaction Router, user accounts
+           on your system must have certain quotas and privileges.
+           The next two sections contain information on these
+           requirements. If current settings are less than those
+           required, increase them to the amounts required.
+
+     3.3.2.1 Check User Account Quotas
+
+           Table 3-6 summarizes the required user account quotas.
+
+           Table 3-6 User Account Quotas for Using Reliable
+           __________Transaction_Router______________________________
+
+           Account_Quota____Value____________________________________
+
+           ASTLM            At least 2000
+
+           BIOLM            At least 2000
+
+           BYTLM            At least 150000 [1]
+
+           DIOLM            At least 2000
+
+           TQELM            At least 2000
+           [1]At_least_80000_for_accounts_running_RTR_applications.__
+
+           At least 150000 for accounts running the RTR ACP. This
+           may need to be increased to accommodate large numbers of
+           application programs and/or users. The formula to use is:
+           32K + 32K * n where n equals the number of application
+           processes plus the number of users in the ACP's group.
+           __________________________________________________________
+
+     3.3.2.2 Check User Account Privileges
+
+           To use the features of Reliable Transaction Router, each
+           account must have the following privileges:
+
+           o  NETMBX
+
+           o  TMPMBX
+
+           o  SYSLCK
+
+           In addition, the Rights Identifier RTR$INFO is required.
+
+     3-10 Full Installation on OpenVMS
+
+ 
+
+
+
+                                           Full Installation on OpenVMS
+                                                 3.3 Complete RTR Setup
+
+                ___________________On  Identifiers ___________________
+
+                A fresh installation of RTR adds RTR$INFO and
+                RTR$OPERATOR identifiers to those on your system
+                (they are removed during an uninstall).
+
+                _____________________________________________________
+
+        3.3.2.3 Check System Manager Account Privileges
+
+              The RTR System Manager (that is, the account that starts
+              up RTR and creates facilities) must also have either OPER
+              privilege or have the Rights Identifier RTR$OPERATOR.
+
+        3.3.3 Check Installed Files
+
+              To see the files installed on your system by the
+              installation process, use the following command:
+
+              $ PRODUCT LIST RTR/SOURCE=[pcsi kit location]
+
+        3.3.4 Enable RTR Remote Commands
+
+              To make it possible to execute RTR commands on remote
+              systems, enable the capability with the SYSMAN Utility.
+              See the documentation for SYSMAN in the OpenVMS docu-
+              mentation set for information on this utility. You can
+              also execute remote commands with /NODE qualifiers on
+              certain RTR commands, and in conjunction with the RTR SET
+              ENVIRONMENT command. For more information on executing
+              RTR commands remotely, refer to the Reliable Transaction
+              Router System Manager's Manual.
+
+        3.3.5 Display CONOLD Documentation
+
+              Documentation for Reliable Transaction Router is available
+              on the OpenVMS Online Documentation Library CD-ROM
+              in hypertext (.html) file format. You can display the
+              hypertext files on your workstation or PC using any HTML
+              browser such as Internet Explorer or Netscape.
+
+
+
+
+
+                                      Full Installation on OpenVMS  3-11
+
+ 
+
+
+
+     Full Installation on OpenVMS
+     3.3 Complete RTR Setup
+
+     3.3.6 Run RTR
+
+           To run RTR, enter the following command at the OpenVMS
+           system prompt:
+
+           $ run SYS$COMMON:[SYSEXE]RTR
+           RTR>
+
+           or
+
+           $ RTR
+           RTR>
+
+           You can then enter commands at the RTR prompt to configure
+           RTR facilities and partitions, and run applications that
+           use RTR.
+
+     3.3.6.1 Configure RTR Facilities and Partitions
+
+           For information on configuring RTR facilities and setting
+           up partitions, refer
+           to the Reliable Transaction Router Getting Started and the
+           Reliable Transaction Router System Manager's Manual.
+
+     3.3.7 Install and Run Applications
+
+           Once applications that use RTR have been designed and
+           tested, they can be deployed on the systems configured
+           for use with RTR. For information on designing RTR
+           applications, refer to the Reliable Transaction Router
+           Application Design Guide; for information on deployment
+           and use, refer to
+           the Reliable Transaction Router System Manager's Manual.
+
+
+
+
+
+
+
+
+
+
+
+
+     3-12 Full Installation on OpenVMS
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                         Full Installation on Tru64 UNIX
+
+
+
+              This chapter describes how to install Reliable Transaction
+              Router on Tru64 UNIX systems. It includes steps for:
+
+              o  Preparing for installation
+
+              o  Installing RTR
+
+              o  Completing RTR setup
+
+        4.1 Prepare for Installation
+
+              Before you start the installation, complete the prepara-
+              tion tasks outlined in this section.
+
+                _____________User-Changed  Monitor Files _____________
+
+                If you have changed any RTR monitor (*.mon) files,
+                you must rename them or they will be overwritten
+                during installation. To avoid this, always work
+                from renamed copies of RTR monitor files when making
+                local modifications.
+
+                _____________________________________________________
+
+        4.1.1 Check Software Distribution Kit
+
+              RTR software is distributed on CD-ROM. Use the Bill of
+              Materials (BOM) to check the contents of your RTR software
+              distribution kit.
+
+
+
+
+
+
+                                     Full Installation on Tru64 UNIX 4-1
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.1 Prepare for Installation
+
+     4.1.2 Register Your Software License
+
+           RTR includes support for the License Management Facility
+           (LMF). You must register your License Product Authorization
+           Key (License PAK) in the License Database (LDB) in order
+           to use RTR on a newly licensed node. The License PAK may
+           be shipped along with the kit if you ordered the license
+           and media together; otherwise, it is shipped separately to
+           a location based on your license order.
+
+           If you are installing RTR as an update on a node already
+           licensed for this software, you have already completed the
+           License PAK registration requirements.
+
+           If you are installing prerequisite or optional software
+           along with RTR, review the PAK status and install the
+           PAKs for any prerequisite or optional software before you
+           install RTR.
+
+           To register a license under the Tru64 UNIX operating
+           system, first log in as superuser.
+
+           At the superuser prompt, edit an empty PAK template with
+           the lmf register command as follows, and include all the
+           information on your License PAK:
+
+           #  lmf register
+
+           After you register your license, use the following lmf
+           reset command to copy the license details from the License
+           Database (LDB) to the kernel cache:
+
+           #  lmf reset
+
+           For complete information on using the License Management
+           Facility, see the Guide to Software License Management and
+           the lmf(8) reference page.
+
+           Installing RTR, including running the Installation
+           Verification Procedure (IVP), takes approximately 10 to
+           15 minutes, depending on your type of media and system
+           configuration.
+
+
+
+     4-2 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                           4.1 Prepare for Installation
+
+        4.1.3 Check Login Privileges
+
+              You must have superuser privileges to install the RTR
+              software.
+
+        4.1.4 Check Required Hardware
+
+              To install RTR, you need the following hardware:
+
+              o  Software distribution device (if installing from media)
+
+                 Locate the CD-ROM drive for the CD-ROM software
+                 distribution media. The CD booklet or the documentation
+                 for the CD-ROM drive you are using explains how to load
+                 the CD-ROM media.
+
+              o  Terminal
+
+                 You can use a hardcopy or video terminal or a
+                 workstation to communicate with the operating system
+                 and respond to prompts from the installation procedure.
+
+              See the RTR Software Product Description (SPD) for
+              additional hardware requirements.
+
+        4.1.5 Check Required Software
+
+              RTR requires that the following Tru64 UNIX software subset
+              be loaded on the system where you install RTR:
+
+              o  OSFBASE-the Base System subset
+
+              One of the following is required:
+
+              o  DECnet-Plus for Tru64 UNIX, for DECnet configurations
+
+              o  TCP/IP as provided for Tru64 UNIX
+
+              The following Tru64 UNIX software subsets are optional on
+              the system where you install RTR:
+
+              o  OSFCLINET200-Basic Networking Services (TCP/IP) subset
+
+              o  DNABASE110-DECnet/OSI Base Components subset, together
+                 with
+
+              o  DNANETMAN110-DECnet/OSI Network Management subset
+
+              To check whether these subsets are loaded:
+
+              1. Log in to the system where you will install RTR.
+
+                                     Full Installation on Tru64 UNIX 4-3
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.1 Prepare for Installation
+
+           2. Enter the following command:
+
+              # setld -i | egrep 'OSFBASE|DNA'
+
+           If your path is not set as /usr/sbin/, you must enter the
+           full path of the command. For example:
+
+           % /usr/sbin/setld -i | egrep 'OSFBASE|DNA'
+
+           Check the displayed rows for the name of the relevant
+           subset and any related patches. The word "installed"
+           appears after the subset identifier when a subset is
+           loaded. If the word "installed" does not appear (the
+           second column in a row is blank), the subset or patch is
+           not loaded. In this case, you must load the missing Tru64
+           UNIX software before installing RTR. (For information on
+           how to load the operating system software, see the Guide
+           to Installing Tru64 UNIX.)
+
+     4.1.6 Determine Which Subsets to Load
+
+           RTR has only one subset:
+
+           -  rtrbase420
+
+              RTR runtime and system management.
+
+     4.1.7 Check Required Disk Space
+
+           Table 4-1 lists the disk space requirements for loading
+           the RTR software subset. These requirements apply to the
+           disks where you load the RTR subset. The requirements
+           are listed by directory for convenience if you are doing
+           installations on systems where these directories are mount
+           points for different disk partitions.
+
+           Table_4-1_RTR_Subset_Size_(in_Kilobytes)_for_Tru64_UNIX___
+
+                            Subset
+           Subset_Title_____Name________/usr/opt/___/rtr_____________
+
+           RTR              rtrbase420  21000       5600
+
+           Total:_______________________26600________________________
+
+           Using these disk space requirements, calculate the total
+           values for the subsets you will load in each directory.
+
+     4-4 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                           4.1 Prepare for Installation
+
+              You will also require at least 2MB disk space for the RTR
+              journal, which defaults to /rtrjnl.
+
+              Compare the space required for the subset with the free
+              space currently on the disks where RTR files will reside.
+
+        4.1.7.1 Check Current Disk Space
+
+              To check the current amount of free space for a directory
+              path, log in to the system where you will install RTR. You
+              can check which directories are mounted and where they are
+              by viewing the /etc/fstab file. For example:
+
+              # more /etc/fstab
+              /dev/rd0a:/:rw:1:1:ufs::
+              /dev/rd0g:/usr:rw:1:2:ufs::
+              /usr/staff/r1/leslie@bigsys:/usr/staff/r1/leslie:rw:0:0:nfs:bg:
+              /usr/man@bigsys:/usr/man:ro:0:0:nfs:bg:
+
+              The display indicates that /usr (mounted to /dev/rd0g)
+              is the only mount point that affects where RTR files will
+              reside; the system has only one local disk drive, and the
+              /usr/lib and file system resides in the g partition of the
+              disk on that drive.
+
+              To check the total space and the free space for the
+              directories where RTR will reside, enter the df command.
+              Given the previous display of the /etc/fstab file, which
+              shows that only /usr is a mount point, you need to check
+              free space only in the /usr file system. For example:
+
+              # df -k /usr
+              Filesystem   1024-blocks    Used   Available  Capacity Mounted on
+              /dev/rd0g         122598   54447       55892     49%   /usr
+
+              This display shows that there are 55,892 Kbytes (55 MB)
+              free. This free space is sufficient to accommodate the
+              subset requirements listed in Table 4-1, RTR Subset Size
+              (in Kilobytes) for Tru64 UNIX.
+
+              On systems where /usr/lib and /usr/man are mounted to
+              different devices from /usr, enter the following command:
+
+              #  df /usr/lib /usr/man
+
+                                     Full Installation on Tru64 UNIX 4-5
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.1 Prepare for Installation
+
+           In this case, you compare space required for RTR files
+           in /usr/lib to the free space displayed in the first line
+           of the df output list, and compare the space required for
+           RTR files in /usr/man to the free space displayed in the
+           second line of that list.
+
+     4.1.7.2 Increase Disk Space
+
+           The RTR installation procedure creates the following
+           directory and loads files into subordinate directories:
+
+           /usr/opt/RTR420
+
+           If the /usr/opt/RTR420 directory in the previous path does
+           not exist, the installation procedure creates it.
+
+           If the RTR420 directory does exist, the installation
+           procedure uses it.
+
+           If you find that there is insufficient disk space for the
+           RTR subsets and you know that you have additional space
+           on alternative disks or disk partitions for your system,
+           perform the following steps before installing RTR:
+
+           1. Log in as superuser.
+
+           2. Create the directory /usr/lib/RTR420.
+
+           3. Specify in the /etc/fstab file that one or more of the
+              newly created directories are mount points to new disk
+              partitions where there is additional space.
+
+           4. Enter the mount -a command so that the new mount points
+              take effect.
+
+     4.1.8 Check System Parameters
+
+           Installing RTR for Tru64 UNIX may mean that you have to
+           increase the values for some system parameters.
+
+     4.1.8.1 Check Shared Memory Requirements
+
+           RTR has basic memory requirements. For information on
+           how much shared memory to allocate, refer to the Reliable
+           Transaction Router System Manager's Manual, RTR Shared
+           Memory Sizing.
+
+     4-6 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                           4.1 Prepare for Installation
+
+        4.1.8.2 Check Virtual Memory Requirements
+
+              For information on how much virtual memory to allocate,
+              refer to the Reliable Transaction Router System Manager's
+              Manual, RTRACP Virtual Memory Sizing for All Systems.
+
+        4.1.8.3 TCP Services File
+
+              RTR uses TCP/IP port number 46000 for the network
+              communication daemon rtr rtrd. On UNIX platforms, edit
+              the /etc/services file to add the following line:
+
+               rtracp 46000/tcp
+
+              This informs the system administrator that port number
+              46000/tcp is reserved for RTR. Note that the RTR daemon is
+              started by the RTRACP, not by inetd.
+
+        4.1.9 Back Up Your System Disk
+
+              HP recommends that you back up your system disk before
+              installing any software. For information about backing
+              up your system disk, see the Tru64 UNIX system documenta-
+              tion.
+
+        4.2 Install RTR
+
+              Before you start the installation, read Section 4.1,
+              Prepare for Installation to ensure that you are prepared
+              to complete the installation.
+
+              You can install RTR locally (using CD-ROM media) or
+              from a server area. If you encounter any failures during
+              installation, see Appendix A.
+
+        4.2.1 Install from Media or RIS
+
+              Someone from your site must perform at least one RTR
+              installation from the distribution medium. Your site
+              system manager can then decide whether or not to make
+              a RTR distribution kit available online so that subsequent
+              installations of RTR can use the Remote Installation
+              Service (RIS). For information on extracting RTR subsets
+              to a RIS distribution area, see the Guide to Sharing
+              Software on a Local Area Network.
+
+                                     Full Installation on Tru64 UNIX 4-7
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.2 Install RTR
+
+           If you expect to use RTR subsets from the RIS area of a
+           remote system for installation on your local system, first
+           check with your site system manager to ensure that:
+
+           o  A RTR network kit is available for use.
+
+           o  Your system is registered as a RIS client.
+
+           If RTR subsets are available to you on a RIS server
+           system, you must know the name of that system.
+
+           For more information on installing RTR from a RIS
+           distribution area, see Section 4.2.1.2.
+
+              ____________Note on Cluster Installation ____________
+
+              To support TruCluster Server 5, the /rtr directory
+              is now a symbolic link to a target directory, which
+              is a context-dependent symbolic link (CDSL), so that
+              it is a different physical directory on each cluster
+              member.
+
+              Before installing RTR on a TruCluster Server, you
+              must first remove any existing /rtr directory or
+              /rtr symbolic link, its target directory and the
+              directory's contents on all member nodes. If you do
+              not need the previous journal, HP recommends that
+              you remove /rtrjnl and its contents; it will then be
+              recreated as a symbolic link to a shared directory
+              in /var, which usually has more space than the /
+              filesystem.
+
+              Note that although the /rtrjnl directory can also
+              be replaced by a symbolic link, the target should
+              be an ordinary cluster-wide directory and not a
+              member-specific CDSL so that each member can access
+              the journal files belonging to the other members.
+              Similarly, any other devices that you may specify
+              when creating journals should normally also refer to
+              cluster-wide shared directories.
+
+              To create a subdirectory within a suitable existing
+              member-specific directory using the following
+              commands:
+
+     4-8 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                                        4.2 Install RTR
+
+                # mkdir /var/run/rtr
+                # cp -pr /rtr/* /var/run/rtr/
+                # rm -fr /rtr
+                # ln -s /var/run/rtr /rtr
+
+                The rtr directory still contains a mixture of
+                temporary and permanent files, so whichever
+                directory is chosen must not be cleared on reboot.
+
+                _____________________________________________________
+
+        4.2.1.1 Install from CD-ROM
+
+              This procedure loads RTR files on to a disk belonging to
+              the system where you perform the installation. When RTR is
+              run, its executable images are mapped into memory on your
+              system.
+
+              Follow these steps to install RTR from CD-ROM media:
+
+              1. Mount the media on the appropriate disk drive.
+
+              2. Log in as superuser (login name root) to the system
+                 where you will install RTR.
+
+              3. Make sure you are at the root (/) directory by entering
+                 the following command:
+
+                     # cd /
+
+              4. Use the setld utility to check if you have a version of
+                 RTR already installed:
+
+                 # setld -i | grep RTR
+
+              5. If RTR is already installed on your system, see
+                 Section B.3 for information on uninstalling RTR and
+                 removing related processes.
+
+              6. Specify the /CD-ROM directory to be the mount point for
+                 the distribution file system on the drive. For example,
+                 if your drive is rz0, enter the following command:
+
+                     # mount -dr /dev/rz0c /CD-ROM
+
+              7. Enter a setld command that requests the load function
+                 (-l) and identifies the directory in the mounted file
+                 system where RTR subsets are located.
+
+                                     Full Installation on Tru64 UNIX 4-9
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.2 Install RTR
+
+              For example, if the directory location for these
+              subsets is RTRBASE420, enter the following command:
+
+                  # setld -l RTRBASE420
+
+           See Section 4.2.3 to continue the installation.
+
+     4.2.1.2 Install from RIS
+
+           If you are installing RTR subsets that reside in an
+           /etc/ris RIS distribution area on a remote system, follow
+           these steps:
+
+           1. Log in as superuser (login name root) to the system
+              where you will install RTR.
+
+           2. Make sure you are at the root directory (/) by entering
+              the following command:
+
+              #cd
+
+           3. Enter a setld command that requests the load function
+              (-l option) and identifies the system where the RTR
+              subsets are located. For example, if you are loading
+              RTR subsets from a RIS distribution area on node orion,
+              enter the following:
+
+              #setld -l orion:
+
+           Remote Installation Services now displays a menu that
+           lists all the software subsets available to you and asks
+           you to specify the subsets you want to load.
+
+     4.2.2 Read the Online Release Notes
+
+           The Release Notes provide information for RTR that
+           could not be included in the printed documentation.
+           After installation the Release Notes are located in the
+           directory /usr/opt/RTR420/hlp; you are advised to read the
+           Release Notes before using RTR.
+
+           To read the release notes, navigate to the directory where
+           RTR is installed and issue the following command:
+
+           more rtr_relnotes.txt
+
+     4-10 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                                        4.2 Install RTR
+
+        4.2.3 Installation Example
+
+              This section explains the installation procedure prompts
+              and displays.
+
+        4.2.3.1 Select Subsets
+
+              You must specify which RTR subsets you want to load.
+
+                ________________________Note  ________________________
+
+                If you are installing from a RIS distribution area,
+                the number of subsets can vary depending on what
+                products are available in the RIS area and how many
+                subsets they have.
+
+                _____________________________________________________
+
+              # setld -l RTRBASE420
+
+                Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+                Confidential computer software. Valid license from HP and/or
+                its subsidiaries required for possession, use or copying.
+                Consistent  with FAR 12.211 and 12.212, Commercial Computer
+                Software, Computer Software Documentation, and Technical
+                Data for Commercial Items are licensed to the U.S.
+                Government under vendor's standard commercial license.
+
+              The subsets listed below are optional:
+
+                    There may be more optional subsets than can be presented
+                    on a single
+                    screen. If this is the case, you can choose subsets
+                    screen by screen
+                    or all at once on the last screen. All of the choices
+                    you make will
+                    be collected for your confirmation before any subsets
+                    are installed.
+
+                    1) RTR API & Management Utility
+
+              Or you may choose one of the following options:
+
+                   2) ALL of the above
+                   3) CANCEL selections and redisplay menus
+                   4) EXIT without installing any subsets
+
+              Estimated free diskspace(MB) in root:33.2 usr:198.8
+
+                                    Full Installation on Tru64 UNIX 4-11
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.2 Install RTR
+
+           Press RETURN to display the next screen.
+
+           Enter your choices or press RETURN to redisplay menus.
+
+           Choices (for example, 1 2 4-6): 1
+
+           If you specify more than one number at the prompt,
+           separate each number with a space, not a comma.
+
+           Next, the script lets you verify your choice. For example,
+           if you enter 1 in response to the previous prompt, you
+           will see the following display:
+
+           You are installing the following optional subsets:
+
+                   RTR API & Management Utility
+
+           Estimated free diskspace(MB) in root:33.2 usr:177.9
+
+           Is this correct? (y/n): y
+
+           If the displayed subsets are not the ones you intended
+           to choose, enter n. In this case, the subset selection
+           menu is again displayed and you can correct your choice of
+           optional subsets.
+
+           If the displayed subsets are the ones you want to load,
+           enter y.
+
+           The installation procedure loads and verifies the selected
+           RTR subset.
+
+           The following example shows a display where the RTR subset
+           is being loaded from CD-ROM:
+
+           Checking file system space required to install selected subsets:
+
+           File system space checked OK.
+
+           1 subsets will be installed.
+
+           Loading subset 1 of 1 ...
+
+             Reliable Transaction Router V4.2 for Tru64 UNIX
+
+             Installation started at Wed Apr 10 16:08:17 EDT 2002
+
+             Installation proceeds automatically, and will complete in
+             approximately
+             1 minute.
+
+     4-12 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                                        4.2 Install RTR
+
+              RTR API & Management Utility
+                 Copying from . (disk)
+                      Working....Wed Apr 10 16:08:29 EDT 2002
+                 Verifying
+
+              1 of 1 subset(s) installed successfully.
+              reusing existing /usr/doc/rtr directory
+              /usr/doc/rtr//rtr_relnotes.txt: File exists
+              /usr/doc/rtr//rtr_relnotes.ps: File exists
+              mkdir: cannot create /var/opt/rtrjnl.
+              /var/opt/rtrjnl: File exists
+
+              Configuring "RTR API & Management Utility" (RTRBASE420)
+
+                directory /var/run/rtr created
+
+                reusing existing /rtr directory
+
+              Copyright 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+              Confidential computer software. Valid license from HP and/or
+              its
+              subsidiaries required for possession, use or copying. Consistent
+              with FAR 12.211 and 12.212, Commercial Computer Software,
+              Computer
+              Software Documentation, and Technical Data for Commercial Items
+              are licensed to the U.S. Government under vendor's standard
+              commercial license.
+
+                Reliable Transaction Router V4.2 for Tru64 UNIX
+
+                Installation completed at Wed Apr 10 16:09:31 EDT 2002.
+
+                You can run the Installation Verification Procedure using
+                this command:
+                                 setld -v RTRBASE420
+
+                Release Notes are available in:
+                /usr/opt/RTR420/hlp/rtr_relnotes.*
+              #
+
+              When you see the "Verifying" message during the subset
+              installation, the installation procedure is checking to
+              see that the files are copied correctly; it is not an
+              Installation Verification Procedure (IVP) message.
+
+                                    Full Installation on Tru64 UNIX 4-13
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.2 Install RTR
+
+           During the installation, if you get errors from the setld
+           utility, see the Diagnostics section of the setld(8)
+           reference page for an explanation of the errors and the
+           appropriate actions to take.
+
+           Section 4.2.4 explains how to run the IVP after installa-
+           tion, and how to delete old RTR subsets before installing
+           a new version of RTR.
+
+     4.2.4 Run the Installation Verification Procedure
+
+           After installing RTR, you can run the Installation
+           Verification Procedure (IVP) independently to verify that
+           the software is available on your system. You might also
+           want to run the IVP after a system failure to be sure that
+           users can access RTR.
+
+           Note that the Installation Verification Procedure (IVP)
+           requires a working C language compiler to run.
+
+           The RTR IVP verifies the installation as follows:
+
+           o  Starts RTR
+
+           o  Creates an RTR journal
+
+           o  Creates an RTR facility
+
+           o  Stops RTR
+
+           o  Compiles and links the example client and server
+              programs
+
+           To run the IVP after an installation, enter the following
+           command:
+
+           # setld -v RTRBASE420
+
+           For a sample RTR IVP, see Section 1.2.4.
+
+           If the verification process fails, look in the
+           /var/adm/smlogs/fverify.log file for information to help
+           diagnose the problem.
+
+
+     4-14 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                                        4.2 Install RTR
+
+        4.2.5 Stop the Installation
+
+              To stop the installation procedure at any time, press
+              Ctrl/C. You must then delete files created up to this
+              point interactively. The directories and files created
+              during the RTR installation are listed in the following
+              file (on your CD-ROM):
+
+              /rtr40/kit/instctrl/rtrbase420.inv
+
+        4.2.6 Delete RTR from Your System
+
+              If you must remove a version of Reliable Transaction
+              Router from your system, delete each subset that you
+              previously installed.
+
+              To delete subsets:
+
+              1. Log in as superuser (login name root).
+
+              2. Make sure you are at the root directory (/) by entering
+                 the following command:
+
+                     # cd /
+
+              3. Enter the following form of the setld command:
+
+                     # setld -i | grep RTRBASE
+
+              4. Look for the word "installed" in the listing produced,
+                 and then delete the installed subsets. For example:
+
+                 # setld -d RTRBASE420
+
+        4.2.7 Display Documentation from CD-ROM
+
+              The Reliable Transaction Router documentation is provided
+              on the Tru64 UNIX Layered Products Online Documentation
+              CD-ROM in hypertext (.html) file format. You can display
+              the hypertext files on your workstation using any HTML
+              browser such as Netscape or Internet Explorer.
+
+
+
+
+                                    Full Installation on Tru64 UNIX 4-15
+
+ 
+
+
+
+     Full Installation on Tru64 UNIX
+     4.3 Complete RTR Setup
+
+     4.3 Complete RTR Setup
+
+           This section explains what you need to do after the
+           installation on Tru64 UNIX to make RTR ready for use.
+
+              ______Requirements for Application Permissions ______
+
+              If the RTR executable is modified after installation
+              to no longer be suid root or the mode of the /rtr
+              directory is changed, an application process (for
+              example a client) can encounter a fatal error
+              (Unable to locate a socket) when the client process
+              finds it cannot create an rtr_ipc_sock_* file for
+              the process ID (pid) in the /rtr directory.
+
+              To avoid this, ensure that application processes run
+              with user and group IDs that have access permission
+              to create and remove files in this directory.
+
+              _____________________________________________________
+
+     4.3.1 Check Installed Files
+
+           To see the list of files installed on your system, use the
+           following command:
+
+           % setld -i subset_name
+
+     4.3.2 Enable Remote RTR Commands
+
+           RTR supports the use of remote commands (described in
+           Chapter 1 of the Reliable Transaction Router System
+           Manager's Manual). To use this feature on Tru64 UNIX,
+           check your operating system documentation for how to
+           ensure access to a TCP/IP environment.
+
+           You may, for example, need to create an .rhosts file in
+           the home directory of the RTR user on the target node or
+           nodes, among other things. This file would contain the
+           hostname (and, optionally, the username) of the node where
+           the remote commands will be issued. For more information
+           on the .rhosts file, see the rhosts(4) reference page.
+
+
+
+     4-16 Full Installation on Tru64 UNIX
+
+ 
+
+
+
+                                         Full Installation on Tru64 UNIX
+                                                 4.3 Complete RTR Setup
+
+        4.3.3 Run RTR
+
+              To run RTR, enter the following command at the system
+              prompt:
+
+              % RTR
+              RTR>
+
+              You can then enter commands at the RTR prompt to configure
+              facilities and partitions, and run applications that use
+              RTR.
+
+        4.3.3.1 Configure RTR Facilities and Partitions
+
+              For information on configuring RTR facilities and setting
+              up partitions, refer to the Reliable Transaction Router
+              Getting Started and the Reliable Transaction Router System
+              Manager's Manual.
+
+        4.3.4 Install and Run Applications
+
+              Once applications that use RTR have been designed and
+              tested, they can be deployed on the systems configured
+              for use with RTR. For information on designing RTR
+              applications, refer to the Reliable Transaction Router
+              Application Design Guide; for information on deployment
+              and use, refer to the Reliable Transaction Router System
+              Manager's Manual.
+
+              Application programming interfaces that can be used to
+              write transaction processing applications used with RTR
+              are described in the Reliable Transaction Router C++
+              Foundation Classes manual and the Reliable Transaction
+              Router C Application Programmer's Reference Manual.
+
+
+
+
+
+
+
+
+
+
+
+                                    Full Installation on Tru64 UNIX 4-17
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       5
+        ________________________________________________________________
+
+                                            Full Installation on Windows
+
+
+
+              This chapter describes how to install Reliable Transaction
+              Router on Windows systems. It includes steps for:
+
+              o  Preparing for installation
+
+              o  Installing RTR
+
+              o  Completing RTR setup
+
+        5.1 Prepare for Installation
+
+              Before you start the installation, review the hardware and
+              software requirements described in the following sections.
+
+                _____________User-Changed  Monitor Files _____________
+
+                If you have changed any RTR monitor (*.mon) files,
+                you must rename them or they will be overwritten
+                during installation. To avoid this, always work
+                from renamed copies of RTR monitor files when making
+                local modifications.
+
+                _____________________________________________________
+
+        5.1.1 Check Required Hardware
+
+              o  For client/server/router functionality, any Intel
+                 system that runs Windows NT, Windows 2000, or Windows
+                 XP.
+
+              o  For client functionality, any Intel system that runs
+                 Windows 2000, Windows NT, Windows XP, Windows 98, or
+                 Windows ME.
+
+
+                                        Full Installation on Windows 5-1
+
+ 
+
+
+
+     Full Installation on Windows
+     5.1 Prepare for Installation
+
+     5.1.2 Check Required Software
+
+           The following list contains the required version of
+           Windows for each system to be used with RTR:
+
+           o  Windows NT Version 4.0, Service Pack 4
+
+           o  Windows 2000, Service Pack 1
+
+           o  Windows XP
+
+           o  Windows ME (client only)
+
+           o  Windows 98 (client only), Service Pack 1, Y2K update
+
+           o  all systems must include TCP/IP support
+
+     5.1.3 Check Required Disk Space
+
+           The installation of the RTR base product requires about 19
+           megabytes of disk space. The installation procedure takes
+           about two minutes to complete.
+
+     5.1.4 Check System Parameters
+
+           RTR has basic memory requirements. This section references
+           setup instructions for the relevant system parameters.
+
+     5.1.4.1 Check Memory-Mapped I/O Requirements
+
+           For information on how to size memory-mapped I/O
+           appropriately, refer to Reliable Transaction Router System
+           Manager's Manual, RTR Shared Memory Sizing.
+
+     5.1.4.2 Check Virtual Memory Requirements
+
+           The basic memory requirement for an unconfigured RTRACP is
+           5.6MB. Additional memory may be required. For additional
+           information, refer to the Reliable Transaction Router
+           System Manager's Manual, RTRACP Virtual Memory Sizing for
+           All Systems.
+
+     5.2 Install RTR
+
+           1. If you are installing on Windows 2000, Windows XP,
+              or Windows NT, ensure that you are logged in as the
+              Administrator, or have administrator privileges.
+
+     5-2 Full Installation on Windows
+
+ 
+
+
+
+                                            Full Installation on Windows
+                                                         5.2 Install RTR
+
+              2. If RTR is already installed on your system, see
+                 Section B.2, Uninstalling on Windows Systems, for
+                 information on uninstalling RTR and removing related
+                 processes.
+
+              3. Insert the RTR CD-ROM into the drive.
+
+              4. Exit all Windows programs to run Setup.
+
+              5. From the Start button, invoke Windows Explorer to view
+                 files.
+
+              6. Choose the drive letter of your CDROM and open the
+                 directory I386. Double click on the file SETUP.EXE.
+                 This starts the InstallShield that takes you through
+                 the setup process.
+
+              7. The InstallShield wizard steps you through the
+                 installation. Click on the Next button to continue
+                 installation or on the Cancel button to stop it.
+
+              8. Accept the terms of the License Agreement. If you
+                 reject the terms, installation is stopped.
+
+              9. Follow the screen instructions to enter the name of the
+                 directory where you want to install RTR. The default
+                 is:
+
+                 C:\Program Files\HP\RTR
+
+                 HP recommends that you install RTR on a local hard
+                 disk (NTFS or FAT).
+
+             10. Choose the Setup Type: Typical, Compact, or Custom by
+                 selecting a radio button. Choices are:
+
+                 o  Typical: RTR is installed with the most common
+                    options. Recommended for most users.
+
+                 o  Compact: RTR is installed with the minimum required
+                    options. Selecting compact installs RTR with no
+                    example files.
+
+                 o  Custom: Choose the options to install (for users
+                    familiar with RTR only). Choose this to install an
+                    add-on such as RTR as a Service (NT only).
+
+                                        Full Installation on Windows 5-3
+
+ 
+
+
+
+     Full Installation on Windows
+     5.2 Install RTR
+
+              If you select Custom, the components screen appears.
+              Choose components to install. The screen display
+              indicates how much disk space is required for each
+              component.
+
+              RTR as a Service runs only on Windows NT, Windows 2000,
+              or Windows XP; the InstallShield does not register the
+              service but RTR provides batch procedures to do so in
+              the target directory.
+
+              To use the batch procedures for RTR as a Service,
+              follow this sequence:
+
+              Start -> Programs -> Compaq -> RTR -> Service -> Register 
+
+              To remove RTR as a Service, end the above sequence with
+              -> Unregister.
+
+          11. Setup adds a program icon to the Program Folder you
+              select, and installs files in the appropriate location.
+
+          12. The InstallShield completes the installation,
+              displaying a progress graphic until installation is
+              complete.
+
+          13. Click on Finish to complete the installation of RTR.
+
+     5.2.1 Read the Readme File
+
+           The Readme file provides information about RTR that could
+           not be included in the printed documentation. The Readme
+           file is located in the directory where you installed RTR.
+           You should read the Readme before you use RTR. You can
+           also open the RTR Readme from the Start menu as follows:
+
+           Start -> Programs -> Compaq -> RTR -> Documentation ->
+           Readme
+
+     5.3 Complete RTR Setup
+
+           If you install RTR on an NTFS drive, you will need to
+           give RTR users access to the RTR directories. Use Windows
+           Explorer and select the RTR root directory. Pull down the
+           Security menu and choose File permissions. Give the RTR
+           root directory and all its subdirectories "Full Control"
+           access for all RTR users. You may then restrict access
+           on individual files to read only. (All RTR users require
+           write access to the RTR journal directory.)
+
+     5-4 Full Installation on Windows
+
+ 
+
+
+
+                                            Full Installation on Windows
+                                                  5.3 Complete RTR Setup
+
+                ________________________Note  ________________________
+
+                The Windows registry is modified slightly as a
+                result of a RTR installation.
+
+                _____________________________________________________
+
+        5.3.1 Check Installed Files
+
+              Navigate to the directory where you installed RTR.
+
+              To see a list of the files installed, use Windows Explorer
+              or enter the following command:
+
+              Tree/F
+
+        5.3.2 Enable RTR Remote Commands
+
+              To make it possible to execute RTR commands on remote
+              systems, you must use the remote shell (RSH). See the
+              documentation on remote shell on your Windows system.
+
+              The RSH service runs commands on remote computers running
+              the RSH service. This command is available only if the
+              TCP/IP protocol has been installed.
+
+              You can also execute remote commands with /NODE qualifiers
+              on certain RTR commands, and in conjunction with the RTR
+              SET ENVIRONMENT command. For more information on executing
+              RTR commands remotely, refer to the Reliable Transaction
+              Router System Manager's Manual.
+
+        5.3.3 Display Documentation
+
+              Softcopy documentation for Reliable Transaction Router is
+              available on the RTR Software Kit in distilled PostScript
+              (.pdf) file format. You can display .pdf files with
+              Acrobat Reader, a free reader of electronic files from
+              Adobe Systems.
+
+        5.3.4 Run RTR
+
+              To run RTR, follow these steps:
+
+              o  Click on
+                 Start -> Programs -> Compaq -> RTR -> Reliable
+                 Transaction Router
+
+                 This brings up a DOS-style RTR command window. To start
+                 RTR, enter Start RTR at the RTR> prompt.
+
+                                        Full Installation on Windows 5-5
+
+ 
+
+
+
+     Full Installation on Windows
+     5.3 Complete RTR Setup
+
+           o  Click on Start -> Programs -> Compaq -> RTR -> Web
+              Browser Interface
+
+              This brings up the browser-based RTR screens with which
+              you monitor and manage RTR.
+
+     5.3.4.1 Configure RTR Facilities and Partitions
+
+           For information on configuring RTR facilities and setting
+           up partitions, refer to the Reliable Transaction Router
+           Getting Started and the Reliable Transaction Router System
+           Manager's Manual.
+
+     5.3.5 Install and Run Applications
+
+           Once applications that use RTR have been designed and
+           tested, they can be deployed on the systems configured for
+           use with RTR. For information on designing applications,
+           refer to the Reliable Transaction Router Application
+           Design Guide; for information on deployment and moni-
+           toring, refer to the Reliable Transaction Router System
+           Manager's Manual.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     5-6 Full Installation on Windows
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       6
+        ________________________________________________________________
+
+                                        Full Installation on Sun Solaris
+
+
+
+              This chapter describes how to install Reliable Transaction
+              Router on Sun Solaris systems. It includes steps for:
+
+              o  Preparing for installation
+
+              o  Installing RTR
+
+              o  Completing RTR setup
+
+        6.1 Prepare for Installation
+
+              Before you start the installation, complete the prepara-
+              tion tasks outlined in this section.
+
+        6.1.1 Check Software Distribution Kit
+
+              RTR software is distributed on CD-ROM. Use the Bill of
+              Materials (BOM) to check the contents of your RTR software
+              distribution kit.
+
+              If your software distribution kit is damaged or incom-
+              plete, contact your HP representative.
+
+        6.1.2 Check Login Privileges
+
+              You must have superuser (root) privileges to install RTR
+              software.
+
+        6.1.3 Check Required Hardware
+
+              To install RTR, you need the following hardware:
+
+              o  Software distribution device (if installing from media)
+
+                 Locate the CD-ROM drive for the CD-ROM software
+                 distribution media. The CD booklet or the documentation
+                 for the CD-ROM drive you are using explains how to load
+                 CD-ROM media.
+
+              o  Terminal
+
+                                    Full Installation on Sun Solaris 6-1
+
+ 
+
+
+
+     Full Installation on Sun Solaris
+     6.1 Prepare for Installation
+
+              You can use a hardcopy terminal, a video terminal, or
+              a workstation to communicate with the operating system
+              and respond to prompts from the installation procedure.
+
+           o  Sun Server
+
+              You must have a Sun Server that runs the Sun Solaris
+              operating system.
+
+           See the RTR Software Product Description (SPD) for
+           additional hardware requirements.
+
+     6.1.4 Check Required Software
+
+           One of the following is required:
+
+           o  SunLink DNI Version 8.0
+
+           o  TCP/IP as provided by the operating system
+
+           See the RTR Software Product Description (SPD) for
+           additional software requirements.
+
+     6.1.5 Determine Which Subsets to Load
+
+           RTR has only one subset:
+
+           -  rtrbase420
+
+              RTR runtime and system management.
+
+     6.1.6 Check Required Disk Space
+
+           Table 6-1 lists the approximate disk space requirements
+           for loading the RTR software subset. These requirements
+           apply to the disks where you load RTR. The requirements
+           are listed by directory for convenience if you are doing
+           installations on systems where these directories are mount
+           points for different disk partitions.
+
+           Table_6-1_RTR_Subset_Size_(in_Kilobytes)_for_Sun_Solaris__
+
+                            Subset
+           Subset_Title_____Name________/usr/opt/___/rtr_____________
+
+           RTR              rtrbase420  15500       8000
+
+           Total:_______________________23500________________________
+
+     6-2 Full Installation on Sun Solaris
+
+ 
+
+
+
+                                        Full Installation on Sun Solaris
+                                           6.1 Prepare for Installation
+
+              Using these disk space requirements, calculate the total
+              values for the subsets you will load in each directory.
+              You will also require at least 2MB disk space for the RTR
+              journal, which defaults to /rtrjnl.
+
+              Compare the space required for the subset with the free
+              space currently on the disks where RTR files will reside.
+
+        6.1.7 Check System Parameters
+
+              RTR has basic memory requirements. This section references
+              setup instructions for the relevant system parameters.
+
+        6.1.7.1 Check Shared Memory Requirements
+
+              For information on how much shared memory to allocate,
+              refer to the Reliable Transaction Router System Manager's
+              Manual, RTR Shared Memory Sizing.
+
+        6.1.7.2 Check Virtual Memory Requirments
+
+              For information on how much virtual memory to allocate,
+              refer to the Reliable Transaction Router System Manager's
+              Manual, RTRACP Virtual Memory Sizing for All Systems.
+
+        6.1.7.3 TCP Services File
+
+              RTR uses TCP/IP port number 46000 for the network
+              communication daemon rtr rtrd. On UNIX platforms, edit
+              the /etc/services file to add the following line:
+
+               rtracp 46000/tcp
+
+              This informs the system administrator that port number
+              46000/tcp is reserved for RTR. Note that the RTR daemon is
+              started by the RTRACP, not by inetd.
+
+        6.1.8 Back Up Your System Disk
+
+              HP recommends that you back up your system disk before
+              installing any software. For information about backing up
+              your system disk, see the Sun Solaris documentation.
+
+
+
+                                    Full Installation on Sun Solaris 6-3
+
+ 
+
+
+
+     Full Installation on Sun Solaris
+     6.2 Install RTR
+
+     6.2 Install RTR
+
+           Install RTR from CD-ROM using the following procedure.
+
+           This procedure loads RTR files on to a disk belonging to
+           the system where you perform the installation. When RTR is
+           run, its executable images are mapped into memory on your
+           system.
+
+           Installing RTR, including running the Installation
+           Verification Procedure (IVP), takes approximately 10 to 15
+           minutes, depending on your media and system configuration.
+
+           Follow these steps to install RTR from CD-ROM:
+
+           1. Mount the CD-ROM on the appropriate disk drive.
+
+           2. Log in as superuser (login name root) to the system
+              where you will install RTR.
+
+           3. Make sure you are at the root (/) directory by entering
+              the following command:
+
+                  # cd /
+
+           4. Use the pkginfo utility to check if you have a version
+              of RTR already installed:
+
+              # pkginfo -i | grep RTR
+
+           5. If RTR is already installed on your system, see
+              Section B.4 for information on uninstalling RTR and
+              removing related processes.
+
+           6. Specify the /CD-ROM directory to be the mount point for
+              the distribution file system on the drive. For example,
+              if your drive is rz0, enter the following command:
+
+                  # mount -dr /dev/rz0c /CD-ROM
+
+           7. Install RTR from the CD-ROM directory where the kit is
+              located. For example:
+
+                  # cd /cdrom/rtr_kit
+                  # pkgadd -d .
+
+              ________________________Note ________________________
+
+              By default, the IVP is not run. To run the IVP
+              you must define the NONABI_SCRIPTS environment
+
+     6-4 Full Installation on Sun Solaris
+
+ 
+
+
+
+                                        Full Installation on Sun Solaris
+                                                         6.2 Install RTR
+
+                variable when starting the installation by issuing
+                the following commands:
+
+                   # sh
+                   # NONABI_SCRIPTS=TRUE
+                   # pkgadd -d .
+
+                _____________________________________________________
+
+              8. Select the package to install.
+
+              9. Respond to prompts during installation.
+
+                 You can accept the defaults for most questions from the
+                 pkgadd utility.
+
+             10. Decide whether to run the IVP.
+
+             11. Exit from the pkgadd utility.
+
+        6.2.1 Read the Release Notes
+
+              The Release Notes provide information for RTR that
+              could not be included in the printed documentation.
+              After installation the Release Notes are located in the
+              directory /usr/opt/RTR420/hlp; you are advised to read the
+              Release Notes before using RTR.
+
+              To read the release notes, navigate to the directory where
+              RTR is installed and issue the following command:
+
+              more rtr_relnotes.txt
+
+        6.2.2 Installation Example
+
+              This section explains the installation procedure prompts
+              and displays.
+
+        6.2.2.1 Select Package
+
+              You must specify which package you want to load.
+
+              If the displayed package is the one you intended to
+              choose, enter 1.
+
+              If the displayed package is not the one you want to load,
+              enter q.
+
+                                    Full Installation on Sun Solaris 6-5
+
+ 
+
+
+
+     Full Installation on Sun Solaris
+     6.2 Install RTR
+
+     6.2.2.2 Output During Package Loading
+
+           The installation procedure loads and verifies the selected
+           RTR package.
+
+           The following example shows a display where the RTR
+           package is being loaded from CD-ROM:
+
+           # pkgadd -d .
+
+           The following packages are available:
+
+             1  rtr     Reliable Transaction Router
+                        (sun4u) 420 1
+
+           Select package(s) you wish to process (or all to process
+           all packages). (default: all) [?,??,q]:  2
+
+           Processing package instance <rtr> from </CDROM/rtr420/rtrkit>
+
+           Reliable Transaction Router
+           (sun4u) 420
+           Hewlett-Packard Company
+           Using </opt> as the package base directory.
+           ## Processing package information.
+           ## Processing system information.
+           ## Verifying disk space requirements.
+           ## Checking for conflicts with packages already installed.
+           ## Checking for setuid/setgid programs.
+
+           This package contains scripts which will be executed with
+           super-user
+           permission during the process of installing this package. 3
+
+           Do you want to continue with the installation of <rtr> [y,n,?] y
+
+           Installing Reliable Transaction Router as <rtr>
+
+           ## Executing preinstall script.
+           (C) 1994, 2003 Hewlett-Packard Development Company, L.P.
+           Confidential computer software. Valid license from HP and/or its
+           subsidiaries required for possession, use or copying. Consistent
+           with
+           FAR 12.211 and 12.212, Commercial Computer Software, Computer
+           Software
+           Documentation, and Technical Data for Commercial Items are licensed
+           to
+           the U.S. Government under vendor's standard commercial license.
+
+     6-6 Full Installation on Sun Solaris
+
+ 
+
+
+
+                                        Full Installation on Sun Solaris
+                                                         6.2 Install RTR
+
+              This kit will only run on Sun Solaris 2.6 and higher.
+              Installation should complete in approximately 1 minute.
+
+              Hit any key to continue....
+              ## Installing part 1 of 1. 4
+              /opt/rtr/RTR420/bin/rtr
+              /opt/rtr/RTR420/bin/rtr_r
+              /opt/rtr/RTR420/bin/rtr_remote
+              /opt/rtr/RTR420/bin/rtr_rqif
+              /opt/rtr/RTR420/bin/rtr_snapshot.sh
+              /opt/rtr/RTR420/examples/ABCBook/ABCBook.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCBook.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCCHandlers.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCCHandlers.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCCommon.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCMagazine.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCMagazine.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCOrder.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCOrder.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCOrderProcessor.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCOrderProcessor.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCOrderTaker.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCOrderTaker.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCSClassFactory.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCSClassFactory.h
+              /opt/rtr/RTR420/examples/ABCBook/ABCSHandlers.cpp
+              /opt/rtr/RTR420/examples/ABCBook/ABCSHandlers.h
+              /opt/rtr/RTR420/examples/ABCBook/README.html
+              /opt/rtr/RTR420/examples/ABCBook/SAMPLE1.COM
+              /opt/rtr/RTR420/examples/ABCBook/SAMPLE1.MMS
+              /opt/rtr/RTR420/examples/ABCBook/Sample1.cpp
+              /opt/rtr/RTR420/examples/ABCBook/Sample1.dsp
+              /opt/rtr/RTR420/examples/ABCBook/Sample1.dsw
+              /opt/rtr/RTR420/examples/ABCBook/Sample1.h
+              /opt/rtr/RTR420/examples/ABCBook/Sample1.mk
+              /opt/rtr/RTR420/examples/ADG/adg_client.c
+              /opt/rtr/RTR420/examples/ADG/adg_header.h
+              /opt/rtr/RTR420/examples/ADG/adg_server.c
+              /opt/rtr/RTR420/examples/ADG/adg_shared.c
+              /opt/rtr/RTR420/examples/IVP/rtr_ivp_osf.sh
+              /opt/rtr/RTR420/examples/IVP/rtrreq.c
+              /opt/rtr/RTR420/examples/IVP/rtrsrv.c
+              /opt/rtr/RTR420/hlp/copyright.txt
+
+
+                                    Full Installation on Sun Solaris 6-7
+
+ 
+
+
+
+     Full Installation on Sun Solaris
+     6.2 Install RTR
+
+           /opt/rtr/RTR420/hlp/license.txt
+           /opt/rtr/RTR420/hlp/rtr.hlb
+           /opt/rtr/RTR420/lib/rtr.h
+           /opt/rtr/RTR420/lib/rtr_v2.h
+           /opt/rtr/RTR420/lib/rtrapi.h
+              .
+              .
+              .
+           /opt/rtr/RTR420/mon/*.mon  files
+              .
+              .
+              .
+           /opt/rtr/RTR420/shlib/librtr.so
+           /opt/rtr/RTR420/shlib/librtr_r.so
+           /opt/rtr/RTR420/shlib/librtrapicpp.so
+           /opt/rtr/RTR420/shlib/librtrapicpp_r.so
+           /opt/rtr/RTR420/wbi/graphics/blank.jpg
+              .
+              .
+              .
+           /opt/rtr/RTR420/wbi/graphics/*.gif files
+              .
+              .
+              .
+           /opt/rtr/RTR420/wbi/rtr_accept_node.js
+           /opt/rtr/RTR420/wbi/rtr_command_displ.js
+           /opt/rtr/RTR420/wbi/rtr_command_form.js
+           /opt/rtr/RTR420/wbi/rtr_create_fac.js
+           /opt/rtr/RTR420/wbi/rtr_create_jou.js
+           /opt/rtr/RTR420/wbi/rtr_create_par.js
+           /opt/rtr/RTR420/wbi/rtr_create_tree.js
+           /opt/rtr/RTR420/wbi/rtr_create_tree_sub.js
+           /opt/rtr/RTR420/wbi/rtr_delete_fac.js
+           /opt/rtr/RTR420/wbi/rtr_delete_par.js
+           /opt/rtr/RTR420/wbi/rtr_extend_fac.js
+           /opt/rtr/RTR420/wbi/rtr_left_frame.html
+           /opt/rtr/RTR420/wbi/rtr_log_displ.js
+           /opt/rtr/RTR420/wbi/rtr_main.html
+           /opt/rtr/RTR420/wbi/rtr_modify_jou.js
+           /opt/rtr/RTR420/wbi/rtr_monitor.js
+           /opt/rtr/RTR420/wbi/rtr_set_btx.js
+           /opt/rtr/RTR420/wbi/rtr_set_fac.js
+           /opt/rtr/RTR420/wbi/rtr_set_lnk.js
+
+
+     6-8 Full Installation on Sun Solaris
+
+ 
+
+
+
+                                        Full Installation on Sun Solaris
+                                                         6.2 Install RTR
+
+              /opt/rtr/RTR420/wbi/rtr_set_log.js
+              /opt/rtr/RTR420/wbi/rtr_set_par.js
+              /opt/rtr/RTR420/wbi/rtr_trim_fac.js
+              /opt/rtr/RTR420/wbi/smm.html
+              /opt/rtr/RTR420/wbi/smm_contents.html
+              /opt/rtr/RTR420/wbi/smm_contents_001.html
+              /opt/rtr/RTR420/wbi/smm_contents_002.html
+              /opt/rtr/RTR420/wbi/smm_index.html
+              /opt/rtr/RTR420/wbi/smm_index_001.html
+              [ verifying class <none> ]
+              ## Executing postinstall script. 5
+              (C) 1994, 2003 Hewlett-Packard Development Company, L.P.
+
+              Confidential computer software. Valid license from HP and/or its
+              subsidiaries required for possession, use or copying. Consistent
+              with FAR 12.211 and 12.212, Commercial Computer Software, Computer
+              Software Documentation, and Technical Data for Commercial Items
+              are licensed to the U.S. Government under vendor's standard
+              commercial license.
+
+                  directory /rtr -> /var/opt/rtr created
+
+                Starting     Reliable Transaction Router V4.2  for SunOS
+                Installation Verification Procedure
+
+              WARNING: This is not a first time install.
+              WARNING: Please ensure that you have terminated *all* existing
+              WARNING: rtr processes and rtr applications before continuing.6
+              See man fuser or lsof to identify processes using
+              /usr/*lib/librtr*.so
+
+              RTR will find and reuse any existing journal files in the
+              top level rtrjnl directory on each suitable filesystem, and will
+              reuse any existing shared memory segment associated with
+              /rtr/RTRENVPS
+              Normally this is intended and should not cause any problems.
+
+
+
+
+
+
+
+
+
+                                    Full Installation on Sun Solaris 6-9
+
+ 
+
+
+
+     Full Installation on Sun Solaris
+     6.2 Install RTR
+
+           WARNING: Any existing journal will be used and modified, otherwise
+           WARNING: a new journal will be created on the default filesystem. 7
+           WARNING: Facilities RTR_IVP_FACILITY and RTR$DEFAULT_FACILITY
+           will be created.
+           WARNING: Result may be affected by size and contents of
+           any existing journal.
+           WARNING: The sample client and server do not necessarily
+           complete if they
+           WARNING: encounter previously journalled transactions
+           for these facilities.
+
+           NOTE: The following question is ignored in a non-interactive
+           install
+           NOTE: unless NONABI_SCRIPTS=TRUE, see man pkgadd for details...
+
+           You may run the IVP separately from the installation
+           procedure by executing the file:
+           /opt/rtr/RTRxxx/examples/IVP/rtr_ivp_osf.sh
+
+           Would you like to abort the IVP? (y/n)  IVP aborted 8
+
+           Installation of <rtr> was successful.
+
+           The following packages are available:
+
+             1  rtr     Reliable Transaction Router
+                        (sun4u) 420
+
+           Select package(s) you wish to process (or all to process
+           all packages). (default:all) q 9
+           #
+
+           1  Lists kit name and number.
+
+           2  Select package to install.
+
+           3  Warning about use of superuser privileges.
+
+           4  Start of first installation segment, followed by list
+              of files installed.
+
+           5  Indication of postinstallation processing.
+
+           6  Warning for reinstallation of RTR.
+
+           7  Warning about overwriting existing journal.
+
+           8  Prompt for decision to run IVP.
+
+           9  Enter q to exit from utility.
+
+     6-10 Full Installation on Sun Solaris
+
+ 
+
+
+
+                                        Full Installation on Sun Solaris
+                                                         6.2 Install RTR
+
+              The "Verifying" message that precedes the postinstall
+              message is a check to see that the files are copied
+              correctly; it is not an Installation Verification
+              Procedure (IVP) message.
+
+              Section 6.2.4 explains how to run the IVP after instal-
+              lation, and Section 6.2.5 explains how to delete old RTR
+              subsets before installing a new version of RTR.
+
+        6.2.3 Stop the Installation
+
+              To stop the installation procedure at any time, press
+              Ctrl/C. You must then delete files created up to this
+              point interactively. The directories and files created
+              during RTR installation are listed in the following file
+              (on your CD-ROM):
+
+              /rtr40/kit/instctrl/rtrbase420.inv
+
+        6.2.4 Run the Installation Verification Procedure
+
+              After installing RTR, you can run the Installation
+              Verification Procedure (IVP) independently to verify that
+              the software is available on your system. You might also
+              want to run the IVP after a system failure to be sure that
+              users can access RTR.
+
+              Note that the Installation Verification Procedure (IVP)
+              requires a working C language compiler to run.
+
+              The RTR IVP verifies the installation as follows:
+
+              o  Starts RTR
+
+              o  Creates an RTR journal
+
+              o  Creates an RTR facility
+
+              o  Stops RTR
+
+              o  Compiles and links the example client and server
+                 programs
+
+              To run the IVP after an installation, enter the following
+              command:
+
+              # /opt/rtr/RTRxxx/examples/IVP/rtr_ivp_osf.sh
+
+                                   Full Installation on Sun Solaris 6-11
+
+ 
+
+
+
+     Full Installation on Sun Solaris
+     6.2 Install RTR
+
+     6.2.4.1 Sample IVP Output
+
+              .
+              .
+              .
+
+
+           Would you like to abort the IVP? (y/n) n
+           IVP continuing ...
+
+             keep any existing log file settings (RTR_DBG not set)
+             starting RTR . . .
+             creating a journal, if not already created . . .
+             creating test facility . . .
+             stopping RTR.
+
+                  Reliable Transaction Router V4.2 for SunOS
+
+             Installation Verification Procedure successful
+
+           The following packages are available:
+
+             1 rtr      Reliable Transaction Router
+                        (sun4u) 420
+
+           Select package(s) you wish to process (or 'all' to process
+           all packages). (default: all) [?,??,q]: q
+           #
+
+           If the verification process fails, look in the
+           /var/adm/smlogs/fverify.log file for information to help
+           diagnose the problem.
+
+     6.2.5 Delete RTR from Your System
+
+           If you must remove a version of Reliable Transaction
+           Router from your system, delete each subset that you
+           previously installed.
+
+           To delete subsets:
+
+           1. Log in as superuser (login name root).
+
+           2. Make sure you are at the root directory (/) by entering
+              the following command:
+
+                  # cd /
+
+     6-12 Full Installation on Sun Solaris
+
+ 
+
+
+
+                                        Full Installation on Sun Solaris
+                                                         6.2 Install RTR
+
+              3. Enter the following form of the pkginfo command:
+
+                     # pkginfo -i rtr
+
+              4. Look for the word "installed" in the listing produced,
+                 and then delete the installed subsets. For example:
+
+                 # pkgrm rtr
+
+        6.2.6 Display Documentation from CD-ROM
+
+              The Reliable Transaction Router documentation is provided
+              on the Reliable Transaction Router CD-ROM kit in hypertext
+              (.html) file format. You can display the hypertext files
+              on your workstation using an HTML browser such as Netscape
+              or Internet Explorer.
+
+        6.3 Complete RTR Setup
+
+              This section explains how to make RTR ready for use after
+              installation on Sun Solaris.
+
+                ______Requirements  for Application Permissions ______
+
+                If the RTR executable is modified after installation
+                to no longer be suid root or the mode of the /rtr
+                directory is changed, an application process (for
+                example a client) can encounter a fatal error
+                (Unable to locate a socket) when the client process
+                finds it cannot create an rtr_ipc_sock_* file for
+                the process ID (pid) in the /rtr directory.
+
+                To avoid this, ensure that application processes run
+                with user and group IDs that have access permission
+                to create and remove files in this directory.
+
+                _____________________________________________________
+
+        6.3.1 Check Installed Files
+
+              To see the list of files installed on your system, use the
+              following command:
+
+              % pkginfo i rtr
+
+                                   Full Installation on Sun Solaris 6-13
+
+ 
+
+
+
+     Full Installation on Sun Solaris
+     6.3 Complete RTR Setup
+
+     6.3.2 Run RTR
+
+           To run RTR, enter the following command at the system
+           prompt:
+
+            % RTR
+            RTR>
+
+           You can then enter commands at the RTR prompt to configure
+           facilities and partitions, and run applications that use
+           RTR.
+
+     6.3.2.1 Configure RTR Facilities and Partitions
+
+           For information on configuring RTR facilities and setting
+           up partitions, refer to the Reliable Transaction Router
+           Getting Started manual and the Reliable Transaction Router
+           System Manager's Manual.
+
+     6.3.3 Install and Run Applications
+
+           Once applications that use RTR have been designed and
+           tested, they can be deployed on the systems configured for
+           use with RTR. For information on designing applications,
+           refer to the Reliable Transaction Router Application
+           Design Guide; for information on deployment and use,
+           refer to the Reliable Transaction Router System Manager's
+           Manual.
+
+           Application programming interfaces that can be used to
+           write transaction processing applications used with RTR
+           are described in the Reliable Transaction Router C++
+           Foundation Classes manual and the Reliable Transaction
+           Router C Application Programmer's Reference Manual.
+
+
+
+
+
+
+
+
+
+
+
+     6-14 Full Installation on Sun Solaris
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                 Recovering from Errors
+
+
+
+              This appendix provides information to help you deal with
+              problems that might occur during product installation or
+              product use.
+
+              If you find an error in the documentation, send an email
+              message to the internet address on the last page of this
+              appendix. Include the manual title, publication date,
+              section and page numbers where the error occurred.
+
+        A.1 Problems During Product Installation
+
+              If errors occur during the installation, the system
+              displays failure messages. For example, if the Tru64 UNIX
+              installation fails due to insufficient disk space, the
+              following message appears:
+
+              There is not enough space for subset RTRBASExxx
+              Reliable Transaction Router for Tru64 UNIX
+              (RTRBASExxx) will not be loaded.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  The operating system version is incorrect.
+
+              o  The prerequisite software version is incorrect.
+
+              o  There is insufficient disk space.
+
+              o  The system parameter values for successful installation
+                 are insufficient.
+
+              For descriptions of error messages generated by these
+              conditions, see the operating system documentation
+              on system messages, recovery procedures, and software
+              installation. For information on system software
+              requirements, see the software and disk space requirements
+              for your operating system.
+
+                                             Recovering from Errors  A-1
+
+ 
+
+
+
+     Recovering from Errors
+     A.2 Problems After Installation
+
+     A.2 Problems After Installation
+
+           U.S. customers who encounter a problem while using
+           Reliable Transaction Router can report it to HP by
+           telephoning the HP Customer Support Center (CSC) at 1-
+           800-354-9000. (Customers with service contracts can also
+           use an electronic means such as DSNlink.)
+
+           Customers without a service contract can arrange for per-
+           call support.
+
+           The CSC will need the following information:
+
+           o  The name and version number of the operating system you
+              are using
+
+           o  The Reliable Transaction Router version number you are
+              using
+
+           o  The hardware system you are using (such as a model
+              number)
+
+           o  A brief description of the problem (one sentence if
+              possible)
+
+           o  Whether or not the problem is critical
+
+           o  Any other information that is helpful, such as the
+              specific commands you used to run the software, the
+              error messages displayed, and source listings of the
+              relevant software module or lines of code
+
+           If the problem is related to Reliable Transaction Router
+           documentation, send comments electronically to the
+           following internet address:
+           rtrdoc@hp.com.
+
+           If you are reporting a specific documentation error, be
+           sure to include the manual title, date from title page,
+           section and page numbers where the error occurred.
+
+
+
+
+
+     A-2 Recovering from Errors
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                                        Uninstalling RTR
+
+
+
+              Remove commands do not remove all RTR files from your
+              disks. This is particularly important when you are
+              upgrading from one version of RTR to another. You must
+              eliminate all RTR files from your system, but do not
+              discard any customized monitor files in /rtr or a journal
+              containing recoverable transactions in /rtrjnl. Copy
+              these to another directory before completing the uninstall
+              instructions.
+
+              If /rtrjnl or /rtr is a symbolic link to another
+              directory, first remove the target directory and all files
+              contained in it, and then remove the symbolic link.
+
+        B.1 Uninstalling on OpenVMS
+
+              Complete the following steps to uninstall RTR from your
+              system.
+
+              o  Stop all RTR processes on the system:
+
+                 $ RTR STOP RTR
+                 $ RTR DISCONNECT SERVER
+
+              o  Check for any surviving processes such as rtrd and
+                 applications programmed to handle RTR_STS_NOACP, and
+                 terminate any such processes until there are none left.
+                 Note that all the RTR ACP and comserver processes must
+                 be terminated before rtrd, otherwise they will create a
+                 new rtrd.
+
+                 The rtrd process can now be terminated with the STOP
+                 command or by issuing the following command:
+
+                 $ RTR DISC SERVER/DAEMON
+
+                                                    Uninstalling RTR B-1
+
+ 
+
+
+
+     Uninstalling RTR
+     B.1 Uninstalling on OpenVMS
+
+           o  Terminate all application processes linked to RTR. If
+              you are running in a cluster configuration, you must
+              remove RTR application processes from all the cluster
+              members that use the disk where RTR was installed.
+
+              Processes can be terminated with the STOP command, or
+              by a program that uses $FORCEX.
+
+              To verify that no RTR-related processes are still
+              running on a node or cluster member, use the SHOW
+              DEVICE/FILES command to make sure that there are no
+              remaining SYS$SHARE:LIBRTR*.EXE shareable images.
+
+           o  Remove RTR from your system.
+
+              $ PRODUCT REMOVE RTR
+
+     B.2 Uninstalling on Windows Systems
+
+           You must perform the following actions before uninstalling
+           RTR on a Windows system:
+
+           o  If RTR has previously been registered as a service,
+              unregister RTR as a service. Do this with the following
+              menu selections from the Program menu:
+
+              Compaq -> RTR -> Service -> Unregister
+
+           o  Delete all *.LCK files located in the directory used
+              for the previous installation, and the RTRenvps file
+              (shared memory).
+
+           o  Stop all RTR processes on the system:
+
+               RTR STOP RTR
+               RTR DISCONNECT SERVER
+
+              If you are uninstalling RTR Version 4.0, use the
+              /DAEMON option:
+
+               RTR DISCONNECT SERVER/DAEMON
+
+              You can also use the Shutdown command, which executes
+              Shutdown.bat.
+
+              Programs-> Compaq -> RTR -> Utilities -> Shutdown
+
+     B-2 Uninstalling RTR
+
+ 
+
+
+
+                                                        Uninstalling RTR
+                                     B.2 Uninstalling on Windows Systems
+
+              o  Check for any surviving processes such as rtrd and
+                 applications programmed to handle RTR_STS_NOACP, and
+                 terminate any such processes until there are none left.
+                 Note that all the RTR ACP and comserver processes must
+                 be terminated before rtrd, otherwise they will create a
+                 new rtrd.
+
+                 The rtrd process can now be terminated with this
+                 command:
+
+                 $ RTR DISC SERVER/DAEMON
+
+                 To verify that no RTR-related processes are still
+                 running on a node or cluster member, check for the
+                 existence of the rtrdll.dll file. The rtrdll.dll file
+                 cannot be deleted if it is in use.
+
+              o  To uninstall RTR, perform one of the following options:
+
+                 Programs -> Compaq -> RTR -> Utilities -> Uninstall
+
+                 or
+
+                 Control Panel -> Add/Remove Programs -> Reliable
+                 Transaction Router -> Add/Remove
+
+              o  Terminate all application processes linked to RTR. If
+                 you are running in a cluster configuration, you must
+                 remove RTR application processes from all the cluster
+                 members that use the disk where RTR was installed.
+
+              o  Remove previous versions of RTR from the disk:
+
+                 DEL /S/Q C:\RTR
+
+        B.3 Uninstalling on Tru64 UNIX
+
+              Complete the following steps to uninstall RTR from your
+              system.
+
+              o  Stop all RTR processes on the system:
+
+                 # rtr stop rtr
+                 # rtr disconnect server
+
+              o  Check for any surviving processes such as rtrd and
+                 applications programmed to handle RTR_STS_NOACP, and
+                 terminate any such processes until there are none left.
+                 Note that all the RTR ACP and comserver processes must
+
+                                                    Uninstalling RTR B-3
+
+ 
+
+
+
+     Uninstalling RTR
+     B.3 Uninstalling on Tru64 UNIX
+
+              be terminated before rtrd, otherwise they will create a
+              new rtrd.
+
+              The rtrd process can now be terminated with the KILL
+              command or by issuing the following command:
+
+              $ rtr disc server/daemon
+
+              To verify that no RTR-related processes are still
+              running on a node or cluster member, use the fuser
+              or lsof command to make sure that the threaded or
+              unthreaded librtr*.so shared libraries are not in use.
+
+           o  Terminate all application processes linked to RTR. If
+              you are running in a cluster configuration, you must
+              remove RTR application processes from all the cluster
+              members that use the disk where RTR was installed.
+
+           o  Uninstall all previous versions that you find:
+
+              # setld -d RTRBASE4xx
+
+              where "xx" is the version number.
+
+           o  Remove all RTR files with the following commands:
+
+              ________________________Note ________________________
+
+              The last directory is user configurable, so verify
+              its location before executing the last command.
+
+              _____________________________________________________
+
+              rm -rf /rtr
+              rm -rf /rtrjnl
+              rm -rf /usr/opt/rtr
+
+     B.4 Uninstalling on Sun
+
+           Complete the following steps to uninstall RTR from your
+           system.
+
+           o  Stop all RTR processes on the system:
+
+              # rtr stop rtr
+              # rtr disconnect server
+
+     B-4 Uninstalling RTR
+
+ 
+
+
+
+                                                        Uninstalling RTR
+                                                 B.4 Uninstalling on Sun
+
+              o  Check for any surviving processes such as rtrd and
+                 applications programmed to handle RTR_STS_NOACP, and
+                 terminate any such processes until there are none left.
+                 Note that all the RTR ACP and comserver processes must
+                 be terminated before rtrd, otherwise they will create a
+                 new rtrd.
+
+                 The rtrd process can now be terminated with the KILL
+                 command or by issuing the following command:
+
+                 $ rtr disc server/daemon
+
+              o  Terminate all application processes linked to RTR. If
+                 you are running in a cluster configuration, you must
+                 remove RTR application processes from all the cluster
+                 members that use the disk where RTR was installed.
+
+                 To verify that no RTR-related processes are still
+                 running on a node or cluster member, use the fuser
+                 or lsof command to make sure that the threaded or
+                 unthreaded librtr*.so shared libraries are not in use.
+
+              o  Uninstall all previous versions that you find:
+
+                 # pkgrm rtr
+
+              o  Remove all RTR files with the following commands:
+
+                ________________________Note  ________________________
+
+                The last directory is user configurable, so verify
+                its location before executing the last command.
+
+                _____________________________________________________
+
+                 rm -rf /rtr
+                 rm -rf /rtrjnl
+                 rm -rf /opt/rtr
+
+
+
+
+
+
+
+                                                    Uninstalling RTR B-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+
+     B__________________________          I__________________________
+
+     Batch procedures                     I/O channels
+       Windows, 5-4                        OpenVMS,  3-4
+
+                                          inetd, 4-7, 6-3
+     C__________________________          IVP
+
+     CHANNELCNT,  3-4                      OpenVMS,  1-2
+     Channels                              Tru64 UNIX,  4-14
+
+       OpenVMS, 3-4
+                                          L__________________________
+
+     D__________________________          Logical name
+
+     Daemon                                OpenVMS,  1-2
+
+       network, 4-7, 6-3
+     Disk space                           M__________________________
+       OpenVMS, 1-1                       Memory sizing
+
+                                           Sun,  6-3
+     F__________________________           Tru64,  4-6
+
+     Files                                 Windows,  5-2
+       monitor, 1-1                       Monitor files, 1-1
+
+     ___________________________          N__________________________
+
+     GBLPAGES,  1-2                       Network daemon, 4-7, 6-3
+
+     GBLSECTIONS,  1-2
+                                          O__________________________
+
+     H__________________________          OpenVMS
+
+     Help                                  channels,  3-4
+       OpenVMS, 1-1                        global pages,  1-2
+                                           global sections,  1-2
+                                           help,  1-1
+                                           IVP,  1-2
+                                           logical,  1-2
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+     OpenVMS (cont'd)                      virtual memory,  6-3
+       Release Notes, 1-1                 SYS$COMMON:[SYSHLP], 1-1
+
+     ___________________________          T__________________________
+
+     Port                                 TCP/IP port, 4-7, 6-3
+       TCP/IP, 4-7, 6-3                   Tru64 UNIX
+                                           IVP,  4-14
+     R                                     shared memory,  4-6
+     ___________________________           virtual memory,  4-6
+     Readme
+       Windows, 5-4                       V__________________________
+     Release Notes                        Virtual memory
+       OpenVMS, 1-1                        Tru64,  4-6
+       Sun, 6-5                           VMS Installation, 3-1
+
+     S__________________________          W
+
+     Shared memory                        ___________________________
+       Tru64, 4-6                         Windows
+     Sun                                   batch procedures,  5-4
+       Release Notes, 6-5                  Readme,  5-4
+       shared memory, 6-3                  sizing memory,  5-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Index-2

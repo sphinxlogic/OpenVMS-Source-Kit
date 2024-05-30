@@ -1,0 +1,561 @@
+ 
+
+
+                              
+
+Software
+Product
+Description
+
+___________________________________________________________________
+
+PRODUCT NAME:  Hierarchical Storage Management         SPD 46.38.20
+               for OpenVMS Version 4.1
+
+PRODUCT DESCRIPTION
+
+HP Hierarchical Storage Management (HSM) for OpenVMS is a layered soft-
+ware product that extends the OpenVMS file system to allow efficient
+management of infrequently accessed (dormant) data. HSM migrates dor-
+mant data from online storage to less expensive nearline or offline
+(shelf) storage. The movement of dormant data to shelf storage is called
+shelving. The shelved data can be automatically and transparently re-
+turned to online storage when needed. HSM will also save valuable backup
+time, since the shelved data is already located on secure, removable
+media.
+
+HSM for OpenVMS Operation
+
+HSM operates in Basic or Plus Mode. Basic mode uses its own media man-
+ager and qualifies a limited number of device types. Plus mode allows
+the use of advanced storage devices. If used for remote tape devices,
+Plus Mode requires the Remote Device Facility[TM] (RDF) software. See
+the OPTIONAL SOFTWARE section for details.
+
+New and frequently accessed files remain online while older and less
+active files are automatically, or manually, shelved in accordance with
+user-defined policies. The directory information and file headers for
+shelved files are maintained on online storage devices while the data
+itself is on the shelf device. When access is needed to the shelved
+data, HSM automatically returns it to online storage. The file attributes
+may be viewed and modified without bringing the data back online.
+
+                                                       January 2003
+
+                                                        AE-PWNTW-TE
+
+ 
+
+Control over the execution of the shelving process is either explicit
+or implicit. Explicit shelving is a process that has been started in
+response to a DCL command. The command can be issued directly to the
+OpenVMS Operating System or executed in an OpenVMS command procedure.
+Implicit shelving is a process that has been started by HSM in response
+to a trigger event or policy.
+
+The transparent management of HSM is set through HSM policies which:
+
+o  Specify which files are or are not to be shelved
+
+o  Set a high water mark on the online storage to automatically trig-
+   ger shelving of dormant data
+
+o  Set a low water mark as a space recovered goal when your files are
+   shelved
+
+o  Specify which processes should cause automatic unshelving
+
+HSM policies use predefined selection algorithms or scripts contain-
+ing HSM-specific commands to shelve or unshelve files in response to
+trigger events. Trigger events are situations that, when set by an HSM
+policy, cause HSM to move files to shelf storage. Examples of specific
+trigger events are listed below:
+
+o  Volume occupancy full
+
+o  Disk quota exceeded
+
+o  High water mark reached
+
+o  Scheduled policy execution
+
+Trigger events, used in conjunction with appropriately designed se-
+lection criteria, free up enough online disk space to satisfy the pol-
+icy goal.
+
+The selection criteria include definitions that determine the appro-
+priate files to be shelved in response to the need for shelving. Ex-
+amples of selection criteria include:
+
+o  Least recently used and size combination
+
+o  Least recently used
+
+                                 2
+
+ 
+
+o  According to a user-defined script
+
+HSM for OpenVMS qualifies file access to shelved files on client sys-
+tems where access is through DFS, NFS, or PATHWORKS.
+
+HARDWARE REQUIREMENTS
+
+Qualified Devices:
+
+o  Specified in the qualfied device table, tape devices, including Dig-
+   ital Linear Tape (DLT) loaders, and large tape libraries, such as
+   the TL893 and TL894.
+
+o  Remote Tapes
+
+Remote tapes can be accessed through the use of the RDF utility. See
+the OPTIONAL SOFTWARE section for details
+
+Device Restrictions:
+
+HSM does not provide shelving capability for the following:
+
+o  Read-only devices such as CD-ROMs, or any disk that is software locked
+   or write-protected
+
+o  Any device that is not flagged as a disk device in OpenVMS system
+   calls
+
+A minimum system configuration to run HSM for OpenVMS includes:
+
+o  16 MB memory
+
+o  One or more CD-ROM drives in the VMScluster
+
+o  One or more disk drives qualified by OpenVMS
+
+
+
+
+
+                                 3
+
+ 
+
+___________________________________________________________________
+
+Table_1:_Disk_Space_Requirements_(Block_Cluster_Size_=_1)__________
+
+              Blocks
+Item__________Needed____Description________________________________
+
+Install       100,000*  Temporary blocks for installation
+Kit
+
+HSM Soft-     45000**   Permanent blocks for software
+ware
+
+Catalog       100000    Catalog grows at the average rate of 1.25
+                        blocks for each file copy shelved. HP
+                        recommends that 100000 blocks be set aside
+________________________initially_for_each_catalog_________________
+
+Note:
+
+* This includes Documentation in .PS and .PDF format.
+
+** 10k blocks reside on the system disk;remaining optionally on an-
+other device.
+
+These counts refer to the disk space required on the system disk. The
+sizes are approximate; actual sizes may vary depending on the user's
+system environment, configuration, and software options.
+
+SOFTWARE REQUIREMENTS
+
+o  HSM V4.1 runs on the OpenVMS Alpha V6.2, V7.1-2, V7.2-2, V7.3 and
+   V7.3-1 and OpenVMS VAX Operating System V6.2, V7.1, V7.2 and V7.3.
+   HSM V4.1 does not utilize the ODS5 disk structure.
+
+   NOTE: Storage Management makes every effort to be as current or cor-
+   rect as possible in qualifying our layered products on the Oper-
+   ating System (OS) versions. The use of a particular OS by a cus-
+   tomer can only be guaranteed by the customer's contract with Open-
+   VMS or by a specific service contract.
+
+                                 4
+
+ 
+
+o  HSM Basic Mode does not require any software other than HSM and the
+   OpenVMS Operating System.
+
+o  HSM Plus Mode requires a media manager. If HSM is used with Stor-
+   age Library System, SLS, then HSM will use the SLS media manager,
+   MDMS V2.9G, which comes with SLS.
+
+o  If HSM is used with Archive Backup System, ABS, then HSM will use
+   the media manager installed by ABS as part of the ABS product in-
+   stallation. This is the same media manager MDMS V4.1 that is pro-
+   vided with the HSM V4.1 kit.
+
+o  If HSM Plus Mode is not used with either SLS or ABS, then just in-
+   stall the MDMS V4.1 provided in the HSM V4.1. The media manager (MDMS)
+   is still a manual install with HSM V4.1 as users may continue to
+   use SLS/MDMS V2.9G in their environment.
+
+o  OpenVMS Version 7.3 provides support for Fibre Channel (FC) con-
+   nected tape devices. This is accomplished through the use of Mod-
+   ular Data Router (MDR) connected to the FC Switch. MDR converts Fi-
+   bre Channel protocol to SCSI protocol, which the tape device un-
+   derstands. HSM V4.1 has qualified this new feature in OpenVMS 7.3
+   as used with MDR. Please refer to OpenVMS V7.3 for a complete list-
+   ing of supported tape devices.
+
+o  Network Storage Router (NSR) M2402 by HP is a key component in a
+   complete data protection solution. It allows multiple host servers
+   to communicate with a SCSI tape device over a Fibre Channel link
+   making backup speeds five times faster. HSM has been tested and qual-
+   ified with Network Storage Router (NSR) M2402.
+
+o  The HSM V4.1 is compatible with the Multipath failover function-
+   ality on Tape devices as provided in OS 7.3-1.
+
+OPTIONAL SOFTWARE
+
+o  SLS Version 2.9G, or ABS Version V4.1, can be used in conjunction
+   with HSM for an integrated Backup and HSM environment. SLS or ABS
+   contains the Media, Device and Management Services software (MDMS).
+
+                                 5
+
+ 
+
+o  Remote access to tape devices in Plus Mode requires the Remote De-
+   vice Facility [TM] (RDF). RDF requires a licesne. RDF is available
+   as a component of the media manager, MDMS, which is part of your
+   HSM V4.1 kit. RDF V4.3G has been qualified for HSM V4.1. This ca-
+   pability is turned on through licensing of the following:
+
+   -  Purchase of Storage Library System (SLS)
+
+   -  Purchase of Archive Backup System (ABS)
+
+   -  Purchase of an RDF license directly from Computer Associates In-
+      ternational Inc.
+
+License Management Facility
+
+This layered product qualifies the OpenVMS License Management Facil-
+ity.
+
+For more information on the OpenVMS License Management Facility, re-
+fer to the OpenVMS Operating System Software Product Description or
+the License Management Facility manual of the OpenVMS Operating Sys-
+tem documentation set.
+
+CLUSTER ENVIRONMENT
+
+This layered product is fully qualified when installed on any valid
+and licensed VMScluster configuration without restrictions. The HARD-
+WARE REQUIREMENTS section details any special hardware required by this
+product.
+
+The VMScluster Software Product Description (SPD 29.78.xx) describes
+VMScluster configurations and includes CI, Ethernet, and Mixed Inter-
+connect configurations.
+
+OpenVMS Tailoring
+
+For OpenVMS systems, the following classes are required for full func-
+tionality of this layered product:
+
+   OpenVMS Required Saveset
+   Programming Support
+
+                                 6
+
+ 
+
+   Utilities
+   System Programming Support
+   Secure User's Environment
+   Network Support
+
+For more information on OpenVMS classes and tailoring, refer to the
+OpenVMS Alpha and VAX Operating System Software Product Description
+(SPD 25.01.xx).
+
+Qualified Devices
+
+The following libraries and loaders have been tested and qualified by
+Storage Management Software Engineering. However, Storage Management
+Software Engineering does not test each of the devices with every pos-
+sible combination of controllers and host systems. Because the HSM prod-
+uct and the Media Robot Utility (MRU) run in common environments, these
+combinations are tested first with MRU. Upon successful completion of
+the MRU tests, HSM is then tested in representative configurations.
+Note that MRU is not a prerequisite for HSM.
+
+Therefore, to determine if your specific configuration has been qual-
+ified, follow these steps:
+
+1. If you have a tape drive that is not software-defined as a juke-
+   box (is not a library or a loader device), reference the OpenVMS
+   Software Product Description (SPD 25.01.xx) to determine if your
+   tape drive is qualifieded for your platform and controller/adapter
+   combination.
+
+2. If your device is software-defined as a jukebox (it is a library
+   or loader device), first check the following list to determine if
+   it has been qualified by the media manager. If the device is listed,
+   see the following instructions:
+
+   a. Check the OpenVMS Software Product Description (SPD 25.01.xx)
+      to make sure the tape drive(s) in your library/loader are sup-
+      ported for your platform and controller/adapter combination.
+
+
+
+                                 7
+
+ 
+
+   b. Check the MRU Software Product Description (SPD 64.44.xx) to make
+      sure your library/loader is listed by MRU for your specific con-
+      troller/adapter combination.
+
+3. Assuming your device is correctly connected and configured, it has
+   been qualified by the common media manager.
+
+If you have devices that are not shown on the list, they may still be
+qualified. HP continually tests its software on additional devices that
+may have been released since the last publication of this SPD.
+
+If you have a question about a particular device, contact customer sup-
+port.
+
+              ESL9198DLX    ESL9198SL
+
+              ESL9326D      ESL9326DX
+
+              ESL9326SL     ESL9595SL
+
+              MSL5026SL     MSL5052SL
+
+              SSL2020       STK ACS[1]
+
+              TKZ6x         TL891DLX
+
+              TLZ6L         TLZ7L
+
+              TLZ9L         TL810
+
+              TL812         TL820
+
+              TL822         TL826
+
+              TL890         TL891
+
+              TL892         TL893
+
+              TL894         TL895
+
+              TL896         TSL10000
+
+              TZ857         TZ867
+
+              TZ875         TZ875N
+
+              TZ877         TZ877N
+
+              TZ885         TZ887
+___________________________________________________________________
+[1]Requires an optional DCSC V3.2 license (SPD 33.59.xx).
+
+                                 8
+
+ 
+
+GROWTH CONSIDERATIONS
+
+The minimum hardware and software requirements for any future version
+of this product may be different from the requirements for the cur-
+rent version.
+
+DISTRIBUTION MEDIA
+
+HSM, SLS, and ABS are available as part of the OpenVMS Consolidated
+Software Distribution on CD-ROM.
+
+SOFTWARE LICENSING
+
+HSM for OpenVMS is licensed according to the amount of online stor-
+age customers may free up through shelving files. One base license,
+which includes 20 GB of storage capacity, is required for each VMSclus-
+ter or a single system in a non-cluster environment. Base licenses are
+available for all-VAX clusters, all-Alpha clusters, and mixed archi-
+tecture clusters. The base licenses are included in the 140GB, 280GB,
+500GB, 1000GB, and unlimited capacity packages.
+
+Additional storage capacity is licensed by purchasing one or more ca-
+pacity licenses. Users who want to have virtually unlimited storage
+capacity, with respect to current system capabilities, can purchase
+the unlimited capacity license.
+
+Note: In order to purchase concurrent upgrade licenses, users must show
+proof that they previously purchased at least the same number of con-
+current licenses.
+
+This software is furnished under the licensing provisions of HP's stan-
+dard terms and conditions. For more information about HP's licensing
+terms and policies, contact your local HP office.
+
+
+
+
+
+
+
+                                 9
+
+ 
+
+ORDERING INFORMATION
+
+Base Licenses:
+
+VAX only Cluster             QL-0NXA9-AA
+
+VAX license update ser-      QT-0NXA9-L9
+vice
+
+Alpha only Cluster           QL-3J1A9-AA
+
+Alpha license update         QT-3J1A9-L9
+service
+
+Mixed Cluster                QP-03PAA-01
+
+Concurrent Use Capacity
+Licenses:
+
+20 GB                        QL-2AWAA-3B
+
+140 GB*                      QP-03TAA-01
+
+280 GB*                      QP-03TAA-02
+
+500GB*                       QP-03TAA-04
+
+1000GB*                      QP-03TAA-03
+
+Unlimited capacity*          QP-03TAA-05
+
+OpenVMS Software Media:
+
+VAX Software Products        QA-VWJ8A-A8
+CD-ROM
+
+VAX On-Line Documentation    QA-VYR8A-G8
+CD-ROM
+
+VAX Media and Documenta-     QA-YL48A-H8
+tion CD-ROM
+
+Alpha Software Products      QA-4KL8A-A8
+CD-ROM
+
+Alpha On-Line Documenta-     QA-4KM8A-G8
+tion CD-ROM
+
+Alpha Media and Documen-     QA-03XAA-H8
+tation CD-ROM
+
+                                10
+
+ 
+
+
+Hard Copy Documentation
+Kit
+
+HSM Documentation Kit        QA-0NXAA-GZ
+
+OpenVMS Software One Year
+Subscription Services
+
+VAX Software Media CD-ROM    QT-VWJ8A-C8
+
+VAX On-Line Documentation    QT-VYR8A-C8
+CD-ROM
+
+VAX Media and Documenta-     QT-YL48A-C8
+tion CD-ROM
+
+Alpha Software Media         QT-4KL8A-C8
+CD-ROM
+
+Alpha On-Line Documenta-     QT-4KM8A-C8
+tion CD-ROM
+
+Alpha Media and Documen-     QT-03XAA-C8
+tation CD-ROM
+
+*  This capacity license includes the HSM base licenses.
+
+Note: The HSM documentation in the Hard Copy Documentation kit (QA-0NXAA-
+GZ) consists of:
+
+   HSM Installation Guide
+   HSM Guide to Operations
+   HSM Command Reference Guide
+   HSM Software Product Description
+   HSM Cover Letter
+
+The first three HSM documents are also available in the on-line doc-
+umentation CD-ROM. MDMS information is incorporated with the HSM doc-
+umentation set.
+
+                                11
+
+ 
+
+SOFTWARE PRODUCT SERVICES
+
+In addition to the media services listed above, a software license up-
+date service is also available from HP. For more information, contact
+your local HP office.
+
+
+SOFTWARE WARRANTY
+
+
+© Hewlett-Packard Development Company, L.P. 2003.
+
+Confidential computer software. Valid license from HP and/or its sub-
+sidiaries required for possession, use, or copying.
+
+Consistent with FAR 12.211 and 12.212, Commercial Computer Software,
+Computer Software Documentation, and Technical Data for Commercial Items
+are licensed to the U.S. Government under vendorrd commercial license.
+
+Neither HP nor any of its subsidiaries shall be liable for technical
+or editorial errors or omissions contained herein. The information in
+this document is provided "as is" without warranty of any kind and is
+subject to change without notice. The warranties for HP products are
+set forth in the express limited warranty statements accompanying such
+products. Nothing herein should be construed as constituting an ad-
+ditional warranty.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                12

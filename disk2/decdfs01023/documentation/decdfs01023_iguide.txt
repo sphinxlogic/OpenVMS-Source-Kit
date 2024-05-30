@@ -1,0 +1,3692 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                    DECdfs_for_OpenVMS__________________________________
+                    Installation Guide
+
+
+                    April 2001
+
+                    This document contains installation information for
+                    DECdfs Version 2.3-1 for OpenVMS.
+
+
+
+
+
+
+
+                    Software Version:             DECdfs Version 2.3-1
+                                                  for OpenVMS
+
+                    Operating System and Version: OpenVMS Alpha Version
+                                                  6.2, 7.1, 7.2 and 7.3
+
+                                                  OpenVMS VAX Version
+                                                  5.5-2, 6.2, 7.1, 7.2
+                                                  and 7.3
+
+
+
+
+
+
+
+
+
+
+
+
+                    Compaq Computer Corporation
+                    Houston, Texas
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          April 2001
+
+          Compaq Computer Corporation makes no representations
+          that the use of its products in the manner described in
+          this publication will not infringe on existing or future
+          patent rights, nor do the descriptions contained in this
+          publication imply the granting of licenses to make, use,
+          or sell equipment or software in accordance with the
+          description.
+
+          Possession, use, or copying of the software described in
+          this publication is authorized only pursuant to a valid
+          written license from Compaq or an authorized sublicensor.
+
+          Compaq conducts its business in a manner that conserves
+          the environment and protects the safety and health of its
+          employees, customers, and the community.
+
+          © Compaq Computer Corporation 2001. All rights reserved.
+
+          The following are trademarks of Compaq Computer
+          Corporation: Alpha, Compaq, DECdfs, DECdirect, DECdns,
+          DECnet, DIGITAL, OpenVMS, VAX, VAX DOCUMENT, VMS, and the
+          Compaq logo.
+
+          All other trademarks and registered trademarks are the
+          property of their respective holders.
+
+                                                               ZK6547
+
+          The OpenVMS documentation set is available on CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................    vii
+
+  1  Installation Prerequisites
+
+        1.1   Contents of the Kit...........................    1-1
+        1.2   Required Hardware.............................    1-2
+        1.3   Required Software.............................    1-2
+        1.4   License Registration (PAK)....................    1-2
+        1.5   Required Disk Space...........................    1-3
+        1.6   Installing Over Earlier Versions of DECdfs
+              Software......................................    1-4
+        1.7   SYSGEN Parameters.............................    1-5
+        1.7.1     Increasing the Nonpaged Pool Size.........    1-5
+        1.7.2     Increasing the System Interrupt Stack Size
+                  (VAX Systems Only)........................    1-6
+        1.7.3     Increasing Global Pages and Global
+                  Sections..................................    1-6
+        1.7.4     Increasing the Channel Count..............    1-7
+        1.8   Account and Quota Requirements................    1-8
+        1.9   Installation Time.............................    1-8
+        1.10  Configuration Planning........................    1-9
+        1.10.1    Configuration Questions...................    1-9
+        1.10.2    The DECdns Distributed Name Service
+                  (DECdns)..................................   1-10
+        1.10.2.1    Access Points...........................   1-10
+        1.10.2.2    DECdns Clerk............................   1-11
+        1.10.2.3    DECdns Logical Name Table...............   1-11
+        1.10.3    Installing DECdfs on OpenVMS Cluster
+                  Systems...................................   1-12
+        1.11  Reviewing the DECdfs Installation Procedure...   1-13
+        1.11.1    Rebooting an Existing DECdfs System Before
+                  or After the Installation.................   1-14
+        1.11.2    Renaming Existing DFS*.EXE Files..........   1-14
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+          1.11.3    Processing Existing DFS*.COM Files........   1-15
+          1.12  Maintenance Updates...........................   1-15
+
+    2  Installation and Verification
+
+          2.1   Preliminary Information.......................    2-1
+          2.2   Installation Procedure........................    2-2
+          2.3   Additional DECdfs Messages....................   2-14
+          2.3.1     Renaming Files Message....................   2-14
+          2.3.2     Deleting Old Driver Files Message.........   2-16
+          2.3.3     DECdfs License PAK Message................   2-16
+          2.3.4     DECdfs Startup Messages...................   2-16
+
+    3  Postinstallation Procedures
+
+          3.1   Running the Installation Verification
+                Procedure.....................................    3-1
+          3.2   Editing the Local System Startup Command
+                File..........................................    3-3
+          3.3   Using DECdfs Command Files....................    3-4
+          3.4   Setting Additional DECnet and System
+                Parameters....................................    3-6
+          3.5   Creating OpenVMS Proxy Accounts...............    3-6
+          3.6   Reinstalling DECdfs...........................    3-8
+          3.7   Changing DECdfs Configurations................    3-8
+          3.8   Deleting Server Software from Client-Only
+                Systems.......................................    3-9
+          3.9   Checking OpenVMS Cluster Systems After
+                Installing DECdfs.............................   3-10
+          3.10  Error Handling................................   3-10
+          3.11  Problem Reporting.............................   3-10
+
+    A  Files Affected by DECdfs Installation
+
+
+    B  Sample Installations for OpenVMS Systems
+
+          B.1   Client-Only Installation on OpenVMS VAX
+                Version 5.5-2 with DECnet-VAX ................    B-1
+          B.2   Server Installation on OpenVMS Alpha Version
+                7.1-1H2 with DECnet-Plus......................    B-5
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+        Index
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+        Intended Audience
+
+              This guide is intended for the person who installs DECdfs
+              for OpenVMS Version 2.3-1.
+
+        Associated Documents
+
+              The DECdfs documentation set consists of this installation
+              guide, the DECdfs for OpenVMS Management Guide, and the
+              release notes document. You can find related information in
+              the following documents:
+
+              o  The OpenVMS installation and operations guide for your
+                 system.
+
+              o  OpenVMS System Manager's Manual
+
+              o  DECnet for OpenVMS Networking Manual
+
+              o  OpenVMS Guide to System Security
+
+              o  OpenVMS License Management Utility Manual
+
+              o  OpenVMS System Services Reference Manual
+
+              o  DECnet-Plus for OpenVMS Network Management
+
+              o  DECnet-Plus DECdns Management
+
+        Reader's Comments
+
+              Compaq welcomes your comments on this manual.
+
+              Print or edit the online form SYS$HELP:OPENVMSDOC_
+              COMMENTS.TXT and send us your comments by:
+
+              Internet    openvmsdoc@zko.mts.dec.com
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+          Fax         603 884-0120, Attention: OSSG Documentation,
+                      ZKO3-4/U08
+
+          Mail        Compaq Computer Corporation
+                      OSSG Documentation Group, ZKO3-4/U08
+                      110 Spit Brook Rd.
+                      Nashua, NH 03062-2698
+
+    How To Order Additional Documentation
+
+          Use the following World Wide Web address to order
+          additional documentation:
+
+          http://www.openvms.digital.com:81/
+
+          If you need help deciding which documentation best meets
+          your needs, call 800-DIGITAL (800-344-4825).
+
+    Conventions Used in This Document
+
+          The following graphic conventions are used in this
+          document.
+
+          Special type  This special type in examples indicates
+                        system output or user input.
+
+          Bold type     Bold type in examples indicates user input.
+
+          [ ]           Brackets in command lines indicate that the
+                        enclosed values are optional. (Do not type
+                        the brackets.)
+
+          UPPERCASE     Uppercase letters in command lines indicate
+                        keywords that must be entered. You can enter
+                        them in either uppercase or lowercase.
+                        You can abbreviate command keywords to the
+                        minimum unique abbreviation.
+
+          lowercase     Lowercase letters (often hyphenated) in
+          letters       command syntax or examples indicate variables
+                        that the user replaces with appropriate
+                        values.
+
+          The Return key, which you must press in order to execute
+          commands, is assumed in command examples.
+
+    viii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                               Installation Prerequisites
+
+
+              This chapter describes the prerequisites for installing the
+              DECdfs software on an OpenVMS VAX or OpenVMS Alpha system.
+              It covers the following topics:
+
+              o  Contents of the kit
+
+              o  Hardware and software requirements
+
+              o  License registration
+
+              o  Disk space requirements
+
+              o  Installing over earlier DECdfs versions
+
+              o  System Generation (SYSGEN) parameters
+
+              o  Account and quota requirements
+
+              o  Installation time
+
+              o  Configuration planning
+
+              o  Reviewing the installation procedure
+
+              o  Maintenance updates
+
+        1.1 Contents of the Kit
+
+              DECdfs software is available on compact disc read-only
+              memory (CD-ROM). Contact your Compaq support representative
+              if any components of the software distribution kit are
+              missing.
+
+              The DECdfs documentation set consists of this installation
+              guide, the DECdfs for OpenVMS Management Guide, and the
+              DECdfs for OpenVMS Release Notes. Keep the installation
+              guide with your distribution kit for future reference.
+              You can use this guide to install maintenance updates (see
+              Section 1.12) or reinstall the DECdfs software.
+
+                                           Installation Prerequisites 1-1
+
+ 
+
+
+
+    Installation Prerequisites
+    1.1 Contents of the Kit
+
+
+          The DECdfs release notes are available on line. Read
+          steps 2 and 6 in Section 2.2 for instructions on how
+          to access them. After you install DECdfs, the release
+          notes file (DECDFS01023.RELEASE_NOTES) resides in the
+          SYS$HELP directory. Compaq recommends that you read the
+          release notes and the installation guide before you install
+          DECdfs.
+
+    1.2 Required Hardware
+
+          The only required hardware is the DECnet Phase IV or
+          DECnet Phase V network hardware. For a list of supported
+          hardware and configurations, refer to the Software Product
+          Description (SPD) for DECdfs for OpenVMS Version 2.3-1 and
+          to the SPD for the version of the OpenVMS operating system
+          on which you plan to run DECdfs.
+
+    1.3 Required Software
+
+          You must be running DECnet for OpenVMS, DECnet/OSI, or
+          DECnet-Plus for OpenVMS on your OpenVMS operating system
+          before you install DECdfs.
+
+          In the DECdfs documentation, DECnet Phase IV is used to
+          refer to DECnet for OpenVMS, and DECnet Phase V is used
+          to refer to either or both DECnet/OSI and DECnet-Plus for
+          OpenVMS.
+
+          The software required to run DECdfs Version 2.3-1 is as
+          follows:
+
+          o  OpenVMS VAX Version 5.5-2 (with DECnet Phase IV only)
+
+          o  OpenVMS VAX Version 6.2, 7.1, 7.2 or 7.3 with DECnet
+             Phase IV or DECnet Phase V
+
+          o  OpenVMS Alpha Version 6.2, 7.1, 7.2 or 7.3 with DECnet
+             Phase IV or DECnet Phase V
+
+    1.4 License Registration (PAK)
+
+          You must register and load the DECdfs license Product
+          Authorization Key (PAK) before you can run the DECdfs
+          software and the Installation Verification Procedure (IVP).
+
+    1-2 Installation Prerequisites
+
+ 
+
+
+
+                                               Installation Prerequisites
+                                           1.4 License Registration (PAK)
+
+
+              Use the License Management utility (LICENSE) to register
+              and load the DECdfs license PAK in the LMF database before
+              or after installing the DECdfs software. Use the License
+              Management utility (LICENSE) documentation to learn how to
+              register and load a license PAK.
+
+              When you register the license PAK before you install, the
+              IVP runs automatically (if selected) and DECdfs starts
+              automatically at the end of the installation. Neither
+              happens if you do not register the license PAK until after
+              the installation.
+
+              See the OpenVMS License Management Utility Manual for more
+              information about registering and loading licenses for
+              OpenVMS layered products.
+
+        1.5 Required Disk Space
+
+              To install DECdfs, there must be a minimum amount of
+              free disk space (peak block count) on the system disk
+              (SYS$SYSDEVICE:). After DECdfs is installed, the DECdfs
+              files require less disk space (net block count). Required
+              space depends on the processor, as shown in the following
+              table:
+
+              ___________________________________________________________
+              Processor_____Peak_Blocks___Net_Blocks_____________________
+
+              VAX           1500          1250
+
+              Alpha_________3525__________3250___________________________
+
+              To display the number of free blocks, enter the following
+              DCL command:
+
+              $ SHOW DEVICES SYS$SYSDEVICE
+
+              The number of free blocks is displayed on your screen under
+              the Free Blocks heading, as follows:
+
+              Device   Device   Error   Volume  Free   Trans  Mnt
+              Name     Status   Count   Label   Blocks Count  Cnt
+              DUA0:    Mounted     0    DAISY   31625    82   1
+
+              If the system disk does not contain enough free space,
+              you must purge files, remove unused files (log files, for
+              example), or remove some applications or user files. You
+              can then install the DECdfs software.
+
+                                           Installation Prerequisites 1-3
+
+ 
+
+
+
+    Installation Prerequisites
+    1.6 Installing Over Earlier Versions of DECdfs Software
+
+
+    1.6 Installing Over Earlier Versions of DECdfs Software
+
+          As of DECdfs Version 1.3, several tuning parameters were
+          removed to ease performance management tasks. Consequently,
+          the following command qualifiers and logical names are
+          obsolete:
+
+          o  /SESSIONS_MAXIMUM and /CONNECTIONS_MAXIMUM qualifiers
+
+             In the Communication Entity, both the /SESSIONS_MAXIMUM
+             and /CONNECTIONS_MAXIMUM qualifiers have been removed
+             from the SET COMMUNICATION and SHOW COMMUNICATION
+             commands. DECdfs now automatically allocates session and
+             communication blocks to accommodate increased requests.
+
+          o  /FILES_MAXIMUM qualifier
+
+             In the server, the /FILES_MAXIMUM qualifier for the SET
+             SERVER and SHOW SERVER commands has been removed. DECdfs
+             now automatically allocates blocks that correspond to
+             open files.
+
+          o  /PERSONA_CACHE=BLOCKS_THRESHOLD qualifier and value
+
+             As part of persona cache autosizing in the server entity
+             of DECdfs, the BLOCKS_THRESHOLD value for the /PERSONA_
+             CACHE qualifier of the SET SERVER and SHOW SERVER
+             commands has been disabled. DECdfs now automatically
+             recalculates this threshold periodically.
+
+          o  DFS$PQL_FILLM and DFS$PQL_BYTLM logical names
+
+             The two logical names DFS$PQL_FILLM and DFS$PQL_BYTLM,
+             which were defined in file DFS$CONFIG.COM in versions of
+             DECdfs prior to Version 1.3, are no longer necessary and
+             will be ignored if they exist in the file. DECdfs now
+             automatically computes values for these server process
+             quotas based on the SYSGEN parameter CHANNELCNT.
+
+          If you are installing DECdfs over a version of DECdfs
+          earlier than Version 1.3 and the existing DFS$CONFIG.COM
+          contains any of the qualifiers or logical names shown in
+          the above list, you should either rename DFS$CONFIG.COM
+          to disable it or edit the file and remove the obsolete
+          qualifiers or logical names. DECdfs issues a warning
+          message if it finds obsolete qualifiers or logical names
+          during startup.
+
+    1-4 Installation Prerequisites
+
+ 
+
+
+
+                                               Installation Prerequisites
+                                                    1.7 SYSGEN Parameters
+
+
+        1.7 SYSGEN Parameters
+
+              The following sections describe how to check and modify
+              the System Generation (SYSGEN) parameters that are needed
+              to run DECdfs. After modifying any SYSGEN parameters in
+              the MODPARAMS.DAT file, invoke the OpenVMS AUTOGEN command
+              procedure to automatically adjust the values of the other
+              system parameters and reboot the system to set the new
+              parameter values. For information about AUTOGEN, see the
+              OpenVMS System Manager's Manual.
+
+              To run DECdfs, you might need to modify the following
+              SYSGEN parameters:
+
+              o  NPAGEDYN (nonpaged dynamic pool size)
+
+              o  INTSTKPAGES (system interrupt stack size)
+
+              o  GBLPAGES (global pages) and GLBSECTIONS (global
+                 sections)
+
+        1.7.1 Increasing the Nonpaged Pool Size
+
+              To use DECdfs, you may need to increase the size of the
+              nonpaged dynamic pool (the SYSGEN parameter NPAGEDYN).
+
+              For a client-only node, add 100,000 bytes of nonpaged pool.
+              For a server node, Compaq recommends an additional 250,000
+              bytes of nonpaged pool. The additional bytes are usually
+              sufficient for the normal use of approximately 10 to 20
+              DECdfs client devices.
+
+              To increase the nonpaged pool size, edit the MODPARAMS.DAT
+              file in the SYS$SYSTEM directory. Add the statements that
+              increase the value of the SYSGEN parameter NPAGEDYN as
+              follows:
+
+              o  For a client-only node, add the following comment and
+                 statement at the end of the file:
+
+                 ! Add some nonpaged pool for DECdfs client
+                 !
+                 ADD_NPAGEDYN=100000
+
+
+                                           Installation Prerequisites 1-5
+
+ 
+
+
+
+    Installation Prerequisites
+    1.7 SYSGEN Parameters
+
+
+          o  For a server node, add the following comment and
+             statement at the end of the file:
+
+             ! Add some nonpaged pool for DECdfs server
+             !
+             ADD_NPAGEDYN=250000
+
+          If you decide to increase the data cache size on the server
+          node, increase the server node's nonpaged pool size further
+          (see the DECdfs for OpenVMS Management Guide).
+
+    1.7.2 Increasing the System Interrupt Stack Size (VAX Systems
+          Only)
+
+          To use DECdfs, increase the size of the system interrupt
+          stack four pages more than your current use. To
+          increase the size of the interrupt stack, edit the
+          SYS$SYSTEM:MODPARAMS.DAT file to add a statement that
+          increments the value of the SYSGEN parameter INTSTKPAGES.
+
+          For a server node, add the following statement at the end
+          of the MODPARAMS.DAT file:
+
+          ! Increase the size of the interrupt stack for the DECdfs
+          ! server.
+          ADD_INTSTKPAGES=4
+
+          By increasing the size of the system interrupt stack, you
+          can prevent the DECdfs server from experiencing occasional
+          system halts. An interrupt stack pointer error (ISP ERR) or
+          similar hardware error message is displayed when the size
+          of the interrupt stack is too small. The specific error
+          message that is displayed depends on the VAX model you are
+          using.
+
+    1.7.3 Increasing Global Pages and Global Sections
+
+          To use DECdfs, you may need to increase the number of
+          global pages and global sections (the SYSGEN parameters
+          GBLPAGES and GBLSECTIONS). If the current settings for
+          these parameters are inadequate, VMSINSTAL cannot start
+          DECdfs after installation.
+
+          The following table shows how many additional global pages
+          and global sections you need for a DECdfs server node
+          running on a VAX or Alpha processor:
+
+    1-6 Installation Prerequisites
+
+ 
+
+
+
+                                               Installation Prerequisites
+                                                    1.7 SYSGEN Parameters
+
+              ___________________________________________________________
+              Processor_____Global_Pages______Global_Sections____________
+
+              VAX           1080              21
+
+              Alpha_________1312______________10_________________________
+
+              For a client-only node, DECdfs requires about 60 percent
+              of the global page values shown in the previous table; the
+              global section requirements are the same.
+
+              To check the number of available global pages and global
+              sections, use the WRITE command with the F$GETSYI lexical
+              function to find the number of free global pages and global
+              sections. The following example shows how to get this
+              information at your terminal or workstation (the default
+              destination for SYS$OUTPUT):
+
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+                15848
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+                24
+
+              If the number of unused global pages and global
+              sections is insufficient to run DECdfs, edit the
+              SYS$SYSTEM:MODPARAMS.DAT file and insert statements that
+              raise the values of the SYSGEN parameters GBLPAGES and
+              GBLSECTIONS.
+
+              To increase the values for GBLPAGES and GBLSECTIONS, add
+              the following statements at the end of the MODPARAMS.DAT
+              file. The variables nnn and mmm represent numbers that you
+              add to the current setting for these SYSGEN parameters.
+
+              ADD_GBLPAGES=nnn
+              ADD_GBLSECTIONS=mmm
+
+        1.7.4 Increasing the Channel Count
+
+              Your system's channel count parameter, CHANNELCNT,
+              specifies the maximum number of files that any process
+              on the system can open concurrently. Each file requires
+              one channel, and the DECdfs server process opens all local
+              files that users at DECdfs clients access. If the server
+              is your system's most active file user, you may need to
+              increase the channel count to accommodate the server.
+
+                                           Installation Prerequisites 1-7
+
+ 
+
+
+
+    Installation Prerequisites
+    1.7 SYSGEN Parameters
+
+
+          Determine the appropriate CHANNELCNT parameter by
+          estimating the maximum number of simultaneously open files
+          you expect on the server. Add 15 to this number to allow
+          for some additional channels for the server's own use. For
+          example, if you expect 250 files to be open simultaneously,
+          set the CHANNELCNT parameter to 265 channels before running
+          DECdfs.
+
+          Insert the following line in the MODPARAMS.DAT file in the
+          SYS$SYSTEM directory, and then run the AUTOGEN procedure:
+
+          ADD_CHANNELCNT = 265
+
+          For information on AUTOGEN, see the OpenVMS System
+          Management Utilities Reference Manual. You can read the
+          online help information about the CHANNELCNT parameter by
+          entering the following SYSGEN HELP command:
+
+          $ RUN SYS$SYSTEM:SYSGEN
+          SYSGEN> HELP PARAMETERS SPECIAL_PARAMS CHANNELCNT
+
+    1.8 Account and Quota Requirements
+
+          To run VMSINSTAL, you must have the following privileges:
+          SYSPRV, SYSNAM, OPER, NETMBX, TMPMBX, CMKRNL, DETACH,
+          ALTPRI, ACNT, PRMMBX, PSWAPM, and PHY_IO. Use the system
+          manager account to install the DECdfs software.
+
+          The default values for the system quotas are sufficient to
+          install DECdfs. See the OpenVMS System Services Reference
+          Manual for more information about system quotas.
+
+    1.9 Installation Time
+
+          The DECdfs software installation takes less than 5 minutes
+          when installed from CD-ROM. The time that it takes to
+          install DECdfs client or server software is similar, but
+          can vary depending on the processor, distribution media,
+          and system load. The installation verification procedure
+          (IVP) takes approximately 30 seconds.
+
+
+
+
+
+    1-8 Installation Prerequisites
+
+ 
+
+
+
+                                               Installation Prerequisites
+                                              1.10 Configuration Planning
+
+
+        1.10 Configuration Planning
+
+              Before you install any DECdfs software, you need to plan
+              your configuration. Decide which nodes will be DECdfs
+              server nodes (those with active DECdfs server and client
+              software) and which will be DECdfs client-only nodes (those
+              with active DECdfs client software only). You must consider
+              how many servers and client-only nodes exist in your
+              network, as well as their locations. This information is
+              important in deciding where to place servers.
+
+              A DECdfs server allows users at DECdfs clients to access
+              server disks and directories. These disks and directories
+              appear to be local to the DECdfs client system. For
+              information on DECdfs server and client functions, see
+              the DECdfs for OpenVMS Management Guide.
+
+              When you install DECdfs software without specifying that
+              you want a client-only node, the software for clients and
+              servers is loaded and the node becomes a DECdfs server.
+              When you specify client-only, then only the DECdfs client
+              software starts up on the client-only node. The server
+              software is present but inactive on client-only nodes.
+
+              See Section 1.10.3 or Section 3.7 for information on
+              changing the configuration of client systems and server
+              systems.
+
+        1.10.1 Configuration Questions
+
+              As you plan your configuration, consider the following
+              criteria:
+
+              o  The nodes on which you will install DECdfs client-only
+                 software.
+
+              o  The nodes on which you will install DECdfs server
+                 software.
+
+              o  The namespace naming conventions used on your network.
+                 See Section 1.10.2 for information on DECdns.
+
+              o  Whether the DECdfs and DECnet license PAKs are
+                 registered and loaded on systems that will be clients
+                 and servers.
+
+              o  Whether each node in a cluster environment has DECdfs
+                 and DECnet license PAKs.
+
+                                           Installation Prerequisites 1-9
+
+ 
+
+
+
+    Installation Prerequisites
+    1.10 Configuration Planning
+
+
+    1.10.2 The DECdns Distributed Name Service (DECdns)
+
+          On all DECnet Phase V systems, and on VAX systems running
+          DECnet Phase IV, DECdfs uses the facilities of the DECdns
+          Distributed Name Service to identify file services. This
+          allows clients to access file services without explicitly
+          knowing the name or location of the node that provides the
+          service. On Alpha systems running DECnet Phase IV, DECdns
+          is not available, and consequently, DECdfs operational
+          procedures are adjusted to include specifying the node name
+          of the server in appropriate places.
+
+          The following stated requirements here and elsewhere in
+          this guide regarding DECdns do not apply to DECnet Phase
+          IV Alpha systems. However, you should refer to the DECdfs
+          for OpenVMS Management Guide for information concerning the
+          interaction between nodes that do and do not use DECdns.
+
+          DECdns provides a database (called a namespace) for
+          storing and managing the names and addresses of resources
+          that are distributed throughout a network. This scheme
+          permits users and applications throughout the network
+          to locate a particular resource by its name rather than
+          its address. Thus, network resources can move to a new
+          location without affecting users or applications seeking
+          them. If someone moves a resource, that person writes the
+          new address information into the namespace. The next user
+          or application seeking that resource by name automatically
+          gets the updated address information from the namespace.
+
+    1.10.2.1 Access Points
+
+          DECdfs servers store address information for access points
+          in the DECdns namespace. An access point represents the
+          file resources that a DECdfs server makes available to a
+          DECdfs client. Each access point name resides in the DECdns
+          namespace and provides the address information for a DECdfs
+          server that offers that particular file resource.
+
+          Ask your network's DECdns manager to help you perform the
+          following tasks:
+
+          o  Identify a node that has the DECdns server software. A
+             DECdns server must be installed, running, and accessible
+             before you can use the DECdfs software or run the IVP.
+
+    1-10 Installation Prerequisites
+
+ 
+
+
+
+                                               Installation Prerequisites
+                                              1.10 Configuration Planning
+
+
+              o  Create access point names that comply with the DECdns
+                 naming conventions used on your network.
+
+              The DECdns manager must also provide access rights to
+              DECdfs server accounts and client accounts, as follows:
+
+              o  The account from which you operate a DECdfs server needs
+                 read and write access rights in any DECdns directory in
+                 which you plan to store access points.
+
+              o  The account from which you plan to run a DECdfs client
+                 installation and verification procedure (IVP) needs read
+                 access rights in the DECdns directory containing any
+                 DECdfs access point.
+
+        1.10.2.2 DECdns Clerk
+
+              DECdfs Version 2.3-1 should be installed on nodes running
+              OpenVMS Version 5.5-2 or a higher version. These versions
+              of OpenVMS include the DECdns clerk, so the DECdfs
+              installation no longer supplies the DECdns clerk. The
+              installation, however, still attempts to start the
+              DECdns clerk if it has not already been started and if
+              file DNS$DEFAULT_FILE.DAT exists. If this file does not
+              exist, the installation reminds you to execute procedure
+              SYS$STARTUP:DNS$CHANGE_DEF_FILE.COM before you try to start
+              DECdfs. This procedure copies file DNS$DEFAULT_FILE.DAT to
+              your node and starts the DECdns clerk.
+
+              On systems running DECnet Phase V, the file DNS$DEFAULT_
+              FILE.DAT is no longer used. The DECdns clerk is always
+              installed and running on DECnet Phase V systems.
+
+        1.10.2.3 DECdns Logical Name Table
+
+              DECdns uses its own logical name table for DECdns objects.
+              You must supply the name of this table, DNS$SYSTEM_TABLE,
+              to any DEFINE command that applies to related DECdns
+              objects. For example, suppose you want to define a system
+              logical name in your DFS$SYSTARTUP.COM procedure for your
+              namespace name or directory. Supply the DEFINE statement
+              with the qualifier that specifies the DECdns logical
+              name table, DNS$SYSTEM_TABLE. To create the logical name
+              EXAMPLE_DIR, you could include the following line:
+
+              $ DEFINE/TABLE=DNS$SYSTEM_TABLE EXAMPLE_DIR -"THIS.IS.AN.EXAMPLE"
+
+                                          Installation Prerequisites 1-11
+
+ 
+
+
+
+    Installation Prerequisites
+    1.10 Configuration Planning
+
+
+          Keep this OpenVMS and DECdns change in mind if you are
+          upgrading to DECdfs Version 2.3-1 from an earlier version
+          of DECdfs.
+
+    1.10.3 Installing DECdfs on OpenVMS Cluster Systems
+
+          In an OpenVMS Cluster environment with only one system
+          disk, you need to install DECdfs server software on only
+          one cluster member. VMSINSTAL places all DECdfs files in
+          the SYS$COMMON directory. This provides identical DECdfs
+          environments for each cluster member; for example, mounting
+          the same access points and serving the same access points
+          added by using the ADD ACCESS_POINT command with the
+          /CLUSTER qualifier.
+
+             ________________________ Note ________________________
+
+             All nodes in an OpenVMS Cluster system that will run
+             DECdfs need a registered and loaded DECdfs license PAK
+             before DECdfs can be started.
+
+             ______________________________________________________
+
+          You can create a different DECdfs environment on each
+          node in an OpenVMS Cluster system by copying the
+          DFS$SYSTARTUP.COM and DFS$CONFIG.COM files to each node's
+          SYS$SPECIFIC:[SYS$STARTUP] directory and modifying it for
+          that specific cluster member.
+
+          If you want to run some cluster members as DECdfs client-
+          only nodes and others as DECdfs server nodes, copy:
+
+          o  The DFS$CONFIG.COM file to each member's
+             SYS$SPECIFIC:[SYS$STARTUP] directory and modify it for
+             that specific cluster member.
+
+          o  The DFS$SYSTARTUP.COM file to each member's
+             SYS$SPECIFIC:[SYSMGR] directory and modify it for that
+             specific cluster member.
+
+          o  The DFS$STARTUP.COM file to each member's
+             SYS$SPECIFIC:[SYS$STARTUP] directory and edit the
+             following lines:
+
+
+    1-12 Installation Prerequisites
+
+ 
+
+
+
+                                               Installation Prerequisites
+                                              1.10 Configuration Planning
+
+
+                 $! Installation specific parameters:
+                 $!
+                 $ START_CLIENT_FLAG = "TRUE"
+                 $ START_SERVER_FLAG = "TRUE"
+                 $!
+                 $!
+                 $! Title = DFS$STARTUP.COM
+
+              The flag START_SERVER_FLAG = "TRUE" indicates that the
+              DECdfs server software can be started on this node.
+              Edit the DFS$STARTUP.COM file only when you change the
+              configuration of the node. Make one of the following
+              changes:
+
+              o  When you change from a server to a client-only node, you
+                 must change the flag START_SERVER_FLAG from "TRUE" to
+                 "FALSE."
+
+              o  When you change from a client-only to a server node, you
+                 must change the flag START_SERVER_FLAG from "FALSE" to
+                 "TRUE."
+
+              To run DECdfs on a heterogeneous OpenVMS Cluster system,
+              on a mixed architecture OpenVMS Cluster system, or on
+              a homogeneous OpenVMS Cluster system that uses multiple
+              system disks, install DECdfs on each of the system disks.
+              Each node and system disk needs a registered and loaded
+              license PAK before DECdfs can be started on that node.
+
+        1.11 Reviewing the DECdfs Installation Procedure
+
+              Before installing DECdfs, assemble the information that
+              you must provide to VMSINSTAL during the installation
+              procedure. To determine the context in which VMSINSTAL
+              requires this information, review the installation
+              procedure (as described in Section 2.2).
+
+              Read the DECdfs release notes before continuing the
+              installation procedure. Use the OPTIONS N parameter in
+              the command line to gain access to the release notes. After
+              you complete the installation, you can access the release
+              notes in SYS$HELP:DECDFS01023.RELEASE_NOTES. See Chapter 2
+              for more information about the installation procedure.
+
+              If DECdfs files exist on your system from a previous
+              installation, read the following three sections.
+
+                                          Installation Prerequisites 1-13
+
+ 
+
+
+
+    Installation Prerequisites
+    1.11 Reviewing the DECdfs Installation Procedure
+
+
+    1.11.1 Rebooting an Existing DECdfs System Before or After the
+           Installation
+
+          DECdfs uses OpenVMS drivers that, once loaded, cannot be
+          unloaded without rebooting the system. Therefore, if a
+          previous version of DECdfs is running on the target system,
+          one of the following two actions must be taken:
+
+          o  Reboot the system without starting DECdfs before doing
+             the installation.
+
+          o  Do the installation and promptly reboot the system. In
+             this case, once you complete the installation and before
+             the system is rebooted, you will not be able to run
+             DFS$CONTROL because of version incompatibilities between
+             drivers, installed images, and new files. Furthermore,
+             you cannot run the IVP until after the reboot.
+
+          Compaq recommends that you reboot the system without
+          starting DECdfs before you perform this installation. If
+          you choose to do the installation first, reboot the system
+          as soon as possible after the installation is complete.
+          Do not attempt to run DFS$CONTROL or the IVP, or restart
+          DECdfs, until after the reboot.
+
+          If you reboot first, you will not need to reboot again when
+          the installation completes. To avoid starting DECdfs, you
+          must edit your SYS$SYSTARTUP file or otherwise temporarily
+          eliminate the call to DFS$STARTUP.COM.
+
+    1.11.2 Renaming Existing DFS*.EXE Files
+
+          The installation checks whether any DFS*.EXE files are
+          in the SYS$SPECIFIC:[SYSEXE], SYS$SPECIFIC:[SYSLIB],
+          SYS$SPECIFIC:[SYS$LDR], or SYS$SPECIFIC:[SYSMSG]
+          directories. If you moved DFS*.EXE files to any of these
+          directories, VMSINSTAL asks you if you want to rename all
+          DFS*.EXE files to DFS*.OLD (see Section 2.3.1). If you
+          answer YES, the installation procedure renames the files
+          and continues. Otherwise, the installation procedure aborts
+          and displays an error message.
+
+          If you want to conserve disk space, remember to delete
+          all the previous versions of the DFS*.EXE files from
+          the SYS$SPECIFIC:[SYSEXE], SYS$SPECIFIC:[SYSLIB],
+          SYS$SPECIFIC:[SYS$LDR], and SYS$SPECIFIC:[SYSMSG]
+
+    1-14 Installation Prerequisites
+
+ 
+
+
+
+                                               Installation Prerequisites
+                         1.11 Reviewing the DECdfs Installation Procedure
+
+
+              directories before you install DECdfs. If DECdfs runs on a
+              cluster system, delete these files on all cluster members.
+
+        1.11.3 Processing Existing DFS*.COM Files
+
+              As part of its installation, DECdfs Version 2.3-1 looks
+              for existing DFS$CONFIG.COM and DFS$SYSTARTUP.COM files
+              in directories SYS$STARTUP and SYS$MANAGER. If it does
+              not find these files, the installation procedure places
+              a default version of the missing file in SYS$MANAGER.
+              If it finds these files, the installation procedure
+              places the respective template files (DFS$CONFIG.TEMPLATE
+              and DFS$SYSTARTUP.TEMPLATE) in SYS$MANAGER. Note that
+              if you have previously moved either DFS$CONFIG.COM or
+              DFS$SYSTARTUP.COM to SYS$SPECIFIC directories, the
+              installation proceeds as if these two files do not exist.
+              DECdfs uses the DFS$SYSTARTUP.COM and DFS$CONFIG.COM files
+              for adding or mounting access points (or both) and for
+              configuration purposes.
+
+              The installation procedure always renames previously
+              existing
+              DFS$STARTUP.COM files to DFS$STARTUP.OLD and provides a new
+              startup file in directory SYS$STARTUP.
+
+        1.12 Maintenance Updates
+
+              Compaq may periodically issue a maintenance update release
+              of the DECdfs software. If you are upgrading from a
+              previous version of DECdfs, your software installation
+              kit will not include new documentation if the documentation
+              has not been revised. In this case, use the installation
+              guide for the previous version to install the new software.
+
+              The release notes included with each software release
+              describe new and changed software features. Compaq
+              recommends that you read the release notes before
+              installing the software to ensure that you are aware of
+              any special installation or operating requirements.
+
+              For more information about reading, printing, and accessing
+              the release notes before you install the software,
+              follow steps 1 through 6 of the installation procedure
+              in Section 2.2. You can stop the installation procedure
+              during step 6 by answering the "Do you want to continue
+              the installation [NO]?" prompt with NO. You can read,
+
+                                          Installation Prerequisites 1-15
+
+ 
+
+
+
+    Installation Prerequisites
+    1.12 Maintenance Updates
+
+
+          display, or print the release notes after the installation
+          by specifying the SYS$HELP:DECDFS01023.RELEASE_NOTES file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-16 Installation Prerequisites
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                            Installation and Verification
+
+
+              This chapter contains general information about the OpenVMS
+              installation procedure (VMSINSTAL) and explains each step
+              of the procedure. This chapter also describes additional
+              DECdfs installation messages that you may receive during an
+              installation.
+
+        2.1 Preliminary Information
+
+              Compaq recommends that you read Section 1.11 and this
+              section before you install DECdfs. Compaq also recommends
+              that you back up your system before beginning the
+              installation.
+
+              Use the installation procedure, VMSINSTAL, to install the
+              DECdfs software on an OpenVMS system. The sample procedure
+              in Section 2.2 installs both client and server software on
+              a node. If you are establishing a client-only node, you can
+              delete the files that are used by only the server after the
+              DECdfs installation is complete. See Section 3.8 for more
+              information about reclaiming disk space.
+
+              VMSINSTAL asks a series of questions, to which you must
+              provide appropriate responses. Default responses appear
+              in brackets ([]). Press Return to accept the default
+              response. For help while installing DECdfs, enter a
+              question mark (?) after the prompt.
+
+              To abort the installation procedure, press Ctrl/Y. The
+              installation procedure deletes all DECdfs files that it has
+              created up to that point and returns to the DCL prompt ($).
+              If you want to retry the installation procedure after you
+              press Ctrl/Y, you must invoke VMSINSTAL again. See Step 2
+              in Section 2.2 for additional information.
+
+
+
+                                        Installation and Verification 2-1
+
+ 
+
+
+
+    Installation and Verification
+    2.1 Preliminary Information
+
+
+          To save a copy of the VMSINSTAL session on disk for future
+          reference, use the SET HOST 0 /LOG command before invoking
+          VMSINSTAL. Node 0 represents the local node. See Appendix B
+          for sample installations.
+
+          Before you install DECdfs, ensure that:
+
+          o  Your system is running the required software (see
+             Section 1.3 for additional information).
+
+          o  Your system has the required free disk space on
+             the system disk (see Section 1.5 for additional
+             information).
+
+          o  You modified the SYSGEN parameters as described in
+             Section 1.7.
+
+          o  Your DECnet Phase IV or DECnet Phase V software is
+             installed and running.
+
+          o  At least one DECdfs server is installed, running, and
+             accessible and at least one registered access point is
+             available if you wish to create a DECdfs client-only
+             configuration and run the Installation Verification
+             Procedure (IVP).
+
+          o  If you are running DECnet Phase IV on a VAX processor,
+             the DECdns Distributed Name Service is running on
+             the network and is accessible (see Section 1.10.2 for
+             additional information).
+
+          o  If you are running DECnet Phase IV on a VAX processor,
+             the file SYS$SYSTEM:DNS$DEFAULT_FILE.DAT is necessary
+             for DECdns to work properly. If this file does not exist
+             on your system, execute SYS$STARTUP:DNS$CHANGE_DEF_
+             FILE.COM to obtain a copy of this file from your DECdns
+             server. The file is not necessary if you are running
+             DECnet Phase V. DECdns is not available on Alpha systems
+             running DECnet Phase IV.
+
+    2.2 Installation Procedure
+
+          This section presents the steps of a sample installation
+          procedure for installing DECdfs client and server software.
+          To install the DECdfs software, follow these steps:
+
+    2-2 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                               2.2 Installation Procedure
+
+
+              Step 1. Log in to the system manager account.
+
+              The system manager account has the necessary privileges to
+              run VMSINSTAL.
+
+              Step 2. Invoke VMSINSTAL.
+
+              To invoke VMSINSTAL, enter the following command line:
+
+              $ @SYS$UPDATE:VMSINSTAL DECDFS01023 ddcu: OPTIONS N
+
+              The value ddcu: represents the name of the device where
+              you mounted the distribution media. For example, if the
+              DECdfs kit is in a subdirectory on a user disk, you might
+              construct the device name MY_SYS$DUA1:[MY_DIRECTORY]. When
+              you invoke VMSINSTAL and include the OPTIONS N parameter in
+              the command line, you can view or print the release notes
+              automatically. If you omit OPTIONS N in the command line,
+              you cannot print or read the release notes until after the
+              installation procedure is complete.
+
+              The following message is displayed on the screen:
+
+                      VAX/VMS Software Product Installation Procedure Vn.n
+
+              It is dd-mmm-yyyy at hh:mm.
+
+              Enter a question mark (?) at any time for help.
+
+                ________________________ Note ________________________
+
+                The real version number, date, and time will be
+                substituted for the variables shown in italic type.
+
+                ______________________________________________________
+
+              Step 3. Check the system environment.
+
+              VMSINSTAL checks your system environment and notifies you
+              of any running processes. For example, your system might
+              display the following message:
+
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                      MAIL_38503
+
+              * Do you want to continue anyway [NO]?
+
+              This message is informational only. Enter NO (or press
+              Return) to end the installation and return to the DCL
+              prompt ($). Enter YES to continue installing DECdfs.
+
+                                        Installation and Verification 2-3
+
+ 
+
+
+
+    Installation and Verification
+    2.2 Installation Procedure
+
+
+          Step 4. Check backup.
+
+          The following message reminds you to back up your system
+          disk before installing software:
+
+          * Are you satisfied with the backup of your system disk [YES]?
+
+          Enter YES to continue installing DECdfs. Enter NO to end
+          the installation and return to the DCL prompt ($).
+
+          Step 5. Mount the installation kit volume.
+
+          If the device you provided in step 2 for the distribution
+          media is not mounted, VMSINSTAL prompts you to mount the
+          installation kit volume. Mount the volume and ensure that
+          the device is in the READY state. Enter YES and press
+          Return when you are ready. A message confirms that the
+          media is mounted and ready:
+
+          Please mount the first volume of the set on ddcu:
+
+          * Are you ready? YES
+          %MOUNT-I-MOUNTED, DECDFS01023 mounted on _ddcu:.
+
+          Step 6. Start the installation.
+
+          After you mount the installation kit volume, VMSINSTAL
+          displays the following messages:
+
+          The following products will be processed:
+
+            DECDFS01 V2.3
+
+                  Beginning installation of DECDFS01 V2.3 at hh:mm
+
+          %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+          Release notes included with this kit are always copied to
+          SYS$HELP. If you included OPTIONS N in the command line
+          in step 2, the Additional Release Notes Options menu is
+          displayed. You can select one of the following options:
+
+          Additional Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  None of the above
+
+          * Select option [2]: 2
+
+          If you choose option 1, VMSINSTAL displays the release
+          notes at your terminal.
+
+    2-4 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                               2.2 Installation Procedure
+
+
+              If you choose option 2, VMSINSTAL prompts you to enter a
+              print queue name as follows:
+
+              Queue name [SYS$PRINT]:
+
+              Type a print queue name or press Return. VMSINSTAL queues a
+              copy of the release notes to print and displays a message
+              such as the following:
+
+              Job DECDFS01023 (queue queue, entry nnn) started on queue
+
+              If you select option 3, VMSINSTAL displays the release
+              notes on your screen and prompts you for a print queue
+              name.
+
+              If you select option 4, VMSINSTAL does not display or
+              print the release notes at any time during the installation
+              procedure.
+
+              After you select any of the options, VMSINSTAL displays the
+              following message:
+
+              * Do you want to continue the installation [NO]?
+
+              One way to read the release notes now is to respond NO
+              and locate them in SYS$HELP. A NO response terminates the
+              installation and requires you to start again at step 1.
+              Regardless of your response, the procedure displays the
+              following message:
+
+              %VMSINSTAL-I-RELMOVED, The product's release notes have been
+              successfully moved to SYS$HELP.
+
+              Step 7. Run the Installation Verification Procedure.
+
+              VMSINSTAL asks whether you want to run the Installation
+              Verification Procedure (IVP) as part of the installation
+              procedure. If you enter YES, you need to supply an access
+              point name in step 13. If you enter NO, VMSINSTAL skips
+              steps 13 and 14.
+
+              * Do you want to run the IVP after the installation [YES]?
+
+              Step 8. Purge old files.
+
+              VMSINSTAL asks whether you want to purge files that are
+              replaced during the installation process. To retain the old
+              copies, enter NO; otherwise, enter YES (or press Return).
+
+              * Do you want to purge files replaced by this installation [YES]?
+
+                                        Installation and Verification 2-5
+
+ 
+
+
+
+    Installation and Verification
+    2.2 Installation Procedure
+
+
+          If VMSINSTAL finds DFS*.EXE files in any SYS$SPECIFIC:
+          directory, the procedure lists the files and asks whether
+          you want to rename them. See Section 2.3.1 for the dialog
+          and possible responses.
+
+          If VMSINSTAL finds DECdfs driver files in SYS$SYSTEM,
+          the procedure asks whether you want to delete them. See
+          Section 2.3.2 for the dialog and possible responses.
+
+          Step 9. Verify the configuration.
+
+          VMSINSTAL asks whether the stated configuration is correct
+          or not.
+
+          DECnet Phase IV:
+
+           Current configuration:   OpenVMS/xxx Vn.n - DECnet
+
+          * Install the DFS files that support this configuration? [YES]?
+
+          DECnet Phase V:
+
+           Current configuration:   OpenVMS/xxx Vn.n - DECnet-
+          Plus
+
+          * Install the DFS files that support this configuration? [YES]?
+
+          In the previous examples, the variables can have the
+          following values:
+
+          o  xxx can be either a VAX or an Alpha processor
+
+          o  Vn.n can be Version 5.5-2, 6.2, 7.1, 7.2 or 7.3 for VAX
+             processors, and Version 6.2, 7.1, 7.2 or 7.3 for Alpha
+             processors
+
+          To use the configuration displayed, enter YES (or press
+          Return). If this configuration does not represent the
+          system, enter NO. If you enter NO, you are given the
+          opportunity to choose one of the following alternate
+          configurations:
+
+           Possible configurations:
+                      1. OpenVMS VAX V5.5-2 - DECnet Phase IV
+
+                      2. OpenVMS VAX V6.2   - DECnet Phase IV
+                         OpenVMS VAX V7.1   - DECnet Phase IV
+
+                      3. OpenVMS VAX V6.2   - DECnet/OSI
+                         OpenVMS VAX V7.1   - DECnet-Plus
+
+    2-6 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                               2.2 Installation Procedure
+
+
+                          4. OpenVMS Alpha V6.2 - DECnet Phase IV
+
+                          5. OpenVMS Alpha V6.2 - DECnet/OSI
+
+                          6. OpenVMS Alpha V7.1 - DECnet-Plus
+
+                          7. OpenVMS Alpha V7.1 - DECnet Phase IV
+
+                          8. OpenVMS Alpha V7.2 - DECnet-Plus
+
+                          9. OpenVMS Alpha V7.2 - DECnet Phase IV
+                             OpenVMS Alpha V7.3 - DECnet Phase IV
+
+                         10. OpenVMS VAX V7.2   - DECnet-Plus
+                             OpenVMS VAX V7.3   - DECnet-Plus
+
+                         11. OpenVMS VAX V7.2   - DECnet Phase IV
+                             OpenVMS VAX V7.3   - DECnet Phase IV
+
+                          0. Stop installation
+
+              * Enter number [8]
+
+              If you want to stop the installation, enter 0. The default
+              is the stated configuration. If you prefer the alternate
+              configuration, enter one of the other numbers. If you
+              choose an alternate configuration, a difference will
+              exist between the stated configuration and the chosen
+              configuration, and a warning message and question therefore
+              will be displayed.
+
+               %DECDFS_-VRMISM-E, Architecture type, VMS version,
+               -DECDFS_-VRMISM-E, or DECnet version mismatch detected
+
+              * Do you wish to continue with this configuration? [NO]
+
+              If you answer NO, the installation ends. If you answer YES,
+              it continues.
+
+              Step 10. Install the Help Message Utility.
+
+              If you are installing on a system that is running OpenVMS
+              Version 6.2 or later, the following question is displayed:
+
+              * Install DFS Help Message file? [YES]
+
+              If you answer YES, the installation procedure displays the
+              following message:
+
+                                        Installation and Verification 2-7
+
+ 
+
+
+
+    Installation and Verification
+    2.2 Installation Procedure
+
+
+            Add SYS$HELP:DFS.MSGHLP$DATA to the searchlist defined by
+            MSGHLP$LIBRARY in order to include the DFS messages in your
+            HELP/MESSAGE search. Please refer to the OpenVMS SYSTEM
+            MANAGER'S MANUAL: ESSENTIALS for more information.
+
+          Step 11. Install client or server software.
+
+          Indicate whether you want to install client or server
+          software on this node at this VMSINSTAL prompt. Enter YES
+          to install both the client and server software. Enter NO to
+          establish a client-only node.
+
+          * Do you want to install the DECDFS01 V2.3 SERVER software on this node [YES]?
+
+          After you answer these questions, VMSINSTAL displays the
+          following message:
+
+                  Product:       DFS
+                  Producer:      DEC
+                  Version:       2.0
+                  Release Date:  20-JUN-1994
+
+          The Product name DFS indicates a server software
+          installation; the Product name DFS-CLIENT indicates a
+          client software installation. The Product name is also
+          the PAK name, which is checked in the next step.
+
+          Step 12. Check for a License Product Authorization Key
+          (PAK).
+
+          VMSINSTAL checks for a registered and loaded DECdfs license
+          PAK.
+
+          * Does this product have an authorization key registered and loaded?
+
+          Enter YES or press Return to indicate that the DECdfs
+          license PAK is installed. Enter NO and press Return if
+          the DECdfs license PAK is not installed.
+
+          If you are installing DECdfs client software (you answered
+          NO in step 11), the installation procedure looks for a PAK
+          named DFS-CLIENT, which includes only the client. If you
+          are installing DECdfs server software (you answered YES in
+          step 11), the installation procedure looks for a PAK named
+          DFS, which includes both server and client.
+
+    2-8 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                               2.2 Installation Procedure
+
+
+              You can continue to install DECdfs without a license, but
+              the IVP cannot run and DECdfs cannot be started as part of
+              the installation or when the installation finishes. After
+              using the License Management Facility (LMF) to register and
+              load the license PAK, you can start DECdfs or run the IVP.
+
+              Step 13. Read informational messages.
+
+              VMSINSTAL displays the following informational messages:
+
+                       Installation will be complete in approximately 1 - 5 minutes
+                       depending upon your configuration.
+
+                       There are no more questions unless you choose to run the IVP.
+                       Installing DECdfs software . . .
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+              The following table shows the save sets installed for
+              each possible operating system/processor/network transport
+              combination:
+
+              ___________________________________________________________
+              ______________________DECnet_Phase_IV______________________
+
+              Operating_System___________Save_Sets_______________________
+
+              VAX/VMS Version 5.5-2      A,B
+
+              OpenVMS VAX Version 6.2    A,C
+
+              OpenVMS VAX Version 7.1    A,C
+
+              OpenVMS VAX Version 7.2    A,L
+
+              OpenVMS VAX Version 7.3    A,L
+
+              OpenVMS Alpha Version 6.2  A,E
+
+              OpenVMS Alpha Version 7.1  A,H
+
+              OpenVMS Alpha Version 7.2  A,J
+
+              OpenVMS Alpha Version 7.2  A,J
+
+              ___________________________________________________________
+              ______________________DECnet_Phase_V_______________________
+
+              Operating_System___________Save_Sets_______________________
+
+              OpenVMS VAX Version 6.2    A,D
+
+              OpenVMS VAX Version 7.1    A,D
+
+              OpenVMS VAX Version 7.2    A,K
+
+                                        Installation and Verification 2-9
+
+ 
+
+
+
+    Installation and Verification
+    2.2 Installation Procedure
+
+          ___________________________________________________________
+          _______________________DECnet_Phase_V______________________
+
+          Operating_System___________Save_Sets_______________________
+
+          OpenVMS VAX Version 7.3    A,K
+
+          OpenVMS Alpha Version 6.2  A,F
+
+          OpenVMS Alpha Version 7.1  A,G
+
+          OpenVMS Alpha Version 7.2  A,I
+
+          OpenVMS_Alpha_Version_7.3__A,I_____________________________
+
+          Step 14. Complete the DECdfs installation.
+
+          If the installation has proceeded without errors on a node
+          that does not have DECdfs running, VMSINSTAL displays the
+          following text as it completes the installation of DECdfs:
+
+          DECnet Phase IV:
+
+                  The following line should be added to your SYSTARTUP command
+                  file to automatically start DFS at system startup time:
+
+             "@SYS$STARTUP:DFS$STARTUP.COM"
+
+                  Put DFS$STARTUP after the statement that invokes the DECnet
+                  startup command file (STARTNET.COM). The DECnet software
+                  must be started before the DECdfs software.
+
+          %VMSINSTAL-I-
+    MOVEFILES, Files will now be moved to their target
+          directories...
+
+          DECnet Phase V:
+
+                  The following line should be added to your SYSTARTUP command
+                  file to automatically start DFS at system startup time:
+             "@SYS$STARTUP:DFS$STARTUP.COM"
+          %VMSINSTAL-I-
+    MOVEFILES, Files will now be moved to their target
+          directories...
+
+             ________________________ Note ________________________
+
+             Additional text may appear in the preceding display.
+             See Section 2.3.4 for information about this text.
+
+             ______________________________________________________
+
+    2-10 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                               2.2 Installation Procedure
+
+
+              Step 15. Run the Installation Verification Procedure (IVP).
+
+              If you answered NO to the question in step 7, proceed to
+              step 15c.
+
+              If you previously specified that you want to run the IVP
+              after the installation and no errors occurred, VMSINSTAL
+              starts DECdfs and displays the following message:
+
+                  The Installation Verification Procedure will now be run.  Please
+                  review preceding messages and take note of postinstallation actions
+                  that may be required (such as editing the SYSTARTUP procedure).
+
+              Begin the DECdfs IVP? [YES]
+
+              Enter YES to start the IVP; enter NO to skip the IVP.
+              VMSINSTAL displays a message that is specific for either a
+              client-only (step 15a) or a server (step 15b) installation.
+              The IVP prompts you for an access point name. Section 3.1
+              describes how to run the IVP and Section B.1 includes an
+              example of the IVP.
+
+              Step 15a. Client-Only IVP.
+
+              If you are verifying a client-only software installation,
+              the IVP displays the following message and prompts you for
+              an existing access point name (a DECdns name that you can
+              get from the system manager of a DECdfs server node). The
+              IVP uses an access point name to test a DECdfs mount and
+              dismount operation.
+
+                ________________________ Note ________________________
+
+                The account you use to run the DECdfs client IVP needs
+                read-access rights to the DECdns directory where the
+                access point resides.
+
+                ______________________________________________________
+
+
+
+
+
+
+
+                                       Installation and Verification 2-11
+
+ 
+
+
+
+    Installation and Verification
+    2.2 Installation Procedure
+
+
+             This system will run as a DECdfs Client. To verify the
+             installation, an Access Point must exist on a Server Node. You
+             must have already ADDed this Access Point on one of your Server
+             Nodes. To do this, use the DFS$CONTROL command ADD ACCESS_POINT on
+             a Server Node.
+
+           * Enter an Access Point name [] ? access_point_name
+
+             ________________________ Note ________________________
+
+             On Alpha systems running DECnet Phase IV, the
+             following message is displayed:
+
+                DNS is not available on this system. Therefore, the name of the node
+                which serves this access point must also be entered. Note that for
+                normal operation, the /NODE qualifier must be supplied on DFS MOUNT
+                commands on this system.
+
+              * Enter the node which serves this access point [] :
+
+             ______________________________________________________
+
+          The IVP verifies that the DECdfs client can communicate
+          with the DECdfs server and at least one DECdns server. The
+          IVP displays the following messages:
+
+          $ DFSCP MOUNT access_point_name DFS$IVP_DISK
+          %MOUNT-I-MOUNTED, access_point_name mounted on _DFSC1001: (40FORD)
+          $ DFSCP DISMOUNT DFS$IVP_DISK
+          %DFS-S-DISMNT_SUCCESS, Dismount was successfully performed
+
+          Step 15b. Server IVP.
+
+          If you are verifying a server software installation, the
+          IVP displays the following message and prompts you for a
+          unique name to use as a temporary access point. This name
+          must follow the DECdns naming conventions in use in your
+          namespace. Ask the DECdns manager about your network naming
+          conventions. The IVP uses this name to add the access
+          point, mount and dismount the access point, and remove
+          the access point. The IVP can then verify whether there is
+          communication among the DECdfs clients and the DECdfs and
+          DECdns servers.
+
+
+    2-12 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                               2.2 Installation Procedure
+
+
+                ________________________ Note ________________________
+
+                The account you use to run the DECdfs server IVP needs
+                read and write access rights in the DECdns directory
+                where you plan to add the temporary access point.
+
+                ______________________________________________________
+
+               This system will run as a DECdfs Server.  To verify the
+               installation, an Access Point must be ADDed on the Server.
+               This procedure creates an Access Point for its own use. You must
+               supply a name for this Access Point that does not already exist
+               and is consistent with the DECdns naming policy used in your network.
+
+              * Enter an Access Point name [] ? access_point_name
+
+                ________________________ Note ________________________
+
+                On Alpha systems running DECnet Phase IV, the
+                following additional message is displayed before the
+                access point prompt:
+
+                   Be sure to use the namespace prefix (e.g., DEC:.nam.nam).
+
+                ______________________________________________________
+
+              The IVP now executes while displaying the following
+              messages:
+
+              $ DFSCP ADD ACCESS_POINT access_point_name SYS$SYSDEVICE:[000000]
+              $ DFSCP MOUNT access_point_name DFS$IVP_DISK
+              %MOUNT-I-MOUNTED, access_point_name mounted on _DFSC1001:
+                 .
+                 .
+                 .
+              $ DFSCP DISMOUNT DFS$IVP_DISK
+              %DFS-S-DISMNT_SUCCESS, Dismount was successfully performed
+              $ DFSCP REMOVE ACCESS_POINT access_point_name
+
+              Step 15c. End the IVP.
+
+              After the specific client or server IVP in step 15a or step
+              15b, VMSINSTAL displays a message verifying that either
+              the DECdfs software was installed successfully or the IVP
+              failed. If you receive any error messages during the IVP,
+              see the explanations in the DECdfs for OpenVMS Management
+              Guide.
+
+                                       Installation and Verification 2-13
+
+ 
+
+
+
+    Installation and Verification
+    2.2 Installation Procedure
+
+
+          ******************************************************************
+                      DECdfs V2.3-1 IVP Successful
+          ******************************************************************
+
+          You can run the IVP at any time to check the DECdfs
+          software. See Section 3.1 for more information and for
+          instructions on how to run the IVP after installing DECdfs.
+
+          Step 16. End the installation procedure.
+
+          After the installation of the DECdfs software is complete,
+          VMSINSTAL displays the following message:
+
+           Installation of DECDFS01 V2.3 completed at hh:mm.
+
+          The following message then indicates that VMSINSTAL
+          successfully completed installation and verification of
+          the DECdfs software:
+
+           VMSINSTAL procedure done at hh:mm
+
+          If VMSINSTAL reports a failure, review the installation
+          prerequisites. If you removed console media before you
+          installed the software, replace the media in the console
+          drive.
+
+    2.3 Additional DECdfs Messages
+
+          You may receive additional messages during a DECdfs
+          installation. The following sections describe those DECdfs
+          messages and the conditions that can cause them.
+
+    2.3.1 Renaming Files Message
+
+          If VMSINSTAL finds existing DECdfs files in any
+          SYS$SPECIFIC: directory, the following message appears
+          after step 8 in Section 2.2:
+
+
+
+
+
+
+
+
+    2-14 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                           2.3 Additional DECdfs Messages
+
+
+                      Previous versions of the following files were found in the
+                      SYS$SPECIFIC directories. In order for DECdfs to be installed
+                      properly, the files must be renamed so that they do not
+                      interfere with the installation.  You may continue with the
+                      installation by answering "YES" to the following question;
+                      otherwise, the installation will be aborted.
+
+                      Also, as part of a cluster, please delete or rename the
+                      following files on ALL members of the cluster.
+
+                      SYS$SPECIFIC:[SYSEXE]DFSCDRIVER.EXE
+                      SYS$SPECIFIC:[SYSEXE]DFSRRDRIVER.EXE
+                      SYS$SPECIFIC:[SYSEXE]DFS$COM_ACP.EXE
+                      SYS$SPECIFIC:[SYSEXE]DFSSDRIVER.EXE
+                      SYS$SPECIFIC:[SYSEXE]DFS$SERVER_ACP.EXE
+                      SYS$SPECIFIC:[SYSEXE]DFS$COM_LOGGER.EXE
+                      SYS$SPECIFIC:[SYSEXE]DFS$CONTROL.EXE
+
+                      SYS$SPECIFIC:[SYS$LDR]DFSCDRIVER.EXE
+                      SYS$SPECIFIC:[SYS$LDR]DFSRRDRIVER.EXE
+                      SYS$SPECIFIC:[SYS$LDR]DFSSDRIVER.EXE
+
+                      SYS$SPECIFIC:[SYSLIB]DFS$MESSAGE.EXE
+                      SYS$SPECIFIC:[SYSLIB]DFS$MNGT_SHR.EXE
+                      SYS$SPECIFIC:[SYSLIB]DFS$MOUNT_SHR.EXE
+
+              * Do you want to rename all SYS$SPECIFIC DECdfs files to .OLD [YES]?
+
+              If you enter YES, VMSINSTAL renames the listed DFS*.EXE
+              files to DFS*.OLD and continues with the installation
+              procedure.
+
+              If you enter NO, VMSINSTAL ends the installation and
+              displays the following error message:
+
+              %VMSINSTAL-E-INSFAIL, The installation of DECdfs V2.3-1 has successfully
+              failed.
+
+              If you are installing the software on a cluster, you must
+              delete the listed files or rename them on all cluster
+              members before retrying the DECdfs installation procedure.
+
+
+
+
+                                       Installation and Verification 2-15
+
+ 
+
+
+
+    Installation and Verification
+    2.3 Additional DECdfs Messages
+
+
+    2.3.2 Deleting Old Driver Files Message
+
+          VMSINSTAL displays the following message after step 8 in
+          Section 2.2 if you chose to purge files and if it finds old
+          DECdfs driver files in the SYS$SYSTEM directory:
+
+          * Do you want to delete old DECdfs driver images from SYS$SYSTEM [YES]?
+
+          If you enter YES, VMSINSTAL deletes the obsolete DECdfs
+          driver files. If you enter NO, DECdfs operates successfully
+          but the obsolete DECdfs driver files remain in the
+          SYS$SYSTEM directory.
+
+    2.3.3 DECdfs License PAK Message
+
+          VMSINSTAL displays the following message after step 9 in
+          Section 2.2 if the DECdfs license PAK is not installed:
+
+               The startup file will not be executed after installation and
+               the IVP will not run.  Install the DECdfs license PAK before you
+               start DECdfs and run the IVP.
+
+    2.3.4 DECdfs Startup Messages
+
+          The following is a list of all the possible messages that
+          can be displayed before step 12 in Section 2.2 if VMSINSTAL
+          cannot start DECdfs or run the IVP:
+
+               Before starting DECdfs . . .
+
+               * You must install the DECdfs license PAK.
+
+               * You must increase your GLOBAL PAGES.
+
+               * You must increase your GLOBAL SECTIONS.
+
+               * You must start DECnet.
+
+               * You must execute SYS$STARTUP:DNS$CHANGE_DEF_FILE.COM.
+
+               * You must increase the size of your nonpaged pool.
+                 See the DECdfs for OpenVMS Installation Guide
+
+               * You must reboot your system because you already
+                 have DECdfs drivers loaded.
+
+    2-16 Installation and Verification
+
+ 
+
+
+
+                                            Installation and Verification
+                                           2.3 Additional DECdfs Messages
+
+
+                   Since DECdfs is not being started, you cannot
+                   run the Installation Verification Procedure (IVP).
+                   A copy of the DFS$IVP.COM file is in the SYS$TEST
+                   directory, so you can run the IVP after you start DECdfs.
+
+              The message about executing the command
+              procedure SYS$STARTUP:DNS$CHANGE_DEF_FILE.COM
+              appears if the installation procedure did not find file
+              SYS$SYSTEM:DNS$DEFAULT_FILE.DAT on your node. This
+              file defines the default DECdns namespace for
+              your node. Executing this procedure copies file
+              SYS$SYSTEM:DNS$DEFAULT_FILE.DAT from the DECdns server
+              node (whose name you provide). Then DECdns can start and
+              DECdfs can run.
+
+              VMSINSTAL displays the following message after step 12
+              in Section 2.2 if you need to increase the size of your
+              interrupt stack:
+
+              You should also increase the size of your Interrupt Stack
+              before starting the DECdfs server software. See the
+              DECdfs for OpenVMS Installation Guide
+              for more information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       Installation and Verification 2-17
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                              Postinstallation Procedures
+
+
+              This chapter describes the procedures that can be performed
+              after installing DECdfs on a system:
+
+              o  Running the Installation Verification Procedure (IVP)
+
+              o  Editing the local system startup command file
+
+              o  Using DECdfs command files
+
+              o  Setting additional DECnet and system parameters
+
+              o  Using DECdfs security (OpenVMS proxy)
+
+              o  Reinstalling DECdfs
+
+              o  Changing clients to servers
+
+              o  Changing servers to clients
+
+              o  Deleting server software from client-only systems
+
+              o  Checking OpenVMS Cluster systems after installing DECdfs
+                 software
+
+        3.1 Running the Installation Verification Procedure
+
+              The DECdfs software distribution kit contains a command
+              procedure that verifies the correct installation and
+              operation of DECdfs. The installation procedure places
+              the procedure file, DFS$IVP.COM, in the SYS$TEST directory.
+              The Installation Verification Procedure (IVP) tests whether
+              the major components of DECdfs were installed correctly.
+              Successful completion of the IVP indicates that the DECdfs
+              software operates properly.
+
+              You can run the IVP when you install the DECdfs software
+              (as shown in steps 7 and 13 in Section 2.2) or at any time
+              after the software is installed and running. If you want to
+              run the IVP during the installation, VMSINSTAL invokes the
+              IVP after the DECdfs components are moved to their target
+
+                                          Postinstallation Procedures 3-1
+
+ 
+
+
+
+    Postinstallation Procedures
+    3.1 Running the Installation Verification Procedure
+
+
+          directories. The procedure displays a message that the
+          IVP is running. You then enter information that VMSINSTAL
+          needs to complete the IVP. To the IVP independent of the
+          installation procedure, supply the same information.
+
+          To verify a client-only software installation, supply the
+          name of an access point that was previously added on an
+          accessible DECdfs server. The IVP uses this access point
+          name to test a DECdfs mount and dismount operation. The IVP
+          can then verify that the DECdfs client can communicate
+          successfully with the DECdfs server and the Digital
+          Distributed Name Service (DNS) server.
+
+          To verify a server software installation, supply a unique,
+          temporary access point name (a DECdns name, as discussed
+          with the DECdns manager). The IVP uses this name to add
+          the access point, mount and dismount the access point, and
+          remove the access point from the DECdns namespace. This
+          verifies successful communication among the DECdfs clients
+          and the DECdfs server and DECdns server.
+
+          To run the IVP, you need the account privileges SYSNAM,
+          OPER, NETMBX, and TMPMBX, or the privilege SETPRV (allows
+          all privileges to be set). On a DECdfs client, read access
+          to the DECdns namespace directory that stores an access
+          point name for that client is sufficient to run the
+          IVP. You need read and write access rights in the DECdns
+          namespace directory to run the IVP on a DECdfs server. Your
+          DECdns manager grants these access rights. The IVP fails if
+          you do not have the appropriate access rights.
+
+          You need the read and write access rights for your user
+          name on a specific DECnet node for the DECdns namespace
+          directory that you plan to use. You need access to at
+          least one DECdns directory (usually the directory where
+          you plan to add access points) to perform an IVP on a
+          DECdfs server. For example, if the DECdns manager grants
+          the access rights to the SALES.WEST directory, you can
+          add a unique access point name to that directory, such as
+          SALES.WEST.DFSIVPTEST.
+
+          To run the IVP independently from the installation
+          procedure, enter the following command:
+
+          $ @SYS$TEST:DFS$IVP
+
+    3-2 Postinstallation Procedures
+
+ 
+
+
+
+                                              Postinstallation Procedures
+                      3.1 Running the Installation Verification Procedure
+
+
+              You can delete the DFS$IVP.COM file without adversely
+              affecting any DECdfs operations. However, Compaq recommends
+              that you not delete this file as you may want to run the
+              IVP later.
+
+        3.2 Editing the Local System Startup Command File
+
+              Edit your system startup command file if you want to start
+              DECdfs automatically.
+
+              For VAX/VMS Version 5.5-2 systems running DECnet
+              Phase IV, the system startup command file is
+              SYS$STARTUP:SYSTARTUP_V5.COM.
+
+              For other OpenVMS systems, the system startup command file
+              is SYS$STARTUP:SYSTARTUP_VMS.COM.
+
+              Edit the file so that it invokes the DECdfs startup command
+              file, SYS$STARTUP:DFS$STARTUP.COM, by adding the following
+              line:
+
+              @SYS$STARTUP:DFS$STARTUP.COM
+
+              For DECnet Phase IV systems, insert this line after the
+              statement that invokes the DECnet startup command file:
+
+              STARTNET.COM.
+
+              For DECnet Phase V systems, the network startup command
+              file does not appear in the system startup file.
+
+              DECnet software must be started before the DECdfs software.
+              If you use a batch job to start the DECnet software, start
+              the DECdfs software later in the same batch stream to
+              ensure that the DECdfs software starts after the DECnet
+              software.
+
+              The following sample portion of a system startup file shows
+              the statement that invokes the DECdfs startup command file.
+              This statement executes the DFS$STARTUP command procedure
+              in your SYS$STARTUP directory. The sample applies to both
+              DECnet Phase IV and DECnet Phase V systems.
+
+
+
+                                          Postinstallation Procedures 3-3
+
+ 
+
+
+
+    Postinstallation Procedures
+    3.2 Editing the Local System Startup Command File
+
+
+                             .
+          $ !Command procedure to start up DECnet
+          $ !
+          $ IF F$SEARCH("SYS$SYSTEM:NETACP.EXE") .NES. "" -
+                  THEN @SYS$STARTUP:STARTNET.COM
+                             .
+                             .
+                             .
+          $ !Command procedure to start up DECdfs
+          $ !
+          $ IF F$SEARCH("SYS$STARTUP:DFS$STARTUP.COM") .NES. "" -
+                  THEN @SYS$STARTUP:DFS$STARTUP.COM
+                             .
+                             .
+                             .
+
+    3.3 Using DECdfs Command Files
+
+          The DECdfs startup command procedure (DFS$STARTUP)
+          executes two DECdfs command files: DFS$CONFIG.COM and
+          DFS$SYSTARTUP.COM. Modify these files to suit your network
+          environment.
+
+          When DECdfs starts, the DFS$STARTUP.COM file invokes
+          SYS$MANAGER:DFS$CONFIG.COM. This configuration file
+          sets configuration parameters. To change the static
+          DECdfs parameters, you must change the values for the
+          parameters in the DFS$CONFIG.COM file. A related file named
+          DFS$CONFIG.TEMPLATE contains the default settings for each
+          parameter.
+
+          The DFS$STARTUP.COM file also invokes
+          SYS$STARTUP:DFS$SYSTARTUP.COM, which adds access points
+          to the DECdfs server and mounts DECdfs client devices that
+          are shared throughout the system.
+
+          If you have files DFS$CONFIG.COM or DFS$SYSTARTUP.COM from
+          earlier versions (prior to Version 2.3-1) of DECdfs, you
+          may wish to process them as follows, because they can
+          contain obsolete commands:
+
+          1. Rename existing versions of DFS$CONFIG.COM and
+             DFS$SYSTARTUP.COM files to DFS$CONFIG.OLD and
+             DFS$SYSTARTUP.OLD, respectively.
+
+    3-4 Postinstallation Procedures
+
+ 
+
+
+
+                                              Postinstallation Procedures
+                                           3.3 Using DECdfs Command Files
+
+
+              2. Create new DFS$*.COM files by copying the DECdfs Version
+                 2.3-1 DFS$CONFIG.TEMPLATE file to DFS$CONFIG.COM and the
+                 DFS$SYSTARTUP.TEMPLATE file to
+                 DFS$SYSTARTUP.COM in the SYS$MANAGER directory.
+
+              3. Copy any changed configuration and access point
+                 information from DFS$CONFIG.OLD and DFS$SYSTARTUP.OLD
+                 files into the new command files in the SYS$MANAGER
+                 directory.
+
+                 Do not copy any values for the following obsolete
+                 parameters from old versions of DFS$CONFIG.COM:
+
+                    DFS$PQL_BYTLM
+                    DFS$PQL_FILLM
+                    SET COMMUNICATION/CONNECTIONS_MAXIMUM
+                    SET COMMUNICATION/SESSIONS_MAXIMUM
+                    SET SERVER/FILES_MAXIMUM
+                    SET SERVER/PERSONA_CACHE=(BLOCKS_THRESHOLD=xxx)
+
+                 If you decide to use older DFS$*.COM files, Compaq
+                 recommends that you move them to the SYS$MANAGER
+                 directory if possible. Then edit the DFS$CONFIG.COM
+                 file to remove the following lines:
+
+                    DEFINE/SYSTEM DFS$PQL_FILLM "nn"
+                    DEFINE/SYSTEM DFS$PQL_BYTLM "nn"
+                    SET COMMUNICATION/CONNECTIONS_MAXIMUM=nn
+                    SET COMMUNICATION/SESSIONS_MAXIMUM=nn
+                    SET SERVER/FILES_MAXIMUM=nn
+                    SET SERVER/PERSONA_CACHE=(BLOCKS_THRESHOLD=nn)
+
+                 DECnet Phase V:
+
+                 On DECnet Phase V systems, do not copy any of
+                 the following parameters from old versions of
+                 DFS$SYSTARTUP.COM:
+
+                    SET/DEFINE EXECUTOR ALIAS NODE
+                    SET OBJECT DFS$COM_ACP ALIAS OUTGOING ENABLED
+
+                 Edit the DFS$SYSTARTUP.COM file to remove the following
+                 NCP commands if they are present in the file:
+
+                    SET/DEFINE EXECUTOR ALIAS NODE cluster-alias-name
+
+                                          Postinstallation Procedures 3-5
+
+ 
+
+
+
+    Postinstallation Procedures
+    3.3 Using DECdfs Command Files
+
+
+                SET OBJECT DFS$COM_ACP ALIAS OUTGOING ENABLED
+
+             ________________________ Note ________________________
+
+             Failure to remove the obsolete commands from older
+             DFS$CONFIG.COM and DFS$SYSTARTUP.COM files as
+             recommended in this section does not affect DECdfs
+             operation. However, any values entered for the
+             preceding list of obsolete commands are meaningless
+             and will not be displayed in response to the SHOW
+             COMMUNICATION or SHOW SERVER commands.
+
+             ______________________________________________________
+
+          If your system is in a cluster, see Section 1.10.3 before
+          you edit any startup command files.
+
+          For more information, see the DECdfs for OpenVMS Management
+          Guide.
+
+    3.4 Setting Additional DECnet and System Parameters
+
+          The DECdfs for OpenVMS software was designed to provide
+          excellent performance using the default DECnet parameters
+          and default RMS parameters. In some cases, however, you
+          might enhance performance by setting several parameters.
+          See Appendix C in the DECdfs for OpenVMS Management Guide
+          for information about setting network and RMS parameters.
+
+    3.5 Creating OpenVMS Proxy Accounts
+
+          You must create OpenVMS proxy accounts, a DFS$DEFAULT
+          account, or both, on DECdfs server systems to ensure that
+          users on client systems can access a DECdfs server.
+
+          To create proxy accounts, run AUTHORIZE on the server
+          system and use the ADD/PROXY command to equate an end user
+          on a DECdfs client system to a local user with appropriate
+          rights and privileges.
+
+          The following example assumes that the client end user
+          already has an account (WPINE) on the server and an account
+          on node WRKSTN:
+
+
+    3-6 Postinstallation Procedures
+
+ 
+
+
+
+                                              Postinstallation Procedures
+                                      3.5 Creating OpenVMS Proxy Accounts
+
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF> ADD/PROXY WRKSTN::WPINE WPINE/DEFAULT
+              UAF> EXIT
+              $
+
+              Note that OpenVMS VAX Version 6.2 and later systems running
+              DECnet Phase V provide long name support in the proxy
+              database. On these systems, refer to the following example:
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF> ADD/PROXY FOO:.NET.WRKSTN::WPINE WPINE/DEFAULT
+              UAF> EXIT
+              $
+
+              To provide access to your DECdfs server to users on client
+              systems without explicit proxy, create a default DECdfs
+              account (DFS$DEFAULT). To make this account available
+              for use by DECdfs only (and not for logging in), create
+              DFS$DEFAULT as a restricted account following the example
+              in the OpenVMS System Manager's Manual. You can use the
+              DFS$DEFAULT account as an example of how to create proxy
+              accounts that can only be used for DECdfs access. Make
+              sure you choose a user identification code (UIC) for the
+              DFS$DEFAULT account that does not match the UIC of an
+              existing user.
+
+                ________________________ Note ________________________
+
+                When creating the DFS$DEFAULT account or a proxy
+                account on a server, note the authorized privileges as
+                well as the default privileges of the DFS$DEFAULT
+                account and the proxy accounts. The authorized
+                privileges can become effective for users, depending
+                on the current privileges on the DECdfs client when
+                the file was accessed.
+
+                ______________________________________________________
+
+              For more information about the DFS$DEFAULT account, see
+              the DECdfs for OpenVMS Management Guide. For detailed
+              information about creating proxy accounts, see the OpenVMS
+              Guide to System Security and the DECnet-Plus for OpenVMS
+              Network Management.
+
+                                          Postinstallation Procedures 3-7
+
+ 
+
+
+
+    Postinstallation Procedures
+    3.5 Creating OpenVMS Proxy Accounts
+
+
+             ________________________ Note ________________________
+
+             Make sure you set up the proxy accounts so that
+             DECdfs users have the necessary rights and privileges
+             they need to gain access to files. If there is a
+             DFS$DEFAULT account (and its DISUSER and CAPTIVE flags
+             are not set), all the users who do not have explicit
+             proxy in the proxy database file (NETPROXY.DAT on
+             systems running DECnet Phase IV and NET$PROXY.DAT for
+             DECnet Phase V) have only the rights and privileges of
+             the DFS$DEFAULT account.
+
+             ______________________________________________________
+
+    3.6 Reinstalling DECdfs
+
+          Although it is not usually necessary, you can reinstall the
+          DECdfs software on your system at any time. Note that you
+          must reinstall DECdfs if you change versions of OpenVMS or
+          DECnet software. After you reinstall the DECdfs software,
+          you need to reboot the system to use the DECdfs software if
+          DECdfs drivers were previously loaded.
+
+          When you reinstall DECdfs software, the installation
+          procedure copies new DFS$CONFIG.TEMPLATE and
+          DFS$SYSTARTUP.TEMPLATE files to the SYS$MANAGER directory.
+          These files contain default DECdfs settings.
+
+    3.7 Changing DECdfs Configurations
+
+          With DECdfs Version 2.3-1, there are now two types of
+          license: a full license called DFS, and a client-only
+          license called DFS-CLIENT. To change a DECdfs client-
+          only system to a server system may require loading and
+          registering the full DFS license PAK, if that PAK is not
+          already loaded.
+
+          To change a DECdfs system from client-only to server (or
+          server to client-only), edit the following lines in the
+          SYS$STARTUP:DFS$STARTUP.COM file:
+
+
+
+
+
+    3-8 Postinstallation Procedures
+
+ 
+
+
+
+                                              Postinstallation Procedures
+                                       3.7 Changing DECdfs Configurations
+
+
+              $! Installation specific parameters:
+              $!
+              $ START_CLIENT_FLAG = "TRUE"
+              $ START_SERVER_FLAG = "FALSE"
+              $!
+              $!
+              $! Title = DFS$STARTUP.COM
+
+              The START_CLIENT_FLAG = "TRUE" flag indicates that the
+              DECdfs client software can be started on this system. When
+              you convert from a client-only system to a server system,
+              you must change the value of the flag START_SERVER_FLAG
+              from "FALSE" to "TRUE." When you convert from a server
+              system to a client-only system, you must change the value
+              of the flag START_SERVER_FLAG from "TRUE" to "FALSE."
+
+                ________________________ Note ________________________
+
+                The two flags, START_CLIENT_FLAG and START_SERVER_
+                FLAG, are the only two lines that you should edit in
+                the DFS$STARTUP.COM file.
+
+                ______________________________________________________
+
+        3.8 Deleting Server Software from Client-Only Systems
+
+              The DECdfs installation procedure always copies all of the
+              DECdfs software to your disk, whether you are installing
+              server software or client-only software. If you do not
+              want to install the server software, VMSINSTAL changes
+              SYS$STARTUP:DFS$STARTUP.COM to prevent it from starting
+              the server. To free disk space, delete the following server
+              software from client-only systems:
+
+              o  DFS$SERVER_ACP.EXE (in the SYS$SYSTEM directory)
+
+              o  DFSSDRIVER.EXE (in the SYS$LOADABLE_IMAGES directory)
+
+              You can also save these files so that a client-only system
+              can regain its server capability in the future. See
+              Section 3.7 if you want to convert a client-only system
+              to a server system.
+
+
+
+                                          Postinstallation Procedures 3-9
+
+ 
+
+
+
+    Postinstallation Procedures
+    3.9 Checking OpenVMS Cluster Systems After Installing DECdfs
+
+
+    3.9 Checking OpenVMS Cluster Systems After Installing DECdfs
+
+          If you are installing DECdfs on a system in a cluster
+          that uses a system-specific system disk, you must install
+          DECdfs on each system disk on the cluster before you can
+          run DECdfs in the cluster. See Section 1.10.3 for more
+          information about OpenVMS Cluster systems.
+
+          If you install DECdfs on an OpenVMS Cluster system that
+          uses a common system disk, you do not need to install
+          DECdfs on any other cluster members. However, you must
+          install the appropriate licenses before running the IVP or
+          running DECdfs in your cluster.
+
+    3.10 Error Handling
+
+          When you encounter a problem while installing or using
+          the DECdfs for OpenVMS, running the installation and
+          verification procedure (IVP), or installing the DECdfs or
+          DECnet license Product Authorization Keys (PAKs), an error
+          message appears on the screen. Appendix A in the DECdfs for
+          OpenVMS Management Guide lists the DECdfs error messages.
+
+          When you encounter problems while using the license PAK
+          or the License Management Utility (LMF), see the OpenVMS
+          License Management Utility Manual for a list of error
+          messages. Determine which software issued the error message
+          by its standard format (%facility-l-ident, text). For
+          example, all DECdfs error messages begin with the %DFS-
+          facility prefix.
+
+          For additional problem-solving information, see Appendix B
+          in the DECdfs for OpenVMS Management Guide.
+
+    3.11 Problem Reporting
+
+          If you encounter an error while using DECdfs and you cannot
+          determine the cause, or if you believe that an error is
+          caused by a problem in the DECdfs software, report the
+          problem to Compaq Computer Corporation according to the
+          terms of your product support contract.
+
+          You can report a problem if an operation gives unexpected
+          results or when you get undocumented or unknown failures
+          using DECdfs commands. Gather all information possible
+          about a problem and submit it with your report.
+
+    3-10 Postinstallation Procedures
+
+ 
+
+
+
+                                              Postinstallation Procedures
+                                                   3.11 Problem Reporting
+
+
+                ________________________ Note ________________________
+
+                Many problem reports do not contain enough information
+                to duplicate or identify the problem. Complete and
+                concise information will help Compaq provide accurate
+                service and a timely response to software problems.
+
+                ______________________________________________________
+
+              When you prepare to report a problem, please use the
+              following guidelines:
+
+              1. To ensure a timely response, describe one problem only
+                 in each report.
+
+              2. Describe as accurately as possible the state of the
+                 system (such as specifying whether the system failed)
+                 and the situation when the problem occurred. In this
+                 description, include the version numbers of OpenVMS
+                 and DECdfs software for both the client and the server.
+                 Indicate the version number for each client and server
+                 in a cluster. To determine these numbers, enter the
+                 DFS$CONTROL command SHOW VERSION. If you cannot gain
+                 access to the DFS$CONTROL program, enter the following
+                 command at the DCL prompt to determine the DECdfs
+                 version number for clients:
+
+                 $ ANALYZE/IMAGE SYS$LOADABLE_IMAGES:DFSCDRIVER.EXE
+
+                 To determine the DECdfs version number for servers,
+                 enter the following command:
+
+                 $ ANALYZE/IMAGE SYS$LOADABLE_IMAGES:DFSSDRIVER.EXE
+
+                 The version numbers appear in the Image Identification
+                 Information section, in the same line as the text "Image
+                 File Identification."
+
+              3. Pinpoint or narrow down the problem, if possible. Use
+                 examples.
+
+              4. Make suggestions that can help to isolate your problem.
+
+              5. Remember to include listings of any command files and
+                 other relevant data files.
+
+              6. If possible, provide a listing of the user programs that
+                 were running when the problem occurred.
+
+                                         Postinstallation Procedures 3-11
+
+ 
+
+
+
+    Postinstallation Procedures
+    3.11 Problem Reporting
+
+
+          7. Send the following files from the SYS$MANAGER directory
+             if possible:
+
+             o  DFS$CONFIG.COM
+
+             o  DFS$ERROR.LOG
+
+             o  DFS$SYSTARTUP.COM
+
+          8. Include source files or data files on machine-readable
+             media (floppy diskette or magnetic tape) if possible.
+             All media will be returned to you when your report is
+             answered.
+
+          9. If you have questions, state them as simply as possible
+             and include all pertinent information so that a clear
+             and correct answer can be provided.
+
+         10. If you report a severe error (the system hangs or
+             fails), include a description of the events that led
+             to the problem, any messages received at the console, or
+             other specific information.
+
+         11. When a system fails, include a copy of the crash dump
+             file (SYS$SYSTEM:SYSDUMP.DMP).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    3-12 Postinstallation Procedures
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                    Files Affected by DECdfs Installation
+
+
+              This appendix lists the files produced or changed after
+              installing DECdfs on an OpenVMS system.
+
+              ___________________________________________________________
+              SYS$SYSTEM_Files_________Function__________________________
+
+              DECDFSDEF.STB            Symbol table file
+
+              DFS$CONTROL.EXE          DECdfs control program
+
+              DFS$COM_ACP.EXE          Ancillary control process for the
+                                       DECdfs communication driver
+
+              DFS$SERVER_ACP.EXE       DECdfs server ancillary control
+                                       process
+
+              DFS$COM_LOGGER.EXE       DECdfs maintenance file for
+              _________________________logging_communication_transactions
+
+              ___________________________________________________________
+              SYS$HELP_Files___________Function__________________________
+
+              DECDFS023.RELEASE_NOTES  DECdfs release notes
+
+              DFS$HELP.HLB             Help library for DECdfs control
+                                       program
+
+              HELPLIB.HLB              DCL DECdfs help text is modified
+                                       by DECdfs installation
+
+              SYS$HELP:DFS.MSGHLP$DATA DECdfs Help Message database (on
+              _________________________OpenVMS_Version_6.2_and_later)____
+
+              ___________________________________________________________
+              SYS$LIBRARY_Files________Function__________________________
+
+              DFS$MOUNT_SHR.EXE        DECdfs mount library
+
+              DFS$MNGT_SHR.EXE_________DECdfs_management_system_services_
+
+                                Files Affected by DECdfs Installation A-1
+
+ 
+
+
+
+    Files Affected by DECdfs Installation
+
+
+          ___________________________________________________________
+          SYS$LOADABLE_IMAGES
+          Files____________________Function__________________________
+
+          DFSCDRIVER.EXE           DECdfs client device driver
+
+          DFSRRDRIVER.EXE          DECdfs communication driver
+
+          DFSSDRIVER.EXE___________DECdfs_server_driver______________
+
+          ___________________________________________________________
+          SYS$STARTUP_Files________Function__________________________
+
+          DFS$STARTUP.COM__________DECdfs_startup_command_file_______
+
+          ___________________________________________________________
+          SYS$MANAGER_Files________Function__________________________
+
+          DFS$CONFIG.COM           DECdfs command file to set
+                                   configuration parameters
+
+          DFS$CONFIG.TEMPLATE      DECdfs command file template with
+                                   default configuration parameters
+
+          DFS$SYSTARTUP.COM        DECdfs setup command file to mount
+                                   and add access points
+
+          DFS$SYSTARTUP.TEMPLATE   DECdfs setup command file template
+          _________________________with_default_settings_____________
+
+          ___________________________________________________________
+          SYS$MESSAGE_File_________Function__________________________
+
+          DFS$MESSAGE.EXE__________DECdfs_error_message_file_________
+
+          ___________________________________________________________
+          SYS$TEST_File____________Function__________________________
+
+          DFS$IVP.COM              Installation Verification
+          _________________________Procedure_command_file____________
+
+
+
+
+
+
+    A-2 Files Affected by DECdfs Installation
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                 Sample Installations for OpenVMS Systems
+
+
+              This appendix shows sample installations of DECdfs client
+              and server software on the following systems:
+
+              o  Client-only installation on OpenVMS VAX Version 5.5-2
+                 with DECnet-VAX
+
+              o  Server installation on OpenVMS Alpha Version 7.1-1H2
+                 with DECnet-Plus
+
+        B.1 Client-Only Installation on OpenVMS VAX Version 5.5-2 with
+            DECnet-VAX
+
+              The following sample dialogue shows a typical installation
+              of DECdfs client software on OpenVMS VAX Version 5.5-2 with
+              DECnet-VAX.
+
+              $ @sys$update:vmsinstal
+
+                      VAX/VMS Software Product Installation Procedure V5.5-2
+
+              It is 27-OCT-1998 at 11:23.
+
+              Enter a question mark (?) at any time for help.
+
+              * Are you satisfied with the backup of your system disk [YES]?
+              * Where will the distribution volumes be mounted: dua0:[kit]
+
+              Enter the products to be processed from the first distribution volume set.
+              * Products: DECDFS01023
+              * Enter installation options you wish to use (none):
+
+              The following products will be processed:
+
+                DECDFS01 V2.3
+
+                      Beginning installation of DECDFS01 V2.3 at 11:24
+
+                             Sample Installations for OpenVMS Systems B-1
+
+ 
+
+
+
+    Sample Installations for OpenVMS Systems
+    B.1 Client-Only Installation on OpenVMS VAX Version 5.5-2 with DECnet-VAX
+
+
+          %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+          %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+          * Do you want to run the IVP after the installation [YES]?
+          * Do you want to purge files replaced by this installation [YES]?
+
+           Current configuration:    OpenVMS VAX V5.5-2 - DECnet Phase IV
+
+          * Install the DFS files that support this configuration? [YES]?
+          * Do you want to install the DECDFS01 V2.3 SERVER software on this node [YES]?
+           no
+
+                  Product:      DFS-CLIENT
+                  Producer:     DEC
+                  Version:      2.0
+                  Release Date: 20-JUN-1994
+
+          * Does this product have an authorization key registered and loaded? yes
+
+                   Installation will be complete in approximately 1 - 5 minutes
+                   depending upon your configuration.
+
+                   There are no more questions unless you chose to run the IVP.
+                   Installing DECdfs software . . .
+
+          %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+                  The following line should be added to your SYSTARTUP command
+                  file to automatically start DFS at system startup time:
+                           "@SYS$STARTUP:DFS$STARTUP.COM"
+
+                  Put DFS$STARTUP after the statement that invokes the DECnet
+                  start-up command file (STARTNET.COM). The DECnet software
+                  must be started before the DECdfs software.
+
+                  Before starting DECdfs . . .
+
+                  * You must execute SYS$STARTUP:DNS$CHANGE_DEF_FILE.COM.
+
+                  Since DECdfs is not being started, we cannot
+                  run the Installation Verification Procedure (IVP).
+                  A copy of DFS$IVP.COM is in the SYS$TEST directory,
+                  so you can run the IVP after you start DECdfs.
+
+          %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                  Installation of DECDFS01 V2.3 completed at 11:28
+
+    B-2 Sample Installations for OpenVMS Systems
+
+ 
+
+
+
+                                 Sample Installations for OpenVMS Systems
+ Client-Only   Installation on OpenVMS VAX Version 5.5-2 with DECnet-VAX
+
+
+              Enter the products to be processed from the next distribution volume set.
+              * Products:  Exit
+
+                      VMSINSTAL procedure done at 11:28
+
+              $ @SYS$STARTUP:DNS$CHANGE_DEF_FILE.COM
+              Name of DNS server node? MURZIM
+              %COPY-S-COPIED, MURZIM::SYS$SYSROOT:[SYSLIB]DNS$NS_DEF_FILE.DAT;3 copied to SYS$
+              COMMON:[SYSEXE]DNS$DEFAULT_FILE.DAT;1 (1 block)
+              %SYSTEM-W-NONEXPR, nonexistent process
+              %INSTALL-W-FAIL, failed to REMOVE entry for DISK$VAXVMSV055:<SYS0.SYSCOMMON.SYSL
+              IB>DNS$CLIENT.EXE
+              -INSTALL-E-NOKFEFND, Known File Entry not found
+              %INSTALL-W-FAIL, failed to REMOVE entry for DISK$VAXVMSV055:<SYS0.SYSCOMMON.SYSL
+              IB>DNS$RTL.EXE
+              -INSTALL-E-NOKFEFND, Known File Entry not found
+              %RUN-S-PROC_ID, identification of created process is 00000052
+              $
+              $
+              $ @SYS$STARTUP:DFS$STARTUP
+              % DECdfs starting up...
+              % DECdfs startup completed.
+              $
+              $
+              $ @SYS$TEST:DFS$IVP
+
+                 **************************************************************************
+                 ***                                                                    ***
+                 ***                            DECdfs V2.3-1                            ***
+                 ***                                                                    ***
+                 ***                     Distributed  File  Service                     ***
+                 ***                                                                    ***
+                 ***                  Installation Verification Procedure               ***
+                 ***                                                                    ***
+                 **************************************************************************
+
+                              COPYRIGHT (C) 1987, 1988, 1989, 1992, 1994, 1998
+                              Compaq Computer Corporation. ALL RIGHTS RESERVED.
+
+                 Compaq registered in U.S. Patent and Trademark Office. Confidential computer
+                 software. Valid License from Compaq required for possession, use or copying.
+                 Consistent with FAR 12.211 and 12.212. Commerical Computer Software,
+                 Computer Software Documentation, and Technical Data for Commercial Items are
+                 licensed to the U.S. Government under vendor's standard commercial license.
+
+                             Sample Installations for OpenVMS Systems B-3
+
+ 
+
+
+
+    Sample Installations for OpenVMS Systems
+    B.1 Client-Only Installation on OpenVMS VAX Version 5.5-2 with DECnet-VAX
+
+
+             **************************************************************************
+
+            This system will run as a DECdfs Client. To verify the installation,
+            you must supply the name of an access point now being served by a
+            DFS server node.  This node and username should have proxy access
+            to the file service named by the access point.
+
+           * Enter an Access Point name [] ? DFSTEST:.MURZIM_SYS
+
+           * Enter the node which serves this access point [] : MURZIM
+          $ DFSCP MOUNT DFSTEST:.MURZIM_SYS DFS$IVP_DISK
+          %MOUNT-I-MOUNTED, DFSTEST:.MURZIM_SYS mounted on _DFSC1001:
+
+              If available, enter the specification for an accessible directory within
+              the filesystem identified by this access point, e.g. [JONES].  A read
+              access on the directory will be tested.  If a valid proxy does not
+              exist on the server for this node and user, a protection violation will
+              be reported, but that will not terminate the IVP. If you enter a null
+              specification, the read access will not be attempted.
+
+           * Enter directory specification: [000000]
+
+          Directory DFS$IVP_DISK:[000000]
+
+          000000.DIR;1        BACKUP.SYS;1        BADBLK.SYS;1        BADLOG.SYS;1
+          BITMAP.SYS;1        CONTIN.SYS;1        CORIMG.SYS;1        DFSTEST.DIR;1
+          DNS$SERVER.DIR;1    INDEXF.SYS;1        SECURITY.SYS;1      SYS0.DIR;1
+          SYSEXE.DIR;1        UCX$FTP.DIR;1       UCX$REXEC.DIR;1     UCX$RSH.DIR;1
+          USER.DIR;1          VMS$COMMON.DIR;1    VOLSET.SYS;1
+
+          Total of 31 files.
+          % Directory access was successful.
+          $ DFSCP DISMOUNT DFS$IVP_DISK
+          %DFS-S-DISMNT_SUCCESS, Dismount was successfully performed
+
+          ********************************************************************************
+                                       DECdfs V2.3-1 IVP Successful
+          ********************************************************************************
+
+          $
+
+
+
+
+
+    B-4 Sample Installations for OpenVMS Systems
+
+ 
+
+
+
+                                 Sample Installations for OpenVMS Systems
+ Server    Installation on OpenVMS Alpha Version 7.1-1H2 with DECnet-Plus
+
+
+        B.2 Server Installation on OpenVMS Alpha Version 7.1-1H2 with
+            DECnet-Plus
+
+              The following sample dialogue shows a typical installation
+              of DECdfs server software on OpenVMS Alpha Version 7.1-1H2
+              with DECnet-Plus.
+
+              $ @sys$update:vmsinstal.com
+
+                      OpenVMS AXP Software Product Installation Procedure V7.1-1H2
+
+              It is 29-OCT-1998 at 08:47.
+
+              Enter a question mark (?) at any time for help.
+
+              * Are you satisfied with the backup of your system disk [YES]?
+              * Where will the distribution volumes be mounted: dka0:[kit]
+
+              Enter the products to be processed from the first distribution volume set.
+              * Products: DECDFS01023
+              * Enter installation options you wish to use (none):
+
+              The following products will be processed:
+
+                DECDFS01 V2.3
+
+                      Beginning installation of DECDFS01 V2.3 at 08:47
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+              * Do you want to run the IVP after the installation [YES]?
+              * Do you want to purge files replaced by this installation [YES]?
+
+               Current configuration:    OpenVMS Alpha V7.1-1H2 - DECnet-Plus
+
+              * Install the DFS files that support this configuration? [YES]?
+              * Install DFS Help Message file [YES]?
+
+                  Add SYS$HELP:DFS.MSGHLP$DATA to the searchlist defined by
+                  MSGHLP$LIBRARY in order to include the DFS messages in your
+                  HELP/MESSAGE search. Please refer to the OpenVMS SYSTEM
+                  MANAGER'S MANUAL: ESSENTIALS for more information.
+
+              * Do you want to install the DECDFS01 V2.3 SERVER software on this node [YES]?
+
+                      Product:      DFS
+                      Producer:     DEC
+                      Version:      2.0
+                      Release Date: 20-JUN-1994
+
+                             Sample Installations for OpenVMS Systems B-5
+
+ 
+
+
+
+    Sample Installations for OpenVMS Systems
+    B.2 Server Installation on OpenVMS Alpha Version 7.1-1H2 with DECnet-Plus
+
+
+          * Does this product have an authorization key registered and loaded? YES
+
+                   Installation will be complete in approximately 1 - 5 minutes
+                   depending upon your configuration.
+
+                   There are no more questions unless you chose to run the IVP.
+                   Installing DECdfs software . . .
+
+          %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+
+                  The following line should be added to your SYSTARTUP command
+                  file to automatically start DFS at system startup time:
+                           "@SYS$STARTUP:DFS$STARTUP.COM"
+          %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+          % DECdfs starting up...
+
+          Node 0 Session Control Application DFS$COM_ACP
+          at 1998-10-29-08:49:09.654-07:00I9.254
+
+          Characteristics
+
+              Node Synonym                      = True
+
+          % DECdfs startup completed.
+
+              The Installation Verification Procedure will now be run.  Please
+              review preceeding messages and take note of post-installation actions
+              that may be required (such as editing the SYSTARTUP procedure).
+
+          Begin the DECdfs IVP? [YES]
+
+             **************************************************************************
+             ***                                                                    ***
+             ***                            DECdfs V2.3-1                            ***
+             ***                                                                    ***
+             ***                     Distributed  File  Service                     ***
+             ***                                                                    ***
+             ***                  Installation Verification Procedure               ***
+             ***                                                                    ***
+             **************************************************************************
+
+                          COPYRIGHT (C) 1987, 1988, 1989, 1992, 1994, 1998
+                              Compaq Computer Corporation. ALL RIGHTS RESERVED.
+             Compaq Registered in U.S. Patent and Trademark Office. Confidential computer
+             software, Valid license required for possession, use or copying. Consistent
+             with FAR 12.211 and 12.212. Commercial Computer Software, Computer Software
+             Documentation, and Technical Commercial Items are licensed to the U.S.
+             Government under vendor's standard commercial license.
+
+             **************************************************************************
+
+    B-6 Sample Installations for OpenVMS Systems
+
+ 
+
+
+
+                                 Sample Installations for OpenVMS Systems
+ Server    Installation on OpenVMS Alpha Version 7.1-1H2 with DECnet-Plus
+
+
+                 This system will run as a DECdfs Server. To verify the
+                 installation, an Access Point must be ADDed on the Server.
+                 This procedure creates an Access Point for its own use. You must
+                 supply a name for this Access Point that does not already exist
+                 and is consistent with the DECdns naming policy used in your network.
+
+               * Enter an Access Point name [] ? DFSTEST:.IVP_TEST
+
+              $ DFSCP ADD ACCESS_POINT DFSTEST:.IVP_TEST SYS$SYSDEVICE:[000000]
+              $ DFSCP MOUNT DFSTEST:.IVP_TEST DFS$IVP_DISK
+              %MOUNT-I-MOUNTED, DFSTEST:.IVP_TEST mounted on _DFSC1001:
+
+              Directory DFS$IVP_DISK:[000000]
+
+              000000.DIR;1        BACKUP.SYS;1        BADBLK.SYS;1        BADLOG.SYS;1
+              BITMAP.SYS;1        CONTIN.SYS;1        CORIMG.SYS;1        DFSTEST.DIR;1
+              INDEXF.SYS;1        KIT.DIR;1           SECURITY.SYS;1      SYS0.DIR;1
+              VMS$COMMON.DIR;1    VOLSET.SYS;1
+
+              Total of 16 files.
+              % Directory access was successful.
+              $ DFSCP DISMOUNT DFS$IVP_DISK
+              %DFS-S-DISMNT_SUCCESS, Dismount was successfully performed
+              $ DFSCP REMOVE ACCESS_POINT DFSTEST:.IVP_TEST
+
+              ********************************************************************************
+                                           DECdfs V2.3-1 IVP Successful
+              ********************************************************************************
+
+                      Installation of DECDFS01 V2.3 completed at 08:49
+
+                  Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+                  Creating installation data file: VMI$ROOT:[SYSUPD]DECDFS01023.VMI_DATA
+
+              Enter the products to be processed from the next distribution volume set.
+              * Products:  Exit
+
+                      VMSINSTAL procedure done at 08:50
+
+
+
+
+
+
+                             Sample Installations for OpenVMS Systems B-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                                 Index
+
+
+
+     A______________________________   D______________________________
+
+     Access point,  1-10, 2-11, 2-13   DECdfs drivers,  2-17
+     Access point name,  2-13, 3-2     DECdfs license PAK
+     Access rights for using DECdns      See License PAK
+        , 1-11                         DECdns,  1-9, 1-10
+     AUTOGEN command procedure           access rights for servers and
+        (AUTOGEN), 1-5                      clients, 1-11
+
+     B                                   client,  1-11, 2-11
+     _______________________________     logical name table,  1-11
+     Backup of system disk,  2-4         namespace,  3-2
+                                         server,  1-10
+     C______________________________   DECdns Distributed Name
+
+     CHANNELCNT parameter,  1-7           Service
+
+     Channel count,  1-7                 See DECdns
+     Client                            DECnet license PAK,  1-2, 1-9
+       deleting server files, 3-9      DECnet network,  1-2
+       IVP, 2-11                       DECnet node,  3-2
+       license PAK, 1-2                DECnet software,  2-2, 2-17,
+     Client installation,  2-8            3-3
+       example of OpenVMS VAX          DECnet startup command file,
+         Version 5.5-2 with DECnet-       3-3
+         VAX,  B-1                     DEFINE command,  1-11
+     Command files                     Deleting files during
+       DFS$CONFIG.COM, 3-4                installation,  2-5
+       DFS$STARTUP.COM, 3-4            DFS$DEFAULT account,  3-6, 3-7
+       DFS$SYSTARTUP.COM, 3-4          DFS$IVP.COM file,  3-1
+     Configuration,  3-4               DFS$STARTUP.COM file,  3-3
+       client to server, 3-8           Disk space,  1-3
+       file, 3-4                       Distributed Name Service
+       planning, 1-9                     See DECdns
+       server to client, 3-8
+
+                                                               Index-1
+
+ 
+
+
+
+
+
+
+
+    Distribution kit,  1-1             Installation (cont'd)
+
+    DNS                                 rebooting before or after,
+      See DECdns                           1-14
+    DNS$CHANGE_DEF_FILE.COM file,       time required,  1-8
+       1-11, 2-17                       verification,  2-11
+
+    DNS$DEFAULT_FILE.DAT file,         Installation Verification
+       1-11, 2-17                        Procedure
+    DNS$SYSTEM_TABLE logical name       See IVP
+       table, 1-11                     Interrupt stack size, 2-17
+    Driver file                        INTSTKPAGES parameter, 1-6
+      deletion messages,  2-16         IVP, 2-5, 2-11 to 2-14, 3-1
+                                        access rights,  3-2
+    E______________________________     client-only,  3-2
+    Environment                         during installation,  2-5
+      before installation,  2-2         server,  3-2
+
+      during installation,  2-3        L
+    Error messages,  3-10              _______________________________
+                                       License Management Facility
+    F______________________________     See LMF
+
+    Files, installed or modified,      License PAK, 1-9, 1-13, 2-8,
+       A-1                               2-9, 2-17
+    Flags                               installation,  1-2
+      START_CLIENT_FLAG,  1-13          loaded,  2-8
+      START_SERVER_FLAG,  1-13          messages,  2-16
+                                        registered,  2-8
+    G______________________________    LMF, 2-8, 2-9
+    GBLPAGES parameter,  1-6            installation,  1-2
+    GBLSECTIONS parameter,  1-6        Local startup file, 3-3
+
+    Global pages                       M
+      increasing,  1-7                 _______________________________
+    Global sections                    Maintenance updates, 1-1, 1-15
+      increasing,  1-7                 Media, 2-3, 2-14
+                                       Messages
+    I______________________________     DECnet,  2-16
+    Installation                        driver file deletion,  2-16
+      aborting,  2-1                    error,  2-15, 3-10
+      informational messages,  2-9,     installation,  2-14
+                                        interrupt stack size,  2-17
+         2-14                           IVP,  2-16
+      invoking,  2-3                    license PAK,  2-16
+      mount kit,  2-4                   patch,  2-16
+      on OpenVMS Cluster systems,       purge files,  2-14
+         1-12                           startup,  2-16
+      over previous versions,  1-4      SYSGEN parameters,  2-16
+
+    Index-2
+
+ 
+
+
+
+
+
+
+
+        Mount installation kit volume,    Requirements for installation
+          2-4                                (cont'd)
+
+                                            hardware, 1-2
+        N______________________________     privileges, 1-8
+
+        Nonpaged pool                       quota, 1-8
+         increasing size,  1-5              security, 3-6
+        NPAGEDYN parameter, 1-5             software, 1-2
+
+        _______________________________   S______________________________
+
+        Online release notes              Security,  3-6
+         See Release notes                Server
+        OpenVMS Cluster systems, 1-12       IVP, 2-12
+         postinstallation,  3-10            license PAK, 1-2
+         preinstallation,  1-12           Server installation,  2-8
+                                            example of OpenVMS Alpha
+        P                                     Version 7.1-1H2 with
+        _______________________________       DECnet-Plus,  B-5
+        PAK, 1-2                          Software version,  3-11
+        Prerequisites                     Startup command file,  3-4
+         hardware,  1-2                   Startup messages,  2-16
+         software,  1-2                   SYSGEN parameters,  1-5
+        Problems                            CHANNELCNT, 1-7
+         reporting,  3-10                   GBLPAGES, 1-6
+        Proxy account, OpenVMS, 3-6         GBLSECTIONS, 1-6
+        Purging files during                INTSTKPAGES, 1-6
+          installation,  2-5, 2-14          modifying, 1-5
+
+                                            NPAGEDYN, 1-5
+        R______________________________   SYSTARTUP.COM file
+        Rebooting                           editing, 3-3
+         an existing DECdfs system,       SYSTARTUP_V5.COM file
+            1-14                            editing, 3-3
+        Reconfiguring DECdfs, 3-8         SYSTARTUP_VMS.COM file
+        Reinstalling DECdfs software,       editing, 3-3
+          3-8                             System interrupt stack
+        Release notes, 1-2, 1-13, 1-15      increasing size, 1-6
+
+         copying to SYS$HELP,  2-4        System interrupt stack
+         online,  2-3, 2-5                   parameter
+
+         options menu,  2-4                 See INTSTKPAGES parameter
+        Renaming files during
+          installation,  2-5
+        Reporting problems, 3-10
+        Requirements for installation
+         account,  1-8
+         disk space,  1-3
+
+                                                                  Index-3
+
+ 
+
+
+
+
+
+
+
+
+    T______________________________
+
+    /TABLE qualifier,  1-11
+
+    V______________________________
+
+    VMSINSTAL procedure,  2-1, 2-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Index-4

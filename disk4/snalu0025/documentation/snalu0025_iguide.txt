@@ -1,0 +1,1797 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital SNA
+                     Application_Programming_Interface_for_OpenVMS_
+                     Installation
+
+                     Part Number: AA-EW86E-TE
+
+                     May 1996
+
+                     This document describes how to install the Digital
+                     SNA Application Programming Interface for OpenVMS,
+                     Version 2.4 software. The document also explains
+                     how to configure the IBM software to communicate
+                     with the interface.
+
+
+
+
+
+
+                     Revision/Update Information: This is a revised
+                                                  manual.
+
+                     Operating System and Version: OpenVMS VAX Versions
+                                                  6.1, 6.2, or 7.0
+                                                  OpenVMS Alpha
+                                                  Versions 6.1, 6.2,
+                                                  or 7.0
+
+                     Software Version:            Digital SNA Application
+                                                  Programming Interface
+                                                  for OpenVMS, Version
+                                                  2.4
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           May 1996
+
+           The information in this document is subject to change
+           without notice and should not be construed as a commitment
+           by Digital Equipment Corporation or EDS. Digital Equipment
+           Corporation or EDS assumes no responsibility for any
+           errors that may appear in this document.
+
+           The software described in this document is furnished under
+           a license and may be used or copied only in accordance
+           with the terms of such license.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           Digital conducts its business in a manner that conserves
+           the environment.
+
+           Restricted Rights: Use, duplication, or disclosure by the
+           U.S. Government is subject to restrictions as set forth in
+           subparagraph (c)(1)(ii) of the Rights in Technical Data
+           and Computer Software clause at DFARS 252.227-7013.
+
+                    Copyright © 1989, 1996 Digital Equipment
+                        Corporation, EDS Defense Limited
+                              All Rights Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: Alpha, DEC, DEC/CMS, DEC/MSS, DECnet,
+           DECsystem-10, DECSYSTEM-20, DECUS, DECwriter, DIBOL,
+           EduSystem, IAS, MASSBUS, OpenVMS, PDP, PDT, RSTS, RSX,
+           UNIBUS, VAX, VAXcluster, VMS, VT, and the Digital logo.
+
+           IBM is a registered trademark of International Business
+           Machines Corporation.
+
+           This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing for Installation
+
+         1.1   Checking the Distribution Kit................    1-1
+         1.2   OpenVMS System Requirements..................    1-1
+         1.2.1     Installation Requirements................    1-1
+         1.2.1.1     OpenVMS SNA and Gateway Support........    1-3
+         1.2.2     OpenVMS License Management Facility
+                   Requirements.............................    1-4
+         1.2.3     OpenVMS Tailor Requirements..............    1-4
+         1.2.4     Calculating the Value for GBLSECTIONS....    1-4
+         1.3   VMScluster Considerations....................    1-5
+         1.4   OpenVMS Optional Products....................    1-6
+         1.5   VMSINSTAL Requirements.......................    1-6
+         1.5.1     Using VMSINSTAL..........................    1-7
+         1.6   Accessing the On-line Release Notes..........    1-8
+
+   2  Installing the API
+
+         2.1   The Installation Procedure...................    2-1
+         2.1.1     Running VMSINSTAL........................    2-2
+         2.2   Postinstallation Considerations..............    2-6
+         2.2.1     Files Created During Installation........    2-7
+         2.2.2     Installing the API as a Shareable
+                   Image....................................    2-8
+         2.2.3     Running the Installation Verification
+                   Procedure................................    2-9
+         2.2.4     Adding the SNA_API Help File to the Help
+                   File of an Editor........................    2-9
+         2.2.5     License Management Facility in a
+                   VMScluster...............................    2-9
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+           2.3   Error Recovery...............................   2-10
+           2.3.1     Installation Verification Procedure
+                     Messages.................................   2-10
+           2.4   Sample Installation on an OpenVMS System with
+                 OPTIONS N....................................   2-12
+           2.5   Sample Installation on an OpenVMS System
+                 without OPTIONS N............................   2-14
+
+
+     3  Post-Installation Procedure
+
+
+     Tables
+
+           1-1       Installation Specifications..............    1-2
+
+           1-2       Disk Space Requirements..................    1-2
+
+           2-1       File Locations After Installation........    2-7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              The Digital SNA Application Programming Interface (API)
+              for OpenVMS is a Digital Equipment Corporation software
+              product that enables OpenVMS VAX and OpenVMS Alpha users
+              to communicate with programs running on IBM systems
+              through one of Digital's interconnect systems.
+
+        Manual Objectives
+
+              The Digital SNA Application Programming Interface for
+              OpenVMS Installation manual provides the information
+              needed to install and verify the API software.
+
+        Intended Audience
+
+              The Digital SNA Application Programming Interface for
+              OpenVMS Installation manual is intended for system
+              managers and network managers responsible for the
+              installation of the Application Programming Interface.
+
+        Document Structure
+
+              This document consists of two chapters.
+
+              Chapter 1   Provides introductory information about
+                          Application Programming Interface.
+
+              Chapter 2   Describes the installation process, including
+                          the Product Authorization Key (PAK) and
+                          Installation Verification Procedure (IVP).
+                          It also contains sample installations.
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+     Associated Documents
+
+           The following is a list of documents related to the
+           Application Programming Interface:
+
+           o  Digital SNA Application Programming Interface for
+              OpenVMS Installation
+
+           o  Digital SNA Application Programming Interface for
+              OpenVMS Problem Solving
+
+           o  Digital SNA Application Programming Interface for
+              OpenVMS Programming
+
+           You should have the following Digital documents available
+           for reference when you use the Application Programming
+           Interface:
+
+           o  Digital SNA Domain Gateway Installation
+
+           o  Digital SNA Domain Gateway Management
+
+           o  Digital SNA Domain Gateway Guide to IBM Resource
+              Definition
+
+           o  DECnet SNA Gateway Problem Determination Guide
+
+           o  DECnet SNA Gateway-CT Installation
+
+           o  DECnet SNA Gateway-CT Problem Solving (OpenVMS &
+              ULTRIX)
+
+           o  DECnet SNA Gateway-CT Management (OpenVMS)
+
+           o  DECnet SNA Gateway-CT Guide to IBM Parameters
+
+           o  DECnet SNA Gateway-ST Installation
+
+           o  DECnet SNA Gateway-ST Problem Solving (OpenVMS)
+
+           o  DECnet SNA Gateway-ST Guide to IBM Parameters
+
+           o  DECnet SNA Gateway Management for OpenVMS
+
+           o  Digital Peer Server Installation and Configuration
+
+           o  Digital Peer Server Management
+
+           o  Digital Peer Server Network Control Language Reference
+
+           o  Digital Peer Server Guide to IBM Resource Definition
+
+           o  OpenVMS SNA Installation
+
+     vi
+
+ 
+
+
+
+
+
+
+              o  OpenVMS SNA Problem Solving
+
+              o  OpenVMS SNA Guide to IBM Parameters
+
+              o  OpenVMS SNA Management
+
+              o  OpenVMS SNA Problem Determination Guide
+
+              See the following documents for more information about the
+              IBM 3270 Information Display System:
+
+              o  ACF for VTAM Version 2, Messages and Codes (IBM Order
+                 No. SC27-0614)
+
+              o  IBM 3270 Information Display System and 3274 Control
+                 Unit Description and Programmer's Guide (IBM Order No.
+                 GA23-0061)
+
+              o  IBM 3287 Printer Models 1 and 2 Component Description
+                 (IBM Order No. GA27-3153)
+
+              o  MVS/TSO/VTAM Data Set Print Program Description/Operations
+                 Manual (IBM Order No. SB21-2070)
+
+              o  IBM 3270 Information Display System, Order No. GA23-
+                 0060
+
+              o  IBM 3270 Information Display System Data Stream
+                 Programmer's Reference, Order No. GA23-0059
+
+              o  Systems Network Architecture-Introduction to Sessions
+                 Between Logical Units, Order No. GC20-1869
+
+              o  Systems Network Architecture-Sessions Between Logical
+                 Units, Order No. GC20-1868
+
+              o  IBM 3270 Information Display System: Operator's Guide,
+                 Order No. GA27-2742
+
+        Conventions Used in This Manual
+
+              The following table summarizes the graphic conventions
+              that are used in this manual.
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+           __________________________________________________________
+           Convention____Meaning_____________________________________
+
+
+           Special type  This special type indicates an example of
+                         system output or user input.
+
+           UPPERCASE     Uppercase letters in command syntax indicate
+                         keywords that you can enter. You can enter
+                         keywords in either uppercase or lowercase.
+
+           italics       Italics in command syntax or examples
+                         indicate variables for which either you
+                         or the system supplies a value.
+
+           [ ]           Square brackets in command syntax statements
+                         indicate that the enclosed value(s)
+                         are optional. Default values apply for
+                         unspecified options. (Do not type the
+                         brackets.)
+
+           { }           Braces in command syntax statements indicate
+                         that you must specify one, and only one,
+                         of the enclosed values. (Do not type the
+                         braces.)
+
+           ( )           Parentheses enclose a group of values that
+                         you must specify for an operand. Type the
+                         values in the line of code in the order
+                         indicated. Type parentheses wherever they
+                         appear in a line of code.
+
+           hh:mm:ss      Indicates hours, minutes, and seconds
+
+           <KEY>         This symbol indicates a key that you should
+                         press. For example, <RET> means that you
+                         should press the RETURN key.
+
+           <CTRL/x>      This notation means that you should
+                         hold down the CTRL key and press the key
+           ______________specified_by_x_at_the_same_time.____________
+
+           You must press <RETURN> to enter all commands.
+
+
+
+     viii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                              Preparing for Installation
+
+
+
+              Before you install the Digital SNA Application Programming
+              Interface for OpenVMS software, referred to as API, you
+              should prepare your system.
+
+              This installation involves writing to your system disk.
+              Digital recommends that you make a backup copy of your
+              system disk before you begin.
+
+        1.1 Checking the Distribution Kit
+
+              Before beginning the installation, check that you have
+              a complete distribution kit by comparing the kit against
+              the bill of materials (BOM). If any part of the kit is
+              missing, contact your Digital representative. Each API
+              kit consists of one or more volumes of software media
+              (depending on the media) and a set of documentation.
+
+        1.2 OpenVMS System Requirements
+
+              This section discusses OpenVMS requirements and calculates
+              parameter values for the API.
+
+        1.2.1 Installation Requirements
+
+              Before you install the API software, verify that
+              the specifications in Table 1-1 and the disk space
+              requirements in Table 1-2 have been met.
+
+
+
+
+
+
+
+
+                                          Preparing for Installation 1-1
+
+ 
+
+
+
+
+
+
+           Table_1-1_Installation_Specifications_____________________
+
+                            OpenVMS VAX           OpenVMS Alpha
+           Requirement______Specifications________Specifications_____
+
+           Software                 Versions 6.1, 6.2, or 7.0
+
+           Privileges       system manager        system manager
+
+           Image sections   3                     4
+
+           Global pages     68                    944
+
+           Approximate              5 to 15 minutes, depending
+           installation                 on the medium used
+           time
+
+           Associated         OpenVMS Software Installation contains
+           Documents_____________general_installation_information____
+
+           Table_1-2_Disk_Space_Requirements_________________________
+
+                                   OpenVMS
+                                   VAX Free    OpenVMS Alpha Free
+           Requirement_____________Blocks______Blocks________________
+
+           Minimum for API         12,947      12,947
+           installation
+
+           Permanent for API and   5548        5548
+           all languages
+
+           Permanent for API       1152        1520
+           installation
+
+           For ADA                 3302        3088
+
+           For BASIC               78          78
+
+           For BLISS               63          63
+
+           For C                   91          91
+
+           For FORTRAN             72          72
+
+           For LIBRARY             47          47
+
+           For MACRO               271         271
+
+                                             (continued on next page)
+
+     1-2 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              Table_1-2_(Cont.)_Disk_Space_Requirements_________________
+
+                                      OpenVMS
+                                      VAX Free    OpenVMS Alpha Free
+              Requirement_____________Blocks______Blocks________________
+
+              For Pascal              186         186
+
+              For_PLI_________________132_________132___________________
+
+              To determine how much permanent disk space you need after
+              installation of a particular language, add the permanent
+              disk space required for that language to the disk space
+              required for API. For example, on OpenVMS VAX, to the
+              permanent disk space for BASIC, which is 78 blocks, add
+              1152 blocks, which are required for API. A total of 1230
+              blocks are required.
+
+        1.2.1.1 OpenVMS SNA and Gateway Support
+
+              Version 2.4 of the API software also requires one of the
+              following system configurations for proper operation:
+              Either the DECnet SNA Gateway-ST, DECnet SNA Gateway-CT,
+              Digital SNA Domain Gateway-ST, Digital SNA Domain Gateway-
+              CT, Digital SNA Peer Server, or systems must be part of
+              OpenVMS SNA (OpenVMS VAX Version 6.1 or Version 6.2 only).
+              For more information on these products, see the following
+              documentation:
+
+              o  DECnet SNA Gateway Management for OpenVMS
+
+              o  DECnet SNA Gateway-ST Installation
+
+              o  DECnet SNA Gateway-CT Installation
+
+              o  Digital SNA Domain Gateway Installation
+
+              o  OpenVMS SNA Installation
+
+              o  Digital Peer Server Installation and Configuration
+
+              o  Digital Peer Server Management
+
+              o  Digital Peer Server Network Control Language Reference
+
+              o  Digital Peer Server Guide to IBM Resource Definition
+
+                                          Preparing for Installation 1-3
+
+ 
+
+
+
+
+
+
+     1.2.2 OpenVMS License Management Facility Requirements
+
+           Before you install API, you should register your Product
+           Authorization Key (PAK) with the License Management
+           Facility (LMF). The PAK, which contains information
+           about the license, is a paper certificate shipped with
+           the product.
+
+           During the installation, the system prompts you asking
+           if you have registered the Application Programming
+           Interface license and loaded the appropriate Product
+           Authorization Key (PAK). If you have not already done so,
+           you can complete the installation and run the Installation
+           Verification Procedure (IVP). The Application Programming
+           Interface will not run if you have not registered the
+           license or loaded the PAK. Once you perform the license
+           registration and have loaded the PAK, you will be able to
+           run the Application Programming Interface.
+
+           To register and load the license, log in to the system
+           manager's account. Then type the following command:
+
+           @ SYS$UPDATE:VMSLICENSE.COM
+
+           When you are prompted for information, enter the data
+           from your PAK. For more information on LMF, see the
+           OpenVMS License Management Utility Manual in the OpenVMS
+           documentation set.
+
+     1.2.3 OpenVMS Tailor Requirements
+
+           The required classes are: OpenVMS Required Save Set,
+           Network Support, Programming Support, and Utilities.
+           Be certain these classes are installed on your system
+           before installing the product. Refer to OpenVMS Tailor
+           documentation in the OpenVMS documentation set for more
+           information.
+
+     1.2.4 Calculating the Value for GBLSECTIONS
+
+           Make sure that you have enough global pages and global
+           sections free. If there are not enough global pages and
+           global sections, the API software cannot be installed as a
+           shareable image. You can check the number of global pages
+           and global sections available by entering the following
+           commands:
+
+     1-4 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN> SHOW GBLPAGES
+              SYSGEN> SHOW GBLSECTIONS
+
+              You can then check the number of global pages and global
+              sections in use by entering the following commands:
+
+              $ INSTALL
+              INSTALL> LIST/GLOBAL
+
+              By subtracting the second set of values from the first,
+              you can determine if there are enough global pages and
+              global sections available for your use. If you need to
+              modify these values, you must edit the
+              SYS$SYSTEM:MODPARAMS.DAT file and include the following
+              lines.
+
+              For OpenVMS VAX:
+
+              ADD_GBLPAGES=68
+              ADD_GBLSECTIONS=3
+
+              For OpenVMS Alpha:
+
+              ADD_GBLPAGES=994
+              ADD_GBLSECTIONS=4
+
+              After modifying these values, you must run AUTOGEN by
+              using the following commands:
+
+              $ @SYS$UPDATE:AUTOGEN SAVPARAMS GENPARAMS
+              $ @SYS$UPDATE:AUTOGEN SETPARAMS REBOOT
+
+              These commands will recompute your system parameters.
+              AUTOGEN will also perform an automatic shutdown and reboot
+              when it is finished.
+
+        1.3 VMScluster Considerations
+
+              This layered product is fully supported when installed on
+              any valid and licensed VMScluster configuration, with the
+              following restrictions:
+
+              o  The API must be installed and run on each node in the
+                 VMScluster containing a synchronous communications
+                 interface connected to an IBM system.
+
+                                          Preparing for Installation 1-5
+
+ 
+
+
+
+
+
+
+           o  When you run the API in interactive mode, you must run
+              it from a node with a synchronous device interface and
+              API locally installed.
+
+
+     1.4 OpenVMS Optional Products
+
+           For general background information on installing optional
+           products on an OpenVMS system, refer to the OpenVMS
+           Software Installation . This manual has an appendix
+           dealing with optional product installation.
+
+     1.5 VMSINSTAL Requirements
+
+           Installing the Application Programming Interface on an
+           OpenVMS system involves running the VMSINSTAL procedure.
+           The dialogue is self-explanatory. The system tells you to
+           answer questions and waits for you to tell it to continue.
+           Most questions require a simple YES (Y) or no (N) answer.
+           The questions display default answers (where available) in
+           the following way:
+
+           [YES]:
+
+           To answer a question with the default YES, press [RET].
+
+           When you invoke VMSINSTAL, it checks that:
+
+           o  You are logged in to a privileged account.
+
+           o  You have adequate quotas for installation.
+
+           o  All users are logged off.
+
+           Note that the following explanation of VMSINSTAL deals
+           with the simplest case; in actual practice, the procedure
+           may ask other questions, depending on your configuration
+           and the products already installed. Refer to the Guide to
+           OpenVMS Software Installation for a full description of
+           how VMSINSTAL works.
+
+           To install the distribution kit on your OpenVMS host:
+
+           o  Log in to the system manager's account.
+
+           o  Make sure you have backed up the system disk.
+
+           o  Make sure that you have at least 12,947 free blocks on
+              the system disk.
+
+     1-6 Preparing for Installation
+
+ 
+
+
+
+
+
+
+              o  Make sure that you have 68 global pages free (for
+                 OpenVMS VAX) or 944 (for OpenVMS Alpha). (If there are
+                 not enough global pages, the API cannot be installed as
+                 a shareable image.)
+
+              o  Make sure you have five global sections free.
+
+              o  Make sure that all users are logged out and all batch
+                 jobs are complete.
+
+        1.5.1 Using VMSINSTAL
+
+              VMSINSTAL is a command procedure that installs OpenVMS
+              layered software products. The VMSINSTAL command line has
+              the following format:
+
+              $ @SYS$UPDATE:VMSINSTAL SNALU0nnn ddcu: [OPTIONS N]
+
+              where:
+
+              nnn represents the major version number and the current
+              maintenance update in that version.
+
+              The first and second digits represent the major version
+              number, and the third digit represents the current
+              maintenance update version number. For the version number
+              of your kit, refer to the label on the distribution kit or
+              the BOM. If you do not supply the product name and version
+              number, VMSINSTAL prompts you for them.
+
+              ddcu represents a device name for the API installation
+              media, where dd is the device code, c is the controller
+              id, and u is the unit number.
+
+              It is not necessary to use the console drive. If you do
+              not supply the device name, VMSINSTAL prompts you for
+              it. MTA0: is the device name used in examples in this
+              document.
+
+              OPTIONS N is an optional parameter you should provide if
+              you want to be prompted to display or print the release
+              notes.
+
+              If you do not include the OPTIONS N parameter, VMSINSTAL
+              does not prompt you to display or print the release notes.
+
+                                          Preparing for Installation 1-7
+
+ 
+
+
+
+
+
+
+           When you install a product using VMSINSTAL, you have two
+           installation options. Either you can enter the VMSINSTAL
+           command line specifying the product name, version number,
+           device name, and release notes option, or you can enter
+           the following command:
+
+           $ @SYS$UPDATE:VMSINSTAL
+
+           If you enter the preceding command, VMSINSTAL prompts
+           you for the product name, version number, and device name
+           during the installation. If you use this command, you do
+           not have the option of displaying or printing the release
+           notes.
+
+     1.6 Accessing the On-line Release Notes
+
+           This product provides on-line release notes. You should
+           review the release notes before installing the product.
+           They contain the latest enhancements to the product, which
+           may include changes to the installation procedure. If
+           you specify the OPTIONS N parameter on the VMSINSTAL
+           command line, the system prompts you regarding how you
+           would like to see the release notes. After installing
+           the product, you can read the release notes in the file
+           SYS$HELP:SNALU0vvu.RELEASE_NOTES, where vv is the major
+           version number and u is the update number (1 digit).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     1-8 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                      Installing the API
+
+
+
+              This chapter describes how to install the Digital SNA
+              Application Programming Interface for OpenVMS (referred
+              to as API). It contains a step-by-step description of the
+              installation considerations. The final section includes
+              sample system installation logs using PAK information and
+              VMSINSTAL.
+
+        2.1 The Installation Procedure
+
+              The API installation consists of a series of questions and
+              informational messages. The process takes 5 to 15 minutes
+              to complete.
+
+                ________________________Note  ________________________
+
+                You can install the API software from two locations:
+                the Consolidated Software Distribution CD-ROM or
+                a remote node in your local area network using the
+                Remote Installation Service (RIS). The VMSINSTAL
+                procedure presented in this chapter assumes the API
+                software is being installed from your local area
+                network.
+
+                To install the API software from the Consolidated
+                Software Distribution CD-ROM, see the master
+                index table in the document Consolidated Software
+                Distribution Disk User's Guide for the directory
+                containing the API files.
+
+                _____________________________________________________
+
+
+
+
+
+                                                  Installing the API 2-1
+
+ 
+
+
+
+
+
+
+     2.1.1 Running VMSINSTAL
+
+           Digital recommends that you use a hard-copy terminal for
+           installing the API software if you would like a copy
+           of the installation process. If you have a hard-copy
+           terminal, you can produce a copy of the installation
+           procedure in a file by typing:
+
+           $ SET HOST 0/LOG=filename
+
+           where:
+
+           filename is the name of the file in which you want the log
+           file stored.
+
+           Step 1: Log in to system manager's account.
+
+           To start the installation, invoke the VMSINSTAL command
+           procedure from a privileged account, such as the SYSTEM
+           account.
+
+           Username: SYSTEM [RET]
+           Password:        [RET]
+
+           Step 2: Invoke VMSINSTAL.
+
+           Use the following syntax to invoke VMSINSTAL:
+
+           $ @SYS$UPDATE:VMSINSTAL SNALU0nnn ddcn: OPTIONS N
+
+           Replace nnn in the product name with the version number of
+           the software, for example, SNALU0024.
+
+           Replace ddcn with the name of the device on which you plan
+           to mount the media, where dd is the device name, c is the
+           controller ID, and n is the unit number.
+
+           OPTIONS N is an optional parameter that indicates you want
+           to be prompted to display or print the release notes, or
+           copy them to SYS$HELP. If you do not include the OPTIONS
+           N parameter, VMSINSTAL does not prompt you to display,
+           print, or copy the release notes. Please read the release
+           notes before proceeding with this installation.
+
+                      OpenVMS Alpha Software Product Installation Procedure V6.1
+
+           It is dd-mmm-yyyy at hh::mm.
+           Enter a question mark (?) at any time for help.
+
+     2-2 Installing the API
+
+ 
+
+
+
+
+
+
+              Step 3: Product Installation Begins.
+
+              VMSINSTAL displays a message that the media containing the
+              API has been mounted on the specified device and that the
+              installation has begun.
+
+              Please mount the first volume of the set on ddcn:
+              * Are you ready? YES
+              %MOUNT-I-MOUNTED, SNALU0 mounted on _ddcn:
+
+              The following products will be processed:
+
+              SNALU0 Vn.n
+
+                  Beginning installation of SNALU0 Vn.n at hh::mm
+
+              %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+              Where n.n is automatically replaced with the version
+              number of the API, for example, V2.4.
+
+              Step 4: Select a release notes option.
+
+              If you specified OPTIONS N when you invoked VMSINSTAL,
+              the installation procedure prompts you for a release notes
+              option.
+
+              Release Notes included with this kit are always copied to SYS$HELP.
+              Additional Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  None of the above
+
+              * Select option [2]:
+
+              If you select option 1, VMSINSTAL displays the release
+              notes immediately on your terminal. You can terminate the
+              display at any time by pressing <CTRL/C>.
+
+              If you select option 2 or 3, VMSINSTAL prompts you for a
+              print queue name:
+
+              Queue name [SYS$PRINT]:
+
+              Enter a queue name or press RETURN to send the file to the
+              default output print device, SYS$PRINT.
+
+                                                  Installing the API 2-3
+
+ 
+
+
+
+
+
+
+           No matter which option you select, VMSINSTAL then asks you
+           if you want to continue the installation. Answer YES to
+           continue or NO to exit VMSINSTAL.
+
+           * Do you want to continue the installation? YES
+           %VMSINSTAL-I-RELMOVED, The products release notes have been successfully
+           moved to SYS$HELP.
+
+           Step 5: Register the product with the License Management
+           Facility.
+
+           The installation procedure prints out information specific
+           to the particular license and asks if you have registered
+           and loaded your PAK for the API.
+
+           Product:              SNA-API
+           Producer:             DEC
+           Version:              n.n
+           Release Date:         dd-mmm-yyyy
+
+           * Does this product have an authorization key registered and loaded?
+
+           If you have not registered and loaded your PAK, answer NO
+           to this question. The installation reminds you to register
+           the PAK before you run the product. The installation
+           continues.
+
+           Step 6: Select installation options.
+
+           You have the option to purge files from previous versions
+           of the API that are superseded by this installation.
+           Purging is recommended because it will save disk space.
+
+           * Do you want to purge files replaced by this installation [YES]?
+
+           The system now asks if you want to have the IVP run
+           automatically at the end of the installation. The IVP
+           for the API checks to be sure that the installation is
+           successful. You should run the IVP immediately after
+           installation.
+
+           * Do you want to run the IVP after the installation [YES]?
+
+           Press RETURN to exit from the procedure, unless you have
+           more products to install using VMSINSTAL.
+
+     2-4 Installing the API
+
+ 
+
+
+
+
+
+
+              Step 7: Select language symbols.
+
+              You have the option of installing only those symbol files
+              necessary for the programming languages you are using. You
+              need 4138 blocks of disk space to install all the symbol
+              files.
+
+              If you do not want all the symbol files offered, answer NO
+              to the following:
+
+              * Would you like all the symbol files installed on this system [Y]?
+
+              A NO answer to this question results in a list that
+              displays the languages offered and the disk requirements
+              for the symbol files of each of those languages.
+
+               Please enter Yes (Y) or No (N) if you want the symbol files
+               installed for the following languages:
+
+              *       ADA (XXXX blocks) [N]?
+              *       BASIC (XX blocks) [N]?
+              *       BLISS (XX blocks) [N]?
+              *       CC (XXX blocks) [N]?
+              *       FORTRAN (XXX blocks) [N]?
+              *       LIBRARY (XX blocks) [N]?
+              *       MACRO (XX blocks) [N]?
+              *       PASCAL (XXX blocks) [N]?
+              *       PLI (XXX blocks) [N]?
+
+                      You have chosen the following languages:
+                          ()
+
+              * Is this OK [Y]?
+
+              Step 8: Read informational message.
+
+              The installation procedure now displays the following
+              informational message:
+
+              %SNALU0-I-NOQUEST, No further questions will be asked
+
+                      The IVP for this product, SNALU0$IVP.COM, can be found in
+                      the SYS$TEST directory.
+
+                      To install the SNALU0SHR.EXE and SNALU0MSG.EXE images as
+                      shareable each time the system reboots, you must add the
+                      following line to your system startup procedure:
+
+                              $ @SYS$STARTUP:SNALU0$STARTUP
+
+                                                  Installing the API 2-5
+
+ 
+
+
+
+
+
+
+                   On-line release notes for this product can be found in the file,
+                           SYS$COMMON:[SYSHLP]SNALU00nn.RELEASE_NOTES
+
+           %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories ...
+
+           Step 9: The IVP is run.
+
+           The installation procedure calls the IVP to verify that
+           the API software was successfully installed. The system
+           displays the following messages:
+
+           ** Digital SNA Application Programming Interface for OpenVMS Vn.n Installation Test **
+           .... Testing API Vn.n file locations
+           .... Testing API Vn.n
+
+           ** Digital SNA API for OpenVMS Vn.n Test Successful **
+
+           Step 10: End the installation procedure.
+
+           The following messages indicate that the entire installa-
+           tion procedure is complete:
+
+                 Installation of SNALU0 Vn.n completed at hh::mm
+
+                 VMSINSTALL procedure done at hh::mm
+
+     2.2 Postinstallation Considerations
+
+           The installation procedure for API installs SNALU0SHR.EXE,
+           SNALU0MSG.EXE, and SNAGWAMSG.EXE files as shareable
+           images. Section 2.2.1 lists the files added to the system.
+
+           To install API on other nodes that share a common system
+           disk in a cluster environment, run the SYS$STARTUP:SNALU0$STARTUP.COM
+           command procedure on each node. For nodes in a cluster
+           environment that do not share a common system disk, the
+           API must be installed on each node. Section 2.2.2 shows
+           the command procedure for installing API as a shareable
+           image.
+
+           Verification of the installation can be done either during
+           installation through the VMSINSTAL utility or at any other
+           time by running the SNALU0$IVP.COM command procedure found
+           in the SYS$TEST directory. This command procedure verifies
+           that the API has been installed correctly on your system.
+           This command procedure does not verify connectivity
+           between IBM and either the DECnet SNA Gateway-ST, DECnet
+           SNA Gateway-CT, Digital SNA Domain Gateway-CT, Digital SNA
+           Domain Gateway-ST, Digital SNA Peer Server or OpenVMS SNA.
+
+     2-6 Installing the API
+
+ 
+
+
+
+
+
+
+              Section 2.2.3 shows the command procedure for running the
+              IVP. The API Help file can be added to an editor's Help
+              file. Section 2.2.4 shows the command procedure for adding
+              API Help.
+
+        2.2.1 Files Created During Installation
+
+              During installation, the files listed below are placed on
+              your system.
+
+                ________________________Note  ________________________
+
+                API V2.0 or later does not provide the object
+                library, SNA.OLB. API V2.4 or later does not provide
+                the shareable image SNASHR.EXE. If SNASHR.EXE is on
+                the system, it will not be removed. If you wish to
+                use existing applications, you must link them with
+                SNALU0SHR.EXE.
+
+                _____________________________________________________
+
+              Table_2-1_File_Locations_After_Installation_______________
+
+              File_Name_____________Location____________________________
+
+              SNAGWAMSG.EXE         (SYS$MESSAGE)
+
+              SNALIBDEF.ADA         (SYS$LIBRARY)
+
+              SNALIBDEF.BAS         (SYS$LIBRARY)
+
+              SNALIBDEF.R32         (SYS$LIBRARY)
+
+              SNALIBDEF.PAS         (SYS$LIBRARY)
+
+              SNALIBDEF.PEN         (SYS$LIBRARY)
+
+              SNALIBDEF.LIB         (SYS$LIBRARY)
+
+              SNALIBDEF.MAR         (SYS$LIBRARY)
+
+              SNALIBDEF.PLI         (SYS$LIBRARY)
+
+              SNALIBDEF.FOR         (SYS$LIBRARY)
+
+              SNALIBDEF.H           (SYS$LIBRARY)
+
+              SNALU024.RELEASE_     (SYS$HELP)
+              NOTES
+
+                                                (continued on next page)
+
+                                                  Installing the API 2-7
+
+ 
+
+
+
+
+
+
+           Table_2-1_(Cont.)_File_Locations_After_Installation_______
+
+           File_Name_____________Location____________________________
+
+           SNALU0SHR.EXE         (SYS$SHARE)
+
+           SNALU0SHR.IIF         (SYS$LIBRARY)-OpenVMS Alpha only
+
+           SNALU0MSG.EXE         (SYS$MESSAGE)
+
+           SNALU0DEF.ADA         (SYS$LIBRARY)
+
+           SNALU0DEF.BAS         (SYS$LIBRARY)
+
+           SNALU0DEF.FOR         (SYS$LIBRARY)
+
+           SNALU0DEF.H           (SYS$LIBRARY)
+
+           SNALU0DEF.LIB         (SYS$LIBRARY)
+
+           SNALU0DEF.MAR         (SYS$LIBRARY)
+
+           SNALU0DEF.PAS         (SYS$LIBRARY)
+
+           SNALU0DEF.PAS_FOR_    (SYS$LIBRARY)
+           PEN
+
+           SNALU0DEF.PLI         (SYS$LIBRARY)
+
+           SNALU0DEF.R32         (SYS$LIBRARY)
+
+           SNALU0$STARTUP.COM    (SYS$STARTUP)
+
+           SNALU0$IVP.COM________(SYS$TEST)__________________________
+
+           You can find HELP information for the API in the system
+           help facility under the topic SNA_API.
+
+     2.2.2 Installing the API as a Shareable Image
+
+           The file SYS$STARTUP:SNALU0$STARTUP.COM contains the
+           start-up command procedure for the API. To install the
+           API as a shareable image, execute the command procedure as
+           follows:
+
+           $ @SYS$STARTUP:SNALU0$STARTUP
+
+           Include the above command in your system start-up
+           procedure to automatically install the API as a shareable
+           image when you boot the system.
+
+     2-8 Installing the API
+
+ 
+
+
+
+
+
+
+        2.2.3 Running the Installation Verification Procedure
+
+              The Installation Verification Procedure (IVP) verifies the
+              success of the installation. It checks that the new files
+              were transferred to their proper locations and that files
+              are not in the wrong location. If you encounter problems
+              using the API, you should run the IVP as a first step in
+              finding a solution. The IVP is designed to catch problems
+              with missing files and old files left on your system. If a
+              problem develops with the API, run the IVP first. To run
+              the IVP after you install the product, invoke the command:
+
+              $ @SYS$TEST:SNALUO$IVP
+
+              If the IVP fails, correct the situation, and run the
+              IVP again. Section 2.3.1 describes IVP failures in more
+              detail.
+
+        2.2.4 Adding the SNA_API Help File to the Help File of an
+              Editor
+
+              The API HELP information that is added to the HELPLIB
+              file during installation can also be inserted into the
+              HELP file of an editor for programmers who use editors
+              to develop Digital SNA or OpenVMS SNA applications. The
+              following commands perform this operation. These commands
+              require system manager privileges.
+
+              $ LIBRARY/HELP/EXTRACT=SNAAPI/OUTPUT=SNAAPI SYS$HELP:HELPLIB
+              $ LIBRARY/HELP/INSERT SYS$HELP:xxxHELP SNAAPI
+              $ DELETE SNAAPI.HLP;*
+
+              where xxx is the name of your editor. For example, EDT or
+              LSE.
+
+        2.2.5 License Management Facility in a VMScluster
+
+              Refer to the OpenVMS License Management Utility Manual
+              for information on managing licenses in a VMScluster
+              environment.
+
+
+
+
+
+                                                  Installing the API 2-9
+
+ 
+
+
+
+
+
+
+     2.3 Error Recovery
+
+           If errors occur during the installation or when the IVP is
+           running, VMSINSTAL displays error messages.
+
+           Errors can occur during the installation if any of the
+           following conditions exist:
+
+           1. The operating system version is incorrect.
+
+           2. A prerequisite software version is incorrect.
+
+           3. Quotas necessary for successful installation are
+              insufficient.
+
+           4. System parameter values for successful installation are
+              insufficient.
+
+           5. The OpenVMS help library is currently in use.
+
+           6. The product is not properly licensed.
+
+           7. Your system has insufficient disk space.
+
+           For descriptions of the error messages generated by these
+           conditions, see the OpenVMS documentation on system
+           messages, recovery procedures, and OpenVMS software
+           installation. If any of these conditions exist, you should
+           take the appropriate action as described in the message.
+           (You might need to change a system parameter or increase
+           an authorized quota value.) These requirements are part of
+           the installation requirements in Chapter 1 of this manual.
+
+     2.3.1 Installation Verification Procedure Messages
+
+           This section shows the different messages that the
+           SNALU0$IVP command procedure displays:
+
+           Beginning IVP Installation
+
+           ** Digital SNA Application Programming Interface for Digital Vn.n Installation Test **
+
+           Error Messages
+
+           %SNALU0$IVP-E-FILNOTFOU, the following files were not found:
+
+     2-10 Installing the API
+
+ 
+
+
+
+
+
+
+              This message displays a list of files not found. The list
+              will include one, some, or all of the following files:
+
+              SYS$SHARE:SNALU0SHR.EXE
+              SYS$MESSAGE:SNALU0MSG.EXE
+              SYS$MESSAGE:SNAWAMSG.EXE
+
+              SNALU0$IVP-F-ASSEMFAI, failed to assemble API Vn.n test program
+
+              %SNALU0$IVP-E-LINKFAI, failed to link API Vn.n test program with
+              %SNALU0SHR.EXE
+
+              %SNALU0$IVP-E-RUNFAI, failed to run API Vn.n test program
+
+              Completing IVP Installation
+
+              ** Digital SNA Application Programming Interface for OpenVMS Vn.n Test Successful **
+
+              or
+
+              ** Digital SNA Application Programming Interface for OpenVMS Vn.n Test FAILED **
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                 Installing the API 2-11
+
+ 
+
+
+
+
+
+
+     2.4 Sample Installation on an OpenVMS System with OPTIONS N
+
+           A sample of the entire installation procedure follows:
+
+           $ @SYS$UPDATE:VMSINSTAL SNALU0024 MUA0
+
+                OpenVMS Alpha Software Product Installation Procedure V6.1
+
+           It is dd-mmm-yyyy at hh:mm
+           Enter a question mark (?) at any time for help.
+
+           * Are you satisfied with the backup of your system disk [YES]?
+
+           Please mount the first volume of the set on MUA0:
+
+           The following products will be processed:
+
+             SNALU0 V2.4
+
+               Beginning installation of SNALU0 V2.4 at hh:mm
+
+           %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+           Release Notes included with this kit are always copied to SYS$HELP.
+           Additional Release Notes Options:
+
+           1. Display release notes
+           2. Print release notes
+           3. Both 1 and 2
+           4. None of the above
+
+           * Select option [2]: 4
+           * Do you want to continue the installation? YES
+
+           %VMSINSTAL-I-RELMOVED, The products release notes have been successfully
+           moved to SYS$HELP.
+
+                Product:           SNA-API
+                Producer:          DEC
+                Version:           V2.4
+                Release Date:      dd-mmm-yyyy
+
+           * Does this product have an authorization key registered and loaded? YES
+           * Do you want to purge files replaced by this installation [YES]?
+           * Do you want to run the IVP after the installation [YES]?
+
+                   Installing all the symbol files for the supported languages
+                   requires XXXX blocks of permanent storage.
+
+           * Would you like all the symbol files installed on this system [Y]? NO
+
+                   Please enter Yes (Y) or No (N) if you want the symbol files
+                   installed for the following languages:
+
+     2-12 Installing the API
+
+ 
+
+
+
+
+
+
+              *       ADA (XXXX blocks) [N]? Y
+              *       BASIC (XX blocks) [N]? Y
+              *       BLISS (XX blocks) [N]? Y
+              *       CC (XXX blocks) [N]? Y
+              *       FORTRAN (XX blocks) [N]? Y
+              *       LIBRARY (XX blocks) [N]? Y
+              *       MACRO (XX blocks) [N]? Y
+              *       PASCAL (XXX blocks) [N]? Y
+              *       PLI (XXX blocks) [N]? Y
+
+                      You have chosen the following languages:
+                          (ADA,BASIC,BLISS,CC,FORTRAN,LIBRARY,MACRO,PASCAL,PLI)
+
+              * Is this OK [Y]?
+              %SNALU0-I-NOQUEST, No further questions will be asked
+
+                      The IVP for this product, SNALU0$IVP.COM, can be found in
+                      the SYS$TEST directory.
+
+               To install the SNALU0SHR.EXE and SNALU0MSG.EXE images as
+                      shareable each time the system reboots, you must add the
+                      following line to your system startup procedure:
+
+                              $ @SYS$STARTUP:SNALU0$STARTUP
+
+                      On line release notes for this product can be found in the file,
+                              SYS$COMMON:[SYSHLP]SNALU0024.RELEASE_NOTES
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              ** Digital SNA API for OpenVMS, V2.4 Installation Test **
+
+              .... Testing API V2.4 file locations
+              .... Testing API V2.4
+
+              ** Digital SNA API for OpenVMS, V2.4 Test Successful **
+
+                       Installation of SNALU0 V2.4 completed at hh:mm
+
+                       VMSINSTAL procedure done at hh:mm
+              $
+
+
+
+
+                                                 Installing the API 2-13
+
+ 
+
+
+
+
+
+
+     2.5 Sample Installation on an OpenVMS System without OPTIONS N
+
+           A sample of the entire installation procedure (without
+           OPTIONS N) follows:
+
+           $ @SYS$UPDATE:VMSINSTAL SNALU0024 MUA0
+
+                OpenVMS Alpha Software Product Installation Procedure V6.1
+
+           It is dd-mmm-yyyy at hh:mm
+           Enter a question mark (?) at any time for help.
+
+           * Are you satisfied with the backup of your system disk [YES]?
+
+           Please mount the first volume of the set on MUA0:
+
+           * Are you ready? Yes
+           %MOUNT-I-MOUNTED, SNALU0 mounted on _MUA0:
+
+           The following products will be processed:
+
+             SNALU0 V2.4
+
+               Beginning installation of SNALU0 V2.4 at hh:mm
+
+           %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+           %VMSINSTAL-I-RELMOVED, The products release notes have been successfully
+           moved to SYS$HELP.
+
+                Product:           SNA-API
+                Producer:          DEC
+                Version:           V2.4
+                Release Date:     dd-mmm-yyyy
+
+           * Does this product have an authorization key registered and loaded?
+           * Do you want to purge files replaced by this installation [YES]?
+           * Do you want to run the IVP after the installation [YES]?
+
+                   Installing all the symbol files for the supported languages
+                   requires 4138 blocks of permanent storage.
+
+           * Would you like all the symbol files installed on this system [Y]:
+           %SNALU0-I-NOQUEST, No further questions will be asked
+
+                   The IVP for this product, SNALU0$IVP.COM, can be found in
+                   the SYS$TEST directory.
+
+                   To install the SNALU0SHR.EXE and SNALU0MSG.EXE images as
+                   shareable each time the system reboots, you must add the
+                   following line to your system startup procedure
+
+                           $ @SYS$STARTUP:SNALU0$STARTUP
+
+     2-14 Installing the API
+
+ 
+
+
+
+
+
+
+                      On-line release notes for this product can be found in the file,
+                              SYS$COMMON:[SYSHLP]SNALU0024.RELEASE_NOTES
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              ** Digital SNA API for OpenVMS, V2.4 Installation Test **
+
+              .... Testing API V2.4 file locations
+              .... Testing API V2.4
+
+              ** Digital SNA API for OpenVMS, V2.4 Test Successful **
+                       Installation of SNALU0 V2.4 completed at hh:mm
+
+                       VMSINSTAL procedure done at hh:mm
+              $
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                 Installing the API 2-15
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                             Post-Installation Procedure
+
+
+
+              With the release of API Version 2.4, the PASCAL environ-
+              ment copies of the following files are no longer with the
+              kit:
+
+              o  SNALIBDEF
+
+              o  SNALU0DEF
+
+              o  SNALIBDEF.PEN
+
+              o  SNALU0DEF.PEN
+
+              You can create your own copy of the environment files
+              by executing the following OpenVMS commands. This only
+              applies if PASCAL is installed with a valid PAK on the
+              system where you want the environment to exist.
+
+              $ PASCAL SYS$LIBRARY:SNALIBDEF.PAS /ENVIRONMENT=SYS$LIBRARY:SNALIBDEF.PEN
+              $ PASCAL SYS$LIBRARY_SNALU0DEF.PAS_FOR_PEN /ENVIRONMENT=SYS$LIBRARY:SNALU0DEF.PEN
+
+                ________________________Note  ________________________
+
+                You must build the environment files on your own
+                system for the following reasons:
+
+                1. Linking the environment file created on an
+                   OpenVMS Version 6.1 or Version 6.2 system might
+                   not allow the creation of a good executable on
+                   and OpenVMS Version 7.0 system.
+
+                2. To avoid compilation differences based on the
+                   versions of compilers at each installtion, it is
+                   wiser to produce the environment file from the
+                   PASCAL compiler on the system where the API is
+                   installed.
+
+                _____________________________________________________
+
+                                         Post-Installation Procedure 3-1

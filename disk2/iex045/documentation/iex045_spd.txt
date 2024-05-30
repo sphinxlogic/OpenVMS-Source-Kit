@@ -1,0 +1,502 @@
+ 
+
+
+                              DIGITAL
+
+Software
+Product
+Description
+
+___________________________________________________________________
+
+PRODUCT NAME:  IEX-VMS-DRIVER, Version 4.5             SPD 26.30.11
+
+DESCRIPTION
+
+The DIGITAL IEX-VMS-DRIVER allows programs written in VAX MACRO and
+higher-level languages (such as VAX FORTRAN, VAX BASIC, and VAX Pascal)
+to communicate through the IEU11-A or IEQ11-A with devices contain-
+ing an IEC 625-1 or IEEE-488 Standard interface. This communication
+is implemented through a choice of direct QIO calls or a set of sub-
+routines callable from high-level languages.
+
+Note: In the following description, the term IEX11 stands for the IEU11-
+A and/or IEQ11-A interface. The IEU11-A supports VAX UNIBUS machines,
+and the IEQ11-A supports MicroVAX Q-bus machines.
+
+The IEX11-A interface is a bit-parallel, byte-serial device that can
+perform transfers in either program interrupt or DMA (direct memory
+access) mode. Program interrupt is used for transferring commands and
+addresses, while DMA is used for transferring data. DMA significantly
+reduces processor loading during the transfer of long data buffers.
+
+The IEX11-A interface contains two independent IEC/IEEE bus controllers,
+also known as General Purpose Interface Buses (GPIBs). These two con-
+trollers may be connected to the same or to different IEC/IEEE buses.
+Up to 15 devices may be attached to each IEC/IEEE bus. Each IEX11-A
+IEC/IEEE bus controller counts as a device on its IEC/IEEE bus.
+
+The IEX11 is most commonly used as Controller-in-Charge, but it can
+also be used when another device is Controller-in-Charge. The Controller-
+in-Charge directs the sequence of information on the bus.
+
+                                                        August 1998
+
+                                                        AE-BW75N-TE
+
+ 
+
+When the IEX11 acts as Controller-in-Charge, it may request status in-
+formation from other devices through serial and parallel polling. When
+the IEX11 is not Controller-in-Charge, it can be polled in either fash-
+ion to provide status information.
+
+Features
+
+The DIGITAL IEX-VMS-DRIVER supports the following IEC/IEEE hardware
+capabilities:
+
+o  Controller (C1, C2, C3, C4, C5)
+
+o  Talker and Extended Talker (T5, TE5)
+
+o  Listener and Extended Listener (L3, LE3)
+
+o  Automatic Source Handshake (SH1)
+
+o  Automatic Acceptor Handshake (AH1)
+
+o  Service Request (SR1)
+
+o  Remote/Local (RL1)
+
+o  Parallel Poll (PP1, PP2)
+
+o  Device Clear (DC1)
+
+o  Device Trigger (DT1)
+
+The DIGITAL IEX-VMS-DRIVER supports QIO requests to perform the fol-
+lowing software functions:
+
+o  Initialize Unit
+
+o  Write Data
+
+o  Read Data
+
+o  Send One IEC/IEEE Bus Command*
+
+o  Send a String of IEC/IEEE Bus Commands*
+
+o  Request Service**
+
+o  Issue a Serial Poll*
+
+                                 2
+
+ 
+
+o  Configure Devices for Parallel Polls*
+
+o  Load Parallel Poll Register**
+
+o  Perform a Parallel Poll*
+
+o  Go to Controller-Active-State (CACS)*
+
+o  Go to Controller-Standby-State (CSBS)*
+
+o  Pass Control*
+
+o  Sense Mode
+
+o  Set Mode
+
+o  Enable Event Recognition
+
+o  Recognize Events
+
+The event recognition facility allows the user's process to specify
+the events on the IEC/IEEE instrument bus which the interface should
+detect. The interface is capable of detecting the occurrence of the
+following events:
+
+o  Service Request*
+
+o  Addressed as Listener**
+
+o  Addressed as Talker**
+
+o  Deaddressed**
+
+o  Addressed as Extended Listener**
+
+o  Addressed as Extended Talker**
+
+o  Device Clear**
+
+o  Device Trigger**
+
+o  Remote/Local Change**
+
+o  Parallel Poll Configure**
+
+o  Parallel Poll Unconfigure**
+
+                                 3
+
+ 
+
+o  Interface Clear
+
+*  Functions that can only be used by the Controller-in-Charge
+
+** Functions used only by a device that is not Controller-in-Charge
+
+All IEC/IEEE bus commands are issued through a process request and all
+data is transferred through the DMA mechanism. When the DIGIAL IEX-
+VMS-DRIVER is processing a read data request, the three ways to de-
+tect the end of the data transfer are:
+
+o  Byte Count Overflow - Transfer terminates after the specified num-
+   ber of bytes have been read.
+
+o  EOI Termination - Transfer terminates if, during the reception of
+   a byte, the EOI line is true.
+
+o  Match Character - Transfer terminates after the Termination spec-
+   ified match character has been consecutively received the speci-
+   fied number of times.
+
+A device exerciser is provided to verify that the DIGITAL IEX-VMS-DRIVER
+is correctly installed and to aid the user in testing his application.
+When the two bus controllers are connected with a loop back cable (re-
+fer to the IEU11-A/IEQ11-A User's Guide), the device exerciser can be
+run with command files delivered with the exerciser. These command files
+demonstrate all features of the driver and the IEC/IEEE bus interface
+functions. The device exerciser can also be used by users in a dia-
+logue mode to test their devices. The commands to the exerciser are
+directly converted into QIOs to the driver. Using the exerciser in the
+dialogue mode, users can quickly determine the set of QIOs required
+for their application.
+
+The DIGITAL IEX-VMS-DRIVER may be programmed in the following two ways:
+
+
+
+
+
+
+                                 4
+
+ 
+
+OpenVMS QIO System Service - The OpenVMS QIO requests allow direct ac-
+cess to the driver. These requests can be issued in higher-level lan-
+guages (such as VAX FORTRAN, VAX BASIC, VAX Pascal, and MACRO-32). This
+is the most flexible way of programming the IEX11 device, but requires
+the user to be familiar with the QIO calling procedures.
+
+Simplified User Interface - This is a package of subroutines which can
+be called from higher-level languages (such as VAX FORTRAN and VAX BASIC)
+to perform the following functions:
+
+IESTRT  -    Initialize an interface
+
+IEPOLL  -    Setup for serial polling
+
+IESEND  -    Send data
+
+IERECV  -    Receive data
+
+IERQSV  -    Request service
+
+IECMD   -    Perform a bus control function
+
+IEWFE   -    Wait for IEC/IEEE bus event
+
+HARDWARE REQUIREMENTS
+
+Processors Supported
+
+VAX:        VAX 4000 Model 100,
+            VAX 4000 Model 100A,
+            VAX 4000 Model 200,
+            VAX 4000 Model 300,
+            VAX 4000 Model 400,
+            VAX 4000 Model 500,
+            VAX 4000 Model 600,
+            VAX 4000 Model 500A,
+            VAX 4000 Model 600A,
+            VAX 4000 Model 700A
+
+            VAX 8200, VAX 8250, VAX 8300,
+            VAX 8350, VAX 8600, VAX 8650
+
+                                 5
+
+ 
+
+
+            VAX-11/730, VAX-11/750,
+            VAX-11/780, VAX-11/785
+
+MicroVAX:   MicroVAX II,
+            MicroVAX 3300, MicroVAX 3400,
+            MicroVAX 3500, MicroVAX 3600,
+            MicroVAX 3800, MicroVAX 3900
+
+VAXstation: VAXstation II,
+            VAXstation 3200, VAXstation 3500,
+
+Processors Not Supported
+
+VAX:        VAX 6000 Model 200 Series,
+            VAX 6000 Model 300 Series,
+            VAX 6000 Model 400 Series,
+            VAX 6000 Model 500 Series,
+            VAX 6000 Model 600 Series
+
+            VAX 8500, VAX 8530, VAX 8550,
+            VAX 8700, VAX 8800, VAX 8810,
+            VAX 8820, VAX 8830, VAX 8840
+
+            VAX 9000 Model 110,
+            VAX 9000 Model 210,
+            VAX 9000 Model 300 Series,
+            VAX 9000 Model 400 Series
+
+            VAXft Model 110,
+            VAXft Model 310,
+            VAXft Model 410,
+            VAXft Model 610,
+            VAXft Model 612
+
+
+
+
+
+
+                                 6
+
+ 
+
+
+            VAX-11/725, VAX-11/782
+
+MicroVAX:   MicroVAX I, MicroVAX 2000,
+            MicroVAX 3100 Model 10/10E,
+            MicroVAX 3100 Model 20/20E,
+            MicroVAX 3100 Model 30,
+            MicroVAX 3100 Model 40,
+            MicroVAX 3100 Model 80
+
+VAXstation: VAXstation I, VAXstation 2000,
+            VAXstation 3100 Model 30,
+            VAXstation 3100 Model 38,
+            VAXstation 3100 Model 40,
+            VAXstation 3100 Model 48,
+            VAXstation 3100 Model 76,
+            VAXstation 3520, VAXstation 3540,
+            VAXstation 8000
+
+            VAXstation 4000 Model 60,
+            VAXstation 4000 VLC
+
+VAXserver:  VAXserver 3100, VAXserver 3300, VAXserver 3400,
+            VAXserver 3500, VAXserver 3600, VAXserver 3602,
+            VAXserver 3800, VAXserver 3900
+            VAXserver 4000 Model 200,
+            VAXserver 4000 Model 300,
+            VAXserver 4000 Model 500
+
+
+
+
+
+
+
+
+
+
+
+
+                                 7
+
+ 
+
+
+            VAXserver 6000 Model 210,
+            VAXserver 6000 Model 220,
+            VAXserver 6000 Model 310,
+            VAXserver 6000 Model 320,
+            VAXserver 6000 Model 410,
+            VAXserver 6000 Model 420,
+            VAXserver 6000 Model 510,
+            VAXserver 6000 Model 520,
+            VAXserver 6000 Model 610,
+            VAXserver 6000 Model 620,
+            VAXserver 6000 Model 630
+
+Processor Restrictions
+
+o  A minimum of an R80/RL02 configuration is required for VAX-11/730
+   systems.
+
+o  For VAX-11/730 systems, the IEU11-A must be mounted in an expan-
+   sion cabinet due to cabling constraints, unless a System Building
+   Block configuration is used.
+
+o  Minimum hardware revision for support on 8200, 8250, 8300, 8350 BI
+   series CPUs is IEU11 Revision E and DWBUA Revision F.
+
+o  For VAX 4000 systems, a maximum of 1 IEQ11 module is supported per
+   system configuration.
+
+Other Hardware Required
+
+o  At least 6 Kbytes nonpaged pool memory for the driver
+
+o  At least one IEU11-A for UNIBUS based VAX systems
+
+o  At least one IEQ11-A for Q-bus based VAX systems
+
+Disk Space Requirements
+
+
+
+                                 8
+
+ 
+
+
+Disk space required for      1,300 blocks
+installation:
+                             (.7 Mbytes)
+
+Disk space required for      1,000 blocks
+use (permanent):
+                             (.5 Mbytes)
+
+These counts refer to the disk space required on the system disk. The
+sizes are approximate; actual sizes may vary depending on the user's
+system environment, configuration, and software options.
+
+OPTIONAL HARDWARE
+
+Depending on processor type, up to 3 additional IEU11/IEQ11 modules
+may be added to each system for a total of 4 maximum.
+
+CLUSTER ENVIRONMENT
+
+This layered product is fully supported when installed on any valid
+and licensed VAXcluster configuration. It must be installed once on
+each VAX, MicroVAX, or VAXstation processor on which usage is planned.
+
+In order to configure some product-specific attributes that must re-
+main unique to each system, certain components of the product are stored
+in the system-specific environment (SYS$SPECIFIC:[SYSxxx]) of the VAX,
+MicroVAX, or VAXstation processor on which the installation is per-
+formed. The remaining components of the product, including some or all
+of the executable images, will be installed common to all accessing
+systems.
+
+SOFTWARE REQUIREMENTS
+
+OpenVMS Operating System V6.2 or
+
+OpenVMS Operating System V7.1
+
+
+
+                                 9
+
+ 
+
+OpenVMS Tailoring
+
+The following OpenVMS classes are required for full functionality of
+this layered product:
+
+o  OpenVMS Required Saveset
+
+o  Programming Support
+
+o  System Programming Support
+
+o  User Environment Test Package
+
+GROWTH CONSIDERATIONS
+
+The minimum hardware/software requirements for any future version of
+this product may be different from the requirements for the current
+version.
+
+DISTRIBUTION MEDIA
+
+TK50 Streaming Tape
+
+This product is also available as part of the OpenVMS Consolidated Soft-
+ware Distribution on CDROM.
+
+ORDERING INFORMATION
+
+Software Licenses: QL-519A9-**
+Software Media: QA-519A*-**
+Software Documentation: QA-519AA-GZ
+
+*  Denotes variant fields. For additional information on available li-
+   censes, services, and media, refer to the appropriate price book.
+
+The above information is valid at time of release. Please contact your
+local DIGITAL office for the most up-to-date information.
+
+
+
+                                10
+
+ 
+
+SOFTWARE LICENSING
+
+This software is only furnished under a license. For more information
+about DIGITAL's licensing terms and policies, contact your local DIG-
+ITAL office.
+
+License Management Facility Support
+
+This layered product supports the OpenVMS License Management Facil-
+ity.
+
+License units for this product are allocated on an Unlimited System
+Use basis.
+
+For more information on the License Management Facility, refer to the
+OpenVMS Operating System Software Product Description (SPD 25.01.xx)
+or the OpenVMS Operating System documentation set.
+
+SOFTWARE PRODUCT SERVICES
+
+A variety of service options are available from DIGITAL. For more in-
+formation, contact your local DIGITAL office.
+
+[R]  IEEE-488 is a registered trademark of The Institute of Elec-
+     trical and Electronics Engineers, Inc.
+
+[TM] The DIGITAL Logo, BI, CI, DEC, DIGITAL, MicroVAX, Open-
+     VMS, Q-bus, RL, TK, UNIBUS, VAX, VAX BASIC, VAX FORTRAN,
+     VAX MACRO, VAX Pascal, VAXcluster, VAXft, VAXserver, VAXs-
+     tation, and VMS are trademarks of Digital Equipment Corpora-
+     tion.
+
+Printed in U.S.A. © 1998 Digital Equipment Corporation. All rights re-
+served.
+
+
+
+
+
+
+                                11
+

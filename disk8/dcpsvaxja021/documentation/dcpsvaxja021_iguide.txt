@@ -1,0 +1,2363 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      日本語Compaq DECprint Supervisor
+                     (DCPS)_for_OpenVMS____________________________
+                      インストレーション・ガイド
+
+                     AA-PZCGH-TE
+
+
+                      2003年2月
+
+                     本書では，日本語DECprint Supervisor for OpenVMSソ
+                     フトウェアのインストレーション方法について説明しま
+                     す。
+
+
+
+
+
+                     オペレーティング・シ  日本語OpenVMS Alpha V6.2，
+                     ステム:               V7.2-2，V7.3，V7.3-1
+                                           日本語OpenVMS VAX V5.5-2，
+                                           V7.2，V7.3
+
+
+
+                     ソフトウェア・バージ  日本語Compaq DECprint
+                     ョン:                 Supervisor (DCPS) V2.1A for
+                                           OpenVMS
+
+
+
+                     日本ヒューレット・パッカード株式会社
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           2003年2月
+
+           本書の著作権は日本ヒューレット・パッカード株式会社が保有し
+           ており，本書中の解説および図，表は日本ヒューレット・パッカ
+           ードの文書による許可なしに，その全体または一部を，いかなる
+           場合にも再版あるいは複製することを禁じます。
+
+           また，本書に記載されている事項は，予告なく変更されることが
+           ありますので，あらかじめご承知おきください。万一，本書の記
+           述に誤りがあった場合でも，日本ヒューレット・パッカードは一
+           切その責任を負いかねます。
+
+           本書で解説するソフトウェア(対象ソフトウェア)は，所定のライ
+           センス契約が締結された場合に限り，その使用あるいは複製が許
+           可されます。
+
+           (c)日本ヒューレット・パッカード株式会社
+
+           Compaq，Compaqロゴ，Alpha，DCPS，DECnet，OpenVMS，VAXおよ
+           びVMSは，Compaq Information Technologies Group, L.P.の商標
+           です。
+
+           MicrosoftおよびWindowsは米国Microsoft社の商標です。
+
+           このドキュメントに記載されているその他の会社名および製品名
+           は，各社の商標または登録商標です。
+
+           本書は，日本語VAX DOCUMENT V 2.1を用いて作成しています。
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                               目次
+
+
+
+    まえがき................................................      v
+
+
+    1     ソフトウェアのインストレーションの準備
+
+          1.1   オペレーティング・システムのバージョン......    1-1
+
+          1.2   ディスク容量................................    1-2
+
+          1.3   関連するソフトウェア........................    1-2
+          1.3.1     DEC C実行時ライブラリ...................    1-3
+          1.3.2     PrintServerソフトウェア.................    1-3
+          1.3.3     TCP/IPネットワーク......................    1-4
+          1.3.4     AppleTalkネットワーク...................    1-4
+          1.3.5     DDIF印刷................................    1-4
+          1.3.6     DEC Image Print-PLUS (ICPS).............    1-5
+
+          1.4   互換性のないコンポーネント..................    1-5
+
+    2     ソフトウェアのインストレーション
+
+          2.1   概要........................................    2-1
+
+          2.2   VMSINSTALの表記法...........................    2-2
+
+          2.3   ソフトウェアのインストレーション............    2-2
+
+    A   インストレーションの例
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+      B   システム・メッセージ
+
+            B.1   システム・メッセージの概要..................    B-1
+            B.1.1     メッセージの形式........................    B-1
+            B.1.2     重大度レベル............................    B-2
+
+            B.2   DCPSインストレーション・メッセージ..........    B-2
+
+      C   ドキュメンテーション・キットの構成
+
+
+
+      例
+
+            A-1      日本語OpenVMS Alphaシステムへのインストレ
+                     ーション例...............................    A-1
+
+            A-2      日本語OpenVMS VAXシステムでのアップグレー
+                     ドの例...................................    A-5
+
+      表
+
+            1-1      必要なディスク容量.......................    1-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                まえがき
+
+
+
+        対象読者
+
+              本書は，日本語DECprint Supervisor (DCPS) for OpenVMSプリン
+              ティング・システムをインストールするシステム管理者を対象に
+              しています。プリンティング・システムをインストールするに
+              は，次のことに関しての経験が必要です。
+
+               o  OpenVMS DCLコマンド言語とシステム管理プロシージャ
+
+               o  『日本語DECprint Supervisor for OpenVMSシステム・マネ
+                  ージャーズ・ガイド』に説明されている操作方法とコマン
+                  ド
+
+               o  OpenVMSソフトウェアをインストールするためのVMSINSTAL
+                  ユーティリティ
+
+              ネットワーク経由でプリンタと通信するようなプリンティング環
+              境では，ネットワーク管理ツールについても知識が必要です。
+
+              『日本語DECprint Supervisor for OpenVMSシステム・マネージ
+              ャーズ・ガイド』には，キューの作成およびプリンティング環境
+              のカスタマイズなどのインストレーション後の作業についての情
+              報を記述しています。
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+     表記法
+
+           本書では次の表記法を使用します。
+
+           __________________________________________________________
+           表記法________意味________________________________________
+
+           大文字        大文字はDCLコマンド，修飾子，およびパラメー
+                         タを示します。
+
+           イタリック体  コマンドの例で使用するイタリック体の文字は，
+                         その部分に適切な単語，または値を指定しなけれ
+                         ばならないことを示します。
+
+           太字          太字はPostScriptオペレータまたはエラー・メッ
+                         セージの接頭辞文字列です。オンライン表示の例
+                         で使用されている太字は，操作の一部として入力
+                         しなければならない文字を示します。
+
+           [ ]           大括弧は省略可能な項目を囲むために使用しま
+                         す。
+
+           <Ctrl/x>      このシンボルは制御キー・シーケンスを示しま
+                         す。Ctrlキーを押した状態で，< x >によって示
+                         される別のキーを同時に押さなければなりませ
+                         ん。
+
+           <Return>      このシンボルはReturnキーを押さなければならな
+                         いことを示します。
+
+           『_』_________ドキュメントのタイトルを示します。__________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      vi
+
+ 
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                  ソフトウェアのインストレーションの準備
+
+
+              日本語DECprint Supervisorは，日本語OpenVMS Alphaおよび日本
+              語OpenVMS VAXシステム上で動作します。それぞれのシステムへ
+              のインストレーションでは，いくつかの小さな相違があります。
+
+               o  インストールされるファイルが異なります。インストール
+                  されるファイルの一覧については，リリース・ノートを参
+                  照してください。
+
+               o  必要なディスク容量が異なります。Alphaシステムおよび
+                  VAXシステムで必要なディスク・ブロック数については，第
+                  1.2節を参照してください。
+
+                _______________________  注意 _______________________
+
+                DCPS V2.0以降，DCPS-OPENおよびDCPS-PLUSのライセンス
+                は必要ありません。現在では，DCPSのすべての機能を使用
+                する権利は，OpenVMSオペレーティング・システムのライ
+                センスに含まれています。
+
+                _____________________________________________________
+
+        ___________________________________________________________
+
+        1.1   オペレーティング・システムのバージョン
+
+              DCPS V2.1Aは，現在サポートされている下記のOpenVMSオペレー
+              ティング・システムのバージョンでサポートされます。
+
+               o  OpenVMS Alpha V6.2，V7.2-2，V7.3およびV7.3-1
+
+               o  OpenVMS VAX V5.5-2，V7.2およびV7.3
+
+              DCPS V2.1Aは，OpenVMS Alpha V6.1以降またはOpenVMS VAX
+              V5.5-2以降が稼動しているシステムにインストールすることがで
+              きますが，現在サポートされていないOpenVMSのバージョンを実
+              行しているお客様は，ご自身の責任でインストレーションを行っ
+              てください。
+
+                              ソフトウェアのインストレーションの準備 1-1
+
+ 
+
+
+
+
+
+     ___________________________________________________________
+
+     1.2    ディスク容量
+
+           日本語DECprint SupervisorをAlphaプロセッサにインストールす
+           るのかVAXプロセッサにインストールするのかに応じて，ディス
+           ク容量の必要条件が異なります。表 1-1に必要なディスク容量を
+           示します。
+
+           表 1-1 必要なディスク容量
+           __________________________________________________________
+           _________________Alphaシステム_________VAXシステム________
+
+           インストレーシ   14,000ブロック        14,000ブロック
+           ョン時
+
+           システム運用時___9,500ブロック_________11,000ブロック_____
+
+           これらのディスク容量は概算であり，実際の値はシステム環境，
+           ディスク・クラスタ・サイズ，構成，ソフトウェア・オプション
+           に応じて異なります。
+
+
+     ___________________________________________________________
+
+     1.3    関連するソフトウェア
+
+           日本語DECprint Supervisorは他のソフトウェアとともに動作す
+           ることにより，完全なプリンティング・システムを構成します。
+           日本語DECprint Supervisorをインストールする前に，他のソフ
+           トウェアとプリンティング・ソフトウェアとの互換性があること
+           を確認してください。
+
+           以降の各項では，必要なソフトウェアについての詳細を説明しま
+           す。特定のバージョンについての必要条件については，『日本語
+           DECprint Supervisor for OpenVMSソフトウェア仕様書(SPD)』を
+           参照してください。
+
+
+
+
+
+
+
+
+
+
+      1-2  ソフトウェアのインストレーションの準備
+
+ 
+
+
+
+
+
+
+        1.3.1  DEC C実行時ライブラリ
+
+
+              DCPSは，システムにDEC C実行時ライブラリがインストールされ
+              ていることを必要とします。このライブラリは，OpenVMS V6.1以
+              降のOpenVMSオペレーティング・システムのDEC C/C++ Run-Time
+              Componentsキットに含まれています。したがって，次のようにな
+              ります。
+
+               o  OpenVMS V6.1以降のシステムで実行するには，DEC C実行時
+                  ライブラリをインストールする必要はありません。
+
+               o  OpenVMS VAX V5.5-2およびV6.0のシステムで実行するに
+                  は，DCPSをインストールする前にDEC C/C++ Run-Time
+                  Componentsキットをインストールする必要があります。
+
+                  DEC C実行時ライブラリがシステムにインストールされてい
+                  るかどうかを判定するには，SYS$STARTUP:CRT$STARTUP.COM
+                  ファイルが存在するかどうかを確認してください。このフ
+                  ァイルが存在する場合，DEC C/C++ Run-Time Componentsキ
+                  ットはすでにインストールされています。存在しない場合
+                  には，インストール前にDEC C/C++ Run-Time Componentsキ
+                  ットをインストールする必要があります。
+
+                  DEC C/C++ Run-Time ComponentsキットはV1.6以降のDCPS
+                  CD-ROMに含まれています。また，弊社のOpenVMS VAXソフ
+                  トウェア製品ライブラリCD-ROMにも含まれています。こ
+                  のキットのインストレーション情報については，まずDEC
+                  C/C++ Run-Time Componentsドキュメントの『Read Before
+                  Installing or Using DEC C/C++ Run-Time Components
+                  Version 6.0 for OpenVMS VAX Systems』を参照してくださ
+                  い。
+
+        1.3.2  PrintServerソフトウェア
+
+              弊社のPrintServerプリンタに出力するには，プリンティング環
+              境に，PrintServerソフトウェア製品を動作させるサポーティン
+              グ・ホスト・システムが含まれていなければなりません。
+
+
+
+
+
+
+
+
+                              ソフトウェアのインストレーションの準備 1-3
+
+ 
+
+
+
+
+
+
+     1.3.3  TCP/IPネットワーク
+
+
+           CPAP (Common Printer Access Protocol)を使用したPrintServer
+           プリンタへのTCP/IP接続，あるいはraw TCP/IPソケット・プロト
+           コルを使用したその他のプリンタへの接続では，次のいずれかを
+           必要とします。
+
+            o  日本語Compaq TCP/IP Services for OpenVMS
+
+            o  Process Software MultiNet for OpenVMS
+
+            o  Process Software TCPware for OpenVMS
+
+              _______________________  注意 _______________________
+
+              Process Software MultiNet for OpenVMSおよびProcess
+              Software TCPware for OpenVMSは，日本では販売していま
+              せん。
+
+              _____________________________________________________
+
+     1.3.4  AppleTalkネットワーク
+
+           AppleTalkネットワークに接続されたプリンタは，日本語
+           DECprint Supervisor for OpenVMSソフトウェアからアクセ
+           スすることができ，したがってOpenVMSシステムの一般ユーザか
+           らは共有ネットワーク・プリンタとして使用することができま
+           す。このプリンティング・システム構成では，PATHWORKS for
+           OpenVMS (Macintosh)ソフトウェアを必要とします。
+
+     1.3.5  DDIF印刷
+
+           DDIFエンコード2値イメージを印刷するには，システムに
+           DECwindowsあるいはDAS (DECimage Application Services)
+           がインストールされていることが必要となります。DASはOpenVMS
+           VAXシステムでのみ使用可能です。
+
+
+
+
+
+
+
+
+
+      1-4  ソフトウェアのインストレーションの準備
+
+ 
+
+
+
+
+
+
+        1.3.6  DEC Image Print-PLUS (ICPS)
+
+
+              DCPS V1.1以降のバージョンは，ICPS V1.xソフトウェアと
+              共存することができません。DCPSをインストールすると，
+              SYS$LIBRARY:TRN$DDIF_IMAGE.EXEイメージを置き換えてしま
+              います。この新しいイメージは，ICPSソフトウェアとの互換性が
+              ありません。
+
+        ___________________________________________________________
+
+        1.4   互換性のないコンポーネント
+
+              すべてのDCPS実行可能コンポーネントは，相互に互換性を持つ組
+              み合わせであることを保証しようとします。互換性がない場合，
+              キューの起動時にDCPSがエラーを通知します。互換性を持たない
+              ソフトウェアの古いバージョンのコンポーネントがSYS$SPECIFIC
+              領域に存在し，新しいコンポーネントがSYS$COMMON領域にインス
+              トールされた場合に，このエラーが発生します。発生するエラー
+              は，どのコンポーネントのどのバージョンを実行するかに応じて
+              異なります。
+
+              たとえば，次のようなエラーが発生します。
+
+               o  DCPS$SMB.EXEの実行バージョンがV1.1Aであり，その他の
+                  すべてのコンポーネントがV1.2である場合，OpenVMS VAX
+                  V5.5-2システムでは次のエラーが発生します。
+
+                  $ start/que atk_1152
+                  %%%%%%%%%%%  OPCOM  13-FEB-1995 21:38:08.66  %%%%%%%%%%%
+                  Message from user QUEUE_MANAGE on DAHLIA
+                  %QMAN-E-SYMDEL, unexpected symbiont process termination
+
+                  %%%%%%%%%%%  OPCOM  13-FEB-1995 21:38:08.67  %%%%%%%%%%%
+                  Message from user QUEUE_MANAGE on DAHLIA
+                  -SYSTEM-F-ACCVIO, access violation, reason mask=00,
+                  virtual address=00000000, PC=0001A9B8, PSL=03C00000
+
+               o  DCPS$SMBSHR.EXEの実行バージョンがV1.1Aであり，その他
+                  のすべてのコンポーネントがV1.2である場合，OpenVMS VAX
+                  システムでは次のエラーが発生します。
+
+
+
+
+
+                              ソフトウェアのインストレーションの準備 1-5
+
+ 
+
+
+
+
+
+
+               %%%%%%%%%%%  OPCOM  13-FEB-1995 21:44:42.40  %%%%%%%%%%%
+               Message from user SYSTEM on DAHLIA
+               Process SYMBIONT_98: %SMBSHRMISMTCH2, Wrong version of
+               DCPS$SMBSHR.EXE
+
+               %%%%%%%%%%%  OPCOM  13-FEB-1995 21:44:42.51  %%%%%%%%%%%
+               Message from user QUEUE_MANAGE on DAHLIA
+               %QMAN-E-SYMDEL, unexpected symbiont process termination
+
+               %%%%%%%%%%%  OPCOM  13-FEB-1995 21:44:42.52  %%%%%%%%%%%
+               Message from user QUEUE_MANAGE on DAHLIA
+               -NONAME-F-NOMSG, Message number 064BE124
+
+            o  DCPS$SMBSHR.EXEの実行バージョンがV1.1Aであり，その
+               他のすべてのコンポーネントがV1.2である場合，OpenVMS
+               Alphaシステムでは次のエラーが発生します。
+
+               %%%%%%%%%%%  OPCOM   1-FEB-1995 12:20:35.02  %%%%%%%%%%%
+               Message from user QUEUE_MANAGE on DNGBAT
+               %QMAN-E-SYMDEL, unexpected symbiont process termination
+
+               %%%%%%%%%%%  OPCOM   1-FEB-1995 12:20:35.03  %%%%%%%%%%%
+               Message from user QUEUE_MANAGE on DNGBAT
+               -IMGACT-F-SYMVECMIS, shareable image's symbol vector table
+               mismatch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      1-6  ソフトウェアのインストレーションの準備
+
+ 
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                        ソフトウェアのインストレーション
+
+
+              この章では，VMSINSTALユーティリティを使用した日本語
+              DECprint Supervisorソフトウェアのインストレーション方
+              法について説明します。VMSINSTALユーティリティについての詳
+              細は，『OpenVMSシステム管理者マニュアル』を参照してくださ
+              い。
+
+
+        ___________________________________________________________
+
+        2.1   概要
+
+              次の手順に従って，日本語DECprint Supervisor (DCPS) for
+              OpenVMSソフトウェアをインストールします。
+
+               1. 『リリース・ノート』のすべての注意事項に目を通しま
+                  す。
+
+               2. 既にキューが存在していてDCPSのインストレーション・
+                  プロシージャの実行時にそのキューを自動停止させたく
+                  ない場合，あるいはSYS$SPECIFICシステム領域にDCPS実行
+                  イメージが存在している場合，あるいはDCPSに影響を与え
+                  るOpenVMSあるいはその他のパッチを当てる必要がある場
+                  合，STOP/QUEUE/NEXTあるいはSTOP/QUEUE/RESETコマンドを
+                  使用して各DCPSキューを停止させます。
+
+               3. SYS$SPECIFICシステム領域からDCPS実行イメージを削除し
+                  ます。
+
+               4. DCPSリリース・ノートあるいはその他の情報によりパッチ
+                  が必要な場合は，DCPSに影響を与えるOpenVMSあるいはその
+                  他のパッチを当てます。必要な場合は，パッチを当てた後
+                  にシステムを再ブートします。
+
+               5. DCPSをインストールします。
+
+
+
+
+                                    ソフトウェアのインストレーション 2-1
+
+ 
+
+
+
+
+
+
+            6. 『日本語DECprint Supervisor for OpenVMSシステム・
+               マネージャーズ・ガイド』に記述されているように，
+               DCPS$STARTUP.COMを作成あるいは更新します。たとえば，
+               キュー定義をファイルに追加し，プロシージャに記述され
+               ている例に従ってDCPS$MAX_STREAMS論理名の値を設定しま
+               す。
+
+            7. DCPS$STARTUP.COMを起動することにより，DCPSプリント・
+               キューを起動します。停止させたキューを再起動するよう
+               に指示した場合，DCPSインストレーション・プロシージャ
+               はキューを再起動します。DCPSインストレーション・プロ
+               シージャが自動的にいくつかのキューを再起動した後に，
+               DCPS環境あるいはDCPS$STARTUP.COMを変更した場合は，そ
+               の変更を有効にするためにすべてのDCPSキューを一旦停止
+               させた後に再起動する必要があります。
+
+     ___________________________________________________________
+
+     2.2    VMSINSTALの表記法
+
+           VMSINSTALは，システム固有の情報について問い合わせます。
+           質問の先頭にアスタリスク(*)が表示され，大括弧([])で囲
+           まれた省略時の応答が最後に表示されます。応答を入力した
+           後，<Return>キーを押してください。
+
+           省略時の応答をそのまま使用する場合には，<Return>キーだけを
+           押します。応答が分からない場合は，疑問符(?)を入力します。
+           VMSINSTALは応答に関する説明を表示し，プロンプトを再度表示
+           します。
+
+           日本語DECprint Supervisorのインストレーションに固有のメッ
+           セージについては，付録 Bに示されています。
+
+
+     ___________________________________________________________
+
+     2.3    ソフトウェアのインストレーション
+
+              _______________________  注意 _______________________
+
+              日本語DECprint Supervisorソフトウェアのインストレー
+              ション時に画面に表示されるすべてのテキストが，この節
+
+
+
+
+      2-2  ソフトウェアのインストレーション
+
+ 
+
+
+
+
+
+
+                に示されているわけではありません。VMSINSTALプロシー
+                ジャの例については付録 Aを参照してください。
+
+                _____________________________________________________
+
+              次の手順に従って，ソフトウェアをインストールします。
+
+               1. VMSINSTALプロシージャの起動
+
+                  次のコマンドを入力します。
+
+                  $ @SYS$UPDATE:VMSINSTAL DCPSpppJnnn device-id [OPTIONS N]
+
+                  このコマンド行に指定する情報は次のとおりです。
+
+                   o  DCPSpppJnnnはセーブセット名で，pppはプラットフォ
+                      ーム(AXP (Alpha)あるいはVAX)を指定し，nnnはバージ
+                      ョンを指定します。バージョン番号に枝番がある場合
+                      はnnnの前に指定します(たとえばV2.1AのAlpha版セー
+                      ブセット名はDCPSAXPJA021になります)。
+
+                   o  device-idは媒体をマウントする装置名(たとえばDQA0:
+                      など)です。
+
+                   o  OPTIONS Nにより，リリース・ノートを要求することが
+                      できます。OPTIONS Nパラメータを指定しなかった場合
+                      には，VMSINSTALはリリース・ノートに関する問い合わ
+                      せを行いません。インストレーションを行う前に，リ
+                      リース・ノートに目を通しておいてください。インス
+                      トレーションを再実行している場合，あるいはすでに
+                      リリース・ノートに目を通している場合は，OPTIONS N
+                      を指定する必要はありません。
+
+                  VMSINSTALは最初に日付と時刻を含むバナー行，および対話
+                  的な処理を行うための指示を表示します。VMSINSTALの起動
+                  時に，次に示す警告メッセージが表示される場合がありま
+                  す。この場合は，プロシージャを終了し，警告メッセージ
+                  の原因を修正した後，VMSINSTALプロシージャを再起動して
+                  ください。
+
+                   o  現在SYSTEMアカウントにログインしていない場合に
+                      は，次のメッセージが表示されます。
+
+                      %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+
+
+                                    ソフトウェアのインストレーション 2-3
+
+ 
+
+
+
+
+
+
+                o   MSINSTALを実行するときにシステムで他のプロセスが
+                    実行されている場合には，次のメッセージが表示され
+                    ます。
+
+                    %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                            process-name
+
+               他のプロセスが実行されている場合は，HELPのインストレ
+               ーションに失敗する可能性があります。上記のいずれかの
+               メッセージが表示された場合，続いて次の問い合わせが表
+               示され，VMSINSTALを停止して問題を修正することができま
+               す。
+
+               * Do you want to continue anyway [NO]?
+
+               操作を継続する場合はYESと入力してください。NOと応答し
+               た場合には，VMSINSTALはただちに終了します。
+
+               ここで疑問符(?)を入力すると，VMSINSTALソフトウェア
+               からアドバイスが表示されます。次の例を参照してくださ
+               い。
+
+               The above conditions may cause VMSINSTAL to function improperly.
+               In particular, problems may occur with file ownership if you are not
+               logged into the SYSTEM account.
+
+            2. 既存のソフトウェアの保存の確認
+
+               VMSINSTALは次のような問い合わせを表示します。
+
+               * Are you satisfied with the backup of your system disk [YES]?
+
+               操作を継続する場合はYESと入力してください。NOと入力す
+               ると，VMSINSTALは終了します。バックアップを作成した
+               後，VMSINSTALを再度実行してください。
+
+               この問い合わせに対する応答として疑問符(?)を入力した場
+               合には，VMSINSTALは次の説明を表示します。
+
+               VMSINSTAL attempts to ensure that a power failure or system crash
+               will not corrupt your system disk.  However, for absolute safety we
+               recommend that you back it up before installing new products.  Please
+               see the documentation for more information on crashes during
+               installation.
+
+            3. ディストリビューション・メディアのロードの確認
+
+      2-4  ソフトウェアのインストレーション
+
+ 
+
+
+
+
+
+
+                  VMSINSTALは，ディストリビューション・メディアがマウ
+                  ントされたかどうかの確認のための問い合わせを表示しま
+                  す。
+
+                   Please mount the first volume of the set on device-id:
+                  * Are you ready?
+
+               4. インストールされる製品の通知
+
+                  続いてVMSINSTALはインストールしようとしている製品を表
+                  示します。次の例で，pppにはプラットフォーム，n.nには
+                  バージョンが表示されます。
+
+                  The following products will be processed:
+
+                  DCPSppp Vn.n
+
+                          Beginning installation of DCPSppp Vn.n at 13:45
+
+                  %VMSINSTAL-I-RESTORE, Restoring product saveset A
+
+               5. リリース・ノートの出力
+
+                  VMSINSTALコマンド行にOPTIONS Nを指定した場合には，次
+                  のリリース・ノート・オプションが表示されます。
+
+                  Release notes included with this kit are always copied to SYS$HELP.
+
+                  Additional Release Notes Options:
+
+                     Release Notes Options:
+                            (1) Display release notes
+                            (2) Print release notes
+                            (3) Both 1 and 2
+                            (4) None of the above
+
+                  リリース・ノート・オプションを入力した後，VMSINSTALは
+                  インストレーション・プロシージャを継続するかどうかを
+                  問い合わせます。
+
+                  Do you want to continue the installation [NO]?
+
+                  VMSINSTALコマンド行にOPTIONS Nを指定しなかった場合に
+                  は，VMSINSTALはこの問い合わせを表示しません。そのかわ
+                  りに次のメッセージが表示されます。
+
+                  %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP
+
+               6. 動作中のDCPSキューの確認
+
+                                    ソフトウェアのインストレーション 2-5
+
+ 
+
+
+
+
+
+
+               VMSINSTALを実行中にDCPSプリント・キューが動作している
+               場合は，次のようなメッセージが表示されます。
+
+               %DCPSVAX-W-QUEACTIVE, The following DCPS queues are still active:
+
+               Queue                     Device                                    Status
+               -----                     ------                                    ------
+               LN09                      DAN::LTA9000:                             IDLE
+               LN17                      DAN::"AppleTalk/Dan's LN17+ps"            IDLE
+               LN40                      DAN::"IP_RawTCP/ln40:6869"                IDLE
+               LPS32                     DAN::"IP_CPAP/lps32.office.genicom.com"   IDLE
+
+               %DCPSVAX-I-NUMQUEUES, 4 existing DCPS queues, with 4 active
+
+                       Previously installed DCPS queues are still running.
+                       Continuing this installation without entering
+                       STOP/QUEUE/RESET for each such queue can cause
+                       inconsistent behavior among queues and can cause
+                       the IVP to fail.
+
+                       Note that if you choose to have this installation
+                       procedure automatically stop such queues, and the
+                       installation subsequently aborts, this procedure
+                       will not automatically restart them.
+
+               * Do you want these queues automatically stopped and restarted [YES]?
+
+               これらのキューをインストレーション・プロシージャが自
+               動的に停止するのを避けたい場合のために，インストレー
+               ション処理を中断するためのオプションが用意されていま
+               す。また，キューが動作中のままインストレーション処理
+               を継続するオプションも用意されています。継続オプショ
+               ンを使用しないことを推奨します。
+
+            7. 十分なディスク容量があることの確認
+
+               VMSINSTALは，インストレーションを実行するのに必要なデ
+               ィスク容量があるかどうかを確認します。十分な容量がな
+               い場合は，必要なディスク容量のサイズを示すメッセージ
+               が表示され，インストレーションは強制終了されます。こ
+               の場合は，十分なディスク容量を確保してから，VMSINSTAL
+               プロシージャを再起動しなければなりません。十分なディ
+               スク容量がある場合には，インストレーション・プロシー
+               ジャは継続されます。
+
+            8. ファイルの余分なバージョンのパージ
+
+      2-6  ソフトウェアのインストレーション
+
+ 
+
+
+
+
+
+
+                  VMSINSTALは置換されたファイルをパージするかどうかを問
+                  い合わせます。
+
+                  * Do you want to purge files replaced by this installation [YES]?
+
+                  ディスク容量を節約したい場合はYESと入力します。ファイ
+                  ルをまだ使用する可能性がある場合はNOと入力します。
+
+                  この問い合わせに対する応答として疑問符(?)を入力した場
+                  合には，次のメッセージが表示されます。
+
+                  During this installation, new files will be provided to replace
+                  existing versions.  You may purge these older versions to save disk
+                  space, or keep them if you feel they may be of use.  Purging is
+                  recommended.
+
+               9. DCPS$LAYUPの定義
+
+                  次に，インストレーション・プロシージャはエグゼクティ
+                  ブ・モードのシステム・テーブルからDCPS$LAYUPという論
+                  理名の定義を検索します。
+
+                   o  定義が登録されている場合には，次のメッセージが表
+                      示されます。
+
+                      %DCPSppp-I-LAYUPDEF, DCPS$LAYUP is already defined
+                      -DCPSppp-I-LAYUPDEF, This installation will use its value
+
+                   o  DCPS$LAYUPが定義されていない場合には，プロシー
+                      ジャは定義を問い合わせます。省略時の設定である
+                      SYS$SYSROOT:[SYSHLP.EXAMPLES.DCPS]を選択する場合
+                      には，<Return>キーを押してください。またはシステ
+                      ム・レイアップ定義ファイルが格納されているディス
+                      ク・ディレクトリを入力してください。
+
+                      * Full definition for DCPS$LAYUP [SYS$SYSROOT:[SYSHLP.EXAMPLES.DCPS]]:
+
+                      プロシージャはその定義が正しいかどうか確認しま
+                      す。省略時のロケーションを使用せず，指定されたデ
+                      ィレクトリが存在しない場合，プロシージャはそのデ
+                      ィレクトリを作成してもよいかどうかを問い合わせま
+                      す。
+
+                      DISK$USER:[MY-LAYUP-DIR] does not exist.
+
+                      * Create it? [N]?
+
+                                    ソフトウェアのインストレーション 2-7
+
+ 
+
+
+
+
+
+
+                    NOと応答した場合は，プロシージャは再度定義を問い
+                    合わせます。
+
+            10.ディレクトリの作成
+
+               続いて，VMSINSTALはいくつかのディレクトリを作成しま
+               す。ディレクトリがすでに存在している場合は，次のよう
+               な追加のメッセージを表示します。
+
+               %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                    VMI$ROOT:[SYSTEST.DCPS].
+               %CREATE-I-EXISTS, VMI$ROOT:[SYSTEST.DCPS] already exists
+               %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                    VMI$ROOT:[SYSHLP.EXAMPLES.DCPS].
+               %CREATE-I-EXISTS, VMI$ROOT:[SYSHLP.EXAMPLES.DCPS] already exists
+               %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                    VMI$ROOT:[SYSHLP.EXAMPLES.DCPS.NETPRINT].
+               %CREATE-I-EXISTS, VMI$ROOT:[SYSHLP.EXAMPLES.DCPS.NETPRINT] already exists
+
+            11.キュー・マネージャが動作していることの確認
+
+               VMSINSTALは，キュー・マネージャがシステムで実行されて
+               いるかどうかを確認します。
+
+               キュー・マネージャが動作していない場合には，インスト
+               レーション検証プロシージャ(IVP)は実行されず，次のメッ
+               セージが画面に表示されます。
+
+               %DCPSppp-I-NOQUEMGR, System queue manager is not running
+               -DCPSppp-I-NOQUEMGR, IVP will NOT run.  Installation continuing ...
+
+               インストレーション時にIVPを実行する場合は，キュー・マ
+               ネージャが動作していなければなりません。
+
+            12.キューの停止
+
+               この時点で，VMSINSTALは次のメッセージを表示します。
+
+               %DCPSppp-I-NOQUEST, No further questions will be asked.
+
+               動作しているDCPSキューが存在していて，VMSINSTALが自
+               動的にそれらのキューを停止するように指定した場合は，
+               VMSINSTALは動作しているDCPSキューを停止させます。
+
+               %DCPSppp-I-STOPQUEUES, Stopping queues previously reported as active.
+
+            13.残りのセーブセットの復元
+
+      2-8  ソフトウェアのインストレーション
+
+ 
+
+
+
+
+
+
+                  各セーブセットを復元するたびに，VMSINSTALはその進捗状
+                  況を通知します。
+
+                  VMSINSTAL-I-RESTORE, Restoring product saveset B ...
+                  VMSINSTAL-I-RESTORE, Restoring product saveset C ...
+
+                  この操作が終了するまで最大10分かかります。
+
+                  すべてのセーブセットを復元した後，VMSINSTALは画面にメ
+                  ッセージを表示し，この後に必要な作業を指示します。指
+                  示内容の詳細については，『日本語DECprint Supervisor
+                  for OpenVMSシステム・マネージャーズ・ガイド』を参照し
+                  てください。
+
+                  次に，VMSINSTALはインストレーションで使用した一時的な
+                  位置から永続的に格納するディレクトリにファイルを移動
+                  します。
+
+                  %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+                  directories...
+
+               14.ソフトウェアが正しくロードされたことの検証
+
+                  IVPはソフトウェアが正しくロードされたかどうかを検証し
+                  ます。システム・キュー・マネージャが動作している場合
+                  には，IVPは自動的に実行され，VMSINSTALは次の処理を実
+                  行します。
+
+                   1. 一時的なプリント・キューを作成します。
+
+                   2. [SYSTEST.DCPS]のテスト・ファイルを，一時プリン
+                      ト・キューDCPS$IVP_TESTに登録します。
+
+                   3. 次のようなメッセージを表示します。
+
+                  Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43) started on DCPS$IVP_TEST
+                  %DCPS-I-JOBSTART, Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43)
+                        started on DCPS$IVP_TEST
+
+                  Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 43) completed
+                  Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44) started on DCPS$IVP_TEST
+                  %DCPS-I-JOBSTART, Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44)
+                        started on DCPS$IVP_TEST
+
+
+
+                                    ソフトウェアのインストレーション 2-9
+
+ 
+
+
+
+
+
+
+               Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 44) completed
+               Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45) started on DCPS$IVP_TEST
+               %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45)
+                     started on DCPS$IVP_TEST
+
+               Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 45) completed
+               Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46) started on DCPS$IVP_TEST
+               %DCPS-I-JOBSTART, Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46)
+                     started on DCPS$IVP_TEST
+
+               Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 46) completed
+               Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47) started on DCPS$IVP_TEST
+               %DCPS-I-JOBSTART, Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47)
+                     started on DCPS$IVP_TEST
+
+               Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 47) completed
+               Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48) started on DCPS$IVP_TEST
+               %DCPS-I-JOBSTART, Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48)
+                     started on DCPS$IVP_TEST
+
+               Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 48) completed
+               Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49) started on DCPS$IVP_TEST
+               %DCPS-I-JOBSTART, Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49)
+                     started on DCPS$IVP_TEST
+
+               Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 49) completed
+
+              _______________________  注意 _______________________
+
+              IVPでは実際の印刷は行いません。
+
+              _____________________________________________________
+
+               IVPが完了すると，IVPプロシージャは一時的なキューを
+               自動的に削除します。IVPテスト・ファイルを，後で実際
+               にプリンタに印刷することができます(『日本語DECprint
+               Supervisor for OpenVMSシステム・マネージャーズ・ガイ
+               ド』を参照)。
+
+               インストレーション終了後に，次のコマンドを入力してIVP
+               をマニュアル操作により起動することができます。
+
+               $ @SYS$TEST:DCPS$IVP
+
+
+
+      2-10  ソフトウェアのインストレーション
+
+ 
+
+
+
+
+
+
+                  IVPが終了すると，VMSINSTALは次の情報メッセージを出力
+                  します。
+
+                          IVP successful for OpenVMS DECprint Supervisor for OpenVMS Software
+
+               15.キューの再起動
+
+                  インストレーションに成功して最終メッセージを表示する
+                  と，VMSINSTALはインストレーション中に停止させたキュー
+                  を再起動します。
+
+                  %DCPSppp-I-STARTQUEUES, Restarting queues previously reported as active.
+
+                          Installation of DCPSppp Vn.n completed at 14:04
+
+                          VMSINSTAL procedure done at 14:08
+                  $
+
+               16.以降の作業
+
+                  プリント・キューの作成およびプリンティング環境のカス
+                  タマイズ方法については，『日本語DECprint Supervisor
+                  for OpenVMSシステム・マネージャーズ・ガイド』を参照し
+                  てください。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                   ソフトウェアのインストレーション 2-11
+
+ 
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                  インストレーションの例
+
+
+              この付録では，日本語OpenVMS Alphaおよび日本語OpenVMS VAXシ
+              ステムへの日本語DECprint Supervisorソフトウェアのインスト
+              レーション例を示します。システムにDCPSソフトウェアがすでに
+              存在している場合と存在していない場合の例を示します。
+
+              例 A-1には，日本語OpenVMS Alphaシステムに日本語DECprint
+              Supervisorソフトウェアを初めてインストールする場合の例を
+              示します。例 A-2には，日本語OpenVMS VAXシステムでの日本語
+              DECprint Supervisorソフトウェアのアップグレードの例を示し
+              ます。
+
+
+        例 A-1 日本語OpenVMS Alphaシステムへのインストレーション例
+
+        $ @SYS$UPDATE:VMSINSTAL DCPSAXPJA021 DKA400:[DCPSJA021.KIT] OPTIONS N
+
+         OpenVMS AXP Software Product Installation Procedure V7.3
+
+        It is 19-JAN-2003 at 15:25.
+
+        Enter a question mark (?) at any time for help.
+
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          DCPSAXPJA V2.1
+
+         Beginning installation of DCPSAXPJA V2.1 at 15:25
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+            Release notes included with this kit are always copied to SYS$HELP.
+
+            Additional Release Notes Options:
+
+                                                        (次ページに続く)
+
+                                              インストレーションの例 A-1
+
+ 
+
+
+
+
+
+
+     例 A-1 (続き) 日本語OpenVMS Alphaシステムへのインストレーション
+                   例
+
+      1.  Display release notes
+      2.  Print release notes
+      3.  Both 1 and 2
+      4.  None of the above
+
+     * Select option [2]: 4
+
+     * Do you want to continue the installation [NO]? YES
+     %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+          -------------------------------------------------------------------
+          Compaq DECprint Supervisor (DCPS) for OpenVMS
+          DCPS V2.1A-J Installation Procedure
+
+          -------------------------------------------------------------------
+          (c) 2003 Compaq Information Technologies Group, L.P.
+
+          Compaq and the Compaq logo are trademarks of Compaq Information
+          Technologies Group, L.P. in the U.S. and/or other countries.
+
+          Confidential computer software.  Valid license from Compaq required
+          for possession, use or copying.  Consistent with FAR 12.211 and
+          12.212, Commercial Computer Software, Computer Software
+          Documentation, and Technical Data for Commercial Items are licensed
+          to the U.S. Government under vendor's standard commercial license.
+          -------------------------------------------------------------------
+
+     %DCPSAXPJA-I-LAYUPDEF, DCPS$LAYUP is already defined
+     -DCPSAXPJA-I-LAYUPDEF, This installation will use its value
+
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSTE
+     ST.DCPS].
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSHL
+     P.EXAMPLES.DCPS].
+     %DCPSAXPJA-I-ESTTIME, This installation will take between 1 and 10 minutes.
+     %DCPSAXPJA-I-NOQUEST, No further questions will be asked.
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+
+     Software installer:
+
+                                                     (次ページに続く)
+
+      A-2  インストレーションの例
+
+ 
+
+
+
+
+
+
+        例 A-1 (続き) 日本語OpenVMS Alphaシステムへのインストレーション
+                      例
+
+                Starting with DCPS V2.0, the need for DCPS-OPEN and DCPS-PLUS
+                licenses has been eliminated.  The right to use all features of
+                DCPS is now included with the OpenVMS operating system license.
+
+         Please remember to copy SYS$STARTUP:DCPS$STARTUP.TEMPLATE to
+         SYS$STARTUP:DCPS$STARTUP.COM.  Then edit the resulting copy,
+         following the instructions contained within it, to define
+         your DCPS environment and queue characteristics.  When done,
+         execute the file to establish and start the DCPS queues.
+         Also remember to edit SYS$MANAGER:SYSTARTUP_VMS.COM so that
+         DCPS$STARTUP.COM is automatically run at system startup time.
+
+         DCPS$STARTUP.COM should be executed after all printer devices
+         and interconnects are running.  Below is a summary list:
+
+           printers via TCP/IP:      after TCP is started
+           printers via LAT:         after LAT devices are created
+           printers via AppleTalk:   after the AppleTalk driver is loaded
+           PrintServers via DECnet:  after DECnet is started
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+        %DCPS-I-IVP, Beginning IVP...
+
+             -------------------------------------------------------------------
+             Compaq DECprint Supervisor (DCPS) for OpenVMS
+             V2.1A-J Installation Verification Procedure
+
+             -------------------------------------------------------------------
+             (c) 2003 Compaq Information Technologies Group, L.P.
+
+             Compaq and the Compaq logo are trademarks of Compaq Information
+             Technologies Group, L.P. in the U.S. and/or other countries.
+
+             Confidential computer software.  Valid license from Compaq required
+             for possession, use or copying.  Consistent with FAR 12.211 and
+             12.212, Commercial Computer Software, Computer Software
+             Documentation, and Technical Data for Commercial Items are licensed
+             to the U.S. Government under vendor's standard commercial license.
+             -------------------------------------------------------------------
+
+             IVP using Version V2.1A-J of DECprint Supervisor
+
+                                                        (次ページに続く)
+
+                                              インストレーションの例 A-3
+
+ 
+
+
+
+
+
+
+     例 A-1 (続き) 日本語OpenVMS Alphaシステムへのインストレーション
+                   例
+
+     Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 480) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 480) started on
+     DCPS$IVP_TEST
+
+     Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 480) completed
+     Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 481) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 481) started on
+     DCPS$IVP_TEST
+
+     Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 481) completed
+     Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 482) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 482) started on
+      DCPS$IVP_TEST
+
+     Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 482) completed
+     Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 483) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 483) started
+     on DCPS$IVP_TEST
+
+     Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 483) completed
+     Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 484) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 484) started on D
+     CPS$IVP_TEST
+
+     Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 484) completed
+     Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 485) started on DCPS$IVP_TES
+     T
+     %DCPS-I-JOBSTART, Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 485) start
+     ed on DCPS$IVP_TEST
+
+     Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 485) completed
+     Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 486) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 486) started on
+     DCPS$IVP_TEST
+
+     Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 486) completed
+     Job DCPS$IVP_KANJI (queue DCPS$IVP_TEST, entry 487) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_KANJI (queue DCPS$IVP_TEST, entry 487) started on
+      DCPS$IVP_TEST
+
+                                                     (次ページに続く)
+
+
+      A-4  インストレーションの例
+
+ 
+
+
+
+
+
+
+        例 A-1 (続き) 日本語OpenVMS Alphaシステムへのインストレーション
+                      例
+
+        Job DCPS$IVP_KANJI (queue DCPS$IVP_TEST, entry 487) completed
+        Job DCPS$IVP_KANJI78 (queue DCPS$IVP_TEST, entry 488) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_KANJI78 (queue DCPS$IVP_TEST, entry 488) started
+        on DCPS$IVP_TEST
+
+        Job DCPS$IVP_KANJI78 (queue DCPS$IVP_TEST, entry 488) completed
+        Job DCPS$IVP_LA_KANJI (queue DCPS$IVP_TEST, entry 489) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_LA_KANJI (queue DCPS$IVP_TEST, entry 489) started
+         on DCPS$IVP_TEST
+
+        Job DCPS$IVP_LA_KANJI (queue DCPS$IVP_TEST, entry 489) completed
+
+             IVP successful for DECprint Supervisor V2.1A-J
+
+         Installation of DCPSAXPJA V2.1 completed at 15:28
+
+            Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+            Creating installation data file: VMI$ROOT:[SYSUPD]DCPSAXPJA021.VMI_DATA
+
+         VMSINSTAL procedure done at 15:29
+
+        $
+
+        例 A-2 日本語OpenVMS VAXシステムでのアップグレードの例
+
+        $ @SYS$UPDATE:VMSINSTAL DCPSVAXJA021 DKA400:[DCPSJA021.KIT] OPTIONS N
+
+         OpenVMS VAX Software Product Installation Procedure V7.2
+
+        It is 19-JAN-2003 at 17:25.
+
+        Enter a question mark (?) at any time for help.
+
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          DCPSVAXJA V2.1
+
+         Beginning installation of DCPSVAXJA V2.1 at 17:25
+
+                                                        (次ページに続く)
+
+                                              インストレーションの例 A-5
+
+ 
+
+
+
+
+
+
+     例 A-2 (続き) 日本語OpenVMS VAXシステムでのアップグレードの例
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+         Release notes included with this kit are always copied to SYS$HELP.
+
+         Additional Release Notes Options:
+
+      1.  Display release notes
+      2.  Print release notes
+      3.  Both 1 and 2
+      4.  None of the above
+
+     * Select option [2]: 4
+     * Do you want to continue the installation [NO]? YES
+     %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+          -------------------------------------------------------------------
+          Compaq DECprint Supervisor (DCPS) for OpenVMS
+          DCPS V2.1A-J Installation Procedure
+
+          -------------------------------------------------------------------
+          (c) 2003 Compaq Information Technologies Group, L.P.
+
+          Compaq and the Compaq logo are trademarks of Compaq Information
+          Technologies Group, L.P. in the U.S. and/or other countries.
+
+          Confidential computer software.  Valid license from Compaq required
+          for possession, use or copying.  Consistent with FAR 12.211 and
+          12.212, Commercial Computer Software, Computer Software
+          Documentation, and Technical Data for Commercial Items are licensed
+          to the U.S. Government under vendor's standard commercial license.
+          -------------------------------------------------------------------
+
+     %DCPSVAXJ-W-QUEACTIVE, The following DCPS queues are still active:
+
+     Queue                     Device                                    Status
+     -----                     ------                                    ------
+     MERCURY                   TOKYO3::"APPLETALK/PRINTER1"              IDLE
+     VENUS                     TOKYO3::"SERIAL/LTA101:"                  IDLE
+     MARS                      TOKYO3::"IP_CPAP/mars.foo.bar.baz"        IDLE
+
+     %DCPSVAXJ-I-NUMQUEUES, 6 existing DCPS queues, with 3 active
+
+                                                     (次ページに続く)
+
+      A-6  インストレーションの例
+
+ 
+
+
+
+
+
+
+        例 A-2 (続き) 日本語OpenVMS VAXシステムでのアップグレードの例
+
+         Previously installed DCPS queues are still running.
+         Continuing this installation without entering
+         STOP/QUEUE/RESET for each such queue can cause
+         inconsistent behavior among queues and can cause
+         the IVP to fail.
+
+         Note that if you choose to have this installation
+         procedure automatically stop such queues, and the
+         installation subsequently aborts, this procedure
+         will not automatically restart them.
+
+        * Do you want these queues automatically stopped and restarted [YES]?
+
+        * Do you want to purge files replaced by this installation [YES]?
+
+        %DCPSVAXJ-I-LAYUPDEF, DCPS$LAYUP is already defined
+        -DCPSVAXJ-I-LAYUPDEF, This installation will use its value
+
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSTE
+        ST.DCPS].
+        %CREATE-I-EXISTS, VMI$ROOT:[SYSTEST.DCPS] already exists
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSHL
+        P.EXAMPLES.DCPS].
+        %CREATE-I-EXISTS, VMI$ROOT:[SYSHLP.EXAMPLES.DCPS] already exists
+        %DCPSVAXJ-I-ESTTIME, This installation will take between 1 and 10 minutes,
+        -DCPSVAXJ-I-ESTTIME,  excluding time needed to stop and restart active queues.
+        %DCPSVAXJ-I-NOQUEST, No further questions will be asked.
+        %DCPSVAXJ-I-STOPQUEUES, Stopping queues previously reported as active.
+        %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+
+        Software installer:
+
+                Starting with DCPS V2.0, the need for DCPS-OPEN and DCPS-PLUS
+                licenses has been eliminated.  The right to use all features of
+                DCPS is now included with the OpenVMS operating system license.
+
+                                                        (次ページに続く)
+
+
+
+
+
+                                              インストレーションの例 A-7
+
+ 
+
+
+
+
+
+
+     例 A-2 (続き) 日本語OpenVMS VAXシステムでのアップグレードの例
+
+      Please remember to copy SYS$STARTUP:DCPS$STARTUP.TEMPLATE to
+      SYS$STARTUP:DCPS$STARTUP.COM.  Then edit the resulting copy,
+      following the instructions contained within it, to define
+      your DCPS environment and queue characteristics.  When done,
+      execute the file to establish and start the DCPS queues.
+      Also remember to edit SYS$MANAGER:SYSTARTUP_VMS.COM so that
+      DCPS$STARTUP.COM is automatically run at system startup time.
+
+      DCPS$STARTUP.COM should be executed after all printer devices
+      and interconnects are running.  Below is a summary list:
+
+        printers via TCP/IP:      after TCP is started
+        printers via LAT:         after LAT devices are created
+        printers via AppleTalk:   after the AppleTalk driver is loaded
+        PrintServers via DECnet:  after DECnet is started
+
+      If you are converting CPS queues to DCPS, you may want to run
+      the utility SYS$STARTUP:CPS_TO_DCPS_STARTUP.COM instead of
+      editing the startup template.  This utility will read your
+      CPS startup file, change the queue definitions to use DCPS$SMB
+      and its library and logical names, and write out a new DCPS
+      startup file.
+
+     %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+     %DCPS-I-IVP, Beginning IVP...
+
+          -------------------------------------------------------------------
+          Compaq DECprint Supervisor (DCPS) for OpenVMS
+          V2.1A-J Installation Verification Procedure
+
+          -------------------------------------------------------------------
+          (c) 2003 Compaq Information Technologies Group, L.P.
+
+          Compaq and the Compaq logo are trademarks of Compaq Information
+          Technologies Group, L.P. in the U.S. and/or other countries.
+
+          Confidential computer software.  Valid license from Compaq required
+          for possession, use or copying.  Consistent with FAR 12.211 and
+          12.212, Commercial Computer Software, Computer Software
+          Documentation, and Technical Data for Commercial Items are licensed
+          to the U.S. Government under vendor's standard commercial license.
+          -------------------------------------------------------------------
+
+                                                     (次ページに続く)
+
+      A-8  インストレーションの例
+
+ 
+
+
+
+
+
+
+        例 A-2 (続き) 日本語OpenVMS VAXシステムでのアップグレードの例
+
+             IVP using Version V2.1A-J of DECprint Supervisor
+
+        Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 295) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 295) started on
+        DCPS$IVP_TEST
+
+        Job DCPS$IVP_POST (queue DCPS$IVP_TEST, entry 295) completed
+        Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 296) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 296) started on
+        DCPS$IVP_TEST
+
+        Job DCPS$IVP_ANSI (queue DCPS$IVP_TEST, entry 296) completed
+        Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 297) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 297) started on
+         DCPS$IVP_TEST
+
+        Job DCPS$IVP_REGIS (queue DCPS$IVP_TEST, entry 297) completed
+        Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 298) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 298) started
+        on DCPS$IVP_TEST
+
+        Job DCPS$IVP_TEK4014 (queue DCPS$IVP_TEST, entry 298) completed
+        Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 299) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 299) started on D
+        CPS$IVP_TEST
+
+        Job DCPS$IVP_PCL (queue DCPS$IVP_TEST, entry 299) completed
+        Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 300) started on DCPS$IVP_TES
+        T
+        %DCPS-I-JOBSTART, Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 300) start
+        ed on DCPS$IVP_TEST
+
+        Job DCPS$IVP_PROPRINTER (queue DCPS$IVP_TEST, entry 300) completed
+        Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 301) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 301) started on
+        DCPS$IVP_TEST
+
+        Job DCPS$IVP_LIST (queue DCPS$IVP_TEST, entry 301) completed
+        Job DCPS$IVP_KANJI (queue DCPS$IVP_TEST, entry 302) started on DCPS$IVP_TEST
+        %DCPS-I-JOBSTART, Job DCPS$IVP_KANJI (queue DCPS$IVP_TEST, entry 302) started on
+         DCPS$IVP_TEST
+
+                                                        (次ページに続く)
+
+                                              インストレーションの例 A-9
+
+ 
+
+
+
+
+
+
+     例 A-2 (続き) 日本語OpenVMS VAXシステムでのアップグレードの例
+
+     Job DCPS$IVP_KANJI (queue DCPS$IVP_TEST, entry 302) completed
+     Job DCPS$IVP_KANJI78 (queue DCPS$IVP_TEST, entry 303) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_KANJI78 (queue DCPS$IVP_TEST, entry 303) started
+     on DCPS$IVP_TEST
+
+     Job DCPS$IVP_KANJI78 (queue DCPS$IVP_TEST, entry 303) completed
+     Job DCPS$IVP_LA_KANJI (queue DCPS$IVP_TEST, entry 304) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_LA_KANJI (queue DCPS$IVP_TEST, entry 304) started
+      on DCPS$IVP_TEST
+
+     Job DCPS$IVP_LA_KANJI (queue DCPS$IVP_TEST, entry 304) completed
+     Job DCPS$IVP_REGIS_KANJI (queue DCPS$IVP_TEST, entry 305) started on DCPS$IVP_TE
+     ST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS_KANJI (queue DCPS$IVP_TEST, entry 305) star
+     ted on DCPS$IVP_TEST
+
+     Job DCPS$IVP_REGIS_KANJI (queue DCPS$IVP_TEST, entry 305) completed
+     Job DCPS$IVP_REGIS_KANJI80 (queue DCPS$IVP_TEST, entry 306) started on DCPS$IVP_
+     TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_REGIS_KANJI80 (queue DCPS$IVP_TEST, entry 306) st
+     arted on DCPS$IVP_TEST
+
+     Job DCPS$IVP_REGIS_KANJI80 (queue DCPS$IVP_TEST, entry 306) completed
+     Job DCPS$IVP_TEK_KANA (queue DCPS$IVP_TEST, entry 307) started on DCPS$IVP_TEST
+     %DCPS-I-JOBSTART, Job DCPS$IVP_TEK_KANA (queue DCPS$IVP_TEST, entry 307) started
+      on DCPS$IVP_TEST
+
+     Job DCPS$IVP_TEK_KANA (queue DCPS$IVP_TEST, entry 307) completed
+
+          IVP successful for DECprint Supervisor V2.1A-J
+
+     %DCPSVAXJ-I-STARTQUEUES, Restarting queues previously reported as active.
+
+      Installation of DCPSVAXJA V2.1 completed at 17:30
+
+      VMSINSTAL procedure done at 17:30
+
+     $
+
+
+
+
+
+
+      A-10  インストレーションの例
+
+ 
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                                    システム・メッセージ
+
+
+              この付録では，以降の各節で日本語DECprint Supervisorメッセ
+              ージについて説明します。
+
+               o  メッセージの概要，第B.1節
+
+               o  DCPSインストレーション・メッセージ，第B.2節
+
+        ___________________________________________________________
+
+        B.1   システム・メッセージの概要
+
+        B.1.1  メッセージの形式
+
+              日本語DECprint Supervisorシステム・メッセージは次のいずれ
+              かの形式です。
+
+              %fac-s-ident, text
+              -fac-s-ident, text
+
+              __________________________________________________________
+              コード___意味_____________________________________________
+
+              %        すべての基本メッセージの先頭に追加される接頭辞
+
+              -        すべての継続メッセージの先頭に追加される接頭辞
+
+              fac      機能コード，DCPSでなければなりません
+
+              s        メッセージの重大度レベル
+
+              ident    メッセージ・テキストの省略形
+
+              text_____メッセージの完全なテキスト_______________________
+
+
+
+
+
+                                                システム・メッセージ B-1
+
+ 
+
+
+
+
+
+
+     B.1.2  重大度レベル
+
+
+           日本語DECprint Supervisorシステム・メッセージの重大度レベ
+           ルは次のとおりです。
+
+           __________________________________________________________
+           コー
+           ド_____意味_______________________________________________
+
+           S      Success (正常終了) -要求は正常終了しました。
+
+           I      Informational (情報) -ユーザの処置を必要とする場合
+                  もあります。
+
+           W      Warning (警告) -要求は終了していない可能性があり，
+                  ユーザの処置を必要とする場合もあります。
+
+           E      Error (エラー) -システムで回復可能なエラーが検出さ
+                  れました。
+
+           F      Fatal (致命的なエラー) -システムで回復不可能なエラ
+           _______ーが検出され，この要求の処理を継続できません。_____
+
+     ___________________________________________________________
+
+     B.2    DCPSインストレーション・メッセージ
+
+           この後のメッセージの説明は，メッセージ・コードの ident の
+           部分のアルファベット順に示されています。メッセージの重大
+           度レベル，およびテキストも示されています。メッセージの接
+           頭辞，機能コード(DCPSppp)は示されていません。DCPS以外の機
+           能コードのメッセージを受信した場合には，『OpenVMS System
+           Messages: Companion Guide for Help Message Users』でそのメ
+           ッセージについての箇所を参照するか，HELP /MESSAGEコマンド
+           でオンライン・ヘルプ・メッセージ・ユーティリティを使用して
+           ください。
+
+
+
+
+
+
+
+
+
+      B-2  システム・メッセージ
+
+ 
+
+
+
+
+
+
+         E-BADSPEC, File spec LPS$SINGLEHOLES.LUP cannot be parsed
+
+            説明: たぶん以前のDCPSのインストレーション時のレイアップ・
+            ファイルの位置の問い合わせに対して間違った回答をしたことが
+            原因で，論理名DCPS$LAYUPの現在の定義が不正です。DCPS V1.6以
+            降のバージョンではこの検証を行います。詳細については，『リ
+            リース・ノート』を参照してください。
+
+            対処法: 次のコマンドを実行して論理名の割り当てを解除してく
+            ださい。
+
+            $ DEASSIGN /SYSTEM /EXECUTIVE_MODE DCPS$LAYUP
+
+            続いてDCPSのインストレーションを再開すると，レイアップ・フ
+            ァイルの位置についての問い合わせがあります。
+
+         E-BADVMSVER, This product requires OpenVMS version version or
+            later to install
+
+            説明: DCPSソフトウェアが，OpenVMSオペレーティング・システム
+            の新しいバージョンを要求しています。
+
+            ユーザの処置: オペレーティング・システムを正しいバージョン
+            にアップグレードしてください。
+
+         I-ESTTIME, This installation will take between 1 and 10
+            minutes,
+         I-ESTTIME, excluding time needed to stop and restart active
+            queues.
+
+            説明: この情報メッセージは，ソフトウェアのインストレーショ
+            ンにかかる時間を見積もっています。
+
+            ユーザの処置: 処置は必要ありません。
+
+         W-HIDES, If these files remain, they will be used instead of
+            the
+         W-HIDES, DCPS product files you are installing now, and the
+            IVP
+
+            説明: 日本語DECprint Supervisor for OpenVMSが，SYS$SPECIFIC
+            ディレクトリ内の既存のDCPSファイルが最新のもののかわりに使
+            用されることを警告しています。
+
+            ユーザの処置: SYS$SPECIFICディレクトリから表示されたDCPSフ
+            ァイルを削除あるいは別の名前に変更してください。
+
+                                                システム・メッセージ B-3
+
+ 
+
+
+
+
+
+
+       E-INVDIRSPE, invalid directory specification
+
+         説明: 指定したディレクトリの構文が間違っています。
+
+         ユーザの処置: 正しい構文でディレクトリを指定してください。
+
+       I-LAYUPDEF, DCPS$LAYUP is already defined.
+       I-LAYUPDEF, This installation will use its value.
+
+         説明: インストレーション時に，既存の論理名DCPS$LAYUPを使用
+         します。
+
+         ユーザの処置: 処置は必要ありません。
+
+       I-NOHELP, There is no help in this install procedure.
+       I-NOHELP, Please refer to the Software Installation Guide.
+
+         説明: この情報メッセージは，使用可能なヘルプがないことを通
+         知しています。
+
+         ユーザの処置: 詳細については，本書を参照してください。
+
+       I-NOQUEMGR, System queue manager is not running.
+       I-NOQUEMGR, IVP will NOT be run. Installation continuing.
+
+         説明: キュー・マネージャがシステムで実行されていません。イ
+         ンストレーションは継続されますが，インストレーション検証プ
+         ロシージャを実行することはできません。
+
+         ユーザの処置: インストレーション終了後，キュー・マネ
+         ージャを起動し，マニュアル操作でIVPを起動してください
+         (@SYS$TEST:DCPS$IVP)。
+
+       I-NOQUEST, No further questions will be asked
+
+         説明: VMSINSTALプロシージャはこの時点以降，入力を要求するこ
+         となく処理を実行します。
+
+         ユーザの処置: 処置は必要ありません。
+
+       W-NORSTRT, Automatically stopped queues have not been
+         restarted
+
+         説明: VMSINSTALが自動的に停止させたキューを再起動しませんで
+         した。
+
+         ユーザの処置: インストレーションを異常終了させた問題を解消
+         し，DCPSインストレーション・プロシージャの実行時に動作中で
+         あることを通知したキューをマニュアル操作で再起動してくださ
+         い。
+
+      B-4  システム・メッセージ
+
+ 
+
+
+
+
+
+
+         E-NOSUCHDEV, no such device available
+
+            説明: 指定された装置が存在していません。
+
+            ユーザの処置: システムに存在している装置を指定してくださ
+            い。
+
+         E-NO_DECC_RTL, DEC C run-time library is not installed.
+
+            説明: システムにDEC C実行時ライブラリがインストールされてい
+            ません。
+
+            ユーザの処置: DEC C/C++ Run-Time Componentsキットをインスト
+            ールしてください。
+
+         E-NO_QUEMAN, This product requires the queue management
+            facility to install.
+
+            説明: キュー・マネージャを検出できません。インストレーショ
+            ン・プロシージャーは強制終了されました。
+
+            ユーザの処置: キュー・マネージャを起動してください。詳しく
+            は『OpenVMS System Management Utilities Reference Manual』
+            を参照してください。
+
+         E-NO_SPACE, This product requires number blocks of disk space
+            to install.
+
+            説明: このソフトウェアをインストールするために十分なディス
+            ク容量がありません。インストレーション・プロシージャは強制
+            終了されました。
+
+            ユーザの処置: 少なくとも指定された空きブロック数が確保され
+            ているかどうかを確認し，インストレーションを再起動してくだ
+            さい。
+
+         I-NUMQUEUES, existing-number existing DCPS queues, with
+            active-number active.
+
+            説明: このメッセージは，存在しているDCPSキューの数，および
+            現在動作中のキュー(停止していないキュー)の数を通知します。
+
+            ユーザの処置: 処置は必要ありません。
+
+
+
+                                                システム・メッセージ B-5
+
+ 
+
+
+
+
+
+
+       W-PURGW, Purging files may leave running queues with no image
+       W-PURGW, file and the IVP may fail.
+
+         説明: マルチストリームDCPSシンビオントがまだ動作中である場
+         合にDCPSファイルをパージした場合，問題が発生する可能性があ
+         ります。
+
+         ユーザの処置: 既存のファイルのパージを避けるか，インストレ
+         ーションを継続する前にすべてのキューを停止させてください。
+
+       I-QSCANNING, Looking for existing DCPS print queues...
+
+         説明: この情報メッセージは，インストレーション・プロシージ
+         ャが既存のプリント・キューを確認していることを通知します。
+
+         ユーザの処置: 処置は必要ありません。
+
+       W-QUEACTIVE, The following queues are still active:
+
+         説明: インストレーション・プロシージャが，以降の行に表示す
+         るいくつかのDCPSキューが動作中であることを検出しました。動
+         作中のキューを停止させない場合，インストレーションが失敗す
+         るか，同時に印刷中のジョブに影響を与える可能性があります。
+
+         ユーザの処置: 続く問い合わせに対して，VMSINSTALが自動的にキ
+         ューを停止させるように指定するか，マニュアル操作でキューを
+         停止させた後にインストレーション・プロシージャを再起動する
+         ように指定します。いくつかのキューが"Idle"状態にない場合，
+         すべてのジョブが印刷を完了するまで待つことも可能です。
+
+       I-STARTQUEUES, Restarting queues previously reported as active
+
+         説明: VMSINSTALが以前に動作中であることを通知したすべてのキ
+         ューを，現在VMSINSTALが再起動しています。
+
+         ユーザの処置: 処置は必要ありません。
+
+       I-STOPQUEUES, Stopping queues previously reported as active
+
+         説明: VMSINSTALが以前に動作中であることを通知したすべてのキ
+         ューを，現在VMSINSTALが停止させています。
+
+         ユーザの処置: 処置は必要ありません。
+
+
+
+      B-6  システム・メッセージ
+
+ 
+
+
+
+
+
+
+         W-SYSPF, This system contains DCPS images in SYS$SPECIFIC
+            areas:
+
+            説明: システムのSYS$SPECIFICディレクトリに以降の行に表
+            示されるいくつかのDCPS実行イメージが見つかりました。
+            SYS$SPECIFICディレクトリに存在しているバージョンにより，
+            インストールしようとしている新しいイメージは使用されませ
+            ん。
+
+            ユーザの処置: SYS$COMMONに存在する新しいファイルが使用され
+            るように，SYS$SPECIFICディレクトリから表示されたDCPSファイ
+            ルを削除あるいは別の名前に変更してください。
+
+         F-WRONGARCH, This product will only install on OpenVMS
+            platform.
+
+            説明: キットを間違ったプラットフォームにインストールしよう
+            としています。
+
+            ユーザの処置: メッセージで示されるAlphaあるいはVAXプラット
+            フォームにキットをインストールしてください。あるいは，現在
+            のプラットフォーム用の異なるキットを使用してください。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                システム・メッセージ B-7
+
+ 
+
+
+
+
+
+
+
+
+                                                                       C
+        ________________________________________________________________
+
+                                      ドキュメンテーション・キットの構成
+
+
+              ここでは，本ソフトウェアに関するドキュメンテーション・キッ
+              トについて説明します。
+
+              日本語Compaq DECprint Supervisor for OpenVMSドキュメンテー
+              ション・キット(注文番号: QA-09NJA-GZ)
+
+               o  日本語DECprint Supervisor for OpenVMSユーザーズ・ガイ
+                  ド
+
+               o  日本語DECprint Supervisor for OpenVMSシステム・マネー
+                  ジャーズ・ガイド
+
+               o  日本語トランスレータ リファレンス・マニュアル
+
+              プログラミング・ガイド・キット(注文番号: QA-798JC-GZ)
+
+               o  日本語トランスレータ リファレンス・マニュアル
+
+               o  PostScript Printers Programmer's Supplement
+
+               o  Digital ANSI-Compliant Printing Protocol Level 3
+                  Programming Reference Manual
+
+               o  Digital ANSI-Compliant Printing Protocol Level 3
+                  Programming Supplement
+
+               o  PostScript Translators Reference Manual for ReGIS and
+                  Tektronix 4010/4014
+
+              日本語DEC PrintServerサポーティング・ホスト・ソフトウェア
+              for OpenVMS VAX (注文番号: QA-798JA-GZ)
+
+               o  日本語DEC PrintServerサポーティング・ホスト・ソフトウ
+                  ェア/VMSインストレーション・ガイド
+
+               o  DEC PrintServer Supporting Host Software for OpenVMS
+                  Management Guide
+
+               o  ユーザ・リファレンス・カード
+
+                                  ドキュメンテーション・キットの構成 C-1
+
+ 
+
+
+
+
+
+
+           日本語DEC PrintServerサポーティング・ホスト・ソフトウェア
+           for ULTRIX (注文番号: QA-VVZJA-GZ)
+
+            o  日本語DEC PrintServerサポーティング・ホスト・ソフトウ
+               ェア/ULTRIXインストレーション・ガイド
+
+            o  DEC PrintServer Supporting Host Software for ULTIRX
+               Management Guide
+
+            o  ユーザ・リファレンス・カード
+
+           以下のPostScriptドキュメントが株式会社ASCIIより販売されて
+           います。
+
+            o  ページ記述言語PostScriptリファレンス・マニュアル第3版
+
+            o  ページ記述言語PostScriptチュートリアル&クックブック
+
+            o  ページ記述言語PostScriptプログラム・デザイン
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      C-2  ドキュメンテーション・キットの構成
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             日本語Compaq DECprint Supervisor (DCPS) for OpenVMS
+             インストレーション・ガイド
+
+        ________________________________________________________________
+
+                 2003年2月 発行
+
+                   日本ヒューレット・パッカード株式会社
+
+                   〒140-8641 東京都品川区東品川2-2-24天王洲セントラルタワ
+                 ー
+
+                        電話 (03)5463-6600 (大代表)
+
+        ________________________________________________________________
+
+                                                             AA-PZCGH-TE

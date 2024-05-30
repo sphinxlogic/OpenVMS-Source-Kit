@@ -1,0 +1,4637 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    OpenVMS_SNA_________________________________________
+                    Installation
+
+
+                    Part Number: AA-EV61G-TE
+
+
+                    August 1998
+
+                    The OpenVMS SNA software allows an OpenVMS user
+                    to communicate with programs running on an IBM SNA
+                    networked system.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a revised
+                                                  manual.
+
+                    Operating System and Version: OpenVMS VAX V6.2, V7.1
+
+                    Network Version:              DECnet-OSI, DECnet-Plus
+
+                    Software Version:             OpenVMS SNA V2.3
+
+ 
+
+
+
+
+
+
+
+          Electronic Data Systems Corporation and Digital Equipment
+          Corporation make no representations that the use of their
+          products in the manner described in this publication will
+          not infringe on existing or future patent rights, nor do
+          the descriptions contained in this publication imply the
+          granting of licenses to make, use, or sell equipment or
+          software in accordance with the description.
+
+          Possession, use, or copying of the software described in
+          this publication is authorized only pursuant to a valid
+          written license from DIGITAL or an authorized sublicensor.
+
+          The information in this document is subject to change
+          without notice and should not be construed as a commitment
+          from Electronic Data Systems Corporation or Digital
+          Equipment Corporation. Electronic Data Systems Corporation
+          and Digital Equipment Corporation assume no responsibility
+          for any errors that may appear in this document.
+
+          DIGITAL conducts its business in a manner that conserves
+          the environment and protects the safety and health of its
+          employees, customers, and the community.
+
+          Copyright © 1998 Electronic Data Systems Corporation. All
+          Rights Reserved.
+
+          Copyright © 1989, 1994 Digital Equipment Corporation. All
+          Rights Reserved.
+
+          The following are trademarks of Digital Equipment
+          Corporation:
+
+          DEC, DECnet, DIGITAL, OpenVMS, VAX, VAXcluster, VMS,
+          VMScluster, the AlphaGeneration logo, and the DIGITAL logo.
+
+          The following are third-party trademarks:
+
+             IBM is a registered trademark of International Business
+             Machines Corporation.
+             PostScript is a registered trademark of Adobe Systems,
+             Inc.
+
+          This document is available on CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................    vii
+
+  1  Preparing for Installation
+
+        1.1   Checking the Distribution Kit.................    1-1
+        1.2   SNA Concepts..................................    1-1
+        1.3   Preparing the IBM Environment.................    1-2
+        1.4   Installation Requirements.....................    1-4
+        1.4.1     Disk Space................................    1-4
+        1.4.2     Privileges................................    1-5
+        1.4.3     Dynamic Nonpaged Memory...................    1-5
+        1.4.3.1     Changing the Value for Nonpaged Pool....    1-6
+        1.4.4     Process Account Quotas....................    1-7
+        1.5   VMS License Management Facility...............    1-8
+        1.6   Hardware Requirements.........................    1-8
+        1.6.1     DIGITAL Communications Devices............    1-9
+        1.6.2     Modems....................................    1-9
+        1.7   Software Requirements.........................   1-10
+        1.7.1     OpenVMS Software..........................   1-10
+        1.7.2     DECnet SNA OpenVMS Access Routines........   1-11
+        1.8   Considerations for OpenVMS VAX Systems........   1-11
+        1.9   Configuration Requirements....................   1-12
+        1.9.1     Configuration Questionnaire...............   1-14
+        1.9.2     Configuration Parameters for SDLC Lines...   1-18
+        1.9.3     Configuration Parameters for X.25 Lines...   1-23
+        1.9.4     Access Names..............................   1-26
+        1.9.5     Access Name Parameters....................   1-26
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    2  Installing and Configuring OpenVMS SNA
+
+          2.1   Accessing the On-Line Release Notes...........    2-1
+          2.2   Using VMSINSTAL...............................    2-2
+          2.3   Installing OpenVMS SNA Software...............    2-3
+          2.4   Configuring OpenVMS SNA Software..............    2-8
+          2.5   After Installation and Configuration..........   2-18
+          2.5.1     Authorizing Users.........................   2-18
+          2.5.2     Configuring OpenVMS SNA for Other Cluster
+                    Nodes.....................................   2-18
+          2.5.3     Updating DCL Tables.......................   2-19
+          2.5.4     Starting OpenVMS SNA......................   2-19
+          2.5.5     Running the Installation Verification
+                    Procedure.................................   2-20
+          2.5.6     User Account Quotas and Privileges........   2-21
+          2.5.7     Editing the System Startup File...........   2-22
+          2.5.8     Editing the Configuration File............   2-22
+
+    A  Files Installed During Installation
+
+    B  Sample Installation and Configuration
+
+          B.1   Sample Installation...........................    B-1
+          B.2   Sample Configuration (SDLC Lines).............    B-4
+          B.3   Sample Configuration (X.25 Lines).............    B-6
+
+    Index
+
+
+    Tables
+
+          1-1       Disk Space Requirements...................    1-4
+
+          1-2       Required Nonpaged Pool Resources..........    1-5
+
+          1-3       Process Account Quotas for the Installing
+                    Account...................................    1-7
+
+          1-4       Configuration Questionnaire (SDLC
+                    Lines)....................................   1-15
+
+          1-5       Configuration Questionnaire (X.25
+                    Lines)....................................   1-17
+
+          1-6       Communications Devices and Configuration
+                    Parameters................................   1-21
+
+    iv
+
+ 
+
+
+
+
+
+
+
+              1-7       Configuration Questionnaire (Access
+                        Names)....................................   1-27
+
+              2-1       File Locations After Configuration........   2-14
+
+              A-1       Files Added During Installation of OpenVMS
+                        SNA.......................................    A-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              OpenVMS SNA is a Digital Equipment Corporation software
+              product that allows an OpenVMS user to communicate with
+              programs running on an IBM SNA networked system. These
+              systems must be part of a network configuration designed
+              according to IBM's Virtual Telecommunication Access Method
+              (VTAM) and Advanced Communications Function for Network
+              Control Program (ACF/NCP).
+
+              This manual presents the information needed to install and
+              configure OpenVMS SNA on OpenVMS VAX systems that use the
+              OpenVMS V6.2 (or V7.1) operating system.
+
+
+        Intended Audience
+
+              This manual is intended for OpenVMS VAX system managers or
+              users who are going to install and configure the OpenVMS
+              VAX SNA software. You should be familiar with installation
+              concepts, and you must have knowledge of IBM's ACF/NCP and
+              VTAM or have access to someone with this knowledge.
+
+              Keep this document with your distribution kit, or insert
+              it into the binder that is provided with OpenVMS SNA
+              Management. You will need to refer to it again if you
+              receive any maintenance updates or need to reinstall
+              OpenVMS SNA.
+
+
+
+
+
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+    Structure
+
+          OpenVMS SNA Installation is divided into two chapters and
+          one appendix.
+
+          Chapter 1        Provides introductory information about
+                           OpenVMS SNA, describes all required and
+                           optional OpenVMS SNA components, describes
+                           the IBM parameters with which you must be
+                           familiar, and describes access names.
+
+          Chapter 2        Describes the installation and
+                           configuration process.
+
+          Appendix A       Shows the files installed during
+                           installation.
+
+          Appendix B       Provides a sample installation procedure
+                           and a sample configuration procedure.
+
+    Associated Documents
+
+          The documentation for an OpenVMS SNA system consists of the
+          following sets of manuals:
+
+          o  Communications hardware manuals
+
+          o  OpenVMS SNA software manuals
+
+          o  Access routine manuals
+
+          Communications Hardware Manuals
+
+          The following manuals on the various DIGITAL communications
+          devices might be helpful:
+
+          o  DMB32 User's Guide (DMB32 users only)
+
+          o  DMB32 Technical Description (DMB32 users only)
+
+          o  MicroVAX 2000 Hardware Owner's Manual Addendum: DST32
+             Synchronous Serial Line Option (DST32 users only)
+
+          o  QMA DPV11 Serial Synchronous Interface Technical Manual
+             (DPV11 users only)
+
+          o  QMA DPV11 Serial Synchronous Interface User's Guide
+             (DPV11 users only)
+
+          o  VAXstation 2000 and MicroVAX 2000 Hardware Maintenance
+             Guide Addendum: DST32 Synchronous Serial Line Option
+             (DST32 users only)
+
+    viii
+
+ 
+
+
+
+
+
+
+
+              o  VAX Wide Area Network Device Drivers Installation Guide
+
+              OpenVMS SNA Software Manuals
+
+              The following manuals are part of the OpenVMS SNA
+              documentation kit:
+
+              o  OpenVMS SNA Guide to IBM Parameters
+
+              o  OpenVMS SNA Installation
+
+              o  OpenVMS SNA Management
+
+              o  OpenVMS SNA Problem Solving
+
+              In addition to the OpenVMS SNA base communication system,
+              Digital Equipment Corporation provides the following access
+              routine products that run on OpenVMS and use OpenVMS SNA to
+              access IBM systems:
+
+              o  Bulk Data Transfer
+
+                 -  DECnet SNA Data Transfer Facility
+
+                 -  DECnet SNA OpenVMS Remote Job Entry
+
+                 -  DECnet SNA OpenVMS Printer Emulator
+
+              o  Programming Interface
+
+                 -  DECnet SNA OpenVMS APPC/LU6.2 Programming Interface
+
+                 -  DECnet SNA OpenVMS 3270 Data Stream Programming
+                    Interface
+
+                 -  DECnet SNA OpenVMS Application Programming Interface
+
+              o  Interactive Access
+
+                 -  DECnet/SNA OpenVMS 3270 Terminal Emulator
+
+              o  Office Information Transfer
+
+                 -  VAX Message Router/P Gateway
+
+                 -  VAX Message Router/S Gateway
+
+              For a list of the documentation for the preceding products,
+              see OpenVMS SNA Management.
+
+                                                                       ix
+
+ 
+
+
+
+
+
+
+
+          If you are communicating with the IBM host over an X.25
+          Packet Switched Data Network (PSDN), you might find the
+          following VAX Packetnet System Interface (PSI) manuals
+          useful:
+
+          o  VAX PSI Installation Procedures
+
+          o  VAX PSI Introduction
+
+          o  VAX PSI Management Guide
+
+          o  VAX PSI Problem Solving Guide
+
+          You might find the following OpenVMS manuals useful.
+
+          o  OpenVMS Networking Manual
+
+          o  OpenVMS Network Control Program Manual
+
+          o  OpenVMS Network Control Language Manual
+
+          o  OpenVMS Install Utility Manual
+
+          o  OpenVMS System Messages and Recovery Procedures
+
+          o  Guide to Maintaining an OpenVMS System
+
+          o  Guide to OpenVMS System Security
+
+          o  OpenVMS Authorize Utility Manual
+
+          In addition, if applicable, you also might want to refer to
+          your DECnet-Plus documentation.
+
+          The following IBM documents should be available for
+          reference:
+
+          o  ACF for Network Control Program, ACF for Systems
+             Support Programs,  Version 3, Installation and Resource
+             Definition Guide, IBM Order No. SC30-3253
+
+          o  ACF for Network Control Program, Versions 3 and 4,
+             ACF for Systems  Support Programs, Version 3: Resource
+             Definition Reference, IBM Order No. SC30-3254
+
+          o  Systems Network Architecture Concepts and Products, IBM
+             Order No. GC30-3072
+
+          o  Systems Network Architecture Formats, IBM Order No.
+             GA27-3136
+
+          o  Systems Network Architecture Technical Overview, IBM
+             Order No. GC30-3073
+
+    x
+
+ 
+
+
+
+
+
+
+
+        Acronyms
+
+              The following acronyms are used throughout this manual:
+
+              Acronym               Meaning
+
+              ACF/NCP               IBM's Advanced Communications
+                                    Facility/Network Control Program
+
+              CTF                   Common Trace Facility
+
+              DCE                   Data-circuit terminating equipment
+
+              DCL                   DIGITAL Command Language
+
+              DTE                   Data terminal equipment
+
+              LU                    Logical unit
+
+              NCL                   Network Control Language
+
+              NCP                   Network Control Program
+
+              NPSI                  IBM's X.25 NCP Packet Switching
+                                    Interface
+
+              PLU                   Primary logical unit
+
+              PSDN                  Packet switching data network
+
+              PSI                   VAX Packetnet System Interface
+                                    software
+
+              PU                    Physical unit
+
+              QLLC                  Qualified Logical Link Control
+
+              SDLC                  Synchronous data link control
+
+              SLU                   Secondary logical unit
+
+              SNA                   Systems Network Architecture
+
+              SNANCP                OpenVMS SNA Network Control Program
+
+              SSCP                  System Services Control Point
+
+              SVC                   Switched virtual circuit
+
+              VAX                   Refers to any one of the systems
+                                    listed in the Software Product
+                                    Description (SPD) but not to a
+                                    particular system.
+
+              VTAM                  IBM's Virtual Telecommunications
+                                    Access Method
+
+              X.25                  CCITT Recommendation for DTE/DCE
+                                    interface for PSDNs
+
+                                                                       xi
+
+ 
+
+
+
+
+
+
+
+    Graphic Conventions
+
+          This manual uses the following graphic conventions for
+          SNANCP and NCL commands.
+
+                              Command examples show system output and
+          SNANCP> SET LINE    user input in black monospaced type.
+
+          line-id             In both command and syntax examples,
+                              uppercase letters represent text
+                              that you must enter exactly as shown.
+                              Lowercase letters in italics represent
+                              variables for which you must substitute
+                              specific information.
+
+          [opt-arg]           Square brackets enclose optional parts
+                              of a command.
+
+          { ACTIVE LINES }    Braces indicate that you must choose
+          { KNOWN LINES  }    only one of the command words or
+          { LINE line-id }    arguments in the list.
+          {              }
+
+          <RET>               Unless otherwise specified, every
+                              command line is terminated by pressing
+                              the RETURN key.
+
+          <CTRL/x>            This symbol indicates that you
+                              press and hold down the key labeled
+                              CTRL while simultaneously pressing
+                              another key (for example, <CTRL/C> or
+                              <CTRL/T>).
+
+          circuit-id          A string of characters whose exact
+                              syntax is that for an SNA circuit
+                              identification.
+
+                              SDLC circuits are identified by a
+                              string in the form SDLC-n, where n
+                              indicates the number of the circuit.
+
+                              QLLC circuits are identified by a
+                              string in the form QLLC-n, where n
+                              indicates the number of the circuit.
+
+    xii
+
+ 
+
+
+
+
+
+
+
+
+              line-id             A string of characters whose exact
+                                  syntax is that for an SNA line
+                                  identification. A line is identified
+                                  in the following form:
+
+                                     dev-c[-u]
+
+                                  dev    A device name.
+
+                                  c      A decimal number (0 or a
+                                         positive integer) designating
+                                         the device's hardware
+                                         controller.
+
+                                  u      A decimal number (0 or a
+                                         positive integer) designating
+                                         a unit on the device's hardware
+                                         controller, if the controller
+                                         supports more than one unit. The
+                                         default is 0.
+
+              lu-id               A string of characters whose exact
+                                  syntax is that for logical unit (LU)
+                                  identification. An LU is identified in
+                                  the form SNA-nnn.mmm, where nnn is the
+                                  number of the PU and mmm is the number
+                                  of the LU.
+
+              node-id             Either a node-name or a node-address.
+
+              node-name           A string of up to 6 alphanumeric
+                                  characters containing at least 1
+                                  alphabetic character.
+
+              pu-id               A string of characters whose exact
+                                  syntax is that for physical unit (PU)
+                                  identification. A PU is identified
+                                  in the form SNA-nnn, where nnn is the
+                                  number of the PU.
+
+              When you issue NCL/NCP and SNANCP commands, many component
+              names, parameters, and qualifiers require additional
+              information. In most cases, the syntax of this additional
+              information follows a standard set of rules. (Exceptions
+              to these rules are noted where appropriate.) All numeric
+              values are in decimal and have a range of 0 to 65,535
+              unless otherwise specified.
+
+                                                                     xiii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                               Preparing for Installation
+
+
+              The OpenVMS SNA software is a set of programs and routines
+              that implements the IBM SNA network protocol for programs
+              running on a DIGITAL OpenVMS VAX system under the OpenVMS
+              operating system. DECnet SNA OpenVMS access routines,
+              such as the DECnet SNA OpenVMS 3270 Terminal Emulator,
+              use OpenVMS SNA to access applications and programs on the
+              IBM system.
+
+              This chapter describes the preparations you must make
+              before you install and configure OpenVMS SNA.
+
+
+
+        1.1 Checking the Distribution Kit
+
+              The Software Bill of Materials (BOM) included with your
+              distribution kit should specify the contents of the
+              distribution kit. You should carefully compare the items
+              you received with the items listed in the BOM. If any
+              components are missing or damaged, contact your DIGITAL
+              representative before continuing with the installation.
+
+        1.2 SNA Concepts
+
+              An IBM SNA network perceives all communications with
+              OpenVMS SNA in terms of logical connections called
+              sessions. An application running on an OpenVMS VAX system
+              and an application running on an IBM host-linked together
+              in a session-are identified as logical units (LUs). When
+              a session is established, the IBM host designates one LU
+              as the primary logical unit (PLU) and one as the secondary
+              logical unit (SLU). The SLU resides on your OpenVMS VAX
+              system; the PLU resides on the IBM host.
+
+
+
+                                           Preparing for Installation 1-1
+
+ 
+
+
+
+
+
+
+
+          Communication between an OpenVMS SNA SLU and an IBM PLU is
+          accomplished by means of a software component in OpenVMS
+          SNA known as a physical unit (PU).
+
+    1.3 Preparing the IBM Environment
+
+          IBM SNA software components must be configured before you
+          can use the OpenVMS SNA communications software.
+
+          The OpenVMS SNA Guide to IBM Parameters discusses the IBM
+          parameters required for successful communication between
+          the IBM system and your OpenVMS VAX system. Your IBM
+          systems programmer should pay special attention to the
+          following macros and operands:
+
+          o  ACF/NCP GROUP Macro
+
+                DIAL
+                LNCTL
+                REPLYTO
+
+          o  ACF/NCP LINE Macro
+
+                DUPLEX
+                NRZI
+                PAUSE
+                SPEED
+
+          o  ACF/NCP PU Macro
+
+                ADDR
+                DATMODE
+                MAXDATA
+                PUTYPE
+
+          o  ACF/NCP LU Macro
+
+                BATCH
+                LOCADDR
+                PACING
+
+          o  X.25 NPSI Macros (for X.25 communication)
+
+
+
+    1-2 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              o  VTAM Operands PATH Statement (for X.25 communication)
+
+                    DIALNO
+                    GRPNM
+
+              o  VTAM Operands GROUP Statement
+
+                    ANSWER
+                    CALL
+                    DIAL
+                    DLOGMOD
+                    MODETAB
+
+
+              o  VTAM Operands PU Macro
+
+                    ADDR
+                    DLOGMOD
+                    IDBLK
+                    IDNUM
+                    MAXDATA
+                    MAXOUT
+                    MODETAB
+                    PACING
+                    PUTYPE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           Preparing for Installation 1-3
+
+ 
+
+
+
+
+
+
+
+
+          o  VTAM Operands LU Macro
+
+                DLOGMOD
+                LOCADDR
+                MODETAB
+                PACING
+
+
+          o  VTAM Logon Mode Table
+
+                LOGMODE
+                RUSIZE
+
+          You should regard the DIGITAL documentation as an adjunct
+          to the IBM documentation; the IBM documentation remains
+          the authoritative source for IBM software concepts and
+          procedures. In most cases, the IBM parameters you use with
+          the OpenVMS SNA software are compatible with the DECnet SNA
+          Gateway software.
+
+    1.4 Installation Requirements
+
+          The following sections discuss the various requirements for
+          installing OpenVMS SNA.
+
+    1.4.1 Disk Space
+
+          Installing OpenVMS SNA requires a certain amount of free
+          storage disk space during the installation. Once OpenVMS
+          SNA is installed, less storage space is required. Table 1-1
+          summarizes the storage requirements.
+
+          Table_1-1_Disk_Space_Requirements__________________________
+
+                           Blocks During         Blocks After
+          Kit______________Installation__________Installation________
+
+          OpenVMS SNA      8,000                 6,500
+          V2.3_______________________________________________________
+
+
+
+
+
+    1-4 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+        1.4.2 Privileges
+
+              To install OpenVMS SNA you must be logged in to an account
+              that has SETPRV or at least the following privileges:
+
+              o  ACNT
+
+              o  CMKRNL
+
+              o  DETACH
+
+              o  EXQUOTA
+
+              o  LOG_IO
+
+              o  OPER
+
+              o  PHY_IO
+
+              o  PRMMBX
+
+              o  SYSNAM
+
+              o  SYSPRV
+
+              o  WORLD
+
+        1.4.3 Dynamic Nonpaged Memory
+
+              You must ensure that your system has enough dynamic
+              nonpaged pool space allocated before installing and
+              starting OpenVMS SNA. Table 1-2 provides an estimate of
+              the amount of system nonpaged pool resources required.
+
+              Table_1-2_Required_Nonpaged_Pool_Resources_________________
+
+              Task_or_Object_____________Memory_Required_________________
+
+              Load, configure, and       180 KB[1]
+              start OpenVMS SNA
+
+              Each access name           192 bytes
+
+              Receive buffers[2]         number of receive buffers*(864
+                                         bytes + PU segment size)
+
+              [1]If_using_VAX_PSI_for_X.25_communication,_subtract_28_KB.
+
+              If using a DPV device, add 5 KB.
+              [2]For SDLC lines only. Use SNANCP to display or modify
+              this value
+
+                                                 (continued on next page)
+
+                                           Preparing for Installation 1-5
+
+ 
+
+
+
+
+
+
+
+          Table_1-2_(Cont.)_Required_Nonpaged_Pool_Resources_________
+
+          Task_or_Object_____________Memory_Required_________________
+
+          Each "active" LU (#        1 KB
+          started)
+
+          Each "in session" LU (#    10 KB
+          available)
+
+          Each LU authorization      272 bytes
+          record_____________________________________________________
+
+          To see the current dynamic nonpaged pool resources, run the
+          SYSGEN utility and use the SHOW NPAGEDYN command:
+
+          $ RUN SYS$SYSTEM:SYSGEN
+          SYSGEN> USE CURRENT
+          SYSGEN> SHOW NPAGEDYN
+          Parameter Name          Current   Default   Minimum   Maximum Unit  Dynamic
+          --------------          -------   -------   -------   ------- ----  -------
+          NPAGEDYN                2050000    300032     16384        -1 Bytes
+
+    1.4.3.1 Changing the Value for Nonpaged Pool
+
+          To install and run OpenVMS SNA you must increase the value
+          of the NPAGEDYN system parameter. Using the guidelines
+          specified in Table 1-2, calculate the value to increase
+          NPAGEDYN. If you have installed a previous version of
+          OpenVMS SNA on your system, you might use a value less
+          than the calculated value.
+
+          For example, a system with 64 active LUs, 16 "in session"
+          LUs, and a receive buffer size of 521 bytes needs
+          approximately 450 KB of nonpaged pool. This amount
+          increases as you increase the number of access names and
+          authorized users.
+
+          To increase the NPAGEDYN system value, use the AUTOGEN
+          command procedure. AUTOGEN automatically adjusts values for
+          parameters associated with the ones you reset manually. To
+          change system parameters with AUTOGEN, edit the following
+          file:
+
+          SYS$SYSTEM:MODPARAMS.DAT
+
+    1-6 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              For example, to change the setting for the NPAGEDYN system
+              parameter, add this line to the file:
+
+              ADD_NPAGEDYN = nnn
+
+              where nnn is the amount you calculated.
+
+              Now, run the AUTOGEN procedure to recalculate your system
+              parameters. Enter the following command at the DCL prompt:
+
+              $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+              AUTOGEN performs an automatic system shutdown and reboots
+              when it has finished. Rebooting your system makes the
+              new parameter values active. For more information
+              about using AUTOGEN, see the instructions on modifying
+              system parameters in the OpenVMS documentation on system
+              management and operations.
+
+        1.4.4 Process Account Quotas
+
+              To install OpenVMS SNA, the account you use must have
+              sufficient quotas. Table 1-3 summarizes the process quotas
+              required to perform the installation.
+
+              Table_1-3_Process_Account_Quotas_for_the_Installing_Account
+
+              Account_Quota____Value_____________________________________
+
+              ASTLM            24
+
+              BIOLM            18
+
+              BYTLM            18,000
+
+              DIOLM            18
+
+              ENQLM            30
+
+              FILLM____________20________________________________________
+
+              Use the OpenVMS Authorize Utility (AUTHORIZE) to compare
+              the current values of these quotas with the requirements
+              for OpenVMS SNA. For example, the account used in the
+              following example is the SYSTEM account:
+
+              $ SET DEFAULT SYS$SYSTEM <RETURN>
+              $ RUN AUTHORIZE <RETURN>
+              UAF> SHOW SYSTEM <RETURN>
+
+                                           Preparing for Installation 1-7
+
+ 
+
+
+
+
+
+
+
+          To change the values of these quotas, use the OpenVMS
+          Authorize Utility's MODIFY command. For more information,
+          see the VMS Authorize Utility Manual.
+
+    1.5 VMS License Management Facility
+
+          Before installing OpenVMS SNA you must register your
+          software license. The license registration information
+          is contained in the Product Authorization Key (PAK) that
+          is shipped with OpenVMS SNA. The PAK is a paper certificate
+          that contains information about the license you need to run
+          a particular piece of software.
+
+          You should register your OpenVMS SNA license before you
+          perform the installation, configuration, and startup.
+          During the installation, you are asked if you have
+          registered the OpenVMS SNA license and loaded the
+          appropriate authorization key. If you have not registered
+          and loaded the PAK information, you can complete the
+          installation; however, you will not be able to start the
+          product or run the Installation Verification Program (IVP).
+          After you register the license and load an authorization
+          key, you can start the product and run the IVP.
+
+          Register the license information by using either the
+          OpenVMS License command procedure (VMSLICENSE) or the
+          LICENSE REGISTER command, as described in the VMS License
+          Management Utility Manual. When registering the OpenVMS SNA
+          PAK information, use the product name SNA-VMS.
+
+    1.6 Hardware Requirements
+
+          Your single OpenVMS VAX system is attached to the SNA
+          network through a DIGITAL hardware communications device, a
+          communications line, an IBM communications controller, and
+          modems (if not directly attached to the IBM communications
+          controller). The following sections discuss only the
+          DIGITAL communications device and modem requirements.
+
+
+
+
+
+
+
+    1-8 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+        1.6.1 DIGITAL Communications Devices
+
+              DIGITAL communications devices support half-duplex point-
+              to-point, half-duplex multipoint, full-duplex point-to-
+              point, and full-duplex multipoint SDLC communications.
+
+                ________________________ Note ________________________
+
+                The words multipoint and multidrop have the same
+                meaning and are used interchangeably in this manual.
+
+                ______________________________________________________
+
+              Transmission characteristics (such as speed and mode of
+              operation) can vary to satisfy different performance
+              requirements. For a list of supported communications
+              devices and characteristics, see the Software Product
+              Description (SPD) for the current version of OpenVMS SNA.
+
+        1.6.2 Modems
+
+              If your OpenVMS VAX system is not directly attached to
+              the IBM communications controller, the communications line
+              between your OpenVMS VAX system and the IBM host system
+              requires a pair of synchronous modems or a modem eliminator
+              (hardware that performs the function of two modems if the
+              communicating systems are in close proximity). Modems can
+              be full-duplex or half-duplex. The type of modem or modem
+              eliminator that you need for each OpenVMS SNA line depends
+              on the data transfer rate. The modem you select should also
+              have the following characteristics:
+
+              o  RS-232-C or EIA-232 (CCITT V.24) interface-for DPV11
+                 device
+
+              o  EIA-232-D (CCITT V.24) interface-for DSH32 and DST32
+                 devices
+
+              o  EIA-232-D (CCITT V.24) or EIA-422 (CCITT V.36)interface-
+                 for DSW41/42 device
+
+              o  EIA-232-D (CCITT V.24) or CCITT V.35 interface-for all
+                 other devices
+
+              o  Synchronous communication
+
+              o  Full-duplex or half-duplex
+
+                                           Preparing for Installation 1-9
+
+ 
+
+
+
+
+
+
+
+          o  Leased or dial-up lines
+
+             ________________________ Note ________________________
+
+             The EIA-232-D interface replaces the RS-232-
+             C interface. If you are using RS-232-C modem
+             eliminators, you need a special adapter. Refer to the
+             OpenVMS SNA release notes for additional information.
+
+             ______________________________________________________
+
+          For a complete range of modem options or for help in
+          selecting a modem, consult your DIGITAL network specialist.
+
+    1.7 Software Requirements
+
+          OpenVMS SNA product installation requires the following
+          software components:
+
+          o  OpenVMS operating system software
+
+          o  OpenVMS SNA software distribution kit
+
+          o  DECnet-Plus for OpenVMS VAX 7.1 or DECnet/OSI for
+             OpenVMS V6.2 (VAX Wide Area Network Device Drivers and
+             VAX PSI are included)
+
+          When OpenVMS SNA installation is complete, you can add one
+          or more DECnet SNA OpenVMS access routines if they are not
+          already installed.
+
+    1.7.1 OpenVMS Software
+
+          You must have the required version of the OpenVMS operating
+          system software on your OpenVMS VAX system (see the title
+          page for the correct version of OpenVMS). If you do not
+          have the required version, you must install it before you
+          install the OpenVMS SNA software. For information on how
+          to install OpenVMS software, refer to the OpenVMS Install
+          Utility Manual.
+
+          OpenVMS SNA also requires the Network class in addition to
+          the OpenVMS Required Saveset class.
+
+
+    1-10 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              When you are installing OpenVMS SNA software on an OpenVMS
+              system, you must enable OPCOM to receive information about
+              circuit changes that occur during OpenVMS SNA startup.
+              If OPCOM is not enabled, you will not receive information
+              needed to resolve problems. See OpenVMS SNA Problem Solving
+              for information about event messages logged by OPCOM.
+
+              To enable OPCOM when using an OpenVMS system, either issue
+              the command manually or edit the SYS$MANAGER:SYSTARTUP_
+              VMS.COM file and remove the comment character (!) in front
+              of the @SYS$SYSTEM:STARTUP OPCOM command. After you remove
+              the comment character, restart the system or run the
+              commands in SYS$MANAGER:SYSTARTUP_VMS.COM by issuing the
+              following command:
+
+              $ @SYS$SYSTEM:STARTUP OPCOM <RET>
+
+        1.7.2 DECnet SNA OpenVMS Access Routines
+
+              DECnet SNA OpenVMS access routines allow you to communicate
+              with programs running on the IBM system. Each access
+              routine is installed separately. This manual provides
+              instructions for installing only the base OpenVMS SNA
+              communications software. For a complete list of access
+              routines and individual user guides containing product
+              installation information, see the SPD for the current
+              version of OpenVMS SNA and OpenVMS SNA Management.
+
+        1.8 Considerations for OpenVMS VAX Systems
+
+              A VAXcluster is a group of OpenVMS VAX systems that
+              communicate over a high-speed communications connection.
+              VAXcluster systems have all the functions of single-node
+              OpenVMS VAX systems and have the ability to share CPU
+              resources, queues, and disk storage.
+
+              To install OpenVMS SNA software on a VAXcluster system, use
+              the following guidelines:
+
+              o  Install OpenVMS SNA once for the entire cluster.
+
+              o  For SDLC circuits, install a hardware communications
+                 device on each node that is to have the OpenVMS SNA
+                 software configured and used.
+
+                                          Preparing for Installation 1-11
+
+ 
+
+
+
+
+
+
+
+             A hardware communications device can be used only by
+             the node on which it is installed. That is, a DECnet
+             SNA OpenVMS access routine on one node cannot use a
+             communications hardware device installed on another
+             node.
+
+          o  For QLLC circuits, you do not have to install a hardware
+             communications device on each node that is to have the
+             OpenVMS SNA software configured and used. For example,
+             if you use PSI Access, you connect to the PSI Connector
+             node that has the appropriate communications device
+             installed (see VAX PSI Installation Procedures for
+             information).
+
+          o  Configure the OpenVMS SNA software on each node that is
+             to use the software. When configuring the OpenVMS SNA
+             software, you must specify the name of the system on
+             which to configure the OpenVMS SNA software.
+
+    1.9 Configuration Requirements
+
+          After OpenVMS SNA is installed, you configure the software
+          by running the configuration procedure. Before configuring
+          OpenVMS SNA, fill out the configuration questionnaires with
+          the following information:
+
+          o  Node name for VAXcluster system. Node names can have a
+             maximum of 6 letters.
+
+          o  Whether you are communicating with the IBM host through
+             an X.25 network.
+
+          o  Communications device information for the device you
+             are using. This includes the line ID, how you want to
+             load the communications device driver software, and
+             the communications device hardware address(es). For
+             additional information on the communications device
+             at your site, refer to the OpenVMS VAX Site Management
+             Guide or ask your field service representative.
+
+          o  Line characteristics. For SDLC lines, defines the
+             physical characteristics (such as line duplex and
+             signalling) of the communications line connecting your
+             OpenVMS VAX system to the IBM communications controller.
+             The values for these parameters must match those used
+             on the IBM system. Refer to the OpenVMS SNA Guide to IBM
+
+    1-12 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+                 Parameters or your IBM systems programmer for additional
+                 information.
+
+                 For X.25 lines, line definition is done using the VAX
+                 PSI software product. The VAX PSI configuration must
+                 be compatible with your network subscription and the
+                 IBM NPSI configuration (see VAX PSI or DECnet-Plus
+                 Management Guide).
+
+              o  Circuit characteristics. For SDLC lines, defines the
+                 characteristics of the SDLC circuit, such as tributary
+                 address and XID number. The values for these parameters
+                 must match those used on the IBM system. Refer to the
+                 OpenVMS SNA Guide to IBM Parameters or your IBM systems
+                 programmer for additional information.
+
+                 For X.25 lines, defines the characteristics of the X.25
+                 virtual circuit, such as local and remote DTE, network
+                 name, type of calls and reverse charging. The values
+                 for these parameters must match those defined in VAX PSI
+                 and on the IBM system. Refer to the VAX PSI Management
+                 Guide, OpenVMS SNA Guide to IBM Parameters and your IBM
+                 systems programmer for additional information.
+
+              o  PU characteristics. Defines the characteristics of the
+                 OpenVMS SNA physical unit (PU), such as maximum session
+                 number and maximum segment size. The values for these
+                 parameters must match those used on the IBM system.
+                 Refer to the OpenVMS SNA Guide to IBM Parameters or your
+                 IBM systems programmer for additional information.
+
+              o  Access names. Defines the session establishment
+                 parameters, such as IBM application name, LU used for
+                 sessions, logon mode table name, and user data. Refer
+                 to the OpenVMS SNA Guide to IBM Parameters or your IBM
+                 systems programmer for additional information.
+
+
+
+
+
+
+
+
+
+                                          Preparing for Installation 1-13
+
+ 
+
+
+
+
+
+
+
+    1.9.1 Configuration Questionnaire
+
+          The configuration procedure asks you different questions
+          depending on the type of communication line you choose.
+          Table 1-4 is a blank configuration questionnaire for you
+          to copy and fill out if you are using SDLC lines. Table 1-5
+          is a blank configuration questionnaire for you to copy and
+          fill out if you are using X.25 lines. As they are discussed
+          in the following pages, record the configuration parameters
+          you will enter during the OpenVMS SNA configuration
+          procedure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-14 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              Table_1-4_Configuration_Questionnaire_(SDLC_Lines)_________
+
+              Configuration
+              Prompt______________Sample_Response_______Your_Response____
+
+              Which VAXcluster    local node
+              member node will
+              run OpenVMS SNA?
+              (VAXcluster only)
+
+              Will this node      NO                    NO
+              communicate over
+              an X.25 network?
+
+              How many LU         16
+              addresses
+              available to this
+              PU?
+
+              What is the PU      265
+              segment size
+              (decimal)?
+
+              What is the         HALF
+              circuit duplex
+              (HALF, FULL)?
+
+              What is the         40
+              station address
+              (2-digit hex)?
+
+              What is the         DEC03790
+              exchange ID (XID)
+              number (8-digit
+              hex)?
+
+              What is the line-   DPV-n DMB-n DSB-n-n
+              id specification    DSH-n DST-n DSV-n-n
+              (dev-c-u)?          DSF-n-n DSW-n-n
+
+              What is the line    HALF
+              duplex (HALF,
+              FULL)?
+
+              Is the line a       NO
+              multidropped line?
+
+                                                 (continued on next page)
+
+                                          Preparing for Installation 1-15
+
+ 
+
+
+
+
+
+
+
+          Table_1-4_(Cont.)_Configuration_Questionnaire_(SDLC_Lines)_
+
+          Configuration
+          Prompt______________Sample_Response_______Your_Response____
+
+          Is the line a       NO
+          NRZI-signalling
+          line?(for all
+          except DPV11)
+
+          Will OpenVMS        YES
+          SNA load the
+          device driver
+          when starting?
+
+          What is the         7
+          adapter number
+          (decimal)?
+
+          What is the CSR     760270
+          address of the
+          device (octal)?
+          (for DPV11 and
+          DSV11 only)?
+
+          What is the device  300
+          vector address
+          (octal)?___________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-16 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              Table_1-5_Configuration_Questionnaire_(X.25_Lines)_________
+
+              Configuration
+              Prompt______________Sample_Response_______Your_Response____
+
+              Which VAXcluster    local node
+              member node will
+              run OpenVMS SNA?
+              (VAXcluster only)
+
+              Will this node      YES                   YES
+              communicate over
+              an X.25 network?
+
+              How many LU         16
+              addresses
+              available to this
+              PU?
+
+              What is the PU      265
+              segment size
+              (decimal)?
+
+              Which calling       OUTGOING
+              direction?
+              (INCOMING,OUTGOING)
+
+              What is the         X25NET
+              network name?
+
+              What is the         38112
+              address of the
+              local DTE?
+
+              What is the group   GROUP1
+              name for the local
+              DTE?
+
+              What is the         91144
+              address of the
+              remote DTE?
+
+              What is the         DEC03790
+              exchange ID (XID)
+              number (8-digit
+              hex)?
+
+                                                 (continued on next page)
+
+                                          Preparing for Installation 1-17
+
+ 
+
+
+
+
+
+
+
+          Table_1-5_(Cont.)_Configuration_Questionnaire_(X.25_Lines)_
+
+          Configuration
+          Prompt______________Sample_Response_______Your_Response____
+
+          Will reverse        NO
+          charging be
+          applied to
+          outgoing_calls?____________________________________________
+
+    1.9.2 Configuration Parameters for SDLC Lines
+
+          VAXcluster node name
+          If you are installing and configuring OpenVMS SNA on a
+          system on a VAXcluster, write the node name of the system.
+
+          X.25 network
+          Write NO because you are using SDLC lines to communicate
+          with the IBM host.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-18 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              LU addresses available
+              Write the highest LU address that the IBM host can activate
+              for the PU. The maximum session number is a decimal number
+              in the range of 1 to 255. It must correspond to the LU
+              address as defined in the IBM LU macro LOCADDR operand,
+              following the PU that describes OpenVMS SNA. It does not
+              refer to the maximum number of LU sessions that can run
+              concurrently. Set the number only as high as you need. The
+              higher the number you specify, the more OpenVMS VAX system
+              resources you will use.
+
+              PU segment size
+              Write the maximum size of the SDLC frames, in bytes,
+              that are sent between your OpenVMS VAX system and the IBM
+              communications controller. This value must be greater than
+              or equal to the IBM ACF/NCP PU macro MAXDATA parameter. The
+              larger the size, the more system memory will be used.
+
+              Circuit duplex
+              Write FULL if the circuit will send and receive SDLC frames
+              simultaneously.
+
+              Write HALF if the circuit will send frames after the IBM
+              host finishes sending the frames.
+
+              The value you specify must correspond to the IBM ACF/NCP PU
+              macro DATMODE parameter.
+
+              Station address
+              Write the SDLC station address for the PU. The station
+              address value is a 2-digit hexadecimal number. It must
+              correspond to the SDLC station address as defined in the
+              IBM ACF/NCP PU macro ADDR parameter for leased lines, or in
+              VTAM for dial-up lines). If you do not know what value to
+              use, consult your IBM systems programmer.
+
+              Exchange ID
+              If you have a dial-up line, write the SDLC exchange ID
+              (XID) associated with the circuit. The XID is exchanged
+              between OpenVMS SNA and the IBM host before the PU is
+              activated.
+
+              This value is an 8-digit hexadecimal number and corresponds
+              to the value of the IDBLK and IDNUM parameters on the IBM
+              VTAM PU macro together, in that order.
+
+                                          Preparing for Installation 1-19
+
+ 
+
+
+
+
+
+
+
+          Line ID
+          Write the line ID for the communications device using the
+          following format:
+
+          dev[-c[-u]]
+
+          dev
+          Represents the device name (DPV, DMB, DSB, DSH, DST, DSF,
+          DSW, or DSV).
+
+          c
+          Represents the device's hardware controller number. The
+          numbers 0, 1, and 2 correspond to OpenVMS controllers A, B,
+          and C, respectively.
+
+          u
+          Represents the device unit number.
+
+          The controller number and unit number are optional; they
+          default to 0. Table 1-6 contains valid line IDs for the
+          DIGITAL communication devices.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-20 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              Table 1-6 Communications Devices and Configuration
+              __________Parameters_______________________________________
+
+              Communications  Device              Duplex    Signalling
+              Device__________Name______Line_ID___Values____Values_______
+
+              DPV11           UHA0:     DPV-0     HALF      NORMAL
+                                                  FULL
+
+              DSV11           SJA0:     DSV-0-0   HALF      NORMAL
+                              SJA1:     DSV-0-1   FULL      NRZI
+
+              DMB32           SIA0:     DMB-0     HALF      NORMAL
+                                                  FULL      NRZI
+
+              DSB32           SLA0:     DSB-0-0   HALF      NORMAL
+                              SLA1:     DSB-0-1   FULL      NRZI
+
+              DSH32           ZSA0:     DSH-0     HALF      NORMAL
+                                                  FULL      NRZI
+
+              DST32           ZSA0:     DST-0     HALF      NORMAL
+                                                  FULL      NRZI
+
+              DSF             SFA0:     DSF-0-0   HALF      NORMAL
+                              SFBO:     DSF-1-0   FULL      NRZI
+
+              DSW             ZTA0:     DSW-0-0   HALF      NORMAL
+              ________________ZTA1:_____DSW-0-1___FULL______NRZI_________
+
+              Line duplex
+              Write HALF if your line modem hardware and related line are
+              configured for half-duplex. Half-duplex is typically found
+              with dial-up lines.
+
+              Write FULL if the line is dedicated to point-to-point,
+              two-way, simultaneous connections using full-duplex modem
+              hardware.
+
+              Table 1-6 contains valid DUPLEX parameter values for the
+              DIGITAL communications devices.
+
+              NRZI signalling
+              Write YES if the SDLC communications line will operate
+              in NRZI (non-return-to-zero-inverted) mode. That is, the
+              signals are interpreted as NRZI. If the line will operate
+              in NRZI mode, the modems must also support NRZI operation.
+
+              Write NO if the SDLC communications line will operate in
+              normal (NRZ) mode.
+
+                                          Preparing for Installation 1-21
+
+ 
+
+
+
+
+
+
+
+          The value you specify must correspond with the IBM ACF/NCP
+          LINE macro, NRZI operand.
+
+          Table 1-6 contains valid SIGNALLING parameter values for
+          the DIGITAL communications.
+
+          Multidropped line
+          Write YES if your OpenVMS SNA system is a multidrop
+          configuration (multiple SDLC stations on a physical line).
+
+          Write NO if your OpenVMS SNA system is the only device on
+          the line.
+
+          Loading the device driver
+          There are three ways to configure a device using SYSGEN:
+
+          1. Autoconfigure the device at system startup. This is a
+             valid method for all communications devices except the
+             DPV11 communications device.
+
+             ________________________ Note ________________________
+
+             To autoconfigure the DMB32 synchronous port and the
+             DSB32, DSH32, DST32, and DSV11, the 50-pin external
+             interface adapter cable (BC19) must be in place.
+
+             ______________________________________________________
+
+          2. Load and configure the device at system startup. This
+             method is valid for all devices.
+
+          3. Load and connect the device at OpenVMS SNA startup. This
+             method is valid for all devices.
+
+          If you select method 1 or 2, write NO. When OpenVMS SNA
+          starts, it assumes that the driver has already been loaded
+          and does not attempt to load it.
+
+          If you select method 3, write YES. OpenVMS SNA will
+          load the communications device driver software when it
+          starts. (The DPV11 driver is supplied with the OpenVMS SNA
+          distribution kit.)
+
+          Adapter number
+          For VAXBI and Q-bus systems, if you decide to have OpenVMS
+          SNA load the device driver at startup, write the adapter
+          number (in decimal). The adapter number is the nexus number
+
+    1-22 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              for the device as displayed using the SHOW/ADAPTER command
+              of the SYSGEN utility.
+
+              Control and status register (CSR) address
+              If you decide to have OpenVMS SNA load the DPV11 or
+              DSV11 device driver at startup, write the CSR address
+              (in octal). The CSR address is the physical address for
+              a communications device.
+
+              Vector address
+              If you decide to load the DPV11 or DSV11 device driver
+              during OpenVMS SNA startup, write the vector address (in
+              octal).
+
+        1.9.3 Configuration Parameters for X.25 Lines
+
+              VAXcluster node name
+              If you are installing and configuring OpenVMS SNA on a
+              system on a VAXcluster, write the node name of the system.
+
+              X.25 network
+              Write YES because you are using a packet switched data
+              network (PSDN) to communicate with the IBM host.
+
+              LU addresses available
+              Write the highest LU address that the IBM host can activate
+              for the PU (circuit). The maximum session number is a
+              decimal number in the range of 1 to 255. It must correspond
+              to the LU address as defined in the IBM LU macro LOCADDR
+              operand, following the PU that describes OpenVMS SNA. It
+              does not refer to the maximum number of LU sessions that
+              can run concurrently. Set the number as high as you need
+              but no higher. A higher number uses more OpenVMS VAX system
+              resources.
+
+              PU Segment size
+              Write the maximum size of the SNA Path Information Units
+              (PIU),in bytes, that are sent between your OpenVMS VAX
+              system and the IBM communications controller. This value
+              must be greater than or equal to the IBM VTAM PU macro
+              MAXDATA parameter. The larger the size, the more system
+              memory will be used.
+
+
+
+                                          Preparing for Installation 1-23
+
+ 
+
+
+
+
+
+
+
+          Calling direction
+          Write INCOMING if the incoming X.25 virtual circuit will be
+          used to establish a OpenVMS SNA QLLC circuit.
+
+          Write OUTGOING if the outgoing X.25 virtual circuit will be
+          used to establish a OpenVMS SNA QLLC circuit.
+
+          X.25 network name
+          If defining the virtual circuit for incoming or outgoing
+          calls, write the name of the PSDN to which the local DTE
+          is connected. The network name can consist of 1 to 16
+          characters. The value you specify must match the parameter
+          you defined when you used PSI$CONFIGURE.COM to generate the
+          PSI NCL scripts.
+
+          Local DTE address
+          If defining the virtual circuit for incoming or outgoing
+          calls, write the network address of the local DTE. The
+          DTE address value can consist of 1 to 16 characters. The
+          DTE uses this address to make outgoing calls or receive
+          incoming calls. The value you specify must match the Called
+          DTE value in the IBM VTAM PATH definition statement DIALNO
+          operand.
+
+          If you are using PSI Access, the local DTE address is the
+          network address of the DTE used by the VAX PSI Multihost
+          node or X25router node for connection to the PSDN.
+
+          You must specify either the local DTE address or the group
+          name; you can also specify both.
+
+          Group name
+          If defining the virtual circuit for incoming or outgoing
+          calls, write the name of the closed user group (CUG) to
+          which the local DTE belongs. The group name value can
+          consist of 1 to 16 characters. The value you specify
+          must match the group parameter you defined when you used
+          PSI$CONFIGURE.COM to generate the PSI NCL scripts.
+
+          For incoming circuits, the X.25 Incoming Call Packet
+          must contain the CUG selection facility for OpenVMS SNA
+          to activate the QLLC circuit. Some PSDNs remove the CUG
+          selection facility from the Incoming Call Packet under
+          certain conditions. Consult your PSDN authority for more
+          information.
+
+    1-24 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              You must specify either the local DTE address or the group
+              name; you can also specify both.
+
+              Remote DTE address
+              If defining the virtual circuit for outgoing calls, write
+              the network address of the remote DTE. The DTE address
+              value can consist of 1 to 15 characters. The local DTE
+              uses this value to make outgoing calls. The value you
+              specify must match the Calling DTE value in the IBM VTAM
+              PATH definition statement DIALNO operand.
+
+              Exchange ID
+              Write the QLLC exchange ID (XID) associated with the
+              circuit. The XID is exchanged between OpenVMS SNA and the
+              IBM host before the PU is activated.
+
+              This value is an 8-digit hexadecimal number and corresponds
+              to the value of the IDBLK and IDNUM parameters on the IBM
+              VTAM PU macro together, in that order.
+
+              Reverse charging
+              If defining the virtual circuit for outgoing calls, write
+              YES if the remote DTE will be charged for calls placed by
+              the local DTE.
+
+              Write NO if the local DTE is charged for all outgoing calls
+              to the remote DTE.
+
+                ________________________ Note ________________________
+
+                To control the acceptance or rejection of reverse
+                charging for any incoming calls, use VAX PSI security.
+                See the VAX PSI or DECnet-Plus Management Guide.
+
+                ______________________________________________________
+
+
+
+
+
+
+
+
+
+
+                                          Preparing for Installation 1-25
+
+ 
+
+
+
+
+
+
+
+    1.9.4 Access Names
+
+          An access name is an optional name you define in the
+          configuration file. Access name represents the session
+          parameters required for access to an IBM system resource.
+          Similar in function to an OpenVMS logical name, an access
+          name provides an easy way for DECnet SNA OpenVMS access
+          routine users to establish an SNA session.
+
+          When an access name is specified by a DECnet SNA OpenVMS
+          access routine, the corresponding session parameters
+          are used to establish an SNA session; the access routine
+          user must remember only the access name. An access
+          routine can also specify an access name and explicit
+          session parameter(s). In this case, the specified session
+          parameters override the parameter values defined for the
+          access name.
+
+          Access names are defined in the configuration file
+          SNAVMS$CFG_node-name.COM or in any alternate configuration
+          file that you create and specify at startup. When OpenVMS
+          SNA is started, the access names and their parameters are
+          read from the configuration file and added to the OpenVMS
+          SNA database. An access name and parameters remain in the
+          database until one of the following events occurs:
+
+          o  You delete the access name by using the SNA Network
+             Control Program (SNANCP) utility.
+
+          o  You restart OpenVMS SNA. Restarting OpenVMS SNA modifies
+             an access name if an existing access name and modified
+             parameters are defined in the configuration file.
+
+          o  You reboot the OpenVMS operating system. Rebooting
+             OpenVMS deletes all access names. If the access name
+             is defined in the configuration file, the name and
+             parameters are added to the database.
+
+    1.9.5 Access Name Parameters
+
+          The configuration procedure asks you to supply information
+          about access names. Table 1-7 is a blank access name
+          questionnaire for you to copy and fill in. Record the
+          access name parameters you will enter during the OpenVMS
+          SNA configuration procedure as they are discussed in the
+          following pages.
+
+    1-26 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              If you do not enter an access name during the configuration
+              procedure, you can add access names after configuration by
+              editing the configuration file.
+
+                ________________________ Note ________________________
+
+                The configuration procedure always creates one access
+                name, SNAVP. Do not delete this access name because it
+                is used by the OpenVMS SNA Installation Verification
+                Program.
+
+                ______________________________________________________
+
+              Table_1-7_Configuration_Questionnaire_(Access_Names)_______
+
+              Configuration
+              Prompt______________Sample_Response_______Your_Response____
+
+              Access name? (1-16  TSO
+              characters)
+
+              Sessions for        3,6-10
+              this access
+              name? (numbers
+              or ranges)
+
+              Application name?   TSOL
+              (1-8 characters)
+
+              Logon mode table?   DECLOG
+              (1-8 characters)
+
+              User data? (quoted  "password"
+              string, 1-32
+              characters)
+
+              Access name? (1-16  TSO
+              characters)
+
+              Sessions for        3,6-10
+              this access
+              name? (numbers
+              or ranges)
+
+              Application name?   TSOL
+              (1-8 characters)
+
+                                                 (continued on next page)
+
+                                          Preparing for Installation 1-27
+
+ 
+
+
+
+
+
+
+
+          Table 1-7 (Cont.) Configuration Questionnaire (Access
+          __________________Names)___________________________________
+
+          Configuration
+          Prompt______________Sample_Response_______Your_Response____
+
+          Logon mode table?   DECLOG
+          (1-8 characters)
+
+          User data? (quoted  "password"
+          string, 1-32
+          characters)
+
+          Access name? (1-16  TSO
+          characters)
+
+          Sessions for        3,6-10
+          this access
+          name? (numbers
+          or ranges)
+
+          Application name?   TSOL
+          (1-8 characters)
+
+          Logon mode table?   DECLOG
+          (1-8 characters)
+
+          User data? (quoted  "password"
+          string, 1-32
+          characters)________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-28 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              The following list describes the access name keyword
+              parameters; ACCESS NAME is the only required parameter.
+
+
+              ACCESS NAME
+              The access name represents a list of session establishment
+              parameters. The access name is a string of up to 16
+              characters that can include alphanumeric characters and
+              the following special characters: dollar sign ($) and
+              underscore (_). Some DECnet SNA access routines limit you
+              to a maximum of 8 characters in an access name.
+
+              PU
+              The PU name identifies the PU that is used when
+              establishing a session. For OpenVMS SNA, the PU name is
+              always SNA-0.
+
+              LU LIST
+              The LU parameters represent a list of possible LUs
+              that can be assigned to a DECnet SNA access routine
+              participating as a SLU in a session with an IBM host.
+              When you establish a session, the first available session
+              address is assigned. You can specify (in decimal) up to
+              eight separate addresses, or ranges of addresses. Each
+              address or range of addresses is separated from the next
+              one by a comma (no space); for example; 9-10,1,11-24
+
+              The list you define should correspond with the list
+              defined for the IBM PLU on the physical unit with which
+              you are communicating. The values you supply must also
+              be consistent with the LU LIST parameter to the SET PU
+              command in the configuration file. You can specify up to
+              255 LUs for each access name. You can specify the same LU
+              address under multiple access names. IBM addresses might
+              be assigned to specific applications. Check with your IBM
+              systems programmer for the correct ranges.
+
+              APPLICATION
+              The application name represents the VTAM application name
+              of the program on the IBM system that you want to access.
+              This name is identical to the PLU name on the IBM host. The
+              application name is a string of up to 8 characters that can
+              include alphanumeric characters and the following special
+              characters: dollar sign ($), pound sign (#), and at sign
+
+                                          Preparing for Installation 1-29
+
+ 
+
+
+
+
+
+
+
+          (@). The first character in an application name should not
+          be a numeral.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-30 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+              LOGON MODE
+              The logon mode name represents the name of the entry in the
+              logon mode table defined on the IBM host. The name is sent
+              to the IBM host to obtain redefined characteristics for
+              the session being established. The logon mode name has the
+              same format as the application name. See the OpenVMS SNA
+              Guide to IBM Parameters or your IBM systems programmer for
+              further information.
+
+              DATA
+              The data represents user access control information that is
+              sent to the IBM host for the session being established.
+              Typically, the data parameter contains privileged
+              information, usually a password. The information you
+              enter depends on the IBM application with which you are
+              communicating.
+
+              The user data is a string of up to 32 characters that can
+              include alphanumeric characters and the following special
+              characters: dollar sign ($), pound sign (#), and at sign
+              (@). If you need to specify characters other than those
+              listed, you must enclose the characters in double quotation
+              marks (for example, "&&").
+
+                ________________________ Note ________________________
+
+                The use of the data field might compromise the
+                security of your OpenVMS SNA-to-IBM connection. In
+                the form of a password, user data provides access to a
+                specified account.
+
+                ______________________________________________________
+
+              NOTE
+              Specifies additional information (up to 30 characters)
+              that is part of the SHOW SUMMARY display. You can use the
+              note to provide information about the IBM application to
+              which the access name refers. Specify the text of your note
+              within double quotation marks.
+
+              You should confer with an IBM systems programmer to
+              determine what values you need to specify for most of
+              the access name parameters. Some IBM applications do not
+              require you to specify all the parameters To connect to the
+
+                                          Preparing for Installation 1-31
+
+ 
+
+
+
+
+
+
+
+          IBM system. Once you have determined the values you need,
+          keep a printed copy for future reference.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-32 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                   Installing and Configuring OpenVMS SNA
+
+
+              This chapter explains how to install and configure
+              your OpenVMS SNA software. You should not attempt the
+              installation until you have installed the required hardware
+              and software and prepared the IBM SNA environment. Complete
+              the configuration questionnaire (see Section 1.9) before
+              you attempt the configuration.
+
+              OpenVMS SNA installation and configuration should take
+              no longer than 20 minutes, depending on the type of
+              installation media you use. The estimated installation
+              time does not include preparation time or time consumed by
+              problems resulting from failure to prepare properly.
+
+              For general background information on installing optional
+              software products on an OpenVMS VAX system, refer to the
+              OpenVMS Install Utility Manual.
+
+        2.1 Accessing the On-Line Release Notes
+
+              The OpenVMS SNA software provides on-line release notes.
+              The prompt to display, print, or copy the release notes
+              before installation appears in step 4 of the installation
+              procedure when you run VMSINSTAL with the OPTIONS N
+              parameter.
+
+              To obtain the release notes after installation, display
+              or print the file SYS$HELP:SNAVMS$023.RELEASE_NOTES. On-
+              line help also directs you to the release notes file. After
+              installation, type the following:
+
+              $ HELP SNA_VMS RELEASE_NOTES <RET>
+
+
+
+
+
+                               Installing and Configuring OpenVMS SNA 2-1
+
+ 
+
+
+
+
+
+
+
+    2.2 Using VMSINSTAL
+
+          After you log in to a privileged account to install the
+          OpenVMS SNA software, set the default to SYS$UPDATE; then
+          run VMSINSTAL, the command procedure that installs this
+          product. An example of this procedure is shown in steps 1
+          and 2 (see Section 2.3).
+
+          $ SET DEFAULT SYS$UPDATE <RET>
+          $ @VMSINSTAL SNAVMS023 ddcu: [OPTIONS N] <RET>
+
+          The command parameters are described in the next
+          paragraphs. If you do not supply the first two parameters,
+          VMSINSTAL prompts you for the product and device names. If
+          you want to be prompted for the product name, device name,
+          and installation options, type the following:
+
+          $ @SYS$UPDATE:VMSINSTAL <RET>
+
+          ddcu:
+          Represents a device name where the distribution kit will
+          be mounted for the OpenVMS SNA installation media, where
+          dd is the device, c is the controller ID, and u is the unit
+          number. It is not necessary to use the console drive to
+          install OpenVMS SNA. If you do use the console drive, you
+          should replace any media you removed from the drive. CSA1:
+          is the device name used in examples in this document.
+
+          OPTIONS N
+          Is an optional parameter you should provide if you want
+          to be prompted to display or print the release notes. If
+          you do not include the OPTIONS N parameter, VMSINSTAL does
+          not prompt you to display or print the release notes. Note
+          that VMSINSTAL permits the use of several other options.
+          For more information on the other options, refer to your
+          processor-specific installation/operations guide.
+
+          When you run VMSINSTAL, it checks the following:
+
+          o  Whether you logged in to a privileged account. Digital
+             Equipment Corporation recommends that you install
+             software from the system manager's account [SYSTEM] with
+             your default device and directory set to SYS$UPDATE.
+
+
+    2-2 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              o  Whether you have adequate quotas for installation.
+                 VMSINSTAL checks for the following quota values:
+
+                 -  ASTLM = 24
+
+                 -  BIOLM = 18
+
+                 -  BYTLM = 18000
+
+                 -  DIOLM = 18
+
+                 -  ENQLM = 30
+
+                 -  FILLM = 20
+
+              o  Whether the following conditions exist:
+
+                 -  DECnet is up and running.
+
+                 -  Users are logged in to the system.
+
+                 If VMSINSTAL detects either of these conditions, you
+                 are asked whether you want to continue the installation.
+                 To continue, type YES. To stop the installation, press
+                 <RET>.
+
+        2.3 Installing OpenVMS SNA Software
+
+              This section contains excerpts from the installation
+              procedure and explains each step. Default answers appear in
+              brackets throughout the installation procedure. To accept a
+              default answer, press <RET> in response to the question.
+
+              To abort the installation procedure at any time, press
+              <CTRL/Y>. The installation procedure deletes all files
+              it has created up to that point and then returns to DCL
+              level. To retry the installation procedure after pressing
+              <CTRL/Y>, you must start at step 2.
+
+              Step 1: Log in to a privileged account, and set your
+              default device and directory to SYS$UPDATE.
+
+        <RET>
+
+              Username: SYSTEM   <RET>
+              Password: password <RET>
+              $ SET DEFAULT SYS$UPDATE <RET>
+
+              Make sure you have backed up the system disk and that you
+              have more than 8000 free blocks on the system disk.
+
+                               Installing and Configuring OpenVMS SNA 2-3
+
+ 
+
+
+
+
+
+
+
+          Step 2: Run VMSINSTAL.
+
+          $ @VMSINSTAL SNAVMS023 CSA1: OPTIONS N <RET>
+
+                VAX/VMS Software Product Installation Procedure V6.2
+
+          It is 25-OCT-1998 at 10:50.
+          Enter a question mark (?) at any time for help.
+
+          * Are you satisfied with the backup of your system disk [YES]? <RET>
+
+          Before you proceed with an installation that will write to
+          your system disk, make sure you have a good backup copy.
+          If you are satisfied with the backup of your system disk,
+          press <RET>. If you do not have a good backup copy, type NO
+          and press <RET> to end the installation.
+
+          Step 3: Insert the first installation kit volume.
+
+          Please mount the first volume of the set on CSA1:.
+          * Are you ready? YES <RET>
+          The following products will be processed:
+
+            SNAVMS
+
+              Beginning installation of SNAVMS at 10:52
+
+          %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+          To continue the installation, mount volume 1, type YES, and
+          then press <RET>.
+
+          Step 4: Select a release notes option.
+
+          This step applies only if you specified OPTIONS N in step
+          2.
+
+          Release Notes Options:
+
+              1. Display release notes
+              2. Print release notes
+              3. Both 1 and 2
+              4. Copy release notes to SYS$HELP
+              5. Do not display, print, or copy release notes
+
+          * Select option [2]: <RET>
+
+    2-4 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              If you select option 1, VMSINSTAL displays the release
+              notes on line immediately. You can terminate the display at
+              any time by pressing <CTRL/C>.
+
+              If you select option 2, VMSINSTAL prompts you for a queue
+              name. Either type a queue name, or press <RET> to send the
+              file to the default output print device.
+
+              * Queue name [SYS$PRINT]: <RET>
+
+              If you select option 3, VMSINSTAL displays the release
+              notes on line immediately and then prompts you for a queue
+              name.
+
+              For any of the first three options, VMSINSTAL also copies
+              the release notes to SYS$HELP:SNAVMS$023.RELEASE_NOTES.
+
+              If you select option 4, VMSINSTAL just copies the release
+              notes to SYS$HELP:SNAVMS$023.RELEASE_NOTES.
+
+                ________________________ Note ________________________
+
+                This version of the release notes file installed by
+                VMSINSTAL is labeled with the current product name and
+                version number. Take care not to delete release notes
+                for previous versions of OpenVMS SNA.
+
+                ______________________________________________________
+
+              If you select option 5, VMSINSTAL does not display, print,
+              or copy the release notes. The release notes remain on the
+              installation media.
+
+              Next, VMSINSTAL displays the following prompt:
+
+              * Do you want to continue the installation [N]?: YES <RET>
+
+              To continue the installation, type YES and press <RET>.
+              If you type NO or press <RET>, VMSINSTAL ends the
+              installation. In either case, if you selected one of the
+              first four release notes options, VMSINSTAL moves the
+              release notes to SYS$HELP.
+
+
+
+                               Installing and Configuring OpenVMS SNA 2-5
+
+ 
+
+
+
+
+
+
+
+          Step 5: Respond to LMF queries.
+
+          This product supports the OpenVMS License Management
+          Facility (LMF). For more information about LMF, see the
+          OpenVMS License Management Utility Manual.
+
+                  Product:      SNA-VMS
+                  Producer:     DEC
+                  Version:      2.3
+                  Release Date: 01-AUG-1998
+
+          * Does this product have an authorization key registered and loaded? Y <RET>
+
+          If the Product Authorization Key (PAK) information is
+          registered and loaded, type YES and press <RET>. If the
+          information is not registered and loaded, type NO and
+          press <RET>. In either case, the installation procedure
+          continues.
+
+             ________________________ Note ________________________
+
+             Be sure to register and load the PAK information
+             before starting OpenVMS SNA.
+
+             ______________________________________________________
+
+          Step 6: Select installation options.
+
+          * Will this installation of OpenVMS SNA use the DPV11 device for SDLC
+            communications [NO]? YES <RET>
+
+          Type YES press <RET> if you are using a DPV communications
+          device. Type NO and press <RET> if you are using one of the
+          other communications devices.
+
+          * Do you want to purge files replaced by this installation [YES]? <RET>
+
+          The directories SYS$COMMON:[SNAVMS$], SYS$HELP,
+          SYS$LIBRARY, SYS$MESSAGE, SYS$SYSTEM, SYS$LOADABLE_IMAGES,
+          and
+          SYS$COMMON:[SNACSV] could contain previous versions of
+          OpenVMS SNA files. These files are replaced with new
+          files during the installation, but the old files are not
+          automatically purged. Purging is recommended. In response
+          to the purging prompt, press <RET> to purge the files,
+          or type NO to keep them. Either way, the installation
+          continues.
+
+    2-6 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              VMSINSTAL then displays the following message:
+
+              %VMSINSTAL-I-RESTORE, Restoring product saveset B...
+
+              Step 7: Insert subsequent installation kit volumes.
+
+              %BACKUP-I-READYREAD, mount volume 2 on _CSA1: for reading
+
+              Enter "YES" when ready: YES<RET>
+
+              VMSINSTAL prompts you to insert the next volume and waits
+              for you to type YES after inserting it. If you type
+              NO, VMSINSTAL displays the prompt again. This prompt is
+              displayed only if your installation kit contains more than
+              one volume.
+
+              Step 8: Read informational messages.
+
+              %SNAVMS-I-NOMORQUES, there are no more questions
+              %SNAVMS-I-PLEASE_
+        WAIT, installation may take up to twenty minutes to complete
+
+              Then, the OpenVMS SNA installation procedure produces
+              a number of informational messages that report on the
+              progress of the installation.
+
+              The following message tells you that the installation was
+              successful:
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              The SYS$HELP:HELPLIB.HLB file is updated to include the new
+              versions of the SNAVMS HELP text.
+
+              If the installation procedure is successful, the new or
+              modified files are moved to their target directories.
+              Appendix A lists the files and their location.
+
+              If you typed YES in response to the prompt that requests a
+              file purge (step 6), previous versions of the OpenVMS SNA
+              files are now purged.
+
+              Step 9: End the installation procedure.
+
+                 Installation of SNAVMS completed at 10:54
+
+                 VMSINSTAL procedure done at 10:54
+
+              $ LOGOUT <RET>
+              SYSTEM     logged out at 25-OCT-1998 10:54:00.00
+
+                               Installing and Configuring OpenVMS SNA 2-7
+
+ 
+
+
+
+
+
+
+
+          When the product installation procedure is complete,
+          you can install more products, run the OpenVMS SNA
+          configuration program, or log out (as shown here.) If
+          you removed any media from the console drive before
+          the installation, you should replace it now. Appendix B
+          contains a sample installation procedure.
+
+          VMSINSTAL deletes or changes entries in the process symbol
+          tables during the installation. Therefore, if you are
+          continuing to use the system manager's account and want
+          to restore these symbols, log out and log in again.
+
+    2.4 Configuring OpenVMS SNA Software
+
+          After installation is complete, you then configure the
+          OpenVMS SNA software. This section contains excerpts from
+          the configuration procedure and explains each step. Default
+          answers appear in brackets throughout the configuration
+          procedure.
+
+          To abort the configuration procedure at any time, press
+          <CTRL/Z>. When you press <CTRL/Z>, the configuration
+          procedure returns you to DCL level. If you want to retry
+          the configuration procedure after pressing <CTRL/Z>, you
+          must proceed from step 2.
+
+             ________________________ Note ________________________
+
+             If upgrading to a new version of OpenVMS SNA, you must
+             run the configuration procedure.
+
+             ______________________________________________________
+
+          Step 1: Log in to a privileged account, and set your
+          default device and directory to SYS$COMMON:[SNAVMS$].
+
+    <RET>
+
+          Username: SYSTEM  <RET>
+          Password:         <RET>
+          $ SET DEFAULT SYS$COMMON:[SNAVMS$] <RET>
+
+
+
+
+    2-8 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              Step 2: Run the configuration procedure.
+
+              $ @SNAVMS$CONFIGURE <RET>
+
+                  Command file to configure the OpenVMS SNA product
+                  Executing on 25-OCT-1998 10:54:32.42.
+                  Enter a question mark (?) at any time for help.
+                  Enter CONTROL-Z at any time to abort.
+
+              Step 3: Select configuration options. (SDLC lines)
+
+              The configuration procedure prompts you for site-specific
+              information about the connection between your OpenVMS
+              SNA node and the IBM SNA network. Use the information you
+              entered on the configuration questionnaire (see Table 1-4)
+              as the responses to the following prompts.
+
+              Which VAXcluster member node will run OpenVMS SNA? [local system] :  <RET>
+
+              If you are installing OpenVMS SNA software on a VAXcluster
+              system, the configuration procedure requires you to
+              identify the node in the VAXcluster on which the
+              communications device is installed and on which OpenVMS
+              SNA will run. Press <RET> if the local system node name
+              (the system you are currently logged in to) is correct, or
+              type the node name of the system you want.
+
+              Will this node communicate over an X.25 network? [NO] :  <RET>
+
+              Press <RET> because your node will not communicate with the
+              IBM host over an X.25 network.
+
+              How many LU addresses available to this PU?      [64] :  <RET>
+
+              Press <RET> if the number of LU addresses is correct, or
+              type the correct number of LU addresses.
+
+              What is the PU segment size (decimal)?     [265] :  <RET>
+
+              Press <RET> if the segment size from OpenVMS SNA to the IBM
+              host is correct, or type the correct segment size.
+
+              What is the circuit duplex (HALF, FULL)? [HALF] :  <RET>
+
+              Specify how the data is transferred over the circuit. Press
+              <RET> if the default circuit duplex is correct, or type the
+              correct circuit duplex.
+
+              What is the station address (2-digit hex)? [40] :  <RET>
+
+                               Installing and Configuring OpenVMS SNA 2-9
+
+ 
+
+
+
+
+
+
+
+          Press <RET> if the station address is valid for the OpenVMS
+          SNA PU, or type the correct station address.
+
+          What is the exchange ID (XID) number (8-digit hex)? [] :  <RET>
+
+          If you are using a point-to-point communications line,
+          press <RET>.
+
+          If you are using a dial-up communications line, type the
+          XID and press <RET>.
+
+          What is the line-id specification (dev-c-u)?  : DPV-0-0 <RET>
+
+          Type the line ID of the communications device you choose to
+          use (for example, DPV-0 or DMB-1) using the format dev[-c[-
+          u]] and press <RET>.
+
+          What is the line duplex (HALF, FULL)? [HALF] :  <RET>
+
+          Specify the physical characteristics of the line connecting
+          your OpenVMS VAX system to the IBM host. Press <RET> if the
+          default line duplex is correct, or type the correct line
+          duplex.
+
+          Is the line a multidropped line?    [NO] :  <RET>
+
+          The OpenVMS SNA software can communicate on the same line
+          as other IBM devices. Type YES and press <RET> if OpenVMS
+          SNA is multidropped on a line, or press <RET> if it is the
+          only device on the line.
+
+          Is the line a NRZI-signalling line?         [NO] :  <RET>
+
+          Press <RET> if the line will not be operated in non-return-
+          to-zero-inverted (NRZI) mode. Type YES if you are using
+          NRZI signalling on the communications line. This question
+          does not appear if you are using a DPV11 communications
+          device.
+
+          Will OpenVMS SNA load the device driver when starting? [NO] :  <RET>
+
+          The OpenVMS SNA software can load your communications
+          device driver software when it first starts. Type YES and
+          press <RET> to have OpenVMS SNA load the device driver
+          software. Type NO if the system autoconfigures the device
+          or if you load the driver before you start OpenVMS SNA. The
+          next two questions are only requested of a-bus devices.
+
+    2-10 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              What is the CSR address of the device (octal)?  [760270] :  <RET>
+
+              What is the device vector address (octal)?      [300] :  <RET>
+
+              The CSR and vector address questions are displayed only
+              if you are using a DPV or DSV device and only if you typed
+              YES and pressed <RET> in response to the previous question
+              (that is, when OpenVMS SNA starts, you want it to load the
+              device driver software). Press <RET> if the default CSR and
+              device vector addresses are correct, or type the correct
+              ones for your system.
+
+                ________________________ Note ________________________
+
+                If you decide to have OpenVMS SNA load the DSH32 or
+                DST32 communications device driver at startup, you are
+                not prompted to supply device information. The DSH32
+                and DST32 parameters are constant and automatically
+                included in the SNAVMS$LOAD_DEVICE_node-name.COM file.
+
+                ______________________________________________________
+
+              What is the adapter number (decimal)?       [7] :  <RET>
+
+              This question appears only if your system is a VAXBI or
+              Q-bus system and only if you want OpenVMS SNA to load the
+              corresponding device driver software. Press <RET> if the
+              default adapter number for the device is correct, or type
+              the correct adapter number.
+
+              Step 3: Select configuration options. (X.25 lines)
+
+              The configuration procedure prompts you for site-specific
+              information about the connection between your OpenVMS
+              SNA node and the IBM SNA network. Use the information you
+              entered on the configuration questionnaire (see Table 1-5)
+              as the responses to the following prompts.
+
+              Which VAXcluster member node will run OpenVMS SNA [local system]    :  <RET>
+
+              If you are installing OpenVMS SNA software on a VAXcluster
+              system, the configuration procedure requires you to
+              identify the node in the VAXcluster on which the
+              communications device is installed and on which OpenVMS
+              SNA will run. Press <RET> if the local system node name
+              (the system you are currently logged in to) is correct, or
+              type the node name of the system you want.
+
+                              Installing and Configuring OpenVMS SNA 2-11
+
+ 
+
+
+
+
+
+
+
+          Will this node communicate over an X.25 network? [NO] : YES <RET>
+
+          Type YES and press <RET> because your node will communicate
+          with the IBM host over an X.25 network.
+
+          How many LU addresses available to this PU?      [64] :  <RET>
+
+          Press <RET> if the number of LU addresses is correct, or
+          type the correct number of LU addresses.
+
+          What is the PU segment size (decimal)?     [265] :  <RET>
+
+          Press <RET> if the segment size from OpenVMS SNA to the IBM
+          host is correct, or type the correct segment size.
+
+          Which calling direction (INCOMING,OUTGOING)?  [OUTGOING] :  <RET>
+
+          Press <RET> if the X.25 circuit will make outgoing calls.
+          Type INCOMING and and press <RET> if the X.25 circuit will
+          accept incoming calls.
+
+          What is the network name?                       [] :
+
+          Type the name of the X.25 network to which the VAX PSI DTE
+          is attached, and press <RET>.
+
+          What is the address of the local DTE?       [] :
+
+          Type the network address of the local DTE making outgoing
+          calls or receiving incoming calls, and press <RET>.
+
+          What is the group name for the local DTE?           [] :
+
+          Type the name of the closed user group (CUG) to which the
+          local DTE belongs, and press <RET>.
+
+          What is the address of the remote DTE?          []     :
+
+          Type the address of the remote DTE you are calling, and
+          press <RET>.
+
+          What is the exchange ID (XID) number (8-digit hex)? [] :
+
+          Type the correct XID to exchange with the IBM host when
+          establishing a session, and press <RET>.
+
+          Will reverse charging be applied to outgoing calls?       [NO] :
+
+          Press <RET> if the local DTE will not make outgoing calls
+          or if you want to charge the local DTE for outgoing calls.
+          Type YES if you want to charge the remote DTE for outgoing
+          calls from the remote DTE.
+
+    2-12 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              Step 4: Specify access name information.
+
+              Next, the configuration procedure displays the following
+              message:
+
+              You may now enter any access names that you wish to create. Enter
+              RETURN at the ACCESS NAME prompt when finished.
+
+              Access name? (1-16 characters)                         [] :
+
+              Type an access name with which to associate a set of
+              session establishment parameters, and press <RET>. If
+              you are finished entering access names or do not want
+              to enter any at this time, press <RET>. Either way, the
+              configuration procedure continues.
+
+              Sessions for this access name? (numbers or ranges)  [1-64] :
+
+              Type the LUs available for the access name, and press
+              <RET>. The LUs are numbers or ranges of numbers separated
+              by commas; for example, 1-5,3,8,9-15.
+
+              Press <RET> if you do not want to designate specific LUs
+              for this access name.
+
+              Application name? (1-8 characters)                         [] :
+
+              Type the application name for the access name, and press
+              <RET>.
+
+              Press <RET> if you do not want to specify an application
+              name for this access name.
+
+              Logon mode table? (1-8 characters)                         [] :
+
+              Type the name of the entry in the logon mode table for the
+              access name, and press <RET>.
+
+              Press <RET> if you do not want to specify a logon mode
+              table name for this access name.
+
+              User data? (quoted string, 1-32 characters)                [] :
+
+              Type any user data for the access name, and press <RET>.
+              Enclose any user data in double quotation marks; for
+              example, "PASSWORD".
+
+              Press <RET> if you do not want to specify user data for
+              this access name.
+
+                              Installing and Configuring OpenVMS SNA 2-13
+
+ 
+
+
+
+
+
+
+
+          Next, the configuration procedure displays the following
+          message:
+
+          The configuration file SYS$COMMON:[SNAVMS$]SNAVMS$CFG_node-name.COM;1
+          was created on 25-OCT-1998 11:01:41.25
+
+          The configuration file was created.
+
+          Step 5: Clean up old versions of the configuration file.
+
+          During configuration, the files listed in Table 2-1 are
+          placed on your system. You can find them in the indicated
+          directory.
+
+          Table_2-1_File_Locations_After_Configuration_______________
+
+          File_Name_________Location______Description________________
+
+          SNAVMS$AUTHORIZE_ SYS$COMMON:   SNANCP user authorization
+          node-name.COM     [SNAVMS$]     file.
+
+          SNAVMS$CFG_       SYS$COMMON:   OpenVMS SNA configuration
+          node-name.COM     [SNAVMS$]     file, containing line,
+                                          circuit, and access name
+                                          specifications. This file
+                                          is used by default when
+                                          starting OpenVMS SNA.
+
+          SNAVMS$LOAD_      SYS$COMMON:   Command procedure for
+          DEVICE_node-      [SNAVMS$]     loading the device driver
+          name.COM                        software during OpenVMS SNA
+          ________________________________startup.___________________
+
+          The value node-name is the OpenVMS SNA node name you typed
+          in response to the first configuration prompt. In a non-
+          VAXcluster environment, the value of node-name can be 0.
+
+          If the SYSGEN parameter SCSNODE is changed any time
+          after initially configuring OpenVMS SNA (for example,
+          a stand-alone node is now a VAXcluster node), rerun the
+          SNAVMS$CONFIGURE.COM procedure and type the correct node
+          name. Alternatively, you can rename the configuration
+          command procedure, load device command procedure and
+          authorization command procedure with the correct node name.
+          For example, you might rename the file SNAVMS$CFG_0.COM
+          file SNAVMS$CFG_MYNODE.COM. All three files must use the
+          same value for node-name.
+
+    2-14 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              If previous versions of the SNAVMS$CFG_node-name.COM file
+              are on your system, the following question is displayed:
+
+              Earlier versions of SYS$COMMON:[SNAVMS$]SNAVMS$CFG_node-name.COM exist.
+              Do you wish to purge these files [NO]?  <RET>
+
+              Press <RET> to keep the files, or type YES to purge them.
+
+              Next, OpenVMS SNA displays the following message to
+              indicate that the command procedure to load the device
+              driver was created:
+
+              The load file SYS$COMMON:[SNAVMS$]SNAVMS$LOAD_DEVICE_node-name.COM;1
+              was created on 25-OCT-1998 11:01:43.08
+
+              If previous versions of the SNAVMS$LOAD_DEVICE_node-
+              name.COM file are on your system, the following question
+              is displayed:
+
+              Earlier versions of SYS$COMMON:[SNACSV]SNAVMS$LOAD_DEVICE_node-name.COM
+               exist.
+              Do you wish to purge these files [NO]?  <RET>
+
+              Press <RET> to keep the files, or type YES to purge them.
+
+              Next, OpenVMS SNA displays the following message to
+              indicate that the authorization file was created:
+
+              The authorization file SYS$COMMON:[SNAVMS$]SNAVMS$AUTHORIZE_node-name.COM;1
+              was created on 25-OCT-1998 11:01:45.08
+
+              If a previous version of the SNAVMS$AUTHORIZE_node-name.COM
+              file is on your system, the following message is displayed:
+
+              The authorization file SYS$COMMON:[SNAVMS$]SNAVMS$AUTHORIZE_node-name.COM
+               exists; no new authorization file is created.
+
+              If versions of the configuration files are left over
+              from previous versions of OpenVMS SNA, the following is
+              displayed:
+
+              Configuration files from previous versions of OpenVMS SNA still exist.
+
+              Do you wish to delete all versions of:
+               SYS$COMMON:[SNACSV]node-nameSNA.CFG?                [YES]:
+               SYS$COMMON:[SNACSV]SNAVMS$node-name.CFG?            [YES]:
+               SYS$COMMON:[SNACSV]SNAVMS$LOAD_DEVICE_node-name.COM [YES]:
+
+              Press <RET> to delete the files, or type NO to keep them.
+
+                              Installing and Configuring OpenVMS SNA 2-15
+
+ 
+
+
+
+
+
+
+
+          This version of OpenVMS SNA uses the SYS$COMMON:[SNAVMS$]
+          directory for most of the OpenVMS SNA files. The
+          SYS$COMMON:[SNACSV] directory is not used. If you have
+          any OpenVMS SNA files in the
+          SYS$COMMON:[SNACSV] directory, you can delete them.
+
+          Next, the configuration procedure displays the following
+          prompt:
+
+          Do you wish to start the OpenVMS SNA product now [YES]?:  <RET>
+
+          Press <RET> to start OpenVMS SNA if you:
+
+          o  are running the configuration procedure from the SYSTEM
+             account or are an authorized user (see the chapter on
+             OpenVMS SNA security in OpenVMS SNA Management)
+
+          o  are satisfied with the responses you gave to the
+             previous questions
+
+          o  have started DECnet
+
+          o  configured and started VAX PSI and the DTE state is
+             ON-RUNNING (for QLLC circuits only)
+
+          If you do not want to start OpenVMS SNA at this time, type
+          NO and press <RET>; this ends the configuration procedure.
+
+          Step 6: Observe the OpenVMS SNA start-up procedure.
+
+          If you chose to start up OpenVMS SNA in step 5, the
+          configuration procedure now calls the start-up procedure.
+
+          @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP.COM
+          OpenVMS SNA Startup begins  : 25-OCT-1998 11:03:05.32
+          %SNAEVL-I-INIT, starting SNAEVL on node TREE
+          %RUN-S-PROC_ID, identification of created process is 0000002B
+          %LES-S-PROC_ID, identification of created process is 0000002C
+          %SNAACP-S-STARTED, OpenVMS SNA, device _SNA0: mounted
+          OpenVMS SNA Startup complete: 25-OCT-1998 11:03:40.72
+
+          After OpenVMS SNA is started up, the configuration
+          procedure asks the following question:
+
+          Do you wish to run the SNAVMS$IVP program now [YES]? <RET>
+
+    2-16 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+              The Installation Verification Procedure (IVP) runs tests;
+              these check whether the installation and configuration
+              procedures were successful and verify the connection
+              between the OpenVMS SNA software and the IBM SNA network.
+              Press <RET> to run the IVP. The IBM host must activate the
+              OpenVMS SNA line, PU, and LUs before you can run the IVP.
+
+              If you do not want to run the IVP, type NO.
+
+              Step 7: Observe the Installation Verification Procedure.
+
+              If you chose to run the IVP in step 6, the configuration
+              procedure now calls the IVP to verify the connection
+              between the OpenVMS SNA software and the IBM SNA network.
+
+              @ SYS$TEST:SNAVMS$IVP
+
+              OpenVMS SNA Installation Verification Procedure
+
+                CONREQREJ
+
+                      The connection to VTAM was successful; however, the session was
+                      rejected because VTAM did not recognize the application selected.
+
+              The SNAVMS$IVP program ran successfully and connected to VTAM. Checking
+              of other DECnet/SNA access routine products should now proceed.
+
+              If the IVP does not run successfully, see Section 2.5.5.
+
+              Step 8: End the configuration procedure.
+
+              You should add the following command to
+              SYS$MANAGER:SYSTARTUP_V5.COM:
+
+                  $ @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP
+
+                   Finished OpenVMS SNA product configuration
+                   At 25-OCT-1998 11:06:42.19
+
+              $ LOGOUT <RET>
+              SYSTEM     logged out at 25-OCT-1998 11:06:45.00
+
+              When the product configuration is complete, you can do
+              other work, or you can log out (as shown here).
+
+                              Installing and Configuring OpenVMS SNA 2-17
+
+ 
+
+
+
+
+
+
+
+          Appendix B contains two sample configuration procedures,
+          one for SDLC lines and one for X.25 lines.
+
+    2.5 After Installation and Configuration
+
+          OpenVMS SNA is now installed and configured and is
+          available for use with the DECnet SNA access routines.
+
+          After installation and configuration, you need to do the
+          following tasks:
+
+          o  Authorize users.
+
+          o  Configure OpenVMS SNA for other nodes in the cluster.
+
+          o  Update DCL tables for all nodes that have OpenVMS SNA
+             configured.
+
+          o  Start OpenVMS SNA, if not done during configuration or
+             for other nodes in the cluster.
+
+          o  Run the IVP, if not done during configuration or for
+             other nodes in the cluster.
+
+          o  Set user account quotas.
+
+          You might also perform other tasks:
+
+          o  Edit the system startup file.
+
+          o  Edit the configuration file.
+
+    2.5.1 Authorizing Users
+
+          OpenVMS SNA uses privileged usernames to control access to
+          certain functions. See the chapter on OpenVMS SNA security
+          in OpenVMS SNA Management.
+
+    2.5.2 Configuring OpenVMS SNA for Other Cluster Nodes
+
+          If you are going to use OpenVMS SNA on other nodes in a
+          cluster, each node must have the following:
+
+          o  a hardware communications device
+
+          o  OpenVMS SNA configured
+
+          o  at least one DECnet/SNA OpenVMS access routine installed
+
+          See Section 2.4 for instructions on configuring the OpenVMS
+          SNA software.
+
+    2-18 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+        2.5.3 Updating DCL Tables
+
+              After installing OpenVMS SNA on a VAXcluster system, update
+              the DCL tables on each node in the cluster that will run
+              OpenVMS SNA. Type the following command line:
+
+              $  INSTALL REPLACE SYS$LIBRARY:DCLTABLES
+
+        2.5.4 Starting OpenVMS SNA
+
+              If you want to run the OpenVMS SNA start-up procedure
+              separately, you must be:
+
+              o  logged into the SYSTEM account or are an authorized user
+                 (see the chapter on OpenVMS SNA security in OpenVMS SNA
+                 Management)
+
+              o  have started DECnet
+
+              o  configured and started VAX PSI and the DTE state is
+                 ON-RUNNING (for QLLC circuits only)
+
+              Then type the following command line:
+
+              $  @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP.COM file-spec <RET>
+
+              file-spec
+              Represents the name of the configuration file of your
+              choice. The default file is SYS$COMMON:[SNAVMS$]SNAVMS$CFG_
+              node-name.COM.
+
+              If you try to start OpenVMS SNA on a node in a VAXcluster
+              other than the node on which the OpenVMS SNA hardware
+              device is installed, the following error message is
+              displayed:
+
+              OpenVMS SNA is not configured for this node.
+              Execute SNAVMS$STARTUP from these nodes: node-list
+
+              node-list
+              Refers to the node(s) on which the OpenVMS SNA
+              communications hardware device and OpenVMS SNA software
+              are installed.
+
+              If OpenVMS SNA has been started and you want to restart it,
+              run the start-up procedure.
+
+                              Installing and Configuring OpenVMS SNA 2-19
+
+ 
+
+
+
+
+
+
+
+          If any error messages are displayed during startup, see
+          OpenVMS SNA Problem Solving for a list of error messages
+          and solutions. If you are unable to start the product,
+          follow the troubleshooting steps in Chapter 2 of OpenVMS
+          SNA Problem Solving.
+
+    2.5.5 Running the Installation Verification Procedure
+
+          The Installation Verification Procedure (IVP) is usually
+          run at configuration. DIGITAL recommends, however, that
+          you run the IVP after you make changes to the physical
+          connection (for example, adding new modems) or after the
+          IBM systems programmer makes changes to the host system
+          software. The program verifies the connection between the
+          OpenVMS SNA software and the IBM SNA network. To run the
+          IVP, type the following command:
+
+          $  @SYS$TEST:SNAVMS$IVP <RET>
+
+          If you receive either of the following messages, the
+          verification program has completed successfully:
+
+          CONREQREJ   CONREQREJ is a normal completion code for
+                      SNAVMS$IVP. It indicates that your line is
+                      active and that SNAVMS$IVP has succeeded in
+                      making a connection to VTAM.
+
+                      The connect request is rejected because the
+                      default $DIGITAL application is selected,
+                      and no application named $DIGITAL is normally
+                      available on the IBM host. The application name
+                      $DIGITAL is the default application name used
+                      by SNAVMS$IVP.
+
+          NORMAL      The connection to VTAM was successful and the
+                      application name used by the IVP was recognized
+                      by VTAM.
+
+          If the IVP is not successful, you must solve the problem
+          before continuing with the installation. The following
+          default values used by the IVP might be the source of your
+          problem:
+
+          ___________________________________________________________
+          Parameter________Default_Value_____________________________
+
+          SESSION          1
+
+    2-20 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+              ___________________________________________________________
+              Parameter________Default_Value_____________________________
+
+              APPLICATION      $DIGITAL
+
+              PU               SNA-0
+
+              ACCESS_NAME______SNAVP_____________________________________
+
+              For example, if you receive an error message stating that
+              a session is not available (SESNOTAVA), you might override
+              the default value of 1 for a session in the IVP. In this
+              case, perform the following steps:
+
+              1. Select a session number that you know has not been
+                 assigned, and change the session default with a logical
+                 name as follows:
+
+                 $ DEFINE SNA$VP_SESSION n <RET>
+
+              2. Run the IVP to see whether the session default change
+                 solved your problem.
+
+              You can also use logical names to change the default
+              application name from $DIGITAL to another application name.
+              To determine whether an application is available through
+              VTAM, change the default name of $DIGITAL to the name of
+              the application you want to check, as follows:
+
+              $ DEFINE SNA$VP_APPLICATION newname <RET>
+
+              Then run the IVP. If you receive a NORMAL message, you
+              know that the application is available through VTAM. If you
+              receive a CONREQREJ message, you know that the application
+              is not available through VTAM.
+
+              If you are still unable to run the IVP successfully, refer
+              to OpenVMS SNA Problem Solving.
+
+        2.5.6 User Account Quotas and Privileges
+
+              To use OpenVMS SNA, each DECnet/SNA access routine user
+              must have TMPMBX and NETMBX privileges and the following
+              minimum requirements:
+
+              o  AST limit (ASTLM): 12
+
+              o  Buffered I/O quota limit (BIOLM): 12
+
+              o  Buffered I/O byte count quota limit (BYTLM): 32,000
+
+              o  Direct I/O quota limit (DIOLM): 6
+
+                              Installing and Configuring OpenVMS SNA 2-21
+
+ 
+
+
+
+
+
+
+
+          Use the OpenVMS Authorize Utility (AUTHORIZE) to compare
+          the current values of these quotas with the requirements
+          for OpenVMS SNA. For example, the account used in the
+          following example is the SYSTEM account:
+
+          $ SET DEFAULT SYS$SYSTEM <RETURN>
+          $ RUN AUTHORIZE <RETURN>
+          UAF> SHOW SYSTEM <RETURN>
+
+          To change the values of these quotas, use the OpenVMS
+          Authorize Utility's MODIFY command. For more information,
+          see the OpenVMS Authorize Utility Manual.
+
+    2.5.7 Editing the System Startup File
+
+          You must edit the system startup file to provide for
+          automatic startup of OpenVMS SNA when your system is
+          rebooted.
+
+          Add the command line that starts OpenVMS SNA to the system
+          startup file, SYS$MANAGER:SYSTARTUP_VMS.COM. You must
+          position this new command line after the line that invokes
+          the network startup command procedure. The following
+          example shows the network startup command line followed
+          by the startup command line for OpenVMS SNA:
+
+             ________________________ Note ________________________
+
+             In the DECnet-Plus environment the network starts
+             automatically before you execute the startup command.
+
+             ______________________________________________________
+
+          $ @SYS$MANAGER:STARTNET.COM
+               .
+               .
+               .
+          $ @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP.COM
+
+    2.5.8 Editing the Configuration File
+
+          You must edit the OpenVMS SNA configuration file to add
+          information or to correct any errors that you discover
+          during the configuration procedure. After you edit the
+          configuration file, run the start-up procedure to start
+          OpenVMS SNA. OpenVMS SNA Management describes the editing
+          procedure, provides a sample configuration file, and
+          discusses the reconfiguration and restart process.
+
+    2-22 Installing and Configuring OpenVMS SNA
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                      Files Installed During Installation
+
+
+
+        Table_A-1_Files_Added_During_Installation_of_OpenVMS_SNA_________
+
+        File_Name_______________Location________________Description______
+
+        SNA$DECNET.EXE          SYS$COMMON:[SNAVMS$]    Internal module
+                                                        loaded by ACP
+
+        SNA$DECNET_ALT.EXE      SYS$COMMON:[SNAVMS$]    Internal module
+                                                        loaded by ACP
+
+        SNAVMS$CIRCUIT.EXE      SYS$COMMON:[SNAVMS$]    Internal module
+                                                        loaded by ACP
+
+        SNAVMS$CONFIGURE.COM    SYS$COMMON:[SNAVMS$]    Command procedure
+                                                        for configuring
+                                                        OpenVMS SNA
+
+        SNAVMS$CONFIGURE.TLB    SYS$COMMON:[SNAVMS$]    Configuration
+                                                        procedure HELP
+                                                        text file
+
+        SNAVMS$DR.EXE           SYS$COMMON:[SNAVMS$]    Internal module
+                                                        loaded by ACP
+
+        SNAVMS$EVC.EXE          SYS$COMMON:[SNAVMS$]    Internal module
+                                                        loaded by ACP
+
+        SNAVMS$EVL_STARTUP.COM  SYS$COMMON:[SNAVMS$]    Command procedure
+                                                        to start event
+                                                        log listener
+
+        SNAVMS$HS.EXE           SYS$COMMON:[SNAVMS$]    Internal module
+                                                        loaded by ACP
+
+        SNAVMS$LINE.EXE         SYS$COMMON:[SNAVMS$]    Internal module
+                                                        loaded by ACP
+
+                                                 (continued on next page)
+
+                                  Files Installed During Installation A-1
+
+ 
+
+
+
+
+
+
+
+    Table_A-1_(Cont.)_Files_Added_During_Installation_of_OpenVMS_SNA_
+
+    File_Name_______________Location________________Description______
+
+    SNAVMS$LUSVC.EXE        SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$NDM.EXE          SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$NML.EXE          SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$PC.EXE           SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$PUSVC.EXE        SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$GAS.EXE          SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$QLLC.EXE         SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$SDLC.EXE         SYS$COMMON:[SNAVMS$]    Internal module
+                                                    loaded by ACP
+
+    SNAVMS$SNDRIVER.EXE     SYS$COMMON:[SNAVMS$]    OpenVMS SNA
+                                                    software driver
+
+    SNAVMS$STARTUP.COM      SYS$COMMON:[SNAVMS$]    Command procedure
+                                                    to start OpenVMS
+                                                    SNA
+
+    SNAVMS$IVP.COM          SYS$COMMON:[SYSTEST]    Verification
+                                                    command procedure
+
+    SNAVMS$IVP.EXE          SYS$COMMON:             Verification
+                            [SYSTEST.SNAVMS$IVP]    program
+
+    SNAVMS$IVP.HLB          SYS$COMMON:             HELP library
+                            [SYSTEST.SNAVMS$IVP]    for verification
+                                                    program
+
+    SNAVMS$IVPMSG.EXE       [SYSTEST.SNAVMS$IVP]    Verification
+                                                    program message
+                                                    file
+
+    SNANCP.HLB              SYS$HELP                SNANCP HELP
+                                                    library
+
+                                             (continued on next page)
+
+    A-2 Files Installed During Installation
+
+ 
+
+
+
+
+
+
+
+        Table_A-1_(Cont.)_Files_Added_During_Installation_of_OpenVMS_SNA_
+
+        File_Name_______________Location________________Description______
+
+        SNAVMS$023.RELEASE_     SYS$HELP                Release notes for
+        NOTES                                           OpenVMS SNA V2.3
+
+        CTF$PU_ANALYZE.EXE      SYS$LIBRARY             CTF PU trace
+                                                        analyzer
+
+        CTF$QLLC_ANALYZE.EXE    SYS$LIBRARY             CTF QLLC trace
+                                                        analyzer
+
+        CTF$SDLC_ANALYZE.EXE    SYS$LIBRARY             CTF SDLC trace
+                                                        analyzer
+
+        CTF$SNAVMS_             SYS$LIBRARY             OpenVMS SNA CTF
+        TRACEPOINTS.DAT                                 tracepoints
+
+        SNAVMS$LIB.EXE          SYS$LIBRARY             Internal module
+                                                        loaded by ACP
+
+        UHDRIVER.EXE            SYS$LOADABLE_IMAGES     DPV11 device
+                                                        driver for
+                                                        SDLC circuits
+                                                        (optional)
+
+        SNAEVLMSG.EXE           SYS$MESSAGE             Event log
+                                                        listener message
+                                                        file
+
+        SNANCPMSG.EXE           SYS$MESSAGE             SNANCP message
+                                                        file
+
+        SNAVMS$LIBMSG.EXE       SYS$MESSAGE             OpenVMS SNA
+                                                        message file
+
+        SNAEVL.EXE              SYS$SYSTEM              Process image
+                                                        for event log
+                                                        listener
+
+        SNANCP.EXE              SYS$SYSTEM              SNA Network
+                                                        Control Program
+                                                        utility (SNANCP)
+
+        SNAVMS$LES_CONTROL.DAT  SYS$SYSTEM              Internal module
+        ________________________________________________loaded_by_ACP____
+
+                                  Files Installed During Installation A-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                    Sample Installation and Configuration
+
+
+              This appendix contains a sample OpenVMS SNA installation,
+              a sample OpenVMS SNA configuration for SDLC lines, and a
+              sample OpenVMS SNA configuration for X.25 lines. Sometimes
+              the installation procedure and the configuration procedure
+              are modified in maintenance updates of this product.
+              Because this installation guide is not usually revised
+              for maintenance updates, be sure to read the release notes
+              before you install and configure this product. The release
+              notes describe any significant changes in the installation
+              and configuration that vary from these samples.
+
+        B.1 Sample Installation
+
+        $  SET DEFAULT SYS$UPDATE <RET>
+        $  @VMSINSTAL SNAVMS023 MUA0: OPTIONS N <RET>
+
+                VAX/VMS Software Product Installation Procedure V5.0
+
+
+        It is 19-OCT-1998 at 14:07
+        Enter a question mark (?) at any time for help.
+
+        %VMSINSTAL-W-DECNET, Your DECnet network is up and running.
+        * Do you want to continue anyway [NO]?  YES <RET>
+        * Are you satisfied with the backup of your system disk [YES]?  <RET>
+
+        Please mount the first volume of the set on MUA0:.
+        * Are you ready?  YES <RET>
+        %MOUNT-I-MOUNTED, SNAVMS mounted on _MUA2:
+
+
+
+
+
+
+
+                                Sample Installation and Configuration B-1
+
+ 
+
+
+
+
+
+
+
+    The following products will be processed:
+
+      SNAVMS V2.3
+
+            Beginning installation of SNAVMS V2.3 at 14:17
+
+    %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+        Release Notes Options:
+
+            1.  Display release notes
+            2.  Print release notes
+            3.  Both 1 and 2
+            4.  Copy release notes to SYS$HELP
+            5.  Do not display, print or copy release notes
+
+    * Select option [2]:  <RET>
+    * Queue name [SYS$PRINT]:  <RET>
+    Job SNAVMS$023 (queue SYS$PRINT, entry 142) started on LPA0
+    * Do you want to continue the installation?  YES <RET>
+    %VMSINSTAL-I-
+    RELMOVED, The product's release notes have been successfully
+    moved to SYS$HELP.
+
+            Product:      SNA-VMS
+            Producer:     DEC
+            Version:      2.3
+            Release Date: 01-AUG-1998
+
+
+    * Does this product have an authorization key registered and loaded?  YES <RET>
+
+    * Will this installation of OpenVMS SNA use the DPV11 device for SDLC
+    communications [NO]?  YES <RET>
+
+    * Do you want to purge files replaced by this installation [YES]?  <RET>
+
+    %VMSINSTAL-I-RESTORE, Restoring product saveset B...
+    %SNAVMS-I-NOMORQUES, there are no more questions
+    %SNAVMS-I-PLEASE_
+
+
+
+
+
+    B-2 Sample Installation and Configuration
+
+ 
+
+
+
+
+
+
+
+        WAIT, installation may take up to twenty minutes to complete
+
+
+                To install OpenVMS SNA V2.3, the configuration files and procedures
+                must be placed in a directory. Directory SYS$COMMON:[SNAVMS$] is used
+                for this purpose.
+
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+        VMI$ROOT:[SNAVMS$].
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+        VMI$ROOT:[SYSTEST.SNAVMS$IVP].
+        %SNAVMS-I-CLEANUP, deleting previous versions of OpenVMS SNA files
+        %SNAVMS-I-INSTALL, adding new OpenVMS SNA files
+
+            The OpenVMS SNA files have been copied to the system disk. If you have
+            not installed the communication hardware for the connection to the IBM
+            SNA network, please do so now. After the communication hardware has been
+            installed, OpenVMS SNA V2.3 must be configured.
+
+            You should execute the following command to configure OpenVMS SNA V2.3:
+
+                 @SYS$COMMON:[SNAVMS$]SNAVMS$CONFIGURE
+
+            This creates the OpenVMS SNA configuration files, completing the
+            installation. You can start OpenVMS SNA and execute the
+            Installation Verification Procedure (SNAVMS$IVP) at
+            the end of the configuration procedure; the procedure will prompt
+            you.
+
+            For current information about OpenVMS SNA V2.3, type or print the file
+            SNAVMS$023.RELEASE_
+        NOTES, which is supplied by this installation.
+
+        %VMSINSTAL-I-
+        MOVEFILES, Files will now be moved to their target directories...
+                Installation of SNAVMS V2.3 completed at 14:38
+
+                VMSINSTAL procedure done at 14:39
+
+
+        $
+
+
+
+
+                                Sample Installation and Configuration B-3
+
+ 
+
+
+
+
+
+
+
+    B.2 Sample Configuration (SDLC Lines)
+
+          The following is a sample OpenVMS SNA configuration
+          for SDLC lines. The answers to each prompt are for
+          demonstration purposes only and will probably differ
+          from the answers that you supply during your configuration
+          procedure.
+
+    $  SET DEFAULT SYS$COMMON:[SNAVMS$] <RET>
+    $  @SNAVMS$CONFIGURE <RET>
+
+         Command file to configure the OpenVMS SNA product
+         Executing on 19-OCT-1998 15:08:31:27.
+         Enter a question mark (?) at any time for help.
+         Enter CONTROL-Z at any time to abort.
+
+    Which VAXcluster member node will run OpenVMS SNA? [APPLE] : <RET>
+
+    Will this node communicate over an X.25 network?      [NO] : <RET>
+
+    How many LU addresses available to this PU?           [64] : <RET>
+    What is the PU segment size (decimal)?               [265] : 521 <RET>
+
+    What is the circuit duplex (HALF, FULL)?            [HALF] : FULL <RET>
+    What is the station address (2-digit hex)?            [40] : <RET>
+    What is the exchange ID (XID) number (8-digit hex)?     [] : <RET>
+
+    What is the line-id specification (dev-c-u)?               : DPV-0-0 <RET>
+    What is the line duplex (HALF, FULL)?               [HALF] : FULL <RET>
+    Is the line a multidropped line?                      [NO] : <RET>
+    Is the line a NRZI-signalling line?                   [NO] : <RET>
+    Will OpenVMS SNA load the device driver when starting?  [YES] : <RET>
+
+    What is the CSR address of the device (octal)  [760270]   : <RET>
+    What is the device vector address (octal)      [300]      : <RET>
+
+    You may now enter any access names that you wish to create. Enter
+    RETURN at the ACCESS NAME prompt when finished.
+
+    Access name? (1-16 characters)                         [] : TSO <RET>
+    Sessions for this access name? (numbers or ranges) [1-64] : 2-10 <RET>
+    Application name? (1-8 characters)                     [] : TSO <RET>
+    Logon mode table? (1-8 characters)                     [] : DSILGMOD <RET>
+    User data? (quoted string, 1-32 characters)            [] : "ENTRY" <RET>
+
+    B-4 Sample Installation and Configuration
+
+ 
+
+
+
+
+
+
+
+
+        Access name? (1-16 characters)                         [] : RJE <RET>
+        Sessions for this access name? (numbers or ranges) [1-64] : 9-12 <RET>
+        Application name? (1-8 characters)                     [] : JE$2 <RET>
+        Logon mode table? (1-8 characters)                     [] : RJ1024P0 <RET>
+        User data? (quoted string, 1-32 characters)            [] : <RET>
+
+        Access name? (1-16 characters)                         [] : <RET>
+
+        The configuration file SYS$COMMON:[SNAVMS$]SNAVMS$CFG_APPLE.COM;1
+        was created on 19-OCT-1998 15:13:34:18
+
+        The load file SYS$COMMON:[SNAVMS$]SNAVMS$LOAD_DEVICE_APPLE.COM;1
+        was created on 19-OCT-1998 15:13:35.68
+
+        The authorization file SYS$COMMON:[SNAVMS$]SNAVMS$AUTHORIZE_APPLE.COM;1
+        was created on 19-OCT-1998 15:13:37.44
+
+
+        Do you wish to start the OpenVMS SNA product now [YES]?  <RET>
+        @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP.COM
+        OpenVMS SNA V2.3 Startup begins  : 19-OCT-1998 15:13:52.61
+        %SNAEVL-I-INIT, starting SNAEVL on node APPLE
+        %RUN-S-PROC_ID, identification of created process is 0000002B
+        %LES-S-PROC_ID, identification of created process is 0000002C
+        %SNAACP-S-STARTED, OpenVMS SNA V2.3, device _SNA0: mounted
+        OpenVMS SNA V2.3 Startup complete: 19-OCT-1998 15:13:58.28
+
+        Do you wish to run the SNAVMS$IVP program now [YES]?  <RET>
+        @SYS$COMMON:[SYSTEST]SNAVMS$IVP.COM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                Sample Installation and Configuration B-5
+
+ 
+
+
+
+
+
+
+
+
+    OpenVMS SNA V2.3 Installation Verification Procedure
+
+
+      CONREQREJ
+
+            The connection to VTAM was successful; however, the session was
+            rejected because VTAM did not recognize the application selected.
+
+
+    The SNAVMS$IVP program ran successfully and connected to VTAM. Checking
+    of other DECnet/SNA access routine products should now proceed.
+
+    You should add the following command to SYS$MANAGER:SYSTARTUP_VMS.COM:
+
+        $ @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP
+
+        Finished OpenVMS SNA product configuration
+        At  19-OCT-1998 15:30:00.21
+
+    $
+
+    B.3 Sample Configuration (X.25 Lines)
+
+          The following is a sample OpenVMS SNA configuration for
+          communication over a packet switched data network (PSDN).
+          The answers to each prompt are for demonstration purposes
+          only and will probably differ from the answers that you
+          supply during your configuration procedure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    B-6 Sample Installation and Configuration
+
+ 
+
+
+
+
+
+
+
+        $  SET DEFAULT SYS$COMMON:[SNAVMS$] <RET>
+        $  @SNAVMS$CONFIGURE <RET>
+
+             Command file to configure the OpenVMS SNA product
+             Executing on 19-OCT-1998 14:45:47:85.
+             Enter a question mark (?) at any time for help.
+             Enter CONTROL-Z at any time to abort.
+
+        Which VAXcluster member node will run OpenVMS SNA?     [APPLE] : <RET>
+
+        Will this node communicate over an X.25 network?      [NO] : YES<RET>
+
+        How many LU addresses available to this PU?           [64] : <RET>
+        What is the PU segment size (decimal)?               [265] : 521 <RET>
+
+        Which calling direction (INCOMING,OUTGOING)?    [OUTGOING] : <RET>
+        What is the network name?                               [] : TELENET<RET>
+        What is the address of the local DTE?                   [] : 12345<RET>
+        What is the group name for the local DTE?               [] : <RET>
+        What is the address of the remote DTE?                  [] : 023179<RET>
+        What is the exchange ID (XID) number (8-digit hex)?     [] : 017DEC00<RET>
+        Will reverse charging be applied to outgoing calls?   [NO] : <RET>
+
+        You may now enter any access names that you wish to create. Enter
+        RETURN at the ACCESS NAME prompt when finished.
+
+        Access name? (1-16 characters)                         [] : VM <RET>
+        Sessions for this access name? (numbers or ranges) [1-64] : 2-10 <RET>
+        Application name? (1-8 characters)                     [] : VM <RET>
+        Logon mode table? (1-8 characters)                     [] : <RET>
+        User data? (quoted string, 1-32 characters)            [] : <RET>
+
+        Access name? (1-16 characters)                         [] : PRINTER <RET>
+        Sessions for this access name? (numbers or ranges) [1-64] : 16 <RET>
+        Application name? (1-8 characters)                     [] : <RET>
+        Logon mode table? (1-8 characters)                     [] : <RET>
+        User data? (quoted string, 1-32 characters)            [] : <RET>
+
+        Access name? (1-16 characters)                         [] : <RET>
+
+        The configuration file SYS$COMMON:[SNAVMS$]SNAVMS$CFG_APPLE.COM;1
+        was created on 19-OCT-1998 16:41:59:82
+
+
+
+                                Sample Installation and Configuration B-7
+
+ 
+
+
+
+
+
+
+
+
+    The load file SYS$COMMON:[SNAVMS$]SNAVMS$LOAD_DEVICE_APPLE.COM;1
+    was created on 19-OCT-1998 16:42:01.30
+
+    The authorization file SYS$COMMON:[SNAVMS$]SNAVMS$AUTHORIZE_APPLE.COM;1
+    was created on 19-OCT-1998 16:42:03.06
+
+    Do you wish to start the OpenVMS SNA product now [YES]?  <RET>
+    @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP.COM
+    OpenVMS SNA V2.3 Startup begins  : 19-OCT-1998 15:13:52.61
+    %SNAEVL-I-INIT, starting SNAEVL on node APPLE
+    %RUN-S-PROC_ID, identification of created process is 0000002B
+    %LES-S-PROC_ID, identification of created process is 0000002C
+    %SNAACP-S-STARTED, OpenVMS SNA V2.3, device _SNA0: mounted
+    OpenVMS SNA V2.3 Startup complete: 19-OCT-1998 15:13:58.28
+
+    Do you wish to run the SNAVMS$IVP program now [YES]?  <RET>
+    @SYS$COMMON:[SYSTEST]SNAVMS$IVP.COM
+
+    OpenVMS SNA V2.3 Installation Verification Procedure
+
+
+      CONREQREJ
+
+            The connection to VTAM was successful; however, the session was
+            rejected because VTAM did not recognize the application selected.
+
+
+    The SNAVMS$IVP program ran successfully and connected to VTAM. Checking
+    of other DECnet/SNA access routine products should now proceed.
+
+    You should add the following command to SYS$MANAGER:SYSTARTUP_VMS.COM:
+
+        $ @SYS$COMMON:[SNAVMS$]SNAVMS$STARTUP
+
+        Finished OpenVMS SNA product configuration
+        At  19-OCT-1998 15:30:00.21
+
+    $
+
+
+
+
+
+
+    B-8 Sample Installation and Configuration
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                                 Index
+
+
+
+     A______________________________   B______________________________
+
+     Access control information        Bill of Materials (BOM),  1-1
+       specifying, 1-31                BIOLM quota,  1-7, 2-21
+     Access name                       BYTLM quota,  1-7, 2-21
+       definition, 1-26
+       keyword parameters, 1-29 to     C
+         1-32                          _______________________________
+       specifying, 1-29                Calling direction
+       used by verification program,     configuration prompt,  2-12
+         2-21                            specifying,  1-24
+     ACCESS NAME parameter,  1-29      Circuit characteristics,  1-19,
+     Access routines                      1-23
+       required for installation,      Circuit duplex
+         1-11                            configuration prompt,  2-9
+     Adapter number                      specifying,  1-19
+       configuration prompt, 2-11      Circuit name
+       determining, 1-23                 used by verification program,
+       specifying, 1-22                     2-21
+     Address                           Communications device
+       station, 1-19                     configuration parameters,
+     Application name                       1-18 to 1-23
+       specifying, 1-29                  loading the device driver,
+       used by verification program,        1-22
+         2-21                          Communications line
+     APPLICATION parameter,  1-29        characteristics,  1-19 to
+     ASTLM quota,  1-7, 2-21                1-22
+                                         line ID,  2-10
+                                         requirements for installation
+                                            , 1-9
+                                       Configuration
+                                         completion message,  2-17
+                                         procedure,  2-8 to 2-18
+                                         questionnaire,  1-14
+
+                                                               Index-1
+
+ 
+
+
+
+
+
+
+
+    Configuration (cont'd)             DTE address (remote)
+      sample (SDLC lines),  B-4 to      configuration prompt,  2-12
+         B-6                            specifying,  1-25
+      sample (X.25 lines),  B-6 to     DTE group name
+         B-8                            specifying,  1-24
+
+      SNAVMS$CFG_node-name.COM
+         file, 2-14                    E______________________________
+
+      SNAVMS$LOAD_DEVICE_node-         Error messages
+         name.COM file, 2-14            during verification program,
+    Configuration (SDLC lines)             2-21
+      parameters required for,         Exchange identification number
+         1-18 to 1-23                    (XID)
+    Configuration (X.25 lines)          configuration prompt,  2-10,
+      parameters required for,             2-12
+         1-23 to 1-25
+    CONREQREJ completion code,         F______________________________
+       2-20                            File names
+    Control and status register         when to change,  2-14
+       (CSR) address                   Files
+      configuration prompt,  2-11,      created during configuration,
+         2-12                              2-14
+      specifying,  1-23                 installed during installation
+
+    D                                      , A-1A-3
+    _______________________________     purged during configuration,
+    DATA Parameter,  1-31                  2-15
+    Device driver                       purged during installation,
+      methods for loading,  1-22           2-6
+      required for installation,
+         1-10                          G______________________________
+    DIOLM quota,  1-7, 2-21            Group name
+    Disk space                          configuration prompt,  2-12
+      requirements for installation
+         , 1-4                         I
+    Distribution kit,  1-1             _______________________________
+    DPV11                              IBM
+      specifying the CSR address,       matching host parameters with
+         1-23                              OpenVMS SNA parameters,
+      specifying the vector address        1-23
+         , 1-23                         parameters,  1-2 to 1-4
+    DTE address (local)                 SNA concepts,  1-1
+      configuration prompt,  2-12      IBM application password
+      specifying,  1-24                 specifying,  1-31
+
+    Index-2
+
+ 
+
+
+
+
+
+
+
+        Identification number
+         See SDLC exchange                M______________________________
+
+            identification number         Maximum session number
+            (XID)                           specifying, 1-19, 1-23
+        Installation                      Memory requirements,  1-5
+         hardware required for,  1-8      Modem
+            to 1-10                         guidelines for selecting,
+         preparation,  1-1                    1-9
+         procedure,  2-3 to 2-8             required for NRZI operation,
+         sample,  B-1 to B-3                  1-21
+         software required for,  1-10     Modem eliminator,  1-9
+            to 1-12                       Multidrop line
+         VAX system requirements for,       specifying during
+            1-4 to 1-8                        configuration,  1-22
+         verifying,  2-20 to 2-21
+        Installation Verification         N______________________________
+          Procedure (IVP)                 Network name
+         running from the                   configuration prompt, 2-12
+            configuration procedure,      Nonpaged pool
+            2-17                            changing the value, 1-6
+         running separately,  2-20          requirements, 1-5
+
+                                          NORMAL completion code,  2-20
+        L______________________________   NOTE parameter,  1-31
+        Line duplex                       NRZI signalling,  1-21
+
+         configuration prompt,  2-10
+         specifying during                O______________________________
+
+            configuration,  1-21          OPCOM
+        Line ID, 2-10                       enabling, 1-11
+        Logical unit (LU)                 Operating system
+         See LU                             required for installation,
+        Logon mode name                       1-10
+
+         specifying,  1-31
+        LOGON MODE parameter, 1-31        P______________________________
+        LU                                Physical unit (PU)
+         definition,  1-1                   See PU
+         specifying,  1-29                Primary logical unit (PLU),
+        LU addresses                         1-1
+         configuration prompt,  2-9,
+            2-12                          Privileges
+
+        LU LIST parameter, 1-29             see OpenVMS system privileges
+         corresponding with SET PU        Process quotas,  1-7
+            command,  1-29                PU
+                                            definition, 1-2
+                                            specifying, 1-29
+
+                                                                  Index-3
+
+ 
+
+
+
+
+
+
+
+    PU segment size
+      See also segment size            U______________________________
+
+      configuration prompt,  2-9       User process quotas, 2-21
+    PU Segment size
+      configuration prompt,  2-12      V______________________________
+
+    R                                  VAXcluster system
+    _______________________________     configuration prompt,  2-9,
+    Release notes,  2-1                    2-11
+    Reverse charging                    installing software on a,
+      configuration prompt,  2-12          1-11
+      specifying,  1-25                Vector address
+
+                                        configuration prompt,  2-11
+    S______________________________     specifying,  1-23
+
+    SDLC exchange identification       Verifying the OpenVMS SNA
+       number (XID)                      installation
+      specifying,  1-19, 1-25           CONREQREJ completion code,
+    SDLC frame size                        2-20
+      MAXDATA parameter,  1-19,         NORMAL completion code,  2-20
+         1-23                           running the verification
+    Secondary logical unit (SLU),          procedure, 2-20
+       1-1                             VMS
+    Segment size                        installing a new version of,
+      specifying,  1-19, 1-23              1-10
+    Session address                     memory requirements,  1-5
+      used by verification program,     system privileges,  1-5
+         2-21                          VMSINSTAL utility
+    Signalling                          running,  2-3
+      configuration prompt,  2-10       specifying the OPTIONS N
+      specifying,  1-21                    parameter, 2-2
+    Starting OpenVMS SNA
+      from the command line,  2-19     X______________________________
+      from the configuration           X.25 network
+         procedure, 2-16                configuration prompt,  2-9,
+      SNAVMS$STARTUP.COM file,             2-12
+         2-19                           specifying,  1-18, 1-23
+    Station address                    X.25 network name
+      configuration prompt,  2-10       specifying,  1-24
+      specifying,  1-19                XID
+    SYSGEN parameter SCSNODE            See SDLC exchange
+      effect on configuration files
+         , 2-14                            identification number
+                                           (XID)
+
+    Index-4

@@ -1,0 +1,2478 @@
+ 
+
+
+
+                     ______________________________________________
+                     Asian Printing Support for OpenVMS
+                     Version 1.0 Installation Guide
+
+                     Order Number: AA-Q5TLA-TE
+
+
+                     April 1994
+
+                     This document contains instructions for installing
+                     the Asian Printing Support kit on the OpenVMS
+                     /Hanzi, OpenVMS/Hanyu or OpenVMS/Hangul operating
+                     systems. It also provides hints for connecting
+                     various supported printers. This document applies
+                     to Asian Printing Support for OpenVMS Version 1.0
+                     only.
+
+
+
+
+
+
+                     Revision/Update Information: This is a new manual.
+
+                     Operating System & Version:  OpenVMS/Hanzi VAX
+                                                  V5.5 or higher
+
+                                                  OpenVMS/Hanyu VAX
+                                                  V5.5 or higher
+
+                                                  OpenVMS/Hangul VAX
+                                                  V5.5 or higher
+
+                                                  OpenVMS/Hanzi AXP
+                                                  V1.5 or higher
+
+                                                  OpenVMS/Hanyu AXP
+                                                  V1.5 or higher
+
+                                                  OpenVMS/Hangul AXP
+                                                  V1.5 or higher
+
+                     Software & Version :         Asian Printing
+                                                  Support for OpenVMS
+                                                  Version 1.0
+
+                     Prerequisite Software:       DECprint Supervisor
+                                                  for OpenVMS Version
+                                                  1.0C or higher
+                     Digital Equipment Corporation
+                     Asia Region
+
+ 
+
+
+
+
+
+
+              __________________________________________________________
+              First Printing, April 1994
+
+              The information in this document is subject to change
+              without notice and should not be construed as a commitment
+              by Digital Equipment Corporation. Digital Equipment
+              Corporation assumes no responsibility for any errors that
+              may appear in this document.
+
+              The software described in this document is furnished under
+              a license and may be used or copied only in accordance
+              with the terms of such license.
+
+              No responsibility is assumed for the use or reliability
+              of software on equipment that is not supplied by Digital
+              Equipment Corporation or its affiliated companies.
+
+              Restricted Rights: Use, duplication, or disclosure by the
+              U.S. Government is subject to restrictions as set forth in
+              subparagraph (c)(1)(ii) of the Rights in Technical Data
+              and Computer Software clause at DFARS 252.227-7013.
+
+              © Digital Equipment Hong Kong Limited 1994.
+
+              All Rights Reserved.
+              Printed in Singapore.
+
+              The following are trademarks of Digital Equipment
+              Corporation: DECpresent, DECserver, DECwrite, DIKE,
+              DEClaser, DECnet, DECprint, PrintServer, PrintServer 20,
+              PrintServer 17, PrintServer 17/600, Turbo PrintServer
+              20, PrintServer 32, PrintServer 40, PrintServer 40 Plus,
+              ScriptPrinter, VAX DOCUMENT, VMS and the DIGITAL logo.
+
+              PostScript is a registered trademark of Adobe Systems,
+              Incorporated.
+
+              Apple, Macintosh and LaserWriter are registered trademarks
+              of Apple Computer, Inc.
+
+              This document was prepared using VAX DOCUMENT, Version
+              2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                             Contents
+
+
+     Preface..................................................     vi
+
+
+     1  Preparing for Installing Asian Printing Support for
+        OpenVMS
+
+         1.1  Prerequisite Hardware...........................    1-1
+         1.1.1  Serial Printer Hardware Requirements .........    1-2
+         1.1.2  PrintServer Hardware Requirements ............    1-2
+         1.2  Prerequisite Software...........................    1-3
+         1.2.1  General Software Requirements ................    1-3
+         1.2.2  Software Required for Networked Serial
+                Printers......................................    1-4
+         1.2.3  Software Required for PrintServer Printers ...    1-4
+         1.3  License Registration............................    1-4
+         1.4  Installation Procedure Requirements.............    1-4
+         1.4.1  Privileges and Disk Space ....................    1-5
+         1.4.2  Disk Space ...................................    1-5
+         1.4.3  Process Account Quotas .......................    1-6
+         1.4.4  VMSINSTAL Requirements .......................    1-7
+         1.4.5  Backing Up Your System Disk ..................    1-7
+
+     2  Installing Asian Printing Support for OpenVMS
+
+         2.1  The Installation Procedure......................    2-1
+         2.2  Error Recovery..................................    2-7
+
+
+
+
+
+
+
+
+                                                                  iii
+
+ 
+
+
+
+
+
+
+        3  Setting up a DEClaser 1152 Printer
+
+           3.1  Installing the DECprint Supervisor Software.....     3-2
+           3.2  Editing the System Startup Command File.........     3-2
+           3.3  Defining a DCPS Queue for the Printer...........     3-3
+           3.3.1   Copying the Printer Startup Command File .....    3-3
+           3.3.2   Editing the Printer Startup File .............    3-4
+           3.4  Defining an Asian Font Daemon for the Printer...     3-5
+           3.4.1   Copying the Asian Font Daemon Startup Command
+                   File..........................................    3-5
+           3.4.2   Editing the Asian Font Daemon Startup File ...    3-5
+           3.5  Executing DCPS$STARTUP to Create/Start the
+                Queues..........................................     3-6
+           3.6  Executing ASPS$STARTUP_FONT_DAEMON to Create Font
+                Daemons.........................................     3-6
+           3.7  Limitations.....................................     3-7
+           3.8  Determining and Reporting Problems..............     3-7
+
+        4  Setting up a DEClaser 5100 Printer
+
+           4.1  Downloading PostScript Fonts to the Hard Disk of
+                the Printer.....................................     4-1
+           4.2  Installing the DECprint Supervisor Software.....     4-3
+           4.3  Editing the System Startup Command File.........     4-4
+           4.4  Defining a DCPS Queue for the Printer...........     4-4
+           4.4.1   Copying the Printer Startup Command File .....    4-5
+           4.4.2   Editing the Printer Startup File .............    4-5
+           4.5  Executing DCPS$STARTUP to Create/Start the
+                Queues..........................................     4-6
+           4.6  Determining and Reporting Problems..............     4-6
+
+        5  Setting up a PrintServer 17/600 Printer
+
+           5.1  Installing the PrintServer Software.............     5-1
+           5.2  Editing the System Startup Command File.........     5-2
+           5.3  Defining a DCPS Queue for the Printer...........     5-2
+           5.3.1   Copying the Printer Startup Command File .....    5-2
+           5.3.2   Editing the Printer Startup File .............    5-3
+           5.4  Enabling PrintServer Software to access Asian
+                Fonts...........................................     5-4
+           5.5  Executing DCPS$STARTUP to Create/Start the
+                Queues..........................................     5-6
+           5.6  Determining and Reporting Problems..............     5-6
+
+
+        iv
+
+ 
+
+
+
+
+
+
+        A  Sample Installation
+
+
+        B  Files Installed on Your System
+
+
+        Tables
+
+           1-1     Disk Space Requirements ......................    1-5
+
+           1-2     Process Account Quotas for the Installing
+                   Account.......................................    1-6
+
+           4-1     Asian PostScript Font Names ..................    4-3
+
+           5-1     Asian PostScript Font Names ..................    5-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+        About this Guide
+
+              This guide describes how to install Asian Printing Support
+              for OpenVMS V1.0 on the OpenVMS/Hanzi, OpenVMS/Hanyu or
+              OpenVMS/Hangul operating systems.
+
+              Keep this document with your distribution kit. You may
+              need it to install maintenance updates or to reinstall
+              Asian Printing Support for OpenVMS.
+
+
+        Intended Audience
+
+              This guide is intended for system managers who install the
+              Asian Printing Support for OpenVMS software.
+
+        Document Structure
+
+              This guide is organized as follows:
+
+              o  Chapter 1, which describes the operating system and
+                 hardware requirements for installing the Asian Printing
+                 Support for OpenVMS software and the related procedures
+                 before installing the software.
+
+              o  Chapter 2, which provides step-by-step instructions for
+                 the installation.
+
+              o  Chapter 3, which describes post-installation actions
+                 required to set up a DEClaser 1152 printer
+
+              o  Chapter 4, which describes post-installation actions
+                 required to set up a DEClaser 5100 printer
+
+              o  Chapter 5, which describes post-installation actions
+                 required to set up a PrintServer 17/600
+
+        vi
+
+ 
+
+
+
+
+
+
+              o  Appendix A, which contains sample listings for the
+                 installation of the Asian Printing Support for OpenVMS
+                 software.
+
+              o  Appendix B, which contains a list of files created
+                 when the Asian Printing Support for OpenVMS software is
+                 installed.
+
+        Manuals in the Asian Printing Support for OpenVMS Documentation
+        Set
+
+              In addition to this guide, the Asian Printing Support for
+              OpenVMS documentation set includes the following document:
+
+              o  Asian Printing Support for OpenVMS Version 1.0 Release
+                 Notes
+
+        Associated Documents
+
+              o  DECprint Supervisor for OpenVMS System Manager's Guide
+
+              o  DECprint Supervisor for OpenVMS User's Guide
+
+              o  DECprint Supervisor for OpenVMS Version 1.0C Release
+                 Notes
+
+              o  DECprint Supervisor Software Installation Guide
+
+              o  OpenVMS DCL Dictionary
+
+              o  Introduction to OpenVMS System Management
+
+              o  VMS LAT Control Program (LATCP) Manual
+
+              o  DEClaser 1152 Printer Operator's Guide
+
+              o  PrintServer Software for OpenVMS Installation Guide
+
+              o  PrintServer Software for OpenVMS Management Guide
+
+              o  Character Manager (CMGR) User Guide
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+        Conventions
+
+              The following conventions are used in this guide:
+
+
+              UPPERCASE              Uppercase characters indicate
+                                     DCL commands, qualifiers and
+                                     parameters.
+
+              italics                Italic characters are used in
+                                     command examples to indicate that
+                                     you are to substitute a word or
+                                     value of your choice.
+
+              $                      The dollar sign is used to indicate
+                                     the DCL prompt. This prompt may be
+                                     different on your system.
+
+              <Ctrl/x>               In procedures, a sequence such as
+                                     <Ctrl/X> indicates that you must
+                                     hold down the key labeled Ctrl
+                                     while you press another key or a
+                                     pointing device button.
+
+              <Return>               In procedures, a key name is shown
+                                     enclosed to indicate that you press
+                                     a key on the keyboard.
+
+              .                      Vertical ellipsis in an example
+              .                      means that information not directly
+              .                      related to the example has been
+                                     omitted.
+
+              file-spec, . . .       Horizontal ellipsis indicates that
+                                     additional parameters, values, or
+                                     information can be entered.
+
+              OpenVMS                This name is used to refer to the
+                                     VMS and OpenVMS operating systems.
+
+
+
+
+
+
+        viii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+             Preparing for Installing Asian Printing Support for OpenVMS
+
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing Asian Printing Support for
+              OpenVMS, ASPS in short.
+
+
+              ASPS provides on-line release notes. Digital strongly
+              recommends that you read the release notes before
+              proceeding with the installation. For information on
+              accessing the on-line release notes, see Section 2.1.
+
+        1.1 Prerequisite Hardware
+
+              To install ASPS, you need the following items:
+
+              o  The appropriate input device to hold the distribution
+                 media
+
+                 ASPS is distributed with the Asian OpenVMS distribution
+                 media.
+
+              o  Appropriate communications hardware for printer
+                 configuration
+
+              o  Adequate disk space for the installation and operation
+                 of ASPS, as listed in Table 1-1
+
+              In addition, each type of printing device supported by ASPS
+              requires special hardware, as described in the following
+              sections.
+
+
+
+
+
+
+         Preparing for Installing Asian Printing Support for OpenVMS 1-1
+
+ 
+
+
+
+        Preparing for Installing Asian Printing Support for OpenVMS
+        1.1 Prerequisite Hardware
+
+        1.1.1 Serial Printer Hardware Requirements
+
+              ASPS supports the following serial printers.
+
+              o  DEClaser 5100
+
+                 ASPS supports DEClaser 5100 printer with the hard disk
+                 option installed. The hard disk is used for the storage
+                 of high-quality PostScript scalable fonts.
+
+              o  DEClaser 1152
+
+                 ASPS supports DEClaser 1152 printer with the following
+                 hardware options :
+
+                 1. 2MB memory upgrade to give a total of 4MB of memory
+
+                 2. LocalTalk(DIN8) to MMJ converter (P/N -H8584-AB)
+                    with BC16E cable
+
+              Serial printers, such as DEClaser printers, are connected
+              to the host system either by a DECserver port, or by
+              a direct serial line interface. The DECserver devices
+              that can be used with Asian Printing Support for
+              OpenVMS are listed in the Software Product Description
+              of DECprint Supervisor V1.0C for OpenVMS. To set up
+              DECserver connections for serial printers, refer to the
+              reference manual of the printer or Section 6.1 of DECprint
+              Supervisor for OpenVMS Software Installation Guide for
+              more details.
+
+                ________________________Note  ________________________
+
+                DEClaser 5100 printer requires an H8571-E adapter.
+                Refer to your printer installation guide for more
+                information.
+
+                _____________________________________________________
+
+        1.1.2 PrintServer Hardware Requirements
+
+              ASPS supports the following PrintServer printer :
+
+              o  PrintServer 17/600
+
+        1-2 Preparing for Installing Asian Printing Support for OpenVMS
+
+ 
+
+
+
+             Preparing for Installing Asian Printing Support for OpenVMS
+                                               1.1 Prerequisite Hardware
+
+              The PrintServer 17/600 printer must have at least 16MB
+              of memory for simplex (one-side) printing and 20MB of
+              memory for duplex (two-side) printing. A PrintServer
+              client system is an OpenVMS system where print queues
+              to the PrintServer printer are created. Before you can
+              run the DECprint Supervisor software on the client system
+              to print files on a PrintServer printer, the PrintServer
+              printer and its associated software must be installed on
+              the network. Refer to the printer installation guide for
+              more information.
+
+
+
+        1.2 Prerequisite Software
+
+        1.2.1 General Software Requirements
+
+              To install ASPS , the host system must be running one of
+              the following operating systems:
+
+              o  OpenVMS/Hanzi VAX Version 5.5 or higher
+
+              o  OpenVMS/Hanzi AXP Version 1.5 or higher
+
+              o  OpenVMS/Hanyu VAX Version 5.5 or higher
+
+              o  OpenVMS/Hanyu AXP Version 1.5 or higher
+
+              o  OpenVMS/Hangul VAX Version 5.5 or higher
+
+              o  OpenVMS/Hangul AXP Version 1.5 or higher
+
+              In addition, ASPS requires one of the following software to
+              operate.
+
+              o  DECprint Supervisor for OpenVMS AXP Version 1.0C or
+                 higher
+
+              o  DECprint Supervisor for OpenVMS VAX Version 1.0C or
+                 higher
+
+              You can install the above DECprint Supervisor software
+              (DCPS in short) before or after the installation of ASPS .
+
+
+         Preparing for Installing Asian Printing Support for OpenVMS 1-3
+
+ 
+
+
+
+        Preparing for Installing Asian Printing Support for OpenVMS
+        1.2 Prerequisite Software
+
+        1.2.2 Software Required for Networked Serial Printers
+
+              For serial printers on DECserver devices, ensure that
+              the LAT software is started before you start the print
+              queues. Either LAT or LAT/Master software can be used.
+              Refer to VMS LAT Control Program (LATCP) Manual for more
+              information.
+
+
+        1.2.3 Software Required for PrintServer Printers
+
+              For PrintServer printers, ensure that the PrintServer
+              printer is installed and booted with its software before
+              you start the print queue. DECnet-VAX software must be
+              running on the client system. PrintServer Software must
+              be running on the PrintServer host system. Refer to the
+              PrintServer Software for OpenVMS Installation Guide for
+              details.
+
+
+        1.3 License Registration
+
+              You do not need a PAK to install and use ASPS. However,
+              if your printing system requires advanced features, like
+              automatic data type detection, you will need the DCPS
+              Product Authorization Key (PAK in short) for the DECprint
+              Supervisor-Plus license. The PAK name for this license is
+              DCPS-PLUS.
+
+        1.4 Installation Procedure Requirements
+
+              The following sections discuss various requirements for
+              installing ASPS.
+
+              The installation takes approximately 5 to 20 minutes,
+              depending on your type of media and your system configura-
+              tion.
+
+
+
+
+
+
+
+
+        1-4 Preparing for Installing Asian Printing Support for OpenVMS
+
+ 
+
+
+
+             Preparing for Installing Asian Printing Support for OpenVMS
+                                 1.4 Installation Procedure Requirements
+
+        1.4.1 Privileges and Disk Space
+
+              To install Asian Printing Support for OpenVMS, you must
+              log in to an account that has SETPRV or at least the
+              following privileges:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              On most systems, the SYSTEM account has SETPRV and is used
+              to install software. To check the default privileges of
+              the SYSTEM account, log in as SYSTEM, and enter this DCL
+              command:
+
+              $ SHOW PROCESS/PRIVILEGES
+
+        1.4.2 Disk Space
+
+              ASPS requires different free disk storage space for the
+              installation of Hanzi,Hanyu and Hangul options. Table 1-1
+              summarizes the storage requirements.
+
+              Table_1-1_Disk_Space_Requirements_________________________
+
+              Disk Space Required for installing   22000
+              Hanzi option
+
+              Disk Space Required for installing   36000
+              Hanyu option
+
+              Disk Space Required for installing   11000
+              Hangul_option_____________________________________________
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL
+              prompt:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+
+
+
+         Preparing for Installing Asian Printing Support for OpenVMS 1-5
+
+ 
+
+
+
+        Preparing for Installing Asian Printing Support for OpenVMS
+        1.4 Installation Procedure Requirements
+
+        1.4.3 Process Account Quotas
+
+              The account you use to install Asian Printing Support
+              for OpenVMS must have sufficient quotas to enable you to
+              perform the installation. Table 1-2 summarizes the process
+              quotas required for the installation account.
+
+              Table 1-2 Process Account Quotas for the Installing
+              __________Account_________________________________________
+
+              Account_Quota____Value____________________________________
+
+              ASTLM            24
+
+              BIOLM            18
+
+              BYTLM            18,000
+
+              DIOLM            18
+
+              ENQLM            30
+
+              FILLM____________20_______________________________________
+
+              User account quotas are stored in the file SYSUAF.DAT. Use
+              the OpenVMS Authorize Utility (AUTHORIZE) to verify and
+              change user account quotas. First set your directory to
+              SYS$SYSTEM and then run AUTHORIZE:
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF>
+
+              At the UAF> prompt, enter the SHOW command with an account
+              name to check a particular account. For example:
+
+              UAF> SHOW SMITH
+
+              To change a quota, enter the MODIFY command. The following
+              example changes the FILLM quota for the SMITH account and
+              then exits from the utility:
+
+              UAF> MODIFY SMITH /FILLM=50
+              UAF> EXIT
+
+              After you exit from the utility, the system displays
+              messages indicating whether or not changes were made.
+              Once the changes have been made, you must log out and log
+              in again for the new quotas to take effect.
+
+        1-6 Preparing for Installing Asian Printing Support for OpenVMS
+
+ 
+
+
+
+             Preparing for Installing Asian Printing Support for OpenVMS
+                                 1.4 Installation Procedure Requirements
+
+              For more information on modifying account quotas, see the
+              description of the Authorize Utility in the OpenVMS System
+              Management Subkit.
+
+        1.4.4 VMSINSTAL Requirements
+
+              When you invoke VMSINSTAL, it checks the following:
+
+              o  Whether you have set your default device and directory
+                 to SYS$UPDATE
+
+              o  Whether you are logged in to a privileged account
+
+              o  Whether you have adequate quotas for installation
+
+              o  Whether DECnet is running
+
+              o  Whether any users are logged in to the system
+
+              Note that the VMSINSTAL requires that the installation
+              account has a minimum of the following quotas:
+
+                 ASTLM = 24
+                 BIOLM = 18
+                 BYTLM = 18,000
+                 DIOLM = 18
+                 ENQLM = 30
+                 FILLM = 20
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can enter YES to
+              continue. To stop the installation process and correct the
+              situation, enter NO or press <Return>. Then correct the
+              problem and restart the installation.
+
+        1.4.5 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if
+              you have backed up your system disk. Digital recommends
+              that you do a system disk backup before installing any
+              software.
+
+              Use the backup procedures that are established at your
+              site. For details on performing a system disk backup, see
+              the section on the Backup Utility in the OpenVMS System
+              Management Subkit.
+
+         Preparing for Installing Asian Printing Support for OpenVMS 1-7
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                           Installing Asian Printing Support for OpenVMS
+
+
+
+              This chapter explains how to install Asian Printing
+              Support for OpenVMS. Section 2.1 contains a step-by-step
+              description of the installation procedure.
+
+        2.1 The Installation Procedure
+
+              The Asian Printing Support for OpenVMS installation proce-
+              dure consists of a series of questions and informational
+              messages. See Appendix A for a sample installation.
+
+              To abort the installation procedure at any time, press
+              <Ctrl/Y>. When you press <Ctrl/Y>, the installation
+              procedure deletes all files it has created up to that
+              point and exits. You can then start the installation
+              again.
+
+              1. Invoke VMSINSTAL.
+
+                 @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS
+        N
+
+                 To start the installation, invoke the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account. VMSINSTAL is in the SYS$UPDATE directory. The
+                 following list defines the elements of the VMSINSTAL
+                 command procedure:
+
+                 saveset-name
+                 The installation name for the component. For ASPS, use
+                 the following installation name:
+
+                 ASPS010
+
+
+
+                       Installing Asian Printing Support for OpenVMS 2-1
+
+ 
+
+
+
+        Installing Asian Printing Support for OpenVMS
+        2.1 The Installation Procedure
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 media. For example, MTA0: is the device name for a tape
+                 drive. It is not necessary to use the console drive for
+                 this installation. However, if you do use the console
+                 drive, you should replace any media you removed once
+                 the installation is complete.
+
+                 OPTIONS N
+                 An optional parameter that indicates you want to see
+                 the question on release notes. If you do not include
+                 the OPTIONS N parameter, VMSINSTAL does not ask you
+                 about the release notes. You should review the release
+                 notes before proceeding with the installation in
+                 case they contain additional information about the
+                 installation. If you are restarting the installation
+                 and have already reviewed the release notes, you do not
+                 need to specify OPTIONS N.
+
+                 Note that there are several other options you can
+                 select when you invoke VMSINSTAL.
+
+                 o  Auto_answer option (A): Initially creates a file
+                    that contains your answers to VMSINSTAL questions
+                    and prompts. You can then use the option (and the
+                    answer file) to save time during a reinstallation
+                    (typically after upgrading your system).
+
+                 o  Get save set option (G): Lets you store product save
+                    sets temporarily on a magnetic tape or in a disk
+                    directory.
+
+                 o  File log option (L): Logs all activity to the
+                    terminal during installation.
+
+                 o  Alternate root option (R): Lets you install the
+                    product to a system root other than that of the
+                    running system.
+
+                 See the OpenVMS documentation on software installation
+                 in the OpenVMS System Management Subkit for detailed
+                 information on these options. If you specify more than
+                 one option, separate the options with commas (OPTIONS
+                 A,N).
+
+        2-2 Installing Asian Printing Support for OpenVMS
+
+ 
+
+
+
+                           Installing Asian Printing Support for OpenVMS
+                                          2.1 The Installation Procedure
+
+                 The following example invokes VMSINSTAL to install ASPS
+                 from tape drive MTA0: and shows the system response.
+                 This example uses the OPTIONS N release note parameter.
+
+                 $ @SYS$UPDATE:VMSINSTAL ASPS010 MTA0: OPTIONS N
+
+                       VAX/VMS Software Product Installation Procedure V5.5
+
+
+                 It is 05-FEB-1994 at 10:10.
+                 Enter a question mark (?) at any time for help.
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure. VMSINSTAL does
+                 not prompt you for any options, so be sure to include
+                 OPTIONS N on the VMSINSTAL command line to access the
+                 release notes during the installation.
+
+              2. Confirm DECnet status.
+
+                    .
+                    .
+                    .
+                 * Do you want to continue anyway [NO]?
+
+                 VMSINSTAL notifies you if DECnet is running and
+                 displays a list of all active processes. It then asks
+                 if you want to continue the installation. You should
+                 install ASPS on a standalone system or cluster with
+                 DECnet shut down. NO is the default response to the
+                 question.
+
+              3. Confirm system backup.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. You should always back up your system disk
+                 before performing an installation. If you are satisfied
+                 with the backup of your system disk, press <Return>.
+                 Otherwise, enter NO to discontinue the installation.
+                 After you back up your system disk, you can restart the
+                 installation.
+
+                       Installing Asian Printing Support for OpenVMS 2-3
+
+ 
+
+
+
+        Installing Asian Printing Support for OpenVMS
+        2.1 The Installation Procedure
+
+              4. Mount the media.
+
+                 Please mount the first volume of the set on MTA0:.
+                 * Are you ready? YES
+                 %MOUNT-I-MOUNTED, Asian Printing Support for OpenVMS 
+                   MOUNTED ON _$$MTA0:  (NODE 1)
+                 The following products will be processed:
+
+                   ASPS V1.0
+
+                         Beginning installation of ASPS V1.0  at 10:12
+
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                 You should now mount the first distribution volume on
+                 the device you specified when you invoked VMSINSTAL.
+                 The device name appears in the line preceding the
+                 question. VMSINSTAL then asks you if you are ready
+                 to continue with the installation.
+
+                 If you respond YES to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 ASPS has been mounted on the specified device and that
+                 the installation has begun.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter
+                 NO in response to the "Are you ready?" question.
+                 To abort the installation for other reasons, press
+                 <Ctrl/Y>.
+
+              5. Select a release notes option.
+
+                 ASPS release notes, ASPS010.RELEASE_NOTES, is provided
+                 along with the kit. If you specified OPTIONS N when you
+                 invoked VMSINSTAL, you are now asked to choose one of
+                 the following four options for reviewing the release
+                 notes.
+
+
+
+
+
+
+
+
+        2-4 Installing Asian Printing Support for OpenVMS
+
+ 
+
+
+
+                           Installing Asian Printing Support for OpenVMS
+                                          2.1 The Installation Procedure
+
+                 Release notes included with this kit are always copied to 
+                 SYS$HELP.
+
+                 Additional Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  None of the above
+
+                 * Select option [2]:
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on the console terminal. You can
+                 terminate the display at any time by pressing <Ctrl/C>.
+
+                 If you select option 2, VMSINSTAL prompts you for the
+                 name of the print queue that you want to use:
+
+                 * Queue name [SYS$PRINT]:
+
+                 You can press <Return> to send the files to the default
+                 output print device or you can enter another queue
+                 name.
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes immediately on the console terminal and then
+                 prompts you for a queue name for the printed versions.
+
+                 Select option 4 if you have already reviewed the
+                 release notes and are restarting the installation.
+
+                 Next, VMSINSTAL displays the following question:
+
+                 * Do you want to continue the installation [N]?: YES
+                 %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                        successfully moved to SYS$HELP.
+
+                 To continue the installation, enter YES. Otherwise,
+                 press <Return>. In either case, the release notes are
+                 copied to files in the SYS$HELP directory:
+
+                 SYS$HELP:ASPS010.RELEASE_NOTES
+
+              6. Purge files.
+
+                 * Do you want to purge files replaced by this 
+                   installation [YES]?
+
+                 You have the option to purge files from previous
+                 versions of Asian Printing Support for OpenVMS that
+                 are superseded by this installation. Purging is
+
+                       Installing Asian Printing Support for OpenVMS 2-5
+
+ 
+
+
+
+        Installing Asian Printing Support for OpenVMS
+        2.1 The Installation Procedure
+
+                 recommended; however, if you need to keep files from
+                 the previous version, enter NO in response to the
+                 question.
+
+              7. Choose language options.
+
+                 * Do you want to purge files replaced by this 
+                   installation [YES]?
+
+                Option  Description
+                ------  -----------
+                A       Enable Simplified Chinese (Hanzi) printing capability.
+                B       Enable Traditional Chinese (Hanyu) printing capability.
+                C       Enable Korean printing (Hangul) capability.
+
+                For example, enter "CB" to enable Korean and Traditional Chinese
+                printing at the same time.
+
+
+                 * Enter options to enable Asian language printing 
+                   capabilities [B]:
+
+                 You have the option to choose which language options
+                 you want to install on your system. You can specify a
+                 single language option by typing in a single letter,
+                 or specify more than one language options by typing in
+                 any combination of the letters A,B and C. The default
+                 answer will be set according to the language variant of
+                 OpenVMS already installed on your system.
+
+                 VMSINSTAL checks to see if the amount of disk space
+                 required for the installation is available. If the
+                 space is not available, a message indicates the amount
+                 of disk space that is required, and the installation
+                 is aborted. Otherwise, the installation procedure
+                 continues.
+
+              8. Read informational messages.
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation. There are no further
+                 questions. If the installation procedure has been
+                 successful up to this point, VMSINSTAL moves the new
+                 or modified files to their target directories, updates
+                 help files, and updates DCL tables, if necessary. If
+
+        2-6 Installing Asian Printing Support for OpenVMS
+
+ 
+
+
+
+                           Installing Asian Printing Support for OpenVMS
+                                          2.1 The Installation Procedure
+
+                 you chose to have files purged, that work is done now.
+                 The following messages are displayed:
+
+                 %VMSINSTAL-I-MOVEFILES, files will now be moved to their target
+                                                    directories...
+
+              9. End the installation procedure.
+
+                    Installation of ASPS V1.0 completed at 10:15
+
+                    VMSINSTAL procedure done at 10:15
+
+                 This message indicates that the entire installation
+                 procedure is complete.
+
+                 You can now log out of the privileged account:
+
+                 $ LOGOUT
+                 SYSTEM     logged out at 04-FEB-1994 10:15:10.23
+
+                 Note that VMSINSTAL deletes or changes entries in
+                 the process symbol tables during the installation.
+                 Therefore, if you are going to continue using the
+                 system manager's account and you want to restore these
+                 symbols, you should log out and log in again.
+
+        2.2 Error Recovery
+
+              If errors occur during the installation, VMSINSTAL
+              displays failure messages.
+
+              For descriptions of the error messages generated by those
+              conditions, see the OpenVMS documentation on system
+              messages, recovery procedures, and OpenVMS software
+              installation. If you are notified that any of those
+              conditions exists, you should take the appropriate action
+              as described in the message. For information on the
+              installation requirements, see Chapter 1.
+
+
+
+
+
+
+
+                       Installing Asian Printing Support for OpenVMS 2-7
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                      Setting up a DEClaser 1152 Printer
+
+
+
+              The following sections describe the steps to be performed
+              for setting up a DEClaser 1152 printer to print Chinese
+              and Korean characters. To print Asian documents, your
+              DEClaser 1152 printer must have the 2MB memory upgrade
+              board installed to give a total of 4MB of memory. For
+              each DEClaser 1152 printer, you need two serial channels
+              to connect to the host computer. One channel is used for
+              normal DCPS print queue and the other is used for getting
+              Asian PostScript fonts.
+
+              On the printer side, you should use the main serial
+              channel ( Serial ) for connection to DCPS print symbiont.
+              The printer provides a second serial channel (SerialB)
+              through the LocalTalk port. You need a DIN-8 to MMJ
+              converter (P/N -H8584-AB) for connection to host.
+
+              On the host side, you have to designate two serial ports
+              to be used for DCPS print symbiont and ASPS font daemon.
+              The ports can either be TT port or LAT port.
+
+              You must perform the following tasks for ASPS to work with
+              the DEClaser 1152 printer. All tasks should be performed
+              by system managers under the SYSTEM account as follows:
+
+              1. Install the DECprint Supervisor for OpenVMS Software
+
+              2. Edit the system startup command file
+
+              3. Edit the printer startup file SYS$STARTUP:DCPS$STARTUP.COM
+
+              4. Create and edit the Asian font daemon startup file
+                 ASPS$STARTUP_FONTS_DAEMON.COM
+
+              5. Invoke SYS$STARTUP:DCPS$STARTUP.COM
+
+              6. Invoke SYS$STARTUP:ASPS$STARTUP_FONT_DAEMON.COM
+
+                                  Setting up a DEClaser 1152 Printer 3-1
+
+ 
+
+
+
+        Setting up a DEClaser 1152 Printer
+        3.1 Installing the DECprint Supervisor Software
+
+        3.1 Installing the DECprint Supervisor Software
+
+              Install DECprint Supervisor for OpenVMS (DCPS) by
+              VMSINSTAL if it is not already installed. Please follow
+              the installation procedure documented in DECprint
+              Supervisor Software Installation Guide to install the
+              above software. After the installation of the DECprint
+              Supervisor software, you need to enable ASPS to work with
+              the DEClaser 1152 printer by the following command.
+
+              $ @SYS$MANAGER:ASPS$DL1152_SETUP
+
+              The procedure will append a PostScript prologue to the
+              system page module, LPS$$SYSTEMPAGES. The PostScript
+              prologue enables the printer to talk to the font daemon on
+              host to fetch font information when needed.
+
+              The original system page module will be saved under a
+              new module called LPS$$SYSTEMPAGES_ASPS_SAV in the device
+              control library.
+
+              When the DEClaser 1152 printer is no longer used for
+              printing Asian documents, you can recover the original
+              system page module by issuing the following commands :
+
+              $ LIBR/EXTRACT=LPS$$SYSTEMPAGES_ASPS_SAV/OUT=LPS$$SYSTEMPAGES.PS -
+              _$ SYS$LIBRARY:DCPS$DEVCTL.TLB
+              $ LIBR/REPLACE SYS$LIBRARY:DCPS$DEVCTL.TLB LPS$$SYSTEMPAGES.PS
+              $ DELETE LPS$$SYSTEMPAGES.PS;*
+
+        3.2 Editing the System Startup Command File
+
+              Edit the system startup file, SYS$STARTUP:SYSTARTUP_
+              VMS.COM[1] and make sure both of the following procedures
+              are included in the system startup file :
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+              $ @SYS$STARTUP:ASPS$STARTUP_FONT_DAEMON
+
+              ___________________
+              [1]Prior to Asian OpenVMS VAX Version 6.0, the name of
+                 the system startup file is SYS$STARTUP:SYSTARTUP_
+
+                 V5.COM
+
+        3-2 Setting up a DEClaser 1152 Printer
+
+ 
+
+
+
+                                      Setting up a DEClaser 1152 Printer
+                             3.2 Editing the System Startup Command File
+
+              This will ensure that the DEClaser 1152 printer will be
+              set up properly for Asian characters printing after the
+              system is rebooted.
+
+              If either the print queue port or the font daemon port
+              is a Local Area Transport (LAT) port, you should make
+              the necessary changes to the command procedure in
+              SYS$STARTUP:LAT$STARTUP.COM to start the LAT protocol,
+              and to configure application devices for printer before
+              you execute DCPS$STARTUP.COM. DCPS$STARTUP.COM and
+              ASPS$STARTUP_FONT_DAEMON.COM also allow users to set up
+              LAT devices inside the command procedures.
+
+              To update the system startup file, edit 
+              SYS$STARTUP:SYSTARTUP_VMS.COM,
+              and add the following command procedure in the file:
+
+              $ @SYS$STARTUP:LAT$STARTUP
+
+              Make sure that the command lines to start DCPS$STARTUP.COM
+              and ASPS$STARTUP_FONT_DAEMON.COM come after the command to
+              start LAT$STARTUP.COM. If the system startup file does not
+              include the above command line, the Local Area Transport
+              (LAT) protocol will not be started automatically when the
+              system starts up.
+
+        3.3 Defining a DCPS Queue for the Printer
+
+              Before you can print, you must create the startup file
+              DCPS$STARTUP.COM for the DECprint Supervisor software.
+              These operations are required for sites that are
+              installing the DECprint Supervisor software for the first
+              time.
+
+
+        3.3.1 Copying the Printer Startup Command File
+
+              DECprint Supervisor software provides you with a template
+              printer startup file, DCPS$STARTUP.TEMPLATE. You must copy
+              the template file and edit the file to reflect your own
+              queue structure. You may also add a command to execute
+              this file in the system startup file.
+
+
+
+
+                                  Setting up a DEClaser 1152 Printer 3-3
+
+ 
+
+
+
+        Setting up a DEClaser 1152 Printer
+        3.3 Defining a DCPS Queue for the Printer
+
+              Copy the template printer startup file using the copy
+              command as follows:
+
+              $ SET DEFAULT SYS$STARTUP
+              $ COPY DCPS$STARTUP.TEMPLATE DCPS$STARTUP.COM
+
+
+        3.3.2 Editing the Printer Startup File
+
+              Edit DCPS$STARTUP.COM to reflect your own queue structure,
+              to include :
+
+              1. The Definition of Execution Queues
+
+                 You may create an execution queue for each DEClaser
+                 1152 printer. To create an execution queue for your
+                 printer, add the following to your DCPS$STARTUP.COM:
+
+                 $ @SYS$STARTUP:DCPS$EXECUTION_QUEUE -
+                       DL1152 -             ! P1 - Execution queue name
+                       lta1: -              ! P2 - Serial Device Name or Printer
+                       -                    !      Server node name
+                       DCPS_LIB -           ! P3 - Logical name for library(ies)
+                       "" -                 ! P4 - Default queue parameters
+                       "" -                 ! P5 - Default queue qualifiers
+                       "" -                 ! P6 - Communication speed (serial
+                          -                 !      devices only)
+                       "" -                 ! P7 - Device characteristics
+                       ""                   ! P8 - Verify on/off
+
+                 For details about creating your own execution queue
+                 structure, please refer to DECprint Supervisor Software
+                 System Manager's Guide.
+
+              2. The Definition of Generic Queues
+
+                 You can set up a generic queue for each print job. For
+                 example, a generic queue to print simplified Chinese
+                 can be defined as follows:
+
+                 $ @SYS$STARTUP:DCPS$GENERIC_QUEUE -
+                         HANZI_TEXT -           ! P1 - Generic queue name
+                         DL1152 -               ! P2 - Execution queue name
+                         "DATA=LA_DECHANZI" -   ! P3 - Default parameter
+                         "" -                   ! P4 - Default queue qualifiers
+                         ""                     ! P5 - Verify on/off
+
+        3-4 Setting up a DEClaser 1152 Printer
+
+ 
+
+
+
+                                      Setting up a DEClaser 1152 Printer
+                               3.3 Defining a DCPS Queue for the Printer
+
+                 For details, please refer to DECprint Supervisor
+                 Software System Manager's Guide.
+
+
+
+        3.4 Defining an Asian Font Daemon for the Printer
+
+              An Asian font daemon should be defined for every DEClaser
+              1152 printer you want to be enabled for Asian characters
+              printing. The Asian font daemon runs on the host system
+              and serves fonts to the printer when needed. It uses
+              the second serial communication channel to talk to the
+              printer.
+
+              ASPS provides you with a template font daemon startup file,
+              ASPS$STARTUP_FONT_DAEMON.TEMPLATE. You must copy the
+              template file and edit the file to define the Asian font
+              daemons on your system. You may also add a command to
+              execute this file in the system startup file.
+
+
+        3.4.1 Copying the Asian Font Daemon Startup Command File
+
+              Copy the template font daemon startup file using the copy
+              command as follows:
+
+              $ SET DEFAULT SYS$STARTUP
+              $ COPY ASPS$STARTUP_FONT_DAEMON.TEMPLATE -
+                     ASPS$STARTUP_FONT_DAEMON.COM
+
+        3.4.2 Editing the Asian Font Daemon Startup File
+
+              Edit ASPS$STARTUP_FONT_DAEMON.COM to start one or more font
+              daemons on your system. The font daemons are started at
+              the end of the file, the following example shows two font
+              daemons are started, one serving a printer with SerialB
+              channel connected to TTA1:, and the other with SerialB
+              channel connected to LTA9:.
+
+
+
+
+
+
+
+
+                                  Setting up a DEClaser 1152 Printer 3-5
+
+ 
+
+
+
+        Setting up a DEClaser 1152 Printer
+        3.4 Defining an Asian Font Daemon for the Printer
+
+          $!--------------------------------------------------------------------
+          $!  Add a line below for each port you want to enable for font loading
+          $!  p1 is the port name in the form of TTAn , LTAn, OPAn etc
+          $!  P2 is the speed of the TT port, not relevant for LAT port
+          $!
+          $ call font_daemon tta1 19200
+          $ call font_dameon lta9
+
+              For LAT ports, the speed is specified in the DECserver
+              and thus specifying the speed here will not make any
+              difference. For TT ports, the speed specified here will be
+              used for setting the speed of the port. In either case,
+              the speed of the port has to match with the speed set for
+              the SerialB channel of the printer. To keep everything in
+              one place, you can include the LAT port definition in this
+              procedure. The following example shows the definition of a
+              LAT port :
+
+              $ run sys$system:latcp
+              create port lta9: /application /nolog
+              set port lta9:/node=LAT_08002B2F3897/port=PORT_8/application/queue
+
+        3.5 Executing DCPS$STARTUP to Create/Start the Queues
+
+              Invoke DCPS$STARTUP by issuing the following DCL command
+              in the command line:
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+
+
+        3.6 Executing ASPS$STARTUP_FONT_DAEMON to Create Font Daemons
+
+              Invoke ASPS$STARTUP_FONT_DAEMON by issuing the following
+              DCL command in the command line:
+
+              $ @SYS$STARTUP:ASPS$STARTUP_FONT_DAEMON
+
+
+
+
+
+
+
+
+
+        3-6 Setting up a DEClaser 1152 Printer
+
+ 
+
+
+
+                                      Setting up a DEClaser 1152 Printer
+                                                         3.7 Limitations
+
+        3.7 Limitations
+
+              Due to the limitation on the capacity of the serial
+              communication channels, the following line speeds are 
+              recommended for setting up the DEClaser 1152 printer :
+         
+              . 9600  bps for main channel (Serial)
+              . 19200 bps for font channel (SerialB)
+
+        3.8 Determining and Reporting Problems
+
+              If you encounter a problem while using Asian Printing
+              Support for OpenVMS, report it to Digital. Depending on
+              the nature of the problem and the type of support you
+              have, you can take one of the following actions:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter
+              a problem during the warranty period, report the problem
+              as indicated above or follow alternative instructions
+              provided by Digital for reporting SPD nonconformance
+              problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Setting up a DEClaser 1152 Printer 3-7
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                      Setting up a DEClaser 5100 Printer
+
+
+
+              The following sections describe the steps to be performed
+              for setting up a DEClaser 5100 printer to print Asian
+              characters. The DEClaser 5100 printer must have the
+              hard disk option installed to store the Asian fonts. ASPS
+              provides a font loading procedure to download the Asian
+              PostScript fonts to the hard disk of the printer.
+
+              You must perform the following tasks for ASPS to work with
+              the DEClaser 5100 printer. All tasks should be performed
+              by system manager under the SYSTEM account as follows:
+
+              1. Download Asian PostScript fonts to the hard disk of the
+                 printer
+
+              2. Install the DECprint Supervisor for OpenVMS Software
+
+              3. Edit the system startup command File
+
+              4. Edit the printer startup file DCPS$STARTUP.COM
+
+              5. Invoke SYS$STARTUP:DCPS$STARTUP.COM
+
+        4.1 Downloading PostScript Fonts to the Hard Disk of the
+            Printer
+
+              DEClaser 5100 is a high-performance 8 pages-per-minute
+              PostScript printer. ASPS supports printing of Chinese
+              and Korean characters to this printer with the hard
+              disk option installed. You have to execute the following
+              procedure to download the Asian PostScript fonts to the
+              hard disk of the printer:
+
+              @SYS$STARTUP:ASPS$DL5100_LOAD_FONTS.COM
+
+
+                                  Setting up a DEClaser 5100 Printer 4-1
+
+ 
+
+
+
+        Setting up a DEClaser 5100 Printer
+        4.1 Downloading PostScript Fonts to the Hard Disk of the Printer
+
+              The procedure will ask you to specify a TT or LAT port
+              your DEClaser 5100 printer is connected to. Make sure the
+              speed of the port matches with the speed setting of the
+              main serial channel of the printer. If there is currently
+              a print queue running on that port, stop the queue by
+              issuing the following command :
+
+              $ stop/que/reset your_print_queue
+
+              For example, if you connect the DEClaser 5100 printer to
+              the LTA1 port :
+
+      $ @SYS$MANAGER:ASPS$DL5100_LOAD_FONT.COM
+
+      This procedure downloads Asian PostScript fonts to the hard disk of the
+      DEClaser 5100 printer. Please specify the name of TT or LAT port which
+      connects to the printer.
+      If there is a print queue running on that port, please stop it by typing :
+
+                  $ stop/que/reset your_print_queue
+
+              The port DEClaser 5100 is connected to : LTA1:
+
+              Then the procedure will list all Asian PostScript fonts
+              available on your system and ask you to specify which
+              fonts you want to be downloaded to the hard disk of the
+              printer.
+
+              Please select which fonts you want to be downloaded to the 
+              hard disk of the printer :
+
+              HEI-LIGHT-CNS11643.    SUNG-LIGHT-CNS11643.  SUNG-LIGHT-DTSCS.
+
+              You can specify a list of files using comma (,) and wildcard
+              characters (%)(*), E.g. Font*,MyFont
+
+              Enter fonts you want to be downloaded : *
+
+              Normally you would download all PostScript fonts to the
+              hard disk, so you can just answer * to the prompt. If you
+              wish to download only some of the fonts on your system,
+              you can specify a list of files separated by comma(s). You
+              can also specify the fonts by using wild card characters *
+              and %.
+
+              The following table shows the fonts available for
+              Simplified Chinese, Traditional Chinese and Korean
+              languages :
+
+        4-2 Setting up a DEClaser 5100 Printer
+
+ 
+
+
+
+                                      Setting up a DEClaser 5100 Printer
+        4.1 Downloading PostScript Fonts to the Hard Disk of the Printer
+
+              Table_4-1_Asian_PostScript_Font_Names_____________________
+
+              Language___________________Font_Names_____________________
+
+              Simplified Chinese         XiSong-GB2312-80
+              (Hanzi)
+
+                                         Hei-GB2312-80
+
+              Traditional Chinese        Sung-Light-CNS11643
+              (Hanyu)
+
+                                         Hei-Light-CNS11643
+
+                                         Sung-Light-DTSCS
+
+              Korean_(Hangul)____________Munjo__________________________
+
+                ________________________Note  ________________________
+
+                Sung-Light-DTSCS is a dummy font file which does
+                not contain any characters. The Hanyu text-to-
+                PostScript translator needs this font file for
+                proper operations.
+
+                _____________________________________________________
+
+              After you have confirmed the list of fonts are correct,
+              the procedure will start sending fonts to the printer.
+              There will be some informational messages telling you
+              about the status of the job. Depending on the speed of the
+              serial line and the amount of data to be sent, it takes
+              about 1 to 3 hours to complete. When all fonts have been
+              downloaded to the hard disk of the printer, you should
+              power off the printer and turn it on again.
+
+        4.2 Installing the DECprint Supervisor Software
+
+              Install DECprint Supervisor for OpenVMS V1.0C (DCPS
+              V1.0C) by VMSINSTAL if it is not already installed. Please
+              follow the installation procedure documented in DECprint
+              Supervisor Software Installation Guide to install the
+              above software.
+
+
+                                  Setting up a DEClaser 5100 Printer 4-3
+
+ 
+
+
+
+        Setting up a DEClaser 5100 Printer
+        4.3 Editing the System Startup Command File
+
+        4.3 Editing the System Startup Command File
+
+              Edit the system startup file, SYS$STARTUP:SYSTARTUP_
+              VMS.COM[1] and make sure the following procedure is
+              included in the system startup file :
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+
+              This will ensure that the print queue for the DEClaser
+              5100 printer will be automatically started at system
+              startup time.
+
+              If the port for the print queue is a Local Area Transport
+              (LAT) port, you should make the necessary changes to
+              the command procedure in SYS$STARTUP:LAT$STARTUP.COM
+              to start the LAT protocol, and to configure application
+              devices for printer before you execute DCPS$STARTUP.COM.
+              DCPS$STARTUP.COM also allows users to set up LAT devices
+              inside the command procedure.
+
+              To update the system startup file, edit 
+              SYS$STARTUP:SYSTARTUP_VMS.COM,
+              and add the following command procedure in the file:
+
+              $ @SYS$STARTUP:LAT$STARTUP
+
+              Make sure that the command line to start DCPS$STARTUP.COM
+              comes after the command to start LAT$STARTUP.COM. If the
+              system startup file does not include the above command
+              line, the Local Area Transport (LAT) protocol will not be
+              started automatically when the system starts up.
+
+        4.4 Defining a DCPS Queue for the Printer
+
+              Before you can print, you must create the startup file
+              DCPS$STARTUP.COM for the DECprint Supervisor software.
+              These operations are required for sites that are
+              installing the DECprint Supervisor software for the first
+              time.
+
+              ___________________
+              [1]Prior to Asian OpenVMS VAX Version 6.0, the name of
+                 the system startup file is SYS$STARTUP:SYSTARTUP_
+
+                 V5.COM
+
+        4-4 Setting up a DEClaser 5100 Printer
+
+ 
+
+
+
+                                      Setting up a DEClaser 5100 Printer
+                               4.4 Defining a DCPS Queue for the Printer
+
+        4.4.1 Copying the Printer Startup Command File
+
+              DECprint Supervisor software provides you with a template
+              printer startup file, DCPS$STARTUP.TEMPLATE. You must copy
+              the template file and edit the file to reflect your own
+              queue structure. You may also add a command to execute
+              this file in the system startup file.
+
+              Copy the template printer startup file using the copy
+              command as follows:
+
+              $ SET DEFAULT SYS$STARTUP
+              $ COPY DCPS$STARTUP.TEMPLATE DCPS$STARTUP.COM
+
+        4.4.2 Editing the Printer Startup File
+
+              Edit DCPS$STARTUP.COM to reflect your own queue structure,
+              to include :
+
+              1. The Definition of Execution Queues
+
+                 You must create an execution queue for each DEClaser
+                 5100 printer. To create an execution queue for your
+                 printer, add the following to your DCPS$STARTUP.COM:
+
+                 $ @SYS$STARTUP:DCPS$EXECUTION_QUEUE -
+                       DL5100 -             ! P1 - Execution queue name
+                       LTA1: -              ! P2 - Serial Device Name or Printer
+                       -                    !      Server node name
+                       DCPS_LIB -           ! P3 - Logical name for library(ies)
+                       "" -                 ! P4 - Default queue parameters
+                       "" -                 ! P5 - Default queue qualifiers
+                       "" -                 ! P6 - Communication speed (serial
+                          -                 !      devices only)
+                       "" -                 ! P7 - Device characteristics
+                       ""                   ! P8 - Verify on/off
+
+                 For details about creating your own execution queue
+                 structure, please refer to DECprint Supervisor Software
+                 System Manager's Guide.
+
+              2. The Definition of Generic Queues
+
+
+
+                                  Setting up a DEClaser 5100 Printer 4-5
+
+ 
+
+
+
+        Setting up a DEClaser 5100 Printer
+        4.4 Defining a DCPS Queue for the Printer
+
+                 You can set up a generic queue for each print job. For
+                 example, a generic queue to print traditional Chinese
+                 can be defined as follows:
+
+                 $ @SYS$STARTUP:DCPS$GENERIC_QUEUE -
+                         HANYU_TEXT -            ! P1 - Generic queue name
+                         DL5100 -                ! P2 - Execution queue name
+                         "DATA=LA_DECHANYU" -    ! P3 - Default parameter
+                         "" -                    ! P4 - Default queue qualifiers
+                         ""                      ! P5 - Verify on/off
+
+                 For details, please refer to DECprint Supervisor
+                 Software System Manager's Guide.
+
+
+        4.5 Executing DCPS$STARTUP to Create/Start the Queues
+
+              Invoke DCPS$STARTUP by issuing the following DCL command
+              in the command line:
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+
+        4.6 Determining and Reporting Problems
+
+              If you encounter a problem while using Asian Printing
+              Support for OpenVMS, report it to Digital. Depending on
+              the nature of the problem and the type of support you
+              have, you can take one of the following actions:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter
+              a problem during the warranty period, report the problem
+              as indicated above or follow alternative instructions
+              provided by Digital for reporting SPD nonconformance
+              problems.
+
+
+
+
+
+        4-6 Setting up a DEClaser 5100 Printer
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       5
+        ________________________________________________________________
+
+                                 Setting up a PrintServer 17/600 Printer
+
+
+
+              The following sections describe the steps to be performed
+              for setting up a PrintServer 17/600 printer to print
+              Chinese and Korean language documents. To print Asian
+              documents, the PrintServer 17/600 printer must have at
+              least 16MB of memory for simplex printing and 20MB of
+              memory for duplex printing. The supporting host which
+              provides boot service and images to the printer must be
+              running PrintServer Software for OpenVMS Version 5.0 or
+              higher.
+
+              You must perform the following tasks for ASPS to work with
+              the PrintServer 17/600. All tasks should be performed by
+              system manager under the SYSTEM account as follows:
+
+              1. Install the PrintServer Software for OpenVMS
+
+              2. Install the DECprint Supervisor for OpenVMS Software
+
+              3. Invoke SYS$MANAGER:ASPS$LPS17_SETUP.COM to enable the
+                 PrintServer Software to support Asian fonts
+
+              4. Edit the system startup command File
+
+              5. Edit the printer startup file DCPS$STARTUP.COM
+
+              6. Invoke SYS$STARTUP:DCPS$STARTUP.COM
+
+        5.1 Installing the PrintServer Software
+
+              Install PrintServer Software for OpenVMS V5.0 (LPS V5.0)
+              by VMSINSTAL if it is not already installed. Please follow
+              the installation procedure documented in the PrintServer
+              Software for OpenVMS Installation Guide to install the
+              above software. You should follow the procedure to set up
+
+                             Setting up a PrintServer 17/600 Printer 5-1
+
+ 
+
+
+
+        Setting up a PrintServer 17/600 Printer
+        5.1 Installing the PrintServer Software
+
+              the printer for English printing first before performing
+              the following steps.
+
+        5.2 Editing the System Startup Command File
+
+              Edit the system startup file, SYS$STARTUP:SYSTARTUP_
+              VMS.COM[1] and make sure both of the following procedures
+              are included in the system startup file :
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+              $ @SYS$STARTUP:LPS$STARTUP_SERVICES
+
+              This will ensure that the print queue and supporting host
+              software for the PrintServer 17/600 will be automatically
+              started at system startup time.
+
+              Make sure that the command line to start DCPS$STARTUP.COM
+              comes after the command STARTNET.COM.
+
+        5.3 Defining a DCPS Queue for the Printer
+
+              Before you can print, you must create the startup file
+              DCPS$STARTUP.COM for the DECprint Supervisor software.
+              These operations are required for sites that are
+              installing the DECprint Supervisor software for the first
+              time.
+
+        5.3.1 Copying the Printer Startup Command File
+
+              DECprint Supervisor software provides you with a template
+              printer startup file, DCPS$STARTUP.TEMPLATE. You must copy
+              the template file and edit the file to reflect your own
+              queue structure. You may also add a command to execute
+              this file in the system startup file.
+
+              Copy the template printer startup file using the copy
+              command as follows:
+
+              $ SET DEFAULT SYS$STARTUP
+              $ COPY DCPS$STARTUP.TEMPLATE DCPS$STARTUP.COM
+
+              ___________________
+              [1]Prior to Asian OpenVMS VAX Version 6.0, the name of
+                 the system startup file is SYS$STARTUP:SYSTARTUP_V5.COM
+
+        5-2 Setting up a PrintServer 17/600 Printer
+
+ 
+
+
+
+                                 Setting up a PrintServer 17/600 Printer
+                               5.3 Defining a DCPS Queue for the Printer
+
+        5.3.2 Editing the Printer Startup File
+
+              Edit DCPS$STARTUP.COM to reflect your own queue structure,
+              to include
+
+              1. The Definition of Execution Queues
+
+                 You must create an execution queue for each PrintServer
+                 17/600 printer. To create an execution queue for your
+                 printer, add the following to your DCPS$STARTUP.COM:
+
+                 $ @SYS$STARTUP:DCPS$EXECUTION_QUEUE -
+                       LPS17 -              ! P1 - Execution queue name
+                       LPSNOD:: -           ! P2 - Serial Device Name or Printer
+                          -                 !      Server node name
+                       DCPS_LIB -           ! P3 - Logical name for library(ies)
+                       "" -                 ! P4 - Default queue parameters
+                       "" -                 ! P5 - Default queue qualifiers
+                       "" -                 ! P6 - Communication speed (serial
+                          -                 !      devices only)
+                       "" -                 ! P7 - Device characteristics
+                       ""                   ! P8 - Verify on/off
+
+                 For details about creating your own execution queue
+                 structure, please refer to DECprint Supervisor Software
+                 System Manager's Guide.
+
+              2. The Definition of Generic Queues
+
+                 You can set up a generic queue for each print job. For
+                 example, a generic queue to print Hangul can be defined
+                 as follows:
+
+                 $ @SYS$STARTUP:DCPS$GENERIC_QUEUE -
+                         HANGUL_TEXT -           ! P1 - Generic queue name
+                         LPS17 -                 ! P2 - Execution queue name
+                         "DATA=LA_DECKOREAN" -   ! P3 - Default parameter
+                         "" -                    ! P4 - Default queue qualifiers
+                         ""                      ! P5 - Verify on/off
+
+                 For details, please refer to DECprint Supervisor
+                 Software System Manager's Guide.
+
+
+
+                             Setting up a PrintServer 17/600 Printer 5-3
+
+ 
+
+
+
+        Setting up a PrintServer 17/600 Printer
+        5.4 Enabling PrintServer Software to access Asian Fonts
+
+        5.4 Enabling PrintServer Software to access Asian Fonts
+
+              PrintServer 17/600 is a high performance, 17 pages-
+              per-minute PostScript printer. ASPS supports printing
+              of Asian language documents to this printer running
+              PrintServer Software V5.0 or later. You have to execute
+              the following procedure on the supporting host to
+              enable the PrintServer software to use Asian PostScript
+              fonts. Make sure the PrintServer startup procedure
+              SYS$STARTUP:LPS$STARTUP_SERVICES.COM has already been
+              executed. Otherwise this procedure will fail in looking
+              for the LPS$ROOT directories.
+
+              @SYS$STARTUP:ASPS$LPS17_SETUP.COM
+
+              The procedure will create two directories under LPS$ROOT:,
+              LPS$ROOT:[FONTS] and LPS$ROOT:[FONTDATA]. If the
+              PrintServer Software was installed on the system disk,
+              it will use DCL command SET FILE/ENTER to link all
+              files under SYS$COMMON:[SYSFONT.PSFONT.FONTS] and
+              SYS$COMMON:[SYSFONT.PSFONT.FONTDATA] to these two
+              directories. Otherwise, the procedure will just copy files
+              from ASPS directories to LPS directories. The procedure
+              will then ask you to specify the name of the PrintServer.
+              The name is used to locate and update the setup and
+              resource files of the printer. It will prompt you to
+              specify the fonts you want to be loaded to the memory
+              of the printer as resources. Loading fonts to printer at
+              startup time will greatly improve performance but will
+              consume memory of the printer.
+
+              Loading fonts into PrintServer's memory at startup time will 
+              improve printing performance. Please select which fonts of below 
+              you want to be persistently loaded into printer's memory :
+
+              Munjo.
+
+              You can specify a list of files using comma (,) and
+              wildcard characters (%)(*),  e.g. Font*,MyFont
+
+              Enter fonts you want to be persistently loaded : *
+
+
+
+
+        5-4 Setting up a PrintServer 17/600 Printer
+
+ 
+
+
+
+                                 Setting up a PrintServer 17/600 Printer
+                 5.4 Enabling PrintServer Software to access Asian Fonts
+
+              Normally you would load all PostScript fonts to memory
+              of your printer at printer startup time, so you can just
+              answer * to the prompt. If you wish to download only some
+              of the fonts on your system, you can specify a list of
+              files separated by comma(s). You can also specify the
+              files by using wild card characters * and %.
+
+              The following table shows the fonts available for
+              Simplified Chinese, Traditional Chinese and Korean
+              languages :
+
+              Table_5-1_Asian_PostScript_Font_Names_____________________
+
+              Language___________________Font_Names_____________________
+
+              Hanzi Simplified Chinese   XiSong-GB2312-80
+
+                                         Hei-GB2312-80
+
+              Hanyu Traditional Chinese  Sung-Light-CNS11643
+
+                                         Hei-Light-CNS11643
+
+                                         Sung-Light-DTSCS
+
+              Hangul_____________________Munjo__________________________
+
+                ________________________Note  ________________________
+
+                Sung-Light-DTSCS is a dummy font file which does
+                not contain any characters. The Hanyu text-to-
+                PostScript translator needs this font file for
+                proper operations.
+
+                _____________________________________________________
+
+              After you have confirmed that the list of fonts is cor-
+              rect, the procedure will update the LPSRESOURCES.printer
+              file. Then you have to reboot the printer so that the new
+              configuration information will be used. After the printer
+              is rebooted, the printer will be able to use the Asian
+              PostScript fonts directly residing on the supporting host.
+
+
+
+                             Setting up a PrintServer 17/600 Printer 5-5
+
+ 
+
+
+
+        Setting up a PrintServer 17/600 Printer
+        5.5 Executing DCPS$STARTUP to Create/Start the Queues
+
+        5.5 Executing DCPS$STARTUP to Create/Start the Queues
+
+              Invoke DCPS$STARTUP by issuing the following DCL command
+              in the command line:
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+
+              Make sure that DECnet is running on the system before you
+              execute DCPS$STARTUP.COM.
+
+        5.6 Determining and Reporting Problems
+
+              If you encounter a problem while using Asian Printing
+              Support for OpenVMS, report it to Digital. Depending on
+              the nature of the problem and the type of support you
+              have, you can take one of the following actions:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter
+              a problem during the warranty period, report the problem
+              as indicated above or follow alternative instructions
+              provided by Digital for reporting SPD nonconformance
+              problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        5-6 Setting up a PrintServer 17/600 Printer
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                     Sample Installation
+
+
+
+              This appendix contains a sample installation of Asian
+              Printing Support for OpenVMS. This sample has been run on
+              a system that has no previous version of Asian Printing
+              Support for OpenVMS installed.
+
+              The sample installation is done on OpenVMS/Hanyu and it
+              assumes that DECnet has been shut down, that no users are
+              logged on to your system.
+
+              $ @SYS$UPDATE:VMSINSTAL ASPS010 MUA0:
+
+               OpenVMS VAX Software Product Installation Procedure V6.1
+
+              It is 22-MAR-1994 at 16:51.
+
+              Enter a question mark (?) at any time for help.
+              * Are you satisfied with the backup of your system disk [YES]?
+
+              The following products will be processed:
+                ASPS V1.0
+
+               Beginning installation of ASPS V1.0 at 16:52
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to 
+                                     SYS$HELP.
+
+              * Do you want to purge files replaced by this installation [YES]?
+
+               To enable Asian language printing for your system, please choose 
+               the following option(s).
+
+               Option Description
+               ------ -----------
+               A  Enable Simplified Chinese (Hanzi) printing capability.
+               B  Enable Traditional Chinese (Hanyu) printing capability.
+               C  Enable Korean printing (Hangul) capability.
+
+               For example, enter "CB" to enable Korean and Traditional Chinese
+               printing at the same time.
+
+                                                 Sample Installation A-1
+
+ 
+
+
+
+        Sample Installation
+
+
+              * Enter options to enable Asian language printing capabilities[B]:
+              %ASPS-I-HANYU, Traditional Chinese printing capability is enabled.
+              %ASPS-I-ESTTIME, This installation will take between 
+               5 and 20 minutes
+              %ASPS-I-NOQUES, No further questions will be asked
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+              %VMSINSTAL-I-RESTORE, Restoring product save set E ...
+              %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                      VMI$ROOT:[SYSFONT.PSFONT.FONTS].
+              %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                      VMI$ROOT:[SYSFONT.PSFONT.FONTDATA].
+              %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                      VMI$ROOT:[SYSFONT.PSFONT.BITMAP].
+
+                  To enable Chinese and Korean printing on DEClaser 1152,
+                  DEClaser 5100 and PrintServer 17/600 printers, please refer to
+                  Installation Guide for Asian Printing Support.
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target 
+               directories...
+               Installation of ASPS V1.0 completed at 16:58
+
+               VMSINSTAL procedure done at 16:58
+
+              $
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-2 Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                          Files Installed on Your System
+
+
+
+              The ASPS installation procedure installs a number of files
+              on your system. The following list contains the names of
+              all files created on your system:
+
+              o  Common files
+
+                 SYS$COMMON:[SYSFONT.PSFONT]FONTS.DIR
+                 SYS$COMMON:[SYSFONT.PSFONT]FONTDATA.DIR
+                 SYS$COMMON:[SYSFONT.PSFONT]BITMAP.DIR
+                 SYS$COMMON:[SYSMGR]ASPS$LPS17_SETUP.COM
+                 SYS$COMMON:[SYSMGR]ASPS$DL1152_SETUP.COM
+                 SYS$COMMON:[SYSMGR]ASPS$DL5100_LOAD_FONT.COM
+                 SYS$COMMON:[SYS$STARTUP]ASPS$STARTUP_FONT_DAEMON.TEMPLATE
+                 SYS$COMMON:[SYSEXE]ASPS$FONT_DAEMON.EXE
+                 SYS$COMMON:[SYSEXE]ASPS$DL_FONT.EXE
+                 SYS$COMMON:[SYSFONT.PSFONT]LPSAFONTDEF.PS
+                 SYS$COMMON:[SYSFONT.PSFONT]1152SETUP.PS
+                 SYS$COMMON:[SYSMGR]DCPS$TAILOR_FONTNAME.COM
+
+              o  Files installed if Simplified Chinese ( Hanzi ) option
+                 had been selected
+
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTS]XISONG-GB2312-80.
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTS]HEI-GB2312-80.
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTDATA]XISONG-GB2312-80.CSDATA
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTDATA]HEI-GB2312-80.CSDATA
+                 SYS$COMMON:[SYSLIB]TRN$DECHANZI_PS.EXE
+                 SYS$COMMON:[SYSMGR]LPS$TAILOR_DECHANZI_FONT.TEMPLATE
+                 SYS$COMMON:[SYSFONT.PSFONT.BITMAP]FANGSONGTI_32_32.FONT
+                 SYS$COMMON:[SYSFONT.PSFONT.BITMAP]SONGTI_32_32.FONT
+
+
+
+
+
+                                      Files Installed on Your System B-1
+
+ 
+
+
+
+        Files Installed on Your System
+
+
+              o  Files installed if Traditional Chinese ( Hanyu ) option
+                 had been selected
+
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTS]SUNG-LIGHT-CNS11643.
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTS]SUNG-LIGHT-DTSCS.
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTS]HEI-LIGHT-CNS11643.
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTDATA]SUNG-LIGHT-CNS11643.CSDATA
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTDATA]HEI-LIGHT-CNS11643.CSDATA
+                 SYS$COMMON:[SYSLIB]TRN$DECHANYU_PS.EXE
+                 SYS$COMMON:[SYSMGR]LPS$TAILOR_DECHANYU_FONT.TEMPLATE
+                 SYS$COMMON:[SYSMGR]LPS$BIG5_TO_CNS11643.TEMPLATE
+                 SYS$COMMON:[SYSMGR]LPS$BIG5_TO_CNS11643_SETUP.PS
+                 SYS$COMMON:[SYSMGR]DCPS$BIG5_TO_CNS11643.COM
+                 SYS$COMMON:[SYSFONT.PSFONT.BITMAP]SUNG_32_32.FONT
+
+
+              o  Files installed if Korean ( Hangul ) option had been
+                 selected
+
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTS]MUNJO.
+                 SYS$COMMON:[SYSFONT.PSFONT.FONTDATA]MUNJO.CSDATA
+                 SYS$COMMON:[SYSLIB]TRN$DECKOREAN_PS.EXE
+                 SYS$COMMON:[SYSMGR]LPS$TAILOR_DECKOREAN_FONT.TEMPLATE
+                 SYS$COMMON:[SYSFONT.PSFONT.BITMAP]MYUNGCHO_32_32.FONT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        B-2 Files Installed on Your System

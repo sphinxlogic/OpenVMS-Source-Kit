@@ -1,0 +1,618 @@
+ 
+
+ Software
+ Product
+ Description
+
+ ___________________________________________________________________
+
+ PRODUCT NAME:  Digital Extended Math Library for OpenVMS[1],    SPD
+ 31.67.01                Version 2.0
+
+ DESCRIPTION
+
+ Digital Extended Math Library (DXML) is a set of mathematical subrou-
+ tines that are optimized for Digital architectures. Four libraries are
+ included, covering the areas of Basic Linear Algebra, Linear System
+ and Eigenproblem Solvers, Sparse Linear System Solvers, and Signal Pro-
+ cessing.
+
+ The Basic Linear Algebra Library includes the industry-standard Ba-
+ sic Linear Algebra Subprograms (BLAS) Level 1, Level 2, and Level 3.
+ Also included are subprograms for BLAS Level 1 Extensions and Sparse
+ BLAS Level 1.
+
+ The Linear System and Eigenproblem Solver Library provides the com-
+ plete LAPACK package developed by a consortium of university and gov-
+ ernment laboratories. LAPACK is a new, industry-standard package of-
+ fering an extensive set of linear system and eigenproblem solvers. LA-
+ PACK utilizes blocked algorithms that are better suited to most mod-
+ ern architectures, particularly ones with memory hierarchies. LAPACK
+ will supersede LINPACK and EISPACK for most users.
+
+ The Sparse System Library provides a set of iterative Sparse Linear
+ System Solvers. The solver design is modular and matrix-free, allow-
+ ing future expansion and easy modification by users. A basic set of
+ storage methods, preconditioners, and iterative solvers is provided.
+
+ ____________________
+
+ The   terms OpenVMS and VMS refer to the OpenVMS operating system.
+
+
+                               DIGITAL                   August 1992
+
+                                                         AE-PBLLB-TE
+
+ 
+
+ The Signal Processing Library provides a basic set of signal process-
+ ing functions. Included are one-, two-, and three-dimensional Fast Fourier
+ Transforms (FFTs), grouped FFTs, Convolution, Correlation, and Dig-
+ ital Filters.
+
+ All DXML subprograms are optimized for the supported hardware plat-
+ forms. Some key computational modules may be written in assembler lan-
+ guage. Optimization techniques include traditional optimizations such
+ as loop unrolling and loop reordering. DXML subroutines also provide
+ efficient management of the hierarchical memory system, using tech-
+ niques such as the following:
+
+ o  Reuse of data within registers to minimize memory accesses
+
+ o  Efficient cache management
+
+ o  Use of blocked algorithms that minimize translation buffer misses
+    and unnecessary paging
+
+ Since DXML routines can be called from all languages that are supported
+ by the OpenVMS calling standard, the library provides optimized com-
+ putation for applications written in other languages than FORTRAN. Where
+ appropriate, all routines are available in both real and complex ver-
+ sions, as well as in both single and double precision (D and G for-
+ mat).
+
+ The OpenVMS version of DXML also provides a special vector library that
+ supports and is optimized for the VAX Vector Architecture. The vec-
+ tor library uses advanced algorithms tailored to specific operational
+ characteristics of the VAX Vector Architecture.
+
+ BLAS Library Contents
+
+ Linear algebra operations are fundamental to vectorized mathematical
+ applications and many libraries of linear algebra subroutines exist
+ throughout the computer industry. The DXML BLAS library contains the
+ most commonly used linear algebra subroutines.
+
+
+
+                                  2
+
+ 
+
+ The DXML linear algebra library contains six groups of subroutines at
+ three levels:
+
+ o  Basic Linear Algebra Subroutines (BLAS) Level 1
+
+ o  BLAS Level 1 Extensions
+
+ o  BLAS Level 1 Sparse Extensions
+
+ o  BLAS Level 2
+
+ o  BLAS Level 3
+
+ o  BLAS Level 3 Extensions
+
+ BLAS Level 1 (Scalar/Vector and Vector/Vector Operations)
+
+ The Level 1 BLAS provide a set of elementary vector functions, oper-
+ ating on one or two vectors. These are typically very small subrou-
+ tines and depend on assembly language or compiler inlining to make them
+ efficient.
+
+ DXML contains the 15 standard BLAS Level 1 operations:
+
+ o  The index of the element of a vector having maximum absolute value
+
+ o  The sum of the absolute values of the elements of a vector
+
+ o  Inner product of two real vectors
+
+ o  Scalar plus the extended precision inner product of two real vec-
+    tors
+
+ o  Conjugated inner product of two complex vectors
+
+ o  Unconjugated inner product of two complex vectors
+
+ o  Square root of the sum of squares (norm) of the elements of a vec-
+    tor
+
+ o  Scalar times a vector plus a vector
+
+ o  Copy one vector to another
+
+ o  Apply a Givens rotation
+
+ o  Apply a modified Givens plane rotation
+
+                                  3
+
+ 
+
+ o  Generate elements for a Givens plane rotation
+
+ o  Generate elements for a modified Givens plane rotation
+
+ o  Product of a vector times a scalar
+
+ o  Swap the elements of two vectors
+
+ BLAS Level 1 Extensions (Vector/Vector Operations)
+
+ When developing mathematical algorithms using the BLAS Level 1, sci-
+ entists and engineers found that several additional constructs were
+ used on a regular basis. These constructs have also become well known
+ throughout the computer industry and are known as BLAS Level 1 exten-
+ sions.
+
+ DXML contains 13 BLAS Level 1 extension operations:
+
+ o  Index of element having the minimum absolute value
+
+ o  Index of element having the maximum value
+
+ o  Index of element having the minimum value
+
+ o  Largest value of the elements of a vector
+
+ o  Smallest value of the elements of a vector
+
+ o  Largest absolute value of the elements of a vector
+
+ o  Smallest absolute value of the elements of a vector
+
+ o  Sum of the values of the elements of a vector
+
+ o  Set all elements of a vector equal to a scalar
+
+ o  Constant times a vector set to another vector (y = a*x)
+
+ o  Euclidean norm with no intermediate scaling
+
+ o  Sum of the squares of the elements of a vector
+
+ o  Constant times a vector plus a vector set to another vector (z =
+    a*x + y)
+
+ BLAS Level 1 Sparse Extensions (Vector/Vector Operations)
+
+                                  4
+
+ 
+
+ This group of operations is similar to the BLAS Level 1 routines, but
+ is designed to work on sparse vectors (vectors in which most of the
+ elements are zero). Six of the routines are equivalent to the dense
+ Level 1 routines, but are modified to work on vectors stored in a com-
+ pressed form. Three additional routines are added for convenience.
+
+ BLAS Level 2 (Matrix/Vector Operations)
+
+ The BLAS Level 2 codes make more effective utilization of the data in
+ the vector registers, reducing the number of vector loads and stores
+ required. In addition, loop unrolling techniques are used to minimize
+ cache misses and page faults. The BLAS Level 2 subroutines use the fol-
+ lowing types of operations:
+
+ o  Matrix/vector products
+
+ o  Rank-1 and rank-2 matrix updates
+
+ o  Solutions of triangular systems of equations
+
+ Six types of matrices are supported by these BLAS Level 2 routines:
+
+ o  General
+
+ o  General Band
+
+ o  Symmetric/Hermitian
+
+ o  Symmetric/Hermitian Band
+
+ o  Triangular
+
+ o  Triangular Band
+
+ BLAS Level 3 (Matrix/Matrix Operations)
+
+ The BLAS Level 3 routines operate at a level that makes the most ef-
+ ficient use of machine resources. DXML optimizes these routines by par-
+ titioning matrices into blocks and computing matrix/matrix operations
+ on each block. This approach avoids excessive memory accesses by pro-
+ viding full reuse of data while each block is in the cache or the reg-
+ isters. BLAS Level 3 routines provide this kind of blocking for three
+ basic types of operations:
+
+                                  5
+
+ 
+
+ o  Matrix/matrix products
+
+ o  Rank-k and rank-2k updates of a symmetric matrix
+
+ o  Solving triangular systems of equations with multiple right-hand
+    sides
+
+ Three types of matrices are supported by these BLAS Level 3 routines:
+
+ o  General
+
+ o  Symmetric/Hermitian
+
+ o  Triangular
+
+ BLAS Level 3 Extensions
+
+ A set of additional matrix-matrix routines are provided for convenience.
+ The three extensions provided are:
+
+ o  Add two matrices
+
+ o  Subtract one matrix from another
+
+ o  Transpose a matrix, in-place or out-of-place
+
+ LAPACK Library Contents
+
+ LAPACK is a library of linear algebra subroutines intended to solve
+ a wide range of problems in linear algebra. LAPACK can be used to solve
+ dense systems of linear equations, linear least squares problems, eigen-
+ value problems, and singular value problems. It is also useful in do-
+ ing other computations such as matrix factorizations and estimations
+ of condition numbers.
+
+ The DXML LAPACK Library provides the complete LAPACK package. DXML's
+ version of LAPACK is provided as a shareable image, compiled, tested,
+ and ready-to-use. Combined with the optimized BLAS Level 3 routines,
+ the DXML LAPACK will provide optimal performance on all supported plat-
+ forms. LAPACK should be used in place of LINPACK and EISPACK, since
+ it is more efficient, accurate, and robust than those older packages.
+
+                                  6
+
+ 
+
+ LAPACK supports both real and complex, single and double precision data.
+ It operates on the following types of matrices:
+
+ o  Bidiagonal
+
+ o  General band
+
+ o  General unsymmetric
+
+ o  General tridiagonal
+
+ o  Hermitian
+
+ o  Hermitian, packed storage
+
+ o  Upper Hessenberg, generalized problem
+
+ o  Upper Hessenberg
+
+ o  Orthogonal
+
+ o  Orthogonal, packed storage
+
+ o  Symmetric/Hermitian positive definite band
+
+ o  Symmetric/Hermitian positive definite
+
+ o  Symmetric/Hermitian positive definite, packed storage
+
+ o  Symmetric/Hermitian positive definite tridiagonal
+
+ o  Symmetric band
+
+ o  Symmetric, packed storage
+
+ o  Symmetric tridiagonal
+
+ o  Symmetric
+
+ o  Triangular band
+
+ o  Triangular, generalized problem
+
+ o  Triangular, packed storage
+
+ o  Triangular
+
+ o  Trapezoidal
+
+ o  Unitary
+
+                                  7
+
+ 
+
+ o  Unitary, packed storage
+
+ LAPACK provides the following operations:
+
+ o  Triangular factorization
+
+ o  Unblocked triangular factorization
+
+ o  Solve a system of linear equations (based on triangular factoriza-
+    tion)
+
+ o  Compute the inverse (based on triangular factorization)
+
+ o  Unblocked computation of inverse
+
+ o  Estimate condition number
+
+ o  Refine initial solution returned by solver
+
+ o  Perform QR factorization without pivoting
+
+ o  Unblocked QR factorization
+
+ o  Solve linear least squares problem (based on QR factorization)
+
+ o  Perform LQ factorization without pivoting
+
+ o  Unblocked LQ factorization
+
+ o  Solve underdetermined linear system (based on LQ factorization)
+
+ o  Generate a real orthogonal or complex unitary matrix as a product
+    of Householder matrices
+
+ o  Unblocked generate of real orthogonal or unitary matrix
+
+ o  Multiply a matrix by a real orthogonal or complex unitary matrix
+    by applying a product of Householder matrices
+
+ o  Unblocked version of above multiply
+
+ o  Reduce a square matrix to upper Hessenberg form
+
+ o  Unblocked version of square matrix reduction
+
+ o  Reduce a symmetric matrix to real symmetric tridiagonal form
+
+ o  Unblocked version of symmetric matrix reduction
+
+                                  8
+
+ 
+
+ o  Reduce a rectangular matrix to bidiagonal form
+
+ o  Compute eigenvalues and optional Schur factorization or eigenvec-
+    tors using QR algorithm
+
+ o  Compute selected eigenvectors by inverse iteration
+
+ o  Compute eigenvectors from Schur factorization
+
+ o  Compute eigenvectors using the Pal-Walker-Kahan variant of the QL
+    or QR algorithm
+
+ o  Compute singular values and, optionally, singular vectors using the
+    QR algorithm
+
+ Sparse System Solver Library Contents
+
+ The DXML Sparse System Solver Library contains a set of subroutines
+ that may be used to solve sparse linear systems of equations. The li-
+ brary contains a set of storage methods, preconditioners, and iter-
+ ative solvers.
+
+ Routines for three storage methods are provided, or the user may de-
+ velop routines to employ a custom storage scheme. The supplied stor-
+ age schemes include:
+
+ o  Symmetric diagonal
+
+ o  Unsymmetric diagonal
+
+ o  General storage by rows
+
+ Three preconditioners are supplied, which can be selectively applied
+ to the data. Users may also supply custom preconditioners. The pre-
+ conditioners supplied include:
+
+ o  Diagonal
+
+ o  Polynomial (Neumann)
+
+ o  Incomplete LU with zero diagonals added
+
+                                  9
+
+ 
+
+ Five iterative sparse solvers for real, double precision data are sup-
+ plied:
+
+ o  Preconditioned conjugate gradient method
+
+ o  Preconditioned least squares conjugate gradient method
+
+ o  Preconditioned bi-conjugate method
+
+ o  Preconditioned conjugate gradient squared method
+
+ o  Preconditioned generalized minimum residual method
+
+ Signal Processing Library Contents
+
+ The DXML Signal Processing Library contains a set of subroutines in
+ three basic areas of signal processing:
+
+ o  Fast Fourier Transforms
+
+ o  Convolution and Correlation
+
+ o  Digital Filters
+
+ Fast Fourier Transforms (FFTs)
+
+ DXML provides one-dimensional, two-dimensional, three-dimensional, and
+ group FFT routines. Each routine is supplied in two forms:
+
+ o  The first form computes the transform in one unit operation. This
+    is convenient for programs requiring speed on only one or a few FFT
+    operations.
+
+ o  The second form is provided for programs requiring speed on repeated
+    FFT operations. With this form, each routine is subdivided into three
+    routines. One routine builds the rotation factors, a second rou-
+    tine applies them to the data to perform the FFT, and a third rou-
+    tine deallocates any virtual memory allocated in the first routine.
+    Thus, for repeated operations, the rotation factors need to be built
+    only once.
+
+ Convolution and Correlation
+
+                                 10
+
+ 
+
+ DXML provides routines for computing one-dimensional discrete convo-
+ lutions and correlations. These routines can process both periodic and
+ nonperiodic data.
+
+ Digital Filters
+
+ DXML provides support for one-dimensional, nonrecursive digital fil-
+ tering. Based on the Kaisers Sinh-Bessel algorithm, these routines al-
+ low programming of bandpass, bandstop, low-pass, and high-pass fil-
+ ters.
+
+ DXML Run-Time Only License
+
+ The Digital Extended Math Library is an application development tool
+ that provides convenience and improved performance to the developer.
+ To encourage application developers to incorporate DXML routines into
+ their applications for distribution to other users, Digital provides
+ a DXML Run-Time Only license to allow running applications that call
+ DXML routines. This license is offered at a substantially reduced price.
+ The DXML Run-Time License does not allow new applications to be de-
+ veloped, but does allow applications developed on another system with
+ the Development License to be run.
+
+ HARDWARE REQUIREMENTS
+
+ Processor and/or hardware configurations as specified in the System
+ Support Addendum (SSA 31.67.01-x)
+
+ SOFTWARE REQUIREMENTS
+
+ For Systems Using Terminals (No DECwindows Interface):
+
+ OpenVMS Operating System
+
+ For Workstations Running VWS:
+
+ OpenVMS Operating System
+
+ OpenVMS Workstation Software
+
+                                 11
+
+ 
+
+ Refer to the System Support Addendum (SSA 31.67.01-x) for availabil-
+ ity and required versions of prerequisite/optional software.
+
+ ORDERING INFORMATION
+
+ Development Option
+
+ Software Licenses: QL-YEZ99-J*
+ Software Media: QA-YEZAA-**
+ Software Documentation: QA-YEZAA-GZ
+ Software Product Services: QT-YEZA*-**
+
+ Run-Time Option
+
+ Software Licenses: QL-MUS99-J*
+ Software Media: QA-MUSAA-**
+ Software Product Services: QT-MUSA*-**
+
+ *  Denotes variant fields. For additional information on available li-
+    censes, services, and media, refer to the appropriate price book.
+
+ SOFTWARE LICENSING
+
+ This software is furnished under the licensing provisions of Digital
+ Equipment Corporation's Standard Terms and Conditions. For more in-
+ formation about Digital's licensing terms and policies, contact your
+ local Digital office.
+
+ License Management Facility Support:
+
+ This layered product supports the OpenVMS License Management Facil-
+ ity. License units for this product are allocated on an Unlimited Use
+ Basis.
+
+ For more information on the License Management Facility, refer to the
+ OpenVMS Operating System Software Product Description (SPD 25.01.xx)
+ or the License Management Facility manual of the OpenVMS Operating Sys-
+ tem documentation set.
+
+
+                                 12
+
+ 
+
+ For more information about Digital's licensing terms and policies, con-
+ tact your local Digital office.
+
+ SOFTWARE PRODUCT SERVICES
+
+ A variety of service options are available. For more information, please
+ contact your local Digital office.
+
+ SOFTWARE WARRANTY
+
+ Warranty for this software product is provided by Digital with the pur-
+ chase of a license for the product as defined in the Software Warranty
+ Addendum.
+ 
+ [TM]The DIGITAL Logo, CI, DEC, DECwindows, Digital, MicroVAX, Open-
+    VMS, TK, VAX, VAXcluster, VAXft, VAXserver, VAXstation, and VMS
+    are trademarks of Digital Equipment Corporation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                 13

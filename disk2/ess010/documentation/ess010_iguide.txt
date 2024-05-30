@@ -1,0 +1,1978 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    ____________________________________________________
+                    DEC InfoServer Client Software for VMS
+                    Installation_Guide
+
+                    Order Number: AA-PF4DA-TE
+
+
+                    January 1991
+
+                    This manual explains how to install the DEC
+                    InfoServer Client Software for VMS on a VMS system.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a new manual.
+
+                    Operating System and Version: VMS V5.0 to V5.3-2
+
+                    Software Version:             Version 1.0
+
+ 
+
+
+
+
+
+
+              ________________________
+              First Printing, January 1991
+
+              © Digital Equipment Corporation 1991.
+
+              The information in this document is subject to change
+              without notice and should not be construed as a commitment
+              by Digital Equipment Corporation. Digital Equipment
+              Corporation assumes no responsibility for any errors that
+              may appear in this document.
+
+              The software described in this document is furnished under
+              a license and may be used or copied only in accordance with
+              the terms of such license.
+
+              No responsibility is assumed for the use or reliability
+              of software on equipment that is not supplied by Digital
+              Equipment Corporation or its affiliated companies.
+
+              Restricted Rights: Use, duplication, or disclosure by the
+              U.S. Government is subject to restrictions as set forth in
+              subparagraph (c)(1)(ii) of the Rights in Technical Data and
+              Computer Software clause at DFARS 252.227-7013.
+
+              All Rights Reserved.
+              Printed in U.S.A.
+
+              The following are trademarks of Digital Equipment
+              Corporation:
+
+              DEC             DECnet         VAX
+              VAXcluster      VAXstation     VMS
+
+                                             DIGITAL
+
+              High Sierra is a trademark of Microsoft Corporation.
+              MS-DOS is a registered trademark of Microsoft Corporation.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                              Contents
+
+
+
+     Preface...................................................      v
+
+     1  Preparing to Install DEC InfoServer Client Software for
+        VMS
+
+           1.1   Required Operating System Components..........    1-1
+           1.2   Prerequisite Hardware.........................    1-1
+           1.3   License Registration..........................    1-1
+           1.4   Installation Procedure Requirements...........    1-2
+           1.4.1     Privileges and Disk Space.................    1-2
+           1.4.2     Process Account Quotas....................    1-2
+           1.4.3     VMSINSTAL Requirements....................    1-4
+           1.4.4     Backing Up Your System Disk...............    1-4
+           1.4.5     DEC InfoServer Client Software for VMS
+                     Requirements..............................    1-4
+
+     2  Installing DEC InfoServer Client Software for VMS
+
+           2.1   The Installation Procedure....................    2-1
+           2.2   Error Recovery................................    2-7
+
+     3  After Installing DEC InfoServer Client Software for VMS
+
+           3.1   Running the Installation Verification
+                 Procedure Separately..........................    3-1
+           3.2   Editing the System Files......................    3-1
+           3.2.1     Startup Restrictions: PCSA and RSM........    3-2
+           3.2.2     Startup Restrictions: SYSMAN..............    3-2
+           3.3   VAXcluster Considerations.....................    3-3
+           3.4   User Account Requirements.....................    3-3
+           3.4.1     Privileges................................    3-3
+           3.4.2     User Account Quotas.......................    3-3
+           3.5   Determining and Reporting Problems............    3-3
+
+     A  Sample Installation: Run-Time Kit
+
+
+
+
+
+
+
+
+
+
+                                                                   iii
+
+ 
+
+
+
+
+
+
+
+        B  Files and Logical Names Installed on Your System
+
+              B.1   File Names....................................    B-1
+              B.2   Logical Names.................................    B-2
+
+        C  Release Notes
+
+              C.1   Overview of the InfoServer 100................    C-1
+              C.2   VMS Upgrade Considerations....................    C-2
+              C.3   VAXcluster Restrictions.......................    C-2
+              C.4   Upgrading to VMS V5.4 from an InfoServer......    C-2
+
+        Tables
+
+              1-1       Disk Space Requirements...................    1-2
+
+              1-2       Process Account Quotas for the Installing
+                        Account...................................    1-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              This manual explains how to install the DEC InfoServer
+              Client Software for VMS on a VMS system.
+
+        Intended Audience
+
+              This manual is intended for VMS system managers and
+              managers of an InfoServer 100.
+
+        Related Documents
+
+              The VMS LAD Control Program Manual describes the commands
+              for configuring and controlling the Local Area Disk
+              (LAD) protocol on VMS systems. The InfoServer 100 System
+              Operations Guide, included with your InfoServer 100
+              hardware, describes how to set up and operate an InfoServer
+              100.
+
+        Conventions
+
+              The following conventions are used in this manual:
+
+              ___________________________________________________________
+              Convention______________Meaning____________________________
+
+              <Return>                In examples, a key name is shown
+                                      within a box to indicate that
+                                      you press a key on the keyboard.
+                                      <Return> is not usually shown
+                                      in syntax statements or in all
+                                      examples; however, assume that
+                                      you must press <Return> after
+                                      entering a command or responding
+                                      to a prompt.
+
+              Ctrl/C                  For control key sequences, hold
+                                      down the Ctrl key while you press
+                                      the second key.
+
+              $ SHOW TIME             In examples, user input appears in
+                                      bold.
+
+
+
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+              ___________________________________________________________
+              Convention______________Meaning____________________________
+
+              [ ]                     Brackets in installation dialog
+                                      enclose default answers. To choose
+                                      the default, press the Return key.
+                                      To specify another answer, type the
+                                      answer after the question and press
+              ________________________Return.____________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        vi
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+              Preparing to Install DEC InfoServer Client Software for VMS
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing DEC InfoServer Client Software for
+              VMS.
+
+              This manual applies to Version 1.0 of DEC InfoServer Client
+              Software for VMS and all subsequent maintenance releases up
+              to the next major product release.
+
+              Your bill of materials (BOM) and indented bills report
+              (BIL) specify the number and contents of your media.
+              Be sure to verify the contents of your kit with this
+              information. If your kit is damaged or if you find
+              that parts of it are missing, contact your Digital
+              representative.
+
+              DEC InfoServer Client Software for VMS provides online
+              release notes. Digital strongly recommends that you read
+              the release notes before proceeding with the installation.
+              For information on accessing the online release notes,
+              see Section 2.1. The release notes are also included as
+              Appendix C of this document.
+
+        1.1 Required Operating System Components
+
+              The VMS operating system comes with a variety of support
+              options, or classes. Classes include such features as
+              networking and RMS journaling. To use DEC InfoServer
+              Client Software for VMS, your system should be running
+              VMS Version 5.0 to Version 5.3-2 software that includes the
+              Base Operating System.
+
+              For a complete list of the required classes, see the
+              Software Support Addendum (SSA), which comes with the
+              Software Product Description (SPD).
+
+        1.2 Prerequisite Hardware
+
+              DEC InfoServer Client Software for VMS requires that the
+              system have an Ethernet device installed.
+
+        1.3 License Registration
+
+              DEC InfoServer Client Software for VMS does not require a
+              license to be registered with the VMS License Management
+              Facility. Every InfoServer is sold with license capacity
+              for four concurrent client accesses. If this is found to be
+              insufficient, contact your Digital sales representative to
+              purchase additional client licenses for the InfoServer.
+
+          Preparing to Install DEC InfoServer Client Software for VMS 1-1
+
+ 
+
+
+
+        Preparing to Install DEC InfoServer Client Software for VMS
+        1.4 Installation Procedure Requirements
+
+
+        1.4 Installation Procedure Requirements
+
+              This section and those that follow discuss various
+              requirements for installing DEC InfoServer Client Software
+              for VMS.
+
+              The installation takes approximately 5 to 30 minutes,
+              depending on your type of media and your system
+              configuration.
+
+              Installing DEC InfoServer Client Software for VMS and
+              running the Installation Verification Procedure (IVP) on
+              a standalone VAXstation 2000 system takes 10 minutes.
+
+        1.4.1 Privileges and Disk Space
+
+              To install DEC InfoServer Client Software for VMS, you must
+              be logged in to an account that has SETPRV or at least the
+              following privileges:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              o  SYSNAM
+
+              Note that VMSINSTAL turns off BYPASS privilege at the start
+              of the installation.
+
+              DEC InfoServer Client Software for VMS requirements for
+              free disk storage space are different during installation
+              and after installation. Table 1-1 summarizes the storage
+              requirements.
+
+              Table_1-1_Disk_Space_Requirements__________________________
+
+                               Blocks During         Blocks After
+              Kit______________Installation__________Installation________
+
+              DEC InfoServer   1500                  625
+              Client Software
+              for VMS Version
+              1.0________________________________________________________
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL prompt:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+        1.4.2 Process Account Quotas
+
+              The account you use to install DEC InfoServer Client
+              Software for VMS must have sufficient quotas to enable
+              you to perform the installation. Table 1-2 summarizes the
+              process quotas required for the installation account.
+
+        1-2 Preparing to Install DEC InfoServer Client Software for VMS
+
+ 
+
+
+
+              Preparing to Install DEC InfoServer Client Software for VMS
+                                  1.4 Installation Procedure Requirements
+
+
+              Table_1-2_Process_Account_Quotas_for_the_Installing_Account
+
+              Account_Quota____Value_____________________________________
+
+              ASTLM            24
+
+              BIOLM            18
+
+              BYTLM            18,000
+
+              DIOLM            18
+
+              ENQLM            30
+
+              FILLM            20
+
+              WSDEF            300[1]
+              [1]The_values_for_WSEXT_and_WSQUO_must_be_equal_to_or______
+
+              greater than the WSDEF value.
+              ___________________________________________________________
+
+              User account quotas are stored in the file SYSUAF.DAT. Use
+              the VMS Authorize Utility (AUTHORIZE) to verify and change
+              user account quotas. First set your directory to SYS$SYSTEM
+              and then run AUTHORIZE:
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF>
+
+              At the UAF> prompt, enter the SHOW command with an account
+              name to check a particular account. For example:
+
+              UAF> SHOW SMITH
+
+              To change a quota, enter the MODIFY command. The following
+              example changes the FILLM quota for the SMITH account and
+              then exits from the utility:
+
+              UAF> MODIFY SMITH /FILLM=50
+              UAF> EXIT
+
+              After you exit from the utility, the system displays
+              messages indicating whether or not changes were made. Once
+              the changes have been made, you must log out and log in
+              again for the new quotas to take effect.
+
+              For more information on modifying account quotas, see the
+              description of the Authorize Utility in the VMS System
+              Management Subkit.
+
+
+
+
+
+          Preparing to Install DEC InfoServer Client Software for VMS 1-3
+
+ 
+
+
+
+        Preparing to Install DEC InfoServer Client Software for VMS
+        1.4 Installation Procedure Requirements
+
+
+        1.4.3 VMSINSTAL Requirements
+
+              When you invoke VMSINSTAL, it checks the following:
+
+              o  Whether you have set your default device and directory
+                 to SYS$UPDATE
+
+              o  Whether you are logged in to a privileged account
+
+              o  Whether you have adequate quotas for installation
+
+              o  Whether DECnet is running
+
+              o  Whether any users are logged in to the system
+
+              Note that VMSINSTAL requires that the installation account
+              have a minimum of the following quotas:
+
+                 ASTLM = 24
+                 BIOLM = 18
+                 BYTLM = 18,000
+                 DIOLM = 18
+                 ENQLM = 30
+                 FILLM = 20
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can enter YES to
+              continue. To stop the installation process and correct
+              the situation, enter NO or press RETURN. Then correct the
+              problem and restart the installation.
+
+        1.4.4 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if you
+              have backed up your system disk. Digital recommends that
+              you do a system disk backup before installing any software.
+
+              Use the backup procedures that are established at your
+              site. For details on performing a system disk backup,
+              see the section on the Backup Utility in the VMS System
+              Management Subkit.
+
+        1.4.5 DEC InfoServer Client Software for VMS Requirements
+
+              DEC InfoServer Client Software for VMS will check if either
+              VMS Services for PCs (PCSA) or Remote System Manager (RSM)
+              has been installed on the system. The installation will
+              print a warning message if any PCSA or RSM drivers or
+              control programs are found.
+
+
+
+
+
+
+        1-4 Preparing to Install DEC InfoServer Client Software for VMS
+
+ 
+
+
+
+              Preparing to Install DEC InfoServer Client Software for VMS
+                                  1.4 Installation Procedure Requirements
+
+
+              %ESS$CLIENT-W-FILFND, The following drivers were found in SYS$LOADABLE_IMAGES.
+              -ESS$CLIENT-W-FILFND,    LASTDRIVER.EXE LADDRIVER.EXE LADCDRIVER.EXE
+
+
+                  This installation  has  found  drivers on your system that indicate that
+                  you  are  using  either  RSM  or PCSA.  This installation will continue;
+                  however,  the InfoServer client will not be able to start up if the PCSA
+                  or RSM startup is executed before the InfoServer client startup.
+
+
+              %ESS$CLIENT-W-FILFND, The following control programs were found in SYS$SYSTEM.
+              -ESS$CLIENT-W-FILFND, LASTCP.EXE
+
+
+                  This installation has found versions of Control Programs that may not be
+                  compatible  with  the  new drivers. New versions of the control programs
+                  will  be  provided  by this installation. If these control programs were
+                  provided  by  either  the  RSM or PCSA products, you will want to review
+                  Appendix  C  and the post-installation chapter of the installation guide
+                  that  came  with  this  kit  detailing  the ordering of startups for the
+                  InfoServer client, RSM and PCSA server.
+
+              If the startup procedure for the DEC InfoServer Client
+              Software for VMS finds that the RSM startup procedure
+              SYS$STARTUP:RSM$SERVER_STARTUP.COM has not been conditioned
+              to work with the DEC InfoServer Client Software for VMS,
+              the procedure SYS$EXAMPLES:ESS$RSM$SERVER_STARTUP.COM
+              will be copied to SYS$STARTUP:RSM$SERVER_STARTUP.COM and
+              a message will be written to the following file:
+              SYS$MANAGER:ESS$STARTUP.LOG.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          Preparing to Install DEC InfoServer Client Software for VMS 1-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                        Installing DEC InfoServer Client Software for VMS
+
+
+              This chapter explains how to install DEC InfoServer Client
+              Software for VMS. Section 2.1 contains a step-by-step
+              description of the installation procedure.
+
+              The last section covers postinstallation considerations.
+
+        2.1 The Installation Procedure
+
+              The DEC InfoServer Client Software for VMS installation
+              procedure consists of a series of questions and
+              informational messages. See Appendix A for a sample
+              installation.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can then start the installation again.
+
+              1. Invoke VMSINSTAL.
+
+                 @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                 To start the installation, invoke the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account. VMSINSTAL is in the SYS$UPDATE directory. The
+                 following list defines the elements of the VMSINSTAL
+                 command procedure:
+
+                 saveset-name
+                 The installation name for the component. For DEC
+                 InfoServer Client Software for VMS, use the following
+                 installation name:
+
+                 ESS010
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 media. For example, MTA0: is the device name for a tape
+                 drive. It is not necessary to use the console drive for
+                 this installation. However, if you do use the console
+                 drive, you should replace any media you removed once the
+                 installation is complete.
+
+                 OPTIONS N
+                 An optional parameter that indicates you want to see
+                 the question on release notes. If you do not include the
+                 OPTIONS N parameter, VMSINSTAL does not ask you about
+                 the release notes. You should review the release notes
+                 before proceeding with the installation in case they
+
+                    Installing DEC InfoServer Client Software for VMS 2-1
+
+ 
+
+
+
+        Installing DEC InfoServer Client Software for VMS
+        2.1 The Installation Procedure
+
+
+                 contain additional information about the installation.
+                 If you are restarting the installation and have already
+                 reviewed the release notes, you do not need to specify
+                 OPTIONS N.
+
+                 Note that there are several other options you can select
+                 when you invoke VMSINSTAL:
+
+                 o  Auto-answer option (A): Initially creates a file
+                    that contains your answers to VMSINSTAL questions and
+                    prompts. You can then use the option (and the answer
+                    file) to save time during a reinstallation (typically
+                    after upgrading your system).
+
+                 o  Get save set option (G): Lets you store product save
+                    sets temporarily on a magnetic tape or in a disk
+                    directory.
+
+                 o  File log option (L): Logs all activity to the
+                    terminal during installation.
+
+                 o  Alternate root option (R): Lets you install the
+                    product to a system root other than that of the
+                    running system.
+
+                 See the VMS documentation on software installation
+                 in the VMS System Management Subkit for detailed
+                 information on these options. If you specify more than
+                 one option, separate the options with commas (OPTIONS
+                 A,N).
+
+                 The following example invokes VMSINSTAL to install DEC
+                 InfoServer Client Software for VMS from tape drive MTA0:
+                 and shows the system response. This example uses the
+                 OPTIONS N release note parameter.
+
+                 $ @SYS$UPDATE:VMSINSTAL ESS010 MTA0: OPTIONS N
+
+                       VAX/VMS Software Product Installation Procedure V5.3
+
+                 It is 1-Nov-1990 at 15:00.
+                 Enter a question mark (?) at any time for help.
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure. VMSINSTAL does
+                 not prompt you for any options, so be sure to include
+                 OPTIONS N on the VMSINSTAL command line to access the
+                 release notes during the installation.
+
+              2. Confirm DECnet status.
+
+                 %VMSINSTAL-W-DECNET, Your DECnet network is up and running.
+                    .
+                    .
+                    .
+                 * Do you want to continue anyway [NO]?
+
+                 VMSINSTAL notifies you if your DECnet network is running
+
+        2-2 Installing DEC InfoServer Client Software for VMS
+
+ 
+
+
+
+                        Installing DEC InfoServer Client Software for VMS
+                                           2.1 The Installation Procedure
+
+
+                 and displays a list of all active processes. It then
+                 asks if you want to continue the installation. You
+                 should install DEC InfoServer Client Software for VMS
+                 on a standalone system or cluster with DECnet shut down.
+                 NO is the default response to the question.
+
+                 If you are installing on VMS Version 5.2 or higher,
+                 VMSINSTAL does not check the DECnet status. You can
+                 install DEC InfoServer Client Software for VMS while
+                 DECnet is up and running.
+
+              3. Confirm system backup.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. You should always back up your system disk
+                 before performing an installation. If you are satisfied
+                 with the backup of your system disk, press the
+                 Return key. Otherwise, enter NO to discontinue the
+                 installation. After you back up your system disk, you
+                 can restart the installation.
+
+              4. Mount the media.
+
+                 Please mount the first volume of the set on MTA0:.
+                 * Are you ready? YES
+                 %MOUNT-I-MOUNTED, ESS MOUNTED ON _$$MTA0:  (NODE1)
+                 The following products will be processed:
+                   ESS V1.0
+
+                     Beginning installation of ESS V1.0 at 20:01
+
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                 You should now mount the first distribution volume on
+                 the device you specified when you invoked VMSINSTAL. The
+                 device name appears in the line preceding the question.
+                 VMSINSTAL then asks you if you are ready to continue
+                 with the installation.
+
+                 If you respond YES to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 DEC InfoServer Client Software for VMS has been mounted
+                 on the specified device and that the installation has
+                 begun.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter NO
+                 in response to the "Are you ready?" question. To abort
+                 the installation for other reasons, press Ctrl/Y.
+
+              5. Mount additional media volumes.
+
+                 %BACKUP-I-READYREAD, mount volume 2 on _MTA0: for reading
+
+                 Enter "YES" when ready:
+
+                 If your installation kit contains more than one volume,
+
+                    Installing DEC InfoServer Client Software for VMS 2-3
+
+ 
+
+
+
+        Installing DEC InfoServer Client Software for VMS
+        2.1 The Installation Procedure
+
+
+                 VMSINSTAL prompts you to mount the additional volumes
+                 and then asks you to indicate that you are ready for the
+                 installation to proceed.
+
+              6. Select a release notes option.
+
+                 If you specified OPTIONS N when you started the
+                 installation, VMSINSTAL asks a question on release
+                 notes. You have five options for handling the release
+                 notes under VMS Versions 5.0 and 5.1. There are only
+                 four options under VMS Version 5.2 or higher.
+
+                 For VMS Versions 5.0 and 5.1, you see the following
+                 display:
+
+                 Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  Copy release notes to SYS$HELP
+                  5.  Do not display, print or copy release notes
+
+                 * Select option [2]:
+
+                 For VMS Version 5.2 or higher, you see the following
+                 display:
+
+                 Release notes included with this kit are always copied to SYS$HELP.
+
+                 Additional Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  None of the above
+
+                 * Select option [2]:
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on the console terminal. You can
+                 terminate the display at any time by pressing Ctrl/C.
+
+                 If you select option 2, VMSINSTAL prompts you for the
+                 name of the print queue:
+
+                 * Queue name [SYS$PRINT]:
+
+                 You can press the Return key to send the file to the
+                 default output print device or you can enter another
+                 queue name.
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes immediately on the console terminal and then
+                 prompts you for a queue name for the printed version.
+
+                 Option 4 under VMS Versions 5.0 and 5.1 causes the
+                 installation to copy the release notes to the system
+                 help directory. Under VMS V5.2 or higher, release notes
+                 are always copied to the system help directory.
+
+        2-4 Installing DEC InfoServer Client Software for VMS
+
+ 
+
+
+
+                        Installing DEC InfoServer Client Software for VMS
+                                           2.1 The Installation Procedure
+
+
+                 Select option 4 (VMS Version 5.2 or higher) or option
+                 5 (VMS Version 5.0 or 5.1) if you reviewed the release
+                 notes and are restarting the installation.
+
+                 Note that hardcopy release notes are included as
+                 Appendix C in this document.
+
+                 Next, VMSINSTAL displays the following question:
+
+                 * Do you want to continue the installation [N]?: YES
+                 %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                                    successfully moved to SYS$HELP.
+
+                 To continue the installation, enter YES. Otherwise,
+                 press the Return key. In either case, the release notes
+                 are copied to a file in the SYS$HELP directory:
+
+                 SYS$HELP:ESS010.RELEASE_NOTES
+
+                 After the installation, you can enter the following
+                 command to review the release notes.
+
+                 $ TYPE SYS$HELP:ESS010.RELEASE_NOTES
+
+                ________________________ Note ________________________
+
+                The name of the release notes file installed by
+                VMSINSTAL consists of the current product name and
+                version number. Do not delete release notes for
+                previous versions of DEC InfoServer Client Software
+                for VMS.
+
+                ______________________________________________________
+
+              7. Purge files.
+
+                 * Do you want to purge files replaced by this installation [YES]?
+
+                 You have the option to purge files from previous
+                 versions of DEC InfoServer Client Software for VMS
+                 that are superseded by this installation. Purging is
+                 recommended; however, if you need to keep files from the
+                 previous version, enter NO in response to the question.
+
+              8. Choose the Installation Verification Procedure (IVP)
+                 option.
+
+                 * Do you want to run the IVP after the installation [YES]?
+
+                 The installation procedure now asks if you want to run
+                 the IVP. The IVP for DEC InfoServer Client Software
+                 for VMS checks to be sure that the installation is
+                 successful. It is recommended that you run the IVP.
+
+                 After DEC InfoServer Client Software for VMS is
+                 installed, you can run the IVP independently to verify
+                 that the software is available on your system. You might
+                 need to run the IVP after a system failure to make sure
+                 that users can access DEC InfoServer Client Software for
+                 VMS.
+
+                    Installing DEC InfoServer Client Software for VMS 2-5
+
+ 
+
+
+
+        Installing DEC InfoServer Client Software for VMS
+        2.1 The Installation Procedure
+
+
+              9. Read informational messages.
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation. There are no further
+                 questions. If the installation procedure has been
+                 successful up to this point, VMSINSTAL moves the new
+                 or modified files to their target directories, updates
+                 help files, and updates DCL tables, if necessary. If you
+                 chose to have files purged, that work is done now. The
+                 following messages are displayed:
+
+                 %VMSINSTAL-I-MOVEFILES, files will now be moved to their target
+                                                    directories...
+
+              10.Observe the Installation Verification Procedure (IVP).
+
+                 If you chose to run the IVP, VMSINSTAL runs it now.
+                 When the IVP runs successfully, you see the following
+                 display:
+
+                 Starting IVP for DEC InfoServer Client Software for VMS V1.0.
+
+                 %LASTCP-I-ADAPINIT, Initializing adapter ESA2: for LASTDRIVER
+                 %LASTCP-I-STARTED, LASTDRIVER X1.5 started on node NODE1
+                 %LASTCP-I-VERSION, LASTDRIVER X1.5 is running
+
+                 The DEC InfoServer Client Software for VMS V1.0 IVP has completed
+                 successfully.
+
+                 IVP for DEC InfoServer Client Software for VMS V1.0 completed.
+
+              11.End the installation procedure.
+
+                   Installation of ESS V1.0 completed at 15:14
+
+                   VMSINSTAL procedure done at 15:16
+
+                 The previous messages indicate that the entire
+                 installation procedure is complete.
+
+                 You can now log out of the privileged account:
+
+                 $ LOGOUT
+                 SYSTEM     logged out at 1-Nov-1990 15:20:03.78
+
+                 Note that VMSINSTAL deletes or changes entries in
+                 the process symbol tables during the installation.
+                 Therefore, if you are going to continue using the system
+                 manager's account and you want to restore these symbols,
+                 you should log out and log in again.
+
+
+
+
+
+        2-6 Installing DEC InfoServer Client Software for VMS
+
+ 
+
+
+
+                        Installing DEC InfoServer Client Software for VMS
+                                                       2.2 Error Recovery
+
+
+        2.2 Error Recovery
+
+              If errors occur during the installation itself or when
+              the Installation Verification Procedure (IVP) is running,
+              VMSINSTAL displays failure messages. If the installation
+              fails, you see the following message:
+
+              %VMSINSTAL-E-INSFAIL, The installation of ESS V1.0 has failed.
+
+              If the IVP fails, you see these messages:
+
+              The DEC InfoServer Client Software for VMS V1.0 IVP has failed.
+              Check the console and SYS$MANAGER:ESS$STARTUP.LOG for diagnostic messages.
+              The most common problem is that the SYSGEN parameter SCSNODE is blank.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  The operating system version is incorrect.
+
+              o  A prerequisite software version is incorrect.
+
+              o  Quotas necessary for successful installation are
+                 insufficient.
+
+              o  System parameter values for successful installation are
+                 insufficient.
+
+              o  The VMS help library is currently in use.
+
+              o  The product license has not been registered and loaded.
+
+              For descriptions of the error messages generated by these
+              conditions, see the VMS documentation on system messages,
+              recovery procedures, and VMS software installation. If
+              you are notified that any of these conditions exist, you
+              should take the appropriate action as described in the
+              message. For information on installation requirements, see
+              Chapter 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Installing DEC InfoServer Client Software for VMS 2-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                  After Installing DEC InfoServer Client Software for VMS
+
+
+              The following tasks take place after installing DEC
+              InfoServer Client Software for VMS:
+
+              o  Running the Installation Verification Procedure
+                 separately.
+
+              o  Editing the system startup and shutdown files.
+
+              o  Making the product usable on a VAXcluster.
+
+              o  Setting user account quotas.
+
+              o  Reporting problems.
+
+        3.1 Running the Installation Verification Procedure Separately
+
+              You usually run the Installation Verification Procedure
+              (IVP) during installation. If you want to run the IVP
+              separately to ensure the integrity of installed files
+              should system problems occur, execute the following command
+              procedure:
+
+              $ @SYS$TEST:ESS010_IVP
+
+        3.2 Editing the System Files
+
+              You must edit the system startup files to provide for
+              automatic startup and shutdown of DEC InfoServer Client
+              Software for VMS when your system is rebooted.
+
+              Add the command line that starts DEC InfoServer
+              Client Software for VMS to the system startup file,
+              SYS$MANAGER:SYSTARTUP_V5.COM. You must position this new
+              command line after the line that invokes the DECnet network
+              startup command procedure. The following example shows the
+              network startup command line followed by the DEC InfoServer
+              Client Software for VMS startup command line:
+
+              $ @SYS$MANAGER:STARTNET
+                   .
+                   .
+                   .
+              $ @SYS$STARTUP:ESS$STARTUP CLIENT
+
+
+
+
+              After Installing DEC InfoServer Client Software for VMS 3-1
+
+ 
+
+
+
+        After Installing DEC InfoServer Client Software for VMS
+        3.2 Editing the System Files
+
+
+        3.2.1 Startup Restrictions: PCSA and RSM
+
+              If PCSA or RSM or both are installed, the DEC InfoServer
+              Client Software for VMS startup must be run before the
+              startup for PCSA or RSM or both.
+
+              $ @SYS$MANAGER:STARTNET
+                   .
+                   .
+                   .
+              $ @SYS$STARTUP:ESS$STARTUP CLIENT
+              $ @SYS$STARTUP:RSM$SERVER_STARTUP
+              $ @SYS$STARTUP:PCFS_STARTUP
+
+              The DEC InfoServer Client Software for VMS provides device
+              drivers and control programs that are shared by both
+              the PCSA and RSM products. All of the components of the
+              DEC InfoServer Client Software for VMS are prefixed with
+              ESS$. The drivers and control programs provided in the DEC
+              InfoServer Client Software for VMS provide all necessary
+              support for both PCSA and RSM in addition to InfoServer
+              Client support. It is necessary that the DEC InfoServer
+              Client Software for VMS startup be executed in the site-
+              specific startup before either the PCSA or RSM startup
+              procedures. If the DEC InfoServer Client Software for VMS
+              is started after either the PCSA or RSM startup procedure
+              is run, the startup will fail with an informational message
+              indicating the file or files in conflict.
+
+              $ @SYS$STARTUP:ESS$STARTUP CLIENT
+
+               Device LAST using driver LASTDRIVER.
+
+               Device LAD using driver LADDRIVER.
+
+              %SYSTEM-E-UNSUPPORTED, unsupported operation or function
+
+              A message indicating that the client was not started will
+              also be sent to the console.
+
+              Reply received on NODE1 from user SYSTEM at NODE1$OPA0:   15:08:23
+
+              %ESS-I-OLDVER VMS InfoServer client not started.
+
+              Reply received on NODE1 from user SYSTEM at NODE1$OPA0:   15:08:23
+              %ESS-I-OLDVER Check SYS$SYSROOT:[SYSMGR]ESS$STARTUP.LOG;1 for errors.
+
+        3.2.2 Startup Restrictions: SYSMAN
+
+              The startup for DEC InfoServer Client Software for VMS from
+              a subprocess will fail. Because the VMS System Management
+              Utility (SYSMAN) uses subprocesses to complete its tasks
+              on remote nodes, SYSMAN cannot be used to execute the
+              SYS$STARTUP:ESS$STARTUP procedure.
+
+
+        3-2 After Installing DEC InfoServer Client Software for VMS
+
+ 
+
+
+
+                  After Installing DEC InfoServer Client Software for VMS
+                                            3.3 VAXcluster Considerations
+
+
+        3.3 VAXcluster Considerations
+
+              DEC InfoServer Client Software for VMS supplies a new
+              version of SYS$SHARE:MOUNTSHR.EXE that is an installed
+              image. Before the DEC InfoServer Client Software for VMS
+              is started, this image will need to be replaced on all
+              nodes in the cluster. A command file that uses SYSMAN
+              to perform this operation on all nodes in a cluster has
+              been provided with the kit and placed in SYS$UPDATE. The
+              procedure needs to be executed from an account with at
+              least CMKRNL privilege. To execute the procedure, enter the
+              following command:
+
+              $ @SYS$UPDATE:ESS$CLUSTER_INSTALL_MOUNT
+
+        3.4 User Account Requirements
+
+              To work with DEC InfoServer Client Software for VMS, user
+              accounts on your system must have certain privileges and
+              quotas. The next two sections contain information on these
+              requirements.
+
+        3.4.1 Privileges
+
+              To use DEC InfoServer Client Software for VMS, a user needs
+              GRPNAM privilege if the /GROUP qualifier of the LAD Control
+              Program (LADCP) BIND command is used and SYSNAM privilege
+              is required if the /SYSTEM qualifier of the LADCP BIND
+              command is used.
+
+        3.4.2 User Account Quotas
+
+              To use DEC InfoServer Client Software for VMS, the UAF
+              account quotas that are in the DEFAULT UAF record are the
+              minimum values.
+
+              See Section 1.4.2 for a description of how to verify and
+              change account quotas.
+
+        3.5 Determining and Reporting Problems
+
+              If you encounter a problem while using DEC InfoServer
+              Client Software for VMS, report it to Digital. Depending
+              on the nature of the problem and the type of support you
+              have, you can take one of the following actions:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              o  Fill out and submit a Reader's Comments form if the
+                 problem has to do with the DEC InfoServer Client
+                 Software for VMS documentation. There are Reader's
+                 Comments forms at the back of each manual. Use the form
+                 from the manual in which you found the error. Include
+                 the section and page number.
+
+              After Installing DEC InfoServer Client Software for VMS 3-3
+
+ 
+
+
+
+        After Installing DEC InfoServer Client Software for VMS
+        3.5 Determining and Reporting Problems
+
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter a
+              problem during the warranty period, report the problem as
+              indicated above or follow alternate instructions provided
+              by Digital for reporting SPD nonconformance problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        3-4 After Installing DEC InfoServer Client Software for VMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                        Sample Installation: Run-Time Kit
+
+
+              This appendix contains a sample installation of DEC
+              InfoServer Client Software for VMS. This sample was run
+              on a system that had no previous version of DEC InfoServer
+              Client Software for VMS installed. Depending on which
+              layered products you have on your system, you might see
+              additional messages and questions when you perform your
+              installation.
+
+              The sample installation assumes that your DECnet network
+              is up, that no users are logged on to your system, and that
+              OPTIONS N is specified to print the release notes.
+
+               Welcome to VAX/VMS V5.2
+
+              Username: SYSTEM
+              Password:
+               Welcome to VAX/VMS version V5.2 on node NODE1
+                  Last interactive login on Tuesday, 4-DEC-1990 10:08
+                  Last non-interactive login on Tuesday, 21-NOV-1990 10:38
+
+              $ @SYS$UPDATE:VMSINSTAL ESS010 MUA0: OPTIONS N
+
+               VAX/VMS Software Product Installation Procedure V5.2
+
+              It is 4-DEC-1990 at 10:10.
+
+              Enter a question mark (?) at any time for help.
+
+              * Are you satisfied with the backup of your system disk [YES]? YES
+
+              The following products will be processed:
+
+                ESS V1.0
+
+               Beginning installation of ESS V1.0 at 10:11
+
+              Please mount the first volume of the set on MTA0:.
+              * Are you ready? YES
+              %MOUNT-I-MOUNTED, ESS mounted on _MUA0:
+              %VMSINSTAL-I-RESTORE, Restoring product saveset A ...
+
+                  Release notes included with this kit are always copied to SYS$HELP.
+
+                  Additional Release Notes Options:
+
+
+
+                                    Sample Installation: Run-Time Kit A-1
+
+ 
+
+
+
+        Sample Installation: Run-Time Kit
+
+
+
+               1.  Display release notes
+               2.  Print release notes
+               3.  Both 1 and 2
+               4.  None of the above
+
+              * Select option [2]: <Return>
+              * Queue name [SYS$PRINT]: <Return>
+              Job ESS010 (queue SYS$PRINT, entry 1) pending
+              * Do you want to continue the installation [NO]? YES
+              %VMSINSTAL-I-RELMOVED , The product's release notes have been successfully
+                                                                  moved to SYS$HELP.
+              * Do you want to run the IVP after the installation [YES]? YES
+              * Do you want to purge files replaced by this installation [YES]? YES
+              %ESS-I-CONTINUE, No more questions will be asked.
+              %ESS-I-MOVFIL, Providing IVP SYS$TEST:ESS010_IVP.COM
+              %VMSINSTAL-I-SYSDIR, This product creates system directory [SYSTEST.ESS010].
+              %ESS-I-MOVFIL, Providing startup and configuration files.
+              %ESS-I-MOVFIL, Providing help files.
+              %ESS-I-LINK, Linking drivers and control programs.
+              %ESS-I-MOVFIL, Providing control programs.
+              %ESS-I-MOVFIL, Providing drivers.
+              %VMSINSTAL-I-RESTORE, Restoring product saveset D ...
+              %ESS-I-MOVFIL, Providing MOUNTSHR image.
+
+                  After this  installation  completes, be sure to edit SYSTARTUP_V5.COM to
+                  invoke
+
+                  $@SYS$STARTUP:ESS$STARTUP.COM
+
+                  to start  the  protocols.   If this is executed before DECnet is started
+                  with  STARTNET.COM, then the SYSGEN parameter SCSSYSTEMID must be set up
+                  correctly to allow DECnet to start normally.  If this parameter is zero,
+                  then  execute ESS$STARTUP after STARTNET.  If you do not start DECnet be
+                  sure  that  the  SYSGEN  parameter  SCSNODE  is  non-blank  or  the LAST
+                  transport will not be able to start.
+
+                  You may  also  want  to  execute  ESS$STARTUP  when the kit installation
+                  completes to be able to access the network CD-ROMs without rebooting.
+
+                  Another command procedure template is provided:
+
+                  SYS$MANAGER:ESS$MOUNT.TEMPLATE
+
+                  This file  contains  sample  commands  neccessary  to  make  the CD-ROMs
+                  available  as  local  disks.   Use this as a guide to create the command
+                  file:
+
+                  SYS$MANAGER:ESS$MOUNT.COM
+
+                  You may  then  execute  the  procedure at the end of the installation to
+                  make  use of the network CD-ROMs.  After this installation completes, be
+                  sure to edit SYSTARTUP_V5.COM to invoke
+
+                  $@SYS$MANAGER:ESS$MOUNT.COM
+
+
+        A-2 Sample Installation: Run-Time Kit
+
+ 
+
+
+
+                                        Sample Installation: Run-Time Kit
+
+
+
+
+
+                  If this  system  has  RSM or PCSA or both installed, be sure to read the
+                  Install Guide that came with this product for IMPORTANT startup ordering
+                  information.   If you install either PCSA or RSM after this kit has been
+                  installed,  it may be necessary to re-install this kit.  See the Install
+                  Guide for this product for specific information.
+
+                  A new version of MOUNTSHR.EXE has been provided and installed as part of
+                  this  installation.   If  you  are installing this kit on a cluster, you
+                  will need to install the new MOUNTSHR.EXE on each member of the cluster.
+                  A  command procedure, ESS$CLUSTER_INSTALL_MOUNT.COM has been provided in
+                  SYS$UPDATE  to  accomplish  this.   If  you are installing this kit on a
+                  cluster, please execute the command:
+
+                  $ @SYS$UPDATE:ESS$CLUSTER_INSTALL_MOUNT.COM
+
+                  when the  installation  completes.   This  procedure  uses SYSMAN to re-
+                  install MOUNTSHR on every node in the cluster; you need only execute the
+                  procedure on your local node.
+
+                  Continuing installation...
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              Starting IVP for DEC InfoServer Client Software for VMS V1.0 .
+
+              %LAST-I-RUNNING,  is already running
+              %LASTCP-I-VERSION, LASTDRIVER X1.5 is running
+
+              The DEC InfoServer Client Software for VMS V1.0 IVP has completed successfully.
+
+
+              IVP for DEC InfoServer Client Software for VMS V1.0 completed.
+
+               Installation of ESS V1.0 completed at 11:41
+
+              Enter the products to be processed from the next distribution volume set.
+              * Products: <Return>
+               VMSINSTAL procedure done at 10:42
+
+
+              $ LOGOUT
+                SYSTEM       logged out at 4-DEC-1990 11:44:18.01
+
+
+
+
+
+
+
+
+
+
+
+
+                                    Sample Installation: Run-Time Kit A-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                         Files and Logical Names Installed on Your System
+
+
+              The DEC InfoServer Client Software for VMS installation
+              procedure installs a number of files on your system and
+              defines some logical names. Section B.1 lists the files
+              installed. Section B.2 lists the logical names that are
+              added to the system logical name table.
+
+        B.1 File Names
+
+              The following list contains the names of all files created
+              on your system when DEC InfoServer Client Software for VMS
+              is installed.
+
+              o  SYS$HELP:ESS$LADCP.HLB
+
+              o  SYS$HELP:ESS$LASTCPHELP.HLB
+
+              o  SYS$HELP:[EXAMPLES]ESS$RSM$SERVER_STARTUP.COM
+
+              o  SYS$HELP:ESS010.RELEASE_NOTES
+
+              o  SYS$LIBRARY:MOUNTSHR.EXE
+
+              o  SYS$LOADABLE_IMAGES:ESS$LADDRIVER.EXE
+
+              o  SYS$LOADABLE_IMAGES:ESS$DADDRIVER.EXE
+
+              o  SYS$LOADABLE_IMAGES:ESS$LADCDRIVER.EXE
+
+              o  SYS$LOADABLE_IMAGES:ESS$LASTDRIVER.EXE
+
+              o  SYS$MANAGER:ESS$MOUNT.TEMPLATE
+
+              o  SYS$STARTUP:ESS$STARTUP.COM
+
+              o  SYS$STARTUP:ESS$LAD_STARTUP.COM
+
+              o  SYS$STARTUP:ESS$LAD_STARTUP.DAT
+
+              o  SYS$STARTUP:ESS$LAST_STARTUP.COM
+
+              o  SYS$STARTUP:ESS$LAST_STARTUP.DAT
+
+              o  SYS$SYSTEM:ESS$TESTDEV.EXE
+
+              o  SYS$SYSTEM:ESS$LASTCP.EXE
+
+              o  SYS$SYSTEM:ESS$LADCP.EXE
+
+              o  SYS$TEST:ESS010.DIR
+
+              o  SYS$TEST:ESS010_IVP.COM
+
+              o  SYS$UPDATE:ESS$CLUSTER_INSTALL_MOUNT.COM
+
+                     Files and Logical Names Installed on Your System B-1
+
+ 
+
+
+
+        Files and Logical Names Installed on Your System
+        B.2 Logical Names
+
+
+        B.2 Logical Names
+
+              DEC InfoServer Client Software for VMS creates logical
+              names in the appropriate table whenever the LADCP bind
+              command is executed. In order to place logical names in
+              any table other than the process table, the appropriate
+              privileges are required. See Section 3.4.1 for the specific
+              requirements.
+
+              Creating a logical in the process table:
+
+              $ RUN SYS$SYSTEM:ESS$LADCP
+              LADCP>BIND CDDOC05SEP01
+              %LADCP-I-BIND, service bound to logical unit DAD$CDDOC05SEP01 (_DAD20:)
+              LADCP>EXIT
+              $ SHOW LOGICAL/FULL DAD$CDDOC05SEP01
+                 "DAD$CDDOC05SEP01" [super] = "_DAD20:" [concealed] (LNM$PROCESS_TABLE)
+
+              Creating a logical in the group table:
+
+              $ RUN SYS$SYSTEM:ESS$LADCP
+              LADCP>BIND/GROUP CDDOC05SEP01
+              %LADCP-I-BIND, service bound to logical unit DAD$CDDOC05SEP01 (_DAD21:)
+              LADCP>EXIT
+              $ SHOW LOGICAL/FULL DAD$CDDOC05SEP01
+                 "DAD$CDDOC05SEP01" [super] = "_DAD21:" [concealed] (LNM$GROUP_000104)
+
+              Creating a logical in the system table:
+
+              $ RUN SYS$SYSTEM:ESS$LADCP
+              LADCP>BIND/SYSTEM CDDOC05SEP01
+              %LADCP-I-BIND, service bound to logical unit DAD$CDDOC05SEP01 (_DAD22:)
+              LADCP>EXIT
+              $ SHOW LOGICAL/FULL DAD$CDDOC05SEP01
+                 "DAD$CDDOC05SEP01" [exec] = "_DAD22:" [concealed] (LNM$SYSTEM_TABLE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        B-2 Files and Logical Names Installed on Your System
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        C
+        _________________________________________________________________
+
+                                                            Release Notes
+
+
+              The DEC InfoServer Client Software for VMS provides a VAX
+              system running VMS Version 5.0 to Version 5.3-2 software
+              the capability to access the virtual disk services of an
+              InfoServer 100.
+
+        C.1 Overview of the InfoServer 100
+
+              The InfoServer 100 is an Ethernet-based, high performance
+              virtual disk server. Physical disk media and sets of
+              logical disk blocks can be served to the network by
+              the InfoServer. Host systems running the appropriate
+              client software can connect to virtual disks served by
+              the InfoServer 100, and utilize them as though they were
+              locally attached devices.
+
+              The InfoServer 100 is a virtual disk server. Unlike a file
+              server, the InfoServer does not impose a file system on
+              the virtual disks that it serves. This means that the
+              InfoServer can serve a disk with any type of on-disk
+              file structure. The client system interprets the on-disk
+              structure itself, allowing any client system to access
+              the served disk using a native file system. Multiple on-
+              disk structures can be served on a single InfoServer 100
+              simultaneously.
+
+              One of the primary functions of the InfoServer 100 is to
+              make CD-ROMs available to clients on the network. The
+              InfoServer will automatically serve CD-ROMs under their
+              volume labels when the server is booted, or when CD-ROMs
+              are inserted into their drives. No management action needs
+              to be taken on the InfoServer. Client systems simply bind
+              to and mount the CD-ROMs under their volume labels. The
+              InfoServer is capable of automatically serving CD-ROMs
+              that are ODS-2, ISO-9660, or High Sierra format. Other
+              media types can be served manually through the InfoServer
+              management interface.
+
+              The InfoServer 100 can also serve read/write disk
+              partitions. A partition is a logical subset of a read/write
+              disk. A single disk can be subdivided into several
+              partitions, each of which can be served to the network
+              independently. These partitions appear to be whole disks to
+              the remote client systems. For example, an MS-DOS personal
+              computer utilizing the PCSA product can access InfoServer
+              partitions, and use them as though they were a local hard
+              disk.
+
+                                                        Release Notes C-1
+
+ 
+
+
+
+        Release Notes
+        C.2 VMS Upgrade Considerations
+
+
+        C.2 VMS Upgrade Considerations
+
+              The DEC InfoServer Client Software for VMS will install on
+              all released versions of VMS from Version 5.0 to Version
+              5.3-2. The kit will have to be re-installed if a system is
+              upgraded within the range of supported versions. With VMS
+              V5.4 and all subsequent versions, the InfoServer Client
+              Software is an integral part of the base VMS operating
+              system.
+
+              If you install VMS Services for PCs (PCSA) or Remote System
+              Manager (RSM) after the DEC InfoServer Client Software for
+              VMS has been installed, you will need to re-install the DEC
+              InfoServer Client Software for VMS. This is necessary to
+              ensure that the proper versions of the control programs are
+              in place.
+
+        C.3 VAXcluster Restrictions
+
+              The virtual disks created by the DEC InfoServer Client
+              Software for VMS cannot be mounted with the /CLUSTER
+              qualifier in the Mount Utility. An attempt to use this
+              qualifier will cause the mount to fail, as in the following
+              example:
+
+              $ RUN SYS$SYSTEM:ESS$LADCP
+              LADCP> BIND CD_BIN_00121
+              %LADCP-I-BIND, service bound to logical unit DAD$CD_BIN_00121 (_DAD7:)
+              LADCP>  EXIT
+              $ MOUNT/CLUSTER DAD7: CD_BIN_00121
+              %MOUNT-F-NOTACLU, _DAD7: (NODE1) is not a cluster-wide device
+
+              It is therefore necessary to execute the client startup
+              procedure and the ESS$MOUNT procedure on all VAXcluster
+              nodes that will require access to InfoServer disks.
+
+        C.4 Upgrading to VMS V5.4 from an InfoServer
+
+              The DEC InfoServer Client Software for VMS will enable the
+              system disk on which it is installed to be upgraded to VMS
+              V5.4 from the VMS V5.4 CD-ROM served by an InfoServer. Once
+              a system is upgraded to V5.4, it is no longer necessary to
+              install the DEC InfoServer Client Software for VMS because
+              the InfoServer Client is an integral part of VMS V5.4.
+
+              To perform the upgrade, the target system must have the
+              DEC InfoServer Client Software for VMS installed and meet
+              the disk space requirements as detailed in the VMS V5.4
+              installation guide. The VMS V5.4 CD-ROM must be served
+              from an available InfoServer. You must also ensure that the
+              SYSGEN parameter SCSNODE is non-blank on the system to be
+              upgraded.
+
+              Once the system has been properly prepared, follow the
+              V5.4 guidelines to the step where the device containing the
+              distribution medium is to be configured. The DEC InfoServer
+              Client Software for VMS requires that the Ethernet device
+              be configured:
+
+        C-2 Release Notes
+
+ 
+
+
+
+                                                            Release Notes
+                             C.4 Upgrading to VMS V5.4 from an InfoServer
+
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN> AUTOCONFIGURE ALL
+              SYSGEN> EXIT
+
+              You must now load the DEC InfoServer Client Software for
+              VMS by invoking the DEC InfoServer Client Software for VMS
+              startup procedure:
+
+              $ @SYS$STARTUP:ESS$STARTUP CLIENT
+              %LASTCP-I-VERSION, LASTDRIVER X1.5 is stopped
+              %LASTCP-I-ADAPINIT, Initializing adapter ESA1: for LASTDRIVER
+              %LASTCP-I-STARTED, LASTDRIVER X1.5 started on node NODE1
+
+              To verify that the VMS V5.4 CD-ROM is being served, you can
+              perform the following command:
+
+              $ RUN SYS$SYSTEM:ESS$LADCP
+              LADCP> SHOW SERVICE
+              Interrogating network, please wait...
+
+              Services offered by node ESS_TST (LAD V3.0, Address: 08-00-2B-15-05-89)
+                                                                          Current   Writes
+              Service:                                Device:    Rating: Connects: Allowed?:
+              VMS054                                   RRD40      65007       2     No
+
+              If the service VMS054 is available, you can bind to the
+              service and mount the virtual device:
+
+              $ RUN SYS$SYSTEM:ESS$LADCP
+              LADCP> BIND VMS054
+              %LADCP-I-BIND, service bound to logical unit DAD$VMS054 (_DAD1:)
+              LADCP>  EXIT
+              $  MOUNT DAD1: VMS054
+              %MOUNT-I-WRITELOCK, volume is write locked
+              %MOUNT-I-MOUNTED, VMS054       mounted on _DAD1:
+
+              You may now proceed with the installation, specifying the
+              [000000] directory of the DAD device that was just mounted
+              as the distribution volume location:
+
+              $ @SYS$UPDATE:VMSINSTAL
+
+                      VAX/VMS Software Product Installation Procedure V5.3
+
+              It is 15-OCT-1990 at 08:04.
+
+              Enter a question mark (?) at any time for help.
+
+              * Are you satisfied with the backup of your system disk [YES]?YES
+              * Where will the distribution volumes be mounted: DAD1:[000000]
+
+              Enter the products to be processed from the first distribution volume set.
+              * Products: VMS054
+
+              The upgrade to VMS V5.4 will continue for your processor as
+              detailed in the V5.4 installation guide.
+
+                                                        Release Notes C-3

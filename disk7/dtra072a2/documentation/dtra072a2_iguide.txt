@@ -1,0 +1,5460 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     DATATRIEVE____________________________________
+                     Installation Guide
+
+                     Order Number: AA-AJ56R-TE
+
+
+                     February 2000
+
+                     This manual describes the installation procedure
+                     for Compaq[TM]DATATRIEVE [TM] Version 7.2A.
+
+
+
+
+
+
+                     Operating System:            OpenVMS[TM] VAX[TM]
+                                                  Version 5.5-2, 6.2,
+                                                  7.1 or higher
+
+                                                  OpenVMS Alpha Version
+                                                  6.2 or higher
+
+                     Software Version:            DATATRIEVE Version
+                                                  7.2A
+
+
+
+
+
+
+                     Compaq Computer Corporation
+
+ 
+
+
+
+
+
+
+           February 2000
+     Possession, use, or copying of the software described in this
+     documentation is authorized only pursuant to a valid written
+     license from Compaq or an authorized sublicensor.
+
+     Compaq conducts its business in a manner that conserves the
+     environment and protects the safety and health of its employees,
+     customers, and the community. While Compaq believes the
+     information included in this publication is correct as of the
+     date of publication, it is subject to change without notice.
+     Compaq Computer Corporation makes no representations that the
+     use of its products in the manner described in this publication
+     will not infringe on existing or future patent rights, nor
+     do the descriptions contained in this publication imply the
+     granting of licenses to make, use, or sell equipment or software
+     in accordance with the description.
+
+           © Compaq Computer Corporation 2000. All rights reserved. .
+           We welcome your comments on this book. Please use one of
+           the following ways to send your comments:
+
+           o  Send an electronic mail message to openvmsdoc@compaq.com
+
+           o  Send a fax to (+1) 603 884-0120, Attention: DATATRIEVE
+              Documentation, REO2-J9
+
+           The following are trademarks of Compaq Computer Corporation:CDA,
+           Compaq, DATATRIEVE, DEC, DEC Fortran, DECdecision,
+           DECdesign, DECforms, DECnet, DECpresent, DECwindows,
+           DECwrite, DIGITAL, FMS, OpenVMS, PATHWORKS, PDP, ReGIS,
+           VAX, VAX BASIC, VAX COBOL, VAX MACRO, VAX Pascal, VAX
+           Rdb/ELN, VAXcluster, VIDA, VMS, VMS RMS, WPS-PLUS, and the
+           Compaq logo.
+
+           The following are third-party trademarks:
+
+           DB2 is a trademark and IBM is a registered trademark of
+           International Business Machines Corp.
+           LOTUS 1-2-3 is a registered trademark of Lotus Development
+           Corp.
+           Motif is a registered trademark of Open Software
+           Foundation, Inc.
+           ORACLE is a registered trademark, and Oracle CDD/Repository,
+           Oracle CODASYL DBMS, Oracle Expert, Oracle Rdb, SQL/Services,
+           Oracle Rdb Transparent Gateway, Oracle TRACE are
+           trademarks of Oracle Corporation.
+           PostScript is a registered trademark of Adobe Systems
+           Corp.
+           SYBASE is a registered trademark of SYBASE Inc.
+           Windows is a trademark, and Excel, Microsoft, MS-DOS,
+           Visual Basic, Visual C++ are registered trademarks of
+           Microsoft Corporation.
+
+           All other trademarks and registered trademarks are the
+           property of their respective holders. This document is
+           available on CD-ROM. 1
+
+ 
+
+
+
+
+
+
+
+
+                                                                 -3
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+
+   Preface..................................................    vii
+
+   1  Preinstallation Considerations
+
+         1.1   Prerequisite Hardware........................    1-1
+         1.2   OpenVMS Licensing Management Facility
+               (LMF)........................................    1-2
+         1.3   Prerequisite Software........................    1-3
+         1.3.1     Required Software Products...............    1-3
+         1.3.2     Optional Software Products...............    1-3
+         1.3.3     Order of Product Installation............    1-5
+         1.4   VAXcluster Consideration (VAX Only)..........    1-6
+         1.5   VMScluster Consideration.....................    1-6
+         1.6   Preparing Your System and the Installing
+               Account......................................    1-7
+         1.6.1     Required Parameters......................    1-7
+         1.6.1.1     Global Pages (or pagelets) and Global
+                     Sections (GBLPAGES and GBLSECTIONS
+                     Parameters)............................    1-7
+         1.6.2     Oracle CDD/Repository Considerations (if
+                   support required)........................    1-9
+         1.6.2.1     Effect of Installation Procedure on
+                     Existing DTR$LIB Directory.............    1-9
+         1.6.2.2     Required Privileges to CDD$TOP.........    1-9
+         1.6.3     Effect of Installation Procedure on the
+                   Logical DTR$LIBRARY......................   1-11
+         1.6.4     More than One Installation of this
+                   Version of DATATRIEVE....................   1-11
+         1.6.5     Check for Invalid DTRFUNxx.OLB...........   1-12
+
+
+
+                                                                  v
+
+ 
+
+
+
+
+
+
+     2  DATATRIEVE Installation Procedure
+
+           2.1   Starting the Installation Procedure..........    2-1
+           2.2   Mounting the Distribution Medium.............    2-4
+           2.3   Answering Questions About Release Notes......    2-5
+           2.4   Answering Questions About Oracle
+                 CDD/Repository...............................    2-6
+           2.5   Answering Questions About the DATATRIEVE
+                 object libraries (OpenVMS VAX systems
+                 only)........................................    2-6
+           2.6   Answering Questions About the Licensing
+                 Management Facility (LMF)....................    2-7
+           2.7   Answering Questions During the DATATRIEVE
+                 Installation.................................    2-8
+           2.7.1     Installing DATATRIEVE with the Default
+                     Answers..................................    2-9
+           2.7.2     Installing with LSE Support..............   2-11
+           2.7.3     Installing with Support for Forms
+                     Products.................................   2-12
+           2.7.4     Specifying Suffixes for More than
+                     One Installation of This Version of
+                     DATATRIEVE...............................   2-14
+           2.7.5     Defining the DATATRIEVE Remote Server....   2-17
+           2.7.6     Creating a DCL Command File for New
+                     Users....................................   2-18
+           2.7.7     Installing Shared Images.................   2-19
+           2.7.8     Installing Plot Definitions and Optional
+                     Material.................................   2-20
+           2.7.9     Purging Files............................   2-21
+           2.7.10    Running the IVP..........................   2-21
+           2.8   Finishing the Installation...................   2-22
+
+     3  Postinstallation Considerations
+
+           3.1   Updating SYS$MANAGER:SYSTARTUP.COM...........    3-1
+           3.2   VAXcluster Considerations (VAX Only).........    3-1
+           3.3   Moving the DATATRIEVE Environment Between
+                 Operating Systems............................    3-2
+           3.4   Updating Process Command Tables..............    3-2
+           3.5   Online DATATRIEVE Object Library.............    3-3
+           3.6   DECnet Considerations........................    3-3
+           3.6.1     Defining a DECnet Object.................    3-3
+
+
+
+     vi
+
+ 
+
+
+
+
+
+
+              3.6.2     Creating a Default DECnet Account for
+                        Distributed Access.......................    3-5
+              3.7   Maintaining User-Defined Functions...........    3-8
+              3.8   Providing Control Information to
+                    DATATRIEVE...................................   3-10
+              3.9   Preparing to Install DATATRIEVE Client for
+                    Windows......................................   3-11
+              3.10  Deleting Unused Files for DATATRIEVE
+                    DECwindows Motif Support.....................   3-12
+              3.11  Getting Help and Reporting Problems..........   3-13
+
+
+        4  User Environment Test Packages
+
+              4.1   Invoking DATATRIEVE..........................    4-2
+              4.2   DATATRIEVE UETP..............................    4-3
+              4.3   DATATRIEVE Graphics UETP.....................    4-6
+              4.4   DATATRIEVE and Oracle CODASYL DBMS UETP......    4-8
+              4.5   DATATRIEVE and Oracle Rdb UETP...............   4-10
+              4.6   DATATRIEVE and Forms UETP....................   4-14
+
+        5  DATATRIEVE CBT Installation
+
+        A  Sample Installation Session (VAX Only)
+
+
+        B  Sample Installation Session (Alpha Only)
+
+        C  List of Files Modified/Added by the Installation
+           Procedure
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              This manual describes how to install the DATATRIEVE
+              Version 7.2A software. This manual also describes how
+              to use the DATATRIEVE User Environment Test Packages
+              (UETPs) and how to install the DATATRIEVE computer-
+              based training (CBT). This manual covers both DATATRIEVE
+              for OpenVMS Alpha operating systems and DATATRIEVE for
+              OpenVMS VAX operating systems, which are referred to by
+              their abbreviated name DATATRIEVE. Sections specific to a
+              particular platform are indicated using margin icons as
+              shown in Conventions.
+
+        Intended Audience
+
+              This manual is intended for persons responsible for
+              installing and maintaining DATATRIEVE software. To install
+              the software, you should be familiar with VMSINSTAL, the
+              command procedure used to install software products in the
+              OpenVMS environment. For information on VMSINSTAL, see the
+              OpenVMS documentation.
+
+        Operating System Information
+
+              Information about the versions of the operating system
+              and related software that is compatible with this version
+              of DATATRIEVE is included in the DATATRIEVE media kit, in
+              either this manual or the DATATRIEVE Before You Install
+              Letter.
+
+              For information on the compatibility of other software
+              products with this version of DATATRIEVE, refer to the
+              Software Product Description (SPD). You can use the SPD
+              to verify which versions of your operating system are
+              compatible with this version of DATATRIEVE.
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+     Related Documents
+
+           For further information on the topics covered in this
+           manual, you can refer to the following documentation:
+
+           o  DATATRIEVE Release Notes
+
+              Describes corrections to software, restrictions,
+              workarounds, and known problems for DATATRIEVE Version
+              7.2A.
+
+           o  DATATRIEVE User's Guide
+
+              Describes how to use DATATRIEVE interactively.
+
+           o  DATATRIEVE Guide to Interfaces
+
+              Includes information on using DATATRIEVE to manipulate
+              data with forms, relational databases, and database
+              management systems.
+
+           o  DATATRIEVE Reference Manual
+
+              Contains reference information for DATATRIEVE.
+
+           o  DATATRIEVE Guide to Programming and Customizing
+
+              Explains how to use the DATATRIEVE Call Interface.
+              The manual also describes how to create user-defined
+              keywords and user-defined functions to customize
+              DATATRIEVE and how to customize DATATRIEVE help and
+              message texts.
+
+           o  Getting Started with DATATRIEVE Client for Windows
+
+              Describes basic DATATRIEVE Client for Windows
+              functions.
+
+     Conventions
+
+           In this manual, every use of OpenVMS VAX indicates the
+           OpenVMS VAX operating system, every use of OpenVMS Alpha
+           indicates the OpenVMS Alpha operating system, and every
+           use of OpenVMS indicates both the OpenVMS VAX operating
+           system and the OpenVMS Alpha operating system.
+
+           The following conventions are used to identify information
+           specific to OpenVMS Alpha or to OpenVMS VAX:
+
+     viii
+
+ 
+
+
+
+
+
+
+              The following conventions are also used in this manual:
+
+              [ ] (brackets)   Square brackets in the installation
+                               procedure enclose the default response
+                               value to a query.
+
+              ... (horizontal  A horizontal ellipsis in an example means
+              ellipsis)        that information not directly related to
+                               the example has been omitted.
+
+              .                A vertical ellipsis in an example means
+              . (vertical      that information not directly related to
+              . ellipsis)      the example has been omitted.
+
+              Bold type        Bold type is used for terms being defined
+                               for the first time. Bold type in examples
+                               indicates user input.
+
+        References to Products
+
+              DATATRIEVE was formerly known as DEC DATATRIEVE and
+              as DIGITAL DATATRIEVE. All DATATRIEVE Version 7.2A
+              documentation refers to this product as DATATRIEVE.
+
+              The DATATRIEVE documentation to which this manual belongs
+              often refers to products by their abbreviated names.
+
+              o  DATATRIEVE refers to both Compaq DATATRIEVE for OpenVMS
+                 Alpha and Compaq DATATRIEVE for OpenVMS VAX software.
+
+              o  Oracle Rdb[TM] refers to both Oracle Rdb for OpenVMS
+                 Alpha and Oracle Rdb for OpenVMS VAX software.
+
+              o  Oracle CODASYL DBMS[TM] refers to both Oracle CODASYL
+                 DBMS for OpenVMS Alpha and Oracle CODASYL DBMS for
+                 OpenVMS VAX software.
+
+              o  Compaq Fortran[TM] refers to both Compaq Fortran
+                 for OpenVMS Alpha and Compaq Fortran for OpenVMS VAX
+                 software.
+
+              o  Compaq C refers to both Compaq C for OpenVMS Alpha and
+                 Compaq C for OpenVMS VAX software.
+
+              o  DEC TPU refers to both DEC TPU for OpenVMS Alpha and
+                 DEC TPU for OpenVMS VAX software.
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+           o  DEC DB Integrator Gateway refers to DEC DB Integrator
+              Gateway for DB2[TM] Client, DEC DB Integrator Gateway
+              for ORACLE[R], and DEC DB Integrator Gateway for
+              SYBASE[R].
+
+           o  RMS[TM] refers to the OpenVMS Record Management
+              Services.
+
+           This manual uses the term relational database or
+           relational source to refer to all three of these products:
+
+           o  VAX Rdb/ELN[TM]
+
+           o  Oracle Rdb
+
+           o  DEC DB Integrator Gateway
+
+              ________________________Note ________________________
+
+              DEC DB Integrator Gateway is now owned by Oracle
+              Corporation and has been renamed Oracle Rdb
+              Transparent Gateway.
+
+              _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     x
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                          Preinstallation Considerations
+
+
+
+              This chapter includes important installation consid-
+              erations that you must be aware of before you install
+              DATATRIEVE Version 7.2A. Read this chapter carefully
+              before you proceed to Chapter 2, DATATRIEVE Installation
+              Procedure.
+
+              To prepare your system for installing DATATRIEVE, you must
+              perform the following tasks:
+
+              o  Verify that your system has enough memory and available
+                 disk space to install and use DATATRIEVE.
+
+              o  Register the Product Authorization Key (PAK) that
+                 is shipped with DATATRIEVE (if this is the first
+                 installation of DATATRIEVE).
+
+              o  Verify that your system has the correct versions of the
+                 optional and required software you will be using with
+                 DATATRIEVE.
+
+              o  Check your system and the installing account to
+                 ensure that parameters and quotas are sufficient for
+                 installing and using DATATRIEVE.
+
+              This chapter tells you what actions to take to prepare
+              your system for installing DATATRIEVE.
+
+        1.1 Prerequisite Hardware
+
+              Installing DATATRIEVE requires a certain amount of
+              free disk storage space during the installation. Once
+              DATATRIEVE is installed, less storage space is required.
+
+              The following table summarizes the storage requirements
+              for OpenVMS VAX operating systems.
+
+                                      Preinstallation Considerations 1-1
+
+ 
+
+
+
+     Preinstallation Considerations
+     1.1 Prerequisite Hardware
+
+           __________________________________________________________
+                            Blocks During
+           Kit______________Installation_____Blocks_After_Installation
+
+           DATATRIEVE       29,000           26,000
+           Version_7.2A______________________________________________
+
+           DATATRIEVE runs on all VAX processors except the VAX-
+           11/725 processor. <>
+
+           The following table summarizes the storage requirements
+           for OpenVMS Alpha operating systems:
+
+           __________________________________________________________
+                            Blocks During
+           Kit______________Installation_____Blocks_After_Installation
+
+           DATATRIEVE       50,000           35,000 <>
+           Version_7.2A______________________________________________
+
+           To determine the number of free disk blocks on the current
+           system disk, enter the following command at the DCL
+           prompt:
+
+           $ SHOW DEVICE SYS$DEVICE
+
+     1.2 OpenVMS Licensing Management Facility (LMF)
+
+           This version of DATATRIEVE supports the License Management
+           Facility provided by OpenVMS. See the OpenVMS documenta-
+           tion for more information.
+
+           If you receive a Product Authorization Key (PAK) with
+           DATATRIEVE you should register the information contained
+           in the PAK before you begin the installation. You can
+           register by using the License command procedure using the
+           following command:
+
+           $ @SYS$UPDATE:VMSLICENSE
+
+           You can also use the LICENSE REGISTER command to register
+           the information contained in the PAK. Both methods are
+           described in the OpenVMS documentation.
+
+           DATATRIEVE asks you early in the installation procedure
+           whether or not you have registered and loaded an
+           authorization key. You can install this version of
+           DATATRIEVE without the authorization key information, but
+
+     1-2 Preinstallation Considerations
+
+ 
+
+
+
+                                          Preinstallation Considerations
+                         1.2 OpenVMS Licensing Management Facility (LMF)
+
+              you cannot run DATATRIEVE or the Installation Verification
+              Procedure (IVP).
+
+        1.3 Prerequisite Software
+
+              You must have the correct versions of the optional
+              and required software products you will be using with
+              DATATRIEVE. Install those products in the order specified
+              in Section 1.3.3, Order of Product Installation.
+
+              1.3.1 Required Software Products
+
+              This version of DATATRIEVE is a complete kit. You do not
+              need any previous versions of DATATRIEVE to install it.
+
+              On OpenVMS VAX operating systems, DATATRIEVE Version
+              7.2A requires Version 5.5-2, 6.2, 7.1 or higher of the
+              operating system. For Fullname support OpenVMS VAX Version
+              6.2 is required. To check which version of the operating
+              system is currently installed on your system, use the SHOW
+              SYSTEM command at the DCL prompt. <>
+
+              On OpenVMS Alpha operating systems, DATATRIEVE Version
+              7.2A requires Version 6.2 or higher of the operating
+              system. <>
+
+              1.3.2 Optional Software Products
+
+              The following optional products can be used along with
+              DATATRIEVE:
+
+              o  Oracle CDD/Repository
+
+                 If you plan to install DATATRIEVE with Oracle
+                 CDD/Repository support, the following requirements
+                 apply:
+
+                 -  On OpenVMS VAX operating systems, you must have
+                    Version 5.0 or higher of Oracle CDD/Repository[TM]
+                    before you can install DATATRIEVE. <>
+
+                 -  On OpenVMS Alpha operating systems, you must have
+                    Version 5.3 or higher of Oracle CDD/Repository
+                    before you can install DATATRIEVE. <>
+
+                                      Preinstallation Considerations 1-3
+
+ 
+
+
+
+     Preinstallation Considerations
+     1.3 Prerequisite Software
+
+              To check which version of Oracle CDD/Repository is
+              currently installed on the system, use the following
+              command:
+
+              $ DICTIONARY OPERATOR
+
+              The CDO banner gives the version of Oracle CDD/Repository
+              currently installed on your system. For example:
+
+              Welcome to CDO V6.1
+              The CDD/Repository V6.1 User Interface
+              Type HELP for help
+              CDO>
+
+           o  Oracle CODASYL DBMS
+
+           o  Oracle Rdb
+
+           o  VAX Rdb/ELN
+
+           o  VAX TDMS
+
+           o  Compaq FMS[TM]
+
+           o  Compaq DECforms[TM]
+
+           o  DEC DB Integrator Gateway
+
+           o  LSE
+
+           o  Compaq DECwindows[TM] Motif[R]
+
+           o  DECnet[TM]/OSI for OpenVMS VAX Version 5.7 or
+              DECnet/OSI for OpenVMS Alpha Version 5.7 for Fullname
+              support.
+
+           o  For using DATATRIEVE Version 7.2A with DATATRIEVE
+              Client for Windows, the following software is
+              required:
+
+              *  DECnet or TCP/IP
+
+              *  Microsoft Windows
+
+              *  PATHWORKS[TM] for MS-DOS[R] and Windows (for DECnet
+                 use only).
+
+              *  A compiler or interpreter that can access DLL
+                 libraries (only required if you use the DATATRIEVE
+                 Call Interface).
+
+     1-4 Preinstallation Considerations
+
+ 
+
+
+
+                                          Preinstallation Considerations
+                                               1.3 Prerequisite Software
+
+              On OpenVMS Alpha operating systems VAX Rdb/ELN and VAX
+              TDMS are not available. <>
+
+              Refer to the DATATRIEVE Before You Install Letter to
+              determine which versions of these optional software
+              products are compatible with DATATRIEVE Version 7.2A.
+
+              If an optional product is on the system but is not the
+              version required by DATATRIEVE, the installation procedure
+              will not install the User Environment Test Package (UETP)
+              for that product. (Note that not all optional software
+              products have a UETP.)
+
+              If you want to ready domains that reside on a remote node,
+              you must have Version 7.2A of the DATATRIEVE software
+              installed on the remote node you wish to access.
+
+              1.3.3 Order of Product Installation
+
+              When you install required and optional software products
+              with DATATRIEVE, you should install these products in the
+              following order:
+
+              o  Optional LSE
+
+                 If you plan to use LSE with DATATRIEVE, you should
+                 install LSE before installing other required or
+                 optional software products. However, if you choose
+                 to install LSE at a later date, the DATATRIEVE
+                 installation procedure provides you with the option
+                 of performing a modified DATATRIEVE installation to
+                 provide DATATRIEVE support for LSE at that time.
+
+              o  Optional Oracle Rdb
+
+                 If you plan to use Oracle Rdb with DATATRIEVE, you
+                 should follow the order-of-installation instructions
+                 provided with Oracle CDD/Repository to insure the
+                 proper operation of Oracle CDD/Repository with Oracle
+                 Rdb.
+
+              o  Oracle CDD/Repository
+
+              o  Optional forms products ( VAX TDMS, Compaq FMS,
+                 DECforms)
+
+              o  Optional database products (Oracle CODASYL DBMS, VAX
+                 Rdb/ELN, DEC DB Integrator Gateway)
+
+                                      Preinstallation Considerations 1-5
+
+ 
+
+
+
+     Preinstallation Considerations
+     1.3 Prerequisite Software
+
+              Install Oracle CODASYL DBMS, VAX Rdb/ELN, and DEC DB
+              Integrator Gateway before installing DATATRIEVE to
+              make sure the installation includes sample databases
+              and User Environment Test Packages. You do not have
+              to install these optional database products before
+              DATATRIEVE to use the products with DATATRIEVE.
+
+           o  Optional DECwindows Motif
+
+           o  DECnet
+
+           o  Microsoft Windows
+
+           o  PATHWORKS for MS-DOS and Windows.
+
+           o  A compiler or interpreter that can access DLL
+              libraries.
+
+           o  DATATRIEVE
+
+              ________________________Note ________________________
+
+              DECforms, and DECwindows Motif can also be installed
+              after DATATRIEVE.
+
+              _____________________________________________________
+
+     1.4 VAXcluster Consideration (VAX Only)
+
+           This installation procedure lets you install DATATRIEVE
+           only on a system-rooted device. Whether you are installing
+           DATATRIEVE on a VAXcluster[TM] or in a nonclustered
+           environment, the installation procedure places the files
+           that it generates in SYS$COMMON, not in SYS$SPECIFIC.
+           The installation defines the logical name DTR$LIBRARY as
+           SYS$COMMON:[DTR].
+
+     1.5 VMScluster Consideration
+
+           If you are using a dual-architecture (VAX and Alpha
+           systems) heterogeneous cluster, before executing these
+           commands, make sure the appropriate logical names have
+           been set to define the scope of the SYSMAN DO commands.
+           For more information, see the OpenVMS System Manager's
+           Manual.
+
+     1-6 Preinstallation Considerations
+
+ 
+
+
+
+                                          Preinstallation Considerations
+                    1.6 Preparing Your System and the Installing Account
+
+        1.6 Preparing Your System and the Installing Account
+
+              This section tells you which characteristics of your
+              system and installing account need to be checked before
+              you install DATATRIEVE. These characteristics include
+              process quotas, access control privileges to CDD$TOP
+              (if you plan to install DATATRIEVE Version 7.2A with
+              Oracle CDD/Repository support), and system parameters.
+              Instructions are given for checking and modifying the
+              relevant characteristics of your system and installing
+              account.
+
+              1.6.1 Required Parameters
+
+              You must check that the value of your process quotas
+              and system parameters are sufficient for installing
+              DATATRIEVE. You can check these values in the Oracle
+              CDD/Repository documentation (if you plan to install
+              DATATRIEVE Version 7.2A with Oracle CDD/Repository
+              support).
+
+              1.6.1.1 Global Pages (or pagelets) and Global Sections
+              (GBLPAGES and GBLSECTIONS Parameters)
+
+              If you plan to install various DATATRIEVE images as
+              SHARED, you need sufficient global pages (on OpenVMS
+              VAX systems) or pagelets (on OpenVMS Alpha systems), and
+              global sections. The installation procedure asks you about
+              five images: DDMFxx, DTR32xx, DTRSHRxx, DTRAPIxx, and
+              DTRMSGS. (The xx at the end of the file name refers to the
+              optional suffix that you can specify in the installation
+              procedure. See Section 2.7.4, Specifying Suffixes for
+              More than One Installation of This Version of DATATRIEVE
+              for more information.) You do not have to install all of
+              these images; you need sufficient global pages and global
+              sections only for those you do wish to install.
+
+              DATATRIEVE automatically installs the DTRHELP image
+              as SHARED. You need sufficient global pages and global
+              sections for this image.
+
+
+
+
+
+                                      Preinstallation Considerations 1-7
+
+ 
+
+
+
+     Preinstallation Considerations
+     1.6 Preparing Your System and the Installing Account
+
+           The following table indicates the requirements for the
+           GBLPAGES and GBLSECTIONS parameters for the image files
+           that are part of this version of DATATRIEVE on OpenVMS VAX
+           operating systems.
+
+           __________________________________________________________
+           File__________Global_Sections_____Global_Pages____________
+
+           DDMFxx         2                   102
+
+           DTR32xx        1                   184
+
+           DTRSHRxx       5                  1226
+
+           DTRMSGS        1                   115
+
+           DTRHELP        1                    40
+
+           DTRAPIxx       2                    86
+
+           __________________________________________________________
+
+           Total:________12__________________1753_<>_________________
+
+           The following table indicates the requirements for the
+           GBLPAGES and GBLSECTIONS parameters for the image files
+           that are part of this version of DATATRIEVE on OpenVMS
+           Alpha operating systems.
+
+           __________________________________________________________
+           File__________Global_Sections_____Pagelets________________
+
+           DDMFxx         1                   273
+
+           DTR32xx        1                   964
+
+           DTRSHRxx       2                  3970
+
+           DTRMSGS        1                   115
+
+           DTRHELP        1                    49
+
+           DTRAPIxx       2                   282
+
+           __________________________________________________________
+
+           Total:_________8__________________5653<>__________________
+
+           To find how many free global pages and global sections are
+           available on your system, issue the following commands:
+
+           $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+           $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+
+     1-8 Preinstallation Considerations
+
+ 
+
+
+
+                                          Preinstallation Considerations
+                    1.6 Preparing Your System and the Installing Account
+
+              1.6.2 Oracle CDD/Repository Considerations (if support
+              required)
+
+              If you plan to install DATATRIEVE Version 7.2A with Oracle
+              CDD/Repository support, you should perform the following
+              tasks:
+
+              o  Check the contents of the dictionary directory
+                 CDD$TOP.DTR$LIB for user definitions and subdirecto-
+                 ries. Back these up if they exist.
+
+              o  Make sure the installation account has all access
+                 privileges to CDD$TOP.
+
+              The next two sections explain these procedures.
+
+              1.6.2.1 Effect of Installation Procedure on Existing
+              DTR$LIB Directory
+
+              The directory CDD$TOP.DTR$LIB is reserved for use by
+              Compaq. The installation procedure builds, or rebuilds,
+              this directory each time you install DATATRIEVE. The
+              directory should contain only directories that contain
+              definitions for the plots and sample domains, records,
+              and tables that are shipped with the product. Users should
+              not create any dictionary objects or directories that have
+              DTR$LIB as part of their path names.
+
+              When the installation procedure rebuilds DTR$LIB, it
+              deletes the existing DTR$LIB hierarchy. Therefore, you
+              should check that DATATRIEVE users have not placed their
+              own definitions either in DTR$LIB or in any part of its
+              substructure. Extract user definitions you want to save
+              and redefine them in another directory.
+
+              1.6.2.2 Required Privileges to CDD$TOP
+
+              Because the installation procedure builds or rebuilds
+              DTR$LIB, the installation account must have all access
+              control privileges to CDD$TOP. You can check these
+              privileges with the following command sequence:
+
+              $ RUN SYS$SYSTEM:DMU
+              DMU> SHOW PROTECTION CDD$TOP
+
+                                      Preinstallation Considerations 1-9
+
+ 
+
+
+
+     Preinstallation Considerations
+     1.6 Preparing Your System and the Installing Account
+
+           The resulting privileges list should include the
+           following:
+
+           CONTROL          GLOBAL_DELETE
+
+           DTR_EXTEND       HISTORY
+
+           DTR_MODIFY       LOCAL_DELETE
+
+           DTR_READ         PASS_THRU
+
+           DTR_WRITE        SEE
+
+           EXTEND           UPDATE
+
+           FORWARD
+
+           After checking the privileges list, type EXIT and press
+           the RETURN key to return to DCL command level.
+
+           If any of the required privileges are not available or if
+           they are denied or banished, you must change the access
+           control list (ACL) entry to provide all privileges for the
+           duration of the installation. One way you can do this is
+           to enter the following sequence of commands:
+
+           $ RUN SYS$SYSTEM:DMU
+           DMU> SET PROTECTION/GRANT=ALL/UIC=[1,4]-
+           DMU> /POSITION=1 CDD$TOP
+           DMU> EXIT
+
+           If you are using an account other than [1,4] for the
+           installation, replace [1,4] with the UIC of that account.
+
+           After the installation procedure is complete, you can
+           remove the ACL entry with the following command sequence:
+
+           $ RUN SYS$SYSTEM:DMU
+           DMU> DELETE/PROTECTION/POSITION=1 CDD$TOP
+           DMU> EXIT
+
+           For your convenience during future installations of
+           DATATRIEVE, you might want to create command files
+           containing these two sequences of commands.
+
+     1-10 Preinstallation Considerations
+
+ 
+
+
+
+                                          Preinstallation Considerations
+                    1.6 Preparing Your System and the Installing Account
+
+              1.6.3 Effect of Installation Procedure on the Logical
+              DTR$LIBRARY
+
+              The installation defines the logical DTR$LIBRARY as
+              SYS$COMMON:[DTR]. If the installation fails, DTR$LIBRARY
+              may be left deassigned, and you must redefine it. To
+              redefine the logical, use the DEFINE command, as follows:
+
+              $ DEFINE/SYSTEM/EXEC DTR$LIBRARY SYS$COMMON:[DTR]
+
+              1.6.4 More than One Installation of this Version of
+              DATATRIEVE
+
+              You can install this version of DATATRIEVE a number of
+              times to produce different sets of images and files. Note,
+              however, that you cannot install multiple versions of the
+              product, such as both Version 7.2 and Version 7.2A. For
+              example, the installation procedure could be run first
+              to install DATATRIEVE Version 7.2A with VAX TDMS. You can
+              install DATATRIEVE Version 7.2A a second time to support
+              Compaq FMS. (Note that DECforms is supported by default
+              whenever available on the system.) The resulting images
+              and file names are differentiated by a suffix added to the
+              default names. The installation procedure prompts you to
+              choose this suffix.
+
+              The suffix you specify will be given to the following
+              files created during installation. The two letters xx at
+              the end of a file name stand for the 1- to 26-character
+              suffix you specify:
+
+              o  SYS$SHARE:DTRSHRxx.EXE
+
+              o  SYS$SHARE:DTRAPIxx.EXE
+
+              o  SYS$SHARE:DTRAPIxx.OLB
+
+              o  SYS$SYSTEM:DTR32xx.EXE
+
+              o  SYS$SYSTEM:DDMFxx.COM
+
+              o  SYS$SYSTEM:DDMFxx.EXE
+
+              o  DTR$LIBRARY:DTRBLDxx.COM
+
+              o  DTR$LIBRARY:DTRLIBxx.OLB
+
+              o  DTR$LIBRARY:DTRFNDxx.MAR
+
+              o  DTR$LIBRARY:DTRFNDxx.OBJ
+
+                                     Preinstallation Considerations 1-11
+
+ 
+
+
+
+     Preinstallation Considerations
+     1.6 Preparing Your System and the Installing Account
+
+           o  DTR$LIBRARY:DTRFUNxx.OLB
+
+           o  SYS$STARTUP:DTRSTUPxx.COM
+
+           o  VUE$LIBRARY:VUE$DTRxx.COM
+
+              ________________________Note ________________________
+
+              o  The installation procedure does not append the
+                 xx suffix to all images and files. For example,
+                 DTR$LIBRARY:TERMSERVE.OLB and SYS$MESSAGE:DTRMSGS.EXE
+                 do not get the installation suffix.
+
+              o  DTRAPIxx.EXE resides in SYS$SHARE and you can
+                 copy it whenever you need to link it with
+                 user programs to create DATATRIEVE client
+                 applications. You can also copy DTRAPIxx.EXE
+                 to OpenVMS nodes that do not have a registered
+                 DATATRIEVE license.
+
+                 No DATATRIEVE license is required for the Client
+                 application but only for the server. DTRAPI
+                 libraries for the Windows environment are also
+                 provided by the DATATRIEVE kit as optional files
+                 and can be copied to a Windows environment to
+                 create Windows DATATRIEVE Client applications.
+
+              _____________________________________________________
+
+           1.6.5  Check for Invalid DTRFUNxx.OLB
+
+           DATATRIEVE Version 6.1 distributed, and in some cases
+           installed, an incorrect DTRFUNxx.OLB library which did not
+           contain the object module DTRFND.
+
+           To find out if this applies to your system, you must check
+           the DTRFUNxx.OLB library contained in DTR$LIBRARY. If the
+           object module DTRFND is not found in the library, you must
+           delete DTRFUNxx.OLB before installing DATATRIEVE Version
+           7.2A.
+
+           The following example shows how to check for the presence
+           of the object module DTRFND in the DTRFUN.OLB and
+           DTRFUNORIGINAL.OLB libraries.
+           Since DTRFUNORIGINAL.OLB does not contain DTRFND, it will
+           have to be deleted before installation.
+
+     1-12 Preinstallation Considerations
+
+ 
+
+
+
+                                          Preinstallation Considerations
+                    1.6 Preparing Your System and the Installing Account
+
+        $ DIR DTR$LIBRARY:DTRFUN*.OLB
+
+        Directory SYS$COMMON:[DTR]
+
+        DTRFUN.OLB;1             53  17-AUG-1993 13:59:39.37
+        DTRFUNFMS.OLB;1          53   9-JUL-1993 14:34:50.57
+        DTRFUNGRZ.OLB;1          62   9-JUL-1993 15:12:13.64
+        DTRFUNMUPA1.OLB;1        53  12-OCT-1993 17:19:15.50
+        DTRFUNORIGINAL.OLB;1
+                                 50  22-SEP-1993 11:11:01.06
+        DTRFUNTDMS.OLB;1         53   9-JUL-1993 14:57:51.66
+
+        $ LIBRARY/LIST/NAME DTR$LIBRARY:DTRFUN.OLB
+
+        Directory of OBJECT library SYS$COMMON:[DTR]DTRFUN.OLB;1 on
+        12-OCT-1993 17:58:08
+        Creation date: 8-JUL-1993 12:11:37  Creator: VAX-11 Librarian V04-00
+        Revision date: 8-JUL-1993 12:12:25  Library format:   3.0
+        Number of modules:      1           Max. key length:  31
+        Other entries:          2           Preallocated index blocks:    49
+        Recoverable deleted blocks:    0    Total index blocks used:       2
+        Max. Number history records:  20    Library history records:       1
+
+        Module DTRFND
+        DTR$$FND_FUN_LAST                RTN_FN$GET_SYMBOL
+
+        $ LIBRARY/LIST/NAME DTR$LIBRARY:DTRFUNORIGINAL.OLB
+
+        Directory of OBJECT library SYS$COMMON:[DTR]DTRFUNORIGINAL.OLB;1
+        on 12-OCT-1993 17:58:50
+        Creation date: 21-MAY-1993 16:21:34 Creator: VAX-11 Librarian V04-00
+        Revision date: 21-MAY-1993 16:21:34 Library format:   3.0
+        Number of modules:      0           Max. key length:  31
+        Other entries:          0           Preallocated index blocks: 49
+        Recoverable deleted blocks:   0     Total index blocks used:    0
+        Max. Number history records: 20     Library history records:    0
+
+
+
+
+
+
+
+
+
+                                     Preinstallation Considerations 1-13
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                       DATATRIEVE Installation Procedure
+
+
+
+              Before you install DATATRIEVE Version 7.2A, make sure that
+              your system meets all requirements listed in Chapter 1,
+              Preinstallation Considerations.
+
+              Your Version 7.2A installation kit consists of one
+              magnetic tape or TK50. This medium makes obsolete the
+              distribution media for any lower version of DATATRIEVE.
+
+              DATATRIEVE is also available on CDROM. If you are
+              installing DATATRIEVE from CDROM, follow the directions in
+              the documentation packaged with the CDROM kit.
+
+              The installation procedure is described in the sections
+              that follow. Note that as the procedure progresses, the
+              installation command procedure sends questions to your
+              screen to guide you through the installation process. The
+              sections that follow explain these questions in detail.
+
+              On OpenVMS VAX operating systems, after you answer
+              questions from the installation procedure, installation of
+              DATATRIEVE takes approximately 20 to 40 minutes. <>
+
+              On OpenVMS Alpha operating systems, after you answer
+              questions from the installation procedure, installation of
+              DATATRIEVE takes approximately 10 to 20 minutes. <>
+
+        2.1 Starting the Installation Procedure
+
+              To start the installation, invoke the VMSINSTAL command
+              procedure from a privileged account. VMSINSTAL is in the
+              SYS$UPDATE directory. Use the following format to invoke
+              VMSINSTAL.
+
+              @SYS$UPDATE:VMSINSTAL save-set-name device-name OPTIONS N
+
+                                   DATATRIEVE Installation Procedure 2-1
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.1 Starting the Installation Procedure
+
+           save-set-name
+
+           The name of the DATATRIEVE save set you want to install:
+
+           On OpenVMS VAX operating systems, enter DTRA072 to install
+           DATATRIEVE Version 7.2A. <>
+
+           On OpenVMS Alpha operating systems, enter DTRAXPA072 to
+           install DATATRIEVE Version 7.2A. <>
+
+           device-name
+
+           The name of the device on which you plan to mount the
+           media. For example, MTA0: is the device name for a tape
+           drive. It is not necessary to use the console drive for
+           this installation. However, if you do use the console
+           drive, you should replace any media you removed once the
+           installation is complete. If you are installing DATATRIEVE
+           from a CD, you must specify a device-name and a directory
+           name. The directory name should be the same as the save
+           set name.
+
+           OPTIONS N
+
+           An optional parameter that indicates you want to review
+           the release notes questions (see Section 2.3, Answering
+           Questions About Release Notes for more information).
+
+           The following example and the rest of this chapter show
+           how to install DATATRIEVE Version 7.2A for OpenVMS VAX
+           from CDROM DKA400. This example uses the OPTIONS N release
+           note parameter.
+
+           $ @SYS$UPDATE:VMSINSTAL DTRA072 DKA400:[DTRA072] OPTIONS N
+
+           If you do not supply any parameter, VMSINSTAL prompts you
+           for the information later in the installation procedure.
+
+           Note that you can specify the AUTOANSWERBACK option
+           when you invoke VMSINSTAL. This option creates the file
+           SYS$UPDATE:DTRA072.ANS, which contains the installation
+           questions and your responses. This file can then be used
+           in subsequent installations. (The OpenVMS documentation
+           on software installation contains more information about
+           VMSINSTAL.)
+
+     2-2 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+                                 2.1 Starting the Installation Procedure
+
+              The AUTOANSWERBACK option is not recommended for
+              DATATRIEVE installations. Questions asked during
+              the DATATRIEVE installation are based on the system
+              environment. The system environment at the time of the
+              original installation determines which questions the
+              installation procedure will ask. When you proceed with
+              a subsequent installation, the questions change according
+              to changes in the system environment. Thus, if you specify
+              AUTOANSWERBACK during the original installation, you
+              probably will not receive the appropriate questions during
+              the subsequent installation.
+
+              The installation procedure prompts you for input at
+              various times. Whenever you are prompted for input, you
+              can type a question mark (?) symbol for help.
+
+              Most installation prompts include a default response in
+              brackets. To enter the default bracketed response, you can
+              either explicitly enter that response or press the RETURN
+              key.
+
+              Before the installation procedure begins, VMSINSTAL checks
+              if you are logged in to the system account. If not, you
+              receive this warning message:
+
+              %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the
+              system account.
+
+              In addition, before the installation procedure begins,
+              VMSINSTAL checks for active processes on the system. If
+              your DECnet network is running, you receive this warning
+              message:
+
+              %VMSINSTAL-W-DECNET, Your DECnet network is up and running.
+
+              If there are still users on the system, you receive this
+              warning message with a list of process names:
+
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+
+                                        .
+                                        .
+                                        .
+
+              The list of the process names is followed by this
+              question:
+
+              * Do you want to continue anyway? [NO]
+
+                                   DATATRIEVE Installation Procedure 2-3
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.1 Starting the Installation Procedure
+
+           If you want to stop the installation process to allow all
+           users to exit the system, enter N or press the RETURN key.
+
+           At the start of the VMSINSTAL procedure, you need to
+           answer the following question:
+
+           * Are you satisfied with the backup of your system disk [YES]?
+
+           After you have performed the necessary backup, enter
+           Y or press the RETURN key. If you reply with N, the
+           installation stops.
+
+     2.2 Mounting the Distribution Medium
+
+           You should now mount the first distribution volume on the
+           device you specified when you invoked VMSINSTAL.
+
+           VMSINSTAL displays the following message:
+
+           Please mount the first volume of the set on DKA400:
+
+           * Are you ready?
+
+           Type Y after you mount the distribution medium.
+
+           The installation procedure then checks if the following
+           necessary conditions for the installation have been
+           fulfilled:
+
+           o  The target of the installation is SYS$COMMON on the
+              system-rooted device.
+
+           o  A compatible version of OpenVMS is installed.
+
+           o  At least 29,000 blocks are available on the system disk
+              (50,000 blocks are required if you install DATATRIEVE
+              on OpenVMS Alpha systems).
+
+           If any of these conditions has not been fulfilled, the
+           installation procedure displays a message describing
+           the problem. After satisfying the requirement, you can
+           rerun the installation procedure by invoking the command
+           procedure VMSINSTAL again.
+
+           If you choose to install DATATRIEVE Version 7.2A with
+           Oracle CDD/Repository support, the installation procedure
+           checks whether Oracle CDD/Repository is available on the
+           system and if the required version and proper ACL access
+           rights are available.
+
+     2-4 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+                                    2.2 Mounting the Distribution Medium
+
+                ________________________Note  ________________________
+
+                Systems that do not have DECnet cannot support the
+                DATATRIEVE remote server. However on systems without
+                DECnet, but with TCP/IP software (see list of
+                optional software products), the DATATRIEVE remote
+                server image (DDMF) can behave as the DATATRIEVE
+                Server for DATATRIEVE Client applications using
+                the TCP/IP network transport. On such systems,
+                the installation procedure next displays a message
+                noting that it cannot define a DECnet object for the
+                remote server. If you later install DECnet, you will
+                then need to define a DECnet object for the remote
+                server. See Section 3.6, DECnet Considerations for
+                more information.
+
+                _____________________________________________________
+
+              This ends the initial series of questions generated by
+              VMSINSTAL. If you have successfully completed this portion
+              of the installation, a message similar to the following is
+              displayed:
+
+              The following products will be processed:
+
+              DTRA Version 7.2
+
+               Beginning installation of DTRA Version 7.2 at 8:15
+
+              VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+              The installation continues with questions about release
+              notes.
+
+        2.3 Answering Questions About Release Notes
+
+              If you specified the qualifier OPTIONS N at the beginning
+              of the installation, the procedure offers these options
+              regarding DATATRIEVE Version 7.2A online release notes:
+
+              Release Notes Options:
+
+              1.  Display release notes
+              2.  Print release notes
+              3.  Both 1 and 2
+              4.  Do not display, print or copy release notes
+
+              * Select option [2]:
+
+                                   DATATRIEVE Installation Procedure 2-5
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.3 Answering Questions About Release Notes
+
+           Enter the number corresponding to the option you choose.
+           If you enter option 2 or 3, the procedure prompts you for
+           the printer queue name. It then prints a message showing
+           that the job has been queued for printing.
+
+           *Queue name [SYS$PRINT]:
+
+           Job DTROXX (queue YOURSYS_DQS$PRINT, entry 1248) started on
+           YOURSYS_DQS$PRINT
+
+           The procedure now asks if you want to continue the
+           installation.
+
+           *Do you want to continue the installation [N]?
+
+           If you want to continue, enter Y.
+
+           If you selected one of the print options, you must wait
+           until the release notes finish printing before you enter
+           N or press the RETURN key. If you did not select a print
+           option and wish to exit, enter N or press the RETURN key.
+
+     2.4 Answering Questions About Oracle CDD/Repository
+
+           DATATRIEVE removed the dependency from Oracle CDD/Repository
+           by supporting a new textfile-based dictionary in addition
+           to Oracle CDD/Repository. At installation time you will
+           be asked whether you want to link DATATRIEVE with Oracle
+           CDD/Repository or not:
+
+           * Do you want support for Oracle CDD/Repository [Yes]?
+
+           If you type Yes you can dynamically enable and disable
+           Oracle CDD/Repository at run time. If you type No, Oracle
+           CDD/Repository will not be supported and it cannot be
+           enabled at run time.
+
+     2.5 Answering Questions About the DATATRIEVE object libraries
+         (OpenVMS VAX systems only)
+
+           DATATRIEVE Version 7.2A is built using several object
+           libraries which can also be used to customize DATATRIEVE.
+           On OpenVMS VAX systems, up to DATATRIEVE version Version
+           7.2A, the object modules in these libraries have been
+           built with the VAX C compiler. The installation procedure
+           now asks whether you wish to install the product using
+           the object libraries built with the VAX C compiler or the
+
+     2-6 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+ About        the DATATRIEVE object libraries (OpenVMS VAX systems only)
+
+              DEC C compiler. There is no functional difference for the
+              ordinary user. This only affects those users who program
+              their own customizations in the C language on OpenVMS VAX
+              systems and relink DTRSHR.exe.
+
+                  The DATATRIEVE product is built using several object
+                  libraries which can also be used to customize DATATRIEVE
+                  to suit your needs (see theDATATRIEVE documentation manual,
+                  'Guide to Programming and Customizing').   These object libraries
+                  are now built using the DEC C compiler.    If you have been
+                  programming your own customizations and wish to continue using the
+                  VAX C compiler, you have the option of installing the object
+                  libraries which have been built using that compiler instead.
+
+                  If you answer YES to this question, DATATRIEVE will be
+                  linked with the VAX C RTL, and the libraries in DTR$LIBRARY will
+                  contain objects built with the VAX C compiler.
+
+                  If you answer NO to this question, DATATRIEVE will be
+                  linked with the DEC C RTL, and the libraries in DTR$LIBRARY will
+                  contain objects built with DEC C compiler.
+
+                  Unless you customize your use of DATATRIEVE and want to
+                  continue using the VAX C compiler for your own customizations,
+                  answer NO to this question:
+
+              * Do you want to install DATATRIEVE using object libraries built with
+                the VAX C compiler[NO]?
+
+        You should accept the default answer unless you wish to continue
+        compiling your customizations with the VAX C compiler.<>
+
+        2.6 Answering Questions About the Licensing Management Facility
+            (LMF)
+
+              DATATRIEVE Version 7.2A supports the License Management
+              facility provided by OpenVMS. The installation procedure
+              asks whether you have registered and loaded a Product
+              Authorization Key (PAK) as required.
+
+
+
+
+
+
+                                   DATATRIEVE Installation Procedure 2-7
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.6 Answering Questions About the Licensing Management Facility (LMF)
+
+                    Product:       DTR or DTR-USER
+
+                    Producer:      DIGITAL
+
+                    Version:       Version 7.2A
+
+                    Release Date:  22-OCT-1997
+
+           * Does this product have an authorization key registered
+           and loaded?
+
+           If you answer Y or YES, the procedure continues. If you
+           answer N or NO, you receive the following message:
+
+           You have not registered the LMF authorization key as required.
+           The DATATRIEVE installation will continue.  However, you
+           cannot run the product until you register the license
+           authorization key.
+
+           When the DATATRIEVE installation is completed, please
+           register the authorization key using the following command:
+
+           $ @SYS$UPDATE:VMSLICENSE
+
+           The IVP cannot be run until the authorization key is registered.
+           However, the IVP command file will be put in the same directory
+           as the UETPs.  Once you register the authorization key, you may
+           run the IVP by entering DATATRIEVE and issuing the following
+           command:
+
+           @SYS$COMMON:[SYSTEST.DTR]DTR$IVP.COM
+
+           The installation continues with a series of DATATRIEVE
+           questions.
+
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+           The installation procedure asks you a number of questions
+           concerning default installation, forms management
+           products, multiple DATATRIEVE installations, and
+           DATATRIEVE files. The following sections give examples
+           of these questions.
+
+
+
+     2-8 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+              2.7 Answering Questions During the DATATRIEVE Installation
+
+              2.7.1 Installing DATATRIEVE with the Default Answers
+
+              The installation procedure now asks if you want to install
+              DATATRIEVE using default answers for all questions.
+
+                ________________________Note  ________________________
+
+                While this question may simplify the installation
+                procedure, it may not be appropriate for your
+                situation. For example, if your system supports more
+                than one installation of this version of DATATRIEVE,
+                you should not select the default installation
+                option. Read the summary of the default responses
+                that follows the question before you choose this
+                option.
+
+                _____________________________________________________
+
+              The installation procedure prompts you with the following
+              question:
+
+              *Do you want to use default answers for all questions [Yes]?
+
+              If you type Y, the DATATRIEVE installation procedure
+              automatically does the following:
+
+              o  Performs a complete installation of DATATRIEVE; it will
+                 not allow a partial installation to provide DATATRIEVE
+                 support for LSE.
+
+              o  Checks your system for a forms management product
+                 (Compaq FMS or VAX TDMS). If DATATRIEVE does not
+                 find either of them, the automatic installation
+                 procedure provides support only for DECforms, if this
+                 is available on the system.
+
+                 If either Compaq FMS or VAX TDMS already exists on the
+                 system, DATATRIEVE in addition to DECforms support:
+
+                 -  Supplies Compaq FMS support, if only Compaq FMS is
+                    on the system
+
+                 -  Supplies VAX TDMS support, if only VAX TDMS is on
+                    the system
+
+                 -  Supplies VAX TDMS support, if both Compaq FMS and
+                    VAX TDMS are found on the system
+
+                                   DATATRIEVE Installation Procedure 2-9
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+           o  Does not prompt you for the unique 1- to 26-character
+              suffix that identifies the DTR32xx.EXE image of this
+              installation. Note that if you have already installed
+              this version of DATATRIEVE and did not supply a suffix
+              during that installation, you will need a suffix to
+              differentiate the image of the previous installation
+              from the image currently being installed. In such
+              a case, the default installation procedure is not
+              appropriate.
+
+           o  Does not prompt you for the default image to be used
+              with the DATATRIEVE DCL command and DCL help. The
+              default image will be DTR32.
+
+           o  Checks if the DATATRIEVE remote server has been
+              defined by a previous installation of DATATRIEVE. The
+              DATATRIEVE remote server is called the Distributed Data
+              Manipulation Facility (DDMF).
+
+              When the installation procedure checks for a previously
+              defined DDMF:
+
+              -  If there is no remote server or if the remote server
+                 is obsolete, the DDMF files from this installation
+                 become the remote server for DATATRIEVE.
+
+              -  If there is a current remote server already on the
+                 system, the default installation procedure uses
+                 that as the remote server for this installation of
+                 DATATRIEVE.
+
+           o  Copies the NEWUSER.COM file in DTR$LIBRARY.
+
+           o  Checks the status of the DCL help for DATATRIEVE. If
+              DCL help is unavailable or out-of-date, DATATRIEVE
+              automatically updates DCL help.
+
+           o  Installs DTRSHR.EXE, DTRMSGS.EXE, DTR32.EXE, and
+              DDMF.EXE (if applicable) as SHARED.
+
+           o  Installs DTRHELP as SHARED.
+
+           o  Supplies the plot definitions for the current version.
+
+           o  Does not supply the optional text and message files,
+              sample programs, and callable programming aids that can
+              be tailored at the installed site.
+
+     2-10 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+              2.7 Answering Questions During the DATATRIEVE Installation
+
+              o  Purges files replaced by this installation.
+
+              If you type N, the installation procedure continues with
+              the questions about LSE.
+
+              2.7.2 Installing with LSE Support
+
+              To use LSE with DATATRIEVE , LSE must already be installed
+              and licensed on your system. If LSE is not already
+              installed on your system, you see the following message on
+              your screen:
+
+                  *********************************************************
+
+                  The LSE Editor is not installed on your
+                  system.  To have LSE support, you must:
+
+                      1.  Install the LSE Editor
+                      2.  Install or reinstall this product
+
+                  *********************************************************
+
+              * Do you want to continue the installation [No]?
+
+              If you enter Y or YES, the installation continues;
+              however, you will not be able to use LSE with DATATRIEVE.
+              If you enter the default value by entering N, NO, or
+              by pressing the RETURN key, the installation aborts,
+              giving you the opportunity to install LSE on your system.
+              Once LSE is installed, you can begin the DATATRIEVE
+              installation procedure from the beginning. If LSE is
+              already installed on your system, you will be prompted
+              with the following:
+
+                  LSE is installed on your system.
+
+                  You now have the following options:
+
+                       1.  Do a complete DATATRIEVE installation including
+                           DATATRIEVE support for LSE.
+
+                       2.  Do only DATATRIEVE support for LSE without
+                           installing DATATRIEVE.
+
+                       3.  Do a DATATRIEVE installation without including
+                           DATATRIEVE support for LSE.
+
+              *  Select option [1]:
+
+                                  DATATRIEVE Installation Procedure 2-11
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+           If you want to install a new version of DATATRIEVE
+           (including LSE support), select option 1. If you want only
+           to provide DATATRIEVE support for LSE (without installing
+           a new version of DATATRIEVE), select option 2. If you
+           want to install a new version of DATATRIEVE without LSE
+           support, select option 3. If you select option 2, this
+           installation will terminate after DATATRIEVE support for
+           LSE is provided.
+
+           2.7.3  Installing with Support for Forms Products
+
+           Each installation of DATATRIEVE on a system can support
+           two forms management products:
+
+           o  DECforms
+
+           o  Compaq FMS (Forms Management System) or VAX TDMS
+              (Terminal Data Management System)
+
+           DECforms software is dynamically loaded at runtime and
+           no specific operations are required at installation
+           time. This means that DECforms, whenever installed on
+           the system, is always available, while Compaq FMS and
+           VAX TDMS are optional and mutually exclusive. You select
+           Compaq FMS or VAX TDMS at installation time.
+
+           A series of questions determines which product DATATRIEVE
+           will support for the image currently being installed.
+
+           The installation procedure checks which forms management
+           products are on the system. If no forms products are found
+           (or only lower versions of VAX TDMS or Compaq FMS not
+           supported by DATATRIEVE are found), the installation
+           procedure displays the following message:
+
+
+
+
+
+
+
+
+
+
+
+     2-12 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+              2.7 Answering Questions During the DATATRIEVE Installation
+
+                  *********************************************************
+
+                  Neither Compaq FMS nor VAX TDMS product has been found
+                  on this system. If desired, the installation may be
+                  aborted at this point to install either Compaq FMS or
+                  VAX TDMS.
+
+                  If the installation continues, DATATRIEVE
+                  will be built with DECforms support only.
+                  The DECforms support will be automatically available,
+                  provided that DECforms is installed and licensed by
+                  the time DATATRIEVE is invoked.
+
+                  *********************************************************
+
+              * Do you wish to continue with the installation [YES]?
+
+              If you type Y or press the RETURN key, the installation
+              continues with the series of questions about more than
+              one installation of this version of DATATRIEVE. (See
+              Section 2.7.4, Specifying Suffixes for More than One
+              Installation of This Version of DATATRIEVE for more
+              information.)
+
+              If you type N, the installation aborts, giving you an
+              opportunity to install a forms product on your system.
+
+              If one or more forms products are found, you receive a
+              listing of the products on your system, followed by a
+              message and question similar to the following:
+
+                  DATATRIEVE can be built to support any one
+                  of these products, or, if desired, DATATRIEVE
+                  can be built without support of any of these Forms
+                  Management products.
+
+              * Do you want DATATRIEVE to support one of these
+              products [YES]?
+
+              If you do not want forms support, enter N. The installa-
+              tion procedure resumes with questions on suffixes and more
+              than one installation of this version of DATATRIEVE.
+
+              If you do want forms support, enter Y or press the RETURN
+              key. Then, for each forms product on the system, you
+              are asked if you want DATATRIEVE to support this forms
+              product. Remember each installation of DATATRIEVE can
+              support only one forms product in addition to DECforms.
+
+                                  DATATRIEVE Installation Procedure 2-13
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+           After you enter Y to specify support for one forms
+           product, you do not receive questions about the other
+           forms products.
+
+           For example, if you have both VAX TDMS and Compaq FMS on
+           the system, you receive the following question first:
+
+           * Do you wish to have VAX TDMS Forms Management support [YES]?
+
+           If you type Y or press the RETURN key, the DATATRIEVE
+           image being installed will support VAX TDMS. Then the
+           installation procedure moves on to a series of questions
+           on suffixes and more than one installation of this version
+           of DATATRIEVE.
+
+           If you type N, you receive a question about support for
+           Compaq FMS.
+
+           If you type N after each question in the series, you
+           receive the following message:
+
+               There are neither Compaq FMS nor VAX TDMS Forms
+               Management products on this system. If desired, the
+               installation may be aborted at this point to install
+               either Compaq FMS or VAX TDMS. If the installation
+               continues, the questions pertaining to the selection of
+               a Forms Management product will be asked again.
+
+           * Do you wish to continue with the installation [YES]?
+
+           If you type Y or press the RETURN key, you have another
+           opportunity to answer questions about forms. If you type
+           N, the installation procedure aborts.
+
+           2.7.4  Specifying Suffixes for More than One Installation
+           of This Version of DATATRIEVE
+
+           The installation procedure asks whether you intend to
+           complete more than one installation of this version of
+           DATATRIEVE on your system, as follows:
+
+
+
+
+
+     2-14 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+              2.7 Answering Questions During the DATATRIEVE Installation
+
+                  It is possible to do more than one installation of
+                  DATATRIEVE.  More than one installation of a
+                  single version may be desirable for a number of reasons
+                  including:
+
+                      o  Use of multiple forms management products (such as
+                         Compaq FMS and VAX TDMS; DECforms is available in
+                         every image, if present on the system)
+
+                      o  Use of multiple foreign language translations of
+                         DATATRIEVE (such as French or German)
+
+              * Do you plan to install this version more than once [NO]?
+
+              If you type N or press the RETURN key, the installation
+              procedure continues with questions about retaining
+              DATATRIEVE files. (See Section 3.5, Online DATATRIEVE
+              Object Library for more information.) At a later date, you
+              can decide to install DATATRIEVE using file names other
+              than the defaults by typing Y in response to the previous
+              question.
+
+              If you type Y, the installation procedure displays
+              messages requesting that you specify a suffix for the
+              image you are installing and the default image for the DCL
+              command DATATRIEVE.
+
+              The following message and question about the suffix are
+              displayed:
+
+                  To differentiate the files and images produced by this
+                  installation from those produced by some other
+                  DATATRIEVE installation, it is necessary to append a
+                  suffix to some of the file and image names. For each
+                  installation of this version of DATATRIEVE, this suffix
+                  should be unique. This suffix can be 1 to 26 characters.
+
+              * What is the suffix you intend to use for this
+              installation [none]?
+
+              Only one set of DATATRIEVE images and files can use
+              the default file names that have no suffix. (See
+              Section 1.6.4, More than One Installation of this Version
+              of DATATRIEVE for a list of these images and files.)
+              If you install this version of DATATRIEVE a second or
+              subsequent time, you should identify the subsequent image
+              and file names by a unique suffix. This step allows you
+
+                                  DATATRIEVE Installation Procedure 2-15
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+           later to identify which version of DATATRIEVE you want to
+           run.
+
+           For example, on the first run through the installation
+           procedure, you could respond to the question about the
+           suffix by pressing the RETURN key. The result is that each
+           of the DATATRIEVE file names includes no suffix. To run
+           the image produced by this procedure, type:
+
+           $ DATATRIEVE
+
+           During the second or subsequent installation of this
+           version of DATATRIEVE, for example, you might use VAX
+           TDMS as the forms product supported by this image. You
+           could identify the files and images by responding with
+           VAX TDMS for the suffix. To run the image produced by this
+           procedure, type the following line:
+
+           $ DATATRIEVE/VARIANT=XX
+
+           For the remainder of this manual, the two letters xx at
+           the end of a file name stand for the 1- to 26-character
+           suffix you specify.
+
+           If you specify the same suffix for a later installation,
+           the later image supersedes the previous image installed
+           with the same suffix. If you choose to purge files during
+           the installation, those earlier images will be deleted.
+           See Section 2.7.9, Purging Files for more information.
+
+           The following message and question are displayed:
+
+               The DATATRIEVE DCL command allows you to choose which DTR32
+               image to execute by means of the /VARIANT qualifier.  You
+               may now choose an image to be executed by default, when the
+               /VARIANT qualifier is not specified on the DATATRIEVE
+               command. This default image will be the image referenced
+               by DCL HELP.
+
+           DTR32, DTR32xx
+
+           * Which of the above images should be the default [DTR32xx]:
+
+           The installation procedure checks which DATATRIEVE images
+           are on the system. All existing image names, plus the name
+           of the image you are currently installing, are listed. The
+           current image name is provided as the default response to
+           the question.
+
+     2-16 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+              2.7 Answering Questions During the DATATRIEVE Installation
+
+              Only one DATATRIEVE image can be chosen as the default
+              for the DCL command DATATRIEVE. You must use the /VARIANT
+              qualifier to invoke any other DATATRIEVE image using the
+              DCL command DATATRIEVE.
+
+              For example, on the first run through the installation
+              procedure, you could respond to both the question about
+              the suffix and the question about the DCL default by
+              pressing the RETURN key. The result is that the image name
+              is DTR32 and that image is the default when you invoke
+              DATATRIEVE using the DCL command DATATRIEVE as follows:
+
+              $ DATATRIEVE
+
+              During the second or subsequent installation of this
+              version of DATATRIEVE, you might choose VAX TDMS as the
+              suffix. You might then choose DTR32 as the default image
+              name with the DCL command DATATRIEVE. You can use the
+              DCL command DATATRIEVE to invoke the DTR32TDMS image as
+              follows:
+
+              $ DATATRIEVE/VARIANT=TDMS
+
+              If, however, you choose DTR32TDMS as the default with the
+              DATATRIEVE DCL command, you must use the VARIANT qualifier
+              to invoke the DTR32 image as follows:
+
+              $ DATATRIEVE/VARIANT
+
+              2.7.5 Defining the DATATRIEVE Remote Server
+
+              The installation procedure checks if the DATATRIEVE remote
+              server has been defined by previous installations of
+              DATATRIEVE. The remote server for DATATRIEVE is called the
+              Distributed Data Manipulation Facility (DDMF). Although
+              there can be several shareable images of DATATRIEVE
+              installed on the same system, there can be only one remote
+              server for each system.
+
+                ________________________Note  ________________________
+
+                You do not receive the question discussed in this
+                section if you are installing DATATRIEVE on a
+                OpenVMS system without DECnet. If you later install
+                DECnet, you then need to define a DECnet object
+                for the remote server. See Section 3.6, DECnet
+
+                                  DATATRIEVE Installation Procedure 2-17
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+              Considerations for more information on defining a
+              DECnet object.
+
+              _____________________________________________________
+
+           If no remote server has been defined previously or if a
+           previously-defined remote server is obsolete, the DDMF
+           files from this installation become the remote server for
+           DATATRIEVE on the system. You do not receive a question
+           about the remote server, and the installation procedure
+           continues with questions about the file for new users. See
+           Section 2.7.6, Creating a DCL Command File for New Users
+           for more information.
+
+           However, if an up-to-date remote server has already been
+           defined (by a previous installation of this DATATRIEVE
+           release, for example), the installation procedure
+           asks if the remote server established by the current
+           installation should be the remote server for the system.
+           The DECnet object number for DDMF is defined as 30 by
+           the installation procedure. You receive the following
+           question:
+
+           * Do you want DDMFxx.EXE to be used for distributed access [NO]?
+
+           Type Y if you want the remote server (DDMF) established
+           by the current installation to be the remote server for
+           your system. You might want to type Y if this image will
+           contain options that users on remote systems need to
+           access frequently, for example, user-defined functions
+           that PDP-11 users need to access. In such cases, it is
+           more efficient to make the remote server file for this
+           image the remote server for your system.
+
+           Type N or press the RETURN key if these considerations do
+           not apply to this installation of DATATRIEVE.
+
+           2.7.6  Creating a DCL Command File for New Users
+
+           The installation procedure now copies the new user
+           file, NEWUSER.COM, to DTR$LIBRARY. NEWUSER.COM helps
+           new users get started with DATATRIEVE by providing the
+           necessary files to perform the examples in the DATATRIEVE
+           documentation set. Users can invoke the NEWUSER command
+           file by entering:
+
+     2-18 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+              2.7 Answering Questions During the DATATRIEVE Installation
+
+              $ @DTR$LIBRARY:NEWUSER
+
+              This procedure copies the DATATRIEVE data files from
+              DTR$LIBRARY to your directory and creates the DATATRIEVE
+              objects in your Oracle CDD/Repository dictionary (when
+              Oracle CDD/Repository support is available) or in a user-
+              specified OpenVMS directory.
+
+              2.7.7 Installing Shared Images
+
+              DATATRIEVE runs most efficiently when all its executable
+              images are installed as shareable images. The installation
+              procedure lets you choose not to do so, however. The
+              installation procedure prompts you with the following
+              question. Note that the file SYS$STARTUP:DTRSTUPxx.COM is
+              built according to your responses.
+
+              * Do you want DTRSHRxx.EXE and DTRMSGS.EXE to be installed
+              SHARED [YES]?
+
+              For best performance, the images DTRSHRxx.EXE and
+              DTRMSGS.EXE should be installed as SHARED. Type Y or press
+              the RETURN key if you want these images to be installed as
+              SHARED.
+
+              The second question about shareable images refers to
+              DTR32xx.EXE. For best performance, this should also be
+              installed as SHARED.
+
+              * Do you want DTR32xx.EXE to be installed SHARED [YES]?
+
+              Type Y or press the RETURN key if you want this image to
+              be installed SHARED.
+
+              For best performance in environments where you anticipate
+              extensive use of the distributed features of DATATRIEVE,
+              the image DDMFxx.EXE should also be installed as SHARED.
+              If the DDMF from this installation is to be the remote
+              server, you receive the following question:
+
+              * Do you want DDMFxx.EXE to be installed SHARED [YES]?
+
+              Type Y or press the RETURN key if you want this image to
+              be installed as SHARED.
+
+                                  DATATRIEVE Installation Procedure 2-19
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+              ________________________Note ________________________
+
+              You do not receive the question about DDMFxx.EXE if
+              you are installing DATATRIEVE on a system that does
+              not have DECnet. If you later install DECnet, see
+              Section 3.6, DECnet Considerations for instructions
+              on running the DDMFxx.EXE image as SHARED.
+
+              _____________________________________________________
+
+           2.7.8  Installing Plot Definitions and Optional Material
+
+           The installation procedure continues with a question about
+           plot definitions for DATATRIEVE graphics. DATATRIEVE
+           contains graphics features you can use with a VT125,
+           VT240, VT330, or VT340 terminal or on a workstation. To
+           use these features, you must request plot definitions
+           during installation.
+
+              ________________________Note ________________________
+
+              If this is your first installation of DATATRIEVE
+              since Version 3.4, you must answer Y to the
+              following question. The plot definitions were
+              modified with Version 4.0. Plot definitions provided
+              with DATATRIEVE installations prior to Version 4.0
+              are not compatible with DATATRIEVE Version 7.2A.
+
+              _____________________________________________________
+
+           The following question is displayed:
+
+           * Do you wish to have the plot definitions [YES]?
+
+           Type Y or press the RETURN key if you want the instal-
+           lation procedure to include plot definitions. The plot
+           definitions are installed in a Oracle CDD/Repository DMU
+           dictionary, in CDD$TOP.DTR$LIB.PLOTS when DEC DATATRIEVE
+           is installed with Oracle CDD/Repository support. Their
+           textfile definitions to be used when CDD/Repository
+           support is not available or disabled are copied to
+           SYS$SYSDEVICE:[VMS$COMMON.DTR.DTR$LIB.PLOTS].
+
+           The next question pertains to components of DATATRIEVE
+           that can be tailored at the installation site. This
+           optional material includes Data Access Blocks files
+           (used with Callable DATATRIEVE), the DATATRIEVE message
+
+     2-20 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+              2.7 Answering Questions During the DATATRIEVE Installation
+
+              file (necessary for customizing DATATRIEVE messages),
+              sample programs and the files necessary for creating and
+              maintaining user-defined functions.
+
+              The following message and question are displayed:
+
+                  Some optional material is available with this kit including
+                  the components of DATATRIEVE that can be tailored at
+                  the installed site.
+
+              * Do you want the optional material [NO]?
+
+              Type Y if you want this material. The installation
+              procedure loads these files in DTR$LIBRARY. If you do
+              not want this material, type N or press the RETURN key.
+
+              After you respond to this question, the installation
+              procedure continues with a question about purging files
+              replaced by the installation procedure.
+
+              2.7.9 Purging Files
+
+              The installation procedure continues with the following
+              question:
+
+              * Do you want to purge files replaced by this installation [YES]?
+
+              If you wish, you can have all files that were created
+              by this installation procedure purged in the various
+              directories where they were created. No files are purged
+              except those created in this installation. Type Y or press
+              the RETURN key to purge the files.
+
+              2.7.10 Running the IVP
+
+              The last question regarding the installation concerns
+              the IVP. You can choose whether to run the IVP after the
+              installation or not. The following message is displayed:
+
+
+
+
+
+
+
+                                  DATATRIEVE Installation Procedure 2-21
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.7 Answering Questions During the DATATRIEVE Installation
+
+             The DATATRIEVE IVP will be put in the
+             SYS$COMMON:[SYSTEST.DTR] directory. You may run the IVP
+             immediately after the completion of the installation procedure
+             answering YES to the next question or later issuing the
+             following command:
+
+             @SYS$COMMON:[SYSTEST.DTR]DTR$IVP.COM DTRxx.EXE
+
+           * Do you want to run the IVP after the installation [YES]?
+           * Proceed with this installation [YES]?
+
+              ________________________Note ________________________
+
+              The PAK must be registered before either the IVP or
+              any of the UETPs can be run. If you answered no to
+              the following question, the message about IVP will
+              not be displayed and the IVP will not be run at this
+              time:
+
+              * Does this product have an authorization key registered
+              and loaded?
+
+              _____________________________________________________
+
+     2.8 Finishing the Installation
+
+           If you did not request the default installation, the
+           following message is displayed:
+
+               All questions regarding the installation have now been asked.
+
+               The installation of DATATRIEVE will now continue for
+               20 minutes to 40 minutes.
+
+           If the DTRFNDxx.MAR file provided by this installation
+           is newer than an existing one, the installation procedure
+           will display the following message:
+
+           An existing DTRFNDxx.MAR has been found
+           on the system, but its version does not
+           match the current level for this installation.
+           The existing DTRFNDxx.MAR and DTRFUNxx.OLB
+           have been respectively renamed to
+           DTR$LIBRARY:DTRFNDxx.OLD and
+           DTR$LIBRARY:DTRFUNxx.OLD.
+
+           See Section 3.7, Maintaining User-Defined Functions for
+           more information on maintaining user-defined functions.
+
+     2-22 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+                                       DATATRIEVE Installation Procedure
+                                          2.8 Finishing the Installation
+
+              During installation, you should receive the following
+              message:
+
+                  During the installation, a file called
+                  DTRSTUPxx.COM has been added to SYS$STARTUP:
+                  The site-dependent startup file, SYS$MANAGER:SYSTARTUP.COM,
+                  should have the following line added:
+
+                       $ @SYS$STARTUP:DTRSTUPxx.COM
+
+              Be sure to update SYS$MANAGER:SYSTARTUP.COM after
+              installation.
+
+              On OpenVMS VAX systems Version 5.4 or earlier, the file
+              SYSTARTUP.COM is called SYSTARTUP_V5.COM. <>
+
+              The installation procedure next displays information about
+              User Environment Test Packages (UETPs). The installation
+              provides up to five UETPs, depending on the optional
+              products already on the system ( VAX TDMS, Compaq FMS,
+              Oracle CODASYL DBMS, Oracle Rdb) and your responses to
+              the questions about forms products and plots. Besides
+              a general test of DATATRIEVE, there are also UETPs for
+              plots, forms, Oracle Rdb, and Oracle CODASYL DBMS.
+
+              The installation displays a message showing how to invoke
+              each UETP it provides:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  DATATRIEVE Installation Procedure 2-23
+
+ 
+
+
+
+     DATATRIEVE Installation Procedure
+     2.8 Finishing the Installation
+
+           *************************************************************
+
+           DATATRIEVE User Environment Test Packages (UETPs)
+           have been provided and can be run after the installation is
+           complete.  They are invoked from DATATRIEVE as follows:
+
+           DTR> @sys$common:[systest.dtr]DTR   ! The general test
+           DTR> @sys$common:[systest.dtr]plots ! The plots test
+           DTR> @sys$common:[systest.dtr]dbms  ! The Oracle CODASYL DBMS test
+           DTR> @sys$common:[systest.dtr]rdb   ! The Oracle Rdb test
+           DTR> @sys$common:[systest.dtr]forms ! The Forms test
+
+           Before invoking these files from a user's account you must
+           execute the procedure :
+             @DTR$LIBRARY:NEWUSER.COM
+           This procedure loads the DATATRIEVE definitions into the
+           user's dictionary and the data files in the user's directory.
+           This procedure must be executed by each user needing
+           the DATATRIEVE examples.
+           *************************************************************
+
+           The file type for the UETP files in the directory
+           SYS$COMMON:[SYSTEST.DTR] is .DTR.
+
+           Chapter 4, User Environment Test Packages discusses the
+           test packages.
+
+           The installation procedure now runs the general IVP test
+           and, if you chose to run the IVP after the installation,
+           it displays the following message:
+
+           Executing IVP for:  DATATRIEVE Version 7.2A
+
+           Running the general IVP test...
+               Test completed successfully
+
+               *************************************
+
+               DATATRIEVE Version 7.2A
+
+               IVP COMPLETED SUCCESSFULLY
+
+               *************************************
+
+           IVP completed for:  DATATRIEVE Version 7.2A
+
+           When the installation procedure is finished, control
+           returns to the command procedure VMSINSTAL.
+
+     2-24 DATATRIEVE Installation Procedure
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                         Postinstallation Considerations
+
+
+
+              This chapter discusses some important postinstallation
+              considerations concerning DECnet, operating systems,
+              relational databases, Oracle CODASYL DBMS databases,
+              and user-defined functions. This chapter also contains
+              information on installing DATATRIEVE Client for Windows.
+
+        3.1 Updating SYS$MANAGER:SYSTARTUP.COM
+
+              During installation, a file called DTRSTUPxx.COM was added
+              to SYS$STARTUP. Note that xx represents the 1- to 26-
+              character suffix you specify during installation. After
+              installation, you must update the site-dependent startup
+              file SYS$MANAGER:SYSTARTUP.COM by adding the following
+              line:
+
+              $ @SYS$STARTUP:DTRSTUPxx.COM
+
+        3.2 VAXcluster Considerations (VAX Only)
+
+              If you are installing DATATRIEVE on a VAXcluster, the
+              shareable image created by this installation of DATATRIEVE
+              is available only from the node where the installation is
+              done. Therefore, after the installation is complete, you
+              should repeat the following steps on each of the other
+              nodes in the VAXcluster where DATATRIEVE will be used:
+
+              1. Issue the LICENSE LOAD command to activate the OpenVMS
+                 license.
+
+              2. Execute the DATATRIEVE startup command file as follows:
+
+                 $ @SYS$STARTUP:DTRSTUPxx.COM
+
+
+
+                                     Postinstallation Considerations 3-1
+
+ 
+
+
+
+     Postinstallation Considerations
+     3.2 VAXcluster Considerations (VAX Only)
+
+           3. Install the new version of DCLTABLES.EXE that has been
+              updated to include the DCL command DATATRIEVE. Install
+              the file as follows:
+
+              $ INSTALL
+              INSTALL> REPLACE SYS$SHARE:DCLTABLES
+
+           The second step is not necessary if you plan to reboot the
+           entire VAXcluster after the installation is complete.
+
+     3.3 Moving the DATATRIEVE Environment Between Operating Systems
+
+           To move your DATATRIEVE environment from an OpenVMS VAX
+           system to an OpenVMS Alpha system, do the following:
+
+           o  Copy all DATATRIEVE data files and procedures to the
+              other system.
+
+           o  If your application programs use the DATATRIEVE Call
+              Interface, or if you have customized DATATRIEVE by
+              modifying certain source files, you must recompile
+              and relink the application programs and the DATATRIEVE
+              customization source files.
+
+           o  For DATATRIEVE related products (for example, Oracle
+              CDD/Repository, DECforms), refer to their specific
+              documentation.
+
+           o  To migrate OpenVMS VAX applications calling DATATRIEVE
+              via the DEC Migrate utility (VEST), refer to the DEC
+              DATATRIEVE V7.1 Release Notes.
+
+     3.4 Updating Process Command Tables
+
+           The DATATRIEVE installation creates a new version of
+           DCLTABLES.EXE including the DCL command DATATRIEVE. To
+           use the DCL command DATATRIEVE, users must log out of
+           their processes and log back in to update their process
+           command tables.
+
+
+
+
+
+
+     3-2 Postinstallation Considerations
+
+ 
+
+
+
+                                         Postinstallation Considerations
+                                    3.5 Online DATATRIEVE Object Library
+
+        3.5 Online DATATRIEVE Object Library
+
+              The installation keeps the library online in case it is
+              necessary to relink a DATATRIEVE image.
+
+              You may have to relink DATATRIEVE if you:
+
+              o  Add a user-defined function (however it is possible to
+                 add user functions stored in shareable images without
+                 relinking DEC DATATRIEVE).
+
+              o  Customize the text file DTRTEXT.MAR.
+
+              o  Install or patch a new version of Oracle CDD/Repository.
+                 (Check the Oracle CDD/Repository documentation to see
+                 if relinking is necessary.) This only applies if DEC
+                 DATATRIEVE was installed with the Oracle CDD/Repository
+                 support.
+
+              o  Install a new version of the OpenVMS Run-Time Library.
+
+              o  Install a new version of Compaq FMS.
+
+              You may enter the following command to relink DATATRIEVE:
+
+              $ @DTR$LIBRARY:DTRBLDxx
+
+        3.6 DECnet Considerations
+
+              This section describes what you need to do to run the
+              DATATRIEVE remote server if DECnet is installed after
+              DATATRIEVE on a OpenVMS system. It also describes how
+              to create a default DECnet account for remote users of
+              DATATRIEVE on your system.
+
+              3.6.1 Defining a DECnet Object
+
+              DECnet is normally installed on a OpenVMS system. Unless
+              you install DATATRIEVE on a OpenVMS system without DECnet,
+              the installation procedure automatically defines a DECnet
+              object for the DATATRIEVE remote server.
+
+              However, if you install DATATRIEVE on a OpenVMS system
+              that does not have DECnet, the installation procedure
+              cannot use the DECnet Network Control Program (NCP)
+
+                                     Postinstallation Considerations 3-3
+
+ 
+
+
+
+     Postinstallation Considerations
+     3.6 DECnet Considerations
+
+           utility[1], or the Network Control Language (NCL)
+           utility[2] to define a DECnet object.
+
+           This section describes how to use NCP and NCL to define a
+           DECnet object for the remote server if DECnet is installed
+           on your system after DATATRIEVE is installed.
+
+           The remote server for DATATRIEVE is called the Distributed
+           Data Manipulation Facility (DDMF). The installation
+           procedure creates two files, DDMFxx.EXE and DDMFxx.COM,
+           in SYS$SYSTEM. In a DECnet Phase IV network, to define
+           a DECnet object for DDMFxx.EXE and assign it an object
+           number of 30, type the following commands:
+
+           $ NCP == "$NCP"
+           $ NCP DEFINE OBJECT DDMF NUMBER 30
+           $ NCP SET OBJECT DDMF NUMBER 30
+           $ NCP DEFINE OBJECT DDMF FILE DDMFxx.COM
+           $ NCP SET OBJECT DDMF FILE DDMFxx.COM
+
+           In a DECnet/OSI network, to define a DECnet object for
+           DDMFxx.EXE and assign it an object number of 30, type the
+           following commands:
+
+           $ NCL == "$NCL"
+           $ NCL CREATE SESSION CONTROL APPLICATION DDMF
+           $ NCL SET SESSION CONTROL APPLICATION DDMF ADDRESS=(NUMBER=30)
+           $ NCL SET SESSION CONTROL APPLICATION DDMF IMAGE NAME=DDMFxx.COM
+
+           Note that, in a DECnet/OSI network, if the account used
+           to perform the DATATRIEVE installation does not have the
+           NET$MANAGE right identifier, you cannot create the DDMF
+           session control application. Therefore you must use the
+           Authorize Utility to grant the installing account the
+           NET$MANAGE access right:
+
+           UAF> GRANT/ID NET$MANAGE account-name
+
+           In the example "account-name" is the name of the account
+           used to perform the DATATRIEVE installation.
+
+           ___________________
+           [1]       For DECnet Phase IV environments, you use the
+                     Network Control Program to configure, control,
+
+                     monitor, and test the network.
+           [2]       For DECnet/OSI environments, you use the Network
+
+                     Control Language to perform the same tasks.
+
+     3-4 Postinstallation Considerations
+
+ 
+
+
+
+                                         Postinstallation Considerations
+                                               3.6 DECnet Considerations
+
+              The procedure to grant the correct DECnet/OSI identifiers
+              is explained in more details in DECnet/OSI Network
+              Management.
+
+              For best performance in environments where you anticipate
+              extensive use of the distributed features of DATATRIEVE,
+              you should run the remote server as SHARED. To run
+              the image DDMFxx.EXE as a SHARED image, edit the file
+              SYS$STARTUP:DTRSTUPxx.COM. This file begins with the
+              following lines:
+
+              $!+
+              $!   DATATRIEVE Start-up File
+              $!-
+
+              Check the file for the following line and add it if it is
+              not already there:
+
+              $ DTR$INSTALL := $SYS$SYSTEM:INSTALL/COMMAND_MODE
+
+              You will see a dollar sign and the word exit at the end
+              of the file. Enter the following text on the line above $
+              exit:
+
+              ADD/OPEN/SHARED SYS$SYSTEM:DDMFxx.EXE
+
+              3.6.2 Creating a Default DECnet Account for Distributed
+              Access
+
+              The installation procedure defines a DECnet object called
+              DDMF and assigns it the number 30. After the installation,
+              you may want to create a default DECnet account, such
+              as DTR$DECNET, for this DECnet object. Remote users
+              can then omit the user name and password from the node
+              specification when accessing domains on your node.
+
+                ________________________Note  ________________________
+
+                This section applies to systems on which DECnet
+                was installed before DATATRIEVE. If DATATRIEVE is
+                installed on a OpenVMS system that does not have
+                DECnet, you cannot define a default DECnet account.
+                If DECnet is installed afterwards, you must define
+                a DECnet object (see Section 3.6.1, Defining a
+                DECnet Object before you can create a default DECnet
+                account.
+
+                _____________________________________________________
+
+                                     Postinstallation Considerations 3-5
+
+ 
+
+
+
+     Postinstallation Considerations
+     3.6 DECnet Considerations
+
+
+
+           If you wish to set up such a default DECnet account for
+           distributed access, follow these steps:
+
+           1. Add an entry to the user authorization file (UAF)
+              on your system for DTR$DECNET. Specify the same file
+              limits and quotas as you would for any other DATATRIEVE
+              user.
+
+           2. Invoke NCP (or NCL) to associate DDMF (known object
+              30) with the default DECnet account DTR$DECNET. Use the
+              DEFINE OBJECT command in NCP (or the CREATE/SET SESSION
+              CONTROL APPLICATION command in NCL) to modify the
+              object parameters for DDMF in the permanent database on
+              your system.
+
+           You can use the following sample session as a model for
+           your own system. Note that for security reasons, you
+           should use a different password than the one provided.
+           Also note that the UIC used in the sample session is used
+           to illustrate the command; you should use a UIC that is
+           appropriate for your system.
+
+           $ auth == "$authorize"
+           $ set default sys$system
+           $ auth
+           UAF> ADD DTR$DECNET/OWNER="DATATRIEVE"
+           user record successfully added
+           UAF> MODIFY DTR$DECNET/PASSWORD=ANY_PASSWORD
+           user record(S) updated
+           UAF> MODIFY DTR$DECNET/DEVICE=SYS$SYSDEVICE/DIRECTORY=[DTR$DECNET]
+           user record(S) updated
+           UAF> MODIFY DTR$DECNET/UIC=[376,376]
+           user record(S) updated
+           UAF> MODIFY DTR$DECNET/FILLM=60/ENQLM=2000
+           user record(S) updated
+           UAF> MODIFY DTR$DECNET/WSDEFAULT=350/WSQUOTA=350
+           user record(S) updated
+           UAF> MODIFY DTR$DECNET/PRCLM=0
+           user record(S) updated
+           UAF> MODIFY DTR$DECNET/FLAGS=(DISCTLY, DEFCLI, LOCKPWD, CAPTIVE)
+           user record(S) updated
+           UAF> MODIFY DTR$DECNET/NOBATCH
+           user record(S) updated
+
+     3-6 Postinstallation Considerations
+
+ 
+
+
+
+                                         Postinstallation Considerations
+                                               3.6 DECnet Considerations
+
+              UAF> SHOW DTR$DECNET
+
+        Username: DTR$DECNET              Owner:  DATATRIEVE
+        Account:                          UIC:    [376,376] ([376,376])
+        CLI:      DCL                     Tables: DCLTABLES
+        Default:  SYS$SYSDEVICE:[DTR$DECNET]
+        LGICMD:   LOGIN
+        Login Flags: Disctly Defcli Lockpwd Captive
+        Primary days:   Mon Tue Wed Thu Fri
+        Secondary days:                     Sat Sun
+        Primary   000000000011111111112222  Secondary 000000000011111111112222
+        Day Hours 012345678901234567890123  Day Hours 012345678901234567890123
+        Network:  ##### Full access ######            ##### Full access ######
+        Batch:    -----  No access  ------            -----  No access  ------
+        Local:    ##### Full access ######            ##### Full access ######
+        Dialup:   ##### Full access ######            ##### Full access ######
+        Remote:   ##### Full access ######            ##### Full access ######
+        Expiration:            (none)    Pwdminimum:  6   Login Fails:  0
+        Pwdlifetime:        180 00:00    Pwdchange:      (pre-expired)
+        Last Login: (none) (interactive),       (none) (non-interactive)
+        Maxjobs:         0  Fillm:        60  Bytlm:        25000
+        Maxacctjobs:     0  Shrfillm:      0  Pbytlm:           0
+        Maxdetach:       0  BIOlm:        18  JTquota:       1024
+        Prclm:           0  DIOlm:        18  WSdef:          350
+        Prio:            4  ASTlm:        24  WSquo:          350
+        Queprio:         0  TQElm:        10  WSextent:      1000
+        CPU:        (none)  Enqlm:      2000  Pgflquo:      40000
+        Authorized Privileges:
+          TMPMBX NETMBX
+        Default Privileges:
+          TMPMBX NETMBX
+
+              UAF> EXIT
+              SYSUAF.DAT modified
+              $ CREATE/DIR/OWN = [376,376] SYS$SYSDEVICE:[DTR$DECNET]
+              $ NCP == "$NCP"
+              $ NCP
+              NCP> LIST OBJECT DDMF
+
+
+
+
+
+
+
+                                     Postinstallation Considerations 3-7
+
+ 
+
+
+
+     Postinstallation Considerations
+     3.6 DECnet Considerations
+
+           Object Permanent Summary as of  01-OCT-1990 15:31:09
+
+           Object = DDMF
+
+           Number                   = 30
+           File id                  = DDMF.COM
+
+           NCP> DEFINE OBJECT DDMF USER DTR$DECNET PASSWORD ANY_PASSWORD
+           NCP> LIST OBJECT DDMF
+
+           Object Permanent Summary as of  01-OCT-1990 15:31:09
+
+           Object = DDMF
+
+           Number                   = 30
+           File id                  = DDMF.COM
+           User id                  = DTR$DECNET
+           Password                 = ANY_PASSWORD
+
+           NCP> SET KNOWN OBJECTS ALL
+           NCP> EXIT
+           $
+
+           If after the command SHOW DTR$DECNET, you notice that the
+           DISUSER flag is set, you must remove it with the following
+           command:
+
+           UAF> SET DTR$DECNET/FLAG=NODISUSER
+
+           For more information on NCP, NCL and DECnet, see the
+           DECnet for OpenVMS Guide to Networking, the DECnet/OSI for
+           OpenVMS Programming and the DECnet for OpenVMS Networking
+           Manual.
+
+           As always, when working in a remote, or networking
+           environment, follow the security guidelines described
+           in the Guide to VMS System Security.
+
+     3.7 Maintaining User-Defined Functions
+
+           If this is your first installation of DATATRIEVE since
+           Version 4.1, and if your site maintains site-specific or
+           user-defined functions, you should complete the following
+           steps to re-enable user-defined functions.
+
+           After an initial installation of DATATRIEVE Version 4.2
+           or higher, DATATRIEVE will always use the DTRFNDxx.MAR
+           and DTRFUNxx.OLB files that are on the system. You will
+
+     3-8 Postinstallation Considerations
+
+ 
+
+
+
+                                         Postinstallation Considerations
+                                  3.7 Maintaining User-Defined Functions
+
+              no longer have to re-create and relink DATATRIEVE as
+              described in this section.
+
+              1. Transfer the user-defined function definitions
+                 from DTRFNDxx.OLD (renamed during installation) to
+                 DTRFNDxx.MAR. To do this, edit DTRFNDxx.MAR and add the
+                 appropriate definitions. (Merely renaming the old file
+                 does not enable user-defined functions in the file.
+                 They must be transferred to DTRFNDxx.MAR.)
+
+              2. Assemble DTRFNDxx.MAR with the MACRO command:
+
+                 $ MACRO DTR$LIBRARY:DTRFNDxx.MAR
+
+                 This command creates the object file DTRFNDxx.OBJ.
+
+              3. Replace the object module in the function library with
+                 the newly created object file:
+
+                 $ LIBRARY/REPLACE DTR$LIBRARY:DTRFUNxx DTRFNDxx
+
+              4. Skip to the next step if the user-defined functions for
+                 your site consist only of calls to OpenVMS Run-Time
+                 Library routines. However, if your site has user-
+                 defined functions that call their own routines, there
+                 is an additional step before relinking DATATRIEVE.
+                 The object files for those functions routines must be
+                 inserted into the new version of the function library.
+
+                 There are two ways to do this:
+
+                 o  If the object files (.OBJ files) for the routines
+                    are still available, insert them directly into the
+                    function library:
+
+                    $ LIBRARY/INSERT -
+                    _$    DTR$LIBRARY:DTRFUNxx.OLB filename.OBJ
+
+                 o  If the object files for the routines are not
+                    available, extract the modules from the old function
+                    library before inserting them into the new:
+
+                    $ LIBRARY/EXTRACT=module-name/OUTPUT=filename.OBJ -
+                    _$    DTR$LIBRARY:DTRFUNxx.OLD
+                    $ LIBRARY/INSERT -
+                    _$    DTR$LIBRARY:DTRFUNxx.OLB filename.OBJ
+
+                                     Postinstallation Considerations 3-9
+
+ 
+
+
+
+     Postinstallation Considerations
+     3.7 Maintaining User-Defined Functions
+
+           5. Relink DATATRIEVE:
+
+              $ @DTR$LIBRARY:DTRBLDxx
+
+              ________________________Note ________________________
+
+
+              o  If your site maintains no user-defined functions,
+                 you may choose to delete the .OLD files.
+
+              o  DATATRIEVE is no longer linked with the Compaq
+                 Fortran Runtime Library.
+
+              _____________________________________________________
+
+     3.8 Providing Control Information to DATATRIEVE
+
+           The logical name DTR$ENVIRONMENT provides control
+           information to the DATATRIEVE image.
+
+           The equivalence name of DTR$ENVIRONMENT is a string that
+           concatenates qualifiers. Currently, only the qualifiers
+           /EXIT_ON_PRINT_ERROR and /NOCDD are defined. If the
+           equivalence name of DTR$ENVIRONMENT exists and it contains
+           the string qualifier /EXIT_ON_PRINT_ERROR, the DATATRIEVE
+           interactive image exits when an abnormal condition is met
+           while printing output lines. See the following example:
+
+           $ DATATRIEVE "SHOW CDD$DEFAULT.P1"
+
+           PROCEDURE P1
+           READY CDD$TOP.DTR$LIB.DEMO.YACHTS ;
+           FOR YACHTS
+                   BEGIN
+                   PRINT TYPE ;
+                   FN$WAIT(1) ;
+                   END ;
+           END_PROCEDURE
+           $ DIR [NOT_EXISTENT]T.t
+
+
+
+
+
+
+     3-10 Postinstallation Considerations
+
+ 
+
+
+
+                                         Postinstallation Considerations
+                         3.8 Providing Control Information to DATATRIEVE
+
+              Error opening DTRWRK$DISK:[NOT_EXISTENT]T.T;* as input
+              Directory not found
+              No such file
+              $!-- In the following lines of code, the Interactive DATATRIEVE image
+              $!-- continues the execution even if it cannot print to the output file
+              $ DEFINE/USER SYS$OUTPUT [NOT_EXISTENT]T.T
+              $ DATATRIEVE "EXECUTE P1"
+              $ SHOW TIME
+
+              18-JAN-1996 17:19:52
+              $ DEFINE/USER SYS$OUTPUT [NOT_EXISTENT]T.T
+              $ DATATRIEVE "EXECUTE CDD$DEFAULT.P1"
+              $ SHOW TIME
+
+              18-JAN-1996 17:22:08
+              $!-- In the following lines of code, the Interactive DATATRIEVE image
+              $!-- stops the execution when it fails to print the output lines
+              $ SHOW TIME
+
+              18-JAN-1996 17:23:11
+              $ DEFINE/USER DTR$ENVIRONMENT "/OPT1/EXIT_ON_PRINT_ERROR/OPT2"
+              $ DEFINE/USER SYS$OUTPUT [NOT_EXISTENT]T.t
+              $ DATATRIEVE "EXECUTE CDD$DEFAULT.P1"
+
+              %RMS-E-DNF, directory not found
+              $ SHOW TIME
+
+              18-JAN-1996 17:23:35
+
+              If the equivalence name of DTR$ENVIRONMENT exists and it
+              contains the string qualifier /NOCDD, DATATRIEVE starts
+              without using the Oracle CDD/Repository dictionary, even
+              if the DATATRIEVE image had been linked with the Oracle
+              CDD/Repository image at installation time.
+
+        3.9 Preparing to Install DATATRIEVE Client for Windows
+
+              During installation of DATATRIEVE a file called DTRWN11A.ZIP
+              is added to SYS$COMMON:[DTR]. This zip file contains the
+              image files required to install DATATRIEVE Client for
+              Windows.
+
+              To prepare the disks used to install DATATRIEVE client for
+              Windows, use the following steps:
+
+              1. Copy the zip file DTRWN11A.ZIP onto your PC drive.
+
+                                    Postinstallation Considerations 3-11
+
+ 
+
+
+
+     Postinstallation Considerations
+     3.9 Preparing to Install DATATRIEVE Client for Windows
+
+           2. Unzip the file. This creates three image files and one
+              DOS file as follows:
+
+              o  DTRWDSK1.IMG
+
+              o  DTRWDSK2.IMG
+
+              o  DTRWDSK3.IMG
+
+              o  DOSIMAGE.EXE
+
+              You must copy each image file onto a separate floppy
+              disk. These three disks are then used to install
+              DATATRIEVE Client for Windows.
+
+           3. Insert a blank floppy disk into the disk drive.
+
+           4. From the MS-DOS command line run the following:
+
+              $ DOSIMAGE RESTORE DTRWDSK1.IMG A:
+
+              This writes the first image file onto the first floppy
+              disk (Disk 1).
+
+           5. Repeat this procedure by writing DTRWDSK2.IMG and
+              DTRWDSK3.IMG onto Disk 2 and Disk 3 respectively.
+
+           Proceed to install DATATRIEVE Client for Windows using the
+           steps outlined in Section 1.2 of the DATATRIEVE Client for
+           Windows User's Guide.
+
+     3.10 Deleting Unused Files for DATATRIEVE DECwindows Motif
+          Support
+
+           If the DATATRIEVE DECwindows Motif interface is not
+           required at your site, you can delete the following
+           files after the DATATRIEVE installation has successfully
+           completed:
+
+           o  SYS$COMMON:[SYSEXE]DTRHELP.EXE
+
+           o  SYS$COMMON:[DECW$BOOK]DTR_DECW_HELP_MOTIF.DECW$BOOK
+
+           o  SYS$COMMON:[DECW$BOOK]DTR_DECW_HELP_MOTIF.DECW$BOOKSHELF
+
+           o  SYS$COMMON:[SYSLIB]VAX_DATATRIEVE.UID
+
+           o  SYS$COMMON:[DTR]REMOTE_DECTERM.COM
+
+           If you delete any of the DATATRIEVE DECwindows Motif
+           files, ensure that you delete all of the listed files.
+
+     3-12 Postinstallation Considerations
+
+ 
+
+
+
+                                         Postinstallation Considerations
+      3.10 Deleting Unused Files for DATATRIEVE DECwindows Motif Support
+
+              After the DATATRIEVE DECwindows Motif interface files are
+              deleted, remove all references to these files from each of
+              your SYS$STARTUP:DTRSTUPxx.COM files.
+
+        3.11 Getting Help and Reporting Problems
+
+              If you encounter a problem while using DATATRIEVE, report
+              it to Compaq. Depending on the type of support you have
+              and the nature of the problem, take one of the following
+              actions:
+
+              o  If you have a Software Product Services Support
+                 Agreement, contact your Compaq Customer Support Center
+                 (CSC), either by telephone or using the electronic
+                 means provided with your support agreement (such
+                 as DSNlink). The CSC provides telephone support for
+                 high-level advisory and remedial assistance. When
+                 you initially contact the CSC, please indicate the
+                 following:
+
+                 -  The name (e.g. OpenVMS Alpha) and the version number
+                    of the operating system you are using.
+
+                 -  The product name (DATATRIEVE) and the version number
+                    of DATATRIEVE you are using.
+
+                 -  The hardware system you are using, such as a model
+                    number.
+
+                 -  A very brief description of the problem (one
+                    sentence if possible).
+
+                 -  How critical the problem is.
+
+                 When you submit information electronically or are
+                 speaking on the phone to the appropriate DATATRIEVE
+                 support specialist, you can provide more detailed
+                 information. This includes the specific commands used
+                 to compile and link the program, the error messages
+                 displayed, and relevant detailed information (possibly
+                 including source program listings). Please attempt to
+                 narrow the cause of the problem to a specific module or
+                 lines of code.
+
+
+                                    Postinstallation Considerations 3-13
+
+ 
+
+
+
+     Postinstallation Considerations
+     3.11 Getting Help and Reporting Problems
+
+              CSC personnel may ask for additional information,
+              such as listings of any command files, INCLUDE
+              files, relevant data files, and so forth. If the
+              program is longer than 50 lines, submit a copy of
+              it electronically or provide machine-readable media
+              (floppy diskette or magnetic tape).
+
+           o  If you have a Self-Maintenance Software Agreement, you
+              can submit a Software Performance Report (SPR).
+
+           o  If you do not have any type of software services
+              support agreement and you purchased DATATRIEVE within
+              one year, you can submit an SPR if you think the
+              problem is caused by a software error.
+
+           When you submit an SPR, please take the following steps:
+
+           1. Describe as accurately as possible the circumstances
+              and state of the system when the problem occurred. In
+              the description, please provide:
+
+              -  The version number of DATATRIEVE being used.
+
+              -  The name and version number of the operating system
+                 being used.
+
+              -  A concise description of the problem with specific
+                 examples. Include any error messages displayed, the
+                 commands used to compile and link the program, and
+                 so on.
+
+           2. Reduce the problem to as small a size as possible.
+
+           3. Provide a listing of the program.
+
+           4. When you submit an SPR, remember to include listings of
+              any command files, INCLUDE files, relevant data files,
+              and so forth.
+
+           5. When you submit an SPR, if the program is longer than
+              50 lines, submit a copy of it on machine-readable media
+              (floppy diskette or magnetic tape). If necessary, also
+              submit a copy of the program library used to build the
+              application.
+
+           6. Report only one problem per SPR. This will facilitate a
+              faster response.
+
+           7. Mail the SPR package to Compaq.
+
+     3-14 Postinstallation Considerations
+
+ 
+
+
+
+                                         Postinstallation Considerations
+                                3.11 Getting Help and Reporting Problems
+
+              Many problem reports do not contain enough information
+              to duplicate or identify the problem. Concise, complete
+              information helps Compaq give you accurate and timely
+              service to software problems.
+
+              If the problem is related to DATATRIEVE documentation, you
+              can use one of the following ways to send your comments:
+
+              o  Send an electronic mail message to
+
+                 comments@galvia.enet.dec.com
+
+              o  Send a fax to +353 (0)91-754444
+
+              To obtain information about purchasing a Compaq Software
+              Product Services Support Agreement or other support
+              services, please contact your local Compaq sales
+              representative.
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter
+              a problem during the warranty period, report the problem
+              as indicated above or follow alternate instructions
+              provided by Compaq for reporting SPD nonconformance
+              problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    Postinstallation Considerations 3-15
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                          User Environment Test Packages
+
+
+
+              Five User Environment Test Packages (UETPs), which show
+              examples and test product interfaces, are provided with
+              DATATRIEVE. You can run the UETPs after you install
+              DATATRIEVE. The following UETPs are provided with
+              DATATRIEVE:
+
+              o  DATATRIEVE
+
+              o  DATATRIEVE graphics capability
+
+              o  DATATRIEVE and Oracle CODASYL DBMS interface
+
+              o  DATATRIEVE and Oracle Rdb interface
+
+              o  DATATRIEVE and Compaq FMS or VAX TDMS interface
+
+              The DATATRIEVE User's Guide includes the data definitions
+              and procedures used in the UETPs.
+
+                ________________________Note  ________________________
+
+                o  You must run the NEWUSER.COM file before running
+                   any UETP.
+
+                o  You must run the DATATRIEVE UETP before running
+                   any other UETP. The DATATRIEVE UETP creates data
+                   definitions used by the other UETPs.
+
+                _____________________________________________________
+
+
+
+
+
+
+                                      User Environment Test Packages 4-1
+
+ 
+
+
+
+     User Environment Test Packages
+     4.1 Invoking DATATRIEVE
+
+     4.1 Invoking DATATRIEVE
+
+           To run the UETPs, you must first invoke DATATRIEVE in one
+           of the following ways:
+
+           o  Use the DCL command DATATRIEVE, as follows:
+
+              $ DATATRIEVE
+
+              The DCL command DATATRIEVE is useful if you are working
+              in a DECwindows Motif environment. You should not
+              run the UETPs using the DATATRIEVE DECwindows Motif
+              interface, as you may get unexpected results. By
+              using the DATATRIEVE command to invoke DATATRIEVE, you
+              can specify the /INTERFACE=CHARACTER_CELL qualifier
+              to invoke DATATRIEVE without the DECwindows Motif
+              interface.
+
+              If you have installed more than one DATATRIEVE image,
+              you can specify the /VARIANT=image-suffix qualifier to
+              run the image of DATATRIEVE you want to test.
+
+              To invoke DATATRIEVE using these qualifiers, enter the
+              following command:
+
+              $ DATATRIEVE/INTERFACE=CHARACTER_CELL/VARIANT=xx
+
+              The characters xx represent the 1- to 26-character
+              suffix added at installation to identify a particular
+              image of DATATRIEVE Version 7.2A.
+
+           o  Use the DCL command RUN as follows:
+
+              $ RUN SYS$SYSTEM:DTR32xx.EXE
+
+              The xx represents the 1- to 26-character optional
+              suffix added to an image of DATATRIEVE at installation.
+
+           o  Use a symbol you have defined to represent the RUN
+              command. For example:
+
+              $ DTR32
+
+           At the DTR> prompt, enter the command to execute the UETP
+           you want to run. The UETPs and the commands to invoke them
+           are described in the following sections.
+
+     4-2 User Environment Test Packages
+
+ 
+
+
+
+                                          User Environment Test Packages
+                                                     4.2 DATATRIEVE UETP
+
+        4.2 DATATRIEVE UETP
+
+              To run the DATATRIEVE UETP, invoke DATATRIEVE as described
+              in Section 4.1, Invoking DATATRIEVE and type the following
+              command:
+
+              DTR> @SYS$COMMON:[SYSTEST.DTR]DTR
+
+              The DATATRIEVE UETP is approximately 20 pages long, so the
+              entire UETP is not repeated here.
+
+              You respond to prompts during the DATATRIEVE UETP. The
+              parts of the UETP that require a response are included
+              here along with suggested responses. The responses you
+              enter are printed in bolded ink.
+
+                ________________________Note  ________________________
+
+                The DATATRIEVE UETP suggests at one point that
+                you use LP: to print a report directly to a line
+                printer. The LP: option may not work unless LP is
+                defined as the system printer.
+
+                _____________________________________________________
+
+              !
+              ! TEST STORE
+              !
+              ! PLEASE SUPPLY THE FOLLOWING VALUES:
+              !    MANUFACTURER:       HINKLEY
+              !    MODEL:              BERMUDA 40
+              !    RIG:                YAWL
+              !  * LENGTH-OVER-ALL:    140
+              !    LENGTH-OVER-ALL:    40
+              !    DISPLACEMENT:       20000
+              !    BEAM:               12
+              !  * PRICE:              82000 AND XX/100
+              !    PRICE:              $82,000
+              !    CONFIRM:            N
+              !
+              ! Values marked with "*" will generate an error and be reprompted
+              !
+
+
+
+                                      User Environment Test Packages 4-3
+
+ 
+
+
+
+     User Environment Test Packages
+     4.2 DATATRIEVE UETP
+
+           STORE YACHTS :VERIFY
+           Enter MANUFACTURER: HINKLEY
+           Enter MODEL: BERMUDA 40
+           Enter RIG: YAWL
+           Enter LENGTH_OVER_ALL: 140
+           Validation error for field LENGTH_OVER_ALL.
+           Re-enter LENGTH-OVER-ALL: 40
+           Enter DISPLACEMENT: 20000
+           Enter BEAM: 12
+           Enter PRICE: 82000 AND XX/100
+           Non-digit in string "82000 AND XX/100", ignoring character(S).
+           Re-enter PRICE: $82,000
+
+                                         LENGTH
+                                          OVER
+           MANUFACTURER   MODEL     RIG   ALL   WEIGHT BEAM  PRICE
+
+            HINKLEY     BERMUDA 40 YAWL   40    20,000  12  $82,000
+           DISPLAY: IF RECORD IS OK, CONFIRM WITH Y
+           Enter CONFIRM: N
+
+           !
+           ! Invoke report (suggest  TT:  as output file)
+           !
+           :LOA-REPORT
+           Enter FILE: TT
+
+           At this point, a report is displayed on the screen. When
+           the report finishes, the UETP continues:
+
+           !
+           ! Invoke report (suggest  LP:  as output file)
+           !
+           :LOA-REPORT
+           Enter FILE: LP:
+
+           At this point, the procedure sends a report to the line
+           printer and the UETP continues:
+
+           READY YACHTS MODIFY
+           !
+           ! RESPOND WITH 47 (or any two digit value)
+           !
+           MODIFY BEAM
+           Enter BEAM: 47
+           PRINT TYPE,BEAM
+
+     4-4 User Environment Test Packages
+
+ 
+
+
+
+                                          User Environment Test Packages
+                                                     4.2 DATATRIEVE UETP
+
+              MANUFACTURER   MODEL    BEAM
+
+              METALMAST   GALAXY      47
+              !
+              ! RESPOND WITH 48 (or any two digit value)
+              !
+              MODIFY ALL BEAM
+              Enter BEAM: 48
+              !
+              PRINT ALL BEAM
+
+              BEAM
+
+               48
+               48
+               48
+               48
+               48
+
+              !
+              ! Respond each time with 0 (please)
+              !
+              FOR CURRENT PRINT TYPE THEN MODIFY BEAM
+
+              MANUFACTURER   MODEL
+
+               METALMAST   GALAXY
+              Enter BEAM: 0
+               O'DAY       32
+              Enter BEAM: 0
+               RYDER       S. CROSS
+              Enter BEAM: 0
+               TA CHIAO    FANTASIA
+              Enter BEAM: 0
+               WRIGHT      SEAWIND II
+              Enter BEAM: 0
+              !
+              SET ABORT
+              READY YACHTS READ
+              PRINT ALL
+
+                                             LENGTH
+                                              OVER
+              MANUFACTURER   MODEL     RIG    ALL   DISPLACEMENT BEAM  PRICE
+
+                                      User Environment Test Packages 4-5
+
+ 
+
+
+
+     User Environment Test Packages
+     4.2 DATATRIEVE UETP
+
+            METALMAST   GALAXY     SLOOP   32        9,500     00
+            O'DAY       32         SLOOP   32       11,000     00  $29,500
+            RYDER       S. CROSS   SLOOP   31       13,600     00  $32,500
+            TA CHIAO    FANTASIA   SLOOP   35       23,200     00
+            WRIGHT      SEAWIND II SLOOP   32       14,900     00  $34,480
+
+           The installation is successful if you receive the
+           following message at the end of the UETP:
+
+           !
+           ! The DATATRIEVE User Environment Test
+           ! Package has completed successfully.
+           !
+
+     4.3 DATATRIEVE Graphics UETP
+
+           You must run the DATATRIEVE graphics UETP on a VT125,
+           VT240, VT330, or VT340 terminal, or a workstation. To run
+           the UETP, invoke DATATRIEVE as described in Section 4.1,
+           Invoking DATATRIEVE and type the following command:
+
+           DTR> @SYS$COMMON:[SYSTEST.DTR]PLOTS
+
+           The DATATRIEVE graphics UETP does not require any input
+           from you. There are pauses between plots. The DATATRIEVE
+           graphics UETP displays the results of using the following
+           plot statements:
+
+           o  PLOT WOMBAT - A picture of a wombat
+
+           o  PLOT DATE_Y - A scattergraph with dates along the
+              horizontal axis
+
+           o  PLOT SHADE - The previous scattergraph with shading
+
+           o  PLOT DATE_Y - A scattergraph with dates along the
+              horizontal axis
+
+           o  PLOT CONNECT - The previous scattergraph with the
+              points connected
+
+           o  PLOT DATE_LOGY - A scattergraph with dates along
+              the horizontal axis and a logarithmic scale for the
+              vertical axis
+
+           o  PLOT LR - The previous scattergraph with a linear
+              regression line
+
+     4-6 User Environment Test Packages
+
+ 
+
+
+
+                                          User Environment Test Packages
+                                            4.3 DATATRIEVE Graphics UETP
+
+              o  PLOT STACKED_BAR - A bar chart with stacked bars and a
+                 legend
+
+              o  PLOT MULTI_BAR - A bar chart with multiple bars and a
+                 legend
+
+              o  PLOT X_Y - A scattergraph
+
+              o  PLOT TITLE - The previous scattergraph with a title
+
+              o  PLOT LIMITS_Y - The previous X_Y scattergraph with
+                 maximum and minimum limits imposed on the Y axis
+
+              o  PLOT LIMITS_X - The previous X_Y scattergraph with
+                 maximum and minimum limits imposed on the X axis
+
+              o  PLOT REFERENCE_Y - The previous X_Y scattergraph with a
+                 solid reference line on the Y axis
+
+              o  PLOT REFERENCE_X - The previous X_Y scattergraph with a
+                 solid reference line on the X axis
+
+              o  PLOT LR - The previous scattergraph with a linear
+                 regression line
+
+              o  PLOT X_LOGY - A scattergraph with a logarithmic scale
+                 for the vertical axis
+
+              o  PLOT HISTO - A histogram
+
+              o  PLOT PIE - A pie chart (with default title heading)
+
+              o  PLOT TITLE (pie) - The previous pie chart with a
+                 multiline title
+
+              o  PLOT BAR - A bar chart using builder and price
+
+              o  PLOT SORT_BAR - The previous bar chart with the bars
+                 sorted by descending height
+
+              o  PLOT BAR - A bar chart using type and price
+
+              When the DATATRIEVE graphics UETP finishes, you see this
+              message:
+
+              !
+              ! End of User Environment Test Package for DATATRIEVE
+              ! graphics
+              !
+              EXIT
+
+                                      User Environment Test Packages 4-7
+
+ 
+
+
+
+     User Environment Test Packages
+     4.4 DATATRIEVE and Oracle CODASYL DBMS UETP
+
+     4.4 DATATRIEVE and Oracle CODASYL DBMS UETP
+
+           To run the DATATRIEVE and Oracle CODASYL DBMS UETP,
+           invoke DATATRIEVE as described in Section 4.1, Invoking
+           DATATRIEVE and type the following command:
+
+           DTR> @SYS$COMMON:[SYSTEST.DTR]DBMS
+
+           The DATATRIEVE and Oracle CODASYL DBMS UETP is long, so
+           the entire UETP is not repeated here.
+
+           You respond to prompts during the DATATRIEVE and Oracle
+           CODASYL DBMS UETP. The parts of the UETP that require
+           answers are included here with the suggested responses
+           printed in colored ink.
+
+           SELECT
+           PRINT
+
+           Part                                      Unit    Unit
+           Number  ------Part Description------ St   Price   Cost  Sp
+
+           TI-6789-01    RK HOUSING             G     $300   $190  FS
+           !
+           ! Respond with 123 (or any three digit value)
+           !
+           MODIFY PART_PRICE
+           Enter PART_PRICE: 123
+           PRINT PART_ID, PART_PRICE
+
+             Part            Unit
+             Number          Price
+
+           TI-6789-01         $123
+           !
+           ! Respond with 321 (or any three digit value)
+           !
+           MODIFY ALL PART_PRICE
+           Enter PART_PRICE: 321
+           PRINT ALL PART_PRICE
+
+                  Unit
+                  Price
+
+
+     4-8 User Environment Test Packages
+
+ 
+
+
+
+                                          User Environment Test Packages
+                             4.4 DATATRIEVE and Oracle CODASYL DBMS UETP
+
+                      $321
+                      $321
+                      $321
+                      $321
+                      $321
+              !
+              ! Respond each time with 0 (Please)
+              !
+              FOR CURRENT
+                PRINT PART_ID THEN MODIFY PART_PRICE
+
+                Part
+                Number
+
+              TI-6789-01
+              Enter PART_PRICE: 0
+              BR-8901-23
+              Enter PART_PRICE: 0
+              TE-2345-67
+              Enter PART_PRICE: 0
+              TE-2178-90
+              Enter PART_PRICE: 0
+              TI-1334-56
+              Enter PART_PRICE: 0
+              PRINT ALL
+
+              Part                                      Unit     Unit
+              Number  ------Part Description------ St   Price    Cost  Sp
+
+              TI-6789-01    RK HOUSING             G       $0    $190  FS
+
+              BR-8901-23    LA36                   G       $0    $750  FS
+
+              TE-2345-67    RP05                   G       $0  $1,900  FS
+
+              TE-2178-90    RK06                   G       $0  $1,100  FS
+
+              TI-1334-56    RP HOUSING             G       $0    $300  FS
+
+              If the DATATRIEVE and Oracle CODASYL DBMS UETP runs
+              successfully, you see the following message:
+
+              !
+              ! End of DATATRIEVE/Oracle CODASYL DBMS
+              ! User Environment Test Package
+              !
+
+                                      User Environment Test Packages 4-9
+
+ 
+
+
+
+     User Environment Test Packages
+     4.5 DATATRIEVE and Oracle Rdb UETP
+
+     4.5 DATATRIEVE and Oracle Rdb UETP
+
+           To run the DATATRIEVE and Oracle Rdb UETP, invoke
+           DATATRIEVE as described in Section 4.1, Invoking
+           DATATRIEVE and type the following command:
+
+           DTR> @SYS$COMMON:[SYSTEST.DTR]Rdb
+
+           The DATATRIEVE and Oracle Rdb UETP is 12 pages long, so
+           the entire UETP is not repeated here.
+
+           You respond to prompts during the DATATRIEVE and Oracle
+           Rdb UETP. The parts of the UETP that require answers are
+           included here with the suggested responses printed in
+           colored ink.
+
+           !
+           ! Test Store
+           !
+           ! Please supply the following values:
+           !
+           !       WAGE_CLASS :     4
+           !       JOB_TITLE:       ANYTHING
+           !       MINIMUM_SALARY:  12000
+           !       MAXIMUM_SALARY:  123000
+           !
+
+           STORE JOBS USING
+                   BEGIN
+                   JOB_CODE = "XXXX"
+                   WAGE_CLASS = *.WAGE_CLASS
+                   JOB_TITLE = *.JOB_TITLE
+                   MINIMUM_SALARY = *.MINIMUM_SALARY
+                   MAXIMUM_SALARY = *.MAXIMUM_SALARY
+                   END
+           Enter WAGE_CLASS: 4
+           Enter JOB_TITLE: ANYTHING
+           Enter MINIMUM_SALARY: 12000
+           Enter MAXIMUM_SALARY: 123000
+           !
+
+
+
+
+
+     4-10 User Environment Test Packages
+
+ 
+
+
+
+                                          User Environment Test Packages
+                                      4.5 DATATRIEVE and Oracle Rdb UETP
+
+              STORE JOBS USING
+                      BEGIN
+                      JOB_CODE = "YYYY"
+                      WAGE_CLASS = 2
+                      JOB_TITLE = "FILE CLERK"
+                      MINIMUM_SALARY = 8000
+                      MAXIMUM_SALARY = 20000
+                      END
+              !
+              PRINT JOBS WITH JOB_CODE = "XXXX", "YYYY"
+
+              JOB  WAGE          JOB            MINIMUM     MAXIMUM
+              CODE CLASS        TITLE           SALARY      SALARY
+
+              XXXX   4   ANYTHING              $12,000.00 $123,000.00
+              YYYY   2   FILE CLERK              $8000.00  $20,000.00
+              !
+              ! Test Erase
+              !
+              FOR JOBS WITH JOB_CODE = "XXXX"  ERASE
+              PRINT JOBS WITH JOB_CODE = "XXXX"
+              !
+              FIND JOBS WITH JOB_CODE = "YYYY"
+              [1 record found]
+              PRINT ALL
+
+              JOB  WAGE          JOB            MINIMUM     MAXIMUM
+              CODE CLASS        TITLE           SALARY      SALARY
+
+              YYYY   2   FILE CLERK             $8,000.00  $20,000.00
+
+              SELECT LAST
+              ERASE
+              PRINT JOBS WITH JOB_CODE = "YYYY"
+              !
+              ! Test Update
+              !
+              FIND EMPLOYEES WITH EMPLOYEE_ID = "00168"
+              [1 record found]
+              SELECT
+              !
+
+              PRINT EMPLOYEE_ID, LAST_NAME, STREET, TOWN, STATE
+
+
+                                     User Environment Test Packages 4-11
+
+ 
+
+
+
+     User Environment Test Packages
+     4.5 DATATRIEVE and Oracle Rdb UETP
+
+           EMPLOYEE      LAST
+              ID         NAME             STREET          TOWN       STATE
+
+            00168     Nash       87 West Rd.         Meadows          NH
+           !
+           ! Change this employee's address
+           !
+           ! Please supply the following value:
+           !
+           ! STREET:  8 FLINT POND
+           !
+           MODIFY STREET
+           Enter STREET: 8 FLINT POND
+           PRINT EMPLOYEE_ID, LAST_NAME, STREET, TOWN, STATE
+
+           EMPLOYEE      LAST
+              ID         NAME             STREET          TOWN       STATE
+
+            00168    Nash      8 FLINT POND   Meadows          NH
+
+           !
+           ! Don't really want to do this; rollback this change
+           !
+           ROLLBACK
+           ROLLBACK executed; collection CURRENT automatically released.
+
+           !
+           PRINT EMPLOYEE_ID, LAST_NAME, STREET, TOWN, STATE OF
+             EMPLOYEES WITH EMPLOYEE_ID = "00168"
+
+           EMPLOYEE      LAST
+              ID         NAME            STREET           TOWN        STATE
+
+            00168    Nash        87 West Rd.         Meadows           NH
+
+           !
+           FIND ALL EMPLOYEES WITH STATE = "MA"
+           [8 records found]
+           PRINT ALL STATE
+
+           STATE
+
+
+
+
+     4-12 User Environment Test Packages
+
+ 
+
+
+
+                                          User Environment Test Packages
+                                      4.5 DATATRIEVE and Oracle Rdb UETP
+
+               MA
+               MA
+               MA
+               MA
+               MA
+               MA
+               MA
+               MA
+              !
+              ! Respond with VT (or another two-character state abbreviation)
+              !
+              MODIFY ALL STATE
+              Enter STATE: VT
+              PRINT ALL STATE
+
+              STATE
+
+               VT
+               VT
+               VT
+               VT
+               VT
+               VT
+               VT
+               VT
+
+              !
+              ! Move them back to MA
+              !
+              FOR CURRENT
+                MODIFY USING STATE = "MA"
+              PRINT ALL STATE
+
+              STATE
+
+               MA
+               MA
+               MA
+               MA
+               MA
+               MA
+               MA
+               MA
+
+
+                                     User Environment Test Packages 4-13
+
+ 
+
+
+
+     User Environment Test Packages
+     4.5 DATATRIEVE and Oracle Rdb UETP
+
+           If the DATATRIEVE and Oracle Rdb UETP runs successfully,
+           you see the following message:
+
+           !
+           ! End of DATATRIEVE/Rdb User Environment Test Package
+           !
+
+           ROLLBACK
+           ROLLBACK executed; collection CURRENT automatically released.
+           FINISH ALL
+           DTR>
+
+     4.6 DATATRIEVE and Forms UETP
+
+           You need a VT52-, VT100-, VT200-, or VT300-family terminal
+           or a workstation to run the DATATRIEVE and forms UETP.
+
+           If DATATRIEVE was installed with support for VAX TDMS or
+           Compaq FMS, you can run the forms UETP to test the forms
+           interface.
+
+           To run the forms UETP, set your OpenVMS default to a
+           directory that contains YACHT.DAT and OWNER.DAT. Be
+           sure that you have WRITE access (W) to these files.
+           You can copy YACHT.DAT and OWNER.DAT from the directory
+           DTR$LIBRARY if you do not have them in your directory.
+           Then invoke DATATRIEVE as described in Section 4.1,
+           Invoking DATATRIEVE and type the following command:
+
+           DTR> @SYS$COMMON:[SYSTEST.DTR]FORMS
+
+           When DATATRIEVE uses a form to print records, the screen
+           clears before the first record is printed. The DATATRIEVE
+           and forms UETP asks you to enter a character and press
+           RETURN before each statement, causing the forms product to
+           erase the screen.
+
+           The following is a summary of the DATATRIEVE and forms
+           UETP:
+
+           1. The UETP sends instructions to your screen and waits
+              for you to enter a character and press RETURN. After
+              you respond, the UETP defines three domains that use
+              the forms product: YACHTS, SAILBOATS, and FAMILIES.
+              The definitions use forms libraries that are located in
+              DTR$LIBRARY.
+
+     4-14 User Environment Test Packages
+
+ 
+
+
+
+                                          User Environment Test Packages
+                                           4.6 DATATRIEVE and Forms UETP
+
+              2. The UETP readies YACHTS and prints a few records
+                 without using the forms product. Then the UETP sends
+                 more instructions to your screen and waits for you to
+                 enter a character and press RETURN. After you respond,
+                 the UETP prints a record using the forms product. Press
+                 RETURN after the forms product displays the record.
+
+              3. The UETP sends instructions to your screen and waits
+                 for you to enter a character and press RETURN. After
+                 you respond, the UETP prints several records using the
+                 forms product. Press RETURN after the forms product
+                 displays each record.
+
+              4. The UETP tests the STORE statement. The UETP sends
+                 instructions to your screen and waits for you to enter
+                 a character and press RETURN. After you respond, the
+                 forms product puts a form on the screen for you to
+                 fill in. To move the cursor from one field to another,
+                 use the TAB and BACK SPACE keys. The TAB key moves
+                 the cursor to the next field; the BACK SPACE key moves
+                 the cursor back to the previous field. Help is also
+                 available for some fields if you have trouble entering
+                 an acceptable value. Position the cursor on that field
+                 and press the HELP key. After you fill in the form,
+                 press RETURN.
+
+              5. The UETP tests the MODIFY statement controlling the
+                 DISPLAY_FORM statement. The UETP sends instructions
+                 to your screen and waits for you to enter a character
+                 and press RETURN. After you respond, the forms product
+                 displays the first record for you to modify. Use the
+                 TAB and BACK SPACE keys to move from one field to
+                 another. Modify only the BEAM field in each record.
+                 Any other modifications are not written to the data
+                 file. After you modify each record, press RETURN.
+
+              6. The UETP tests the PRINT statement again, using
+                 the SAILBOATS view domain. The UETP waits for you
+                 to enter a character and press RETURN before each
+                 PRINT statement. After the forms product displays the
+                 SAILBOAT records, the UETP sends the following message
+                 to your screen:
+
+
+
+                                     User Environment Test Packages 4-15
+
+ 
+
+
+
+     User Environment Test Packages
+     4.6 DATATRIEVE and Forms UETP
+
+              !
+              ! End of DATATRIEVE/Forms User Environment Test Package
+              !
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     4-16 User Environment Test Packages
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       5
+        ________________________________________________________________
+
+                                             DATATRIEVE CBT Installation
+
+
+
+              This chapter describes the installation procedure for the
+              DATATRIEVE computer-based training (CBT).
+
+
+              1. Before Starting
+
+                    Before starting the DATATRIEVE CBT installation,
+                    please completely review this chapter. Be sure to
+                    gather information to answer the prompts before
+                    starting the installation.
+
+                    If you already have a previous version of the
+                    DATATRIEVE CBT installed, the CBT can remain. This
+                    new kit will add to or overwrite the existing CBTs
+                    as appropriate.
+
+              2. Pre-installation of the DATATRIEVE CBT
+
+                    Perform the following steps before running the
+                    VMSINSTAL procedure:
+
+                    -  Copy the new kit from the tape containing the
+                       savesets, DTC010.A and DTC010.B.
+
+                    -  Set your process privileges to ALL.
+
+                                  SET PROC/PRIV=ALL
+
+                    -  Check to see if the DATATRIEVE CBT was previously
+                       installed:
+
+                                  SHOW LOGICAL EASY$MANAGER
+
+                       If the logical exists, the DATATRIEVE CBT has
+                       been installed before. Invoke shutdown command
+                       for each node in the cluster:
+
+                                  @SYS$MANAGER:EASY$SHUTDOWN.COM
+
+                                         DATATRIEVE CBT Installation 5-1
+
+ 
+
+
+
+     DATATRIEVE CBT Installation
+
+
+                    Next, invoke the startup command for the node on
+                    which you are installing:
+
+                               @SYS$MANAGER:EASY$STARTUP.COM
+
+                    If you find that the DATATRIEVE CBT has been
+                    previously installed, go on to Step 3, SITE WITH
+                    A PREVIOUS EASYAUTHOR INSTALLATION, and do the
+                    actual installation.
+
+                 -  Find a UIC (if EasyAuthor CBTs not previously
+                    installed on system).
+
+                    Find an available UIC to become the owner of
+                    the files to be installed. A new account name
+                    (EASYMGR) is created during install. This account
+                    has the DISUSER flag set.
+
+                 -  Find a disk to use (if this is the first time you
+                    install on the system).
+
+                    The installation will require approximately
+                    12,000 blocks.
+
+           3. Installation of the DATATRIEVE CBT
+
+                 Perform the install by running VMSINSTAL. The
+                 following is a log file of the installation.
+                 Notations (<<-) are included to show where entry
+                 is required. These notations will not appear on the
+                 screen during the install.
+
+              FIRST TIME INSTALLATION
+
+     $ @sys$update:vmsinstal <<--
+      Software Product Installation Procedure V5.4-2
+     It is 20-DEC-1991 at 22:15.
+     Enter a question mark (?) at any time for help.
+     %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+     %VMSINSTAL-W-ACTIVE, The following processes are still active:
+     Resourcemoniter
+     * Do you want to continue anyway [NO]? YES <<--
+     * Are you satisfied with the backup of your system disk [YES]? <<--
+     * Where will the distribution volumes be mounted: SYS$LOGIN: <<--
+
+     5-2 DATATRIEVE CBT Installation
+
+ 
+
+
+
+                                             DATATRIEVE CBT Installation
+
+
+        Enter the products to be processed from the first distribution volume set.
+        * Products: DTC010 <<--
+        * Enter installation options you wish to use (none): <<--
+        The following products will be processed:
+          DTC010
+         Beginning installation of DTC V1.0 at 22:16
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        * Enter UIC value for EASYMGR account in [g,m] format: [666,666] <<--
+        Location for EASYMGR lesson directory:
+        * >> [SYS$COMMON:[EASYMGR]]: EASYAUTHOR_KITS:[easymgr] <<--
+        %DTC-I-CREATE, Creating the EASYMGR account
+        %DTC-I-DISUSER, This account is initially DISABLED. (DISUSER)
+        %VMSINSTAL-I-ACCOUNT, This installation creates an ACCOUNT named EASYMGR.
+        %UAF-I-ADDMSG, user record successfully added
+        %UAF-I-RDBADDMSGU, identifier EASYMGR value: [000666,000666] added to
+        rights data base
+        %DTC-I-CREATEDIR, Creating EasyAuthor directories.
+        %DTC-I-LOADEXE, Loading executables
+        %DTC-I-INSTLOK, EASY has been successfully installed.
+
+         +----------------------------------------------------+
+         |          POST INSTALL INSTRUCTIONS !               |
+         |                                                    |
+         |  Add the EASY symbol definition to                 |
+         |  SYS$SYLOGIN.COM or user's LOGIN.COM as follows:   |
+         |         EASY :== $EASY$PROGRAM:SOLORTP.EXE         |
+         |         LOADDRAW :== $EASY$PROGRAM:SOLORTP.EXE     |
+         |                                                    |
+         |  IMMEDIATELY AFTER INSTALL RUN THE FOLLOWING       |
+         |                COMMAND FILE:                       |
+         |                                                    |
+         |         @EASY$PROGRAM:SETUP.COM                    |
+         |                                                    |
+         |                                                    |
+         +----------------------------------------------------+
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+        directories...
+
+         Installation of DTC V1.0 completed at 22:46
+
+
+
+
+                                         DATATRIEVE CBT Installation 5-3
+
+ 
+
+
+
+     DATATRIEVE CBT Installation
+
+
+     Enter the products to be processed from the next distribution volume set.
+     * Products: <<--
+      VMSINSTAL procedure done at 22:46
+     $ @easy$program:setup.com <<--
+     $ logout <<--
+
+              SITE WITH A PREVIOUS EASYAUTHOR INSTALLATION
+
+     $ @sys$update:vmsinstal
+      Software Product Installation Procedure V5.3-1
+     It is 20-DEC-1991 at 14:50.
+     Enter a question mark (?) at any time for help.
+     %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+     %VMSINSTAL-W-ACTIVE, The following processes are still active:
+      Resourcemonitor
+      EASY_DEV
+     * Do you want to continue anyway [NO]? y <<--
+     * Are you satisfied with the backup of your system disk [YES]? <<--
+     * Where will the distribution volumes be mounted: sys$login <<--
+
+     Enter the products to be processed from the first distribution volume set.
+     * Products: DTC010 <<--
+     * Enter installation options you wish to use (none): <<--
+     The following products will be processed:
+       DTC V1.0
+      Beginning installation of DTC V1.0 at 14:50
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+     *****%KELLY-I-INSTLOK, EASY has been successfully installed.
+
+      +----------------------------------------------------+
+      |          POST INSTALL INSTRUCTIONS !               |
+      |                                                    |
+      |  Add the EASY symbol definition to                 |
+      |  SYS$SYLOGIN.COM or user's LOGIN.COM as follows:   |
+      |         EASY :== $EASY$PROGRAM:SOLORTP.EXE         |
+      |         LOADDRAW :== $EASY$PROGRAM:LOADDRAW.EXE    |
+      |                                                    |
+      |  IMMEDIATELY AFTER INSTALL RUN THE FOLLOWING       |
+      |                COMMAND FILE:                       |
+      |                                                    |
+      |         @EASY$PROGRAM:SETUP.COM                    |
+      |                                                    |
+      |                                                    |
+      +----------------------------------------------------+
+
+     5-4 DATATRIEVE CBT Installation
+
+ 
+
+
+
+                                             DATATRIEVE CBT Installation
+
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+        directories...
+
+         Installation of DTC V1.0 completed at 14:53
+
+        Enter the products to be processed from the next distribution volume set.
+        * Products:  <<--
+         VMSINSTAL procedure done at 14:53
+
+              4. Post-install of the DATATRIEVE CBT
+
+                    Run the following command file:
+
+                                 @EASY$PROGRAM:SETUP.COM
+
+                    Before any of the system's users can access this
+                    CBT, the EASY and LOADDRAW symbols must be added
+                    to SYS$MANAGER:SYLOGIN.COM or user's LOGIN.COM as
+                    follows:
+
+                                 EASY :== $EASY$PROGRAM:SOLORTP.EXE
+                                 LOADDRAW :== $EASY$PROGRAM:LOADDRAW.EXE
+
+                    Upon completion of the above steps, the DATATRIEVE
+                    CBT is installed on a single node. To test the
+                    installation, run it from a user account by typing:
+
+                                 EASY
+
+                    Edit the main course menu file to remove duplicate
+                    lines (if the course was previously installed). The
+                    file is EASY$PROGRAM:EASY.CAT.
+
+              5. Start-up in clustered systems
+
+                    To enable the lessons on all nodes in the cluster,
+                    run the EASY$STARTUP command on EACH NODE as
+                    follows:
+
+                                 @SYS$MANAGER:EASY$STARTUP.COM
+
+              6. De-installation of the DATATRIEVE CBT (if ever
+                 necessary)
+
+                    A shutdown command file can be found in SYS$MANAGER.
+                    The name of the file is EASY$SHUTDOWN.COM. This
+                    command file removes all logicals, logical name
+                    tables, and shared images associated with this
+                    package.
+
+                                         DATATRIEVE CBT Installation 5-5
+
+ 
+
+
+
+     DATATRIEVE CBT Installation
+
+
+                 To completely remove this package from the system:
+
+                 o  Examine the EASY$LESSONS logical. This logical
+                    will tell you where the CBT has been installed.
+
+                 o  Execute the command file (for all nodes if
+                    clustered),
+
+                              @SYS$MANAGER:EASY$SHUTDOWN
+
+                 o  Remove the entire [EASYMGR] directory tree.
+
+                 o  Remove EASYMGR from the user authorization file.
+
+                              RUN AUTHORIZE
+                              REMOVE EASYMGR
+                              EXIT
+
+                 o  Delete the command files,
+
+                       SYS$MANAGER:EASY$STARTUP.COM
+                       SYS$MANAGER:EASY$SHUTDOWN.COM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     5-6 DATATRIEVE CBT Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                  Sample Installation Session (VAX Only)
+
+
+
+              This appendix lists the hardcopy terminal output from an
+              installation of DATATRIEVE Version 7.2A on an OpenVMS VAX
+              system.
+
+        $ @sys$update:vmsinstal dtra072 disk$:[dtr.dtra072]
+
+                OpenVMS VAX Software Product Installation Procedure V7.1
+
+        It is 7-FEB-2000 at 14:32.
+
+        Enter a question mark (?) at any time for help.
+
+        %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                UCX$FTPD
+                _TNA110:
+        * Do you want to continue anyway [NO]? y
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          DTRA V7.2
+
+                Beginning installation of DTRA V7.2 at 14:32
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                    DATATRIEVE V7.2A Installation Procedure
+
+             © Compaq Computer Corporation 2000. All rights reserved.
+
+        * Do you want support for Oracle CDD/Repository [YES]? yes
+
+
+                              Sample Installation Session (VAX Only) A-1
+
+ 
+
+
+
+     Sample Installation Session (VAX Only)
+
+
+         The DATATRIEVE product is built using several object
+         libraries which can also be used to customize DATATRIEVE
+         to suit your needs (see the DATATRIEVE documentation manual,
+         'Guide to Programming and Customizing').   These object libraries
+         are now built using the DEC C compiler.    If you have been
+         programming your own customizations and wish to continue using the
+         VAX C compiler, you have the option of installing the object
+         libraries which have been built using that compiler instead.
+
+         If you answer YES to this question, DATATRIEVE will be
+         linked with the VAX C RTL, and the libraries in DTR$LIBRARY will
+         contain objects built with the VAX C compiler.
+
+         If you answer NO to this question, DATATRIEVE will be
+         linked with the DEC C RTL, and the libraries in DTR$LIBRARY will
+         contain objects built with DEC C compiler.
+
+         Unless you customize your use of DATATRIEVE and want to
+         continue using the VAX C compiler for your own customizations,
+         answer NO to this question:
+
+     * Do you want to install DATATRIEVE using object libraries built with the VAX C compiler [NO]?
+
+             Product:      DTR or DTR-USER
+             Producer:     DIGITAL
+             Version:      V7.2A
+             Release Date: 22-OCT-1997
+
+     * Does this product have an authorization key registered and loaded? yes
+     * Do you want to use default answers for all questions [YES]? no
+
+         VAXLSE is installed on your system.
+
+         You now have the following options:
+
+             1.   Do a complete DATATRIEVE installation including
+                  DATATRIEVE support for LSE.
+
+             2.   Do only DATATRIEVE support for LSE without
+                  installing DATATRIEVE.
+
+             3.   Do a DATATRIEVE installation without including
+                  DATATRIEVE support for LSE.
+     * Select option [1]: 1
+
+     A-2 Sample Installation Session (VAX Only)
+
+ 
+
+
+
+                                  Sample Installation Session (VAX Only)
+
+
+                The following Forms Management products have been found on
+                this system:
+                TDMS (Terminal Data Management System)
+                FMS  (Forms Management System)
+
+                DATATRIEVE can be built to support any one of these
+                products, or, if desired, DATATRIEVE can be built without
+                support of any of these Forms Management products
+
+        * Do you want DATATRIEVE to support one of these products  [YES]? yes
+        * Do you wish to have TDMS Forms Management support [YES]? no
+        * Do you wish to have FMS Forms Management support [YES]? yes
+
+            It is possible to do more than one installation of DATATRIEVE.
+            More than one installation of a single version may be desirable
+            for a number of reasons including:
+
+                o Use of multiple forms management products (such as
+                  FMS and TDMS; DECforms is available in every image,
+                  if present on the system)
+
+                o Use of multiple foreign language translations of
+                  DATATRIEVE (such as French or German)
+
+        * Do you plan to install this version more than once [NO]? no
+        * Do you want DTRSHR.EXE and DTRMSGS.EXE to be installed SHARED [YES]?
+        * Do you want DTRAPI.EXE to be installed SHARED [YES]?
+        * Do you want DTR32.EXE to be installed SHARED [YES]?
+        * Do you want DDMF.EXE to be installed SHARED [YES]?
+        * Do you wish to have the plot definitions [YES]?
+
+            Some optional material is available with this kit including
+            the components of DATATRIEVE that can be tailored at
+            the installed site.
+        * Do you want the optional material [NO]? yes
+        * Do you want to purge files replaced by this installation [YES]?
+
+            The DATATRIEVE IVP will be put in the SYS$COMMON:[SYSTEST.DTR]
+            directory. You may run the IVP immediatly after the completion of
+            the installation procedure answering YES to the next question or
+            later issuing the following command:
+
+            @SYS$COMMON:[SYSTEST.DTR]DTR$IVP.COM DTR32.EXE
+
+
+                              Sample Installation Session (VAX Only) A-3
+
+ 
+
+
+
+     Sample Installation Session (VAX Only)
+
+
+     * Do you want to run the IVP after the installation [YES]?
+     * Proceed with this installation [YES]?
+
+
+         All questions regarding the installation have now been asked.
+
+         The installation of DATATRIEVE will now continue for
+         20 minutes to 40 minutes.
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSTEST.DTR].
+     %CREATE-I-EXISTS, VMI$ROOT:[SYSTEST.DTR] already exists
+
+         Providing the following LSE language(s):
+
+             DATATRIEVE
+
+         During the installation, a file called
+         DTRSTUP.COM has been added to SYS$STARTUP:
+
+         The site-dependent start-up file, SYS$MANAGER:SYSTARTUP_VMS.COM
+         should have the following line added:
+
+               $ @SYS$STARTUP:DTRSTUP.COM
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.ADT].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.ADT] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.DEMO].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.DEMO] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.FORMS].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.FORMS] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.GUIDE].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.GUIDE] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.PLOTS].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.PLOTS] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.DEMO.RDB].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.DEMO.RDB] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.DEMO.DBMS].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.DEMO.DBMS] already exists
+     %DCL-I-SUPERSEDE, previous value of DTR$LIBRARY has been superseded
+
+     A-4 Sample Installation Session (VAX Only)
+
+ 
+
+
+
+                                  Sample Installation Session (VAX Only)
+
+
+            **************************************************************
+            DATATRIEVE User Environment Test Packages (UETPs)
+            have been provided and can be run after the installation is
+            complete. They are invoked from DATATRIEVE as follows:
+
+            DTR> @sys$common:[systest.dtr]dtr     ! The general test"
+            DTR> @sys$common:[systest.dtr]plots   ! The plots test
+            DTR> @sys$common:[systest.dtr]rdb     ! The DEC Rdb test
+            DTR> @sys$common:[systest.dtr]forms   ! The Forms test
+
+            Before invoking these files from a user's account you must
+            execute the procedure :
+                            @DTR$LIBRARY:NEWUSER.COM
+            This procedure loads the DATATRIEVE definitions into the
+            user's dictionary and the data files in the user's directory.
+            This procedure must be executed by each user needing
+            the DATATRIEVE examples
+            **************************************************************
+
+        Restoring UETP-related Oracle Rdb objects
+
+        %RMU-I-AIJRSTAVL, 0 after-image journals available for use
+        %RMU-I-AIJISOFF, after-image journaling has been disabled
+        %RMU-I-LOGCONVRT, database root converted to current structure level
+        %RMU-S-CVTDBSUC, database SYS$COMMON:[DTR]PERSONNEL.RDB;1 successfully converted from version V6.1
+        t
+        o V7.0
+        %RMU-I-CVTCOMSUC, CONVERT committed for SYS$COMMON:[DTR]PERSONNEL.RDB;1 to version V7.0
+        %RMU-I-ACLADDED, RMU access added to SYS$COMMON:[DTR]PERSONNEL.RDB;1 for [311,300]
+        %RMU-I-ACLADDED, RMU access added to SYS$COMMON:[DTR]PERSONNEL.RDB;1 for [*,*]
+        %RMU-W-USERECCOM, Use the RMU Recover command. The journals are not available.
+        UETP-related Oracle Rdb objects Successfully Restored
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+        Node 0 Session Control Application DDMF
+        at 2000-02-07-14:52:26.723+00:00Iinf
+
+        Identifiers
+
+            Name                              = DDMF
+
+        Node 0 Session Control Application DDMF
+        at 2000-02-07-14:52:28.493+00:00Iinf
+
+        Characteristics
+
+                              Sample Installation Session (VAX Only) A-5
+
+ 
+
+
+
+     Sample Installation Session (VAX Only)
+
+
+         Addresses                         =
+            {
+               number = 30
+            }
+
+     Node 0 Session Control Application DDMF
+     at 2000-02-07-14:52:30.583+00:00Iinf
+
+     Characteristics
+
+         Image Name                        = DDMF.COM
+
+                 DATATRIEVE V7.2A Installation Procedure
+
+          © Compaq Computer Corporation 2000. All rights reserved.
+
+     Executing IVP for:  DATATRIEVE V7.2A
+
+         © Compaq Computer Corporation 2000. All rights reserved.
+
+         Test completed successfully
+         ***************************
+
+         IVP COMPLETED SUCCESSFULLY
+         **************************
+
+     IVP completed for:  DATATRIEVE V7.2A
+
+             Installation of DTRA V7.2 completed at 14:53
+
+             VMSINSTAL procedure done at 14:53
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     A-6 Sample Installation Session (VAX Only)
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                Sample Installation Session (Alpha Only)
+
+
+
+              This appendix lists the hardcopy terminal output from
+              an installation of DATATRIEVE Version 7.2A on an OpenVMS
+              Alpha system.
+
+        $ @sys$update:vmsinstal
+
+                OpenVMS AXP Software Product Installation Procedure V7.1
+
+        It is 7-FEB-2000 at 15:42.
+
+        Enter a question mark (?) at any time for help.
+
+        %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+               SNS$WATCHDOG
+               IMBUSY$SRV73
+        * Do you want to continue anyway [NO]? YES
+        * Are you satisfied with the backup of your system disk [YES]?
+        * Where will the distribution volumes be mounted: DKA100:[DTR]
+
+        Enter the products to be processed from the first distribution volume set.
+        * Products:   DTRAXPA072
+        * Enter installation options you wish to use (none):
+
+        The following products will be processed:
+
+          DTRAXPA V7.2
+
+                Beginning installation of DTRAXPA V7.2 at 15:42
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                    DATATRIEVE V7.2A Installation Procedure
+
+             © Compaq Computer Corporation 2000. All rights reserved.
+
+        * Do you want support for Oracle CDD/Repository [YES]?
+
+                            Sample Installation Session (Alpha Only) B-1
+
+ 
+
+
+
+     Sample Installation Session (Alpha Only)
+
+
+             Product:      DTR or DTR-USER
+             Producer:     DIGITAL
+             Version:      V7.2A
+             Release Date: 22-OCT-1997
+
+     * Does this product have an authorization key registered and loaded? y
+     * Do you want to use default answers for all questions [YES]? n
+
+         LSE is installed on your system.
+
+         You now have the following options:
+
+             1.   Do a complete DATATRIEVE installation including
+                  DATATRIEVE support for LSE.
+
+             2.   Do only DATATRIEVE support for LSE without
+                  installing DATATRIEVE.
+
+             3.   Do a DATATRIEVE installation without including
+                  DATATRIEVE support for LSE.
+     * Select option [1]:
+
+         FMS  (Forms Management System) has been found
+         on this system. DATATRIEVE can be built to support
+         this product.
+
+     * Do you want support for this product in DATATRIEVE [YES]?
+
+         It is possible to do more than one installation of DATATRIEVE.
+         More than one installation of a single version may be desirable
+         for a number of reasons including:
+
+             o Use of multiple forms management products (such as
+               FMS; DECforms is available in every image, if present
+               on the system)
+
+             o Use of multiple foreign language translations of
+               DATATRIEVE (such as French or German)
+
+     * Do you plan to install this version more than once [NO]?
+     * Do you want DTRSHR.EXE and DTRMSGS.EXE to be installed SHARED [YES]?
+     * Do you want DTRAPI.EXE to be installed SHARED [YES]?
+     * Do you want DTR32.EXE to be installed SHARED [YES]?
+     * Do you want DDMF.EXE to be installed SHARED [YES]?
+     * Do you wish to have the plot definitions [YES]?
+
+     B-2 Sample Installation Session (Alpha Only)
+
+ 
+
+
+
+                                Sample Installation Session (Alpha Only)
+
+
+            Some optional material is available with this kit including
+            the components of DATATRIEVE that can be tailored at
+            the installed site.
+        * Do you want the optional material [NO]?
+        * Do you want to purge files replaced by this installation [YES]?
+
+
+            The DATATRIEVE IVP will be put in the SYS$COMMON:[SYSTEST.DTR]
+            directory. You may run the IVP immediatly after the completion of
+            the installation procedure answering YES to the next question or
+            later issuing the following command:
+
+            @SYS$COMMON:[SYSTEST.DTR]DTR$IVP.COM DTR32.EXE
+
+        * Do you want to run the IVP after the installation [YES]?
+        * Proceed with this installation [YES]?
+
+            All questions regarding the installation have now been asked.
+
+            The installation of DATATRIEVE will now continue for
+            20 minutes to 40 minutes.
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR].
+        %CREATE-I-EXISTS, VMI$ROOT:[DTR] already exists
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSTEST.DTR].
+        %CREATE-I-EXISTS, VMI$ROOT:[SYSTEST.DTR] already exists
+
+            Providing the following LSE language(s):
+
+                DATATRIEVE
+
+            During the installation, a file called
+            DTRSTUP.COM has been added to SYS$STARTUP:
+
+            The site-dependent start-up file, SYS$MANAGER:SYSTARTUP.COM
+            should have the following line added:
+
+                  $ @SYS$STARTUP:DTRSTUP.COM
+
+
+
+
+
+
+                            Sample Installation Session (Alpha Only) B-3
+
+ 
+
+
+
+     Sample Installation Session (Alpha Only)
+
+
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.ADT].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.ADT] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.DEMO].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.DEMO] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.FORMS].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.FORMS] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.GUIDE].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.GUIDE] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.PLOTS].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.PLOTS] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.DEMO.RDB].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.DEMO.RDB] already exists
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[DTR.DTR$LIB.DEMO.DBMS].
+     %CREATE-I-EXISTS, VMI$ROOT:[DTR.DTR$LIB.DEMO.DBMS] already exists
+
+
+
+         **************************************************************
+         DATATRIEVE User Environment Test Packages (UETPs)
+         have been provided and can be run after the installation is
+         complete. They are invoked from DATATRIEVE as follows:
+
+         DTR> @sys$common:[systest.dtr]dtr     ! The general test"
+         DTR> @sys$common:[systest.dtr]plots   ! The plots test
+         DTR> @sys$common:[systest.dtr]dbms    ! The DEC DBMS test
+         DTR> @sys$common:[systest.dtr]rdb     ! The DEC Rdb test
+         DTR> @sys$common:[systest.dtr]forms   ! The Forms test
+
+         Before invoking these files from a user's account you must
+         execute the procedure :
+                         @DTR$LIBRARY:NEWUSER.COM
+         This procedure loads the DATATRIEVE definitions into the
+         user's dictionary and the data files in the user's directory.
+         This procedure must be executed by each user needing
+         the DATATRIEVE examples
+         ****************************************************************
+
+     Restoring UETP-related Oracle DBMS objects
+
+         ********************************************************************
+
+
+
+     B-4 Sample Installation Session (Alpha Only)
+
+ 
+
+
+
+                                Sample Installation Session (Alpha Only)
+
+
+            A database for the DATATRIEVE UETP that utilizes Oracle DBMS
+            cannot be created because the Oracle DBMS monitor is not running.
+            Although the installation has not been aborted, the UETP will
+            not function properly. It is recommended that you start the
+            Oracle DBMS monitor then re-run this installation.
+
+            ********************************************************************
+
+        Cleanup the UETP-related Oracle DBMS objects
+
+        Restoring UETP-related Oracle Rdb objects
+
+
+            *******************************************************************
+
+            A database for the DATATRIEVE UETP that utilizes Oracle Rdb
+            cannot be created because the DEC Rdb monitor is not running.
+            Although the installation has not been aborted, the UETP will
+            not function properly. It is recommended that you start the
+            Oracle Rdb monitor then re-run this installation.
+
+            *******************************************************************
+
+        Cleanup the UETP-related Oracle Rdb objects
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+        Node 0 Session Control Application DDMF
+        at 2000-02-07-15:49:10.480+00:00I42.900
+
+        Identifiers
+
+            Name                              = DDMF
+
+        Node 0 Session Control Application DDMF
+        at 2000-02-07-15:49:10.527+00:00I42.899
+
+        Characteristics
+
+            Addresses                         =
+               {
+                  number = 30
+               }
+
+        Node 0 Session Control Application DDMF
+        at 2000-02-07-15:49:11.289+00:00I42.892
+
+        Characteristics
+
+                            Sample Installation Session (Alpha Only) B-5
+
+ 
+
+
+
+     Sample Installation Session (Alpha Only)
+
+
+         Image Name                        = DDMF.COM
+
+                 DATATRIEVE V7.2A Installation Procedure
+
+          © Compaq Computer Corporation 1982, 1999. All rights reserved.
+
+     Executing IVP for:  DATATRIEVE V7.2A
+
+         © Compaq Computer Corporation 2000. All rights reserved.
+
+         Test completed successfully
+         ***************************
+
+         IVP COMPLETED SUCCESSFULLY
+         **************************
+
+     IVP completed for:  DATATRIEVE V7.2A
+
+             Installation of DTRAXPA V7.2 completed at 15:49
+
+         Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+         Creating installation data file: VMI$ROOT:[SYSUPD]DTRAXPA072.VMI_DATA
+
+             VMSINSTAL procedure done at 15:49
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     B-6 Sample Installation Session (Alpha Only)
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       C
+        ________________________________________________________________
+
+              List of Files Modified/Added by the Installation Procedure
+
+
+
+              This appendix lists the files that were added or modified
+              during the product installation. Such list can also be
+              found in the following file created during installation:
+
+              SYS$COMMON:[SYSMGR.VAXINFO$PRODUCTS]DTR072A_FILES.DAT
+
+              The file has the following contents:
+
+              !  File:      SYS$COMMON:[SYSMGR.VAXINFO$PRODUCTS]DTR072A_FILES.DAT
+              !  Product:   Compaq DATATRIEVE V7.2A
+              !  Installed:  3-FEB-2000 12:03
+              !  License:   UNKNOWN
+              !*******************************************************************************
+              !  This file is associated with the above product.  It must NOT be moved,
+              !  edited, or deleted.
+              !*******************************************************************************
+              !  Flags: (for DIGITAL use only)
+              !     $D = Delete file when deleting product
+              !     $I = File inserted into IMAGELIB.OLB
+              !     $K = Keep file when deleting product
+              !     $M = Multiple version/product file
+              !-------------------------------------------------------------------------------
+              SYS$COMMON:[SYSHLP]DTR072A.RELEASE_NOTES /$D
+              SYS$COMMON:[SYSMGR.VAXINFO$PRODUCTS]DTR072A_FILES.DAT /$D
+              SYS$SYSROOT:[DECW$BOOK]DTR_DECW_HELP_MOTIF.DECW$BOOK /$D
+              SYS$SYSROOT:[DECW$BOOK]DTR_DECW_HELP_MOTIF.DECW$BOOKSHELF /$D
+              SYS$SYSROOT:[DTR]ACCOUNTS.DAT /$M
+              SYS$SYSROOT:[DTR]ANNUAL.DAT /$M
+              SYS$SYSROOT:[DTR]DTR$DECTERM_DEFAULT.DAT /$M
+              SYS$SYSROOT:[DTR]DTRAPI.OLB /$D
+              SYS$SYSROOT:[DTR]DTRBLD.COM /$D
+              SYS$SYSROOT:[DTR]DTREXTRE.OBJ /$M
+              SYS$SYSROOT:[DTR]DTRLIB.OLB /$D
+              SYS$SYSROOT:[DTR]DTRMSGS.MEM /$M
+              SYS$SYSROOT:[DTR]DTRWN11a.ZIP /$D
+
+          List of Files Modified/Added by the Installation Procedure C-1
+
+ 
+
+
+
+     List of Files Modified/Added by the Installation Procedure
+
+
+           SYS$SYSROOT:[DTR]FAMILY.DAT /$M
+           SYS$SYSROOT:[DTR]FAMILY.FORM /$M
+           SYS$SYSROOT:[DTR]FAMILY.IFDL /$M
+           SYS$SYSROOT:[DTR]FORMS.FLB /$M
+           SYS$SYSROOT:[DTR]LOAD_ADT.DTR /$M
+           SYS$SYSROOT:[DTR]LOAD_DAB.DTR /$M
+           SYS$SYSROOT:[DTR]LOAD_DATA_CDO.COM /$M
+           SYS$SYSROOT:[DTR]LOAD_DATA_DMU.DTR /$M
+           SYS$SYSROOT:[DTR]LOAD_DBMS.DTR /$M
+           SYS$SYSROOT:[DTR]LOAD_FORMS.DTR /$M
+           SYS$SYSROOT:[DTR]LOAD_RDB.DTR /$M
+           SYS$SYSROOT:[DTR]LOAD_UETP.DTR /$M
+           SYS$SYSROOT:[DTR]NEWUSER.COM /$M
+           SYS$SYSROOT:[DTR]OWNER.DAT /$M
+           SYS$SYSROOT:[DTR]OWNER.SEQ /$M
+           SYS$SYSROOT:[DTR]PAYABLES.DAT /$M
+           SYS$SYSROOT:[DTR]PERSON.DAT /$M
+           SYS$SYSROOT:[DTR]PERSONNEL.RDB /$M
+           SYS$SYSROOT:[DTR]PERSONNEL.SNP /$M
+           SYS$SYSROOT:[DTR]PET.DAT /$M
+           SYS$SYSROOT:[DTR]PROJECT.DAT /$M
+           SYS$SYSROOT:[DTR]REMOTE_DECTERM.COM /$M
+           SYS$SYSROOT:[DTR]SAILBOAT.IFDL /$M
+           SYS$SYSROOT:[DTR]SALES.DAT /$M
+           SYS$SYSROOT:[DTR]TERMSERVE.OLB /$M
+           SYS$SYSROOT:[DTR]YACHT.DAT /$M
+           SYS$SYSROOT:[DTR]YACHT.FORM /$M
+           SYS$SYSROOT:[DTR]YACHT.IFDL /$M
+           SYS$SYSROOT:[DTR]YACHT.SEQ /$M
+           SYS$SYSROOT:[DTR]dtrfnlb.mlb /$M
+           SYS$SYSROOT:[DTR]idtrfnd.mar /$M
+           SYS$SYSROOT:[SYS$STARTUP]DTRSTUP.COM /$D
+           SYS$SYSROOT:[SYSEXE]DDMF.COM /$D
+           SYS$SYSROOT:[SYSEXE]DDMF.EXE /$D
+           SYS$SYSROOT:[SYSEXE]DEC_DATATRIEVE.CLD /$D
+           SYS$SYSROOT:[SYSEXE]DTR32.EXE /$D
+           SYS$SYSROOT:[SYSEXE]DTREXTRE.EXE /$D
+           SYS$SYSROOT:[SYSEXE]DTRHELP.EXE /$D
+           SYS$SYSROOT:[SYSHLP]DTRHELP.HLB /$M
+           SYS$SYSROOT:[SYSLIB]DTRADT.DAT /$M
+           SYS$SYSROOT:[SYSLIB]DTRGUIDE.DAT /$M
+           SYS$SYSROOT:[SYSLIB]DTRSHR.EXE /$D
+           SYS$SYSROOT:[SYSLIB]VAX_DATATRIEVE.UID /$M
+
+
+     C-2 List of Files Modified/Added by the Installation Procedure
+
+ 
+
+
+
+              List of Files Modified/Added by the Installation Procedure
+
+
+              SYS$SYSROOT:[SYSMSG]DTRMSG.EXE /$M
+              SYS$SYSROOT:[SYSTEST.DTR]DBMS.DTR /$M
+              SYS$SYSROOT:[SYSTEST.DTR]DTR$IVP.COM /$M
+              SYS$SYSROOT:[SYSTEST.DTR]DTR.DTR /$M
+              SYS$SYSROOT:[SYSTEST.DTR]FORMS.DTR /$M
+              SYS$SYSROOT:[SYSTEST.DTR]IVP.DTR /$M
+              SYS$SYSROOT:[SYSTEST.DTR]PLOTS.DTR /$M
+              SYS$SYSROOT:[SYSTEST.DTR]RDB.DTR /$M
+              SYS$SYSROOT:[VUE$LIBRARY.USER]VUE$DTR.COM /$M
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          List of Files Modified/Added by the Installation Procedure C-3

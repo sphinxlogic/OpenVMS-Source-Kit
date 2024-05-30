@@ -1,0 +1,3311 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             VAX FMS Installation Guide
+
+             Order Number: AA-MK64A-TE
+
+
+
+
+             February 1989
+
+             This manual describes the VAX FMS installation and verification
+             procedures.
+
+
+
+
+
+             OPERATING SYSTEM:             VMS
+
+             SOFTWARE VERSION:             VAX FMS Version 2.4
+
+
+
+
+
+
+
+
+
+
+             digital equipment corporation
+             maynard, massachusetts
+
+ 
+
+
+
+
+
+
+
+
+
+             ___________________________________________________
+
+             The information in this document is subject to change without
+             notice and should not be construed as a commitment by Digital
+             Equipment Corporation. Digital Equipment Corporation assumes no
+             responsibility for any errors that may appear in this document.
+
+             The software described in this document is furnished under a
+             license and may be used or copied only in accordance with the
+             terms of such license.
+
+             No responsibility is assumed for the use or reliability of soft-
+             ware on equipment that is not supplied by Digital Equipment
+             Corporation or its affiliated companies.
+
+             (c) Digital Equipment Corporation 1983, 1984, 1986, 1989.
+
+             All Rights Reserved.
+             Printed in U.S.A.
+
+             The postpaid Reader's Comments forms at the end of this document
+             request your critical evaluation to assist in preparing future
+             documentation.
+
+             The following are trademarks of Digital Equipment Corporation:
+
+             ALL-IN-1        EduSystem     RT
+             DEC             IAS           ULTRIX
+             DEC/CMS         MASSBUS       UNIBUS
+             DEC/MMS         PDP           VAX
+             DECnet          PDT           VAXcluster
+             DECmate         P/OS          VMS
+             DECsystem-10    Professional  VT
+             DECSYSTEM-20    Q-bus         Work Processor
+             DECUS           Rainbow
+             DECwriter       RSTS
+             DIBOL           RSX           DIGITAL
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       Contents
+          _____________________________________________________________________
+
+
+          Preface .................................................................   vi
+
+
+          _____________________________________________________________________
+          Chapter 1  Preparing to Install VAX FMS
+
+               1.1  Required Operating System Components....................  1-1
+
+               1.2  Prerequisite and Optional Software......................  1-2
+
+               1.3  Prerequisite Hardware.....................................  1-2
+
+               1.4  VMS License Management Facility .........................  1-2
+
+               1.5  Installation Procedure Requirements.....................  1-3
+                     1.5.1  Restrictions........................................  1-3
+                     1.5.2  Time.................................................  1-3
+                     1.5.3  Privileges..........................................  1-4
+                     1.5.4  Disk Space..........................................  1-4
+                     1.5.5  System Parameters..................................  1-5
+                           1.5.5.1Checking System Parameter Values ........  1-5
+                           1.5.5.2Calculating the Values for GBLPAGES and
+                                  GBLSECTIONS.................................  1-6
+                           1.5.5.3Changing System Parameter Values with
+                                  AUTOGEN .....................................  1-7
+                     1.5.6  Process Account Quotas............................  1-8
+
+
+                                                                            iii
+
+ 
+
+
+
+
+
+
+
+                     1.5.7  VMSINSTAL Requirements............................  1-9
+                     1.5.8  Backing Up Your System Disk...................... 1-10
+
+
+          _____________________________________________________________________
+          Chapter 2  Installing VAX FMS
+
+               2.1  General Information .......................................  2-1
+                     2.1.1  Accessing the Online Release Notes..............  2-1
+                     2.1.2  Determining the Files and Logical Names Added
+                           to the System ......................................  2-2
+                     2.1.3  Running the Installation Verification
+                           Procedure...........................................  2-2
+                     2.1.4  Aborting the Installation ........................  2-2
+
+               2.2  The Installation Procedure ...............................  2-3
+                     2.2.1  Invoking VMSINSTAL.................................  2-3
+                     2.2.2  Installation Questions............................  2-4
+                     2.2.3  Informational Messages............................  2-8
+                     2.2.4  Running the Installation Verification
+                           Procedure...........................................  2-9
+                     2.2.5  Completing the Installation Procedure .......... 2-10
+
+               2.3  Error Recovery ............................................. 2-10
+
+
+          _____________________________________________________________________
+          Chapter 3  After Installing VAX FMS
+
+               3.1  Editing the System Files..................................  3-1
+
+               3.2  User Account Requirements ................................  3-2
+                     3.2.1  Privileges..........................................  3-2
+                     3.2.2  User Account Quotas ...............................  3-2
+
+               3.3  Running the IVP............................................  3-4
+
+               3.4  Special Requirements ......................................  3-4
+
+
+          iv
+
+ 
+
+
+
+
+
+
+
+               3.5  Enhancing VAX FMS Performance............................  3-4
+
+               3.6  Determining and Reporting Problems......................  3-5
+
+
+          _____________________________________________________________________
+          Chapter 4  Verifying the Form Editor and Form Tester
+
+
+          _____________________________________________________________________
+          Appendix A Sample Installation
+
+               A.1  Full Development Kit ......................................  A-1
+
+               A.2  Run-Time Kit................................................  A-4
+
+
+          _____________________________________________________________________
+          Appendix B Using the Sample Applications Programs
+
+               B.1  Files Associated with the Sample Application
+                     Programs ....................................................  B-2
+
+               B.2  Running the Sample Application on Bisynchronous
+                     Terminals...................................................  B-5
+
+               B.3  Running the Sample Application on MicroVAX
+                     Workstations................................................  B-6
+
+
+          _____________________________________________________________________
+          Appendix C Files Installed on Your System
+
+
+
+
+
+
+
+
+
+                                                                              v
+
+ 
+
+
+
+
+
+
+
+
+          _____________________________________________________________________
+          Tables
+               1-1  Disk Space Requirements...................................  1-4
+               1-2  Required System Parameter Values ........................  1-5
+               1-3  Process Account Quotas for the Installing Account ....  1-8
+               3-1  User Account Quotas for Using VAX FMS ..................  3-3
+               B-1  FMS Sample Application Programs .........................  B-1
+               B-2  FMS Definition Files ......................................  B-3
+               B-3  FMS Source Files...........................................  B-4
+               B-4  FMS Command Files..........................................  B-4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          vi
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                        Preface
+          _____________________________________________________________________
+
+
+
+             This manual describes how to install VAX Forms Management System
+             (FMS) Version 2.4 and how to verify the installation.
+
+          ____________________________________________________________
+          Intended Audience
+
+             This manual is intended for those who install and maintain VAX FMS
+             software. You should read this manual before installing VAX FMS.
+
+             To install VAX FMS, you must have access to a privileged account.
+             To run the postinstallation Installation Verification Procedure,
+             you must use a VT100- or VT200-series terminal or one that is
+             VT100-compatible.
+
+          ____________________________________________________________
+          Operating System Information
+
+             VAX FMS Version 2.4 requires VMS Version 5.0 or higher.
+
+
+
+
+
+
+
+
+          vi
+
+ 
+
+
+
+
+
+
+          ____________________________________________________________
+          Structure
+
+             This manual contains four chapters and three appendixes:
+
+             Chapter 1   Describes the preparations and requirements necessary
+                         for installing FMS.
+
+             Chapter 2   Describes the FMS installation procedure.
+
+             Chapter 3   Describes the tasks to perform after installing FMS.
+
+             Chapter 4   Describes the FMS postinstallation IVP.
+
+             Appendix A  Reproduces typical installation sessions and postin-
+                         stallation IVP sessions.
+
+             Appendix B  Describes the optional sample applications programs
+                         available with FMS.
+
+             Appendix C  Details the files that are installed or modified.
+
+          ____________________________________________________________
+          Related Manuals
+
+             For additional information on installing FMS, refer to the VMS
+             system documentation for these topics:
+
+              o  VMSINSTAL procedure
+
+              o  INSTALL Utility
+
+              o  System management and operations
+
+
+
+
+
+
+
+
+                                                                            vii
+
+ 
+
+
+
+
+
+
+          ____________________________________________________________
+          Conventions
+
+             This manual uses the following conventions:
+
+             <RETURN>  This symbol indicates the RETURN key. Unless otherwise
+                       stated, end all user input lines in examples by pressing
+                       the RETURN key.
+
+             Color     Color in examples shows user input.
+
+             $         The dollar sign represents the DIGITAL Command Language
+                       (DCL) prompt. (The DCL prompt on your system may be
+                       different.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          viii
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                           Chapter 1
+
+
+                                                        Preparing to Install VAX FMS
+               _____________________________________________________________________
+
+
+
+                  This chapter discusses the preparations and requirements necessary
+                  for installing VAX FMS.
+
+                  This manual applies to Version 2.4 of VAX FMS and all subsequent
+                  maintenance releases up to the next major product release.
+
+                  Your bill of materials (BOM) and indented bills report (BIL)
+                  specify the number and contents of your media. Be sure to verify
+                  the contents of your kit with this information. If your kit is
+                  damaged or if you find that parts of it are missing, contact your
+                  DIGITAL representative.
+
+                  VAX FMS provides online release notes. DIGITAL strongly recom-
+                  mends that you read the release notes before proceeding with the
+                  installation.
+
+               ____________________________________________________________
+               1.1  Required Operating System Components
+
+                  VAX FMS supports the following list of VMS Version 5.0 classes:
+
+                   o  VMS Required Saveset
+
+                   o  Programming Supprt
+
+                   o  Utilities
+
+
+
+
+
+
+
+
+                                                   Preparing to Install VAX FMS  1-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               1.2  Prerequisite and Optional Software
+
+                  This section discusses the software you must have installed on
+                  your system before installing VAX FMS. The section also includes
+                  information about software that you can use together with VAX FMS.
+                  Please refer to the System Software Addendum (SSA) for a complete
+                  list of compatible products and their required version numbers.
+                  The SSA is part of the Software Product Description (SPD).
+
+                  VAX FMS Version 2.4 requires VMS Version 5.0 or higher.
+
+                  If the optional software uses the VAX CDD/Plus, or if the VAX DBMS
+                  is to be part of the system, you should install those software
+                  products before you install VAX FMS. Note that CDDSHR.EXE must al-
+                  ways be installed using the Install Utility (see Section 1.5.5.2).
+
+               ____________________________________________________________
+               1.3  Prerequisite Hardware
+
+                  To run the postinstallation Installation Verification Procedure
+                  (IVP), you must have a video terminal. See Chapter 4 for more
+                  information on the postinstallation IVP.
+
+               ____________________________________________________________
+               1.4  VMS License Management Facility
+
+                  The VMS License Management Facility is available with Version 5.0
+                  of the VMS operating system. If you are installing VAX FMS on a
+                  VMS Version 5.0 or higher system, you must register your software
+                  license. [1]
+
+                  The license registration information you need is contained in the
+                  Product Authorization Key (PAK) that is shipped with VAX FMS. The
+                  PAK is a paper certificate that contains information about the
+                  license you own to run a particular piece of software.
+
+                  During the installation, you are asked if you have registered the
+                  VAX FMS license and loaded the appropriate authorization key. You
+                  must register and load your license for VAX FMS before you start
+                  the installation in order to run the IVP and use the software.
+               _____________________
+             [1] VAX FMS can be installed without registering the FMS license.
+                 However, the IVP is not executed without a license registration.
+                 In addition, the FMS utilities and applications using the form
+                 driver are not run until a license is properly registered.
+
+               1-2  Preparing to Install VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  To register a license under VMS Version 5.0, first log in to the
+                  system manager's account, SYSTEM. You then have a choice of two
+                  ways to perform the registration:
+
+                   o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it prompts
+                     you for information, respond with data from your Product
+                     Authorization Key (PAK).
+
+                   o  Issue the DCL command LICENSE REGISTER with the qualifiers that
+                     correspond to information on the PAK.
+
+                  For complete information on using LMF, see the manual on the
+                  License Management Utility in the VMS documentation set.
+
+               ____________________________________________________________
+               1.5  Installation Procedure Requirements
+
+                  The following sections discuss various requirements for installing
+                  VAX FMS.
+
+               ____________________________________________________________
+               1.5.1  Restrictions
+
+                  No users should be logged into the system while you are installing
+                  FMS. You can use the REPLY command to send a message to users, for
+                  example:
+
+                    $ REPLY/ALL "Please log off now. Installing FMS."
+
+                  If VMSINSTAL detects any users on the system, it gives you an
+                  opportunity to stop the installation procedure by prompting you to
+                  continue. If you want to stop the installation, press the RETURN
+                  key.
+
+               ____________________________________________________________
+               1.5.2  Time
+
+                  The installation takes approximately 15 to 60 minutes, depending
+                  on the type of media and your system configuration.
+
+                  Installing VAX FMS and running the IVP on a standalone VAXstation
+                  II system takes 17 minutes.
+
+
+
+
+
+                                                   Preparing to Install VAX FMS  1-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               1.5.3  Privileges
+
+                  To install VAX FMS, you must be logged into an account that has
+                  SETPRV or at least the following privileges:
+
+                   o  CMKRNL
+
+                   o  WORLD
+
+                   o  SYSPRV
+
+                  Note that VMSINSTAL turns off BYPASS privilege at the start of the
+                  installation.
+
+               ____________________________________________________________
+               1.5.4  Disk Space
+
+                  Installing VAX FMS requires a certain amount of free disk space
+                  during the installation. Once VAX FMS is installed, less storage
+                  space is required. Table 1-1 summarizes the storage requirements
+                  for VAX FMS.
+
+                  Table 1-1: Disk Space Requirements
+                  __________________________________________________________________
+                                      Blocks During
+                  Kit_________________Installation_____Blocks_After_Installation____
+                  VAX FMS Version     3000             2650
+                  2.4
+
+                  VAX FMS FDV         350              300
+                  Version 2.4
+                  __________________________________________________________________
+
+                  To determine the number of free disk blocks on the current system
+                  disk, enter the following command at the DCL prompt:
+
+                    $ SHOW DEVICE SYS$SYSDEVICE
+
+
+
+
+
+
+
+
+
+
+               1-4  Preparing to Install VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               1.5.5  System Parameters
+
+                  Installing VAX FMS requires certain system parameter settings.
+                  Table 1-2 lists the minimum required system parameter values
+                  for the installation. Depending on the kinds of programs and
+                  applications running at your site, you might need higher values
+                  for some settings.
+
+                  Table 1-2: Required System Parameter Values
+                  __________________________________________________________________
+                  System_Parameter___________Value__________________________________
+                  GBLPAGES[1]                n + 250
+
+                  GBLSECTIONS[1]             n + 4
+                  __________________________________________________________________
+                  [1]The n variable refers to the system parameter values that are
+                  currently in use. To install VAX FMS, you must raise those values
+                  by the number indicated. (See Section 1.5.5.2.)
+                  __________________________________________________________________
+
+                  The following sections show you how to check system parameter
+                  values, calculate values for the GBLPAGES and GBLSECTIONS system
+                  parameters, and change parameter values with the VMS AUTOGEN
+                  command procedure.
+
+               ____________________________________________________________
+               1.5.5.1  Checking System Parameter Values
+                  To check the values of your system parameters, enter the following
+                  command at the DCL prompt to invoke the System Generation Utility:
+
+                    $ RUN SYS$SYSTEM:SYSGEN
+                    SYSGEN>
+
+                  At the SYSGEN> prompt, enter the SHOW command to display the value
+                  of a system parameter. The values displayed should equal or exceed
+                  the the value of each parameter listed in Table 1-2. The following
+                  command displays the value for the GBLPAGES system parameter:
+
+                    SYSGEN> SHOW GBLPAGES
+
+                  After you finish checking the parameters with the SHOW command,
+                  you can enter the EXIT command at the SYSGEN> prompt to return to
+                  DCL level.
+
+
+
+
+                                                   Preparing to Install VAX FMS  1-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               1.5.5.2  Calculating the Values for GBLPAGES and GBLSECTIONS
+                  To install and run VAX FMS, you must set the correct values for
+                  the GBLPAGES and GBLSECTIONS system parameters.
+
+                  The n shown in the Table 1-2 represents the current number of
+                  unused global pages or global sections available on your system.
+                  For the installation to execute successfully, you must raise these
+                  values by the amount indicated. To calculate how many unused
+                  global pages and global sections your system has, perform the
+                  following steps:
+
+                   1. Run the VMS Install Utility (INSTALL) using the following DCL
+                     command:
+
+                       $ INSTALL LIST /GLOBAL /SUMMARY
+
+                     The Install Utility displays a summary of global pages and
+                     global sections used by your system, as well as the current
+                     number of unused global pages. For example:
+
+                                        Summary of Local Memory Global Sections
+
+                       258 Global Sections Used,  22580/3420 Global Pages Used/Unused
+
+                   2. Determine if the number of unused global pages (3420 in the
+                     example) is equal to or greater than 250. If the number of
+                     unused pages is less than 250, you need to increase the value
+                     for GBLPAGES.
+
+                   3. Note the amount shown for Global Sections Used (258 in the
+                     example).
+
+                   4. Run the System Generation Utility and use the SHOW command to
+                     determine how many global sections have been allocated. For
+                     example:
+
+                       $ RUN SYS$SYSTEM:SYSGEN
+                       SYSGEN> SHOW GBLSECTIONS
+
+                       Parameter Name        Current   Default   Minimum   Maximum Unit  Dynamic
+                       --------------        -------   -------   -------   ------- ----  -------
+                       GBLSECTIONS               512       250        20      4095 Sections
+
+                   5. Subtract the amount shown in the summary (258 in the example)
+                     from the amount allocated. If the difference is less than 4,
+                     you need to increase the value of the GBLSECTIONS parameter.
+
+
+
+               1-6  Preparing to Install VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  Section 1.5.5.3 describes the procedures for increasing these
+                  values as well as those of other system parameters. Refer to the
+                  VMS documentation on system management and operations for more
+                  information.
+
+               ____________________________________________________________
+               1.5.5.3  Changing System Parameter Values with AUTOGEN
+                  You use the AUTOGEN command procedure to change system parameters.
+                  AUTOGEN automatically adjusts values for parameters that are
+                  associated with the ones you reset manually. To change system
+                  parameters with AUTOGEN, you must edit the the following file:
+
+                    SYS$SYSTEM:MODPARAMS.DAT
+
+                  Use an editor to access the file. If you need to change a param-
+                  eter value that is already in the SYS$SYSTEM:MODPARAMS.DAT file,
+                  simply delete the current value associated with that parameter and
+                  enter the new value.
+
+                  To add a new value, add a line to the MODPARAMS.DAT file. The line
+                  contains the name of the parameter and its value. For example:
+
+                    GBLSECTIONS = 128
+
+                  You can also modify incremental parameters in the MODPARAMS.DAT
+                  file. The following example increases the global page setting by
+                  2000:
+
+                    ADD_GBLPAGES = 2000
+
+                  After you have made all your changes, run the AUTOGEN procedure to
+                  recalculate your system parameters. Enter the following command at
+                  the DCL prompt:
+
+                    $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+                  AUTOGEN performs an automatic system shutdown and reboots when it
+                  has finished. Rebooting your system makes the new parameter values
+                  active.
+
+                  When you reboot a system under VMS Version 5.0, the Autogen
+                  Utility automatically adjusts some of the SYSGEN parameters based
+                  on the consumption of resources since the last reboot. If you do
+                  not want to take advantage of this automatic adjustment, include
+                  the /NOFEEDBACK qualifier on the AUTOGEN command line.
+
+
+
+
+                                                   Preparing to Install VAX FMS  1-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  For more information about using AUTOGEN, see the instructions
+                  on modifying system parameters in the VMS documentation on system
+                  management and operations.
+
+               ____________________________________________________________
+               1.5.6  Process Account Quotas
+
+                  The account you use to install VAX FMS must have sufficient quotas
+                  to enable you to perform the installation. Table 1-3 summarizes
+                  the process quotas required for the installation account.
+
+                  Table 1-3: Process Account Quotas for the Installing Account
+                  __________________________________________________________________
+                  Account_Quota____Value____________________________________________
+                  ASTLM            24
+
+                  BIOLM            18
+
+                  BYTLM            18,000
+
+                  DIOLM            18
+
+                  ENQLM            30
+
+                  FILLM            20
+                  __________________________________________________________________
+
+                  User account quotas are stored in the file SYSUAF.DAT. You use the
+                  VMS Authorize Utility to verify and change user account quotas.
+                  First set your directory to SYS$SYSTEM and then run AUTHORIZE:
+
+                    $ SET DEFAULT SYS$SYSTEM
+                    $ RUN AUTHORIZE
+                    UAF>
+
+                  At the Authorize Utility prompt (UAF>), use the SHOW command with
+                  an account name to check a particular account. For example:
+
+                    UAF> SHOW SMITH
+
+                  To change a quota, use the MODIFY command at the UAF> prompt.
+                  MODIFY has the following format:
+
+                        MODIFY account-name /quota-name=nnnn
+
+
+
+               1-8  Preparing to Install VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  The following example changes the FILLM quota for the SMITH ac-
+                  count and then exits from the Authorize Utility:
+
+                    UAF> MODIFY SMITH /FILLM=50
+                    UAF> EXIT
+
+                  After you exit from the utility, the VMS system displays messages
+                  indicating whether or not changes were made. Once the changes have
+                  been made, you must log out and log in again for the new quotas to
+                  take effect.
+
+                  For more information on modifying account quotas, see the descrip-
+                  tion of the Authorize Utility in the VMS documentation set.
+
+               ____________________________________________________________
+               1.5.7  VMSINSTAL Requirements
+
+                  When you invoke VMSINSTAL, it checks the following:
+
+                   o  Whether you have set your default device and directory to
+                     SYS$UPDATE
+
+                   o  Whether you are logged in to a privileged account
+
+                   o  Whether you have adequate quotas for installation
+
+                   o  Whether DECnet is up and running
+
+                   o  Whether any users are logged in to the system
+
+                  VMSINSTAL requires that the installation account have a minimum of
+                  the following quotas:
+
+                     ASTLM = 24
+                     BIOLM = 18
+                     BYTLM = 18,000
+                     DIOLM = 18
+                     ENQLM = 30
+                     FILLM = 20
+
+                  If VMSINSTAL detects any problems during the installation, it
+                  notifies you of the problem and asks if you want to continue the
+                  installation. In some instances, you can enter YES to continue. To
+                  stop the installation process and correct the situation, enter
+                  NO or press RETURN. Then correct the problem and restart the
+                  installation.
+
+
+
+
+                                                   Preparing to Install VAX FMS  1-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               1.5.8  Backing Up Your System Disk
+
+                  At the beginning of the installation, VMSINSTAL asks if you have
+                  backed up your system disk. DIGITAL recommends that you do a
+                  system disk backup before installing any software on top of the
+                  operating system.
+
+                  Use the backup procedures that have been established at your site.
+                  For details on performing a system disk backup, see the section on
+                  the Backup Utility in the VMS documentation set.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               1-10  Preparing to Install VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                           Chapter 2
+
+
+                                                                  Installing VAX FMS
+               _____________________________________________________________________
+
+
+
+                  This chapter describes how to install VAX FMS. Section 2.2 con-
+                  tains a step-by-step description of the installation procedure.
+
+               ____________________________________________________________
+               2.1  General Information
+
+                  This section includes information about accessing release notes,
+                  determining files and logical names added to your system, running
+                  the IVP, and aborting the installation.
+
+               ____________________________________________________________
+               2.1.1  Accessing the Online Release Notes
+
+                  VAX FMS provides online release notes. You must specify OPTIONS N
+                  when you invoke VMSINSTAL if you want the installation procedure
+                  to give you an opportunity to display or print the online release
+                  notes. This question comes near the beginning of the installation.
+
+                  You should review the release notes in case they contain any in-
+                  formation about changes in the installation procedure. If you have
+                  already reviewed the release notes, you do not need to specify
+                  OPTIONS N.
+
+                  Once VAX FMS has been installed, the release notes are located in
+                  the following file:
+
+                    SYS$HELP:VAXFMS024.RELEASE_NOTES
+
+
+
+
+
+
+                                                             Installing VAX FMS  2-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  Online help also directs you to the release notes file. After the
+                  installation, you can enter the following command to review the
+                  release notes through the HELP Facility:
+
+                    $ HELP FMS RELEASE_NOTES
+
+               ____________________________________________________________
+               2.1.2  Determining the Files and Logical Names Added to the System
+
+                  The files added, replaced, or modified on your system when VAX FMS
+                  is installed are listed in Appendix C. They can also be found in
+                  Appendix A of the online release notes.
+
+                  VAX FMS adds only one logical name--FMS$EXAMPLES--to the system
+                  when it is installed. The files associated with FMS$EXAMPLES
+                  are listed in Appendix C as well as in Appendix A of the online
+                  release notes.
+
+               ____________________________________________________________
+               2.1.3  Running the Installation Verification Procedure
+
+                  The IVP for VAX FMS verifies the installation. During the in-
+                  stallation, you are asked if you want to run the IVP as part of
+                  the installation. If you respond YES, VMSINSTAL runs the IVP. It
+                  is recommended that you run the IVP to be sure that VAX FMS is
+                  installed correctly.
+
+                  After VAX FMS is installed, you can run the IVP independently to
+                  verify that the software is available on your system. You might
+                  also want to run the IVP after a system failure to be sure that
+                  users can access VAX FMS.
+
+                  Because of their interactive nature, the Form editor and the Form
+                  Tester must be tested manually on a VT100- or VT200-compatible
+                  terminal. To verify the installation of the Form Editor and Form
+                  Tester, see the procedure explained in Chapter 4.
+
+               ____________________________________________________________
+               2.1.4  Aborting the Installation
+
+                  To abort the installation procedure at any time, press CTRL/Y.
+                  When you press CTRL/Y, the installation procedure deletes all
+                  files it has created up to that point and exits. You can then
+                  start the installation again.
+
+
+
+               2-2  Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               2.2  The Installation Procedure
+
+                  The VAX FMS installation procedure consists of a series of ques-
+                  tions and informational messages. The following sections explain
+                  how to invoke VMSINSTAL and answer the installation procedure
+                  questions.
+
+               ____________________________________________________________
+               2.2.1  Invoking VMSINSTAL
+
+                  To start the installation, invoke the VMSINSTAL command procedure
+                  from a privileged account, such as the SYSTEM account. VMSINSTAL
+                  is in the SYS$UPDATE directory. You use the following syntax to
+                  invoke VMSINSTAL:
+
+                        @SYS$UPDATE:VMSINSTAL product-name device-name OPTIONS N
+
+                  product-name
+                  The installation name for the component. For VAX FMS, use the
+                  following installation name:
+
+                        VAXFMS024
+
+                  device-name
+                  The name of the device on which you plan to mount the media. For
+                  example, MTA0: is the device name for a tape drive. It is not
+                  necessary to use the console drive for this installation. However,
+                  if you do use the console drive, you should replace any media you
+                  removed once the installation is complete.
+
+                  OPTIONS N
+                  An optional parameter that indicates you want to be see the re-
+                  lease notes question. If you do not include the OPTIONS N pa-
+                  rameter, VMSINSTAL does not ask you about the release notes.
+                  You should review the release notes before proceeding with the
+                  installation in case they contain new information about the in-
+                  stallation.
+
+                  There are several other options you can select when you invoke
+                  VMSINSTAL. See the VMS documentation on software installation for
+                  information on these options.
+
+
+
+
+
+
+                                                             Installing VAX FMS  2-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  The following example displays the command to invoke VMSINSTAL
+                  to install VAX FMS from tape drive MTA0: and shows the system
+                  response. This example uses the OPTIONS N release note parameter.
+
+                    $ @SYS$UPDATE:VMSINSTAL VAXFMS024 MTA0: OPTIONS N
+
+                          VAX/VMS Software Product Installation Procedure V5.0
+
+
+                    It is 14-NOV-1988 at 10:15.
+                    Enter a question mark (?) at any time for help.
+
+                  If you do not supply either the product name or the device name,
+                  VMSINSTAL prompts you for this information later on in the instal-
+                  lation procedure. VMSINSTAL does not prompt you for any options,
+                  so be sure to include OPTIONS N on the VMSINSTAL command line to
+                  access the release notes during the installation.
+
+               ____________________________________________________________
+               2.2.2  Installation Questions
+
+                  This section discusses the questions that appear during the in-
+                  stallation. Appendix A contains a sample installation procedure
+                  showing how the questions can be answered.
+
+                  Each question in the installation is marked with an asterisk (*)
+                  at the beginning of the line. Some questions show the default
+                  response in brackets, for example [YES]. If you want to use the
+                  default response, press the RETURN key.
+
+                   1. DECnet status
+
+                     VMSINSTAL notifies you if DECnet is running and displays a list
+                     of all active processes. It then asks if you want to continue
+                     the installation. You should install VAX FMS on a standalone
+                     system or cluster with DECnet shut down. NO is the default
+                     response to the question.
+
+                       %VMSINSTAL-W-DECNET, Your DECnet network is up and running.
+                          .
+                          .
+                          .
+                       * Do you want to continue anyway [NO]?
+
+
+
+
+               2-4  Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                   2. System backup
+
+                     VMSINSTAL asks if you are satisfied with your system backup.
+                     You should always back up your system disk before performing
+                     an installation. If you are satisfied with the backup of your
+                     system disk, press RETURN. Otherwise, enter NO to discontinue
+                     the installation. After you back up your system disk, you can
+                     restart the installation.
+
+                       * Are you satisfied with the backup of your system disk [YES]?
+
+                   3. Mounting the media
+
+                     You should now mount the first distribution volume on the de-
+                     vice you specified when you invoked VMSINSTAL. The device name
+                     appears in the line preceding the question "Are you ready?".
+                     VMSINSTAL then asks you if you are ready to continue with the
+                     installation.
+                     If you respond YES to indicate that you are ready, VMSINSTAL
+                     displays a message that the media containing VAX FMS has been
+                     mounted on the specified device and that the installation has
+                     begun. For example:
+
+                       Please mount the first volume of the set on MTA0:.
+                       * Are you ready? YES
+                       %MOUNT-I-MOUNTED, VAX FMS MOUNTED ON _$$MTA0:
+                       The following products will be processed:
+                         VAX FMS V2.4
+
+                           Beginning installation of VAX FMS V2.4 at 10:30
+
+                       %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                     If you entered the wrong device name when you invoked VMSINSTAL
+                     and need to restart the installation, enter NO in response to
+                     the "Are you ready?" question. To abort the installation for
+                     other reasons, press CTRL/Y.
+
+                   4. Release Notes
+
+                     If you specified OPTIONS N when you invoked VMSINSTAL, you are
+                     now asked to choose one of the five options for reviewing the
+                     release notes.
+
+
+
+
+
+                                                             Installing VAX FMS  2-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                       Release Notes Options:
+
+                        1.  Display release notes
+                        2.  Print release notes
+                        3.  Both 1 and 2
+                        4.  Copy release notes to SYS$HELP
+                        5.  Do not display, print or copy release notes
+
+                       * Select option [2]:
+
+                     If you select option 1, VMSINSTAL displays the release notes
+                     immediately on your terminal. You can terminate the display at
+                     any time by pressing CTRL/C.
+                     If you select option 2, VMSINSTAL prompts you for the name of
+                     the print queue that you want to use:
+
+                       * Queue name [SYS$PRINT]:
+
+                     You can press RETURN to send the file to the default output
+                     print device or you can enter another queue name.
+                     If you select option 3, VMSINSTAL displays the release notes
+                     immediately on the console terminal and then prompts you for a
+                     queue name for the printed version.
+                     Option 4 causes the installation to copy the release notes to
+                     the help directory. Even if you do not select option 4, the
+                     release notes for VAX FMS are copied to the SYS$HELP directory.
+                     Select option 5 if you have already reviewed the release notes.
+
+                   5. Continuing the installation
+
+                     The installation procedure now asks if you want to continue the
+                     installation. To continue, enter YES. Otherwise, press RETURN.
+                     In either case, the release notes are copied to a file in the
+                     SYS$HELP directory. For example:
+
+                       * Do you want to continue the installation [N]?: YES
+                       %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                       successfully moved to SYS$HELP.
+
+                     The release notes are located in the following file:
+
+                       SYS$HELP:VAXFMS024.RELEASE_NOTES
+
+                                                   NOTE
+
+                         The name of the release notes file installed by
+                         VMSINSTAL consists of the current product name and ver-
+
+               2-6  Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                         sion number. Do not delete release notes for previous
+                         versions of VAX FMS.
+
+                   6. License Registration
+
+                     The installation procedure displays license information about
+                     your product and then asks if you have registered and loaded
+                     your authorization key for VAX FMS. For example:
+
+                       Product:       VAX FMS
+                       Producer:      DEC
+                       Version:       2.4
+                       Release Date:  14-NOV-1988
+
+                       * Does this product have an authorization key registered and loaded?
+
+                     If you have not registered and loaded your authorization key,
+                     you must answer NO to this question. You have to register and
+                     load your product authorization key to successfully complete
+                     the installation. If you have not done so, you should stop the
+                     installation, register and load your product authorization key,
+                     and then restart the installation.
+
+                   7. Choosing to run the IVP
+
+                     The installation procedure now asks if you want to run the
+                     Installation Verification Procedure. The IVP for VAX FMS checks
+                     to be sure that the installation is successful. It is recom-
+                     mended that you run the IVP.
+
+                       * Do you want to run the IVP after the installation [YES]?
+
+                   8. Choosing to purge files
+
+                     You have the option to purge files from previous versions of
+                     VAX FMS that are superseded by this installation. Purging
+                     is recommended; however, if you need to keep files from the
+                     previous version, enter NO in response to the question.
+
+                       * Do you want to purge files replaced by this installation [YES]?
+
+                   9. Installation Options
+
+                     You are now asked to choose your installation options. If you
+                     answer YES to the prompt, the VAX FMS modifiable message files
+                     and sample applications are installed.
+
+
+
+
+                                                             Installing VAX FMS  2-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                       * Do you wish to install Sample Application Programs and Modifiable
+                       Message File Procedures [YES]?
+
+                     The Sample Application Programs are used throughout the
+                     VAX FMS documentation as examples of VAX FMS programming
+                     techniques. The files relating to the sample applications
+                     are found in the FMS$EXAMPLES: directory and are listed in
+                     Appendix C. The VAX FMS installation and start-up procedure
+                     (SYS$STARTUP:FMSTARTUP.COM) defines a system logical for the
+                     FMS$EXAMPLES: directory.
+                     See Appendix A for more detailed information concerning the
+                     Sample Application Programs.
+                     The Modifiable Message File Procedure creates a subdirectory
+                     containing the sources for the FMS Message Files and instruc-
+                     tions on how to modify the text of the messages in the FMS Form
+                     Driver and FMS Utilities. The message files are found in the
+                     subdirectory SYS$SYSROOT:[SYSHLP.EXAMPLES.FMS.MESSAGE]. The
+                     instructions for modifying the message files are in the FMS_
+                     MESSAGE.MEM file in that subdirectory.
+
+                   10.Additional media volumes
+
+                     If your installation kit contains more than one volume,
+                     VMSINSTAL prompts you to insert the additional volumes and then
+                     asks you to indicate that you are ready for the installation to
+                     proceed.
+
+                       %BACKUP-I-READYREAD, mount volume 2 on _MTA0: for reading
+
+                       Enter "YES" when ready:
+
+               ____________________________________________________________
+               2.2.3  Informational Messages
+
+                  At this point, the installation procedure displays a number of
+                  informational messages that report on the progress of the in-
+                  stallation. There are no further questions. If the installation
+                  procedure has been successful up to this point, VMSINSTAL moves
+                  the new or modified files to their target directories, updates
+                  help files, and updates DCL tables, if necessary. If you asked for
+                  files to be purged, that is done now. The following messages are
+                  displayed:
+
+                    %VMSINSTAL-I-MOVEFILES, files will now be moved to their target directories...
+
+
+
+               2-8  Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  If the installation procedure is successful, the following files
+                  are moved to their target directory:
+
+                   o  SYS$SYSTEM:FMSFAA.EXE
+
+                   o  SYS$SYSTEM:FMSFCV.EXE
+
+                   o  SYS$SYSTEM:FMSFED.EXE
+
+                   o  SYS$SYSTEM:FMSFLG.EXE
+
+                   o  SYS$SYSTEM:FMSFLI.EXE
+
+                   o  SYS$SYSTEM:FMSFTE.EXE
+
+                   o  SYS$SYSTEM:FMSFUU.EXE
+
+                  In addition, the SYS$HELP:HELPLIB.HLB and SYS$LIBRARY:DCLTABLES.EXE
+                  files are updated to include the new version of the VAX FMS HELP
+                  text and the FMS command line definition, respectively. The VAX
+                  FMS release notes are copied to the SYS$HELP:VAXFMS024.RELEASE_
+                  NOTES file.
+
+                  For a complete list of files that have been created or modified by
+                  the installation procedure, see Appendix C.
+
+               ____________________________________________________________
+               2.2.4  Running the Installation Verification Procedure
+
+                  If you chose to run the IVP, VMSINSTAL runs it now. You see the
+                  following display:
+
+                    Beginning VAX FMS V2.4 Installation Procedure...
+
+                  If VAX FMS has been successfully installed, the IVP displays the
+                  following message:
+
+                    VAXFMS V2.4 Installation Verification Procedure was successful
+                    Refer to the VAX FMS Installation Guide for further verification
+                    procedures..
+
+                  You can run the IVP separately any time after FMS has been in-
+                  stalled. To run the IVP, use the following command:
+
+                    @SYS$SYSDEVICE:[SYS$TEST.FMS]VAXFMS$IVP
+
+
+
+
+
+
+                                                             Installing VAX FMS  2-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               2.2.5  Completing the Installation Procedure
+
+                  The following messages indicate that the entire installation
+                  procedure is complete:
+
+                       Installation of VAX FMS V2.4 completed at 11:03
+
+                       VMSINSTAL procedure done at 11:17
+
+                  You can now log out of the privileged account:
+
+                    $ LOGOUT
+                    SYSTEM     logged out at 14-NOV-1988 11:24:32.40
+
+                  VMSINSTAL deletes or changes entries in the process symbol tables
+                  during the installation. Therefore, if you are going to continue
+                  using the system manager's account and you want to restore these
+                  symbols, you should log out and log in again.
+
+               ____________________________________________________________
+               2.3  Error Recovery
+
+                  If errors occur during the installation itself or when the IVP is
+                  running, VMSINSTAL displays failure messages. If the installation
+                  fails, you see the following message:
+
+                    %VMSINSTAL-E-INSFAIL, The installation of VAX FMS V2.4 has failed.
+
+                  If the IVP fails, you see these messages:
+
+                    The VAX FMS V2.4 Installation Verification Procedure failed.
+
+                    %VMSINSTAL-E-IVPFAIL, The IVP for VAX FMS V2.4 has failed.
+
+                  Errors can occur during the installation if any of the following
+                  conditions exist:
+
+                   o  The operating system version is incorrect.
+
+                   o  Quotas necessary for successful installation are insufficient.
+
+                   o  System parameter values for successful installation are insuf-
+                     ficient.
+
+                   o  The VMS help library is currently in use.
+
+                   o  The product license has not been registered and loaded.
+
+
+
+               2-10  Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  For descriptions of the error messages generated by these con-
+                  ditions, see the VMS documentation on system messages, recovery
+                  procedures, and VMS software installation. If you are notified
+                  that any of these conditions exist, you should take the appropri-
+                  ate action as described in the message. (You might need to change
+                  a system parameter or increase an authorized quota value.) For
+                  information on installation requirements, see Chapter 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            Installing VAX FMS  2-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                           Chapter 3
+
+
+                                                            After Installing VAX FMS
+               _____________________________________________________________________
+
+
+
+                  After installing VAX FMS, you need to perform the following tasks:
+
+                   o  Edit the system startup files.
+
+                   o  Set user account quotas.
+
+
+               ____________________________________________________________
+               3.1  Editing the System Files
+
+                  You must edit two system start-up files to provide for automatic
+                  startup of VAX FMS when your system is rebooted:
+
+                   1. Add the command line that starts VAX FMS to the system startup
+                     file, SYS$MANAGER:SYSTARTUP_V5.COM. VAX FMS cannot start until
+                     the network has started. You must position this new command
+                     line after the line that invokes the network startup command
+                     procedure. The following example shows the network startup
+                     command line followed by the startup command line for VAX FMS:
+
+                       $ @SYS$MANAGER:STARTNET.COM
+                            .
+                            .
+                            .
+                       $ @SYS$STARTUP:FMSTARTUP.COM
+
+
+                   2. The FMS start-up command procedure contains several VMS com-
+                     mands. The first command assigns the logical name FMS$EXAMPLES
+                     to the directory that contains the VAX FMS Version 2.4 Sample
+                     Application Programs.
+
+
+                                                       After Installing VAX FMS  3-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                     The last commands in the command procedure install FDVSHR and
+                     FDVMSG as known shared images. To improve the performance of
+                     FMS application programs further, you can remove the following
+                     line from FMSTARTUP.COM:
+
+                       $ EXIT         ! Remove this line to install the images
+
+                     If you have made any changes to the FMSTARTUP.COM file, use the
+                     SHUTDOWN procedure to stop the current system, and rebootstrap
+                     the system.
+
+
+               ____________________________________________________________
+               3.2  User Account Requirements
+
+                  To work with VAX FMS, user accounts on your system must have
+                  certain privileges and quotas. The next two sections contain
+                  information on these requirements. The third section discusses
+                  special requirements.
+
+               ____________________________________________________________
+               3.2.1  Privileges
+
+                  To use VAX FMS, each account must have at least the TMPMBX priv-
+                  ilege. Use the VMS Authorize Utility to determine whether users
+                  have the privileges they require.
+
+               ____________________________________________________________
+               3.2.2  User Account Quotas
+
+                  You must make sure that the appropriate user accounts have suffi-
+                  cient quotas to be able to use VAX FMS. Table 3-1 summarizes the
+                  required user account quotas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+               3-2  After Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  Table 3-1: User Account Quotas for Using VAX FMS
+                  __________________________________________________________________
+                  Account_Quota____Value____________________________________________
+                  ASTLM            24
+
+                  BIOLM            18
+
+                  DIOLM            18
+
+                  ENQLM            30
+
+                  FILLM            20
+                  __________________________________________________________________
+
+                  User account quotas are stored in the file SYSUAF.DAT. You use the
+                  VMS Authorize Utility to verify and change user account quotas.
+                  First set your directory to SYS$SYSTEM and then run AUTHORIZE:
+
+                    $ SET DEFAULT SYS$SYSTEM
+                    $ RUN AUTHORIZE
+                    UAF>
+
+                  At the Authorize Utility prompt (UAF>), enter the SHOW command
+                  with an account name to check that particular account. For exam-
+                  ple:
+
+                    UAF> SHOW SMITH
+
+                  To change a quota, use the MODIFY command at the UAF> prompt.
+                  MODIFY has the following syntax:
+
+                        MODIFY account-name /quota-name=nnnn
+
+                  The following example changes the ENQLM quota for the SMITH ac-
+                  count and then exits from the utility:
+
+                    UAF> MODIFY SMITH /ENQLM=50
+                    UAF> EXIT
+
+                  After you exit from the utility, the VMS system displays messages
+                  indicating whether or not changes were made. Once you have fin-
+                  ished making the changes, the users must log out and log in again
+                  for the new quotas to take effect.
+
+                  For more information on modifying account quotas, see the descrip-
+                  tion of the Authorize Utility in the VMS documentation set.
+
+
+
+                                                       After Installing VAX FMS  3-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               3.3  Running the IVP
+
+                  When FMS is installed, the IVP is automatically placed in the fol-
+                  lowing location: SYS$SYSDEVICE:[SYS$TEST.FMS]VAXFMS$IVP.COM. The
+                  IVP is placed there even if you chose not to run it at installa-
+                  tion time.
+
+                  You can run the IVP at any time after FMS has been installed by
+                  issuing the following command:
+
+                    @SYS$SYSDEVICE:[SYS$TEST.FMS]VAXFMS$IVP
+
+               ____________________________________________________________
+               3.4  Special Requirements
+
+                  To prevent data loss, users should set their terminals to HOSTSYNC
+                  and TYPAHEAD before using VAX FMS. For more information, see the
+                  online release notes.
+
+               ____________________________________________________________
+               3.5  Enhancing VAX FMS Performance
+
+                  This section includes information on system tuning and explains
+                  how to install VAX FMS as a shared image.
+
+                  The VAX FMS Version 2.4 Form Driver is built as a shared image.
+                  If several users who run FMS applications at the same time are
+                  on your system, each user has a copy of the Form Driver in mem-
+                  ory. If you install the Form Driver as a known shared image, the
+                  users share a single copy of the Form Driver in memory when FMS
+                  applications are run.
+
+                  A known shared image reduces memory requirements and can improve
+                  system performance.
+
+                  To install VAX FMS as a known shared image on a system that is
+                  currently running, use the VMS Install Utility (INSTALL). It is
+                  recommended that you perform the install operation on a system
+                  that has just been bootstrapped because the available space in the
+                  global page table is less likely to be fragmented.
+
+
+
+
+
+
+               3-4  After Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  To install VAX FMS as a shared image, first, determine the number
+                  of available global pages and global sections on your system. See
+                  Section 1.5.5.2 for information on how to verify and modify the
+                  number of global pages and global sections. Table 1-2 contains the
+                  required values for these parameters.
+
+                  Once you have reset the system parameter values, invoke the VMS
+                  Install Utility from a privileged account and then install VAX FMS
+                  as a shared image:
+
+                    $ INSTALL
+                    INSTALL> ADD SYS$SHARE:FDVSHR.EXE /OPEN /SHARED
+                    INSTALL> ADD SYS$MESSAGE:FDVMSG.EXE /OPEN /SHARED
+                    INSTALL> EXIT
+
+                  You must now add the following lines to the appropriate system
+                  startup command file so that each time the system is started, VAX
+                  FMS is available as a shared image. (If your site has modularized
+                  its startup procedures, be sure you add the lines to the correct
+                  file. The default startup command file for VMS Version 5.0 is
+                  SYS$MANAGER:SYSTARTUP_V5.COM.)
+
+                    $ INSTALL
+                    INSTALL> ADD SYS$SHARE:FDVSHR.EXE /OPEN /SHARED
+                    INSTALL> ADD SYS$MESSAGEFDVMSG.EXE /OPEN /SHARED
+                    INSTALL> EXIT
+
+                  When you install VAX FMS as a shared image you need to increase
+                  the global pages and global sections parameters. Increase global
+                  pages (GBLPAGES) by 250 pages and global sections (GBLSECTIONS)
+                  by 4 sections. Refer to Section 1.5.5 for information on changing
+                  these parameters.
+
+               ____________________________________________________________
+               3.6  Determining and Reporting Problems
+
+                  If an error occurs while VAX FMS is being used and you believe
+                  that the error is caused by a problem with VAX FMS, take one of
+                  the following actions:
+
+                   o  If you have a BASIC or DECsupport Software Agreement, you
+                     should call your Customer Support Center. With these services,
+                     you receive telephone support that provides high-level advisory
+                     and remedial assistance.
+
+
+
+                                                       After Installing VAX FMS  3-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                   o  If you have a Self-Maintenance Software Agreement, you can
+                     submit a Software Performance Report (SPR).
+
+                   o  If you purchased VAX FMS within the past 90 days and you think
+                     the problem is caused by a software error, you can submit a
+                     Software Performance Report (SPR).
+
+                  If you find an error in the VAX FMS documentation, you should
+                  fill out and submit the Reader's Comments form at the back of the
+                  document in which the error occurred. Include the section and page
+                  number where the error occurred.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               3-6  After Installing VAX FMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                           Chapter 4
+
+
+                                           Verifying the Form Editor and Form Tester
+               _____________________________________________________________________
+
+
+
+                  Because of their interactive nature, the Form Editor and the Form
+                  Tester must be tested manually on a VT100- or VT200-compatible
+                  terminal. The following procedure verifies the installation of the
+                  Form Editor and the Form Tester.
+
+                   1. Log in using a VT100- or VT200-compatible terminal.
+
+                   2. Create a form to test the Form Editor.
+
+                     Issue the SET TERMINAL/INQUIRE command to request a response
+                     sequence from your terminal. To create a form, specify the name
+                     of a file that does not exist in the current directory. (In
+                     this example, the file is called testfile.frm.) The default
+                     file type is .FRM.
+
+                       $  SET TERMINAL/INQUIRE
+                       $  FMS/EDIT testfile.frm
+
+                   3. Select a Form Editor Menu option.
+
+                     After you have entered the Form Editor, select LAYOUT at the
+                     Phase Choice prompt. The screen is cleared and the Layout Phase
+                     status line appears at the bottom of your screen.
+
+                       Phase Choice: LAYOUT
+
+                   4. Type some text. For example:
+
+                       This is a test of FMS.
+
+
+
+
+
+
+                                      Verifying the Form Editor and Form Tester  4-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                     You have just entered text into your form. If you want to enter
+                     field mode, press the PF1 key and then the keypad 8 key. Type
+                     the letter x six times to indicate a field. For example:
+
+               <PF1>
+                        <KP8>
+                       XXXXXX
+
+                   5. Exit the Form Editor.
+
+                     Press the PF1 key and the keypad 7 key to exit from the Layout
+                     Phase of the Form Editor. The Form Editor Menu reappears; at
+                     the prompt, type EXIT and press RETURN.
+
+               <PF1>
+                        <KP7>
+                       Phase Choice: EXIT
+
+                   6. Save the form.
+
+                     After you have exited Layout Phase, the Editor prompts you to
+                     save the file. Press RETURN to save the form.
+
+                       $ Do you want to save this form?
+                        %FMS-I-FORMSAVED, Form testfile.frm saved in testfile.frm
+
+                   7. Test the form.
+
+                       $FMS/TEST testfile.frm
+
+                     FMS displays your form. Type any seven characters. Note that
+                     the seventh character does not echo on the screen. The terminal
+                     bell rings and an error message indicating that the field is
+                     full is displayed at the bottom of your terminal screen. Press
+                     RETURN. The system prompt appears.
+
+                       123456
+               <RETURN>
+
+                       $
+
+                   8. Delete the form file.
+
+                       $ DELETE testfile.frm;*
+
+                     The test is complete. If any errors occurred during the test,
+                     follow the instructions in Section 2.3.
+
+
+
+
+               4-2  Verifying the Form Editor and Form Tester
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                          Appendix A
+
+
+                                                                 Sample Installation
+               _____________________________________________________________________
+
+
+
+                  This appendix contains sample installations of VAX FMS. These
+                  samples were run on a system that had no previous version of VAX
+                  FMS installed.
+
+                  The sample installation assumes that DECnet has been shut down,
+                  that no users are logged on to your system, and that OPTIONS
+                  N is specified to print the release notes. The Installation
+                  Verification Procedure (IVP) runs at the end of the installation.
+
+               ____________________________________________________________
+               A.1  Full Development Kit
+
+                  This section contains a sample installation for the VAX FMS full
+                  development kit.
+
+                    $ SET DEF SYS$UPDATE
+                    $ @VMSINSTAL
+                     VAX/VMS Software Product Installation Procedure V5.0
+
+                    It is 29-NOV-1988 at 17:35.
+                    Enter a question mark (?) at any time for help.
+                    * Are you satisfied with the backup of your system disk [YES]? YES
+                    * Where will the distribution volumes be mounted: MUA0:
+
+
+
+
+
+
+
+
+
+
+                                                            Sample Installation  A-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                    Enter the products to be processed from the first distribution volume set.
+                    * Products: VAXFMS024
+                    * Options: N
+                    Please mount the first volume of the set on  MUA0:.
+                    * Are you ready? YES
+                    %MOUNT-I-MOUNTED, VAXFMS mounted on _MUA0:
+                    The following products will be processed:
+                      VAXFMS V2.4
+                     Beginning installation of VAXFMS V2.4 at 17:37
+
+                    %VMSINSTAL-I-RESTORE, Restoring product saveset A ...
+
+                        Release Notes Options:
+
+                     1.  Display release notes
+                     2.  Print release notes
+                     3.  Both 1 and 2
+                     4.  Copy release notes to SYS$HELP
+                     5.  Do not display, print or copy release notes
+
+                    * Select option [2]: 4
+                    * Do you want to continue the installation? YES
+                    %VMSINSTAL-I-RELMOVED , The product's release notes have been
+                    successfully moved to SYS$HELP.
+
+                                  Product:       VAX FMS
+                                  Producer:      DEC
+                                  Version:       2.4
+                                  Release Date:  14-NOV-1988
+
+                    * Does this product have an authorization key registered and loaded? YES
+                    * Do you want to run the IVP after the installation [YES]? YES
+                    * Do you want to purge files replaced by this installation [YES]? YES
+
+
+                      If you wish to save space on your system disk you may  choose  not to
+                      install the Sample Application Programs and the Modifiable Message
+                      File Procedures.  You may later install them by installing VAXFMS V2.4 again.
+
+                    * Do you wish to install Sample Application Programs and Modifiable Message
+                    File Procedures [YES]?
+                    %VMSINSTAL-I-RESTORE, Restoring product saveset B ...
+                    %VMSINSTAL-I-RESTORE, Restoring product saveset C ...
+                    %VMSINSTAL-I-RESTORE, Restoring product saveset D ...
+                    %VAXFMS-I-CONTINUE, All inquiries have been requested. If no errors occur,
+                    -VAXFMS-I-CONTINUE, the installation will be completed in about 20 minutes.
+                    %VMSINSTAL-I-SYSDIR, This product creates system directory [SYSHLP.EXAMPLES.FMS].
+
+
+               A-2  Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                        If you intend to execute this layered product on other nodes in your
+                        VAXcluster, and you have the appropriate software license, you must
+                        prepare the system-specific roots on the other nodes by issuing the
+                        following command on each node (using a suitably privileged account):
+
+                     $ CREATE /DIRECTORY SYS$SPECIFIC:[SYSHLP.EXAMPLES.FMS]
+
+                    System Manager:
+
+                         Upon completion of this installation, please be
+                         sure  to  edit  the  system  startup  files  as
+                         described in the VAX FMS Installation Guide.
+
+                    %VAXFMS-S-FMSBUILT, VAXFMS V2.4 has built successfully, continuing...
+                    %VAXFMS-I-STARTSAMP, Starting the Sample Application Programs installation...
+                    %VAXFMS-S-SAMPBUILT, Sample Application Programs have built successfully, continuing...
+                    %VAXFMS-I-CONTINUE, Starting Modifiable Message File Procedures installation ...
+                    %VMSINSTAL-I-SYSDIR, This product creates system directory [SYSHLP.EXAMPLES.FMS.MESSAGE].
+
+                        If you intend to execute this layered product on other nodes in your
+                        VAXcluster, and you have the appropriate software license, you must
+                        prepare the system-specific roots on the other nodes by issuing the
+                        following command on each node (using a suitably privileged account):
+
+                     $ CREATE /DIRECTORY SYS$SPECIFIC:[SYSHLP.EXAMPLES.FMS.MESSAGE]/PROT=(S:RWED,O,G,W)
+                    %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                    Beginning the VAXFMS V2.4 Installation Verification Procedure...
+
+                    VAXFMS V2.4 Installation Verification Procedure was successful
+                    Refer to the VAX FMS Installation Guide for further verification procedures...
+
+                     Installation of VAXFMS V2.4 completed at 17:54
+
+                    Enter the products to be processed from the next distribution volume set.
+                    * Products: EXIT
+                     VMSINSTAL procedure done at 17:55
+                    $
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            Sample Installation  A-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               A.2  Run-Time Kit
+
+                  This section contains a sample installation for the VAX FMS run-
+                  time only kit.
+
+                    $ SET DEF SYS$UPDATE
+                    $ @VMSINSTAL
+                     VAX/VMS Software Product Installation Procedure V5.0-2
+
+                    It is 29-NOV-1988 at 17:23.
+                    Enter a question mark (?) at any time for help.
+                    * Are you satisfied with the backup of your system disk [YES]? YES
+                    * Where will the distribution volumes be mounted: MUA0:
+
+                    Enter the products to be processed from the first distribution volume set.
+                    * Products: FMSFDV024
+                    * Options:
+                    Please mount the first volume of the set on  MUA0:.
+                    * Are you ready? YES
+                    %MOUNT-I-MOUNTED, FMSFDV mounted on _MUA0:
+                    The following products will be processed:
+                      FMSFDV V2.4
+                     Beginning installation of FMSFDV V2.4 at 17:25
+
+                    %VMSINSTAL-I-RESTORE, Restoring product saveset A ...
+
+                                  Product:       VAX FMS
+                                  Producer:      DEC
+                                  Version:       2.4
+                                  Release Date:  14-NOV-1988
+
+                    * Does this product have an authorization key registered and loaded? YES
+                    * Do you want to run the IVP after the installation [YES]?
+                    * Do you want to purge files replaced by this installation [YES]?
+
+                    System Manager:
+
+                         Upon completion of this installation, please be
+                         sure  to  edit  the  system  startup  files  as
+                         described in the  VAX  FMS  INSTALLATION GUIDE.
+
+                    %FMSFDV-S-FDVBUILT, FMSFDV V2.4 has built successfully, continuing...
+
+                    Beginning the FMSFDV V2.4 Installation Verification Procedure...
+
+                    FMSFDV V2.4 Installation Verification Procedure was successful...
+
+                     Installation of FMSFDV V2.4 completed at 17:28
+
+
+               A-4  Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                     VMSINSTAL procedure done at 17:29
+                    $
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            Sample Installation  A-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                          Appendix B
+
+
+                                              Using the Sample Applications Programs
+               _____________________________________________________________________
+
+
+
+                  The VAX FMS Version 2.4 installation and start-up procedure
+                  SYS$STARTUP:FMSTARTUP.COM defines a system logical name for the
+                  FMS$EXAMPLES: directory. This directory contains files relating to
+                  the VAX FMS Version 2.4 Sample Application Programs.
+
+                  If you are planning to run the Sample Application Programs on a
+                  bisynchronous terminal, refer to Section B.2.
+
+                  VAX FMS Version 2.4 provides the Sample Application Programs
+                  listed in Table B-1.
+
+                  Table B-1: FMS Sample Application Programs
+                  __________________________________________________________________
+                  Language____Program_Name_____Executable_Image_____________________
+                  BASIC       SAMP.BAS         SAMP.EXE
+
+                  BLISS       SAMPBLI.BLI      SAMPBLI.EXE
+
+                  C           SAMPCC.C         SAMPCC.EXE
+
+                  COBOL       SAMPCOB.COB      SAMPCOB.EXE
+
+                  FORTRAN     SAMPFOR.FOR      SAMPFOR.EXE
+
+                  PASCAL      SAMPPAS.PAS      SAMPPAS.EXE
+
+                  PL/I        SAMPPLI.PLI      SAMPPLI.EXE
+                  __________________________________________________________________
+
+                  To run the BASIC Sample Application Program, type the following
+                  command:
+
+                                         Using the Sample Applications Programs  B-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                    $ RUN FMS$EXAMPLES:SAMP
+
+                  If, while you are running the Sample Application Program, you
+                  choose to write checks, a data file called SAMPCH.DAT is created
+                  in your default directory when you press the PF4 key to write the
+                  check.
+
+               ____________________________________________________________
+               B.1  Files Associated with the Sample Application Programs
+
+                  Files that help you generate the Sample Application Program are
+                  included in the FMS$EXAMPLES: directory. These files are as fol-
+                  lows:
+
+                   o  Files associated with SAMP forms
+                     The Sample Application Program forms are stored in a form
+                     library, SAMP.FLB.
+                     Two additional forms are provided to successfully run the
+                     Sample Application on either a bisynchronous terminal or a
+                     MicroVAX Workstation. The forms are contained in the files
+                     BISYNC_REGIST.FRM and LONG_REGIST.FRM, and are designed to re-
+                     place the REGISTER form in the Sample Application form library,
+                     SAMP.FLB. The BISYNC_REGIST.FRM file enables you to run the
+                     Sample Application successfully on a bisynchronous terminal.
+                     The LONG_REGIST.FRM enables you to produce and display 55-line
+                     forms on MicroVAX Workstations.
+
+                   o  Files produced by the FMS Application Aids
+                     The memory-resident form file, SMPMEMRES.OBJ, and the UAR
+                     vector file, SMPVECTOR.OBJ, are included in a link command
+                     to produce an executable SAMP image.
+
+                   o  SAMP data base file
+                     The SAMP.DAT file provides the account data for the Sample
+                     Application Programs.
+
+                   o  Source files that contain FMS definitions (see Table B-2)
+                     The FMS definition files provide definitions for Form Driver
+                     symbols used in the Sample Application Programs. Many of these
+                     files are used directly by the appropriate language construct
+                     (INCLUDE, COPY, REQUIRE, ENVIRONMENT, and so forth) to define
+                     the symbols in the programs. You may want to use these files as
+                     examples that you can tailor to fit your own applications.
+
+
+
+               B-2  Using the Sample Applications Programs
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  Table B-2: FMS Definition Files
+                  __________________________________________________________________
+                  Language_________Definition_File__________________________________
+                  BASIC            FDVDEF.BAS
+
+                  BLISS            FDVDEF.REQ
+
+                  C                FDVDEF.H
+
+                  COBOL            FDVDEF.LIB
+
+                  FORTRAN          FDVDEF.FOR
+
+                  PASCAL           FDVDEF.PAS
+
+                  PL/I             FDVDEFCAL.PLI (definition using calls)
+
+                  PL/I             FDVDEFFNC.PLI (definition using functions)
+                  __________________________________________________________________
+
+                   o  Additional source files for languages (see Table B-3)
+                     Some of the Sample Application Programs have source files con-
+                     taining convenient definitions that relate only to a particular
+                     language.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                         Using the Sample Applications Programs  B-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+                  Table B-3: FMS Source Files
+                  __________________________________________________________________
+                  Language_________Files____________________________________________
+                  COBOL            SAMPCOB.LIB
+
+                                   SMPCOBUAR.LIB
+
+
+
+                  FORTRAN          SMPACCOM.FOR
+
+                                   SMPREGCOM.FOR
+
+                                   SMPSTATUS.FOR
+
+                                   SMPWORK.FOR
+                  __________________________________________________________________
+
+                   o  Command files that compile and link the Sample Application
+                     Programs for a given language (see Table B-4)
+
+                  Table B-4: FMS Command Files
+                  __________________________________________________________________
+                  Language_________Command_File_____________________________________
+                  BASIC            SAMPBAS.COM
+
+                  BLISS            SAMPBLI.COM
+
+                  C                SAMPCC.COM
+
+                  COBOL            SAMPCOB.COM
+
+                  FORTRAN          SAMPFOR.COM
+
+                  PASCAL           SAMPPAS.COM
+
+                  PL/I             SAMPPLI.COM
+                  __________________________________________________________________
+
+
+
+
+
+
+
+               B-4  Using the Sample Applications Programs
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               B.2  Running the Sample Application on Bisynchronous Terminals
+
+                  If you do not plan to run the Sample Application Programs on
+                  bisynchronous terminals, you can skip this section.
+
+                  The Sample Application Programs can be run on bisynchronous ter-
+                  minals with no modifications to the programs. Because of the
+                  bisynchronous terminal's width restrictions, a form modifica-
+                  tion is required. The form that is used on asynchronous terminals
+                  (VT52, VT100, VT2xx, and so forth) to display the check register,
+                  REGISTER, will not fit on a bisynchronous terminal screen.
+
+                  The FMS Version 2.4 kit provides a replacement form for REGISTER
+                  that will fit on the bisynchronous terminal screen. This form will
+                  work on aysnchronous terminals as well. The form is contained in
+                  the form file named BISYNC_REGIST.FRM located in FMS$EXAMPLES:.
+
+                  Before running the Sample Application Programs on bisynchronous
+                  terminals, follow these steps to replace the REGISTER form in the
+                  Sample Application form library, SAMP.FLB:
+
+                   1. Log into the system manager's account.
+
+                   2. Type the following FMS DCL command to save the current REGISTER
+                     form in a form file named FMS$EXAMPLES:REGISTER.FRM.
+
+                       $ FMS/LIBRARY/EXTRACT-
+                       _$ FMS$EXAMPLES:SAMP/FORM=REGISTER/OUTPUT=FMS$EXAMPLES:REGISTER.FRM
+
+
+                   3. Type the following FMS DCL command to insert the new REGISTER
+                     form.
+
+                       $ FMS/LIBRARY/REPLACE FMS$EXAMPLES:SAMP FMS$EXAMPLES:BISYNC_REGIST
+
+                  After successfully executing this command, the Sample Application
+                  Programs may be run as documented here on either asynchronous or
+                  bisynchronous terminals.
+
+                  The REGISTER form now has a different appearance and different
+                  field attributes than those of the original REGISTER form doc-
+                  umented in Introduction to VAX-11 FMS. These differences are
+                  required so that the form will fit on the bisynchronous termi-
+                  nal screen. These differences will have no effect on the form's
+                  function or interaction with the program.
+
+
+
+                                         Using the Sample Applications Programs  B-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+               ____________________________________________________________
+               B.3  Running the Sample Application on MicroVAX Workstations
+
+                  If you do not plan to run the Sample Application Programs on
+                  MicroVAX Workstations, you can skip this section.
+
+                  The Sample Application Programs can be run on MicroVAX Workstations
+                  with no modifications to the programs. However, to take advan-
+                  tage of the increased size of the VT100 and VT200 windows on the
+                  Workstation, a modification has been made to one of the forms
+                  in the Sample Application. The REGISTER form, which contains a
+                  scrolled region to display the check register, has been modified
+                  to take advantage of a 55-line window. The FMS Version 2.4 kit
+                  provides this form in the file named LONG_REGIST.FRM, located in
+                  FMS$EXAMPLES:.
+
+                  To take advantage of the 55-line Workstation window, follow these
+                  steps to replace the REGISTER form in the Sample Application form
+                  library, SAMP.FLB:
+
+                   1. Log in to the system manager's account.
+
+                   2. Type the following FMS DCL command to save the current REGISTER
+                     form in a form file named FMS$EXAMPLES:REGISTER.FRM.
+
+                       $ FMS/LIBRARY/EXTRACT-
+                       _$ FMS$EXAMPLES:SAMP/FORM=REGISTER/OUTPUT=FMS$EXAMPLES:REGISTER.FRM
+
+                   3. Type the following FMS DCL command to insert the new REGISTER
+                     form.
+
+                       $ FMS/LIBRARY/REPLACE FMS$EXAMPLES:SAMP FMS$EXAMPLES:LONG_REGIST
+
+                   4. Type the following DCL command to set the Workstation window
+                     size to 55 lines.
+
+                       $ SET TERMINAL/PAGE=55
+
+                  After successfully executing this command, the Sample Application
+                  Programs may be run as documented on a MicroVAX Workstation.
+
+                  The Sample Application will not run on standard terminals (VT52,
+                  VT100, VT2xx, and so forth) with the form LONG_REGIST in the form
+                  library, SAMP.FLB.
+
+
+
+
+
+
+               B-6  Using the Sample Applications Programs
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                          Appendix C
+
+
+                                                      Files Installed on Your System
+               _____________________________________________________________________
+
+
+
+                  The following is a list of files added, replaced, or modified on
+                  your system by VAX FMS Version 2.4 installation:
+
+                  __________________________________________________________________
+                  File_Name__________Function_______________________________________
+                  [SYSHLP]_(SYS$HELP)_______________________________________________
+                  __________________________________________________________________
+                  HELPLIB.HLB        Module FMS added/replaced in help library
+
+                  VAXFMS024.RELEASE_ Online release notes for FMS Version 2.4
+                  NOTES
+
+                  __________________________________________________________________
+                  [SYSEXE]_(SYS$SYSTEM)_____________________________________________
+                  __________________________________________________________________
+                  FMSFAA.EXE         FMS Form Application Aids Utility
+
+                  FMSFCV.EXE         FMS Form Converter Utility
+
+                  FMSFED.EXE         FMS Form Editor Utility
+
+                  FMSFLG.EXE         FMS Form Language Translator Utility
+
+                  FMSFLI.EXE         FMS Form Librarian Utility
+
+                  FMSFTE.EXE         FMS Form Tester Utility
+
+                  FMSFUU.EXE         FMS Form Upgrade Utility
+
+
+
+
+
+                                                 Files Installed on Your System  C-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+                  __________________________________________________________________
+                  File_Name__________Function_______________________________________
+                  [SYSLIB]_(SYS$SHARE)______________________________________________
+                  __________________________________________________________________
+                  FDVSHR.EXE         Form Driver shareable image
+
+                  __________________________________________________________________
+                  [SYSLIB]_(SYS$LIBRARY)____________________________________________
+                  __________________________________________________________________
+                  DCLTABLES.EXE      DCL command FMS added/replaced in DCL tables
+
+                  HLL11.OBJ          PDP-11 compatibility high level language inter-
+                                     face
+
+                  IMAGELIB.OLB       Module FDVSHR added/replaced in library
+
+                  STARLET.OLB        Module FDV$PLITRM added/replaced in library
+
+                  __________________________________________________________________
+                  [SYSMGR]_(SYS$MANAGER)____________________________________________
+                  __________________________________________________________________
+                  FMSTARTUP.COM      FMS startup procedure
+
+                  __________________________________________________________________
+                  [SYSMGR]_(SYS$MESSAGE)____________________________________________
+                  __________________________________________________________________
+                  FDVMSG.EXE         Form Driver message file
+
+                  FMSMSG.EXE         FMS utilities message file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               C-2  Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+                  __________________________________________________________________
+                  __________________________________________________________________
+                  [SYSHLP.EXAMPLES.FMS]_(FMS$EXAMPLES)______________________________
+                  __________________________________________________________________
+                  FDVDEF.BAS         Form Driver symbol definition file for BASIC
+
+                  FDVDEF.FOR         Form Driver symbol definition file for FORTRAN
+
+                  FDVDEF.H           Form Driver symbol definition file for C
+
+                  FDVDEF.LIB         Form Driver symbol definition file for COBOL
+
+                  FDVDEF.PAS         Form Driver symbol definition file for PASCAL
+
+                  FDVDEF.REQ         Form Driver symbol definition file for BLISS
+
+                  FDVDEFCAL.PLI      Form Driver symbol definition file for PL/I
+
+                  FDVDEFFNC.PLI      Form Driver symbol definition file for PL/I
+
+                  MESSAGE.DIR________Directory_for_Modifiable_Message_Procedures____
+
+                  In addition, if the system manager requested the Sample Application
+                  Programs to be installed, the following files will also exist:
+
+                  __________________________________________________________________
+                  File_Name__________Function_______________________________________
+                  [SYSHLP.EXAMPLES.FMS]_(FMS$EXAMPLES)______________________________
+                  __________________________________________________________________
+                  BISYNC_REGIST.FRM  Sample Application REGISTER form to be used
+                                     with bisync terminals
+
+                  LONG_REGIST.FRM    Sample Application REGISTER form to be used
+                                     with MicroVAX Workstations
+
+                  SAMP.BAS           BASIC Sample Application source
+
+                  SAMP.DAT           Sample Application data file
+
+                  SAMP.EXE           BASIC Sample Application executable image
+
+                  SAMP.FLB           Sample Application form library
+
+
+
+
+                                                 Files Installed on Your System  C-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+                  __________________________________________________________________
+                  File_Name__________Function_______________________________________
+                  [SYSHLP.EXAMPLES.FMS]_(FMS$EXAMPLES)______________________________
+                  __________________________________________________________________
+                  SAMPBAS.COM        BASIC Sample Application build procedure
+
+                  SAMPBLI.BLI        BLISS Sample Application source
+
+                  SAMPBLI.COM        BLISS Sample Application build procedure
+
+                  SAMPBLI.EXE        BLISS Sample Application executable image[1]
+
+                  SAMPCC.C           C Sample Application source
+
+                  SAMPCC.COM         C Sample Application build procedure
+
+                  SAMPCC.EXE         C Sample Application executable image[1]
+
+                  SAMPCOB.COB        COBOL Sample Application source
+
+                  SAMPCOB.COM        COBOL Sample Application build procedure
+
+                  SAMPCOB.EXE        COBOL Sample Application executable image[1]
+
+                  SAMPCOB.LIB        COBOL Sample Application library
+
+                  SAMPFOR.COM        FORTRAN Sample Application build procedure
+
+                  SAMPFOR.FOR        FORTRAN Sample Application source
+
+                  SAMPFOR.EXE        FORTRAN Sample Application executable image[1]
+
+                  SAMPPAS.COM        PASCAL Sample Application build procedure
+
+                  SAMPPAS.EXE        PASCAL Sample Application executable image[1]
+
+                  SAMPPAS.PAS        PASCAL Sample Application source
+
+                  SAMPPLI.COM        PL/I Sample Application build procedure
+
+                  SAMPPLI.EXE        PL/I Sample Application executable image[1]
+
+                  __________________________________________________________________
+                  [1]Present only if the language is available on the sytem.
+
+
+               C-4  Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+                  __________________________________________________________________
+                  File_Name__________Function_______________________________________
+                  [SYSHLP.EXAMPLES.FMS]_(FMS$EXAMPLES)______________________________
+                  __________________________________________________________________
+                  SAMPPLI.PLI        PL/I Sample Application source
+
+                  SMPACCOM.FOR       FORTRAN Sample Application include file
+
+                  SMPCOBUAR.LIB      COBOL Sample Application library
+
+                  SMPMEMRES.OBJ      Memory resident form module for the Sample
+                                     Applications
+
+                  SMPREGCOM.FOR      FORTRAN Sample Application include file
+
+                  SMPSTATUS.FOR      FORTRAN Sample Application include file
+
+                  SMPVECTOR.OBJ      UAR vector module for the Sample Applications
+
+                  SMPWORK.FOR        FORTRAN Sample Application include file
+
+                  __________________________________________________________________
+                  [SYSHLP.EXAMPLES.FMS.MESSAGE]_____________________________________
+                  __________________________________________________________________
+                  COMMSG.MSG         Message file common to all FMS utilities
+
+                  FAAMSG.MSG         Form Application Aids message file
+
+                  FCVMSG.MSG         Form Converter message file
+
+                  FDVMSG.MSG         Form Driver message file
+
+                  FEDMSG.MSG         Form Editor message file
+
+                  FIOMSG.MSG         File I/O message file
+
+                  FLGMSG.MSG         Form Language Translator message file
+
+                  FLIMSG.MSG         Form Librarian message file
+
+                  FMSLIT.MSG         FMS message file literals
+
+                  FMS_MESSAGE.MEM    Guide to modifying FMS message files
+
+
+
+                                                 Files Installed on Your System  C-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+                  __________________________________________________________________
+                  File_Name__________Function_______________________________________
+                  [SYSHLP.EXAMPLES.FMS.MESSAGE]_____________________________________
+                  __________________________________________________________________
+                  FTEMSG.MSG         Form Tester message file
+
+                  FUUMSG.MSG         Form Upgrade Utility message file
+
+                  MSGBLD.COM_________Message_file_build_procedure___________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               C-6  Files Installed on Your System

@@ -1,0 +1,2657 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     ______________________________________________
+                     MUXserver
+                     Software Installation Guide
+                     OpenVMS
+
+                     Order Number: AA-PESDB-TE
+
+ 
+
+
+
+
+
+
+              __________________________________________________________
+              Second Edition, August 1993
+
+              © Digital Equipment Corporation 1993. All Rights Reserved.
+
+              This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                             Contents
+
+
+     Preface..................................................    vii
+
+
+     1  Introduction
+
+           1.1   The MUXserver Network........................    1-1
+           1.2   Software Installation Activities.............    1-2
+           1.2.1     Overview.................................    1-2
+           1.2.2     Coordination with Hardware
+                     Installation.............................    1-4
+           1.2.3     Installing Distribution Software.........    1-4
+           1.2.4     Configuring the Load Host Node
+                     Database.................................    1-4
+           1.2.5     Verifying the Installation...............    1-5
+           1.2.5.1     Verifying the Load Host Installation...    1-5
+           1.2.5.2     Verifying the MUXserver Installation...    1-5
+
+     2  Installing Distribution Software
+
+           2.1   Preparing to Run the Installation
+                 Procedure....................................    2-1
+           2.2   Software Prerequisites.......................    2-2
+           2.3   VMSINSTAL Conventions........................    2-2
+           2.4   Running VMSINSTAL............................    2-4
+           2.5   Installing onto Alternate OpenVMS Load
+                 Hosts........................................   2-10
+           2.5.1     Installing onto Single Systems...........   2-10
+           2.5.2     Installing onto VMSclusters..............   2-11
+           2.5.3     Installing onto Other Operating
+                     Systems..................................   2-11
+           2.6   Installation Verification Procedure..........   2-12
+
+
+
+                                                                  iii
+
+ 
+
+
+
+
+
+
+        3  Configuring the Load Host Node Database
+
+              3.1   DSV$CONFIGURE................................    3-1
+              3.1.1     Backward Compatibility of
+                        DSV$CONFIGURE............................    3-2
+              3.1.2     Executing DSV$CONFIGURE..................    3-2
+              3.1.3     The ADD command..........................    3-2
+              3.1.4     The MODIFY and SET Commands..............    3-5
+              3.1.5     The DELETE command.......................    3-5
+              3.1.6     The LIST and SHOW Commands...............    3-6
+              3.1.7     The CONNECT and USE Commands.............    3-6
+              3.1.8     Context-Sensitive Help for
+                        DSV$CONFIGURE............................    3-8
+
+        4  Verifying the Installation
+
+              4.1   Verifying the Load Host Installation.........    4-2
+              4.1.1     The LOAD NODE and LOAD SERVER Commands...    4-2
+              4.1.2     Loading a New MUXserver..................    4-2
+              4.1.3     Loading an Existing MUXserver............    4-3
+              4.1.4     Preparing for the LOAD Command...........    4-3
+              4.1.5     Warning Users before Loading.............    4-4
+              4.1.6     Issuing the LOAD Command.................    4-4
+              4.1.7     Checking DECnet Event Logging............    4-5
+              4.1.8     Loading After Hours......................    4-6
+              4.2   Verifying the MUXserver System
+                    Installation.................................    4-7
+
+        A  MUXserver Distribution Files
+
+
+        Glossary
+
+        Index
+
+
+
+
+
+
+
+
+
+
+
+        iv
+
+ 
+
+
+
+
+
+
+        Examples
+
+              3-1       Starting DSV$CONFIGURE and Displaying
+                        Help.....................................    3-3
+
+              3-2       Example of the DSV$CONFIGURE ADD
+                        Command..................................    3-4
+
+              3-3       The DELETE Command for DSV$CONFIGURE.....    3-5
+
+              3-4       The LIST Command for DSV$CONFIGURE.......    3-6
+
+              3-5       The CONNECT Command for DSV$CONFIGURE on
+                        a DECnet/OSI System......................    3-7
+
+              3-6       The CONNECT Command for DSV$CONFIGURE on
+                        a DECnet Phase IV System.................    3-8
+
+        Figures
+
+              1-1       Flowchart of Software Installation
+                        Activities...............................    1-3
+
+        Tables
+
+              A-1       MUXserver Distribution Kit Files.........    A-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+        Purpose of the Guide
+
+              This document describes:
+
+              o  Installing MUXserver LAT/TELNET Remote Terminal Server
+                 distribution software onto a OpenVMS system running
+                 DECnet Phase IV or DECnet/OSI Phase V so that this
+                 system can then perform as a load host.
+
+              o  Configuring the load host's DECnet databases.
+
+              o  Verifying the installation by:
+
+                 *  Downloading the server image to the MUXserver
+                    LAT/Telnet Remote Terminal Server, and then
+
+                 *  Testing a number of representative server commands.
+
+              This guide is applicable to Version 2.0 of the MUXserver
+              product and all subsequent maintenance releases up to
+              the next major product release. It is intended for system
+              or network managers who are responsible for installing
+              MUXserver software on OpenVMS systems.
+
+              Readers should be familiar with both DECnet network
+              management concepts and the OpenVMS Operating System.
+
+              The Guide is organized as follows:
+
+              Chapter   Briefly introduces the MUXserver Remote
+              1         Terminal Network and summarizes the MUXserver
+                        installation, configuration, and verification
+                        procedures.
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+              Chapter   Describes the preparation for installation
+              2         and the actual installation of MUXserver
+                        distribution software.
+
+              Chapter   Describes the configuration of the load host's
+              3         DECnet databases to support the MUXserver
+                        product.
+
+              Chapter   Describes the verification of the MUXserver
+              4         software installation by:
+
+                        o  Downline loading the server image, and
+
+                        o  Testing a number of representative commands
+                           via the MUXserver product's supervisor port.
+
+              Appendix  Lists the files provided in the MUXserver
+              A         Distribution Kit.
+
+              Glossary  Defines abbreviations and special terms used in
+                        this guide.
+
+              Index     Provides a page reference to important topics
+                        used in this guide.
+
+        Other MUXserver Publications
+
+              The following is a list of related MUXserver publications:
+
+              o  MUXserver Network Reference Manual AA-PESEB-TE
+                 Describes procedures for setting-up, managing,
+                 monitoring, and troubleshooting the MUXserver Network.
+
+              o  MUXserver 90 Hardware Installation Manual EK-DSRZF-IM
+                 Describes installation and maintenance of the MUXserver
+                 90 hardware.
+
+              o  MUXserver 320 Hardware Installation Manual EK-DSRZE-IM
+                 Describes installation and maintenance of the MUXserver
+                 320 hardware.
+
+              o  MUXserver 380 Hardware Installation Manual EK-DSRZD-IM
+                 Describes installation and maintenance of the MUXserver
+                 380 hardware.
+
+              o  MUXserver Network Identification Card EK-DSRZD-IC
+                 A means of recording MUXserver identification
+                 information.
+
+        viii
+
+ 
+
+
+
+
+
+
+              o  MUXserver Software Product Description AE-PESGB-TE
+                 Describes the MUXserver's software and its operation.
+
+              o  MUXserver System Support Addendum AE-PESHB-TE
+                 An addendum to the MUXserver Software Product
+                 Description which describes the various systems
+                 supported by the MUXserver 90, 320 and 380.
+
+        Other Relevant Publications
+
+              Reference to the following Digital publications may be
+              required during installation of the MUXserver software:
+
+              o  DECnet for OpenVMS Guide to Networking
+                 Provides an overview of DECnet networking capabilities
+                 helpful to new users of DECnet for OpenVMS and
+                 experienced users not accustomed to a networking
+                 environment.
+
+              o  DECnet for OpenVMS Networking Manual
+                 Provides concept and use information for system and
+                 network managers and for DECnet for OpenVMS users and
+                 programmers.
+
+              o  DECnet for OpenVMS Network Management Utilities
+                 Describes how to use the Network Control Program (NCP)
+                 utility. Also includes information for testing the
+                 network using DECnet Test Sender/Receiver commands.
+
+        Conventions
+
+              The following conventions apply throughout this guide:
+
+        Numbers
+
+              o  All numbers are in decimal unless otherwise noted.
+
+              o  All Ethernet addresses are in hexadecimal.
+
+
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+        Graphics
+
+              Normal   Normal type indicates an example of system
+                       output.
+
+              Bold     Bold type indicates an example of user input.
+
+              Italics  Indicates a variable.
+
+              < key >  Indicates a specific key to be pressed.
+
+              < CTRL/x Indicates that the < CTRL > key should be held
+                       down while the key, specified by x, is also
+                       pressed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        x
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                                            Introduction
+
+
+
+        1.1 The MUXserver Network
+
+              The MUXserver Remote Terminal Server Network connects
+              remote terminals (or other asynchronous port devices) to
+              an Ethernet Local Area Network (LAN).
+
+              Each network includes one MUXserver, usually connected
+              remotely to one or more DECmux 300 multiplexers and
+              via them, to asynchronous devices such as terminals or
+              printers. The MUXserver 90, MUXserver 320 and MUXserver
+              380 are separate products which support different numbers
+              of remote asynchronous devices via synchronous links as
+              follows:
+
+                 MUXserver 90
+
+                 o  One synchronous link may be connected, via modem, to
+                    the MUXserver 90.
+
+                 o  Up to three remote asynchronous device multiplexers
+                    (DECmux 300s) may be connected in a daisy-chain
+                    fashion, via modems, to the sole synchronous link.
+
+                 o  Depending on its particular model and configu-
+                    ration, each DECmux 300 may have 8, 16, 24 or 32
+                    asynchronous ports. The total MUXserver 90 Network
+                    is limited to 96 active devices at any one time.
+
+                 MUXserver 320
+
+                 o  Up to two synchronous links may be connected, via
+                    modems, to the MUXserver 320.
+
+                 o  Up to three remote asynchronous device multiplexers
+                    (DECmux 300s) may be connected, via modems, in a
+                    daisy-chain fashion to each synchronous link. A
+                    MUXserver 320 Network is limited to six DECmux
+
+                                                        Introduction 1-1
+
+ 
+
+
+
+        Introduction
+        1.1 The MUXserver Network
+
+                    300, and depending on its particular model and
+                    configuration, each DECmux 300 may have 8, 16, 24 or
+                    32 asynchronous ports. However, the total MUXserver
+                    320 Network is limited to 32 active devices at any
+                    one time.
+                 MUXserver 380
+
+                 o  Up to eight synchronous links may be connected, via
+                    modems, to the MUXserver 380.
+
+                 o  Up to three remote asynchronous device multiplexers
+                    (DECmux 300s) may be connected, via modems, in
+                    a daisy-chain fashion to each synchronous link.
+                    However, the total MUXserver 380 network is limited
+                    to sixteen DECmux 300s, and the total MUXserver 380
+                    Network is limited to 128 active terminals at any
+                    one time.
+
+              The network connects each remote terminal to the LAN with
+              access to LAT services and INTERNET hosts.
+
+        1.2 Software Installation Activities
+
+        1.2.1 Overview
+
+              The MUXserver software includes the files in the MUXserver
+              Distribution Kit.
+
+              Software installation involves:
+
+              o  Installing the MUXserver distribution software,
+
+              o  Configuring the load host node database,
+
+              o  Verifying the load host installation by downline
+                 loading the server image, and
+
+              o  Verifying the server system installation by testing a
+                 selection of representative server commands.
+
+              Figure 1-1 is a flow chart of the software installation
+              process. The steps in the flow chart serve as an overview
+              of installing the distribution software and configuring
+              the load host node database.
+
+        1-2 Introduction
+
+ 
+
+
+
+                                                            Introduction
+                                    1.2 Software Installation Activities
+
+              Figure 1-1 Flowchart of Software Installation Activities
+
+
+
+
+
+
+
+
+              Software installation establishes an OpenVMS system as a
+              load host for one or more MUXserver networks. A load host
+              is a system that contains the server image and whose node
+              database has entries for specific servers. This allows it
+              to downline load the server image to servers on the local
+              Ethernet. In addition, a load host performs maintenance
+              activities such as receiving upline dumps from the server.
+
+              A load host can be a single OpenVMS system or can be
+              a member node of a cluster. To act as a load host,
+              an OpenVMS system must be running DECnet Phase IV or
+              DECnet/OSI Phase V and must be located on the same
+              Ethernet as the MUXserver(s).
+
+              Digital Equipment Corporation suggests that:
+
+              o  At least two load hosts be assigned for each MUXserver
+                 (or other server), and
+
+              o  At least one load host be assigned for every ten
+                 servers, although more servers can be supported in
+                 many cases, depending on the load host's capabilities.
+
+              Providing alternate load hosts reduces the MUXserver
+              Network's dependence on one particular load host. If
+              the primary load host is unavailable, another system can
+              downline load the server and receive upline dumps from
+              it. The MUXserver should have these load-host functions
+              available at all times. In addition, assigning more than
+              one load host for every ten servers reduces the demand on
+              any single load host's resources.
+
+              Any Digital system that has a MUXserver Distribution Kit
+              available can be used as an alternate load host. MUXserver
+              Software Distribution Kits are available for the following
+              systems:
+
+              o  OpenVMS (installation is described in this guide),
+
+                                                        Introduction 1-3
+
+ 
+
+
+
+        Introduction
+        1.2 Software Installation Activities
+
+              o  ULTRIX (refer to the MUXserver Software Installation
+                 Guide (ULTRIX)), and
+
+              o  OSF/1 (refer to the MUXserver Software Installation
+                 Guide (OSF/1)).
+
+        1.2.2 Coordination with Hardware Installation
+
+              MUXserver software installation should be coordinated
+              with the installation of the local and remote hardware.
+              Chapter 4 describes the coordination required between
+              hardware and software installation.
+
+        1.2.3 Installing Distribution Software
+
+              MUXserver distribution software is installed onto an
+              OpenVMS system using an automated procedure called
+              VMSINSTAL. The MUXserver Software Distribution Kit
+              includes a procedure file which is used by VMSINSTAL to
+              perform the installation. When run, VMSINSTAL:
+
+              o  Creates an appropriate directory on the load host for
+                 the software files,
+
+              o  Copies the files from the distribution media to the
+                 load host, and
+
+              o  Optionally prints the MUXserver release notes.
+
+              Installation of distribution software is described in
+              Chapter 2.
+
+        1.2.4 Configuring the Load Host Node Database
+
+              When distribution software has been installed onto an
+              OpenVMS system (node), its MOP client database needs to be
+              configured to support the new MUXserver network.
+
+              The node database is configured with an automated
+              procedure included in the MUXserver Software Distribution
+              Kit, DSV$CONFIGURE.COM.
+
+              Previous versions of the MUXserver software included
+              a command procedure called DSVCONFIG.COM, which stored
+              information about MUXservers and DECservers in an external
+              file, DSVCONFIG.DAT. During the installation of the
+              software, you will be asked if you wish to convert your
+              DSVCONFIG.DAT database for use with the new utility.
+
+        1-4 Introduction
+
+ 
+
+
+
+                                                            Introduction
+                                    1.2 Software Installation Activities
+
+        1.2.5 Verifying the Installation
+
+        1.2.5.1 Verifying the Load Host Installation
+
+              Verifying a load host installation involves downline
+              loading the server image to a server. This ensures that
+              the host:
+
+              o  Has the appropriate files in the correct directory,
+
+              o  Has a correct entry in its node database for the test
+                 server, and
+
+              o  Can successfully downline load the server image.
+
+        1.2.5.2 Verifying the MUXserver Installation
+
+              Verifying a complete MUXserver installation involves
+              the testing of a number of MUXserver commands at an
+              interactive terminal connected to a MUXserver port. This
+              ensures that:
+
+              o  The correct version of the software is in the
+                 MUXserver,
+
+              o  The MUXserver hardware operates with the new software,
+                 and
+
+              o  The new software is running correctly.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        Introduction 1-5
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                        Installing Distribution Software
+
+
+
+              This chapter describes the installation of the MUXserver
+              distribution software onto an OpenVMS load host using the
+              OpenVMS operating system's VMSINSTAL command.
+
+              VMSINSTAL is an automated procedure that:
+
+              o  Creates a directory called SYS$COMMON:[DECSERVER] on
+                 the load host,
+
+              o  Copies the files from the distribution media into this
+                 directory, and
+
+              o  Optionally prints a copy of the release notes.
+
+              Installation will take about five minutes.
+
+        2.1 Preparing to Run the Installation Procedure
+
+              Before running the installation procedure:
+
+              o  Determine which systems are to be load hosts for the
+                 server. The distribution software must be installed
+                 onto all load hosts.
+
+              o  Check that each load host has free disk space for
+                 downline loading the server image as specified in the
+                 following table. If installing for multiple types of
+                 MUXserver, add the requirements together, including the
+                 mandatory overhead allowance once only.
+
+                 _______________________________________________________
+                 Installing_______________Required_Disk_Space_+_________
+
+                 Any MUXserver            600 blocks (mandatory)
+                                          Overhead
+
+                 +If_all_subsets_are_to_be_installed,_16,100_blocks_of__
+
+                 disk space will be required.
+
+                                    Installing Distribution Software 2-1
+
+ 
+
+
+
+        Installing Distribution Software
+        2.1 Preparing to Run the Installation Procedure
+
+                 _______________________________________________________
+                 Installing_______________Required_Disk_Space_+_________
+
+                 MUXserver 90             Overhead plus 7,200 blocks
+
+                 MUXserver 320            Overhead (see above) plus
+                                          3,100 blocks
+
+                 MUXserver 380            Overhead plus 5,200 blocks
+                 +If_all_subsets_are_to_be_installed,_16,100_blocks_of__
+
+                 disk_space_will_be_required.___________________________
+
+              o  Check that DECnet Phase IV or DECnet/OSI Phase V is
+                 running and is in the ON state. For information on
+                 DECnet, refer to the DECnet for OpenVMS Networking
+                 Manual.
+
+        2.2 Software Prerequisites
+
+              Configuration of MUXserver distribution software
+              Version 2.0 or later, using the configuration procedure
+              DSV$CONFIGURE.COM requires:
+
+              o  DECnet Phase IV or DECnet/OSI Phase V, and
+
+              o  OpenVMS Operating System for VAX V5.2 or later, or
+                 OpenVMS for Alpha AXP V1.0 or later.
+
+              Installation of MUXserver distribution software Version
+              2.0 is possible with VMS Operating System Versions V5.0-x
+              and V5.1-x, but network configuration cannot be performed
+              by using DSV$CONFIGURE.COM. Configuration with these
+              operating system versions requires use of the earlier
+              installation procedure, DSVCONFIG.COM and any existing
+              DSVCONFIG.DAT database. Contact your local Digital
+              representative if you have problems with the latter
+              process.
+
+        2.3 VMSINSTAL Conventions
+
+              VMSINSTAL is an interactive procedure. It displays a
+              series of questions preceded by an asterisk (*). After
+              a question the default response, if there is one, appears
+              in brackets ([]). At the end of the display line either a
+              colon (:) or a question mark (?) appears.
+
+        2-2 Installing Distribution Software
+
+ 
+
+
+
+                                        Installing Distribution Software
+                                               2.3 VMSINSTAL Conventions
+
+              Type your response immediately after the colon or question
+              mark and then press < Return >. To select the default
+              response, press only < Return >.
+
+              If you need assistance with a question, enter a question
+              mark (?) and then press < Return > as a response.
+              VMSINSTAL will display explanatory text about the question
+              and then repeat the question.
+
+              Refer to the OpenVMS documentation for a complete
+              description of VMSINSTAL.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    Installing Distribution Software 2-3
+
+ 
+
+
+
+        Installing Distribution Software
+        2.4 Running VMSINSTAL
+
+        2.4 Running VMSINSTAL
+
+              1. Load the MUXserver software distribution medium into
+                 the appropriate device.
+
+              2. Log in to the system manager's account and enter the
+                 following commands:
+
+                 $SET DEFAULT SYS$UPDATE < Return >
+                 $@VMSINSTAL MS380 device-identifier OPTIONS  N < Return >
+
+                 where device-identifier is the device in which the
+                 distribution medium is loaded.
+
+                 Running the procedure with this command line is
+                 the only way to get the release notes printed
+                 automatically. If you run VMSINSTAL without these
+                 keywords - OPTIONS N - the release notes will not be
+                 mentioned and you will not be asked if you would like
+                 them printed.
+
+              3. VMSINSTAL then displays the procedure title, the date
+                 and time, and will ask:
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 Press < Return > to answer YES, or take appropriate
+                 action.
+
+              4. If you are installing from the distribution media (not
+                 from copied savesets), you are prompted to mount the
+                 first volume by:
+
+                 Please mount the first volume of the set on device-identifier.
+                 * Are you ready?
+
+                 Press < Y > and press < Return > . A message will
+                 confirm that the medium is mounted.
+
+                 Installation continues with:
+
+                 The following products will be processed:
+                    MS380 Vn.n
+                 Beginning installation of MS380 Vn.n at hh:mm
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+        2-4 Installing Distribution Software
+
+ 
+
+
+
+                                        Installing Distribution Software
+                                                   2.4 Running VMSINSTAL
+
+                 The MUXserver software version numbers are not
+                 specified in this Guide. For example, the release note
+                 file is shown as MS380$nnn.RELEASE_NOTES. Here, nnn
+                 represents the version number. If version 2.0 is being
+                 installed, the release notes file is MS380$020.RELEASE_
+                 NOTES.
+
+              5. The procedure now lists the following options for
+                 printing and displaying the release notes.
+
+                 Release notes included with this kit are always copied to SYS$HELP.
+
+                 Additional Release Notes Options:
+                   1.  Display release notes
+                   2.  Print release notes
+                   3.  Both 1 and 2
+                   4.  None of the above
+
+                 * Select option [2]
+
+                 Select one of these options. Digital recommends that
+                 you select Option 2 to print the release notes.
+
+                 If you select Option 1, the following message is
+                 displayed:
+
+                 VMI$ROOT:[SYSUPD.MS380nnn] MS380$nnn.RELEASE_NOTES;1
+
+                 and the release notes will be immediately displayed on
+                 your terminal.
+
+                 If you select Option 2, you are asked to queue the file
+                 for printing:
+
+                 * Queue name [SYS$PRINT]:
+
+                 To print the release notes on the default printer press
+                 < Return > or type the name of another print queue. A
+                 message will indicate that the file has been queued.
+
+                 If you select Option 3, you are first asked to queue
+                 the file for printing:
+
+                 * Queue name [SYS$PRINT]:
+
+                 To print the release notes on the default printer press
+                 < Return > or type the name of another print queue. A
+                 message will indicate that the file has been queued.
+                 Next, the following message is displayed:
+
+                                    Installing Distribution Software 2-5
+
+ 
+
+
+
+        Installing Distribution Software
+        2.4 Running VMSINSTAL
+
+                 VMI$ROOT:[SYSUPD.MS380nnn] MS380$$nnn.RELEASE_NOTES;1
+
+                 The release notes will immediately start scrolling on
+                 your terminal.
+
+              6. After all release notes have been displayed (if
+                 appropriate), VMSINSTAL will continue with:
+
+                 * Do you want to continue the installation [N]?
+
+                 o  Press either < Y > to continue without reading the
+                    release notes, or < Return > to stop the procedure,
+                    and read the release notes. The latter choice ends
+                    this initial installation session and allows you
+                    to check for any changes that may affect this
+                    installation. VMSINSTAL also places the release
+                    notes in the file MS380$nnn.RELEASE_NOTES in the
+                    SYS$HELP directory, even if you choose not to read
+                    them at this stage.
+
+                    If you stop VMSINSTAL to read the release notes, run
+                    the procedure again when you are ready to continue.
+                    Enter:
+
+                    $ @VMSINSTAL MS380 device-identifier < Return >
+
+                    where device-identifier is the device on which the
+                    distribution materials are mounted.
+
+                    The new procedure will take you through Steps 3 and
+                    4 outlined above, but will then immediately continue
+                    as in Step 7 and following steps below.
+
+              7. When you have chosen to continue without pausing to
+                 read the release notes, or have rerun the procedure
+                 after reading the notes, VMSINSTAL will continue with:
+
+                 %VMSINSTAL_I_RELMOVED , The product's release notes have been moved to SYS$HELP
+
+              8. VMSINSTAL will then inquire which specific MUXserver
+                 products are to be installed:
+
+                 * Do you wish to install the MUXserver 380 product [YES]?
+
+                 If a MUXserver 380 is being installed, press < Return >.
+                 If a MUXserver 380 is not being installed, press < N >
+                 then < Return >.
+
+                 * Do you wish to install the MUXserver 320 product [YES]?
+
+        2-6 Installing Distribution Software
+
+ 
+
+
+
+                                        Installing Distribution Software
+                                                   2.4 Running VMSINSTAL
+
+                 If a MUXserver 320 is being installed, press < Return >.
+                 If a MUXserver 320 is not being installed, press < N >
+                 then < Return >.
+
+                 A further choice is presented for installation of a
+                 MUXserver 90:
+
+                 * Do you wish to install the MUXserver 90 product [YES]?
+
+                 Similarly, if a MUXserver 90 is being installed, press
+                 < Return >. If a MUXserver 90 is not being installed,
+                 press < N > then < Return >.
+
+              9. VMSINSTAL will continue with:
+
+                 * Do you want the installation procedure to convert your DSVCONFIG.DAT database
+                 to the new format [YES]?
+
+                 Press < Enter > to convert your database files if you
+                 have an older form of the database already on your
+                 system (see Section 1.2.4). Conversion time varies,
+                 depending on the number of entries in the DSVCONFIG.DAT
+                 database.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    Installing Distribution Software 2-7
+
+ 
+
+
+
+        Installing Distribution Software
+        2.4 Running VMSINSTAL
+
+             10. The installation process now asks about purging of old
+                 files:
+
+                 * Do you want to purge files replaced by this installation [YES]?
+
+                 Press < Enter > to purge previous versions of the
+                 files.
+
+             11. The next inquiry you have to answer is:
+
+                 Do you want to run the IVP after the installation [Yes]?
+
+                 Enter < Return > to allow the Installation Verification
+                 Procedure (IVP) to execute after the installation is
+                 complete.
+
+                 Installation will take one to two minutes, as indicated
+                 in the message:
+
+                 No more questions will be asked, the installation will take
+                 one to two minutes.
+
+             12. VMSINSTAL then continues with the following message:
+
+                 %VMSINSTAL-I-SYSDIR, This product creates system directory [DECSERVER].
+
+                 This is typically then followed with a sequence of
+                 messages in this format:
+
+                 %CREATE-I-EXISTS, VMI$COMMON:[DECSERVER] already exists
+                 %VMSINSTAL-I-SYSDIR, This product creates system specific directory [DECSERVER].
+                 %CREATE-I-EXISTS, VMI$SPECIFIC:[DECSERVER] already exists
+
+                 Your installation is now complete.  After exiting from VMSINSTAL:
+
+                 1. Add the following line to your system startup file,
+                    SYS$MANAGER:SYSTARTUP_V5.COM:
+
+                         $ @SYS$STARTUP:DSV$STARTUP.COM
+
+                    This procedure includes the SYS$COMMON:[DECSERVER] directory
+                    specification in the MOM$LOAD or MOP$LOAD logical name search
+                    list, and loads all communications server information into the
+                    volatile MOP database.
+
+                    If you have other directories of MOP load images or dump files,
+                    be sure to place the customized DEFINE/SYSTEM commands for
+                    MOM$LOAD, MOP$LOAD, and/or MOP$DUMP ahead of the execution of
+                    DSV$STARTUP.COM in the system startup file.
+
+        2-8 Installing Distribution Software
+
+ 
+
+
+
+                                        Installing Distribution Software
+                                                   2.4 Running VMSINSTAL
+
+                 2. Configure the server into your host's database.
+
+                    Execute the command procedure called DSV$CONFIGURE.COM.  This
+                    command procedure is in the SYS$COMMON:[DECSERVER] directory.
+                    If you have already executed this procedure from previous
+                    installations, you only need to configure additional units.
+                    All previously defined units will still be configured.
+
+                    The Installation Verification Procedure (IVP) for the MUXserver
+                    can be found in SYS$TEST and may be run at any time by executing
+                    the command procedure MS380$IVP.COM.
+
+             13. If you had earlier replied to the effect that you
+                 wanted your existing DSVCONFIG.DAT file converted (see
+                 Step 9 above) a display of system details follows, in a
+                 format such as this:
+
+                 %MS380-I-IMPORT, importing old DSVCONFIG.DAT database - please wait
+                 %DSV-I-IDENT, executing DSV$CONFIGURE version V1.0-007
+                 -DSV-I-HELP, type ? at any time for help
+
+                 Node Volatile Characteristics as of 12-JUL-1993 12:36:32
+
+                 Remote node =   1.739 (EMULAT)
+
+                 Service circuit          = SVA-0
+                 Service password         = 0000000000000000
+                 Hardware address         = 08-00-2B-24-F5-06
+                 Load file                = MOM$LOAD:MS3801ENG.SYS
+                 Dump file                = MOM$LOAD:MS8EMULAT.DMP
+
+             14. A further series of messages indicates the progress
+                 of installation, where the appearance of .SYS file
+                 references vary with the choices you have made for
+                 MUXserver 90, 320 and 380 installation, thus:
+
+                 %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                 Beginning installation verification procedure for MUXserver 90/320/380 V2.0.
+
+
+
+
+
+
+                                    Installing Distribution Software 2-9
+
+ 
+
+
+
+        Installing Distribution Software
+        2.4 Running VMSINSTAL
+
+                 Successful creation of SYS$COMMON:[DECSERVER] directory
+                 Successful installation of SYS$COMMON:[DECSERVER]MS3801ENG.SYS
+                 Successful installation of SYS$COMMON:[DECSERVER]MS3201ENG.SYS
+                 Successful installation of SYS$COMMON:[DECSERVER]MS3901ENG.SYS
+                 Successful installation of SYS$COMMON:[DECSERVER]DSV$CONFIGURE.COM
+                 Successful installation of SYS$COMMON:[SYS$STARTUP]DSV$STARTUP.COM
+                 Successful installation of SYS$COMMON:[DECSERVER]MS_V20_DEFAULTS.COM
+                 Successful installation of SYS$COMMON:[DECSERVER]TSM$MS_V20_GET_CHAR.COM
+                 Successful installation of SYS$COMMON:[SYSTEST]MS380$IVP.COM
+                 *********************************************************************
+                 *                                                                   *
+                 *            MUXserver 90/320/380 V2.0 Installation Verified        *
+                 *                                                                   *
+                 *********************************************************************
+
+                         Installation of MS380 V2.0 completed at 12:36
+
+                         VMSINSTAL procedure done at 12:46
+
+        2.5 Installing onto Alternate OpenVMS Load Hosts
+
+              Digital recommends that you establish alternate OpenVMS
+              load hosts for each server.
+
+              As with the original load host, an alternate load host
+              must be a DECnet Phase IV or DECnet/OSI Phase V system.
+              To serve as an alternate load host, a system must also
+              have the distribution software installed, and it must have
+              entries for one or more servers in its node database.
+
+              If the original load host is unavailable for downline
+              loading the server image, any alternate load host can load
+              the server instead. In addition, alternate load hosts can
+              receive upline dumps from servers and can perform other
+              maintenance functions.
+
+        2.5.1 Installing onto Single Systems
+
+              To install the server distribution software onto an
+              alternate OpenVMS load host that is not a member of a
+              VMScluster, either:
+
+              o  Load the distribution materials into the appropriate
+                 device of the new load host and repeat the installation
+                 procedure detailed in Section 2.4, or
+
+        2-10 Installing Distribution Software
+
+ 
+
+
+
+                                        Installing Distribution Software
+                        2.5 Installing onto Alternate OpenVMS Load Hosts
+
+              o  Copy the distribution files from the original load host
+                 to a new load host.
+
+        2.5.2 Installing onto VMSclusters
+
+              To install the server distribution software onto an
+              alternate load host that is a member of a VMScluster,
+              install the software onto one cluster member and:
+
+              1. Log into a privileged (system) account on one of the
+                 other members of the cluster
+
+              2. Edit the system start-up procedure so that it defines
+                 the logical, MOM$LOAD (DECnet Phase IV) or MOP$LOAD
+                 (DECnet/OSI Phase V) as a search string with a value
+                 equal to the current search string, plus the added
+                 element SYS$COMMON:[DECSERVER]. For example:
+
+                 $ DEFINE/SYSTEM/EXEC/NAME_ATTRIBUTE=NO_ALIAS/NOLOG MOM$LOAD-
+                   current-search-string, SYS$COMMON:[DECSERVER] < Return >
+
+              3. Include the above command in the node's system start-up
+                 procedure, SYS$MANAGER:SYSTARTUP_V5.COM, and also add
+                 the command line:
+
+                 $ @SYS$STARTUP:DSV$STARTUP.COM
+
+                 to this start-up file.
+
+              4. If you want to have installation take full effect,
+                 you will need to either wait until your system is re-
+                 booted or to separately activate your (revised) system
+                 start-up procedure, with the command:
+
+                 $ @SYS$MANAGER:SYSSTARTUP_V5 < Return >
+
+        2.5.3 Installing onto Other Operating Systems
+
+              To install the server distribution software onto another
+              operating system follow the instructions in the MUXserver
+              Software Installation Guide for that operating system.
+
+
+
+
+                                   Installing Distribution Software 2-11
+
+ 
+
+
+
+        Installing Distribution Software
+        2.6 Installation Verification Procedure
+
+        2.6 Installation Verification Procedure
+
+              The MUXserver Installation Verification Procedure (IVP)
+              can be executed at any time by entering the command:
+
+              $ @SYS$TEST:MS380$IVP < Return >
+
+              If the MUXserver software has been installed the IVP
+              output will be:
+
+              Beginning installation verification procedure for MUXserver 90/320/380 V2.0.
+
+              Successfully located SYS$COMMON:[DECSERVER] directory
+              Successfully located SYS$COMMON:[DECSERVER]MS3x01ENG.SYS
+              Successfully located SYS$COMMON:[DECSERVER]DSV$CONFIGURE.COM
+              Successfully located SYS$COMMON:[SYS$STARTUP]DSV$STARTUP.COM
+              Successfully located SYS$COMMON:[DECSERVER]MS_V20_DEFAULTS.COM
+              Successfully located SYS$COMMON:[DECSERVER]TSM$MS_V20_GET_CHAR.COM
+
+              *********************************************************************
+              *                                                                   *
+              *            MUXserver 90/320/380 V2.0 Installation Verified        *
+              *                                                                   *
+              *********************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        2-12 Installing Distribution Software
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                 Configuring the Load Host Node Database
+
+
+
+              This chapter describes the procedures for configuring a
+              load host node database to support a specific MUXserver
+              Network. In order to complete these procedures, you will
+              require details from the MUXserver Network Identification
+              Card, which should have been recorded on the card by the
+              person who installed the MUXserver hardware.
+
+        3.1 DSV$CONFIGURE
+
+              DSV$CONFIGURE is a command procedure that runs on a DECnet
+              Phase IV OpenVMS load host or on a DECnet/OSI OpenVMS load
+              host. This procedure allows you to:
+
+              o  Maintain configuration information about the MUXserver
+                 as well as other DECservers and Access servers.
+
+              o  Modify the local MOP (Maintenance Operation Protocol)
+                 client configuration.
+
+              o  Access the remote console port of the MUXserver.
+
+              Digital provides DSV$CONFIGURE as part of the MUXserver
+              software.
+
+                ________________________Note  ________________________
+
+                If you are using the optional Terminal Server
+                Manager (TSM) software, you must manage its
+                database as detailed in the Terminal Server Manager
+                Installation and User Manual.
+
+                _____________________________________________________
+
+
+
+                             Configuring the Load Host Node Database 3-1
+
+ 
+
+
+
+        Configuring the Load Host Node Database
+        3.1 DSV$CONFIGURE
+
+        3.1.1 Backward Compatibility of DSV$CONFIGURE
+
+              DSV$CONFIGURE supports both DECnet Phase IV and DECnet/OSI
+              Phase V. Upon installation, DSV$CONFIGURE automatically
+              converts databases created by DSVCONFIG to the data format
+              required by DSV$CONFIGURE.
+
+        3.1.2 Executing DSV$CONFIGURE
+
+              The procedure DSV$CONFIGURE.COM is located in the
+              directory:
+
+              SYS$COMMON:[DECSERVER]
+
+              You execute this procedure as you would any other DCL
+              procedure, as shown below:
+
+              $ @SYS$COMMON:[DECSERVER]DSV$CONFIGURE < Return >
+
+              You may find it useful to define a symbol for this
+              procedure in your LOGIN.COM file:
+
+              $ DSV == "@SYS$COMMON:[DECSERVER]DSV$CONFIGURE"
+
+              If you define the symbol DSV as shown above, you can start
+              DSV$CONFIGURE as shown in Example 3-1. This example also
+              shows how to use HELP to display a list of DSV$CONFIGURE
+              commands. The remainder of this section explains each
+              command shown.
+
+        3.1.3 The ADD command
+
+              To add a server to the system, you enter a command in the
+              following format:
+
+              ADD [SERVER] [server-name]
+
+              where:
+
+
+
+
+
+
+
+        3-2 Configuring the Load Host Node Database
+
+ 
+
+
+
+                                 Configuring the Load Host Node Database
+                                                       3.1 DSV$CONFIGURE
+
+              Example 3-1 Starting DSV$CONFIGURE and Displaying Help
+
+              $ DSV
+              %DSV-I-IDENT, executing DSV$CONFIGURE version x.x.x-nnn
+              -DSV-I_HELP, type ? any time for help
+
+              DSV> HELP
+
+               ADD      - Add a server to the system
+               MODIFY   - Modify an existing server's information
+               SET      - Synonym for MODIFY
+               DELETE   - Remove a comm. server from the system
+               LIST     - Display information about one or all servers
+               SHOW     - Synonym for LIST
+               CONNECT  - Connect to a server via remote console
+               USE      - Synonym for connect
+               HELP     - Displays summary of valid commands
+               EXIT     - Exit this procedure
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Configuring the Load Host Node Database 3-3
+
+ 
+
+
+
+        Configuring the Load Host Node Database
+        3.1 DSV$CONFIGURE
+
+
+              SERVER        Is an optional keyword as in all DSV$CONFIGURE
+                            commands.
+
+              server-name   Is an optional way to specify the name. If
+                            you do not specify the name on the command
+                            line, DSV$CONFIGURE prompts you for it.
+
+              After you enter the ADD commands, DSV$CONFIGURE displays
+              a series of prompts. Some prompts display with defaults
+              specified in square brackets. The values of the defaults
+              are based on the running system. The form of responses in
+              some cases depends on the system being installed.
+
+              For example, the Server Type for a MUXserver 380 is given
+              in the form "MS380", and other types are given as "MS320"
+              (MUXserver 320) and "MS90" (MUXserver 90).
+
+              Example 3-2 shows the ADD command on a DECnet/OSI system.
+              In this example, the symbol < Return > without a value
+              signals the selection of the default value.
+
+              Example 3-2 Example of the DSV$CONFIGURE ADD Command
+
+              DSV> ADD SERVER < Return >
+              _Server Name:  SHRIMP < Return >
+              _Ethernet Address: 08-00-2B-26-AE-32 < Return >
+              _Server Type: MS380 < Return >
+              _Service Circuit: [SVA-0]: < Return >
+              _Maintenance Password [none]: FEDCBA
+              _Dump File [MOP$DUMP:MS3SHRIMP.DMP]: < Return >
+              _Load Image [MOP$LOAD:MS3801ENG.SYS]: < Return >
+
+              After you enter the ADD command, you can display
+              information about the MOP client with the
+
+              o  DSV$CONFIGURE LIST command
+
+              o  NCL SHOW command for DECnet/OSI Phase V
+
+              o  NCP SHOW NODE command for DECnet Phase IV
+
+              If you use DECnet Phase IV, the required DECnet address
+              prompt has a default of the first unused address in area
+              13.
+
+        3-4 Configuring the Load Host Node Database
+
+ 
+
+
+
+                                 Configuring the Load Host Node Database
+                                                       3.1 DSV$CONFIGURE
+
+        3.1.4 The MODIFY and SET Commands
+
+              The MODIFY and SET commands operate in a manner similar
+              to the ADD command. These commands provide defaults for
+              each prompt. The defaults are the existing values for the
+              server.
+
+              The syntax, prompts and displays for the SET and MODIFY
+              commands are similar to those for the ADD command.
+
+        3.1.5 The DELETE command
+
+              The DELETE command removes a MUXserver. This command
+              clears both the permanent configuration data stored on
+              disk and the operational data stored in memory.
+
+              The syntax of the DELETE command is identical to that for
+              the ADD command.
+
+              Example 3-3 shows the DELETE command. This example omits
+              the optional SERVER keyword.
+
+              In Example 3-3, NCL on DECnet/OSI Phase V displays the
+              message
+
+              NODE 0 MOP Client SHRIMP
+
+              NCP displays a similar message on a DECnet Phase IV
+              system.
+
+              Example 3-3 The DELETE Command for DSV$CONFIGURE
+
+              DSV> DELETE SHRIMP
+              Server:     SHRIMP              Circuit:            SVA-0
+              Address:    08-00-2B-26-AE-32   Maint. Password:    FEDCBA
+              Type:       MS380
+              Dump File:  MOP$DUMP:MS3SHRIMP.DMP
+              Image File: MOP$LOAD:MS3801ENG.SYS
+              Are you SURE you want to delete this server??? [No] : YES
+
+              Node 0 MOP Client SHRIMP
+              at 1993-10-26-13:31:29.378-05:0010.176
+
+
+
+                             Configuring the Load Host Node Database 3-5
+
+ 
+
+
+
+        Configuring the Load Host Node Database
+        3.1 DSV$CONFIGURE
+
+        3.1.6 The LIST and SHOW Commands
+
+              The LIST and SHOW commands display information about a
+              MUXserver. The syntax of the LIST command is identical to
+              that for the ADD command with one exception: server-name
+              may be a wildcard character.
+
+              Example 3-4 shows the data that the LIST and SHOW commands
+              display.
+
+              In Example 3-4, the DECnet address would also display if
+              this were a DECnet Phase IV node.
+
+              Example 3-4 The LIST Command for DSV$CONFIGURE
+
+              DSV> LIST SERVER
+              _Server Name: SHRIMP
+
+              Server:         SHRIMP              Circuit:            SVA-0
+              Address:        08-00-2B-26-AE-32   Maint. Password:    FEDCBA
+              Type:           MS380
+              Dump File:      MOP$DUMP:MS3SHRIMP.DMP
+              Image File:     MOP$LOAD:MS3801ENG.SYS
+
+        3.1.7 The CONNECT and USE Commands
+
+              The CONNECT and USE commands enable you to communi-
+              cate with the remote console port on the MUXserver.
+              DSV$CONFIGURE uses the console carrier function, CCR
+              to make the connection. Once DSV$CONFIGURE makes the
+              connection, you can use almost any MUXserver command
+              supported at any physical port.
+
+              Example 3-5 shows how to use CCR and DSV$CONFIGURE
+              to connect to a remote console port from a DECnet/OSI
+              system.
+
+              Example 3-6 shows how to use CCR and DSV$CONFIGURE to
+              connect to a remote console port from a DECnet Phase IV
+              system. From a user's perspective, the only difference
+              between DECnet/OSI and DECnet Phase IV is the disconnect
+              character.
+
+
+
+        3-6 Configuring the Load Host Node Database
+
+ 
+
+
+
+                                 Configuring the Load Host Node Database
+                                                       3.1 DSV$CONFIGURE
+
+              Example 3-5 The CONNECT Command for DSV$CONFIGURE on a
+                          DECnet/OSI System
+
+              DSV> USE SHRIMP
+              %CCR-I-CONNEST, connection established to remote system 08-00-2B-26-AE-32
+              Press CTRL/\ to disconnect, CTRL/] to send break
+
+              # ACCESS (not echoed)
+
+              MUXserver 380 Terminal Server V2.0 (BL9) - LAT V5.2
+
+              (c) Copyright 1993, Digital Equipment Corporation - All Rights Reserved
+
+              Please type HELP if you need assistance
+
+              Enter username> Dave
+
+              Local> show user
+              Port            Username         Status         Service
+              3                               Connected
+              10              User 10         Connected
+              11              TELNET          Local Node
+
+              Local> < CTRL/\ >
+
+              o  DECnet/OSI Phase V uses < CTRL/\ > (that is, Control-
+                 Backslash).
+
+              o  DECnet Phase IV uses < CTRL/D >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Configuring the Load Host Node Database 3-7
+
+ 
+
+
+
+        Configuring the Load Host Node Database
+        3.1 DSV$CONFIGURE
+
+              Example 3-6 The CONNECT Command for DSV$CONFIGURE on a
+                          DECnet Phase IV System
+
+              DSV> USE SHRIMP
+
+              Console connected (press CTRL/D when finished)
+              # ACCESS
+
+              MUXserver 380 Terminal Server V2.0 (BL9) - LAT V5.2
+
+              (c) Copyright 1993, Digital Equipment Corporation - All Rights Reserved
+
+              Please type HELP if you need assistance
+
+              Enter username> Dave
+
+              Local> < CTRL/D >
+
+        3.1.8 Context-Sensitive Help for DSV$CONFIGURE
+
+              DSV$CONFIGURE provides context-sensitive help. At any
+              prompt other than the Local> prompt after a CONNECT/USE
+              command, type a question mark (?) for an explanation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        3-8 Configuring the Load Host Node Database
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                              Verifying the Installation
+
+
+
+              This chapter describes the verification of a MUXserver
+              software installation. Verification includes:
+
+              o  Verifying the load host installation by downline
+                 loading the server image.
+
+              o  Verifying the MUXserver as a system after it is loaded,
+                 by testing a number of representative server commands
+                 at an interactive terminal connected to the MUXserver.
+
+              The process of verifying the load host installation
+              involves downline loading the server image to a MUXserver
+              and then reading the DECnet event logging messages. This
+              confirms that the new load host:
+
+              o  Has the appropriate files in the correct directory,
+
+              o  Has a correct entry in its node database for the
+                 server, and
+
+              o  Can successfully downline load the server image to the
+                 MUXserver.
+
+              The process of verifying the total MUXserver system
+              installation (the hardware unit with the correct software
+              loaded and running) involves the testing of a number of
+              representative server commands at an interactive terminal
+              connected to a console port. This confirms that:
+
+              o  The correct version of the software has been loaded,
+
+              o  The MUXserver hardware operates with the new software,
+                 and
+
+              o  The new software is running successfully.
+
+                                          Verifying the Installation 4-1
+
+ 
+
+
+
+        Verifying the Installation
+        4.1 Verifying the Load Host Installation
+
+        4.1 Verifying the Load Host Installation
+
+        4.1.1 The LOAD NODE and LOAD SERVER Commands
+
+              The LOAD NODE command of NCP and the LOAD SERVER command
+              of NCL are the preferred methods of downline loading a
+              server image for verification purposes. These methods
+              permit the testing of the software installation from a
+              specific load host. Other methods of downline loading are
+              described in the MUXserver Network Reference Manual.
+
+              The LOAD NODE and LOAD SERVER commands each allow:
+
+              o  A load host to be specified. The load host which
+                 performs the downline load is the OpenVMS system from
+                 which the command is being given.
+
+              o  DECnet event logging messages to be read. These
+                 messages confirm that the specified load host performed
+                 the downline load successfully.
+
+              Depending on network or system requirements, a new server
+              image may be downline loaded to a new MUXserver or to an
+              existing unit that is currently operating on the network.
+
+        4.1.2 Loading a New MUXserver
+
+              When a MUXserver is new it has no operating software
+              in it until the initial downline load, which occurs
+              automatically upon MUXserver startup.
+
+              When the hardware installer powers up a unit, the
+              MUXserver automatically requests a load of its image
+              from any available load host. An established load host
+              recognizes the request and downline-loads the server
+              image.
+
+              The hardware installer can then verify the hardware
+              installation with the diagnostic light emitting diodes
+              on the MUXserver itself by referring to details provided
+              in the relevant MUXserver Hardware Installation Manual.
+              If the server image cannot be properly downline-loaded as
+              soon as the MUXserver is powered up, this is indicated by
+              the diagnostic displays. Therefore, coordination between
+              software and hardware installation is important.
+
+              Note that this automatic downline load verifies the
+              hardware but does not verify the load host installation.
+
+        4-2 Verifying the Installation
+
+ 
+
+
+
+                                              Verifying the Installation
+                                4.1 Verifying the Load Host Installation
+
+        4.1.3 Loading an Existing MUXserver
+
+              When an operating MUXserver is loaded, all sessions are
+              disconnected. If a MUXserver is about to be loaded with
+              a new image, coordination with the network manager is
+              important. Depending on users' requirements, it may be
+              best to delay installation verification and to perform
+              downline loading when most users are off-duty.
+
+              Ask the network manager of an existing MUXserver to
+              alert the interactive users on the server of the planned
+              shutdown for reloading. The MUXserver Network Reference
+              Manual describes the issues involved in shutting down the
+              server.
+
+        4.1.4 Preparing for the LOAD Command
+
+              To prepare for downline loading:
+
+              1. Check the DECnet node name or DECnet node address of
+                 the MUXserver. To execute the LOAD command you need to
+                 know one of these node identifiers.
+
+                 If you do not remember this information from running
+                 the DSV$CONFIGURE procedure (refer to Chapter 3), run
+                 the procedure again, and select the LIST option from
+                 the menu. LIST displays the DECnet node name and DECnet
+                 node address of all the servers you defined in this
+                 load host node database.
+
+              2. Determine the MUXserver's DECnet service password, if
+                 there is one, from the network manager (the manager may
+                 know it as the maintenance password). For a previously
+                 configured server you may need to specify this password
+                 on the LOAD NODE command line.
+
+              3. Enable DECnet event logging. Event logging messages are
+                 generated.. The example below comes from a system with
+                 NCP available:
+
+                 $ NCP <Return>
+                 NCP> SET LOGGING CONSOLE EVENT 0.3,7 <Return>
+                 NCP> SET LOGGING CONSOLE STATE ON <Return>
+                 NCP> SET LOGGING MONITOR STATE ON <Return>
+
+                ________________________Note  ________________________
+
+                All other commands needed for downline loading,
+
+                                          Verifying the Installation 4-3
+
+ 
+
+
+
+        Verifying the Installation
+        4.1 Verifying the Load Host Installation
+
+                such as those that set the Ethernet line and
+                identify and enable the service circuit, are part
+                of DSV$CONFIGURE and are executed when you run that
+                procedure (see Chapter 3).
+
+                _____________________________________________________
+
+        4.1.5 Warning Users before Loading
+
+              To reload an installed and running MUXserver during normal
+              working hours, either you (if you know the password) or
+              the network manager can use the server interface to issue
+              the privileged BROADCAST ALL command to warn server users.
+
+              A warning can also be broadcast from a remote console
+              port.
+
+              Issue the BROADCAST ALL command at the server prompt
+              (Local>) to send a message to all ports on the MUXserver
+              network. A message can contain up to 115 characters.
+
+              Note that the reception of broadcasts can be disabled on
+              ports and some users may not receive a message.
+
+              A typical BROADCAST ALL command is:
+
+              Local> SET PRIV <Return>
+              Password> system <Return> (not echoed)
+              Local> ATTACH ALL <Return>
+              Local> BROADCAST ALL "The server will be reloaded in 3 minutes." <Return>
+
+        4.1.6 Issuing the LOAD Command
+
+              After warning interactive users of an operating MUXserver
+              network and after enabling event logging, issue the LOAD
+              NODE command at a terminal connected to your OpenVMS load
+              host. On the command line enter either the DECnet node
+              name or the DECnet node number.
+
+              The following example commands load an existing MUXserver
+              named SHRIMP with a node address of 13.204 on a system
+              using NCP.
+
+              $ NCP <Return>
+              NCP> LOAD NODE SHRIMP <Return>
+
+              or
+
+              NCP> LOAD NODE 13.204 <Return>
+
+        4-4 Verifying the Installation
+
+ 
+
+
+
+                                              Verifying the Installation
+                                4.1 Verifying the Load Host Installation
+
+              If the network manager previously set a server maintenance
+              password, include the SERVICE PASSWORD keywords and
+              specify this password as the DECnet service password on
+              the command line. For example:
+
+              NCP> LOAD NODE SHRIMP SERVICE PASSWORD OF23 <Return>
+
+              To exit from NCP, type EXIT:
+
+              NCP> EXIT <Return>
+              $
+
+        4.1.7 Checking DECnet Event Logging
+
+              After executing the LOAD command check the DECnet event
+              logging messages that report the load to confirm that it
+              was successful. Read the event logging messages at your
+              system's operator's console. They identify your OpenVMS
+              system as the node that generated the event.
+
+              If no errors are reported you should assume that the
+              downline load was successful and that verification of
+              the new load host has been completed.
+
+              If the event logging messages report errors, contact the
+              MUXserver hardware installer and check that the hardware
+              is working correctly. If it is, the problem is probably
+              with the load host. Check:
+
+              o  The node database, especially the Ethernet address you
+                 entered when you defined the test server,
+
+              o  That the server image is in the appropriate directory,
+                 and
+
+              o  That DECnet is running.
+
+              Enter the LOAD command again.
+
+                ________________________Note  ________________________
+
+                When event logging is set up on a DECnet node, you
+                can specify the destination (called the sink) of
+                the messages. You should set up one DECnet sink node
+                to receive all the logging events associated with
+                downline loading so that all load request status
+                information is available at one node.
+
+                _____________________________________________________
+
+                                          Verifying the Installation 4-5
+
+ 
+
+
+
+        Verifying the Installation
+        4.1 Verifying the Load Host Installation
+
+        4.1.8 Loading After Hours
+
+              Downline loading can be performed after hours to minimize
+              disruption to the nodes affected by the MUXserver. To do
+              this, include the LOAD command in a batch job to be run
+              after hours.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        4-6 Verifying the Installation
+
+ 
+
+
+
+                                              Verifying the Installation
+                         4.2 Verifying the MUXserver System Installation
+
+        4.2 Verifying the MUXserver System Installation
+
+              Complete the verification of the MUXserver system
+              installation using a number of representative server
+              commands at an interactive terminal attached to the
+              MUXserver's console port, as follows:
+
+              1. Press <Return> a number of times
+
+                 The following message and prompt appear:
+
+                 MUXserver 380 Terminal Server V2.0 (BL9) - LAT V5.2
+
+                 Please type HELP if you need assistance
+
+                 Enter username>
+
+              2. Read the identification message and check that the
+                 correct version of the MUXserver image was downline
+                 loaded. If the message is not displayed, the problem
+                 could be:
+
+                 o  With the load host,
+
+                 o  With the terminal, or
+
+                 o  That the incorrect software was downline loaded.
+
+              3. Enter your user name (any string of 1 through 16
+                 characters that identifies you) and press <Return> .
+                 The port should now enter local mode, and the (Local>)
+                 prompt should appear:
+
+                 Enter username> SWINSTALLER <Return>
+                 Local>
+
+              4. Use the TEST PORT command to check that the terminal is
+                 receiving valid character data. On the command line,
+                 specify the number of lines and the number of columns
+                 you would like displayed. For example, the following
+                 command will display five lines of 80 characters each:
+
+                 Local> TEST PORT COUNT 5 WIDTH 80 <Return>
+
+                 You can interrupt this test by pressing any key.
+
+              5. Issue the SHOW PORT command to display the characteris-
+                 tics of your port and their values:
+
+                 Local>SHOW PORT <Return>
+
+                 A port characteristics display should appear.
+
+                                          Verifying the Installation 4-7
+
+ 
+
+
+
+        Verifying the Installation
+        4.2 Verifying the MUXserver System Installation
+
+              6. Use the SHOW SERVICES command to show what services are
+                 available to you. The following server command produces
+                 a list of services and service announcements:
+
+                 Local>SHOW SERVICES <Return>
+
+              7. Select an available service that you are authorized
+                 to use and use the CONNECT command to verify that the
+                 MUXserver can logically connect your terminal to that
+                 service.
+
+                 On the command line, specify the service name to which
+                 you wish to connect. The following example connects
+                 your terminal to an OpenVMS system, named OPNVMS:
+
+                 Local> CONNECT OPNVMS <Return>
+
+                 When the MUXserver successfully connects your terminal
+                 to the specified service, you should no longer see
+                 the local prompt; you should be communicating with the
+                 service, in this example, your own OpenVMS system.
+
+              8. Enter several commands to verify the ability of the
+                 MUXserver to exchange data with the service. For
+                 example, in this case, you could login then enter SHOW
+                 TIME and SHOW USERS.
+
+              9. Press <BREAK> or log out from the service to return to
+                 local mode.
+
+             10. Log out from the MUXserver then log out the terminal
+                 from the unit:
+
+                 Local> LOGOUT <Return>
+
+              Refer any difficulties with MUXserver installation
+              verification to the relevant network manager.
+
+              If verification has been completed successfully, the test
+              server is operating correctly and you should report
+              the successful load host installation and MUXserver
+              installation verification to the network manager.
+
+              If this installation was a software upgrade, either you or
+              the network manager must now reload all existing servers.
+
+        4-8 Verifying the Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                            MUXserver Distribution Files
+
+
+
+              Table A-1 lists the files included in the MUXserver
+              distribution kit:
+
+
+              Table_A-1_MUXserver_Distribution_Kit_Files________________
+
+              File_Name__________________Description____________________
+
+              KITINSTAL.COM              Command file used by VMSINSTAL
+                                         during installation
+
+              DSV$CONFIGURE.COM          Configuration procedure
+
+              MS380$nnn.RELEASE_NOTES    MUXserver release notes,
+                                         nnn=version number
+
+              MS380_V20_DEFAULTS.COM     TSM command file to set a
+                                         MUXserver to factory defaults
+
+              MS3801ENG.SYS              MUXserver 380 system image
+
+              MS3201ENG.SYS              MUXserver 320 system image
+
+              MS3901ENG.SYS              MUXserver 90 system image
+
+              RFC1213.TXT                SNMP definitions for MIB-II
+
+              RFC1316.TXT                SNMP definitions for Character
+                                         MIB
+
+              RFC1317.TXT                SNMP definitions for RS-232-
+                                         like MIB
+
+              RFC1381.TXT                SNMP definitions for LAPB MIB
+
+              DECMUX_MIB.TXT             SNMP definitions for DECmux MIB
+
+              MS380$IVP.COM              Installation verification
+                                         procedure
+
+                                                (continued on next page)
+
+                                        MUXserver Distribution Files A-1
+
+ 
+
+
+
+        MUXserver Distribution Files
+
+
+              Table_A-1_(Cont.)_MUXserver_Distribution_Kit_Files________
+
+              File_Name__________________Description____________________
+
+              TSM$MS_V2_GET_CHAR.COM_____File_used_by_the_TSM_software__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-2 MUXserver Distribution Files
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                Glossary
+
+
+
+              This glossary defines terms used in the MUXserver Software
+              Installation Guide for the OpenVMS operating system.
+
+              Asynchronous
+
+              A name for a method of communication in which each event
+              occurs in with no relation to a timing signal. See also
+              synchronous.
+
+              CCR
+
+              A function that provides access to the remote console
+              subsystem of a network system on a LAN.
+
+              Console Port
+
+              A DEC423 port used to connect a terminal.
+
+              Ethernet
+
+              A Xerox trade mark for a type of local area network based
+              on carrier-sense multiple access/collision detection
+              (CSMA/CD).
+
+              IVP
+
+              Installation Verification Procedure. A means of checking
+              whether an installation has worked.
+
+              LAT
+
+              Local Area Transport - Digital's name for the Ethernet
+              protocol used by the MUXserver for device connections.
+
+                                                              Glossary-1
+
+ 
+
+
+
+
+
+
+              Local Area Network
+
+              A network spanning a limited geographic area, such as a
+              building or group of buildings, using a high speed data
+              bus.
+
+              MODEM
+
+              A contraction of MOdulator DEModulator. A modem provides
+              an interface between a digital data stream and an analog
+              data stream.
+
+              Network Manager
+
+              The person responsible for all components of a network in
+              a particular geographic area.
+
+              Node
+
+              An intelligent device on a network.
+
+              OpenVMS
+
+              One of Digital's operating systems for VAX and Alpha
+              computers.
+
+              Port
+
+              The actual physical connection between equipment and, for
+              example, a serial communications line.
+
+              Service
+
+              A resource, such as a computer.
+
+              Server
+
+              A hardware and/or software device which provides many
+              users with access to a system.
+
+              Synchronous
+
+              An adjectives describing a communication method in which
+              each event occurs in relation to a timing signal. See also
+              Asynchronous.
+
+              Terminal
+
+              An input/output computer peripheral device that has a
+              keyboard and video screen or printer.
+
+        Glossary-2
+
+ 
+
+
+
+
+
+
+              Terminal Server
+
+              An active device, such as a MUXserver network, used to
+              attach terminals to a host system through a network.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                              Glossary-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+
+     A__________________________          E__________________________
+
+     After-hours software                 Ethernet address, ix
+        initialization, 4-6               Event logging, 4-5
+     Alternate load host
+       assignment, 1-3                    G__________________________
+       software installation,             Graphics conventions, x
+         2-10
+
+     ___________________________          L__________________________
+
+     BROADCAST command,  4-4              LED indications, 4-2
+                                          LOAD command, 4-4, 4-6
+     C                                    Load host
+     ___________________________           alternate,  1-3
+     Conventions,  ix                      assignment,  1-3
+
+                                           installation verification
+     D__________________________              ,  4-2
+
+     DECnet                                node database,  1-4
+       event logging, 4-5                  node database
+       introduction, 1-4                      configuration,  3-1
+       Phase IV, 2-2                      LOAD NODE command, 4-2
+     Distribution kit,  A-1               LOAD SERVER command, 4-2
+
+     DSV$CONFIGURE
+       introduction, 1-4, 3-1             N__________________________
+     DSVCONFIG                            Node Database configuration
+       earlier versions, 1-4               load host,  3-1
+
+                                          Numbering convention, ix
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+                                              verification,  1-5, 4-1
+        O__________________________           VMSclusters,  2-11
+        OSF, 1-4                            Software verification
+                                              existing server,  4-3
+        R                                     new server,  4-2
+        ___________________________         SYS$COMMON:[DECSERVER]
+        Related publications, viii             directory, 2-1
+        Release notes, 1-4                  SYS$HELP directory,  2-6
+
+                                            System installation,  4-1
+        S__________________________
+
+        Service nodes                       T__________________________
+
+         allocation,  2-2                   TEST PORT command,  4-7
+        SHOW PORT command, 4-7
+        SHOW SERVICES command, 4-7          U__________________________
+        Single system software              ULTRIX,  1-4
+          installation,  2-10
+        Software initialization             V
+         after-hours,  4-6                  ___________________________
+         warning to users,  4-4             VMSclusters
+        Software installation                 software installation,
+         alternate load hosts,                   2-11
+            2-10                            VMSINSTAL command
+         other operating systems,             conventions,  2-2
+            2-11                              introduction,  1-4, 2-1
+         preparation,  2-1                    running,  2-4
+         single systems,  2-10
+         system verification,  4-7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Index-2

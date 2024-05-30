@@ -1,0 +1,2423 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     ______________________________________________
+                     OpenVMS/Hanyu VAX Version 7.2 Installation
+                     Guide
+
+                     Order Number: AA-PZCLF-TE
+
+
+                     May 1999
+
+                     This document contains installation information for
+                     the OpenVMS/Hanyu VAX Version 7.2 operating system.
+
+
+
+
+
+
+                     Revision/Update Information: This is a new manual.
+
+                     Software Version:            OpenVMS/Hanyu VAX
+                                                  Version 7.2
+
+
+
+
+
+
+
+
+
+
+                     Compaq Computer Corporation
+                     Asia Region
+
+ 
+
+
+
+
+
+
+              __________________________________________________________
+              First Printing, May 1999
+
+              Compaq Computer Corporation makes no representations
+              that the use of its products in the manner described
+              in this publication will not infringe on existing or
+              future patent rights, nor do the descriptions contained in
+              this publication imply the granting of licenses to make,
+              use, or sell equipment or software in accordance with the
+              description.
+
+              Possession, use, or copying of the software described in
+              this publication is authorized only pursuant to a valid
+              written license from Compaq or an authorized sublicensor.
+
+              Compaq conducts its business in a manner that conserves
+              the environment and protects the safety and health of its
+              employees, customers, and the community.
+
+              © Compaq Computer Taiwan Limited 1999. All rights
+              reserved.
+              Printed in Singapore
+
+              The following are trademarks of Compaq Computer Corporation:
+              Alpha, AlphaGeneration, AlphaServer, AlphaStation,
+              Bookreader, CDA, CI, Compaq DEC, DEC Ada, DEC BASIC,
+              DEC Fortran, DEC Notes, DECdirect, DECdtm, DECevent,
+              DECforms, DECmigrate, DECnet, DECpresent, DECterm,
+              DECthreads, DECwindows, DIGITAL, HSC, HSC40, HSC70,
+              HSJ, HSZ, InfoServer, LAT, LinkWorks, ManageWORKS, MSCP,
+              OpenVMS, OpenVMS Cluster, PATHWORKS, POLYCENTER, RRD42,
+              RZ, StorageWorks, TeamLinks, TMSCP, TURBOchannel, UETP,
+              VAX, VMS, XUI, and the Compaq logo.
+
+              The following are third-party trademarks:
+
+              Microsoft, Windows, Windows NT, and MS-DOS are registered
+              trademarks of Microsoft Corporation.
+
+              Motif are registered trademarks of the Open Software
+              Foundation, Inc.
+
+              PostScript is a registered trademark of Adobe Systems
+              Incorporated.
+
+              All other trademarks and registered trademarks are the
+              property of their respective holders.
+
+              This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                             Contents
+
+
+     Preface..................................................      v
+
+
+     1  Preparing for OpenVMS/Hanyu VAX Installation
+
+           1.1   Software Prerequisites.......................    1-1
+           1.1.1     Required Base Operating System...........    1-1
+           1.1.2     Required Layered Product.................    1-2
+           1.2   Prerequisite Hardware........................    1-2
+           1.3   License Registration.........................    1-2
+           1.4   Installation Procedure Requirements..........    1-3
+           1.4.1     Time.....................................    1-3
+           1.4.2     Privileges...............................    1-3
+           1.4.3     Disk Space...............................    1-3
+           1.5   Resources Requirement........................    1-3
+           1.5.1     System Parameters........................    1-4
+           1.5.2     Process Account Quotas...................    1-4
+           1.5.3     Backing Up Your System Disk..............    1-6
+           1.6   Warning on OpenVMS/Hanyu VAX Upgrades........    1-6
+           1.7   Examining VAXVMSSYS.PAR File.................    1-7
+
+     2  Installation Options
+
+           2.1   Asian Printing Support Sub-Kit...............    2-1
+           2.2   DECwindows Motif/Hanyu Fonts.................    2-1
+
+
+
+
+
+
+
+
+
+                                                                  iii
+
+ 
+
+
+
+
+
+
+        3  Installing OpenVMS/Hanyu VAX
+
+              3.1   The Installation Procedure...................    3-1
+              3.1.1     Invoking VMSINSTAL.......................    3-1
+              3.1.2     Installation Questions...................    3-2
+              3.1.3     Informational Messages...................    3-6
+              3.1.4     Before completing Installation
+                        Procedure................................    3-7
+              3.1.5     Completing the Installation Procedure....    3-7
+              3.2   Error Recovery...............................    3-7
+
+        4  After Installing OpenVMS/Hanyu VAX
+
+              4.1   Rebooting The System.........................    4-1
+              4.2   Running the Installation Verification
+                    Procedure....................................    4-2
+              4.3   Updating Individual Compilers Libraries......    4-2
+              4.4   Determining and Reporting Problems...........    4-3
+
+        A  OpenVMS/Hanyu VAX Sample Installation
+
+
+        B  OpenVMS/Hanyu VAX Sample Installation Verification
+           Procedure
+
+        C  OpenVMS/Hanyu VAX Software Components and Defined
+           System Logical Names
+
+
+        Tables
+
+              1-1       Disk Space Requirement...................    1-3
+
+              1-2       System Parameter Requirement.............    1-4
+
+              1-3       Process Account Quotas Requirements......    1-5
+
+              C-1       Component File List......................    C-1
+
+              C-2       Defined System Logical Names.............    C-9
+
+
+
+
+
+        iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+        Purpose of This Guide
+
+              This guide describes how to install OpenVMS/Hanyu VAX
+              Version 7.2 (hereafter referred to as OpenVMS/Hanyu VAX)
+              on OpenVMS VAX Version 7.2.
+
+              Keep this document with your distribution kit. You will
+              need it to install maintenance updates or to reinstall
+              OpenVMS/Hanyu VAX for any other reasons.
+
+        Intended Audience
+
+              This guide is intended for OpenVMS/Hanyu VAX system
+              manager.
+
+              It is assumed that users of this guide are experienced in
+              upgrading the OpenVMS operating system and are familiar
+              with:
+
+              o  System Management
+
+              o  VMSINSTAL
+
+        Associated Documents
+
+              o  OpenVMS/Hanyu Version VAX 7.2 Release Notes
+
+              o  OpenVMS VAX Version 7.2 Upgrade and Installation Manual
+
+              o  DECprint Supervisor for OpenVMS Release Notes
+
+              o  DECprint Supervisor for OpenVMS Software Installation
+                 Guide
+
+              o  OpenVMS License Management Facility Manual
+
+              o  OpenVMS Documentation set
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+              o  OpenVMS/Hanyu Documentation set
+
+              o  Asian Printing Support for OpenVMS Version 1.0 Release
+                 Notes
+
+              o  Asian Printing Support for OpenVMS Version 1.0
+                 Installation Guide
+
+        Document Structure
+
+              This guide is organized as follows:
+
+              o  Chapter 1 describes the preparations and requirements
+                 necessary for installing OpenVMS/Hanyu VAX.
+
+              o  Chapter 2 describes the installation options available.
+
+              o  Chapter 3 describes how to install OpenVMS/Hanyu VAX.
+
+              o  Chapter 4 describes the steps to proceed after OpenVMS
+                 /Hanyu VAX is installed.
+
+              o  Appendix A contains a log of a sample installation of
+                 OpenVMS/Hanyu VAX.
+
+              o  Appendix B contains a log of a sample execution of
+                 Installation Verification Procedure of OpenVMS/Hanyu
+                 VAX.
+
+              o  Appendix C contains a list of files and logical names
+                 created or modified by this installation procedure.
+
+        Conventions
+
+              The following conventions are used throughout this guide.
+
+              __________________________________________________________
+              Convention_____________Meaning____________________________
+
+              <KEY>                  Means pressing the key named inside
+                                     the box.
+
+              <Return>               Carriage return.
+
+
+        vi
+
+ 
+
+
+
+
+
+              __________________________________________________________
+              Convention_____________Meaning____________________________
+
+              CTRL                   The phrase CTRL/x indicates that
+                                     you must press key labeled CTRL
+                                     while you simultaneously press
+                                     another key. For example, <CTRL/C>,
+                                     <CTRL/Y> and <CTRL/O>.
+
+              .                      Vertical ellipsis in an example
+              .                      means that information not directly
+              .                      related to the example has been
+                                     omitted.
+
+              []                     In format descriptions, brackets
+                                     indicate that whatever is enclosed
+                                     within the brackets is optional;
+                                     you can select none, one or all of
+                                     the choices.
+
+              UPPERCASE              Indicates logical, file and command
+              _______________________names._____________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                            Preparing for OpenVMS/Hanyu VAX Installation
+
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing OpenVMS/Hanyu VAX.
+
+        1.1 Software Prerequisites
+
+        1.1.1 Required Base Operating System
+
+              OpenVMS/Hanyu VAX Version 7.2 requires the OpenVMS VAX
+              Version 7.2 operating system. OpenVMS VAX Version 7.2
+              must be installed and running on the system before OpenVMS
+              /Hanyu VAX Version 7.2 is installed.
+
+              OpenVMS/Hanyu VAX Version 7.2 also requires the XPG4
+              locale database for the DEC Hanyu Character Set. This
+              database is in the VMSI18N072 kit that is provided on
+              the same media as the OpenVMS VAX Version 7.2 operating
+              system. It is not installed during the installation of
+              OpenVMS VAX Version 7.2. To install this database, install
+              the VMSI18N072 kit using VMSINSTAL procedure after the
+              installation of OpenVMS VAX Version 7.2 is complete. Be
+              sure to answer YES to the question "Do you want Chinese
+              support?"
+
+              If you are planning to set up an international environment
+              in your system, you must select other locale databases
+              during the installation of the VMSI18N072 kit. You can
+              install the locale databases after the VMSI18N072 kit is
+              installed if necessary. Please refer to the OpenVMS VAX
+              Version 7.2 Upgrade and Installation Manual for details.
+
+
+
+
+
+
+                        Preparing for OpenVMS/Hanyu VAX Installation 1-1
+
+ 
+
+
+
+        Preparing for OpenVMS/Hanyu VAX Installation
+        1.1 Software Prerequisites
+
+        1.1.2 Required Layered Product
+
+              To enable World-Wide PostScript printing subsystem
+              feature provided by OpenVMS/Hanyu VAX Version 7.2, it
+              requires to install DECprint Supervisor for OpenVMS (DCPS)
+              Version 1.0C or higher. For details on the installation
+              of DECprint Supervisor for OpenVMS, please refer to
+              DECprint Supervisor for OpenVMS Release Notes and DECprint
+              Supervisor for OpenVMS Software Installation Guide.
+
+        1.2 Prerequisite Hardware
+
+              OpenVMS/Hanyu VAX Version 7.2 requires the following
+              hardware:
+
+              o  Any valid VAX configuration supported by OpenVMS VAX
+                 Version 7.2
+
+              o  VT382-D Chinese terminal
+
+        1.3 License Registration
+
+              You must register and load your license for OpenVMS/Hanyu
+              VAX Version 7.2 before you start the installation in order
+              to run the Installation Verification Procedure (IVP) and
+              use the software.
+
+              To register a license under OpenVMS, first log in to the
+              system manager's account, SYSTEM. You then have a choice
+              of two ways to perform the registration:
+
+              o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When
+                 it prompts you for information, respond with data from
+                 your License PAK.
+
+              o  At the DCL prompt, enter the LICENSE REGISTER command
+                 with the appropriate qualifiers that correspond to
+                 License PAK information.
+
+              For complete information on using LMF, see OpenVMS License
+              Management Utility Manual.
+
+
+
+
+        1-2 Preparing for OpenVMS/Hanyu VAX Installation
+
+ 
+
+
+
+                            Preparing for OpenVMS/Hanyu VAX Installation
+                                 1.4 Installation Procedure Requirements
+
+        1.4 Installation Procedure Requirements
+
+              The following sections discuss various requirements for
+              installing OpenVMS/Hanyu VAX.
+
+        1.4.1 Time
+
+              The installation takes approximately 10 to 45 minutes,
+              depending on your system configuration and the options you
+              select during the installation.
+
+        1.4.2 Privileges
+
+              To install OpenVMS/Hanyu VAX, you must log in to the
+              system manager's account or an account that has the SETPRV
+              privilege.
+
+        1.4.3 Disk Space
+
+              Installing OpenVMS/Hanyu VAX requires certain amount of
+              free storage disk space during the installation. Once
+              installed, less disk space will be required. Table 1-1
+              summarizes the disk space requirement for OpenVMS/Hanyu
+              VAX Version 7.2.
+
+              Table_1-1_Disk_Space_Requirement__________________________
+
+              Maximum disk space utilization during
+              installation
+
+                 with DECwindows Motif /Hanyu fonts      119,900 blocks
+
+                 Without DECwindows Motif /Hanyu fonts   101,300 blocks
+
+              Net disk space utilization after
+              installation
+
+                 with DECwindows Motif /Hanyu fonts      86,400 blocks
+
+              ___without_DECwindows_Motif_/Hanyu_fonts___86,000_blocks__
+
+        1.5 Resources Requirement
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL
+              prompt:
+
+                        Preparing for OpenVMS/Hanyu VAX Installation 1-3
+
+ 
+
+
+
+        Preparing for OpenVMS/Hanyu VAX Installation
+        1.5 Resources Requirement
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+              The available free blocks must be greater than or equal
+              to the maximum disk space required for installation, i.e.
+              119,900 blocks or 101,300 blocks, depending on whether you
+              are going to install DECwindows Motif /Hanyu fonts or not.
+
+        1.5.1 System Parameters
+
+              Installing OpenVMS/Hanyu VAX requires certain system
+              parameter available resources. Table 1-2 lists the minimum
+              required system parameter values for installation.
+
+              Table_1-2_System_Parameter_Requirement____________________
+
+              Parameter_name________Minimum_value_______________________
+
+              GBLPAGES              3,000 pages
+
+              GBLSECTIONS___________40_sections_________________________
+
+              To determine the number of free global pages and global
+              sections on the system: first you can use the SYSGEN
+              utility to check the current value of global pages and
+              global sections. For example:
+
+              $ MCR SYSGEN
+              SYSGEN> SHOW GBLPAGES
+              SYSGEN> SHOW GBLSECTIONS
+              SYSGEN> EXIT
+
+              Then, enter the following command at DCL prompt to display
+              global pages and global sections usage on the system.
+
+              $ INSTALL LIST /GLOBAL /SUMMARY
+
+              The difference of the two figures must be greater than or
+              equal to the minimum values required for installation.
+
+        1.5.2 Process Account Quotas
+
+              The account you use to install OpenVMS/Hanyu VAX must
+              have sufficient quotas to enable you to perform the
+              installation. Table 1-3 summarizes the process account
+              quotas required for the installation account.
+
+        1-4 Preparing for OpenVMS/Hanyu VAX Installation
+
+ 
+
+
+
+                            Preparing for OpenVMS/Hanyu VAX Installation
+                                               1.5 Resources Requirement
+
+              Table_1-3_Process_Account_Quotas_Requirements_____________
+
+              Account_Quota_________Value_______________________________
+
+              ASTLM                 40
+
+              BIOLM                 40
+
+              BYTLM                 32768
+
+              DIOLM                 40
+
+              ENQLM                 200
+
+              FILLM_________________300_________________________________
+
+              The installation procedure checks your account quotas at
+              the beginning of the installation. For each account quota
+              that is below the minimum requirement, the installation
+              procedure displays a message that shows your account quota
+              and the minimum requirement. If any of your account quotas
+              is indeed below the minimum requirement, the installation
+              procedure will ask whether you want to continue with
+              the installation. You can answer YES to continue but
+              the installation may or may not complete successfully.
+              Alternatively, you can answer NO or press the <Return>
+              key to abort the installation. Then you can correct the
+              account quotas and restart the installation.
+
+              User account quotas are stored in the file SYSUAF.DAT.
+              You can use the Authorize utility to verify and change
+              user account quotas. First set your default directory to
+              SYS$SYSTEM and then run AUTHORIZE:
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF>
+
+              At the Authorize utility prompt (UAF>), use the SHOW
+              command with an account name to check a particular
+              account. For example:
+
+              UAF> SHOW SYSTEM
+
+              To change the quota, use the MODIFY command at the UAF>
+              prompt. For example, to change the FILLM quota for the
+              SYSTEM account and then exit, you can type the following:
+
+                        Preparing for OpenVMS/Hanyu VAX Installation 1-5
+
+ 
+
+
+
+        Preparing for OpenVMS/Hanyu VAX Installation
+        1.5 Resources Requirement
+
+              UAF> MODIFY SYSTEM/FILLM=300
+              UAF> EXIT
+
+              After you exit from the Authorize utility, the OpenVMS
+              operating system displays messages indicating whether or
+              not changes were made. Once the changes have been made,
+              the owner of the altered account must log out and then log
+              in again for the new quotas to take effect.
+
+              For more information on modifying account quotas, see
+              the description of the Authorize utility in the OpenVMS
+              Documentation Set.
+
+        1.5.3 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL procedure
+              asks if you have backed up your system disk. Compaq
+              recommends that you do a system disk backup before
+              installing any software.
+
+              Use the backup procedures that have been established
+              at your site. For details on performing a system disk
+              backup, see the section on Backup utility in the OpenVMS
+              documentation set.
+
+        1.6 Warning on OpenVMS/Hanyu VAX Upgrades
+
+              OpenVMS/Hanyu VAX can only be installed on the correspond-
+              ing version of OpenVMS VAX. When you upgrade OpenVMS/Hanyu
+              VAX system, you have to:
+
+              1. Upgrade the base OpenVMS VAX system.
+
+              2. Then, install the OpenVMS/Hanyu VAX kit on the upgraded
+                 base OpenVMS VAX system.
+
+              To upgrade the base OpenVMS VAX system, you have to:
+
+              1. Remove the HSY$STARTUP.COM startup command procedure
+                 of OpenVMS/Hanyu VAX from the system startup sequence.
+                 In other words, SYS$STARTUP:HSY$STARTUP.COM should
+                 be taken out from SYS$MANAGER:SYSTARTUP_VMS.COM site
+                 specific startup command procedure or removed from the
+                 SYSMAN utility as a startup file.
+
+        1-6 Preparing for OpenVMS/Hanyu VAX Installation
+
+ 
+
+
+
+                            Preparing for OpenVMS/Hanyu VAX Installation
+                               1.6 Warning on OpenVMS/Hanyu VAX Upgrades
+
+              2. Execute the command procedure @HSY$SYSTEM:RECOVER.COM
+                 to restore from OpenVMS/Hanyu VAX system to OpenVMS VAX
+                 system. RECOVER.COM will replace some of the localized
+                 images with the original images.
+
+              3. Reboot the system.
+
+                ________________________Note  ________________________
+
+                If you are upgrading from OpenVMS/Hanyu VAX Version
+                6.1 and have not applied the AVMSMUP01_061 mup kit,
+                you must reset the SYSGEN parameter LGI_CALLOUTS to
+                0 before rebooting the system, as follows:
+
+                           $ RUN SYS$SYSTEM:SYSMAN
+                           SYSMAN> PARAMETER USE CURRENT
+                           SYSMAN> PARAMETER SET LGI_CALLOUTS 0
+                           SYSMAN> PARAMETER WRITE CURRENT
+                           SYSMAN> EXIT
+
+                Otherwise, you may not be able to log into your
+                system after reboot.
+
+                _____________________________________________________
+
+              4. After the system has been rebooted, upgrade the base
+                 OpenVMS VAX operating system.
+
+        1.7 Examining VAXVMSSYS.PAR File
+
+              Before you begin an installation for OpenVMS/Hanyu VAX,
+              be sure the file protection of the VAXVMSSYS.PAR file
+              stored in SYS$SYSTEM directory is "System:RWED,Owner:RWED,
+              Group:RE,World:RE". If it is incorrect, you need to change
+              the file protection of the VAXVMSSYS.PAR file with the
+              following command.
+
+              $ SET FILE /PROTECTION=(S:RWED, O:RWED, G:RE, W:RE) -
+              _$ SYS$COMMON:[SYSEXE]VAXVMSSYS.PAR
+
+
+
+
+
+
+                        Preparing for OpenVMS/Hanyu VAX Installation 1-7
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                    Installation Options
+
+
+
+              This chapter describes the options provided with the
+              installation.
+
+        2.1 Asian Printing Support Sub-Kit
+
+              There is a separate sub-kit called ASPS010 provided
+              in the media of OpenVMS/Hanyu VAX Version 7.2. It is
+              used to install the Asian Printing Support for OpenVMS
+              Version 1.0. If you want to have high quality Chinese
+              printing capabilities, please install this sub-kit after
+              the installation of OpenVMS/Hanyu VAX Version 7.2. For
+              details on the installation and features of Asian Printing
+              Support, please refer to Asian Printing Support for
+              OpenVMS Version 1.0 Installation Guide and Asian Printing
+              Support for OpenVMS Version 1.0 Release Notes.
+
+                ________________________Note  ________________________
+
+                High quality Chinese printing is only supported with
+                the installation of DECprint Supervisor for OpenVMS
+                (DCPS) Version 1.0C or higher. That is, in addition
+                to the Asian Printing Support sub-kit, you must
+                install DCPS V1.0C or higher if you want to have
+                Chinese printing supported.
+
+                _____________________________________________________
+
+        2.2 DECwindows Motif/Hanyu Fonts
+
+              During the installation of OpenVMS/Hanyu VAX Version 7.2,
+              you have the option to install DECwindows Motif/Hanyu
+              fonts. If you are planning to install DECwindows Motif
+              /Hanyu or above, you must install this option; otherwise
+              you do not need to install this option. If you want to
+              install the fonts after OpenVMS/Hanyu VAX Version 7.2
+
+                                                Installation Options 2-1
+
+ 
+
+
+
+        Installation Options
+        2.2 DECwindows Motif/Hanyu Fonts
+
+              is installed, you must re-install the OpenVMS/Hanyu VAX
+              Version 7.2 by restoring the system to OpenVMS VAX first.
+              Please refer to Section 1.6 for details.
+
+                ________________________Note  ________________________
+
+                Starting with Version 7.1, OpenVMS/Hanyu VAX no
+                longer supports DECwindows Motif/Hanyu Version 1.2
+                or earlier. To use DECwindows Motif and Chinese
+                characters with OpenVMS/Hanyu VAX Version 7.2, you
+                must install DECwindows Motif/Hanyu Version 1.2-3
+                or later. Please see  OpenVMS/Hanyu VAX Version 7.2
+                Release Notes for details.
+
+                _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        2-2 Installation Options
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                            Installing OpenVMS/Hanyu VAX
+
+
+
+              This chapter describes how to install the OpenVMS/Hanyu
+              VAX Version 7.2 operating system. Section 3.1.2 contains a
+              step-by-step description of the installation procedure.
+
+        3.1 The Installation Procedure
+
+              The OpenVMS/Hanyu VAX installation process consists of a
+              series of questions and informational messages.
+
+              To abort the installation procedure at any time, press
+              <CTRL/Y>. However, when you abort the installation
+              procedure, it does not delete files created up to
+              that point. You must delete those files interactively.
+              Appendix C lists the files created by this installation
+              procedure and the directories in which they reside.
+              Note that all files and directories are created under
+              SYS$COMMON.
+
+        3.1.1 Invoking VMSINSTAL
+
+              To start the installation, invoke the VMSINSTAL procedure
+              from a privileged account, such as the SYSTEM account.
+              VMSINSTAL procedure is in the SYS$UPDATE directory. You
+              use the following syntax to invoke VMSINSTAL procedure:
+
+              $ @SYS$UPDATE:VMSINSTAL HANYU072 device-name [OPTIONS N]
+
+              HANYU072
+              This refers to the OpenVMS/Hanyu VAX Version 7.2 saveset.
+
+              device-name
+              The name of the device on which you plan to mount the
+              media. For example, DKA400: is the device name for a
+              compact disc drive. It is not necessary to use the console
+              drive for this installation. However, if you do use the
+
+                                        Installing OpenVMS/Hanyu VAX 3-1
+
+ 
+
+
+
+        Installing OpenVMS/Hanyu VAX
+        3.1 The Installation Procedure
+
+              console drive, you should replace any media you have
+              removed once the installation is completed.
+
+              [OPTIONS N]
+              This portion of the command line invokes the release notes
+              option, allowing you to display or save a copy of the
+              release notes. This portion is optional. If you omit
+              this option, the Release Notes question is omitted from
+              the VMSINSTAL procedure dialog and the release notes are
+              automatically copied to SYS$HELP.
+
+              Note that there are several options you can select
+              when you invoke VMSINSTAL procedure. See the OpenVMS
+              Documentation Set on software installation for information
+              on those options.
+
+              The following example displays the command to invoke
+              VMSINSTAL procedure to install OpenVMS/Hanyu VAX Version
+              7.2 from compact disk drive DKA400: and shows the system
+              response:
+
+              $ @SYS$UPDATE:VMSINSTAL HANYU072 DKA400:[HANYU072.KIT]
+
+                       OpenVMS VAX Software Product Installation Procedure V7.2
+
+              It is 2-MAR-1999 at 16:22
+
+              Enter a question mark (?) at any time for help.
+
+              If you do not supply either the product name or the device
+              name, VMSINSTAL procedure will prompt you for information
+              later on in the installation process. VMSINSTAL procedure
+              does not prompt you for any options.
+
+        3.1.2 Installation Questions
+
+              This section discusses the questions that appear
+              during the installation. Appendix A contains a sample
+              installation log showing how the questions can be
+              answered.
+
+              Each question in the installation is marked with an
+              asterisk (*) at the beginning of the line. Some questions
+              show the default response in brackets, for example [YES].
+              If you want to use the default response, press <Return>.
+
+        3-2 Installing OpenVMS/Hanyu VAX
+
+ 
+
+
+
+                                            Installing OpenVMS/Hanyu VAX
+                                          3.1 The Installation Procedure
+
+              1. System backup
+
+                 VMSINSTAL procedure asks if you are satisfied with your
+                 system backup using the following question:
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 You should always back up your system disk before
+                 performing an installation. If you are satisfied
+                 with the backup of your system disk, press <Return>.
+                 Otherwise, enter NO to discontinue the installation.
+                 After backing up your system disk, you can restart the
+                 installation.
+
+                 If you respond YES, VMSINSTAL procedure displays a
+                 message showing that the installation has begun. For
+                 example:
+
+                 The following products will be processed:
+
+                   HANYU V7.2
+
+                         Beginning installation of HANYU V7.2 at 16:24
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+              2. Choosing Release Notes Options
+
+                 If you specified OPTIONS N in the VMSINSTAL command
+                 line, the following release notes options are
+                 displayed:
+
+                   Release Notes Options:
+                           (1) Display release notes
+                           (2) Print release notes
+                           (3) Both 1 and 2
+                           (4) Copy release notes to SYS$HELP
+                           (5) Do not display, print or copy release notes
+
+                 If you select 1, the release notes are displayed on
+                 your terminal and are copied to HANYU072.RELEASE_NOTES
+                 in SYS$HELP.
+
+                 If you select 2, the release notes are queued to
+                 SYS$PRINT for printing, and copied to HANYU072.RELEASE_
+                 NOTES in SYS$HELP.
+
+                 If you select 3, the release notes are displayed on
+                 your terminal, queued to SYS$PRINT for printing, and
+                 copied to HANYU072.RELEASE_NOTES in SYS$HELP.
+
+                                        Installing OpenVMS/Hanyu VAX 3-3
+
+ 
+
+
+
+        Installing OpenVMS/Hanyu VAX
+        3.1 The Installation Procedure
+
+                 If you select 4, the release notes are copied to
+                 HANYU072.RELEASE_NOTES in SYS$HELP.
+
+                 If you select 5, the release notes are not printed,
+                 displayed, or copied to SYS$HELP.
+
+                 If you did not include the OPTIONS N portion of the
+                 VMSINSTAL command line, the following message is
+                 displayed:
+
+                 %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+              3. Product Authorization Key
+
+                 The installation procedure wants to make sure you have
+                 registered and loaded the product authorization key
+                 (PAK) of OpenVMS/Hanyu VAX before it checks for its
+                 validity. It asks you with the following question:
+
+                 * Does this product have an authorization key registered and loaded?
+
+                 If you answer NO, the installation procedure will stop.
+                 If you answer YES but you actually have not loaded the
+                 PAK, the Installation Verification Procedure will fail
+                 out when it checks the validity of the PAK.
+
+              4. DECwindows Motif/Hanyu fonts
+
+                 The saveset of OpenVMS/Hanyu VAX contains the font
+                 files of DECwindows Motif/Hanyu. If you have installed
+                 or are planning to install DECwindows Motif/Hanyu
+                 V1.2-3 or above to your system, you are recommended
+                 to install the fonts by answering YES to the question:
+
+                 * Do you want to install DECwindows Motif /Hanyu fonts [YES]?
+
+                 If you answer NO to the question, the font files will
+                 not be installed.
+
+                ________________________Note  ________________________
+
+                If you choose to install the DECwindows Motif/Hanyu
+                fonts, the installation procedure will display a
+                warning message as follows
+
+        3-4 Installing OpenVMS/Hanyu VAX
+
+ 
+
+
+
+                                            Installing OpenVMS/Hanyu VAX
+                                          3.1 The Installation Procedure
+
+                     %COPY-W-INCOMPAT,
+                     VMI$ROOT:[SYSFONT.DECW.75DPI]DECW$FONT_ALIAS_GS.DAT (input) and
+                     VMI$ROOT:[SYSFONT.DECW.75DPI]DECW$FONT_ALIAS.DAT (output) have
+                     incompatible attributes
+
+                This warning message can be safely ignored.
+
+                _____________________________________________________
+
+              5. Purge replaced files
+
+                 If you have successfully mounted the media, VMSINSTAL
+                 procedure proceeds to restore the saveset A of OpenVMS
+                 /Hanyu VAX and move the release notes to SYS$HELP.
+
+                 It then asks if you want to purge the files replaced by
+                 the installation of OpenVMS/Hanyu VAX as follows:
+
+                 * Do you want to purge files replaced by this installation [YES]?
+
+                 If you answer NO, the old files with the same name
+                 in the same directory will remain there. Usually you
+                 answer YES to save disk space.
+
+              6. Delete SYS$SPECIFIC files
+
+                 OpenVMS/Hanyu VAX puts its component files in the
+                 directories under SYS$COMMON. However, if there are
+                 files under SYS$SPECIFIC possessing the same name,
+                 those files under SYS$SPECIFIC will be used instead of
+                 those under SYS$COMMON. So it is essential to delete
+                 those SYS$SPECIFIC files in order for OpenVMS/Hanyu VAX
+                 to run successfully.
+
+                 You can have the installation procedure to delete those
+                 SYS$SPECIFIC files by answering YES to the question:
+
+                 * Do you want to delete files in SYS$SPECIFIC directory, if found [YES]?
+
+                 If you answer NO to the question, you then need to
+                 manually delete those files under SYS$SPECIFIC when
+                 their names are in conflict with the files created by
+                 this installation procedure. Appendix C lists the files
+                 created by this installation procedure.
+
+              7. Choose DTSCS or DRC character set
+
+                 OpenVMS/Hanyu VAX supports DEC Hanyu Character Set,
+                 which contains DEC SICGCC and DEC Taiwan Supplemental
+                 Character Set (DTSCS), as the default character set.
+
+                                        Installing OpenVMS/Hanyu VAX 3-5
+
+ 
+
+
+
+        Installing OpenVMS/Hanyu VAX
+        3.1 The Installation Procedure
+
+                 DEC Recommended Character Set (DRC) had been provided
+                 in pre-OpenVMS/Hanyu VAX Version 5.4. It is provided
+                 as an optional character set in OpenVMS/Hanyu VAX so
+                 that applications dependent on DRC can migrate from
+                 pre-OpenVMS/Hanyu VAX Version 5.4 to OpenVMS/Hanyu
+                 VAX Version 7.2. You will be prompted to choose one of
+                 these character sets as follows:
+
+                 * What character set (DTSCS or DRC) will this kit support?
+
+                 "DTSCS" and "DRC" are the only allowed responses. The
+                 above prompt will reappear for any invalid response.
+                 The selected option will be displayed. For instance, if
+                 the DTSCS option is chosen, the message will be
+
+                 This kit supports DTSCS character set
+
+                 Note that DTSCS is recommended.
+
+              8. System shutdown
+
+                 The last question that the installation procedure asks
+                 you is:
+
+                 * Will you allow a system shutdown after this product is installed [YES]?
+
+                 Note that before rebooting your system, you should make
+                 sure that the command procedure SYS$STARTUP:HSY$STARTUP.COM
+                 is executed during system reboot by either putting
+                 that command procedure as a SYSMAN startup file, or by
+                 adding the line:
+
+                 $ @SYS$STARTUP:HSY$STARTUP.COM
+
+                 to your site-specific startup command procedure
+                 SYS$MANAGER:SYSTARTUP_VMS.COM. You are recommended
+                 to use the latter method.
+
+        3.1.3 Informational Messages
+
+              At this point, the installation procedure displays a
+              number of informational messages that report the progress
+              of the installation (refer to the sample installation file
+              in Appendix A for the text of the informational messages
+              that OpenVMS/Hanyu VAX displays).
+
+        3-6 Installing OpenVMS/Hanyu VAX
+
+ 
+
+
+
+                                            Installing OpenVMS/Hanyu VAX
+                                          3.1 The Installation Procedure
+
+              There is no further question. If the installation
+              procedure has been successful up to this point, VMSINSTAL
+              procedure begins moving files to their target directories,
+              updates the help files, and updates the system library and
+              DCL tables. The following message is displayed:
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+        3.1.4 Before completing Installation Procedure
+
+              Before fully completing the installation, the installation
+              procedure will run the Installation Verification Procedure
+              to verify the OpenVMS/Hanyu VAX installation.
+
+              %VMS/HANYU-I-BEGINIVP, beginning 7.2 IVP.
+
+        3.1.5 Completing the Installation Procedure
+
+              The following messages indicate that the entire installa-
+              tion procedure is completed:
+
+                Installation of HANYU V7.2 completed at 17:01
+
+                VMSINSTAL procedure done at 17:07
+
+        3.2 Error Recovery
+
+              If errors occur during the installation, VMSINSTAL
+              procedure displays failure messages.
+
+              For descriptions of the error messages generated by
+              those conditions, see the OpenVMS Documentation Set on
+              system messages, recovery procedures and OpenVMS software
+              installation. If you are notified that any of those
+              conditions exists, you should take appropriate actions
+              as described in the message.
+
+
+
+
+
+
+
+
+
+                                        Installing OpenVMS/Hanyu VAX 3-7
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                      After Installing OpenVMS/Hanyu VAX
+
+
+
+              After you have installed the OpenVMS/Hanyu VAX operating
+              system, you need to perform several important tasks to
+              prepare the system for operation. This chapter describes
+              these tasks in the following sections.
+
+        4.1 Rebooting The System
+
+              If you have chosen to reboot the system after installa-
+              tion, which is the default, the installation procedure
+              will automatically invoke the SHUTDOWN command procedure,
+              and display the following message:
+
+              %VMSINSTAL-I-SHUTDOWN, This product requires that the system be rebooted.
+
+               SHUTDOWN -- Perform an Orderly System Shutdown
+                           on node HANVMS
+
+              If you choose to reboot at a later time, you can use the
+              SHUTDOWN command procedure later as follows:
+
+              $ @SYS$SYSTEM:SHUTDOWN
+
+              However, please be reminded that the file SYS$STARTUP:HSY$STARTUP.COM
+              must be executed at startup time. This can be done by one
+              of the following procedures:
+
+              Procedure A
+                 By adding the following line to your site-specific VMS
+                 startup procedure, SYS$MANAGER:SYSTARTUP_VMS.COM
+
+                   $ @SYS$STARTUP:HSY$STARTUP.COM
+
+                ________________________Note  ________________________
+
+                If you plan to install layered products with Chinese
+                capability, for example, Asian Printing Support for
+                OpenVMS, you should add this layered product startup
+
+                                  After Installing OpenVMS/Hanyu VAX 4-1
+
+ 
+
+
+
+        After Installing OpenVMS/Hanyu VAX
+        4.1 Rebooting The System
+
+                command procedure after the above line. Otherwise,
+                the layered product would not startup properly.
+
+                _____________________________________________________
+
+
+              Procedure B
+                 This can be done with SYSMAN as
+
+                   $ RUN SYS$SYSTEM:SYSMAN
+                   SYSMAN> STARTUP ADD FILE HSY$STARTUP.COM -
+                   _SYSMAN> /PARAMETER=(P1,P2,P3,P4,P5,P6,P7,P8) -
+                   _SYSMAN> /PHASE=LPBEGIN
+
+        4.2 Running the Installation Verification Procedure
+
+              Once the system is running again, you can invoke a command
+              procedure to verify the OpenVMS/Hanyu VAX installation.
+
+              $ @SYS$COMMON:[SYSTEST.VMS-HANYU]VMS-HANYU$IVP
+
+              This Installation Verification Procedure will be invoked
+              by the installation procedure of this version of OpenVMS
+              /Hanyu VAX. Appendix B contains a sample log of the
+              execution of the Installation Verification Procedure.
+
+        4.3 Updating Individual Compilers Libraries
+
+              Individual compilers have their own libraries. If
+              you upgrade your system to OpenVMS/Hanyu VAX Version
+              7.2 without re-building the corresponding libraries
+              for individual compilers, those libraries will not
+              automatically reflect the latest contents of the STARLET
+              library. Using new symbols introduced in the latest
+              version of the STARLET library will result in compilation
+              errors. Therefore, after the system is installed or
+              upgraded to OpenVMS/Hanyu VAX, you are recommended to
+              re-install or upgrade the compiler and choose to rebuild
+              its library during installation.
+
+              For example, Chinese SMG defines several new literals
+              for supporting character sets in the STARLET library of
+              the system, such as SMG$C_ASCII, SMG$C_SPEC_GRAPHICS
+              and SMG$C_HANYU. Users can specify the character set
+              parameter in any SMG routine calls with the new literals
+              for processing Chinese characters in their application.
+
+        4-2 After Installing OpenVMS/Hanyu VAX
+
+ 
+
+
+
+                                      After Installing OpenVMS/Hanyu VAX
+                             4.3 Updating Individual Compilers Libraries
+
+              Thus, you will have to re-install the compiler and rebuild
+              its library. The program compilation will fail if the
+              compiler library is not updated.
+
+        4.4 Determining and Reporting Problems
+
+              If you encounter a problem while using OpenVMS/Hanyu VAX
+              Version 7.2, report it to Compaq. Depending on the nature
+              of the problem and the type of support you have, you can
+              take one of the following actions:
+
+              o  Call Compaq if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter
+              a problem during the warranty period, report the problem
+              as indicated above or follow alternative instructions
+              provided by Compaq for reporting SPD non-conformance
+              problems.
+
+              If you find an error in the OpenVMS/Hanyu Documentation
+              set, fill out and submit the Reader's Comments form to
+              Compaq.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  After Installing OpenVMS/Hanyu VAX 4-3
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                   OpenVMS/Hanyu VAX Sample Installation
+
+
+
+              The following is the log of a sample installation.
+
+              $ @SYS$UPDATE:VMSINSTAL HANYU072 $1$DIA2:[KIT]
+
+                      OpenVMS VAX Software Product Installation Procedure V7.2
+
+              It is 3-MAR-1999 at 14:05.
+
+              Enter a question mark (?) at any time for help.
+
+              * Are you satisfied with the backup of your system disk [YES]?
+
+              The following products will be processed:
+
+                HANYU V7.2
+
+                      Beginning installation of HANYU V7.2 at 14:05
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+              ***********************************************************************
+              *                                                                     *
+              *                    OpenVMS/Hanyu Version 7.2                        *
+              *                    KIT INSTALLATION PROCEDURE                       *
+              *                                                                     *
+              *               COPYRIGHT (C) 1994,1995,1996,1997,1999                *
+              *                    COMPAQ COMPUTER CORPORATION                      *
+              *                HOUSTON TEXAS.  ALL RIGHTS RESERVED.                 *
+              *                                                                     *
+              ***********************************************************************
+
+                      Product:      VMS-UI-HANYU
+                      Producer:     DEC
+                      Version:      7.2
+                      Release Date: 7-MAY-1999
+
+                               OpenVMS/Hanyu VAX Sample Installation A-1
+
+ 
+
+
+
+        OpenVMS/Hanyu VAX Sample Installation
+
+
+              * Does this product have an authorization key registered and loaded? YES
+
+                If you have installed or planning to install DECWindows Motif /Hanyu,
+                you are recommended to install the DECWindows Motif /Hanyu fonts.
+
+              * Do you want to install DECwindows Motif /Hanyu fonts [YES]? NO
+
+              * Do you want to purge files replaced by this installation [YES]?
+
+                This kit will be installed under the SYS$COMMON directory of this
+                node. If there are files in SYS$SPECIFIC directory and not removed,
+                the files will be executed instead of the newly installed ones.
+
+              * Do you want to delete files in SYS$SPECIFIC directory, if found [YES]?
+
+                Please choose the character set (DTSCS or DRC) and make sure
+                you choose the correct one.
+
+              * What Character set (DTSCS or DRC) will this kit support? : DTSCS
+                This kit supports DTSCS character set
+
+                CMGR Database already exist on system.
+              * Install a NEW database or KEEP the old one (NEW or KEEP) [KEEP]:
+
+                    #===============================================================#
+                     The file SYS$STARTUP:HSY$STARTUP.COM must be executed at
+                     startup time.
+
+                     This can be done with SYSMAN as
+                     $ RUN SYS$SYSTEM:SYSMAN
+                     SYSMAN> STARTUP ADD FILE HSY$STARTUP.COM -
+                     _SYSMAN> /PARAMETER=(P1,P2,P3,P4,P5,P6,P7,P8) -
+                     _SYSMAN> /PHASE=LPBEGIN
+
+                     OR
+
+                     By adding the following line in SYS$MANAGER:SYSTARTUP_VMS.COM
+                     $ @SYS$STARTUP:HSY$STARTUP.COM
+
+                     When the installation is completed, the procedure performs an
+                     orderly shutdown of the system.  OpenVMS/Hanyu V7.2
+                     will become available when the system is up again.
+
+                    #===============================================================#
+
+                  To complete the installation of this product, you should reboot
+                  the system.  If it is not convenient to reboot at this time, then
+                  enter NO to the following question.
+
+                  If you enter NO, the installation procedure will continue.
+
+        A-2 OpenVMS/Hanyu VAX Sample Installation
+
+ 
+
+
+
+                                   OpenVMS/Hanyu VAX Sample Installation
+
+
+              * Will you allow a system shutdown after this product is installed [YES]? YES
+              * How many minutes for system shutdown [0]: 5
+              * Do you want to do an automatic system reboot [YES]? YES
+
+                    #===============================================================#
+                      There are NO FURTHER QUESTIONS during the installation and it
+                      will continue for 10 to 45 minutes...
+                    #===============================================================#
+
+              %VMSINSTAL-I-SYSDIR, This product creates system directory [HSYEXE.VMS072].
+
+                  If you intend to execute this layered product on other nodes in your
+                  VAXcluster, and you have the appropriate software license, you must
+                  prepare the system-specific roots on the other nodes by issuing the
+                  following command on each node (using a suitably privileged account):
+
+               $ CREATE /DIRECTORY SYS$SPECIFIC:[HSYEXE.VMS072]/OWNER=[1,4]/PROTECTION
+              =(S:RWE,O:RWE,G:RE,W:RE)
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+                      #============================================================#
+                       Saving standard files and images for future upgrade ...
+                      #============================================================#
+
+              %COPY-S-COPIED, SYS$COMMON:[SYSEXE]DCL.EXE;1 copied to VMI$ROOT:[HSYEXE.VMS072]
+              V072$DCL.EXE;2 (229 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSMSG]CLIUTLMSG.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$CLIUTLMSG.EXE;2 (201 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSEXE]SEARCH.EXE;1 copied to VMI$ROOT:[HSYEXE.VMS0
+              72]V072$SEARCH.EXE;2 (35 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSEXE]SMGBLDTRM.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$SMGBLDTRM.EXE;2 (46 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSEXE]SMGTERMS.TXT;1 copied to VMI$ROOT:[HSYEXE.VM
+              S072]V072$SMGTERMS.TXT;2 (170 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSEXE]TERMTABLE.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$TERMTABLE.EXE;2 (170 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYS$LDR]FBDRIVER.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$FBDRIVER.EXE;2 (18 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSEXE]TFF$MASTER.DAT;1 copied to VMI$ROOT:[HSYEXE.
+              VMS072]V072$TFF$MASTER.DAT;2 (134 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSMGR]TFF$STARTUP.COM;27 copied to VMI$ROOT:[HSYEX
+              E.VMS072]V072$TFF$STARTUP.COM;2 (5 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSHLP]TFF$TFUHELP.HLB;1 copied to VMI$ROOT:[HSYEXE
+              .VMS072]V072$TFF$TFUHELP.HLB;2 (55 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYSLIB]TFFSHR.EXE;1 copied to VMI$ROOT:[HSYEXE.VMS0
+              72]V072$TFFSHR.EXE;2 (21 blocks)
+
+                               OpenVMS/Hanyu VAX Sample Installation A-3
+
+ 
+
+
+
+        OpenVMS/Hanyu VAX Sample Installation
+
+
+              %COPY-S-COPIED, SYS$COMMON:[SYSEXE]TFU.EXE;1 copied to VMI$ROOT:[HSYEXE.VMS072]
+              V072$TFU.EXE;2 (32 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYS$LDR]DZDRIVER.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$DZDRIVER.EXE;2 (9 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYS$LDR]YCDRIVER.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$YCDRIVER.EXE;2 (8 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYS$LDR]YEDRIVER.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$YEDRIVER.EXE;2 (9 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYS$LDR]YFDRIVER.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$YFDRIVER.EXE;2 (11 blocks)
+              %COPY-S-COPIED, SYS$COMMON:[SYS$LDR]YIDRIVER.EXE;1 copied to VMI$ROOT:[HSYEXE.V
+              MS072]V072$YIDRIVER.EXE;2 (13 blocks)
+              %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+              %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+              %VMSINSTAL-I-RESTORE, Restoring product save set F ...
+              %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+
+                      #=================================================================#
+                       Creating libraries ...
+                      #=================================================================#
+
+              %LIBRAR-S-INSERTED, module CHARACTER_MANAGER inserted in VMI$ROOT:[HSYHLP]HSYHL
+              P.HLB;2
+              %LIBRAR-S-INSERTED, module CMGR inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HDUMP inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HEDT inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HELP inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HMAIL inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HMERGE inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HSORT inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HSYSHR inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HTPU inserted in VMI$ROOT:[HSYHLP]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module Phrase_Input_Utility inserted in VMI$ROOT:[HSYHLP]HS
+              YHLP.HLB;2
+              %LIBRAR-S-INSERTED, module CHARACTER_MANAGER inserted in VMI$ROOT:[HSYHLP.HANYU
+              ]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module CMGR inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HDUMP inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HEDT inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HELP inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HMAIL inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HMERGE inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HSORT inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module HSYSHR inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+
+        A-4 OpenVMS/Hanyu VAX Sample Installation
+
+ 
+
+
+
+                                   OpenVMS/Hanyu VAX Sample Installation
+
+
+              %LIBRAR-S-INSERTED, module HTPU inserted in VMI$ROOT:[HSYHLP.HANYU]HSYHLP.HLB;2
+              %LIBRAR-S-INSERTED, module Phrase_Input_Utility inserted in VMI$ROOT:[HSYHLP.HA
+              NYU]HSYHLP.HLB;2
+
+                      #==================================================================#
+                       Moving files to destination directories and searching SYS$SPECIFIC
+                      #==================================================================#
+
+              %CREATE-I-CREATED, $1$DIA1:[SYS0.SYSUPD.HANYU072]AVMS$TEMPSPEC.DAT;1 created
+              %CREATE-I-CREATED, $1$DIA1:[SYS0.SYSUPD.HANYU072]AVMS$TEMPDELETE.COM;1 created
+              %DELETE-I-FILDEL, $1$DIA1:[SYS0.SYSUPD.HANYU072]AVMS$TEMPSPEC.DAT;2 deleted (0
+              blocks)
+              %DELETE-I-FILDEL, $1$DIA1:[SYS0.SYSUPD.HANYU072]AVMS$TEMPSPEC.DAT;1 deleted (0
+              blocks)
+              %DELETE-I-FILDEL, $1$DIA1:[SYS0.SYSUPD.HANYU072]AVMS$TEMPDELETE.COM;2 deleted (
+              4 blocks)
+              %DELETE-I-FILDEL, $1$DIA1:[SYS0.SYSUPD.HANYU072]AVMS$TEMPDELETE.COM;1 deleted (
+              0 blocks)
+              %DELETE-I-TOTAL, 4 files deleted (4 blocks)
+              %RENAME-I-RENAMED, VMI$SPECIFIC:[SYSEXE]TEMPMODPARAMS.DAT;1 renamed to VMI$SPEC
+              IFIC:[SYSEXE]MODPARAMS.DAT;2
+
+              %CREATE-I-CREATED, $1$DIA1:[SYS0.SYSUPD.HANYU072]HANYUSTATE.MAR;1 created
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              %VMS/HANYU-I-BEGINIVP, beginning 7.2 IVP.
+
+              ***********************************************************************
+              *                                                                     *
+              *                       OpenVMS/Hanyu VAX V7.2                        *
+              *                 INSTALLATION VERIFICATION PROCEDURE                 *
+              *                                                                     *
+              *             COPYRIGHT (C) 1993,1994,1995,1996,1997,1999             *
+              *                                                                     *
+              *                     COMPAQ COMPUTER CORPORATION                     *
+              *                 HOUSTON TEXAS.  ALL RIGHTS RESERVED.                *
+              *                                                                     *
+              ***********************************************************************
+
+                      Starting OpenVMS/Hanyu VAX IVP ...
+              %VMS/HANYU-I-ENDIVP, 7.2 IVP completed successfully.
+
+                      Installation of HANYU V7.2 completed at 14:20
+
+              %VMSINSTAL-I-SHUTDOWN, This product requires that the system be rebooted.
+
+                               OpenVMS/Hanyu VAX Sample Installation A-5
+
+ 
+
+
+
+        OpenVMS/Hanyu VAX Sample Installation
+
+
+                      SHUTDOWN -- Perform an Orderly System Shutdown
+                                  on node AVMS
+
+              Do you really want to shutdown node AVMS [NO]?
+
+                      VMSINSTAL procedure done at 14:24
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-6 OpenVMS/Hanyu VAX Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+            OpenVMS/Hanyu VAX Sample Installation Verification Procedure
+
+
+
+              This appendix contains a sample of the Installation
+              Verification Procedure (IVP). Refer to Chapter 4 for
+              information about running the IVP.
+
+              $ @SYS$COMMON:[SYSTEST.VMS-HANYU]VMS-HANYU$IVP
+
+              ***********************************************************************
+              *                                                                     *
+              *                       OpenVMS/Hanyu VAX V7.2                        *
+              *                 INSTALLATION VERIFICATION PROCEDURE                 *
+              *                                                                     *
+              *             COPYRIGHT (C) 1993,1994,1995,1996,1997,1999             *
+              *                                                                     *
+              *                     COMPAQ COMPUTER CORPORATION                     *
+              *                 HOUSTON TEXAS.  ALL RIGHTS RESERVED.                *
+              *                                                                     *
+              ***********************************************************************
+
+                       Starting OpenVMS/Hanyu VAX IVP ...
+
+                       OpenVMS/Hanyu VAX IVP completed successfully.
+
+              $
+
+
+
+
+
+
+
+
+
+
+
+
+        OpenVMS/Hanyu VAX Sample Installation Verification Procedure B-1
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       C
+        ________________________________________________________________
+
+        OpenVMS/Hanyu VAX Software Components and Defined System Logical
+                                                                   Names
+
+
+
+              The OpenVMS/Hanyu VAX installation procedure installs
+              a number of files on your system. Table C-1 lists the
+              names of all the files installed in the directories under
+              SYS$COMMON when OpenVMS/Hanyu VAX is installed.
+
+              Table_C-1_Component_File_List_____________________________
+
+              Directory__________________File______________________Change
+
+              [DECW$DEFAULTS.SYSTEM.ZH_  HEVE$WIDGETS_MOTIF.UID    New
+              TW]
+
+              [HSYEXE.EXAMPLE]           CALLASMG$C.C              New
+
+              [HSYEXE.EXAMPLE]           CALLASMG$FORTRAN.FOR      New
+
+              [HSYEXE.EXAMPLE]           DATETIME.C                New
+
+              [HSYEXE.EXAMPLE]           EXAM31.DAT                New
+
+              [HSYEXE.EXAMPLE]           EXAM32.DAT                New
+
+              [HSYEXE.EXAMPLE]           EXAMPLE.B32               New
+
+              [HSYEXE.EXAMPLE]           POET.DAT                  New
+
+              [HSYEXE.EXAMPLE]           SAMPLE.BAS                New
+
+              [HSYEXE.EXAMPLE]           SAMPLE.C                  New
+
+              [HSYEXE.EXAMPLE]           SAMPLE.COB                New
+
+              [HSYEXE.EXAMPLE]           SAMPLE.FOR                New
+
+              [HSYEXE.EXAMPLE]           SAMPLE.MAR                New
+
+              [HSYEXE.EXAMPLE]           SAMPLE.PAS                New
+
+              [HSYEXE.EXAMPLE]           SAMPLE.PLI                New
+
+              [HSYEXE.EXAMPLE]           SAMPLE_HSYSHR.C           New
+
+                                                (continued on next page)
+
+ VAX            Software Components and Defined System Logical Names C-1
+
+ 
+
+
+
+        OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table_C-1_(Cont.)_Component_File_List_____________________
+
+              Directory__________________File______________________Change
+
+              [HSYEXE.EXAMPLE]           SAMPLE_MERGE.C            New
+
+              [HSYEXE.EXAMPLE]           SAMPLE_SORT1.FOR          New
+
+              [HSYEXE.EXAMPLE]           SAMPLE_SORT2.FOR          New
+
+              [HSYEXE.EXAMPLE]           TEXT.IN                   New
+
+              [HSYEXE.HANYU072]          EDIT.CLD                  Replace
+
+              [HSYEXE.HANYU072]          EDIT_EN.HLP               Replace
+
+              [HSYEXE.HANYU072]          SORT.CLD                  Replace
+
+              [HSYEXE.HANYU072]          SORTMERGE_DCL.HLP         Replace
+
+              [HSYEXE]                   CMGR.EXE                  New
+
+              [HSYEXE]                   FONTHANDL.EXE             New
+
+              [HSYEXE]                   HANYUGEN.EXE              New
+
+              [HSYEXE]                   HDUMP.EXE                 New
+
+              [HSYEXE]                   HEDT.EXE                  New
+
+              [HSYEXE]                   HMAIL.EXE                 New
+
+              [HSYEXE]                   HSY$CHARACTER_INDEX.DAT   New
+
+              [HSYEXE]                   HSY$CHARACTER_MASTER_     New
+                                         INDEX.DAT
+
+              [HSYEXE]                   HSY$DECHANYU_CODE_        New
+                                         INFO.DAT
+
+              [HSYEXE]                   HSY$GLYPH_24X24_USER.GDB  New
+
+              [HSYEXE]                   HSY$GLYPH_32X32_USER.GDB  New
+
+              [HSYEXE]                   HSY$GLYPH_40X40_USER.GDB  New
+
+              [HSYEXE]                   HSY$HANYU_SOFT.GDB        New
+
+              [HSYEXE]                   HSY$HEI_24X24_USER.GDB    New
+
+              [HSYEXE]                   HSY$HEI_32X32_USER.GDB    New
+
+              [HSYEXE]                   HSY$HEI_40X40_USER.GDB    New
+
+              [HSYEXE]                   HSY$HEI_CHARACTER_        New
+                                         INDEX.DAT
+
+                                                (continued on next page)
+
+        C-2 OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+ 
+
+
+
+  OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table_C-1_(Cont.)_Component_File_List_____________________
+
+              Directory__________________File______________________Change
+
+              [HSYEXE]                   HSY$HEI_CHARACTER_        New
+                                         INDEX.DAT
+
+              [HSYEXE]                   HSY$HEI_SORTDB.CDB        New
+
+              [HSYEXE]                   HSY$HEI_SORT_INDEX.DAT    New
+
+              [HSYEXE]                   HSY$INIT.EXE              New
+
+              [HSYEXE]                   HSY$PHRASE.DAT            New
+
+              [HSYEXE]                   HSY$PHRASE_CLASS.DAT      New
+
+              [HSYEXE]                   HSY$SORTDB.CDB            New
+
+              [HSYEXE]                   HSY$SORT_INDEX.DAT        New
+
+              [HSYEXE]                   HSY$SUNG_24X24_USER.GDB   New
+
+              [HSYEXE]                   HSY$SUNG_32X32_USER.GDB   New
+
+              [HSYEXE]                   HSY$SUNG_40X40_USER.GDB   New
+
+              [HSYEXE]                   HSY$SUNG_CHARACTER_       New
+                                         INDEX.DAT
+
+              [HSYEXE]                   HSY$SUNG_SORTDB.CDB       New
+
+              [HSYEXE]                   HSY$SUNG_SORT_INDEX.DAT   New
+
+              [HSYEXE]                   HSY$TAIWAN_SPECIFIC.DAT   New
+
+              [HSYEXE]                   HTPU.EXE                  New
+
+              [HSYEXE]                   MAILEDIT_TAI.COM          New
+
+              [HSYEXE]                   PHRASE.EXE                New
+
+              [HSYEXE]                   RECOVER.COM               New
+
+              [HSYEXE]                   WWPPS.EXE                 New
+
+              [HSYHLP.HANYU]             CMGREDIT.HLB              New
+
+              [HSYHLP.HANYU]             CMGRHELP.HLB              New
+
+              [HSYHLP.HANYU]             HANYUGEN.HLB              New
+
+              [HSYHLP.HANYU]             HEDTHELP.HLB              New
+
+              [HSYHLP.HANYU]             HEVE$HELP.HLB             New
+
+              [HSYHLP.HANYU]             HEVE$KEYHELP.HLB          New
+
+              [HSYHLP.HANYU]             HMAILHELP.HLB             New
+
+                                                (continued on next page)
+
+ VAX            Software Components and Defined System Logical Names C-3
+
+ 
+
+
+
+        OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table_C-1_(Cont.)_Component_File_List_____________________
+
+              Directory__________________File______________________Change
+
+              [HSYHLP.HANYU]             HTPUHELP.HLB              New
+
+              [HSYHLP]                   CMGREDIT.HLB              New
+
+              [HSYHLP]                   CMGRHELP.HLB              New
+
+              [HSYHLP]                   HANYUGEN.HLB              New
+
+              [HSYHLP]                   HEDTHELP.HLB              New
+
+              [HSYHLP]                   HEVE$HELP.HLB             New
+
+              [HSYHLP]                   HEVE$KEYHELP.HLB          New
+
+              [HSYHLP]                   HMAILHELP.HLB             New
+
+              [HSYHLP]                   HTPUHELP.HLB              New
+
+              [SYS$LDR]                  ASDRIVER.EXE              New
+
+              [SYS$LDR]                  DZDRIVER.EXE              Replace
+
+              [SYS$LDR]                  FBDRIVER.EXE              Replace
+
+              [SYS$LDR]                  FHDRIVER.EXE              New
+
+              [SYS$LDR]                  HNDRIVER.EXE              New
+
+              [SYS$LDR]                  YCDRIVER.EXE              Replace
+
+              [SYS$LDR]                  YEDRIVER.EXE              Replace
+
+              [SYS$LDR]                  YFDRIVER.EXE              Replace
+
+              [SYS$LDR]                  YIDRIVER.EXE              Replace
+
+              [SYS$STARTUP]              HSY$CONFIG.COM            New
+
+              [SYS$STARTUP]              HSY$STARTUP.COM           New
+
+              [SYS$STARTUP]              HSYHLPSTARTUP.COM         New
+
+              [SYSEXE]                   DCL.EXE                   Replace
+
+              [SYSEXE]                   SEARCH.EXE                Replace
+
+              [SYSEXE]                   SMGBLDTRM.EXE             Replace
+
+              [SYSEXE]                   SMGTERMS.TXT              Replace
+
+              [SYSEXE]                   TERMTABLE.EXE             Replace
+
+              [SYSEXE]                   TFF$MASTER.DAT            Replace
+
+              [SYSEXE]                   TFU.EXE                   Replace
+
+              [SYSFONT.WWPPS]            ANGSANAUPC-BOLD.          New
+
+                                                (continued on next page)
+
+        C-4 OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+ 
+
+
+
+  OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table_C-1_(Cont.)_Component_File_List_____________________
+
+              Directory__________________File______________________Change
+
+              [SYSFONT.WWPPS]            ANGSANAUPC-BOLDITALIC.    New
+
+              [SYSFONT.WWPPS]            ANGSANAUPC-ITALIC.        New
+
+              [SYSFONT.WWPPS]            ANGSANAUPC-LIGHT.         New
+
+              [SYSFONT.WWPPS]            CORDIAUPC-BOLD.           New
+
+              [SYSFONT.WWPPS]            CORDIAUPC-BOLDITALIC.     New
+
+              [SYSFONT.WWPPS]            CORDIAUPC-ITALIC.         New
+
+              [SYSFONT.WWPPS]            CORDIAUPC-LIGHT.          New
+
+              [SYSFONT.WWPPS]            EUCROSIAUPC-BOLD.         New
+
+              [SYSFONT.WWPPS]            EUCROSIAUPC-BOLDITALIC.   New
+
+              [SYSFONT.WWPPS]            EUCROSIAUPC-ITALIC.       New
+
+              [SYSFONT.WWPPS]            EUCROSIAUPC-LIGHT.        New
+
+              [SYSFONT.WWPPS]            FREESIAUPC-BOLD.          New
+
+              [SYSFONT.WWPPS]            FREESIAUPC-BOLDITALIC.    New
+
+              [SYSFONT.WWPPS]            FREESIAUPC-ITALIC.        New
+
+              [SYSFONT.WWPPS]            FREESIAUPC-LIGHT.         New
+
+              [SYSFONT.WWPPS]            HEI-GB2312-80.CSDATA      New
+
+              [SYSFONT.WWPPS]            HEI-LIGHT-CNS11643-       New
+                                         1.CSDATA
+
+              [SYSFONT.WWPPS]            HEI-LIGHT-CNS11643-       New
+                                         2.CSDATA
+
+              [SYSFONT.WWPPS]            IRISUPC-BOLD.             New
+
+              [SYSFONT.WWPPS]            IRISUPC-BOLDITALIC.       New
+
+              [SYSFONT.WWPPS]            IRISUPC-ITALIC.           New
+
+              [SYSFONT.WWPPS]            IRISUPC-LIGHT.            New
+
+              [SYSFONT.WWPPS]            JASMINEUPC-BOLD.          New
+
+              [SYSFONT.WWPPS]            JASMINEUPC-BOLDITALIC.    New
+
+              [SYSFONT.WWPPS]            JASMINEUPC-ITALIC.        New
+
+              [SYSFONT.WWPPS]            JASMINEUPC-LIGHT.         New
+
+              [SYSFONT.WWPPS]            KODCHIANGUPC-BOLD.        New
+
+                                                (continued on next page)
+
+ VAX            Software Components and Defined System Logical Names C-5
+
+ 
+
+
+
+        OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table_C-1_(Cont.)_Component_File_List_____________________
+
+              Directory__________________File______________________Change
+
+              [SYSFONT.WWPPS]            KODCHIANGUPC-BOLDITALIC.  New
+
+              [SYSFONT.WWPPS]            KODCHIANGUPC-ITALIC.      New
+
+              [SYSFONT.WWPPS]            KODCHIANGUPC-LIGHT.       New
+
+              [SYSFONT.WWPPS]            LILYUPC-BOLD.             New
+
+              [SYSFONT.WWPPS]            LILYUPC-BOLDITALIC.       New
+
+              [SYSFONT.WWPPS]            LILYUPC-ITALIC.           New
+
+              [SYSFONT.WWPPS]            LILYUPC-LIGHT.            New
+
+              [SYSFONT.WWPPS]            MUNJO.CSDATA              New
+
+              [SYSFONT.WWPPS]            SUNG-LIGHT-CNS11643-      New
+                                         1.CSDATA
+
+              [SYSFONT.WWPPS]            SUNG-LIGHT-CNS11643-      New
+                                         2.CSDATA
+
+              [SYSFONT.WWPPS]            WATERLILYUPC-BOLD.        New
+
+              [SYSFONT.WWPPS]            WATERLILYUPC-BOLDITALIC.  New
+
+              [SYSFONT.WWPPS]            WATERLILYUPC-ITALIC.      New
+
+              [SYSFONT.WWPPS]            WATERLILYUPC-LIGHT.       New
+
+              [SYSFONT.WWPPS]            XISONG-GB2312-80.CSDATA   New
+
+              [SYSFONT.WWPPS]            YUCCAUPC-BOLD.            New
+
+              [SYSFONT.WWPPS]            YUCCAUPC-BOLDITALIC.      New
+
+              [SYSFONT.WWPPS]            YUCCAUPC-ITALIC.          New
+
+              [SYSFONT.WWPPS]            YUCCAUPC-LIGHT.           New
+
+              [SYSHLP.HANYU]             TFF$TFUHELP.HLB           New
+
+              [SYSHLP]                   HANYU072.RELEASE_NOTES    New
+
+              [SYSHLP]                   TFF$TFUHELP.HLB           Replace
+
+              [SYSHLP]                   WWPPSHLP.HLB              New
+
+              [SYSLIB]                   CMGRDISPSHR.EXE           New
+
+              [SYSLIB]                   CMGRSHR.EXE               New
+
+              [SYSLIB]                   HEDTSHR.EXE               New
+
+              [SYSLIB]                   HEVE$SECTION.TPU$SECTION  New
+
+                                                (continued on next page)
+
+        C-6 OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+ 
+
+
+
+  OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table_C-1_(Cont.)_Component_File_List_____________________
+
+              Directory__________________File______________________Change
+
+              [SYSLIB]                   HEVE$WIDGETS_MOTIF.UID    New
+
+              [SYSLIB]                   HEVE.DAT                  New
+
+              [SYSLIB]                   HMAILSHR.EXE              New
+
+              [SYSLIB]                   HMAILSHRP.EXE             New
+
+              [SYSLIB]                   HSMGSHR.EXE               New
+
+              [SYSLIB]                   HSYSHR.EXE                New
+
+              [SYSLIB]                   HTPU$CCTSHR.EXE           New
+
+              [SYSLIB]                   HTPU$DEBUG.TPU            New
+
+              [SYSLIB]                   HTPU$MOTIFSHR.EXE         New
+
+              [SYSLIB]                   HTPU.DAT                  New
+
+              [SYSLIB]                   HTPUSHR.EXE               New
+
+              [SYSLIB]                   LATSYM$SETUP.EXE          New
+
+              [SYSLIB]                   SOR4BYTEDICT.EXE          New
+
+              [SYSLIB]                   SORTAIDICT.EXE            New
+
+              [SYSLIB]                   SORTDTYPE.EXE             New
+
+              [SYSLIB]                   TFFSHR.EXE                Replace
+
+              [SYSLIB]                   WWPPS.PCF                 New
+
+              [SYSMGR]                   TFF$STARTUP.COM           Replace
+
+              [SYSMSG.HANYU]             CLIUTLMSG.EXE             New
+
+              [SYSMSG.HANYU]             CMGRMSG.EXE               New
+
+              [SYSMSG.HANYU]             HDUMPMSG.EXE              New
+
+              [SYSMSG.HANYU]             HMAILMSG.EXE              New
+
+              [SYSMSG.HANYU]             HTPUMSG.EXE               New
+
+              [SYSMSG.HANYU]             SORTMSG.EXE               New
+
+              [SYSMSG]                   CLIUTLMSG.EXE             Replace
+
+              [SYSMSG]                   CMGRMSG.EXE               New
+
+              [SYSMSG]                   HDUMPMSG.EXE              New
+
+              [SYSMSG]                   HEDTMSG.EXE               New
+
+              [SYSMSG]                   HMAILMSG.EXE              New
+
+                                                (continued on next page)
+
+ VAX            Software Components and Defined System Logical Names C-7
+
+ 
+
+
+
+        OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table_C-1_(Cont.)_Component_File_List_____________________
+
+              Directory__________________File______________________Change
+
+              [SYSMSG]                   HTPUMSG.EXE               New
+
+              [SYSMSG]                   SORTMSG.EXE               New
+
+              [SYSTEST.VMS-HANYU]        AVMSIVP.EXE               New
+
+              [SYSTEST.VMS-HANYU]________VMS-HANYU$IVP.COM_________New__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        C-8 OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+ 
+
+
+
+  OpenVMS/Hanyu VAX Software Components and Defined System Logical Names
+
+
+              Table C-2 lists the system logical names defined by the
+              OpenVMS/Hanyu VAX startup procedure.
+
+
+              Table_C-2_Defined_System_Logical_Names____________________
+
+              Logical_Name____Value_____________________________________
+
+              CMGR$MASTER     HSY$SYSTEM:HSY$CHARACTER_MASTER_INDEX
+
+              HSY$EXAMPLE     SYS$SYSROOT:[HSYEXE.EXAMPLE]
+
+              HSY$HELP        SYS$SYSROOT:[HSYHLP.HANYU], SYS$SYSROOT:[HSYHLP]
+
+              HSY$LIBRARY     SYS$LIBRARY
+
+              HSY$SYSTEM      SYS$SYSROOT:[HSYEXE]
+
+              HTPU$SECTION    HEVE$SECTION
+
+              HTPU$JOURNAL    SYS$SCRATCH
+
+              SYS$HELP        SYS$SYSROOT:[SYSHLP.HANYU], SYS$SYSROOT:[SYSHLP]
+
+              SYS$MESSAGE_____SYS$SYSROOT:[SYSMSG.HANYU],_SYS$SYSROOT:[SYSMSG]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ VAX            Software Components and Defined System Logical Names C-9

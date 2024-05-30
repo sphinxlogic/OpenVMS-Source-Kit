@@ -1,0 +1,3951 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   VAX TDMS
+   Installation Guide
+
+   Order Number: AA-M057J-TE
+
+
+
+   December 1989
+
+   This document contains instructions for installing VAX TDMS
+   on the VMS operating system. It also explains how to read the
+   online release notes before or after installing the product.
+
+
+
+
+
+   Revision/Update Information:  This revised manual su-
+                                 persedes Version 1.8 VAX
+                                 TDMS Installation Guide
+                                 (Order Number AA-M057I-TE).
+
+   OPERATING SYSTEM:             VMS
+
+   SOFTWARE VERSION:             VAX TDMS Version 1.9
+
+
+   digital equipment corporation
+   maynard, massachusetts
+
+ 
+
+
+   ___________________________________________________
+   Revised, December 1989
+
+   The information in this document is subject to change without
+   notice and should not be construed as a commitment by Digital
+   Equipment Corporation. Digital Equipment Corporation assumes
+   no responsibility for any errors that may appear in this
+   document.
+
+   The software described in this document is furnished under a
+   license and may be used or copied only in accordance with the
+   terms of such license.
+
+   No responsibility is assumed for the use or reliability
+   of software on equipment that is not supplied by Digital
+   Equipment Corporation or its affiliated companies.
+
+   Restricted Rights: Use, duplication, or disclosure by the
+   U.S. Government is subject to restrictions as set forth in
+   subparagraph (c)(1)(ii) of the Rights in Technical Data and
+   Computer Software clause at DFARS 252.227-7013.
+
+   © Digital Equipment Corporation 1989.
+
+   All Rights Reserved.
+   Printed in U.S.A.
+
+   The postpaid Reader's Comments forms at the end of this docu-
+   ment request your critical evaluation to assist in preparing
+   future documentation.
+
+   ACMS            MASSBUS       TEAMDATA
+   ALL-IN-1        PDP           ULTRIX
+   DATATRIEVE      P/OS          VAX
+   DEC             Professional  VAXcluster
+   DEC/CMS         Rainbow       VAX FMS
+   DEC/MMS         RALLY         VIDA
+   DECforms        Rdb/ELN       VMS
+   DECintact       Rdb/VMS       VT
+   DECnet          ReGIS         Work Processor
+   DECmate         RSTS
+   DECUS           RSX
+   DECwriter       RT            DIGITAL
+   DIBOL           TDMS
+
+                                                          ZK5157
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        Contents
+________________________________________________________________
+
+Preface .........................................................    vii
+
+
+________________________________________________________________
+Chapter 1 Preparing to Install VAX TDMS
+
+     1.1  Required Operating System Components............   1-1
+
+     1.2  TDMS Software Components.......................... 1-2
+
+     1.3  Prerequisite Hardware............................. 1-3
+
+     1.4  Prerequisite and Optional Software..............   1-3
+
+     1.5  License Registration .............................. 1-4
+
+     1.6  VAXcluster Considerations ........................ 1-5
+
+     1.7  Installation Procedure Requirements.............   1-5
+          1.7.1  Restrictions................................ 1-5
+          1.7.2  Time......................................... 1-6
+          1.7.3  Privileges.................................. 1-6
+          1.7.4  Disk Space.................................. 1-7
+
+
+
+
+
+                                                             iii
+
+ 
+
+
+
+
+
+
+          1.7.5  System Parameters.......................... 1-8
+                 1.7.5.1Checking System Parameter
+                        Values............................... 1-9
+                 1.7.5.2Calculating the Values for
+                        GBLPAGES and GBLSECTIONS..........   1-9
+                 1.7.5.3Changing System Parameter Values
+                        with AUTOGEN........................ 1-11
+          1.7.6  Process Account Quotas.................... 1-12
+          1.7.7  VMSINSTAL Requirements.................... 1-13
+          1.7.8  Backing Up Your System Disk..............  1-14
+
+
+________________________________________________________________
+Chapter 2 Installing VAX TDMS
+
+     2.1  General Information ............................... 2-1
+          2.1.1  Accessing the Online Release Notes......    2-1
+          2.1.2  Determining the Files and Logical Names
+                 Added to the System ....................... 2-2
+          2.1.3  Running the Installation Verification
+                 Procedure (IVP)............................ 2-2
+          2.1.4  Aborting the Installation ................  2-3
+
+     2.2  The Installation Procedure ....................... 2-3
+          2.2.1  Invoking VMSINSTAL......................... 2-3
+          2.2.2  Installation Questions....................  2-5
+          2.2.3  Informational Messages.................... 2-12
+          2.2.4  Running the Installation Verification
+                 Procedure (IVP)............................ 2-13
+          2.2.5  Completing the Installation Procedure ..   2-13
+
+     2.3  Error Recovery .....................................  2-15
+
+
+
+
+
+
+
+iv
+
+ 
+
+
+
+
+
+
+________________________________________________________________
+Chapter 3 After Installing VAX TDMS
+
+     3.1  Editing the System Files.......................... 3-1
+
+     3.2  User Account Requirements ........................ 3-2
+
+     3.3  VAXcluster Considerations ........................ 3-3
+
+     3.4  Creating the CDD/Plus Tree for the Sample
+          Applications........................................ 3-4
+
+     3.5  Removing Nonessential Files......................  3-4
+
+     3.6  Determining and Reporting Problems..............   3-6
+
+
+________________________________________________________________
+Chapter 4 Postinstallation Verification Procedure
+
+     4.1  Phase 1 of the Postinstallation IVP.............   4-2
+
+     4.2  Phase 2 of the Postinstallation IVP.............   4-3
+
+________________________________________________________________
+Appendix A Sample Installation Sessions
+
+
+________________________________________________________________
+Appendix B Files Installed on Your System
+
+     B.1  Release Notes File................................. B-1
+
+     B.2  Updated System Files .............................. B-1
+
+     B.3  Postinstallation IVP Files ....................... B-3
+
+
+
+                                                               v
+
+ 
+
+
+
+
+
+
+
+________________________________________________________________
+Examples
+
+     A-1  Full Development Sample Installation............   A-1
+
+     A-2  Full Development Sample Postinstallation IVP,
+          Phase 1 .............................................  A-6
+
+     A-3  Run-Time Only Sample Installation...............   A-7
+
+     A-4  Run-Time Only Sample Postinstallation IVP,
+          Phase 1 .............................................   A-10
+
+________________________________________________________________
+Figures
+
+     4-1  IVP Initial Form................................... 4-5
+
+     4-2  Main Menu Form ..................................... 4-6
+
+     4-3  Add Employee Form.................................. 4-6
+
+________________________________________________________________
+Tables
+
+     1-1  Disk Space Requirements........................... 1-7
+
+     1-2  Required System Parameter Values ................  1-8
+
+     1-3  Process Quotas for the Installing Account......   1-12
+
+     2-1  VAX TDMS Logical Names............................ 2-2
+
+     3-1  User Account Quotas for Using VAX TDMS .........   3-2
+
+     4-1  IVP Function Keys.................................. 4-4
+
+
+vi
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                         Preface
+________________________________________________________________
+
+
+
+   This document describes how to install VAX Terminal Data
+   Management System (TDMS) on the VMS operating system. It is
+   intended for system managers. This document applies to VAX
+   TDMS Version 1.9.
+
+   Keep this document with your distribution kit. You will need
+   it to install maintenance updates or to reinstall VAX TDMS
+   for any other reason.
+
+____________________________________________________________
+
+Intended Audience
+
+   This manual is intended for those who install and maintain
+   VAX TDMS software. You should read this manual before in-
+   stalling VAX TDMS.
+
+   To install VAX TDMS, you must have access to a privileged ac-
+   count. To run the postinstallation Installation Verification
+   Procedure (IVP), you must use a VT100- VT200- or VT300-series
+   terminal or one that is VT100-compatible.
+
+
+
+
+
+                                                             vii
+
+ 
+
+
+
+
+
+____________________________________________________________
+
+Operating System Information
+
+   To verify which versions of your operating system are com-
+   patible with this version of VAX TDMS, check the most recent
+   copy of the VAX System Software Order Table/Optional Software
+   Cross Reference Table. Contact your Digital representative
+   for a copy of this document.
+
+____________________________________________________________
+
+Structure
+
+   This manual contains four chapters and two appendixes:
+
+   Chapter 1   Describes the preparations and requirements
+               necessary for installing VAX TDMS.
+
+   Chapter 2   Describes the VAX TDMS installation procedure.
+
+   Chapter 3   Describes the tasks to perform after installing
+               VAX TDMS.
+
+   Chapter 4   Describes the VAX TDMS postinstallation IVP.
+
+   Appendix A  Reproduces typical installation sessions and
+               postinstallation IVP sessions.
+
+   Appendix B  Details the files that are installed or modified.
+
+____________________________________________________________
+
+Related Manuals
+
+   For additional information on installing VAX TDMS, refer to
+   the VMS system documentation for these topics:
+
+   o  VMSINSTAL procedure
+
+   o  INSTALL Utility
+
+viii
+
+ 
+
+
+
+
+
+
+   o  System management and operations
+
+____________________________________________________________
+
+Conventions
+
+   This manual uses the following conventions:
+
+   <Return>  This symbol indicates the Return key. Unless other-
+             wise stated, you must end all user input lines in
+             examples by pressing the Return key.
+
+   <Tab>     This symbol indicates the Tab key.
+
+   <Ctrl/x>  Means press the Ctrl key while you press the desig-
+             nated key. For example: Press Ctrl/Z.
+
+   Color     Color in examples shows user input.
+
+   $         The dollar sign represents the DIGITAL Command
+             Language (DCL) prompt. (The DCL prompt on your
+             system may be different.)
+
+____________________________________________________________
+
+References to Products
+
+   This manual often refers to Digital products by their abbre-
+   viated names:
+
+   o  VAX TDMS software is referred to as TDMS.
+
+   o  VAX Language-Sensitive Editor software is referred to as
+      LSE.
+
+   If VAX CDD/Plus software is installed on your system, ref-
+   erences in this manual to the "VAX Common Data Dictionary,"
+   "Common Data Dictionary," or "CDD" refer to the DMU format
+   dictionary.
+
+                                                              ix
+
+ 
+
+
+
+
+
+
+   CDD/Plus supports dictionary definitions in two distinct
+   formats:
+
+   o  DMU format-dictionary definitions that you can create and
+      manipulate with the DMU, CDDL, and CDDV utilities, and
+      other products that do not support the new features of
+      CDD/Plus.
+
+   o  CDO format-dictionary definitions that you can create
+      and manipulate with the CDO utility, the CDD/Plus call
+      interface, and other supporting products.
+
+   You can create and manipulate definitions that you intend to
+   use in your TDMS applications in the DMU format dictionary
+   using DMU, CDDL, CDDV, and other products that do not support
+   the new features of
+   CDD/Plus.
+
+   Your site may have products that support the new features
+   of CDD/Plus. If so, you may benefit by using these products
+   to create definitions in the CDO format dictionary. These
+   definitions can be read by both your TDMS applications and
+   the products that support the new features of CDD/Plus.
+
+   For more information on the DMU format dictionary, CDO format
+   dictionaries, and CDD/Plus in general, see the VAX CDD/Plus
+   User's Guide.
+
+
+
+
+
+
+
+
+
+
+
+
+x
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            Chapter 1
+
+
+                                        Preparing to Install VAX TDMS
+     ________________________________________________________________
+
+
+        This chapter discusses the preparations and requirements
+        necessary for installing VAX TDMS.
+
+        Your bill of materials (BOM) and indented bills report (BIL)
+        specify the number and contents of your media. Be sure to
+        verify the contents of your kit with this information. If
+        your kit is damaged or if you find that parts of it are
+        missing, contact your Digital representative.
+
+        VAX TDMS provides online release notes. Digital strongly
+        recommends that you read the release notes before proceeding
+        with the installation. For information on accessing the
+        online release notes, see Section 2.1.1.
+
+     ____________________________________________________________
+
+     1.1  Required Operating System Components
+
+        The VMS operating system comes with a variety of support
+        options, or classes. Classes include such features as net-
+        working and RMS journaling. To use VAX TDMS, your system
+        should be running a version of VMS that includes the follow-
+        ing classes:
+
+         o VMS required saveset-BASE, CLUS, DRVR, MNGR
+
+         o System Programming-SYSP
+
+
+
+
+
+                                   Preparing to Install VAX TDMS  1-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+         o Network Support-NET
+
+         o Programming Support-PROG
+
+         o Utilities-UTIL
+
+     ____________________________________________________________
+
+     1.2  TDMS Software Components
+
+        The TDMS software is available in two types of kits: the
+        full development kit and the run-time only kit. Each kit
+        consists of base software and Postinstallation Installation
+        Verification Procedure (IVP) software.
+
+        The TDMS base software consists of:
+
+         o Program interface (TSSSHR.EXE)
+
+           The TDMS program interface is a shareable image that
+           contains the callable routines described in the VAX TDMS
+           Request and Programming Manual.
+
+         o System startup procedure (TDMSTRTUP.COM)
+
+           The TDMS startup procedure is a command procedure that
+           installs TDMS as a known image.
+
+         o Request Definition Utility (RDU.EXE)
+
+           You use the Request Definition Utility (RDU) to create
+           and manage TDMS requests and to build TDMS request library
+           files. RDU is available only on the full development kit.
+           The VAX TDMS Request and Programming Manual describes RDU
+           in detail.
+
+         o Form Definition Utility (FDU.EXE)
+
+           You use the Form Definition Utility (FDU) to create and
+           manage TDMS form definitions. FDU is available only on the
+           full development kit. The VAX TDMS Forms Manual describes
+           FDU in detail.
+
+         o Command procedure that calls EDT as the standard editor
+           (TDMSEDIT.COM)
+
+           The TDMSTRTUP command procedure defines the FDU$EDIT and
+           RDU$EDIT logicals as TDMSEDIT.COM. TDMSEDIT.COM calls
+           EDT as the standard editor for use within FDU and RDU.
+           TDMSEDIT.COM is supplied only on the full development kit.
+
+     1-2  Preparing to Install VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+         o Installation-Time Installation Verification Procedure
+           (TDMSIVP.COM)
+
+           You can use the installation-time IVP during the installa-
+           tion to verify that FDU.EXE, RDU.EXE, and TSSSHR.EXE are
+           correctly installed.
+
+         o DCL-level help (HELPLIB.HLB)
+
+           DCL-level help provides information about synchronous and
+           asynchronous calls. It contains information on running the
+           postinstallation verification procedure, and it contains
+           information on where to find the release notes file. For
+           the full development kit, DCL-level help also explains
+           invoking FDU and RDU.
+
+         o Sample applications
+
+           The sample applications demonstrate features of TDMS. They
+           include three samples:
+
+            _ Employee sample
+
+            _ Personnel sample
+
+            _ Department sample
+
+           The sample applications are available only with the full
+           development kit.
+
+     ____________________________________________________________
+
+     1.3  Prerequisite Hardware
+
+        To run the postinstallation IVP (Installation Verification
+        Procedure), you must have a video terminal. See Chapter 4 for
+        more information on the postinstallation IVP.
+
+     ____________________________________________________________
+
+     1.4  Prerequisite and Optional Software
+
+        This section discusses the software you must have installed
+        on your system before installing VAX TDMS. The section also
+        includes information about software that you can use together
+        with VAX TDMS. Please refer to the System Software Addendum
+        (SSA) for a complete list of compatible products and their
+        required version numbers. The SSA is part of the Software
+        Product Description (SPD).
+
+                                   Preparing to Install VAX TDMS  1-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        To install TDMS, you must have:
+
+         o A valid VMS operating system configuration with VMS
+           Version 5.0 or higher installed on your system.
+
+           Refer to the VAX TDMS Software Product Description (SPD)
+           for minimum hardware requirements and related configura-
+           tion information.
+
+         o VAX Common Data Dictionary (CDD/Plus) Version 4.1 or
+           higher installed on your system.
+
+         o The appropriate device for your distribution media.
+
+        If you want TDMS support for the VAX Language-Sensitive
+        Editor (LSE), you must install LSE before you install TDMS.
+        TDMS support is available only for LSE Version 2.3 or higher.
+        See the VAX Language-Sensitive Editor Installation Guide for
+        information on installing that product.
+
+     ____________________________________________________________
+
+     1.5  License Registration
+
+        The VMS License Management Facility is available with Version
+        5.0 of the VMS operating system. If you are installing VAX
+        TDMS on a VMS
+        Version 5.0 or higher system, you must register your software
+        license through the VMS License Management Facility (LMF) in
+        accordance with the license agreement signed by your site.
+
+        The license registration information you need is contained
+        in the Product Authorization Key (PAK). The PAK is a paper
+        certificate that contains information about your license to
+        run a particular piece of software.
+
+        During the installation, you are asked whether you have
+        registered the VAX TDMS license and loaded the appropriate
+        authorization key. You must register and load your license
+        for VAX TDMS before you start the installation in order to
+        run the Installation Verification Procedure (IVP) and use the
+        software.
+
+        To register a license under VMS Version 5.0, first log in to
+        the system manager's account, SYSTEM. You then have a choice
+        of two ways to perform the registration:
+
+     1-4  Preparing to Install VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+         o Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+           prompts you for information, respond with data from your
+           Product Authorization Key (PAK).
+
+         o Issue the LICENSE REGISTER DCL command with the appro-
+           priate qualifiers that correspond to information on the
+           PAK.
+
+        For complete information on using LMF, see the manual on the
+        License Management Utility in the VMS documentation set.
+
+     ____________________________________________________________
+
+     1.6  VAXcluster Considerations
+
+        When TDMS is installed on a cluster, files are placed un-
+        der the SYS$COMMON root. Files from previous TDMS installa-
+        tions exist under SYS$COMMON and SYS$SPECIFIC. The files in
+        SYS$SPECIFIC must be deleted before you install TDMS Version
+        1.9. Therefore, delete the following files before you invoke
+        the installation procedure:
+
+           SYS$SPECIFIC:[SYSLIB]TSSSHR.EXE;*
+           SYS$SPECIFIC:[SYSEXE]FDU.EXE;*
+           SYS$SPECIFIC:[SYSEXE]RDU.EXE;*
+
+     ____________________________________________________________
+
+     1.7  Installation Procedure Requirements
+
+        This section discusses various requirements for installing
+        VAX TDMS.
+
+     ____________________________________________________________
+
+     1.7.1  Restrictions
+
+        Inform users of the system to avoid using the CDD and help
+        while you install TDMS. You can use the REPLY command to send
+        a message to users, for example:
+
+          $ REPLY/ALL "Please avoid using the CDD or help.  Installing TDMS."
+
+
+
+                                   Preparing to Install VAX TDMS  1-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+     ____________________________________________________________
+
+     1.7.2  Time
+
+        The full development installation procedure takes 30 to 40
+        minutes. The run-time only installation procedure takes 10 to
+        20 minutes.
+
+        Installing VAX TDMS and running the IVP on a standalone VAX
+        11/780 system takes 30 minutes.
+
+     ____________________________________________________________
+
+     1.7.3  Privileges
+
+        To install VAX TDMS, you must be logged in to an account that
+        has SETPRV or at least the following privileges:
+
+         o CMKRNL
+
+         o CMEXEC
+
+         o OPER
+
+         o SYSLICK
+
+         o SYSPRV
+
+         o SYSNAM
+
+         o WORLD
+
+        Note that VMSINSTAL turns off BYPASS privilege at the start
+        of the installation.
+
+
+
+
+
+
+
+
+
+
+
+
+     1-6  Preparing to Install VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        To use TDMS with the dictionary, you must also have the CDD
+        GLOBAL_DELETE (G)  privilege for CDD$TOP. Run the Dictionary
+        Management Utility (DMU) to examine the CDD privileges. Enter
+        the following command at the DCL prompt:
+
+          $ SET DEF SYS$SYSTEM
+          $ RUN DMU
+
+        DMU responds with the DMU> prompt. At the prompt, type:
+
+          DMU> SHOW PROTECTION CDD$TOP
+
+        DMU then displays the privileges for that node. To change the
+        privilege for that node, enter the following command at the
+        DMU> prompt:
+
+          DMU> SET PROTECTION/EDIT CDD$TOP
+
+        With the cursor in the Grant column of the current access
+        control list, type a G to obtain the GLOBAL_DELETE privilege.
+        To return to the DMU prompt, press Ctrl/Z. Then enter the
+        following commands:
+
+          DMU> SHOW PROTECTION CDD$TOP
+          DMU> EXIT
+
+     ____________________________________________________________
+
+     1.7.4  Disk Space
+
+        Installing VAX TDMS requires a certain amount of free disk
+        space during the installation. Once VAX TDMS is installed,
+        less storage space is required. Table 1-1 summarizes the
+        storage requirements for VAX TDMS.
+
+        Table 1-1:  Disk Space Requirements
+        _____________________________________________________________
+                              Blocks During    Blocks After
+        Kit___________________Installation_____Installation__________
+
+        VAX TDMS Version      12,000           5,000
+        1.9 with sample
+        applications
+        _____________________________________________________________
+                                             (continued on next page)
+
+                                   Preparing to Install VAX TDMS  1-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        Table 1-1 (Cont.):  Disk Space Requirements
+        _____________________________________________________________
+                              Blocks During    Blocks After
+        Kit___________________Installation_____Installation__________
+
+        VAX TDMS Version 1.9  12,000           2,500
+        without sample
+        applications
+
+        VAX TDMS RTO Version  3,000            500
+        1.9__________________________________________________________
+
+
+        To determine the number of free disk blocks on the current
+        system disk, enter the following command at the DCL prompt:
+
+          $ SHOW DEVICE SYS$SYSDEVICE
+
+     ____________________________________________________________
+
+     1.7.5  System Parameters
+
+        Installing VAX TDMS requires certain system parameter set-
+        tings. Table 1-2 lists the minimum required system parameter
+        values for the installation. Depending on the kinds of pro-
+        grams and applications running at your site, you might need
+        higher values for some settings.
+
+        Table 1-2:  Required System Parameter Values
+        _____________________________________________________________
+        System_Parameter___________Value_____________________________
+
+        GBLPAGES[1]                n + 208
+
+        GBLSECTIONS[1]             n + 5
+        [1]The_n_variable_refers_to_the_system_parameter_values_that_
+
+        are currently in use. To install VAX TDMS, you must raise
+        those values by the number indicated. (See Section 1.7.5.2.)
+        _____________________________________________________________
+
+        The following sections show you how to check system parameter
+        values, calculate values for the GBLPAGES and GBLSECTIONS
+        system parameters, and change parameter values with the VMS
+        AUTOGEN command procedure.
+
+     1-8  Preparing to Install VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+     ____________________________________________________________
+
+     1.7.5.1  Checking System Parameter Values
+
+        To check the values of your system parameters, enter the
+        following command at the DCL prompt to invoke the System
+        Generation Utility:
+
+          $ RUN SYS$SYSTEM:SYSGEN
+          SYSGEN>
+
+        At the SYSGEN> prompt, enter the SHOW command to display
+        the value of a system parameter. The values displayed should
+        equal or exceed the the value of each parameter listed in
+        Table 1-2. The following command displays the value for the
+        GBLSECTIONS system parameter:
+
+          SYSGEN> SHOW GBLSECTIONS
+
+        After you finish checking the parameters with the SHOW com-
+        mand, you can enter the EXIT command at the SYSGEN> prompt to
+        return to DCL level.
+
+     ____________________________________________________________
+
+     1.7.5.2  Calculating the Values for GBLPAGES and GBLSECTIONS
+
+        To install and run VAX TDMS, you must have sufficient free
+        global pages and global sections. You must first find out how
+        many free global pages and sections you have on your system.
+        Then use AUTOGEN if you need to increase the GBLPAGES and
+        GBLSECTIONS system parameters.
+
+        The n shown in Table 1-2 represents the current number of
+        unused global pages or global sections available on your
+        system. For the installation to process successfully, you
+        must raise these values by the amount indicated. To calculate
+        how many unused global pages and global sections your system
+        has, perform the following steps:
+
+         1. Run the VMS INSTALL Utility using the following DCL com-
+           mand:
+
+             $ INSTALL LIST /GLOBAL /SUMMARY
+
+           The Install Utility displays a summary of global pages
+           and global sections used by your system, as well as the
+           current number of unused global pages. For example:
+
+                                   Preparing to Install VAX TDMS  1-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+                              Summary of Local Memory Global Sections
+
+             258 Global Sections Used,  22580/3420 Global Pages Used/Unused
+
+         2. Determine whether the number of unused global pages (3420
+           in the example) is equal to or greater than 208. If the
+           number of unused pages is less than 208, you need to
+           increase the value for GBLPAGES.
+
+         3. Note the amount shown for Global Sections Used (258 in the
+           example).
+
+         4. Run the System Generation Utility and use the SHOW command
+           to determine how many global sections have been allocated.
+           For example:
+
+     $ RUN SYS$SYSTEM:SYSGEN
+     SYSGEN> SHOW GBLSECTIONS
+
+     Parameter Name          Current   Default   Minimum   Maximum Unit  Dynamic
+     --------------          -------   -------   -------   ------- ----  -------
+     GBLSECTIONS                 512       250        20      4095 Sections
+
+         5. Subtract the amount shown in the summary (258 in the
+           example) from the amount allocated. If the difference
+           is less than 5, you need to increase the value of the
+           GBLSECTIONS parameter.
+
+        If you are installing VAX TDMS on a VMS Version 5.2 sys-
+        tem, you can use the WRITE command with the F$GETSYI lexical
+        function to find the number of free global pages and global
+        sections. The following example shows how to get this infor-
+        mation at your terminal (the default for SYS$OUTPUT):
+
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+          15848
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+          24
+
+        If the values displayed by the system are greater than the
+        values in Table 1-2, you do not need to increase the values
+        for these parameters. If the value of free global pages or
+        global sections is less than the value in Table 1-2, you must
+        increase the system parameter setting.
+
+     1-10  Preparing to Install VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        Section 1.7.5.3 describes the procedures for increasing these
+        values as well as those of other system parameters. Refer to
+        the VMS documentation on system management and operations for
+        more information.
+
+     ____________________________________________________________
+
+     1.7.5.3  Changing System Parameter Values with AUTOGEN
+
+        You use the AUTOGEN command procedure to change system param-
+        eters. AUTOGEN automatically adjusts values for parameters
+        that are associated with the ones you reset manually. To
+        change system parameters with AUTOGEN, edit the following
+        file:
+
+          SYS$SYSTEM:MODPARAMS.DAT
+
+        If you need to change a parameter value that is already in
+        the
+        MODPARAMS.DAT file, use a text editor to locate the line
+        containing that value. Delete the current value associated
+        with that parameter and enter the new value.
+
+        To add a new value, add a line to the MODPARAMS.DAT file. Be
+        sure to include both the name of the parameter and its value
+        in the new line.
+
+        You can also modify incremental parameters in the MODPARAMS.DAT
+        file. The following example increases the global page setting
+        by 2000:
+
+          ADD_GBLPAGES = 2000
+
+                                     NOTE
+
+            When you set the page file quota, do not use a value
+            that exceeds the amount of page file space available
+            on the system.
+
+        After you make all your changes, exit from the editor and
+        execute the AUTOGEN procedure to recalculate your system
+        parameters. Enter the following command at the DCL prompt:
+
+          $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+                                  Preparing to Install VAX TDMS  1-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        When you specify REBOOT, AUTOGEN performs an automatic system
+        shutdown and then reboots the system. Any users logged on to
+        the system are immediately disconnected during the shutdown.
+        The automatic reboot puts the new parameter values into
+        effect.
+
+        When you reboot a system under VMS Version 5.0, the AUTOGEN
+        Utility automatically adjusts some of the SYSGEN parameters
+        based on the consumption of resources since the last reboot.
+        If you do not want to take advantage of this automatic ad-
+        justment, include the /NOFEEDBACK qualifier on the AUTOGEN
+        command line.
+
+        For more information about using AUTOGEN, see the documenta-
+        tion in the VMS System Management Subkit.
+
+     ____________________________________________________________
+
+     1.7.6  Process Account Quotas
+
+        The account you use to install VAX TDMS must have sufficient
+        quotas to enable you to perform the installation. Table 1-3
+        summarizes the minimum process quotas required for the in-
+        stallation account.
+
+        Table 1-3:  Process Quotas for the Installing Account
+        _____________________________________________________________
+        Account_Quota____Value_______________________________________
+
+        ASTLM            24
+
+        BIOLM            18
+
+        BYTLM            18,000
+
+        DIOLM            18
+
+        ENQLM            100
+
+        FILLM____________20__________________________________________
+
+        User account quotas are stored in the file SYSUAF.DAT. You
+        use the VMS Authorize Utility to verify and change user
+        account quotas. First set your directory to SYS$SYSTEM and
+        then run AUTHORIZE:
+
+     1-12  Preparing to Install VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+          $ SET DEFAULT SYS$SYSTEM
+          $ RUN AUTHORIZE
+          UAF>
+
+        At the Authorize Utility prompt (UAF>), use the SHOW command
+        with an account name to check a particular account. For
+        example:
+
+          UAF> SHOW SMITH
+
+        To change a quota, use the MODIFY command at the UAF> prompt.
+        MODIFY has the following format:
+
+              MODIFY account-name /quota-name=nnnn
+
+        The following example changes the FILLM quota for the SMITH
+        account and then exits from the Authorize Utility:
+
+          UAF> MODIFY SMITH /FILLM=50
+          UAF> EXIT
+
+        After you exit from the utility, the VMS system displays
+        messages indicating whether or not changes were made. Once
+        the changes have been made, you must log out and log in again
+        for the new quotas to take effect.
+
+        For more information on modifying account quotas, see the
+        description of the Authorize Utility in the documentation
+        included in the VMS System Management Subkit.
+
+     ____________________________________________________________
+
+     1.7.7  VMSINSTAL Requirements
+
+        When you invoke VMSINSTAL, it checks the following:
+
+         o Whether you have set your default device and directory to
+           SYS$UPDATE
+
+         o Whether you are logged in to a privileged account
+
+         o Whether you have adequate quotas for installation
+
+         o Whether DECnet is up and running
+
+         o Whether any users are logged in to the system
+
+        The VMSINSTAL procedure requires that the installation ac-
+        count have a minimum of the following quotas:
+
+           ASTLM = 24
+
+                                  Preparing to Install VAX TDMS  1-13
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           BIOLM = 18
+           BYTLM = 18,000
+           DIOLM = 18
+           ENQLM = 30
+           FILLM = 20
+
+        If VMSINSTAL detects any problems during the installation,
+        it notifies you of the problem and asks whether you want to
+        continue the installation. In some instances, you can enter
+        YES to continue. To stop the installation process and correct
+        the situation, enter NO or press Return. Then correct the
+        problem and restart the installation.
+
+     ____________________________________________________________
+
+     1.7.8  Backing Up Your System Disk
+
+        At the beginning of the installation, VMSINSTAL asks whether
+        you have backed up your system disk. Digital recommends that
+        you do a system disk backup before installing any software on
+        top of the operating system.
+
+        Use the backup procedures that have been established at your
+        site. For details on performing a system disk backup, see
+        the information on the Backup Utility in the documentation
+        included in the VMS System Management Subkit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     1-14  Preparing to Install VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            Chapter 2
+
+
+                                                  Installing VAX TDMS
+     ________________________________________________________________
+
+
+        This chapter describes how to install VAX TDMS. Section 2.2
+        contains a step-by-step description of the installation
+        procedure.
+
+     ____________________________________________________________
+
+     2.1  General Information
+
+        This section includes information about accessing release
+        notes, determining files and logical names added to your
+        system, running the Installation Verification Procedure
+        (IVP), and aborting the installation.
+
+     ____________________________________________________________
+
+     2.1.1  Accessing the Online Release Notes
+
+        VAX TDMS Version 1.9 provides online release notes only.
+        You should review the release notes in case they contain any
+        information about changes in the installation procedure.
+
+        You must specify OPTIONS N when you invoke VMSINSTAL if you
+        want the installation procedure to give you an opportunity
+        to display or print the online release notes. This ques-
+        tion comes near the beginning of the installation. (If you
+        have already reviewed the release notes, you do not need to
+        specify OPTIONS N.)
+
+        Once VAX TDMS has been installed, the release notes are
+        located in the following file:
+
+          SYS$HELP:TDMS019.RELEASE_NOTES
+
+                                             Installing VAX TDMS  2-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        Online help also directs you to the release notes file. After
+        the installation, you can enter the following command to
+        review the release notes through the help system:
+
+          $ HELP TDMS RELEASE_NOTES
+
+                                     NOTE
+
+            With this release of VAX TDMS, hardcopy release notes
+            are no longer provided.
+
+     ____________________________________________________________
+
+     2.1.2  Determining the Files and Logical Names Added to the
+            System
+
+        The files added, replaced, and/or modified on your system
+        when VAX TDMS is installed are listed in Appendix B.
+
+        Table 2-1 lists the logical names VAX TDMS adds to the system
+        when it is installed:
+
+        Table 2-1:  VAX TDMS Logical Names
+        _____________________________________________________________
+        Logical_Name__________File_Specification_____________________
+
+        TDMS$EDIT             SYS$COMMON:[SYSEXE]TDMSEDIT
+
+        TDMS$EXAMPLES         SYS$COMMON:[SYSHELP.EXAMPLES.TDMS]
+
+        RDU$EDIT              SYS$COMMON:[SYSEXE]TDMSEDIT[1]
+
+        FDU$EDIT              SYS$COMMON:[SYSEXE]TDMSEDIT[1]
+        [1]RDU$EDIT_and_FDU$EDIT_are_logical_names_for_TDMS$EDIT.____
+
+        _____________________________________________________________
+
+     ____________________________________________________________
+
+     2.1.3  Running the Installation Verification Procedure (IVP)
+
+        The Installation Verification Procedure (IVP) for VAX TDMS
+        verifies the installation. During the installation, you
+        are asked whether you want to run the IVP as part of the
+        installation. If you respond YES, VMSINSTAL runs the IVP. It
+        is recommended that you run the IVP to be sure that VAX TDMS
+        is installed correctly.
+
+     2-2  Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        After VAX TDMS is installed, you can run the postinstallation
+        IVP to verify that the software is working properly. You
+        might also want to run the IVP after a system failure to be
+        sure that users can access VAX TDMS.
+
+        Chapter 4 explains the postinstallation IVP. You can also
+        find the same online instructions in the file SYS$COMMON:[SYSTEST.TDMS]TDMSIVP.TXT.
+
+     ____________________________________________________________
+
+     2.1.4  Aborting the Installation
+
+        To abort the installation procedure at any time, press Ctrl
+        /Y. When you press Ctrl/Y, the installation procedure deletes
+        all files it has created up to that point and exits. You can
+        then start the installation again.
+
+     ____________________________________________________________
+
+     2.2  The Installation Procedure
+
+        The VAX TDMS installation procedure consists of a series of
+        questions and informational messages. The following sections
+        explain how to invoke VMSINSTAL and answer the installation
+        procedure questions.
+
+     ____________________________________________________________
+
+     2.2.1  Invoking VMSINSTAL
+
+        To start the installation, invoke the VMSINSTAL command
+        procedure from a privileged account, such as the SYSTEM
+        account. VMSINSTAL is in the SYS$UPDATE directory. Use the
+        following command to set default to the SYS$UPDATE directory:
+
+          $ SET DEFAULT SYS$UPDATE
+
+        Next, invoke VMSINSTAL using the following syntax:
+
+              @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS
+     N
+
+        saveset-name
+        The installation name for the component. For VAX TDMS, use
+        the following installation name:
+
+              TDMSDEV019
+
+                                             Installing VAX TDMS  2-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        device-name
+        The name of the device on which you plan to mount the media.
+        For example, MTA0: is the device name for a tape drive. It is
+        not necessary to use the console drive for this installation.
+        However, if you do use the console drive, you should replace
+        any media you removed once the installation is complete.
+
+        OPTIONS N
+        An optional parameter that indicates you want to be prompted
+        to display or print the release notes. If you do not include
+        the OPTIONS N parameter, VMSINSTAL does not prompt you to
+        display or print the release notes.
+
+        There are several other options you can select when you
+        invoke VMSINSTAL:
+
+         o Auto_answer option (A)-Initially  creates a file that
+           contains your answers to VMSINSTAL questions and prompts.
+           You can then use the option (and the answer file) to save
+           time during a reinstallation (typically after upgrading
+           your system).
+
+         o Get save set option (G)-Lets  you store product save sets
+           temporarily on a magnetic tape or in a disk directory.
+
+         o File log option (L)-Logs  all activity to the terminal
+           during installation.
+
+         o Alternate root option (R)-Lets  you install the product to
+           a system root other than that of the running system.
+
+        For detailed information on these options, see the documenta-
+        tion in the VMS System Management Subkit. If you specify more
+        than one option, separate the options with commas (OPTIONS
+        A,N).
+
+        The following example shows the command to invoke VMSINSTAL
+        to install the full development VAX TDMS kit from tape drive
+        MTA0: and the system response. This example uses the OPTIONS
+        N parameter for printing or displaying release notes.
+
+
+
+
+
+     2-4  Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+          $ @SYS$UPDATE:VMSINSTAL TDMSDEV019 MTA0: OPTIONS N
+
+                VAX/VMS Software Product Installation Procedure V5.0
+
+
+          It is DD-MMM-YYYY at 11:20.
+          Enter a question mark (?) at any time for help.
+
+        If you are installing the run-time only kit, type:
+
+          $ @SYS$UPDATE:VMSINSTAL TDMSRTO019 MTA0: OPTIONS N
+
+        If you are installing TDMS on a system disk other than the
+        currently running system disk, type:
+
+          $ @SYS$UPDATE:VMSINSTAL TDMSDEV019 MTAx: OPTIONS R DBA1:[SYS0.]
+
+        If you do not supply the product name or the device name,
+        VMSINSTAL prompts you for this information later on in the
+        installation procedure. VMSINSTAL does not prompt you for
+        any options, so be sure to include OPTIONS N on the VMSINSTAL
+        command line to access the release notes during the installa-
+        tion.
+
+     ____________________________________________________________
+
+     2.2.2  Installation Questions
+
+        This section discusses the questions that appear during
+        the installation. Appendix A contains a sample installation
+        procedure showing how the questions can be answered.
+
+        Each question in the installation is marked with an asterisk
+        (*)  at the beginning of the line. Some questions show the
+        default response in brackets, for example [YES]. If you want
+        to use the default response, press only the Return key.
+
+         1. Confirm DECnet status.
+
+             %VMSINSTAL-W-DECNET, Your DECnet network is up and running.
+                .
+                .
+                .
+             * Do you want to continue anyway [NO]?
+
+           VMSINSTAL notifies you if DECnet is running and displays
+           a list of all active processes. It then asks whether you
+           want to continue the installation. You should install VAX
+
+                                             Installing VAX TDMS  2-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           TDMS on a standalone system or cluster with DECnet shut
+           down. NO is the default response to the question.
+
+           If you are installing on VMS Version 5.2 or higher,
+           VMSINSTAL does not check the DECnet status. You can in-
+           stall VAX TDMS while DECnet is up and running.
+
+         2. Confirm system backup.
+
+             * Are you satisfied with the backup of your system disk [YES]?
+
+           VMSINSTAL asks whether you are satisfied with your system
+           backup. You should always back up your system disk before
+           performing an installation. If you are satisfied with the
+           backup of your system disk, press Return. Otherwise, enter
+           NO to discontinue the installation. After you back up your
+           system disk, you can restart the installation.
+
+         3. Mount the media.
+
+             Please mount the first volume of the set on MTA0:.
+             * Are you ready? YES
+             %MOUNT-I-MOUNTED, VAX TDMS MOUNTED ON _$$MTA0:  (NODE 1)
+             The following products will be processed:
+               VAX TDMS V1.9
+
+                 Beginning installation of VAX TDMS V1.9 at 20:01
+
+             %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-6  Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           You should now mount the first distribution volume on the
+           device you specified when you invoked VMSINSTAL. The de-
+           vice name is shown in the prompt. VMSINSTAL then asks you
+           whether you are ready to continue with the installation.
+
+           If you respond YES to indicate that you are ready,
+           VMSINSTAL displays a message that the media containing
+           VAX TDMS has been mounted on the specified device and that
+           the installation has begun.
+
+           If you entered the wrong device name when you invoked
+           VMSINSTAL and need to restart the installation, enter NO
+           in response to the "Are you ready?" question. To abort the
+           installation for other reasons, press Ctrl/Y.
+
+         4. Mount additional media volumes.
+
+             %BACKUP-I-READYREAD, mount volume 2 on _$$MTA0: for reading
+
+             Enter "YES" when ready:
+
+           If your installation kit contains more than one volume,
+           VMSINSTAL prompts you to insert the additional volumes
+           and then asks you to indicate that you are ready for the
+           installation to proceed.
+
+         5. Select a release notes option.
+
+             Release Notes Options:
+
+                 1.  Display release notes
+                 2.  Print release notes
+                 3.  Both 1 and 2
+                 4.  Copy release notes to SYS$HELP
+                 5.  Do not display, print or copy release notes
+
+             * Select option [2]:
+
+           If you specified OPTIONS N when you started the installa-
+           tion, VMSINSTAL asks a question about release notes. You
+           have five options for handling the release notes under VMS
+           Versions 5.0 and 5.1. There are only four options under
+           VMS Version 5.2 or higher.
+
+
+                                             Installing VAX TDMS  2-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           For VMS Versions 5.0 and 5.1, you see the following dis-
+           play:
+
+             Release Notes Options:
+
+                 1.  Display release notes
+                 2.  Print release notes
+                 3.  Both 1 and 2
+                 4.  Copy release notes to SYS$HELP
+                 5.  Do not display, print or copy release notes
+
+             * Select option [2]:
+
+           For VMS Version 5.2 or higher, you see the following
+           display:
+
+             Release notes included with this kit are always copied to SYS$HELP.
+
+             Additional Release Notes Options:
+
+                 1.  Display release notes
+                 2.  Print release notes
+                 3.  Both 1 and 2
+                 4.  None of the above
+
+             * Select option [2]:
+
+           If you select option 1, VMSINSTAL displays the release
+           notes immediately on the console terminal. You can termi-
+           nate the display at any time by pressing Ctrl/C.
+
+           If you select option 2, VMSINSTAL prompts you for the name
+           of the print queue:
+
+             * Queue name [SYS$PRINT]:
+
+           You can press RETURN to send the file to the default
+           output print device or you can enter another queue name.
+
+           If you select option 3, VMSINSTAL displays the release
+           notes immediately on the console terminal and then prompts
+           you for a queue name for the printed version.
+
+           Option 4 under VMS Versions 5.0 and 5.1 causes the in-
+           stallation to copy the release notes to the system help
+           directory. [Even if you do not select the VMS Version 5.0
+           or 5.1 option 4, the release notes for VAX TDMS are copied
+           to the system help directory.] Under VMS Version 5.2 or
+
+     2-8  Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           higher, release notes are always copied to the system help
+           directory.
+
+           Select option 4 (VMS Version 5.2 or higher) or option 5
+           (VMS
+           Version 5.0 or 5.1) if you reviewed the release notes
+           and are restarting the installation.
+
+           Next, VMSINSTAL displays the following question:
+
+             * Do you want to continue the installation [N]?: YES
+             %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                                successfully moved to SYS$HELP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                             Installing VAX TDMS  2-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           To continue the installation, enter YES. Otherwise, press
+           RETURN. In either case, the release notes are copied to a
+           file in the SYS$HELP directory:
+
+             SYS$HELP:TDMS019.RELEASE_NOTES
+
+                                      NOTE
+
+               The name of the release notes file installed by
+               VMSINSTAL consists of the current product name and
+               version number. Do not delete release notes for
+               previous versions of VAX TDMS.
+
+           After the installation, you can enter the following com-
+           mand to review the release notes through the VMS online
+           help system:
+
+             $ HELP TDMS RELEASE_NOTES
+
+         6. Check for LSE.
+
+           If you are installing the full development kit, the pro-
+           cedure checks whether LSE is on the system where you are
+           installing TDMS. If LSE is on the system, the TDMS support
+           for LSE is added. If LSE is not installed, the procedure
+           displays a message that indicates LSE is not installed
+           and asks whether you want to continue. If you want TDMS
+           support for LSE, you must install LSE before you install
+           TDMS.
+
+         7. Install sample applications.
+
+             * Do you want to install the TDMS sample applications [NO]?
+
+           If you are installing the full development kit, the pro-
+           cedure then asks whether you want to install the sample
+           applications.
+
+           If you choose not to install the sample applications at
+           this time, they will not be available to you after the
+           installation.
+
+         8. Choose the Installation Verification Procedure (IVP)
+           option.
+
+             * Do you want to run the IVP after the installation [YES]?
+
+           The installation procedure now asks whether you want
+           to run the Installation Verification Procedure. The IVP
+
+     2-10  Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           for VAX TDMS checks to be sure that the installation is
+           successful. It is recommended that you run the IVP.
+
+           After TDMS is installed, you can run the IVP independently
+           to verify that the software is available on your system.
+           You might need to run the IVP after a system failure to
+           make sure that users can access TDMS.
+
+           See Chapter 4 for information on the postinstallation
+           procedure, which runs a TDMS test application.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Installing VAX TDMS  2-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+         9. Purge files.
+
+             * Do you want to purge files replaced by this installation [YES]?
+
+           You have the option to purge files from previous versions
+           of VAX TDMS that are superseded by this installation.
+           Purging is recommended; however, if you need to keep files
+           from the previous version, enter NO in response to the
+           question.
+
+         10.Respond to VAX TDMS license registration queries.
+
+             Product:       VAX TDMS
+             Producer:      DEC
+             Version:       1.9
+             Release Date:  DD-MMM-YYYY
+
+             * Does this product have an authorization key registered and loaded?
+
+           The installation procedure displays license information
+           about your product and then asks whether you have regis-
+           tered and loaded your Product Authorization Key (PAK) for
+           VAX TDMS.
+
+           If you have not registered and loaded your PAK, you must
+           answer NO to this question. You have to register and load
+           your PAK to successfully complete the installation. If you
+           have not done so, you should stop the installation, regis-
+           ter and load your PAK, and then restart the installation.
+
+     ____________________________________________________________
+
+     2.2.3  Informational Messages
+
+        At this point, the installation procedure displays a number
+        of informational messages that report on the progress of
+        the installation. There are no further questions. If the
+        installation procedure has been successful up to this point,
+        VMSINSTAL moves the new or modified files to their target
+        directories, updates help files, and updates DCL tables, if
+        necessary. If you asked for files to be purged, that work is
+        done now. The following message is displayed to indicate that
+        the installation is nearly complete:
+
+     %VMSINSTAL-I-MOVEFILES, files will now be moved to their target directories...
+
+     2-12  Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+     ____________________________________________________________
+
+     2.2.4  Running the Installation Verification Procedure (IVP)
+
+        If you chose to run the IVP, VMSINSTAL runs it now. When the
+        IVP runs successfully, you see the following display:
+
+          Executing IVP procedure for: VAX TDMS V1.9-0
+
+          Testing FDU....
+              Test completed successfully.
+
+          Testing RDU....
+              Test completed successfully.
+
+          Testing TSSSHR....
+              Test completed successfully.
+
+              ***************************************
+
+              VAX TDMS V1.9-0
+
+              Development
+
+              IVP COMPLETED SUCCESSFULLY
+
+              ***************************************
+
+          IVP completed for: VAX TDMS V1.9-0
+
+     ____________________________________________________________
+
+     2.2.5  Completing the Installation Procedure
+
+        The following messages indicate that the entire installation
+        procedure is complete:
+
+             Installation of TDMSDEV 1.9 completed at 11:39
+
+             VMSINSTAL procedure done at 11:39
+
+        You can now log out of the privileged account:
+
+          $ LOGOUT
+          SYSTEM     logged out at DD-MMM-YYYY 11:41:03.45
+
+                                            Installing VAX TDMS  2-13
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        VMSINSTAL deletes or changes entries in the process symbol
+        tables during the installation. Therefore, if you are going
+        to continue using the system manager's account and you want
+        to restore these symbols, you should log out and log in
+        again.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-14  Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+     ____________________________________________________________
+
+     2.3  Error Recovery
+
+        If errors occur during the installation itself or when the
+        IVP is running, VMSINSTAL displays failure messages. If the
+        installation fails, you see the following message:
+
+          %VMSINSTAL-E-INSFAIL, The installation of VAX TDMS V1.9 has failed.
+
+        If the IVP fails, you see these messages:
+
+          The VAX TDMS V1.9 Installation Verification Procedure failed.
+
+          %VMSINSTAL-E-IVPFAIL, The IVP for VAX TDMS V1.9 has failed.
+
+        Errors can occur during the installation if any of the fol-
+        lowing conditions exist:
+
+         o The operating system version is incorrect.
+
+         o A prerequisite software version is incorrect.
+
+         o Quotas necessary for successful installation are insuffi-
+           cient.
+
+         o System parameter values for successful installation are
+           insufficient.
+
+         o The VMS help library is currently in use.
+
+         o The TDMS or CDD/Plus license has not been registered and
+           loaded.
+
+        For descriptions of the error messages generated by these
+        conditions, see the VMS documentation on system messages,
+        recovery procedures, and VMS software installation. If you
+        are notified that any of these conditions exist, you should
+        take the appropriate action as described in the message.
+        (You might need to change a system parameter or increase
+        an authorized quota value.) For information on installation
+        requirements, see Chapter 1.
+
+
+
+
+                                            Installing VAX TDMS  2-15
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            Chapter 3
+
+
+                                            After Installing VAX TDMS
+     ________________________________________________________________
+
+
+        After installing VAX TDMS, you need to perform the following
+        tasks:
+
+         o Edit the system startup and shutdown files.
+
+         o Set user account quotas.
+
+         o Make VAX TDMS available on each licensed node in
+           your VAXcluster (if you are installing VAX TDMS on a
+           VAXcluster).
+
+         o Create the CDD tree (full development option).
+
+         o Remove nonessential files.
+
+        This chapter explains how to perform these tasks.
+
+     ____________________________________________________________
+
+     3.1  Editing the System Files
+
+        You must edit the system startup file to provide for auto-
+        matic startup of VAX TDMS when your system is rebooted.
+
+        Add the command line that starts VAX TDMS to the system
+        startup file, SYS$MANAGER:SYSTARTUP_V5.COM. VAX TDMS cannot
+        start until after the network has started. You must position
+        this new command line after the line that invokes the network
+        startup command procedure. The following example shows the
+        network startup command line followed by the startup command
+        line for VAX TDMS:
+
+                                       After Installing VAX TDMS  3-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+          $ @SYS$MANAGER:STARTNET.COM
+               .
+               .
+               .
+          $ @SYS$MANAGER:TDMSSTRTUP.COM
+
+     ____________________________________________________________
+
+     3.2  User Account Requirements
+
+        To use VAX TDMS, user accounts on your system must have at
+        least the TMPMBX and NETMBX privileges. Use the VMS Authorize
+        Utility to determine whether users have the privileges they
+        require.
+
+        The user accounts must also have sufficient quotas to be able
+        to use VAX TDMS. Table 3-1 summarizes the minimum required
+        user account quotas.
+
+        Table 3-1:  User Account Quotas for Using VAX TDMS
+        _____________________________________________________________
+        Account_Quota____Value_______________________________________
+
+        ASTLM            24
+
+        BIOLM            18
+
+        BYTLM            18,000
+
+        DIOLM            18
+
+        ENQLM            100
+
+        FILLM____________20__________________________________________
+
+        User account privileges and quotas are stored in the file
+        SYSUAF.DAT. You use the VMS Authorize Utility to verify
+        and change user account privileges and quotas. To use the
+        Authorize Utility, set your directory to SYS$SYSTEM and use
+        the DCL RUN command as follows:
+
+          $ SET DEFAULT SYS$SYSTEM
+          $ RUN AUTHORIZE
+          UAF>
+
+     3-2  After Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        At the Authorize Utility prompt (UAF>), enter the SHOW com-
+        mand with an account name to check that particular account.
+        For example:
+
+          UAF> SHOW SMITH
+
+        To change a quota, use the MODIFY command at the UAF> prompt.
+        MODIFY has the following format:
+
+              MODIFY account-name /quota-name=nnnn
+
+        The following example adds the NETMBX privilege, changes the
+        FILLM quota for the SMITH account and then exits from the
+        utility:
+
+          UAF> MODIFY SMITH /PRIVILEGES=NETMBX /FILLM=50
+          UAF> EXIT
+
+        After you exit from the utility, the VMS system displays
+        messages indicating whether changes were made. Once you have
+        finished making the changes, the users must log out and log
+        in again for the new quotas to take effect.
+
+        For more information on modifying account quotas, see the
+        description of the Authorize Utility in the VMS documentation
+        set.
+
+     ____________________________________________________________
+
+     3.3  VAXcluster Considerations
+
+        After you install VAX TDMS on a VAXcluster, you must do the
+        following tasks on each licensed node in the VAXcluster:
+
+         o Register the license for VAX TDMS
+
+         o Execute the VAX TDMS startup command procedure
+
+         o Install DCLTABLES.EXE
+
+         o Run the IVP and the postinstallation IVP
+
+        To execute the startup command procedure, log in to a node in
+        the VAXcluster and enter the following command:
+
+          $ @SYS$STARTUP:TDMS$STARTUP.COM
+
+        To install DCLTABLES.EXE, enter the following commands:
+
+                                       After Installing VAX TDMS  3-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+          $ INSTALL :== $SYS$SYSTEM:INSTALL/COMMAND_MODE
+          $ INSTALL REPLACE SYS$SHARE:DCLTABLES.EXE/OPEN/SHARE/HEADER
+
+        For information on registering the VAX TDMS license on a
+        node, see Section 1.5. For information on running the IVPs,
+        see Section 2.1.3 and Chapter 4
+
+     ____________________________________________________________
+
+     3.4  Creating the CDD/Plus Tree for the Sample Applications
+
+        The sample applications are an optional part of the full
+        development kit. If you chose to install the sample appli-
+        cations, TDMS links them to produce executable images that
+        you can later run. However, the installation procedure does
+        not create the CDD/Plus tree containing the sample records,
+        forms, requests, and request library definitions.
+
+        To create the CDD/Plus tree containing the sample records,
+        forms, requests, and request library definitions, type the
+        following:
+
+          $ SET DEFAULT TDMS$EXAMPLES
+          $ @TDMSBLDSAMPLE
+
+        This command procedure creates the CDD/Plus tree in the
+        CDD$TOP.TDMS$SAMPLES directory. It also builds the sample
+        request library files.
+
+        See the VAX TDMS Forms Manual for information on running the
+        sample applications.
+
+     ____________________________________________________________
+
+     3.5  Removing Nonessential Files
+
+        If you have limited disk space, you can remove some files
+        that are installed on your system as part of the TDMS instal-
+        lation procedure:
+
+         o Sample application files (full development option)
+
+           The files associated with the sample applications exist in
+           TDMS$EXAMPLES. If you installed these files and now want
+           to remove them, (approximately 2600 blocks), type:
+
+             $ DELETE/LOG TDMS$EXAMPLES:*.*;*
+
+         o Postinstallation IVP files (both options)
+
+     3-4  After Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           To delete the TDMS postinstallation IVP files (approxi-
+           mately 222 blocks in the full development option and 151
+           in the run-time only option), type:
+
+             $ DELETE/LOG SYS$COMMON:[SYSTEST]TDMS*.COM;*
+             $ DELETE/LOG SYS$COMMON:[SYSTEST.TDMS]*.*;*
+
+                                      NOTE
+
+               The postinstallation IVP files remain on the system
+               so that you can run the postinstallation IVP at
+               any time after installing TDMS. Do not delete these
+               files if you plan to run the postinstallation IVP.
+
+        If you ran the installation-time IVP as part of the instal-
+        lation, all installation-time IVP files created during the
+        installation procedure are automatically deleted after the
+        IVP is completed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       After Installing VAX TDMS  3-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+     ____________________________________________________________
+
+     3.6  Determining and Reporting Problems
+
+        If you encounter a problem while using VAX TDMS, report it
+        to Digital. Depending on the nature of the problem and the
+        type of support you have, you can take one of the following
+        actions:
+
+         o Call Digital if your software contract or warranty agree-
+           ment entitles you to telephone support.
+
+         o Submit a Software Performance Report (SPR).
+
+         o Fill out and submit a Reader's Comments form if the prob-
+           lem has to do with the VAX TDMS documentation. There are
+           Reader's Comments forms at the back of each manual. Use
+           the form from the manual in which you found the error.
+           Include the section and page number.
+
+        Review the Software Product Description (SPD) and Warranty
+        Addendum for an explanation of warranty. If you encounter
+        a problem during the warranty period, report the problem as
+        indicated above or follow alternate instructions provided by
+        Digital for reporting SPD nonconformance problems.
+
+        See the release notes for VAX TDMS for information on how to
+        submit an SPR.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     3-6  After Installing VAX TDMS
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            Chapter 4
+
+
+                              Postinstallation Verification Procedure
+     ________________________________________________________________
+
+
+        This chapter describes the postinstallation IVP. This IVP
+        checks that the full development and run-time only installa-
+        tion procedures correctly installed TDMS. This IVP also runs
+        a TDMS test application. In addition, the full development
+        kit postinstallation IVP makes sure the software works with
+        the VAX Common Data Dictionary (CDD) and builds a TDMS appli-
+        cation. The IVP for both kits is based on the Employee sample
+        application.
+
+                                     NOTE
+
+            The postinstallation IVP must be installed on the
+            currently running system disk to operate correctly. If
+            you installed TDMS on a system disk that you are not
+            currently using, you must boot your system from that
+            disk before you run the postinstallation IVP.
+
+        If errors occur during the postinstallation IVP, run the
+        postinstallation IVP again. If the problem still occurs,
+        submit a Software Performance Report (if you are eligible to
+        do so).
+
+        The postinstallation IVP is divided into two phases. During
+        the first phase of the postinstallation IVP, the following
+        occurs:
+
+         o If the full development kit is being installed, the
+           postinstallation IVP verifies the installation of the
+           TDMS utilities and invokes a command procedure that:
+
+            _ Inserts the IVP forms, record definitions, requests,
+
+              and request library in the CDD
+
+                         Postinstallation Verification Procedure  4-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+            _ Builds the IVP request library file (.RLB)
+
+            _ Links the IVP program
+
+         o If the run-time only kit is being installed, the postin-
+           stallation IVP links the IVP program.
+
+        The second phase of the postinstallation IVP runs a program
+        that uses TDMS calls with a request library file and verifies
+        the operation of the program. This program is the same for
+        the full development and run-time only kits.
+
+     ____________________________________________________________
+
+     4.1  Phase 1 of the Postinstallation IVP
+
+        To run Phase 1 of the postinstallation IVP, follow these
+        steps:
+
+         1. Log in to a privileged account, such as the SYSTEM ac-
+           count.
+
+         2. Set your default directory to the system test directory,
+           as follows:
+
+             $ SET DEFAULT SYS$COMMON:[SYSTEST]
+
+         3. Invoke the command procedure for the kit you are in-
+           stalling.
+
+            o If you are installing the full development kit, type:
+
+                $ @TDMSBLDIVP
+
+              The TDMSBLDIVP.COM command procedure checks that TDMS
+              works with the VMS operating systems and the CDD. It
+              also creates the forms, records, requests, and request
+              libraries needed for the IVP. It builds the IVP request
+              library file and links the IVP program against the TDMS
+              program interface.
+
+            o If you are installing the run-time only kit, type:
+
+                $ @TDMSRTOIVP
+
+              The TDMSRTOIVP.COM command procedure links the IVP
+              program against the TDMS program interface.
+
+     4-2  Postinstallation Verification Procedure
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+         4. Answer the following question:
+
+             Have you invoked the VAX TDMS system startup procedure [Y/N]?
+
+           The TDMS system startup procedure installs TDMS as a
+           known image. The TDMS installation procedure invokes
+           the TDMS system startup procedure, TDMSTRTUP.COM, during
+           the installation. Therefore, you would normally answer
+           YES to this question. However, some situations may cause
+           your system to be running without knowing that TDMS is
+           installed. For example, if you chose not to modify your
+           system startup command file to invoke the TDMS system
+           startup procedure, the TDMS procedure is not performed
+           when you boot your system. Therefore, if you boot your
+           system, TDMS is no longer installed as a known image.
+           In this case, you would answer NO to this question. The
+           IVP command procedure would then invoke the TDMS system
+           startup procedure.
+
+        See Appendix A for sample Phase 1 postinstallation IVP ses-
+        sions.
+
+     ____________________________________________________________
+
+     4.2  Phase 2 of the Postinstallation IVP
+
+        The procedure you follow for Phase 2 of the TDMS postinstal-
+        lation IVP is the same for the full development and run-time
+        only kits. During Phase 2, you run the postinstallation IVP
+        program that calls TDMS to display forms and accept input.
+        You must perform Phase 1 of the IVP before you run Phase 2.
+
+        Because TDMS applications run only on video terminals, you
+        must run Phase 2 of the postinstallation IVP program on
+        a VT100-, VT200-, or VT300-series terminal. You may also
+        use terminals that are VT100-compatible. See the VAX TDMS
+        Software Product Description for a complete list of the
+        supported terminals.
+
+        During Phase 2 of the postinstallation IVP, you are asked
+        to input data to forms. To allow you to input this data, the
+        postinstallation IVP has defined function keys that allow
+        you to move around forms, signal that input is complete,
+        and get help. Table 4-1 shows what keys are defined for the
+        postinstallation IVP application.
+
+                         Postinstallation Verification Procedure  4-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        Table 4-1:  IVP Function Keys
+        _____________________________________________________________
+        Key_Name______Function_______________________________________
+
+        Tab           Moves the cursor to the next field.
+
+        Enter or      Completes processing for the current form.
+        Return
+
+        Help (PF2     Pressed once, displays a line of help infor-
+        and F15)      mation at the bottom of the screen. Pressed
+                      twice, provides additional information.
+
+        Backspace     Moves the cursor back to the previous field.
+        (F12)
+
+        Linefeed      Deletes the contents of the current field.
+        (F13)________________________________________________________
+
+                                     NOTE
+
+            If the test does not run exactly as detailed here (for
+            example, if the cursor does not tab correctly or the
+            wrong form is displayed), run the postinstallation
+            IVP again. If the problem still occurs, submit an
+            SPR explaining which step failed and what message the
+            postinstallation IVP displayed at the time.
+
+        The following list describes how the postinstallation IVP
+        program proceeds and what you should type to complete the
+        test. Each numbered item names the form displayed at each
+        step. To start the postinstallation IVP program, type:
+
+          $ SET TERMINAL/INQUIRE
+          $ SET DEFAULT SYS$COMMON:[SYSTEST.TDMS]
+          $ RUN TDMSIVP
+
+         1. IVP Initial form
+
+           The IVP begins with an Initial form that introduces you
+           to the TDMS IVP. The Initial form appears as shown in
+           Figure 4-1.
+
+
+
+     4-4  Postinstallation Verification Procedure
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        _____________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                         Postinstallation Verification Procedure  4-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           The Initial form refers you to a file for information
+           about running the postinstallation IVP. The file is:
+
+           SYS$COMMON:[SYSTEST.TDMS]TDMSIVP.TXT
+
+           The same information is contained in this chapter. You do
+           not need to access that file as long as you are using this
+           book.
+
+           Press the Return key to move to the Main Menu form.
+
+         2. Main Menu form
+
+           The Main Menu form appears as shown in Figure 4-2.
+
+        _____________________________________________________________
+
+           In this step of the procedure, the IVP tests the Add
+           function. The cursor is at the selection number field.
+           Press 1. The cursor moves to the employee number field.
+           Type 7654321 and press the Return key.
+
+           The Add Employee form is displayed.
+
+         3. Add Employee form
+
+           The Add Employee form appears as shown in Figure 4-3.
+
+        _____________________________________________________________
+
+           This step tests the Add function's ability to accept data.
+           Enter the following information. (Items not followed by
+           TAB indicate an automatic tab to the next field.)
+
+
+
+
+
+
+
+
+
+
+
+
+     4-6  Postinstallation Verification Procedure
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+                     Joseph <TAB>
+                          S
+                      Smith <TAB>
+             11 Main Street <TAB>
+                  Merrimack <TAB>
+                         NH
+                      03054
+                          M
+                    27DEC64<Return>
+
+           When you press the Return key, the Main Menu form is
+           displayed.
+
+         4. Main Menu form
+
+           This step tests the Display function. The cursor is at the
+           selection number field. Type 2. The cursor moves to the
+           employee number field. Type 7654321 and press the Return
+           key. The Display Employee form appears.
+
+         5. Display Employee form
+
+           This step displays the information you just entered. After
+           reviewing the information, press the Return key. The Main
+           Menu form is displayed.
+
+         6. Main Menu form
+
+           This step tests the Change function. The cursor is at the
+           selection number field. Press 3. The cursor moves to the
+           employee number field. Type 7654321 and press the Return
+           key. The Change Employee form is displayed.
+
+         7. Change Employee form
+
+           This step tests the Change function's ability to accept
+           new information and replace old information. Enter the
+           following:
+
+                     <TAB> (Cursor moves to next field.)
+                     <TAB> (Cursor moves to next field.)
+             Stevens <TAB>
+             35 West Avenue <Return>
+
+           When you press the Return key, the Main Menu form is
+           displayed.
+
+         8. Main Menu form
+
+                         Postinstallation Verification Procedure  4-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           This step tests the Display function. The cursor is at the
+           selection number field. Press 2. The cursor moves to the
+           employee number field. Type 7654321 and press the Return
+           key. The Display Employee form is displayed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     4-8  Postinstallation Verification Procedure
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+         9. Display Employee form
+
+           This step displays the new information you entered. After
+           reviewing the information, press the Return key. The Main
+           Menu form is displayed.
+
+         10.Main Menu form
+
+           This step tests the Delete function. The cursor is at the
+           selection number field. Press 4. The cursor moves to the
+           employee number field. Type 7654321 and press the Return
+           key. The Delete Employee form is displayed.
+
+         11.Delete Employee form
+
+           This step tests the Delete function. Type Y and press the
+           Return key. The Main Menu form is displayed.
+
+         12.Main Menu form
+
+           This step checks that the Delete function worked properly.
+           The cursor is at the selection number field. Press 2. The
+           cursor moves to the employee number field. Type 7654321
+           and press the Return key. The Main Menu form is displayed
+           along with the following error message:
+
+             NO RECORD EXISTS WITH THAT NUMBER CHECK NUMBER AND TRY AGAIN
+
+         13.Main Menu form
+
+           This step ends the test. The cursor is at the selection
+           number field. Press 5. The cursor moves to the employee
+           number field. Press the Return key. The DCL level prompt
+           is displayed.
+
+        When you are finished with the IVP, you can log out.
+
+
+
+
+
+
+
+
+
+                         Postinstallation Verification Procedure  4-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                           Appendix A
+
+
+                                         Sample Installation Sessions
+     ________________________________________________________________
+
+
+        This appendix gives samples of the following sessions:
+
+         o Full development installation
+
+         o Full development postinstallation IVP, Phase 1
+
+         o Run-time only installation
+
+         o Run-time only postinstallation IVP, Phase 1
+
+        See Chapter 4 for information on running Phase 2 of the
+        postinstallation IVP.
+
+     Example A-1:  Full Development Sample Installation
+     ________________________________________________________________
+
+     $ SET DEF SYS$UPDATE
+     $ @VMSINSTAL
+
+             VAX/VMS Software Product Installation Procedure V5.2
+
+     It is 13-NOV-1989 at 14:06.
+
+     Enter a question mark (?) at any time for help.
+
+     * Are you satisfied with the backup of your system disk [YES]? YES
+     * Where will the distribution volumes be mounted: MUA0:
+
+     Enter the products to be processed from the first distribution volume set.
+
+     * Products: TDMSDEV019
+     * Enter installation options you wish to use (none): N
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+                                    Sample Installation Sessions  A-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-1 (Cont.):  Full Development Sample Installation
+     ________________________________________________________________
+
+     The following products will be processed:
+
+       TDMSDEV V1.9
+
+             Beginning installation of TDMSDEV V1.9 at 14:06
+
+     %VMSINSTAL-I-RESTORE, Restoring product saveset A ...
+
+     Release notes included with this kit are always copied to SYS$HELP.
+
+     Additional Release Notes Options:
+
+         1.  Display release notes
+         2.  Print release notes
+         3.  Both 1 and 2
+         4.  None of the above
+
+     * Select option [2]: 2
+     * Queue name [SYS$PRINT]: <Return>
+
+     %VMSINSTAL-I-RELMOVED , The product's release notes have been successfully moved to SYS$HELP.
+
+         *************************************************************
+
+             This installation procedure requires the following
+         privileges:  CMEXEC, CMKRNL, OPER, SYSLCK, SYSPRV, SYSNAM,
+         and  WORLD.  The  procedure  also requires the GLOBAL_DELETE
+         (G) CDD privilege on the CDD$TOP node.
+
+             There must be approximately 12000 free blocks on the disk
+         where this kit is being installed.  The procedure requires
+         that you have installed VAX CDD/Plus V4.1 or later. Your system
+         must have VAX VMS V5.0 or later. You must also have an
+         ENQLM of at least 100 locks.
+
+         This installation requires 5 GBLSECTIONS and 208 GBLPAGES
+         available (SYSGEN parameters) for TSSSHR.EXE. You do not
+         need these extra GBLSECTIONS and GBLPAGES if TSSSHR.EXE has
+         been installed previously.
+
+         *************************************************************
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+     A-2  Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-1 (Cont.):  Full Development Sample Installation
+     ________________________________________________________________
+
+             Product:      TDMS
+             Producer:     DEC
+             Version:      1.9
+             Release Date: 01-JUL-1989
+
+     * Does this product have an authorization key registered and loaded? YES
+
+     * Do you want to install the TDMS sample applications [NO]? YES
+
+     * Do you want to run the IVP after the installation [YES]? YES
+
+     * Do you want to purge files replaced by this installation [YES]? YES
+
+     %VMSINSTAL-I-RESTORE, Restoring product saveset B ...
+     %VMSINSTAL-I-RESTORE, Restoring product saveset C ...
+
+         There are no more questions.  The installation takes
+             approximately .5 hour on a stand-alone VAX 11/780.
+
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    Sample Installation Sessions  A-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-1 (Cont.):  Full Development Sample Installation
+     ________________________________________________________________
+
+         Beginning installation of VAX TDMS V1.9-0 development option.
+
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+         Beginning installation of VAX TDMS V1.9-0 base software.
+
+         Building TSSSHR.EXE
+
+         Building RDU.EXE
+
+         Building FDU.EXE
+
+         Building help libraries
+
+         Installation of VAX TDMS V1.9-0
+             base software successfully completed.
+
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+         Beginning installation of
+             VAX TDMS V1.9-0 sample applications.
+
+         Installation of VAX TDMS V1.9-0
+             sample applications successfully completed.
+
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSHLP.EXAMPLES.TDMS].
+
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSTEST.TDMS].
+
+         *************************************************************
+
+         The TDMS postinstallation IVP (Installation Verification
+         Procedure) has been provided and can be run after the
+         installation is complete.  Information on how to run the
+         postinstallation IVP can be found in:
+
+                   SYS$COMMON:[SYSTEST.TDMS]TDMSIVP.TXT
+
+         *************************************************************
+
+                            REMINDER
+
+         Be sure to add a  line  to  your  site-specific
+         system startup command procedure  (SYS$MANAGER:
+         SYSTARTUP.COM) to   invoke  the  VAX TDMS system
+         startup file (SYS$COMMON:[SYSMGR]TDMSTRTUP.COM).
+
+         *************************************************************
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+     A-4  Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-1 (Cont.):  Full Development Sample Installation
+     ________________________________________________________________
+
+         VAX TDMS V1.9-0 installation procedure
+             successfully completed.
+
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+     Executing IVP for: VAX TDMS V1.9-0
+
+     Testing FDU....
+         Test completed successfully.
+
+     Testing RDU....
+         Test completed successfully.
+
+     Testing TSSSHR....
+         Test completed successfully.
+
+         *************************************
+
+         VAX TDMS V1.9-0
+
+         Development
+
+         IVP COMPLETED SUCCESSFULLY
+
+         *************************************
+
+     IVP completed for: VAX TDMS V1.9-0
+
+     Installation of TDMSDEV V1.9 completed at 14:13
+
+     VMSINSTAL procedure done at 14:13
+
+     ________________________________________________________________
+
+
+
+
+
+
+
+                                    Sample Installation Sessions  A-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-2:  Full Development Sample Postinstallation IVP,
+                   Phase 1
+     ________________________________________________________________
+
+     $ SET DEFAULT SYS$COMMON:[SYSTEST]
+     $ @TDMSBLDIVP
+
+     Beginning VAX TDMS V1.9-0 IVP Phase 1.
+
+     In  order to  run  the  VAX  TDMS   Installation   Verification  Procedure,
+     the  VAX  TDMS  system  startup procedure must have been run  successfully.
+     This  is  normally done at system boot time, but may not have been done yet
+     if you have just installed VAX TDMS.
+
+     If you have not invoked SYS$COMMON:[SYSMGR]TDMSTRTUP.COM yet, this procedure
+     will do it for you.
+
+     Have you invoked the VAX TDMS system startup procedure [Y/N]? yes
+
+     Creating temporary IVP CDD node.
+
+     Inserting IVP forms into CDD.
+
+     Inserting IVP record definitions into CDD.
+
+     Inserting IVP requests into CDD.
+
+     Building IVP request library.
+
+     Deleting temporary IVP CDD node.
+
+     Linking IVP program.
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+
+
+
+
+
+
+
+
+
+     A-6  Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-2 (Cont.):  Full Development Sample Postinstallation
+                           IVP, Phase 1
+     ________________________________________________________________
+
+                               NOTE
+
+             Do not forget to complete the IVP  by
+             manually running the TDMSIVP  program.
+             See SYS$COMMON:[SYSTEST.TDMS]TDMSIVP.TXT
+             for details.
+
+     VAX TDMS V1.9-0 IVP Phase 1 successfully completed.
+     $
+
+     ________________________________________________________________
+
+     Example A-3:  Run-Time Only Sample Installation
+     ________________________________________________________________
+
+     $ SET DEF SYS$UPDATE
+     $ @VMSINSTAL
+
+             VAX/VMS Software Product Installation Procedure V5.2
+
+     It is 16-NOV-1989 at 12:22.
+
+     Enter a question mark (?) at any time for help.
+     * Are you satisfied with the backup of your system disk [YES]? Y
+     * Where will the distribution volumes be mounted: MUA0:
+
+     Enter the products to be processed from the first distribution volume set.
+     * Products: TDMSRTO019
+     * Enter installation options you wish to use (none): N
+     The following products will be processed:
+       TDMSRTO V1.9
+
+             Beginning installation of TDMSRTO V1.9 at 12:23
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+     Release notes included with this kit are always copied to SYS$HELP.
+
+     Additional Release Notes Options:
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+                                    Sample Installation Sessions  A-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-3 (Cont.):  Run-Time Only Sample Installation
+     ________________________________________________________________
+
+         1.  Display release notes
+         2.  Print release notes
+         3.  Both 1 and 2
+         4.  None of the above
+
+     * Select option [2]: 2
+     * Queue name [SYS$PRINT]: <Return>
+
+     %VMSINSTAL-I-RELMOVED , The product's release notes have been successfully moved to SYS$HELP.
+
+         *************************************************************
+
+         This installation procedure requires the following
+         privileges:  CMEXEC, CMKRNL, OPER, SYSLCK, SYSPRV, SYSNAM,
+         and  WORLD. There must be approximately 3000 free blocks on
+         the disk where this kit is being installed. Your system must
+         have VAX VMS V5.0 or later.
+
+         This installation requires 5 GBLSECTIONS and 208 GBLPAGES
+         available (SYSGEN parameters) for TSSSHR.EXE. You do not
+         need these extra GBLSECTIONS and GBLPAGES if TSSSHR.EXE has
+         been installed previously.
+
+         *************************************************************
+
+             Product:      TDMS-RT
+             Producer:     DEC
+             Version:      1.9
+             Release Date: 01-JUL-1989
+
+     * Does this product have an authorization key registered and loaded? YES
+     * Do you want to run the IVP after the installation [YES]? YES
+     * Do you want to purge files replaced by this installation [YES]? YES
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+         There are no more questions.  The installation takes
+         approximately 10 minutes on a stand-alone VAX 11/780.
+
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+         Beginning installation of VAX TDMS V1.9-0 RTO option
+
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+         Beginning installation of VAX TDMS V1.9-0 RTO base software.
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+     A-8  Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-3 (Cont.):  Run-Time Only Sample Installation
+     ________________________________________________________________
+
+         Building TSSSHR.EXE
+
+         Installation of VAX TDMS V1.9-0 RTO base software
+             successfully completed.
+
+         *************************************************************
+
+         The TDMS postinstallation IVP (Installation Verification
+         Procedure) has been provided and can be run after the
+         installation is complete.  Information on how to run the
+         postinstallation IVP can be found in:
+
+                   SYS$COMMON:[SYSTEST.TDMS]TDMSIVP.TXT
+
+         *************************************************************
+
+                            REMINDER
+
+         Be sure to add a  line  to  your  site-specific
+         system startup command procedure  (SYS$MANAGER:
+         SYSTARTUP.COM) to   invoke  the  VAX TDMS system
+         startup file (SYS$COMMON:[SYSMGR]TDMSTRTUP.COM).
+
+         *************************************************************
+
+         VAX TDMS V1.9-0 RTO installation procedure
+             successfully completed.
+
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+     Executing IVP for: VAX TDMS V1.9-0
+
+     Testing TSSSHR...
+         Test completed successfully.
+
+         *************************************
+
+         VAX TDMS V1.9-0
+
+         Run Time Only
+
+         IVP COMPLETED SUCCESSFULLY
+
+         *************************************
+
+     IVP completed for: VAX TDMS V1.9-0
+
+     ________________________________________________________________
+                                             (continued on next page)
+
+                                    Sample Installation Sessions  A-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+     Example A-3 (Cont.):  Run-Time Only Sample Installation
+     ________________________________________________________________
+
+             Installation of TDMSRTO V1.9 completed at 12:29
+
+     ________________________________________________________________
+
+     Example A-4:  Run-Time Only Sample Postinstallation IVP, Phase 1
+     ________________________________________________________________
+
+     $ SET DEFAULT SYS$COMMON:[SYSTEST]
+     $ @TDMSRTOIVP
+
+     Beginning VAX TDMS V1.9-0 RTO IVP Phase 1.
+
+     In  order to  run  the  VAX  TDMS   Installation   Verification  Procedure,
+     the  VAX  TDMS  system  startup procedure must have been run  successfully.
+     This  is  normally done at system boot time, but may not have been done yet
+     if you have just installed VAX TDMS.
+
+     If you have not invoked SYS$COMMON:[SYSMGR]TDMSTRTUP.COM yet, this procedure
+     will do it for you.
+
+     Have you invoked the VAX TDMS system startup procedure [Y/N]? yes
+
+     Linking IVP program.
+
+                               NOTE
+
+             Do not forget to complete the IVP  by
+             manually running the TDMSIVP  program.
+             See SYS$COMMON:[SYSTEST.TDMS]TDMSIVP.TXT
+             for details.
+
+
+     VAX TDMS V1.9-0 RTO IVP Phase 1 successfully completed.
+     $
+
+     ________________________________________________________________
+
+
+
+
+
+
+     A-10  Sample Installation Sessions
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                           Appendix B
+
+
+                                       Files Installed on Your System
+     ________________________________________________________________
+
+
+        During installation, several files are copied to your system.
+        The installation procedure generates a file that contains
+        the specifications for the copied files. The specification of
+        that file is as follows:
+
+        SYS$COMMON:[SYSEXE]TDMS019_FILES.DAT
+
+        The files that are added to the system or modified but are
+        not listed in that file are listed in the sections that
+        follow.
+
+     ____________________________________________________________
+
+     B.1  Release Notes File
+
+        The release notes file for TDMS has the following specifica-
+        tion:
+
+        SYS$HELP:TDMS019.RELEASE_NOTES
+
+     ____________________________________________________________
+
+     B.2  Updated System Files
+
+        The TDMS installation updates the following VMS system files
+        for the full development and run-time only kits:
+
+         o SYS$LIBRARY:IMAGELIB.OLB
+
+           IMAGELIB.OLB is the system-wide shareable image sym-
+           bol table library that the VAX Linker uses to resolve
+           external references to symbols defined in shareable
+           images. The TDMS program interface shareable image
+           (SYS$LIBRARY:TSSSHR.EXE) is inserted into this library.
+
+                                  Files Installed on Your System  B-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+           When you link programs that use TDMS calls, the Linker
+           automatically resolves the TDMS symbols you use.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     B-2  Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+         o SYS$HELP:HELPLIB.HLB
+
+           A new help topic, TDMS, is inserted in the system-wide
+           default help library. Type HELP TDMS to read this new help
+           message.
+
+     ____________________________________________________________
+
+     B.3  Postinstallation IVP Files
+
+        Certain files are added to your system by Phase 1 of the
+        postinstallation Installation Verification Procedure (IVP).
+        The files are located in the following directory:
+
+        SYS$COMMON:[SYSTEST.TDMS]
+
+        The following files are available with the full development
+        kit:
+
+           TDMSIVP.RLB-IVP request library file
+           TDMSIVP.EXE-IVP program
+           TDMSIVP.DAT-IVP data file
+
+        The following files are available with the run-time only kit:
+
+           TDMSIVP.EXE-IVP program
+           TDMSIVP.DAT-IVP data file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Files Installed on Your System  B-3

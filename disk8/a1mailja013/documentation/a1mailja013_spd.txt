@@ -1,0 +1,1003 @@
+ 
+
+
+
+
+
+
+Software
+Product
+Description
+
+_____________________________________________________________________________
+
+日本語MailWorks for OpenVMS V1.3A                                SPD 27.P7.02
+   ソフトウェア仕様書
+
+1  日本語MailWorksの概要
+
+本ソフトウェア仕様書では，日本語MailWorks製品群の3つの構成要素である，日
+本語MailWorksサーバ，日本語MailWorksビデオ・ターミナル，日本語MailWorks
+DECwindowsについて説明します。これらの構成要素は，OpenVMS用レイヤード・ソ
+フトウェア製品です。
+
+日本語MailWorksはCCITT勧告X.400 P2で規定される国際メッセージ通信標準を実装し
+た電子メッセージ通信アプリケーションです。本製品は，メッセージおよび添付デー
+タを他のユーザと交換する手段を提供します。
+
+日本語MailWorksは，当社のVAX Massage Router（SPD 26.33.xx）の上位に位置し，他
+のすべてのMAILbusゲートウェイおよび補足製品と対話します。
+
+日本語MailWorksサーバは，Microsoft Windows環境およびApple Macintoshコンピュー
+タ上のクライアントをサポートします。クライアントとして，Microsoft Windowsおよ
+びMacintosh用のTeamLinks製品をサポートします。日本語MailWorksサーバは，日本語
+MailWorksビデオ・ターミナルおよび日本語MailWorks DECwindowsの構成要素をサポー
+トします。日本語MailWorksビデオ・ターミナルおよび日本語MailWorks DECwindowsの
+構成要素は，日本語MailWorksサーバとともに動作するもので，クライアントではあり
+ません。
+
+日本語MailWorks for OpenVMSのVAX版とAlpha版の機能は同一ですが，以下の制約があ
+ります。
+
+o  VAXとAlphaの混合クラスタはサポートされません。
+
+o  日本語MailWorks DECwindowsはAlpha上ではサポートされません。
+
+o  日本語DEC MAILworks for Macintoshおよび日本語DEC MAILworks for Windowsは
+   Alpha上ではサポートされません。
+
+o  DX, WPL, DDIFおよびDTIFコンバータは，Alpha版には含まれません。
+
+ 注意: 日本語MailWorks，日本語ALL-IN-1 MAILおよび日本語DEC MAILworksは同じ意
+味で使用されています。また，AlphaとAXPは同じ意味で使用されています。
+
+クライアント・ソフトウェアはユーザにサービスを提供します。ソフトウェアはイ
+ンテリジェント・デスクトップ装置で動作し，その処理能力を使用します。OpenVMS
+構成要素(ビデオ・ターミナルあるいはDECwindows）はサーバと同じノードあるいは
+VAXcluster上のOpenVMSで実行されます。
+
+                                    DIGITAL                         1995年7月
+
+                                                                  AE-PM6TC-TE
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+クライアントは，ローカルおよびワイド・エリア・ネットワークの配信サービスを実
+行する日本語MailWorksサーバに接続されます。
+
+日本語MailWorksサーバ間の転送や日本語MailWorksと日本語ALL-IN-1製品群の間の転
+送はVAX Message Routerにより実行されます。マルチ・ベンダ環境のメール転送が必
+要な場合，オプションのゲートウェイをVAX Message Routerに接続することもできま
+す。
+
+ユーザはオフィスではインテリジェント・ワークステーションを使用し，自宅ではビ
+デオ・ターミナルを使い，また旅行中はラップトップPCを使用できます。クライアン
+トはこれらの状況を提供し，またサーバ上の同じユーザ・メールボックスやファイル
+を使用します。
+
+日本語MailWorksは1984年版CCITT勧告X.400の全米標準技術研究所（NIST）プロファイ
+ルに準拠しています。日本語ALL-IN-1統合オフィス・システムの電子メッセージ通信
+サブシステムと互換性のある通信サービスが提供され，日本語MailWorksで定義される
+新しいサービス要素が追加されています。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       2
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+1.1  日本語MailWorksの機能
+
+
+■転送
+
+日本語MailWorksサーバは，クライアントとサーバ間の転送接続をする DECnet，TCP
+/IP，およびKermitあるいはZmodemを使用した非同期接続の3つをサポートしていま
+す。
+
+日本語MailWorksサーバは，これらすべての転送を同時にサポートします。サーバに接
+続する際にどの転送経路を使用するかは，クライアント側で指定します。省略時設定
+では，サーバにはDECnetと非同期接続がサポートされています。TCP/IP接続を使用す
+る場合，適切なソフトウェアがサーバ上で実行され，転送が可能になるように構成を
+適切に変更する必要があります。
+
+クライアントから日本語MailWorksサーバへの接続にDECnetが使用されていなくて
+も，日本語MailWorksサーバによって，そこから様々なネットワーク接続をするために
+DECnetがVAX上で実行される必要があります。
+
+■VMSmailとの互換性
+
+ユーザはVMSmailから日本語MailWorksへ容易に移行できます。インタフェースは
+VMSmailインタフェースを論理的に拡張したものなので，コマンドやサービスは馴
+染み易くなっています。VMSmailで使用しているアドレスや配布先リストは日本語
+MailWorksでも使用することができます。OpenVMS上の構成要素からはニックネーム論
+理名が使用できます。また，VMSmail配布先リストで使用しているほとんどのアドレス
+は日本語MailWorksでも使用できます。ただし，別のノードから配布先リストを使用す
+るときと同様な制約を受けます。
+
+ファイル・キャビネットの変換は，ビデオ・ターミナルの構成要素には必要ありませ
+ん。OpenVMSメール・メッセージをPCから使用可能にするには，ファイル・キャビネッ
+トの変換を一度行う必要があります。
+
+VAX Message Router VMSmail Gatewayによって同じシステム上の，またはDECnetネッ
+トワーク内のVMSmailとメッセージを交換することができます。
+
+ユーザは日本語MailWorksビデオ・ターミナルあるいはDECwindowsの構成要素で使用す
+るエディタを選択できます。VMSmailから呼び出したり生成できるエディタは，日本語
+MailWorksからも呼び出したり生成することができます。
+
+■日本語ALL-IN-1との互換性
+
+VAX Message Routerによって，日本語ALL-IN-1統合オフィス・システムと同じスタイ
+ルのアドレス形式でメッセージを交換することができます。
+
+日本語MailWorksのサービスは，日本語ALL-IN-1の電子メッセージ通信サブシステムの
+サービスと互換性があります。たとえば，一方の製品からの受信通知要求は他方でも
+尊重されます。
+
+                                       3
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+日本語ALL-IN-1統合オフィス・システムで作成された配布先リストは日本語MailWorks
+でも使用できます。ただし，別の日本語ALL-IN-1オフィス・システム・ノードにリ
+ストで送る時と同じ制約を受けます。日本語ALL-IN-1オフィス・システムで使用さ
+れるアドレス指定文字列は日本語MailWorksでも同様に動作します。ただし，日本
+語ALL-IN-1の外部プロトコルを起動するアドレス文字列（下線で始まるもの）を除き
+ます。
+
+■X.400メッセージ転送
+
+他の日本語MailWorks領域や，国際的なX.400 P2適合性基準を満たすサービスとメッセ
+ージを交換することができます。
+
+顧客ネットワークの中では，VAX Message Routerによってメッセージが転送されま
+す。他ベンダのX.400サービスへの転送には OSIネットワーキング・スタックおよび日
+本語VAX Message Router X.400 Gateway（JMRX）が必要となります。
+
+OSIメッセージ交換には，DEC製品で構成されたネットワーク領域(通常，顧客ネットワ
+ークにつき1つ)に少なくとも1つのMRX Gatewayが必要です。必要なハードウェアおよ
+びソフトウェアについては，日本語VAX Message Router X.400 Gatewayの『ソフトウ
+ェア仕様書（SPD 26.H2.xx）』を参照してください。
+
+■マルチ・ベンダ環境のサポート
+
+MAILbusは，一連の既製ゲートウェイを提供します。また，ゲートウェイ開発キット
+を提供し，他ベンダ所有のメール・システムとメッセージを交換するためのゲートウ
+ェイを作成できます。必要なハードウェアおよびソフトウェアについては，各製品の
+『ソフトウェア仕様書(SPD)』を参照してください。
+
+■アドレッシング・オプション
+
+日本語MailWorksは，ユーザ・アドレス・ディレクトリとして当社のDistributed
+Directory Service（DDS）を使用します。VAX Message Routerの一部として利用可能
+なこの分散型ディレクトリは日本語MailWorks，TeamLinks Mail，日本語ALL-IN-1統合
+オフィス・システム，ゲートウェイおよびそのディレクトリ・サービスを共有する他
+のエージェントとを結合します。
+
+DDSディレクトリは，サーバと接続されている間だけ利用することができるネットワー
+ク資源です。
+
+また，日本語MailWorks構成要素は個人アドレス帳(PAB)を提供します。ユーザは，PAB
+を利用して，名前，電話番号，ニック・ネームなどに従ってメール・アドレスを保
+管，検索することができます。
+
+他にも日本語MailWorks OpenVMSクライアントでは，複数のユーザにメールを送付する
+場合に便利な配布リストを作成したりアクセスすることができます。これらの配布リ
+ストはOpenVMSアクセス制御機能を利用して，他のユーザと共有することもできます。
+
+宛名書きをしながら，DDS，PAB，配布リストにアクセスすることもできます。これら3
+つのサービスは，メッセージ作成中に合わせて利用します。
+
+                                       4
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+■ファイリング・サービス
+
+日本語MailWorksはRMSファイルへのアクセスだけでなく，ドロアやフォルダといった
+ファイリング構造も提供します。ファイリング・サービスは事実上VMSmailと似ていま
+す。ローカルに記憶装置を持ったDECwindows装置では，サーバにドロアを置く以外に
+ローカルにもドロアを置くことができます。
+
+OpenVMSのドロアは, OpenVMSアクセス制御で指定された各ユーザの特権により，ユー
+ザ・グループ間で共有できます。
+
+■メッセージ検索
+
+ユーザが指定したヘッダフィールドおよびファイリング構造に基づいて，メッセージ
+を検索することができます。
+
+■ファイル形式
+
+日本語MailWorksは，様々なファイル形式を処理できるように設計されており，メッセ
+ージの読み易さを最大限にするように構成できます。日本語MailWorksは，様々な形式
+のメッセージを自動処理したり，他のファイル書式化ルーチンや変換ルーチンを起動
+することができます。
+
+日本語MailWorks for OpenVMSの構成要素は，添付文書のファイル形式に適合したビュ
+ーアやアプリケーションを起動するように設定することができます。
+
+日本語MailWorksでは，メッセージが配信されたときに，その構成要素が自動的に変換
+されるように設定できます。これにはKEYpak for OpenVMS（SPD 32.71.xx）のような
+サード・パーティのコンバータを使用します。これは別料金のオプションです。ユー
+ザは好みのファイル形式をプロファイルに登録できます。
+
+特定のファイル形式を交換する場合，とくにゲートウェイを経由する場合は，最寄り
+の日本DECの各支店/営業所にお問い合わせください。
+
+■ヘルプ
+
+ユーザはHELP機能を使用して日本語MailWorksのヘルプを見ることができます。HELPは
+ユーザがドキュメントを参照しなくても，当該機能の実行方法など基本的な情報を提
+供します。
+
+■印刷
+
+日本語MailWorksはOpenVMSで提供される当社の標準OpenVMS印刷機能を利用します。ユ
+ーザはプリンタの出力先およびオプションを指定できます。
+
+■メッセージ通信機能
+
+ユーザは提供されているコマンドを使用して，メッセージを作成したり読んだり送る
+ことができます。メッセージには，多様な種類のファイル形式で情報を入れることが
+できます。
+
+                                       5
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+メッセージは別の宛先に回送できます。また，メッセージの添付文書には別のメッセ
+ージ，ドキュメント，ファイルあるいはバイナリ・ファイルでさえ入れることができ
+ます。
+
+メッセージの応答時に，発信者へ送り返す応答は自動的にアドレス指定されます。ユ
+ーザは送信者，受信者全員，または返信先リストに返信することができます。
+
+メッセージは有効なMAILbusの宛先（たとえばVMSmail，X.400など）ならば，世界中の
+一人ないし複数のユーザにアドレス指定できます。ファイル形式は受信者がそのメモ
+を読めるように，ゲートウェイまたはユーザ・エージェントによって変更される場合
+があります。全てのファイル形式が全てのゲートウェイおよびユーザ・エージェント
+で処理されるわけではありません。メモの読み易さを最大限に保証するには，ネット
+ワーク能力の設計に配慮が必要です。
+
+■配信および受信通知
+
+ユーザは，メッセージ送信時に配信および受信通知を指定することができます。これ
+によって，メッセージが配信または受信されたときに通知メッセージが生成され発信
+者へ返されます。
+
+■新しいメールの通知
+
+ユーザは，新しいメッセージの到着の通知を行うかどうかを選択できます。
+
+■メッセージ宛先変更
+
+ユーザは，すべての受信メッセージを自動的に第2のアドレスへ宛先変更するように要
+求できます。
+
+■優先度に基づく配信
+
+ユーザは，メッセージ配信の優先度を選択できます。配信の等級（緊急，普通，不
+急）を指定します。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       6
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+■メッセージ・クラス
+
+ユーザは複数の指標を設定し，メッセージの性質について受信者に情報を与えること
+ができます。指標には重要度（至急，普通，低い）と秘密度（制限なし，私信，親
+展，社外秘）があります。
+
+これらのフィールドはファイル・キャビネット中のメッセージの分類にも使用できま
+す。
+
+■システム管理
+
+メール・システムの必要なローカル・システム管理は最低限ですが，通常は自動化さ
+れています。標準OpenVMSアカウントを開設するにはシステム管理者または監督者を必
+要としますが，基本的なアカウント設定は自動的に行なわれ，大部分の業務はユーザ
+が実行できます。
+
+ファイル・キャビネットの保守用に実行する特別なユーティリティはありません。サ
+ーバ上のすべてのユーザ領域は，標準OpenVMSユーティリティを使用して，保存したり
+回復することができます。
+
+メール管理設計はMAILbus製品群で使用される統合管理システムに従います。日本語
+MailWorksサーバは，管理ユーティリティを提供するので，構成を変更したり，メー
+ル・システムの状態を調べることができます。
+
+■国際化
+
+日本語MailWorksサーバ，日本語MailWorksビデオ・ターミナルおよび日本語MailWorks
+DECwindowsは，複数言語の操作をサポートすることを前提に設計されています。これ
+らは複数言語のネットワークに展開でき，単一サーバ・システム上の複数言語の操作
+をサポートします。日本語MailWorksサーバ，日本語MailWorksビデオ・ターミナルお
+よび日本語MailWorks DECwindowsは，当社の多国籍文字セットをサポートします。
+
+■日本語MailWorksドキュメント
+
+日本語MailWorks for OpenVMSドキュメント・セットの構成は以下の通りです。これら
+はVAX版，Alpha版に共通です。
+
+o  インストレーション・ガイド
+
+o  リリース・ノート(オンラインのみ)
+
+o  VTユーザーズ・ガイド
+
+o  ご使用のお客様へ
+
+o  ソフトウェア仕様書（本書）
+
+o  System Manager's Guide
+
+o  DECwindows Use
+
+                                       7
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+1.2  日本語MailWorksビデオ・ターミナル
+
+日本語MailWorksビデオ・ターミナルはVMSmailに似ていますが，日本語MailWorksサー
+バと直接通信し，メッセージ通信サービスを広範囲にわたってアクセスする豊富なプ
+ロトコルを使用しています。この構成要素は日本語MailWorksサーバと同じところに置
+かれます。また，通常の端末から日本語MailWorksのサービスに一様にアクセスできま
+す。
+
+1.3  日本語MailWorks DECwindows
+
+日本語MailWorks DECwindowsは日本語MailWorksの構成要素です。日本語MailWorks
+DECwindowsはDECwindowsスタイル・ガイドに準拠しており，サーバの動作しているワ
+ークステーション上で動作します。また，表示を当社のサポートするX11表示装置上に
+することもできます。
+
+■他のプラットフォームからのアクセス
+
+日本語MailWorksはDECwindowsの標準に準拠しているので，Xサーバの動作する装置を
+持っているユーザはメール・ソフトウェアを使用することができます。この場合，メ
+ッセージの作成や保存はデスクトップ装置ではなく，日本語MailWorksが行います。ウ
+ィンドウの表示はデスクトップ装置により行われます。これにより，DECwindows標準
+に準拠しているデスクトップ装置にアクセスできます。
+
+2  必要なハードウェアの最小構成
+
+適用プロセッサ
+
+VAX:    VAX 4000モデル50,
+        VAX 4000モデル100,
+        VAX 4000モデル100A,
+        VAX 4000モデル105,
+        VAX 4000モデル105A,
+        VAX 4000モデル200,
+        VAX 4000モデル300,
+        VAX 4000モデル400,
+        VAX 4000モデル500,
+        VAX 4000モデル500A,
+        VAX 4000モデル505A,
+        VAX 4000モデル600,
+        VAX 4000モデル600A,
+        VAX 4000モデル700A,
+        VAX 4000モデル705A
+
+        VAX 6000モデル200シリーズ,
+        VAX 6000モデル300シリーズ,
+
+
+
+                                       8
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+
+        VAX 6000モデル400シリーズ,
+        VAX 6000モデル500シリーズ,
+        VAX 6000モデル600シリーズ
+
+        VAX 7000モデル600シリーズ,
+        VAX 7000モデル700シリーズ
+
+        VAX 8200, VAX 8250, VAX 8300, VAX 8350,
+        VAX 8500, VAX 8530, VAX 8550, VAX 8600,
+        VAX 8650, VAX 8700, VAX 8800, VAX 8810,
+        VAX 8820, VAX 8830, VAX 8840
+
+        VAX 9000モデル110,
+        VAX 9000モデル210,
+        VAX 9000モデル300シリーズ,
+        VAX 9000モデル400シリーズ
+
+        VAX 10000モデル600シリーズ,
+        VAX 10000モデル700シリーズ
+
+        VAXftモデル110, VAXftモデル310,
+        VAXftモデル410, VAXftモデル610,
+        VAXftモデル612
+
+        VAX-11/750, VAX-11/780,
+        VAX11/785
+
+MicroVAX:   MicroVAX II, MicroVAX 2000,
+            MicroVAX 3100,
+            MicroVAX 3100モデル10/10E,
+            MicroVAX 3100モデル20/20E,
+            MicroVAX 3100モデル30/40,
+            MicroVAX 3100モデル80,
+            MicroVAX 3100モデル90,
+            MicroVAX 3300, MicroVAX 3400,
+            MicroVAX 3500, MicroVAX 3600,
+            MicroVAX 3800, MicroVAX 3900
+
+
+VAXstation: VAXstation II, VAXstation 2000,
+            VAXstation 3100モデル30/40,
+            VAXstation 3100モデル38/48,
+            VAXstation 3100モデル76
+
+
+
+
+                                       9
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+
+            VAXstation 3200, VAXstation 3500,
+            VAXstation 3520, VAXstation 3540
+
+            VAXstation 4000モデル60,
+            VAXstation 4000モデル90,
+            VAXstation 4000 VLC
+
+VAXserver： VAXserver 3100, VAXserver 3300,
+            VAXserver 3400, VAXserver 3500,
+            VAXserver 3600, VAXserver 3602,
+            VAXserver 3800, VAXserver 3900
+
+            VAXserver 4000モデル200,
+            VAXserver 4000モデル300,
+            VAXserver 4000モデル500
+
+            VAXserver 6000モデル210,
+            VAXserver 6000モデル220,
+            VAXserver 6000モデル310,
+            VAXserver 6000モデル320,
+            VAXserver 6000モデル410,
+            VAXserver 6000モデル420,
+            VAXserver 6000モデル510,
+            VAXserver 6000モデル520,
+            VAXserver 6000モデル610,
+            VAXserver 6000モデル620,
+            VAXserver 6000モデル630
+
+
+Alpha:      DEC 2000モデル300,
+            DEC 2000モデル500
+
+            DEC 3000モデル300 AXPワークステーション,
+            DEC 3000モデル300L AXPワークステーション,
+            DEC 3000モデル300X AXPワークステーション,
+            DEC 3000モデル300LX AXPワークステーション,
+            DEC 3000モデル400 AXPワークステーション,
+            DEC 3000モデル400 AXPサーバ,
+            DEC 3000モデル500 AXPワークステーション,
+            DEC 3000モデル500 AXPサーバ,
+            DEC 3000モデル500X AXPワークステーション,
+            DEC 3000モデル600 AXPワークステーション,
+            DEC 3000モデル600 AXPサーバ,
+            DEC 3000モデル700 AXPワークステーション,
+
+
+
+                                      10
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+
+            DEC 3000モデル800 AXPワークステーション,
+            DEC 3000モデル800 AXPサーバ,
+            DEC 3000モデル900 AXPワークステーション
+
+            DEC 4000モデル600 AXPシリーズ,
+            DEC 4000モデル700 AXPシリーズ
+
+            DEC 7000モデル600 AXPシリーズ,
+            DEC 7000モデル700 AXPシリーズ
+
+            DEC 10000モデル600 AXPシリーズ,
+            DEC 10000モデル700 AXPシリーズ
+
+            AlphaStation 200 4/166,
+            AlphaStation 200 4/233,
+            AlphaStation 400 4/233
+
+            AlphaServer 1000 4/200,
+            AlphaServer 2000 4/200,
+            AlphaServer 2100 4/200,
+            AlphaServer 2100 4/275
+
+適用されないプロセッサ
+
+VAX:        VAX-11/725, VAX-11/730, VAX-11/782
+
+MicroVAX:   MicroVAX I
+
+VAXstation: VAXstation I, VAXstation 8000
+
+その他の必要なハードウェア
+
+■ 日本語MailWorksビデオ・ターミナル
+
+日本語MailWorksビデオ・ターミナルのソフトウェアは日本語MailWorksサーバと共に
+パッケージされており，サーバと同じシステム上で動作します。
+
+日本語MailWorksビデオ・ターミナルは，VT1xx，VT2xx，VT3xx端末上でサポートされ
+ています。また，当社が提供およびサポートする上記の端末のエミュレータが動作す
+る出力装置でもサポートされます。
+
+■ 日本語MailWorks DECwindows
+
+日本語MailWorks DECwindowsのソフトウェアは日本語MailWorksサーバとともにパッケ
+ージされており，サーバと同じシステム上で動作します。このインタフェースは，次
+に示すワークステーションのいずれか，あるいは当社のサポートするX11表示装置が必
+要です。
+
+                                      11
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+
+VAXstation：VAXstation II，VAXstation 2000,
+            VAXstation 3100シリーズ,
+            VAXstation 3200，VAXstation 3500,
+            VAXstation 3520，VAXstation 3540,
+            VAXstation 4000 VLC，
+            VAXstation 4000モデル60,
+            VAXstation 4000モデル90
+
+
+プロセッサ制限事項
+
+ソフトウェアの構成要素は，サーバ・ソフトウェアと同じシステム内で実行させてく
+ださい。
+
+本プロダクトがX11表示装置上に表示される場合，インタフェースの品質はX11表示サ
+ーバ装置の画面の大きさ，解像度，アスペクト比によります。
+
+■ OpenVMS構成要素で必要なディスク容量
+   （Block Cluster Size＝1の場合）
+
+_____________________________________________________________________________
+インストレーション中____終了後_______________________________________________
+
+23,000__________________15,000_______________________________________________
+
+表中のサイズは概数であり，実際のサイズはユーザのシステム環境，構成，およびソ
+フトウェア・オプションによって異なります。
+
+サーバが必要とするユーザ空間は，そのユーザが保存を望むメールの量によって決ま
+ります。
+
+■ 日本語DECwindowsをサポートする際に必要なメモリ
+
+クライアントとサーバが同じシステム上で実行されている，スタンドアロンの日本語
+DECwindows環境で本アプリケーションを実行するには，少なくとも8MBのメモリが必要
+です。
+
+日本語DECwindowsアプリケーションのパフォーマンスとメモリの使用量は，システム
+環境によって異なります。もしサーバ（アプリケーションの表示する構成要素）が他
+のノード上にある場合は，クライアントシステム（ソフトウェアがインストールさ
+れ，実行されるシステム）では，これよりも少ないメモリ容量ですみます。いくつか
+のアプリケーションを実行させたり，パフォーマンスを向上させるためには，メモリ
+の増設が必要になります。
+
+
+
+
+                                      12
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+3  クラスタ環境
+
+本レイヤード・プロダクトは，正規のライセンスを持つVAXcluster構成の上*にインス
+トールされている場合，機能上の制限を受けません。本ソフトウェアで必要とされる
+ハードウェアについては，必要なハードウェアの最小構成の項に記述されているとお
+りです。
+
+*  VAXcluster構成については『VAXcluster Software Product Description (SPD
+   29.78.xx)』に記述されています。また，この構成にはCI，EthernetおよびMixed
+   Interconnect構成が含まれます。
+
+4  必要なソフトウェア
+
+クライアントをサポートする日本語MailWorksサーバおよび日本語MailWorksビデオ・
+ターミナルには，次のソフトウェアが必要です。
+
+OpenVMS VAX:
+
+o  日本語OpenVMS VAXオペレーティング・システムV5.5-2以降
+
+o  DECnet
+
+   o  DECnet for OpenVMS VAX V5.5以降
+         あるいは
+
+   o  DECnet/OSI for OpenVMS VAX V5.6B ECO 10以降
+      (注意:ロング・ノードネームはサポートされません)
+
+OpenVMS AXP:
+
+o  日本語OpenVMS AXPオペレーティング・システムV6.1
+
+o  DECnet
+
+   o  DECnet for OpenVMS AXP V6.1
+         あるいは
+
+   o  DECnet/OSI for OpenVMS AXP V5.8以降
+      (注意:ロング・ノードネームはサポートされません)
+
+日本語MailWorksサーバは，同じサーバを使用するクライアントや構成要素のユーザに
+メッセージを配信します。したがって，単一 VAXclusterまたは単一LAN上の全ユーザ
+は1つの日本語MailWorksサーバを介してメッセージを交換することができます。
+
+VAX Message Router Transfer Serviceは，他のサーバのユーザ，または他の電子メッ
+セージ通信製品のユーザとメッセージ交換するために必要です。OpenVMS VAXでは，こ
+れは，日本語MailWorksサーバと同一システム上か，あるいは他のDECnetノード上のい
+ずれかに必要です。OpenVMS AXPでは，VAX Message Router Transfer Serviceが別の
+VAXノード上に必要です。VMSmailユーザと通信するには，さらにVMSmail Gatewayが必
+要です。
+
+大部分の構成でVAX Message Routerが必要です。またVMSmail製品から移行するサイ
+ト，あるいはVMSmail製品と通信するサイトではVMSmail Gatewayが必要です。
+
+                                      13
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+日本語MailWorks DECwindowsには，ワークステーション上に次のソフトウェアが必要
+です(OpenVMS AXP版ではサポートされません)。
+
+o  日本語OpenVMS VAXオペレーティング・システムV5.5-2以降(およびOpenVMS
+   DECwindowsの必要な構成要素)
+
+o  DECnet
+
+   o  DECnet for OpenVMS VAX V5.5以降
+         あるいは
+
+   o  DECnet/OSI for OpenVMS VAX V5.6B ECO 10以降
+      (注意:ロング・ノードネームはサポートされません)
+
+本製品は次のいずれの構成でも使用できます。
+
+o  メール・サーバの実行されるのと同じローカル・エリアVAXclusterのメンバのワー
+   クステーション
+
+o  メール・サーバとクライアントが実行されるVAXclusterのメンバではないが，
+   DECnetで接続されているワークステーション装置
+
+o  当社のサポートするX11表示装置をつけたサーバCPUあるいはVAXcluster
+
+日本語OpenVMS DECwindowsは日本語OpenVMSオペレーティング・システムの一部です
+が，別々にインストールしなければなりません。日本語OpenVMS DECwindowsのインス
+トレーションの際に，オプションで次の3つの構成要素のいずれか，またはすべてがイ
+ンストールできます。
+
+o  OpenVMS DECwindows Compute Server (Base kit ;ランタイム・サポートを含む)
+
+o  OpenVMS DECwindows Device Support
+
+o  OpenVMS DECwindows Programming Support
+
+スタンドアロンでの実行では，ワークステーションに次の日本語DECwindows構成要素
+がインストールされていることが必要です。
+
+o  OpenVMS DECwindows Compute Server
+
+o  OpenVMS DECwindows Device Support
+
+リモートでの実行では，次の日本語DECwindows構成要素がインストールされているこ
+とが必要です。
+
+X11表示装置では，
+
+o  OpenVMS DECwindows Compute Server
+
+o  OpenVMS DECwindows Device Support
+
+o  OpenVMS DECwindows Programming Support
+
+                                      14
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+X11クライアント・システムでは，
+
+o  OpenVMS DECwindows Compute Server
+
+o  OpenVMS DECwindows DeviceSupport
+
+o  OpenVMS DECwindows Programming Support
+
+5  オプション・ソフトウェア
+
+OpenVMS VAX:
+
+o  TCP/IP
+
+   o  日本語DEC TCP/IP Services for OpenVMS VAX V3.2 (SPD 28.B4.xx)
+
+o  VAX Message Router V3.3以降(SPD 26.33.xx)
+
+o  VAX Message Router VMSmail Gateway V3.3以降
+      (SPD 26.33.xx)
+
+o  VAX Message Router/P Gateway V1.3以降
+      (SPD 28.94.xx) (IBM PROF Office Vision/VM systemsへの接続)
+
+o  VAX Message Router/S Gateway V1.3以降
+      (SPD 29.24.xx) (IBM DISOSSシステムへの接続)
+
+o  日本語VAX Message Router X.400 Gateway
+      (バージョンについては，最寄りの日本DEC各支店/営業所にお問い合わせくださ
+      い)(SPD 26.H2.xx)
+
+o  CDA Converter Library for OpenVMS V2.2
+      (SPD 31.31.xx)
+
+o  CDA Converter Library -J for OpenVMS VAX V1.0
+      (SPD 46.53.xx)
+
+o  PATHWORKS for OpenVMS, Version 4.2以降
+      (TeamLinks for Windows新着メール通知機能を使用する場合にのみ，必要)
+
+OpenVMS AXP:
+
+o  TCP/IP
+
+   o  日本語DEC TCP/IP Services for OpenVMS AXP V3.2 (SPD 47.59.xx)
+
+o  VAX Message Router V3.3A
+      (Message RouterはVAX上でのみ動作します。Alphaからはリモート・アクセスす
+      ることが必要です)
+
+o  PATHWORKS for OpenVMS, Version 4.2以降
+      (TeamLinks for Windows新着メール通知機能を使用する場合にのみ，必要)
+
+                                      15
+
+ 
+
+
+ 日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ ソフトウェア仕様書
+
+
+6  バージョンアップの考慮
+
+本製品の将来のバージョンでは，必要なハードウェアおよびソフトウェアの最小構成
+が変更されることがあります。
+
+7  提供媒体
+
+VAX版:     TK50ストリーム・テープ
+
+Alpha      日本語OpenVMS Alphaソフトウェア・ライブラリ
+版:
+
+
+8  注文情報
+
+最寄りの日本DECの各支店/営業所にお問い合わせください。
+
+9  ソフトウェア・ライセンス
+
+本ソフトウェアは日本DEC標準契約条項中のライセンス規定に基づいて提供されます。
+
+日本DECのライセンス条件とその方針についての詳細は，最寄りの日本DECの各支店/営
+業所にお問い合わせください。
+
+10  ライセンス管理機能
+
+本ソフトウェアはOpenVMSライセンス管理機能(LMF)をサポートしています。
+
+日本語MailWorksサーバについては，ライセンス単位はUnlimitedユース，パーソナ
+ル・ユース，あるいは同時使用ユーザ数に応じて割り当てられます。
+
+日本語MailWorksビデオ・ターミナルについては，ライセンス単位はUnlimitedユー
+ス，パーソナル・ユース，あるいは同時使用ユーザ数に応じて割り当てられます。
+
+日本語MailWorks DECwindowsについては，ライセンス単位はパーソナル・ユースに応
+じて割り当てられます。
+
+ライセンス管理機能の詳細はOpenVMS Operating Systemの『Software Product
+Description
+（SPD 25.01.xx）』あるいはOpenVMS Operating Systemのドキュメント・セットの
+『License Management Utility Manual』を参照してください。
+
+当社のライセンス用語および方針に関する詳細については，最寄りの日本DECの各支
+店/営業所にお問い合わせください。
+
+
+
+
+                                      16
+
+ 
+
+
+日本語MailWorks for OpenVMS V1.3A                               SPD 27.P7.02
+ソフトウェア仕様書
+
+
+11  ソフトウェア製品サービス
+
+日本DECでは，様々なサービス・オプションを提供しています。詳細については，最寄
+りの日本DECの各支店/営業所にお問い合わせください。
+
+12  保証
+
+本ソフトウェアについては，日本DEC所定のソフトウェア保証基準に定められた保証が
+提供されます。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_______________________
+
+  [R] IBMおよびPROFSは米国International Business Machines社の登録商標です。
+
+  [R] KEYpakは米国Keyword Office Technologies社の登録商標です。
+
+  [R] Microsoftは米国Microsoft社の登録商標です。
+
+ [TM] AppleおよびMacintoshは米国Apple Computer社の商標です。
+
+ [TM] Windowsは米国Microsoft社の商標です。
+
+                                      17

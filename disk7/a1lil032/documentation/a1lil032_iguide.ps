@@ -1,0 +1,1597 @@
+%!PS-Adobe-3.0
+%EDMS_Index: 59826 1563           
+%+EDMS_Begin_Index_Area
+%%Title: AA-R71CA-TE
+%%For: LENAIN
+%%Creator: EDM
+%%Version: V4.21
+%%CreationDate: 17-JUN-1997 13:30:51.01
+%EDMS_RealFileCreator: VAX DOCUMENT V2.1-1
+%%DocumentMedia: (7x9) 504.0 648.0 0.0 () ()
+%%CMYKCustomColor: 0.000 0.000 0.000 1.000 All 
+%%DocumentCustomColors: All
+%%DocumentProcessColors: Black
+%EDMS_ColorBinding: (#All) (BLACK)
+%+ 0.000 0.000 0.000 1.000
+%EDMS_ColorBinding: (#All) (FOOTCOLOR)
+%+ 0.000 0.000 0.000 1.000
+%EDMS_ColorBinding: (#All) (HEADCOLOR)
+%+ 0.000 0.000 0.000 1.000
+%%DocumentFonts: Courier Helvetica Helvetica-Bold
+%%+ NewCenturySchlbk-Roman NewCenturySchlbk-Bold NewCenturySchlbk-Italic
+%%DocumentNeededFonts:
+%%+ Courier
+%%+ Helvetica
+%%+ Helvetica-Bold
+%%+ NewCenturySchlbk-Roman
+%%+ NewCenturySchlbk-Bold
+%%+ NewCenturySchlbk-Italic
+%%BoundingBox: 0 0 504 648
+%%Pages: 10
+%%EndComments
+%%BeginResource: procset EDM_FIRST
+%%Copyright: 1993 by Digital Equipment Corporation, Maynard, MA, All rights reserved.
+%%Creator: R. Anderson
+%%CreationDate: (04/25/96)
+%%Version: 1.0 18
+% add userdict hack for compatibility with DSCVerifier and Preps
+% this will make VAX-Document and EDM, when encapsulating EPS files,
+% put topmost dict on dictstack instead of userdict
+currentdict userdict ne {/userdict currentdict def} if
+%
+/EDMSdict where
+% Reuse EDMatic dictionary
+{
+  pop
+  EDMSdict /EDM_eoj {} put
+}
+% Create new dict
+{
+  % For cleanup at end of file
+  save countdictstack count
+  /EDMSdict 200 dict def
+  EDMSdict begin
+  3 array astore/EDM_state exch def
+  /L2? systemdict/languagelevel known{languagelevel 2 ge}{false}ifelse def
+  /bdf {bind def} bind def
+  /udf {bind userdict 3 1 roll put} bind def
+  % Call at end of file
+  /EDM_eoj
+  {
+    /olduserdict where { pop end } if % close extra userdict
+    EDMSdict /EDM_state get aload pop
+    count 1 sub exch ne {(Error: Residue on operand stack.\n)print quit}if
+    countdictstack exch ne{(Error: Residue on dict stack.\n)print quit}if
+    restore
+  } udf
+  end % EDMSdict
+  % expand userdict
+} ifelse
+%%EndResource
+%%BeginResource: procset EDM_PRINTSPEC
+%%Copyright: 1993 by Digital Equipment Corporation, Maynard, MA, All rights reserved.
+%%Creator: R. Anderson
+%%CreationDate: (08/09/93)
+%%Version: 1.0 22
+EDMSdict begin
+% This procset calibrates spot color to PrintSpec definitions 
+% This must be loaded whenever using spot color
+% Define if not already defined
+/ndf % /key value ndf --
+{1 index where {pop pop pop} {dup xcheck {bind} if userdict 3 1 roll put} ifelse} def
+% cmyk color fallback uses Ned Batchelder's algorithm
+/@setcmykcolor /setcmykcolor where
+{ /setcmykcolor get def }
+{
+  {
+    1 sub 4 1 roll %(k-1)
+    1 sub   3 index mul 3 1 roll % (c-1)(k-1)
+    1 sub   3 index mul 3 1 roll % (m-1)(k-1)
+    1 sub 4 -1 roll mul 3 1 roll % (y-1)(k-1)
+    setrgbcolor
+  } bdf
+} ifelse
+% Print spot as process using PrintSpec values
+% [c m y k /name] tint setprocess --
+/setprocess
+{
+  exch
+  aload pop pop
+  4 index 1.0 ne { 4 {4 index mul 4 1 roll} repeat} if
+  @setcmykcolor pop
+} bdf
+% Get PrintSpec-equivalent spot color
+% [c m y k /oldname] getspot [c m y k /newname]
+/getspot
+{
+  PrintSpec 1 index 4 get known
+  {PrintSpec exch 4 get get} % PrintSpec replacement
+  {
+    EDMSdict/BadSpot known not {/BadSpot 20 dict def} if
+    BadSpot 1 index 4 get known not
+    {
+      (Warning: Unknown spot color = ) print dup 4 get =string cvs print (\n) print flush
+	  BadSpot 1 index aload pop 5 1 roll /Process 5 array astore put
+    } if
+    BadSpot exch 4 get get % BadSpot replacement
+  } ifelse
+} bdf
+% Convert document spot color to printspec spot color
+% [c m y k /name] tint setcustomcolor -
+/setcustomcolor dup where
+{
+   pop
+   EDMSdict /@customcolor /setcustomcolor load put
+  {
+    EDMSdict begin
+    exch
+    getspot % get PrintSpec spot color
+    dup 4 get /Process eq % check if bound to process
+    {exch setprocess}
+    {exch @customcolor} ifelse
+    end % EDMSdict
+  }
+}
+{{
+    EDMSdict begin
+    exch
+    getspot % get PrintSpec spot color
+    exch setprocess
+    end % EDMSdict
+}} ifelse
+udf
+% These two are needed in addition to setcustomcolor for Adobe Illustrator
+/setoverprint { pop } ndf
+/findcmykcustomcolor {5 array astore} ndf
+% Update EDM color binding with EDMatic color binding
+/color_update
+{
+  EDMSdict /EDMatic_color_binding known
+  {
+    PrintSpec begin
+    PrintSpec % look at every EDM color binding
+    {
+      4 get % EDM PrintSpec color
+      dup EDMatic_color_binding exch known
+      {
+        EDMatic_color_binding exch get store % bind to EDMatic color
+      }
+      {
+        pop pop 
+      } ifelse
+    }forall
+    end
+  }if
+} bdf
+end % EDMSdict
+%%EndResource
+%%BeginResource: procset EDM_SUPPRESS_CMY
+%%Copyright: 1993 by Digital Equipment Corporation, Maynard, MA, All rights reserved.
+%%Creator: R. Anderson
+%%CreationDate: (06/06/93)
+%%Version: 1.0 20
+% Inhibits rgb, hsb and cmyk color
+%
+/EDMS_rgbcolor systemdict/setrgbcolor get def
+/EDMS_hsbcolor systemdict/sethsbcolor get def
+/setrgbcolor {EDMS_rgbcolor currentgray setgray} bind def
+/sethsbcolor {EDMS_hsbcolor currentgray setgray} bind def
+/setcmykcolor systemdict/setcmykcolor known
+  {
+    /EDMS_cmykcolor systemdict/setcmykcolor get def
+    {EDMS_cmykcolor currentgray setgray}
+  }
+  % cmyk color fallback uses Ned Batchelder's algorithm
+  {{
+    1 sub 4 1 roll %(k-1)
+    1 sub   3 index mul 3 1 roll % (c-1)(k-1)
+    1 sub   3 index mul 3 1 roll % (m-1)(k-1)
+    1 sub 4 -1 roll mul 3 1 roll % (y-1)(k-1)
+    setrgbcolor
+  }}
+  ifelse
+bind def
+%%EndResource
+%%BeginResource: procset EDM_5044
+%%Copyright: 1993 by Digital Equipment Corporation, Maynard, MA, All rights reserved.
+%%Creator: R. Anderson
+%%CreationDate: (12/06/93)
+%%Version: 1.0 24
+% Not compatible with LaserTalk(tm) 1.3, so disable
+/_Lt13 where {/_Lt13 get type /dicttype ne}{true}ifelse
+{
+  /WARNING { (WARNING, Adobe-5044 prohibited operator: ) print == } bind def
+  [/currentgray/currentrgbcolor/currenthsbcolor/currentcmykcolor
+  /setscreen/currentscreen/setcolorscreen/currentcolorscreen/initgraphics]
+  {[
+    1 index /WARNING load /exec load  % issue warning
+	2 index where
+	{
+	  pop
+	  2 index load dup type /operatortype ne {/exec load }if  % execute command
+	}
+	{
+	  0 0 0 1 systemdict /currentgray  get /sub load
+	}ifelse
+  ]cvx def} forall
+}if
+%%EndResource
+%%BeginResource: procset EDM_STATUSDICT
+%%Copyright: 1993 by Digital Equipment Corporation, Maynard, MA, All rights reserved.
+%%Creator: R. Anderson
+%%CreationDate: (10/22/96)
+%%Version: 1.0 21
+% sanitize device dependent commands
+% statusdict commands
+% Edit 21 fixes problem with HP printers
+mark
+/10x13tray{}
+/10x14tray{}
+/11x17tray{}
+/3.875x7.5tray{}
+/4.125x9.5tray{}
+/7x9tray{}
+/9x12tray{}
+/a3tray{}
+/a4tray{}
+/a5tray{}
+/appletalktype (LaserWriter)
+/b4tray{}
+/b5tray{}
+/b6tray{}
+/baud{pop 9600}
+/c4tray{}
+/c5tray{}
+/c6tray{}
+/checkconfiguration true
+/checkpassword{pop true}
+/componentids {mark} 
+/databits 8
+/defaultjobtimeout 0
+/defaultmirrorprint false
+/defaultnegativeprint false
+/defaultoutputtray 1
+/defaultpagetimeout 0
+/defaultpapertray 1
+/defaulttimeouts{0 0 0}
+/deviceid{1 1}
+/diskdriveparams{0<0101040202B800000000>putinterval}
+/diskonline false
+/diskstatus{0 0}
+/dltray{}
+/dostartpage false
+/eerom false
+/eescratch{pop 0}
+/executivetray{}
+/fcsize 0
+/firstside true 
+/flowcontrol{pop 0}
+/flushpages{}
+/halflettertray{}
+/hardwareiomode 0
+/idlefonts {mark}
+/initializedisk{pop pop}
+/jobname null
+/jobsource (unknown) 
+/jobstate (unknown)
+/jobtimeout 0
+/lastmode 0
+/ledgertray{}
+/legaltray{}
+/lettertray{}
+/manualfeed false
+/manualfeedtimeout 0
+/margins{0 0}
+/mirrorprint false
+/negativeprint false
+/newsheet{}
+/outputtray 1
+/pagecount 0
+/pagestackorder true
+/pagetimeout 0
+/pagetype 0
+/papersize{/lettertray false}
+/papertray 1
+/parity{pop 0}
+/prefeed false
+/printererror{pop pop}
+/printername{ dup 0 (unknown) putinterval 0 7 getinterval} 
+/product (unknown)
+/ramsize 0
+/returnstatus{cleartomark}
+/revision 0
+/sccbatch{pop 9600 7}
+/sccinteractive{ pop 9600 7} 
+/sendctrld false
+/setappletalkname{pop}
+/setbaud{pop pop}
+/setdatabits{pop pop}
+/setdefaultjobtimeout{pop}
+/setdefaultmirrorprint{pop}
+/setdefaultnegativeprint{pop}
+/setdefaultoutputtray{pop}
+/setdefaultpagetimeout{pop}
+/setdefaultpapertray{pop}
+/setdefaulttimeouts{pop pop pop}
+/setdiskdriveparams{pop}
+/setdostartpage{pop}
+/seteescratch{pop pop}
+/setfirstside{}
+/setflowcontrol{pop pop}
+/sethardwareiomode{pop}
+/setidlefonts{cleartomark}
+/setjobname{statusdict begin/jobname exch def end}
+/setjobtimeout{pop}
+/setlight{pop pop} 
+/setmargins{pop pop}
+/setoutputtray{pop}
+/setpage{pop pop pop}
+/setpagemargin{pop}
+/setpageparams{exch setpagemargin setpage}
+/setpagestackorder{pop}
+/setpagetimeout{pop}
+/setpagetype{pop}
+/setpapertray{pop}
+/setparity{pop pop}
+/setpassword{pop pop true}
+/setprintername{pop}
+/setsccbatch{pop pop pop}
+/setsccinteractive{pop pop pop}
+/setsoftwareiomode{pop}
+/setstacklimit{pop}
+/setstopbits{pop pop}
+/setuserdiskpercent{pop}
+/setvmlimit
+{dup type/integertype ne{errordict/typecheck get exec}{pop}ifelse}
+/setvmlimit{pop}
+/sheetcount 0
+/softwareiomode 0
+/stopbits{pop 1}
+/switchsetting 0
+/twothirdsa4tray{}
+/userdiskpercent 15
+/waittimeout 0
+% count new commands
+counttomark 2 idiv
+% expand statusdict
+EDMSdict/L2? get not
+{
+ dup statusdict length add 30 add dict begin
+ statusdict{def} forall
+ userdict/statusdict currentdict put
+ end
+} if
+% add new commands to statusdict
+statusdict begin{def} repeat end pop
+%
+% userdict commands
+mark
+/11x17
+/11x17R
+/a3
+/a3R
+/a4
+/a4page
+/a4pageR
+/a4R
+/a4small
+/a4smallR
+/a5
+/a5R
+/executivepage
+/3.875x7.5
+/4.125x9.5
+/7x9
+/a6
+/b4
+/b5
+/b6
+/c5
+/dl
+/b4
+/b4R
+/b5
+/b5R
+/ledger
+/ledgerR
+/legal
+/legalR
+/letter
+/letterR
+/lettersmall
+/lettersmallR
+/note
+/noteR
+/statement
+/halfletter
+/legalsmall
+/twothirdsa4
+/statementR
+% noop commands in userdict
+counttomark
+userdict begin
+{{}def}repeat
+%
+<1A>cvn{}
+<04>cvn{}
+<041A>cvn{}
+(\004PSp)cvn{PSp}
+(\024\004statusdict)cvn{statusdict}
+(restore\004)cvn{restore}
+(restore\015\004)cvn{restore}
+/setpagedevice{pop}
+counttomark 2 idiv
+{def}repeat
+%
+end % 2nd userdict
+pop %mark
+%
+% ignore exitserver commands
+userdict/serverdict 1 dict put
+serverdict begin /exitserver{pop end} def end
+% Enlarge userdict for Level-1 printers
+EDMSdict /L2? get not
+{
+ /olduserdict /userdict load def
+ /userdict olduserdict length 200 add dict def
+ userdict begin
+ olduserdict{def} forall
+ % leave extra userdict open
+} if
+%%EndResource
+%%BeginSetup
+EDMSdict begin
+% Color binding dictionary
+/PrintSpec 3 dict def
+PrintSpec begin
+(BLACK) [0.000 0.000 0.000 1.000 /All] def
+(FOOTCOLOR) [0.000 0.000 0.000 1.000 /All] def
+(HEADCOLOR) [0.000 0.000 0.000 1.000 /All] def
+end % PrintSpec
+color_update
+end % EDMSDict
+%%EndSetup
+%EDMS_BeginDocument: IGLOCAL_PROFILE.PS
+%!PS-Adobe-3.0
+%%Title: IGLOCAL_PROFILE
+%%Creator: VAX DOCUMENT V2.1-1
+%%Copyright: 1986,1987,1988,1989,1990,1991 DIGITAL EQUIPMENT CORPORATION.
+%%+All Rights Reserved.
+%%CreationDate: Fri Jun 13 1997 09:25:13
+%%For: LENAIN      
+%%BoundingBox: (atend)
+%%DocumentData: Clean7Bit
+%%LanguageLevel: 1
+%%Orientation: Portrait
+%%Pages: (atend)
+%%PageOrder: Ascend
+%%DocumentFonts: (atend) 
+%%DocumentNeededFonts: (atend) 
+%%DocumentProcSets: Underlay Color5044
+%%DocumentSuppliedProcSets: Underlay Color5044
+%%DocumentProcessColors: (atend)
+%%DocumentCustomColors: (atend)
+%%EndComments
+%
+%%BeginResource: procset Underlay
+%%CreationDate: (2/10/92)
+%
+% In VAX DOCUMENT V2.1-1, simple EPSF files up to 65,000 bytes long
+% may be an underlay. Define the EPSF as a PostScript proceedure
+% called /UNDERLAY and prefix to DOCUMENT's PS output  For example:.
+% /UNDERLAY ( EPSF code here ) cvx def
+%
+% To create a "Preliminary" underlay change /UNDERLAY* to /UNDERLAY
+/UNDERLAY* (
+  /Note (Preliminary) def
+  /NoteSize 120 def
+  /NoteFont /Helvetica findfont NoteSize scalefont def
+  /Note where { pop Note length 0 gt {
+    /NoteWidth NoteFont setfont Note stringwidth pop def
+    PaperWidth 36 mul PaperHeight 36 mul moveto
+    PaperHeight PaperWidth atan rotate
+    NoteWidth -2 div NoteSize .729 mul -2 div rmoveto 
+    Note true charpath .075 setseparationgray fill
+  }if  }if
+) cvx def
+%%EndResource
+%
+%%BeginResource: procset Color5044
+%%CreationDate: (1/21/91)
+%%Version:1.0 3
+%Implementation of Adobe 5044 color specification
+%/ndf allows command override during color separation
+/Color5044Dict 100 dict def
+Color5044Dict begin
+/bdf {bind def} def
+/ndf
+  {1 index where
+    {pop pop pop
+    }
+    {dup xcheck
+      {bind} if
+    def
+    }
+    ifelse
+  } bdf
+/setcmykcolor
+  {1 exch sub
+  3 
+    {dup 5 -1 roll sub 0 2 copy lt
+      {exch} if
+    pop exch
+    } repeat
+  pop setrgbcolor
+  }ndf
+/setcmykcoloroverprint
+  {4
+    {dup -1 eq
+      {pop 0} if
+      4 1 roll
+    } repeat
+  setcmykcolor
+  } ndf
+/findcmykcustomcolor
+  {5 /packedarray where
+    {pop packedarray
+    }
+    {array astore readonly
+    }
+    ifelse
+  } ndf
+/setcustomcolor
+  {exch aload pop pop
+  4
+    {4 index mul 4 1 roll
+    } repeat
+  setcmykcolor pop
+  } ndf
+/setseparationgray
+  {1 exch sub systemdict /setgray get exec
+  } ndf
+/setoverprint {pop} ndf
+/currentoverprint false ndf
+%CMYK multi-proc colorimage
+/colorimage
+  {4 ne
+    {(\nUnsupported number of colors for colorimage.\n) print flush quit
+    } if
+  not
+    {(\nSingle procedure form  colorimage unsupported.\n) print flush quit
+    } if
+  save 20 dict begin /&saveobj exch def
+  /&Kproc exch def /&Yproc exch def /&Mproc exch def /&Cproc exch def
+    {&Cproc &Mproc &Yproc &Kproc
+    /&K exch def /&Y exch def /&M exch def /&C exch def
+    0 1 &K length 1 sub
+      {/&i exch def
+      &K &i 255
+      &C &i get 30 mul
+      &M &i get 59 mul add
+      &Y &i get 11 mul add
+      &K &i get 100 mul add
+      100 idiv
+      dup 255 gt
+        {pop 255} if
+      sub put
+      } for
+    &K
+    } image
+  &saveobj end restore
+  } ndf
+/customcolorimage
+  {pop systemdict /image get exec
+  } ndf
+/separationimage
+  {systemdict /image get exec
+  } ndf
+end
+%%EndResource
+Color5044Dict begin
+%
+/DEC_DVC$dict 300 dict def
+DEC_DVC$dict begin
+%
+/DVC$PSJob save def
+%
+/DOCPSE ISOLatin1Encoding 256 array copy def
+mark						% CREATE DOCPSE ENCODING
+  8#055 /hyphen
+  8#201 /bullet    8#202 /emdash     8#203 /endash    8#204 /dagger
+  8#205 /daggerdbl 8#206 /registered 8#207 /trademark %8#210 /Delta
+  8#211 /fi        8#212 /fl         8#213 /OE        8#214 /oe
+  8#215 /Ydieresis
+  counttomark -1 bitshift			% DIVIDE BY 2
+  {DOCPSE 3 1 roll put} repeat			% STACK NOW CONTAINS MARK
+cleartomark
+%
+/ReENCODE {		% /basefont /newfont encoding ReENCODE
+    /newencoding exch def	%ARG: NAME OF ENCODING VECTOR
+    /newfontname exch def	%ARG: NEW NAME FOR FONT AFTER RE-ENCODING
+    findfont
+    /basefontdict exch def	%ARG: NAME OF FONT TO BE RE-ENCODED
+    basefontdict maxlength dict begin	%CREATE AND OPEN NEW DICT
+	basefontdict {		%COPY ENTRIES FROM BASE FONT DICT TO NEW ONE
+	    1 index /FID ne {
+		def		%IF NOT THE ONE WE'RE ENCODING, JUST COPY PTRS
+	    } { %else
+		pop pop		%IGNORE FID AND ENCODING FOR ONE WE'RE ENCODING
+	    } ifelse
+	} forall
+	/FontName newfontname def	%DEFINE NEW NAME 
+	/Encoding newencoding def	%DEFINE NEW ENCODING VECTOR
+	newfontname currentdict definefont	%TURN IT INTO A PS FONT
+	pop			%IGNORE MODIFIED DICT RETURNED BY DEFINEFONT
+    end
+}def
+%
+/cvsstr 64 string def
+/tempmatrix matrix def
+%
+% Exit page (temporarily) to add fonts/characters.
+/XP { }def
+% 
+% Resume page
+/RP { }def
+%
+% End Page: EP
+/EP {DVC$PSPage restore}def
+%
+% Purge fonts to reclaim VM
+/PF {
+  currentoverprint
+  currentrgbcolor
+  EP			%Does restore
+  PageSetup     %Does save
+  setrgbcolor
+  setoverprint
+}def
+%
+% ABBREVIATIONS 
+/S /show load def
+/SV /save load def
+/RST /restore load def
+%
+/Yadjust {Ymax exch sub} def
+%
+/XY {						% (x,y) POSITION ABSOLUTE
+  Yadjust moveto
+} def
+%
+/X {						% (x,0) POSITION ABSOLUTE
+  currentpoint exch pop moveto
+} def
+%
+/Y {						% (0,y) POSITION ABSOLUTE 
+  currentpoint pop exch Yadjust moveto
+} def
+%
+/xy {						% (x,y) POSITION RELATIVE
+  neg rmoveto
+} def
+%
+/x {						% (x,0) POSITION RELATIVE
+  0 rmoveto
+} def
+%
+/y {						% (0,y) POSITION RELATIVE
+  0 exch neg rmoveto
+} def
+%
+/R {						% Draw a rectangle
+  /ht exch def  /wd exch def   gsave
+  currentpoint  newpath  moveto
+  0 ht rlineto  wd 0 rlineto
+  0 ht neg rlineto  wd neg 0 rlineto
+  closepath fill grestore wd 0 rmoveto
+}def
+%
+%Setup Page Media:  <paper-height> <paper-width> PM
+/PM {
+  /Xmax exch Resolution mul def
+  /Ymax exch Resolution mul def
+  /UNDERLAY where {
+    pop
+    /eps_save save def		% save before EPSF underlay
+    Resolution 72 div dup scale % Revert coords to points
+    count array astore /DVCstack exch def % save op stack
+    /dict_count countdictstack def % # of dicts
+    userdict begin		% default dict
+    /showpage {}def		% disable showpage
+    0 setgray
+      {UNDERLAY} stopped {(Error executing /UNDERLAY)== quit}if
+    countdictstack dict_count sub {end} repeat % clean up dict stack
+    clear DVCstack aload pop	% restore op stack
+    eps_save restore		% restore after EPSF
+  }if
+  PageSetup
+}def
+%
+%Setup page coordinates
+/PageSetup
+{
+  /DVC$PSPage save def
+  PortraitMode not {PaperWidth 0 translate  90 rotate} if
+  /Xpos 0 def
+  /Ypos 0 def
+}def
+%
+% Begin EPS file: <xoffset> <yoffset> SPB
+/SPB {
+  Yadjust transform		% convert from DVC to device coords
+  EP				% page-level restore
+  /eps_save save def		% save before EPSF
+  Resolution 72 div dup scale 	% Revert coords to points
+  itransform			% convert position back to points  
+  translate			% set position for EPSF
+  PortraitMode not {90 rotate} if % rotate for EPSF
+  count array astore /DVCstack exch def	% save op stack
+  /dict_count countdictstack def % # of dicts
+  userdict begin		% default dict
+  /showpage {}def		% disable showpage
+  0 setgray
+}def
+%
+% End EPS file
+/SPE {
+  countdictstack dict_count sub {end} repeat % clean up dict stack
+  clear DVCstack aload pop	% restore op stack
+  eps_save restore		% restore after EPSF
+  PageSetup			% restore DVC coords
+}def
+%
+% Print-Page Routine: <Page #> PP
+/PP {
+  gsave
+  showpage
+  grestore
+}def
+%
+/DMF {		%  /font-name <point-size> DMF
+  exch findfont exch scalefont setfont
+}def
+%
+/concatnam {	%  /abcd (xxx) concatnam  ==> /abcdxxx
+  /xxx exch def
+  /namstr exch cvsstr cvs def
+  /newnam namstr length xxx length add string def
+  newnam 0 namstr putinterval
+  newnam namstr length xxx putinterval
+  newnam cvn 
+}def
+%
+/strip {	%  /abcdef 2 strip ==> /cdef
+  /num exch def  /nam exch def
+  /namstr nam cvsstr cvs def
+  /newlen namstr length num sub def
+  namstr num newlen getinterval  cvn
+}def
+%		ROUTINES TO HANDLE PACKING/UNPACKING NUMBERS
+/PackHW {	% <target> <pos> <num> PackHW --> <new target>
+  /num exch def  /pos exch def  /target exch def
+  num 16#0000FFFF and 1 pos sub 16 mul bitshift  target or
+}def
+/PackByte {	% <target> <pos> <num> PackByte --> <new target>
+  /num exch def  /pos exch def  /target exch def
+  num 16#000000FF and 3 pos sub 8 mul bitshift   target or
+}def
+/UnpkHW {	%  <pos> <num> UnpkHW --> <unpacked value>
+  /num exch def  /pos exch def
+  num 1 pos sub -16 mul bitshift 16#0000FFFF and
+  dup 16#00007FFF gt {16#00010000 sub} if
+}def
+/UnpkByte {	%  <pos> <num> UnpkByte --> <unpacked value>
+  /num exch def  /pos exch def
+  num 3 pos sub -8 mul bitshift 16#000000FF and
+  dup 16#0000007F gt {16#00000100 sub} if
+}def
+%
+/ps-scalefont {
+    % FOR PS FONTS, LOOK AT SIZE REQUESTED.  IF IT HAS A DECIMAL REMAINDER
+    % EQUIVALENT TO .001-.009 POINTS (I.E., .050-.450 VAXDOC UNITS), THAT'S 
+    % A FLAG TO STRETCH IT VERTICALLY BY ADDING 1-9 EXTRA POINTS TO THE 
+    % VERTICAL SCALING.
+                % save requested size - as entered and as integer
+    dup /x-size exch def cvi /x-int exch def
+                % calc decimal remainder, mul x 1000, round
+    x-size x-int sub 1000 mul round cvi /remainder exch def
+                % see how we scale...
+    remainder 50 lt remainder 450 gt or {
+                % scale isomorphically
+        /ystretch 0 def
+        x-size scalefont
+    } {
+                % scale anamorphically
+        /ystretch remainder def
+        x-int ystretch add /y-size exch def
+        [x-int 0 0 y-size 0 0] makefont
+    } ifelse
+}def
+%
+/DPSF {		% /procname size /fontname DPSF
+    findfont exch ps-scalefont [ exch /setfont cvx ] cvx def
+}def
+%
+/PXLBuildCharDict 17 dict def
+/CMEncodingArray 256 array def
+0 1 255 {CMEncodingArray exch dup cvsstr cvs cvn put} for
+/RasterConvert {RasterScaleFactor div}def
+/TransformBBox {
+  aload pop
+  /BB-ury exch def  /BB-urx exch def  /BB-lly exch def  /BB-llx exch def
+  [ BB-llx RasterConvert BB-lly RasterConvert 
+    BB-urx RasterConvert BB-ury RasterConvert ]
+}def
+/RunLengthToRasters {
+  % none yet
+}def
+/GenerateRasters {			% GENERATE RASTERS FOR "IMAGEMASK"
+  rasters  runlength 1 eq {RunLengthToRasters} if
+}def
+%
+/int-dict-name {int (-dict) concatnam}def
+/int-dict {int (-dict) concatnam cvx load}def
+%
+/DefinePXLFont {
+	%  <int-font-name><ext-font-name><pt-sz(pix)><PXL mag><num-chars>...
+	%  ...[llx lly urx ury]<newfont-fg>DefinePXLFont
+  /newfont exch def  /bb exch def      /num exch def  /psz exch def
+  /dsz exch def      /pxlmag exch def  /ext exch def  /int exch def
+  /fnam ext (-) concatnam pxlmag cvsstr cvs concatnam def
+  newfont not {
+    int-dict-name 13 dict def
+    int-dict begin
+      /FontType 3 def  /FontMatrix [ 1 dsz div 0 0 1 dsz div 0 0 ] def
+      /FontBBox bb TransformBBox def  /Encoding CMEncodingArray def
+      /CharDict 1 dict def  CharDict begin  /Char-Info num array def  end
+      /BuildChar {
+        PXLBuildCharDict begin
+          /char exch def  /fontdict exch def
+          fontdict /CharDict get /Char-Info get char get aload pop
+          /rasters exch def  /PackedWord1 exch def
+          0 PackedWord1 UnpkHW 16#7FFF ne {
+	    /PackedWord2 exch def  /wx 0 PackedWord1 UnpkHW def
+            /rows 2 PackedWord1 UnpkByte def  /cols 3 PackedWord1 UnpkByte def
+            /llx 0 PackedWord2 UnpkByte def   /lly 1 PackedWord2 UnpkByte def
+            /urx 2 PackedWord2 UnpkByte def   /ury 3 PackedWord2 UnpkByte def
+	  }{ %else
+	    /PackedWord2 exch def  /PackedWord3 exch def /PackedWord4 exch def
+            /wx 1 PackedWord1 UnpkHW def    /rows 0 PackedWord2 UnpkHW def
+            /cols 1 PackedWord2 UnpkHW def  /llx 0 PackedWord3 UnpkHW def
+            /lly 1 PackedWord3 UnpkHW def   /urx 0 PackedWord4 UnpkHW def
+            /ury 1 PackedWord4 UnpkHW def
+          } ifelse
+          rows 0 lt {
+	    /rows rows neg def /runlength 1 def
+	  }{ %else
+	    /runlength 0 def
+	  } ifelse
+          wx 0
+          llx RasterConvert lly RasterConvert 
+          urx RasterConvert ury RasterConvert setcachedevice
+          rows 0 ne {
+	    gsave
+	      cols rows true  RasterScaleFactor 
+              0 0 RasterScaleFactor neg llx .5 add neg ury .5 add 
+              tempmatrix astore  GenerateRasters imagemask
+            grestore
+          } if
+        end
+      }def
+    end
+    fnam int-dict definefont pop 
+  } if 
+  int-dict-name fnam findfont psz scalefont def
+  currentdict int [ int-dict /setfont cvx ] cvx put
+}def 
+/PXLF { true  DefinePXLFont}def	% SIGNAL THAT FONT ALREADY LOADED
+/PXLNF {false  DefinePXLFont}def	% SIGNAL THAT FONT NOT ALREADY LOADED
+%
+/PXLC {	% <int-font-name><code><wx><llx><lly><urx><ury>...
+	% ...<rows><cols><runlength><rasters>PXLC
+  /rasters exch def  /runlength exch def  /cols exch def  /rows exch def
+  /ury exch def      /urx exch def        /lly exch def   /llx exch def
+  /wx exch def       /code exch def       /int exch def
+  % SEE IF LONG OR SHORT FORMAT IS REQUIRED
+  true cols CKSZ rows CKSZ ury CKSZ urx CKSZ lly CKSZ llx CKSZ 
+  TackRunLengthToRows {
+    int-dict /CharDict get /Char-Info get code 
+    [ 0 0 llx PackByte 1 lly PackByte 2 urx PackByte 3 ury PackByte
+      0 0 wx PackHW 2 rows PackByte 3 cols PackByte rasters ] put
+  }{ %else
+    int-dict /CharDict get /Char-Info get code 
+    [ 0 0 urx PackHW 1 ury PackHW   0 0 llx PackHW 1 lly PackHW
+      0 0 rows PackHW 1 cols PackHW 0 0 16#7FFF PackHW 1 wx PackHW rasters ] put
+  } ifelse
+}def
+%
+/CKSZ {abs 127 le and}def
+/TackRunLengthToRows {runlength 0 ne {/rows rows neg def} if}def
+%
+/PLOTC {
+  % <wx><dsz><psz><llx><lly><urx><ury><rows><cols><runlength><rasters>PLOTC
+  /rasters exch def  /runlength exch def  /cols exch def  /rows exch def
+  /ury exch def      /urx exch def        /lly exch def   /llx exch def
+  /psz exch def      /dsz exch def        /wx exch def
+  % "PLOT" A CHARACTER'S RASTER PATTERN
+  rows 0 ne {
+    gsave
+      currentpoint translate  psz dsz div dup scale
+      cols rows true  RasterScaleFactor 0 0 RasterScaleFactor 
+      neg llx .5 add neg ury .5 add  tempmatrix astore
+      GenerateRasters imagemask
+    grestore
+  } if
+  wx x
+}def
+%
+% set color routine: Color# SC
+/SC {ColorPalette exch get 1.0 setcustomcolor}bind def
+%
+%%EndProlog
+
+
+%%BeginSetup
+/PxlResolution 300 def
+/Resolution 3600 def
+/RasterScaleFactor PxlResolution Resolution div def
+/PortraitMode true def
+/PaperWidth 7.000 def
+/PaperHeight 9.000 def
+72 Resolution div dup scale
+
+%>  Postamble of file PROJECTS:[LENAIN.A1]IGLOCAL_PROFILE.DVI_PS.
+% DefineFont:F222 Category:10 Pointsize:8
+/Courier /Courier@DOCPSE DOCPSE ReENCODE
+/F222 400.100 /Courier@DOCPSE DPSF
+% DefineFont:F210 Category:10 Pointsize:18
+/Helvetica /Helvetica@DOCPSE DOCPSE ReENCODE
+/F210 900.100 /Helvetica@DOCPSE DPSF
+% DefineFont:F208 Category:10 Pointsize:20
+/Helvetica-Bold /Helvetica-Bold@DOCPSE DOCPSE ReENCODE
+/F208 1000.0 /Helvetica-Bold@DOCPSE DPSF
+% DefineFont:F163 Category:10 Pointsize:6
+/NewCenturySchlbk-Roman /NewCenturySchlbk-Roman@DOCPSE DOCPSE ReENCODE
+/F163 300.0 /NewCenturySchlbk-Roman@DOCPSE DPSF
+% DefineFont:F161 Category:10 Pointsize:8
+/NewCenturySchlbk-Bold /NewCenturySchlbk-Bold@DOCPSE DOCPSE ReENCODE
+/F161 400.0 /NewCenturySchlbk-Bold@DOCPSE DPSF
+% DefineFont:F159 Category:10 Pointsize:8
+/F159 400.0 /NewCenturySchlbk-Roman@DOCPSE DPSF
+% DefineFont:F157 Category:10 Pointsize:9
+/F157 450.0 /NewCenturySchlbk-Bold@DOCPSE DPSF
+% DefineFont:F156 Category:10 Pointsize:9
+/NewCenturySchlbk-Italic /NewCenturySchlbk-Italic@DOCPSE DOCPSE ReENCODE
+/F156 450.0 /NewCenturySchlbk-Italic@DOCPSE DPSF
+% DefineFont:F155 Category:10 Pointsize:9
+/F155 450.0 /NewCenturySchlbk-Roman@DOCPSE DPSF
+% DefineFont:F152 Category:10 Pointsize:10
+/F152 500.0 /NewCenturySchlbk-Italic@DOCPSE DPSF
+% DefineFont:F151 Category:10 Pointsize:10
+/F151 500.0 /NewCenturySchlbk-Roman@DOCPSE DPSF
+% DefineFont:F44 Category:10 Pointsize:8
+/F44 400.0 /Helvetica-Bold@DOCPSE DPSF
+% DefineFont:F40 Category:10 Pointsize:9
+/F40 450.0 /Helvetica-Bold@DOCPSE DPSF
+% DefineFont:F38 Category:10 Pointsize:9
+/F38 450.0 /Helvetica@DOCPSE DPSF
+% DefineFont:F36 Category:10 Pointsize:10
+/F36 500.0 /Helvetica-Bold@DOCPSE DPSF
+% DefineFont:F32 Category:10 Pointsize:11
+/F32 550.0 /Helvetica-Bold@DOCPSE DPSF
+% DefineFont:F28 Category:10 Pointsize:12
+/F28 600.0 /Helvetica-Bold@DOCPSE DPSF
+% DefineFont:F24 Category:10 Pointsize:14
+/F24 700.0 /Helvetica-Bold@DOCPSE DPSF
+% DefineFont:F8 Category:10 Pointsize:36
+/F8 1800.0 /Helvetica-Bold@DOCPSE DPSF
+%>  Postamble of file IGLOCAL_PROFILE_CONTENTS.
+% DefineFont:F34 Category:10 Pointsize:10
+/F34 500.0 /Helvetica@DOCPSE DPSF
+
+%Spot color array for this job
+/ColorPalette [
+0.0 0.0 0.0 1.0 (HEADCOLOR) findcmykcustomcolor
+] def
+
+%%EndSetup
+%
+%%Page: (I) 1
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 7187 9193 XY F210(ALL\203)S -2 x(IN\2031)S 7187 X 399 y 16140 48 R
+7187 10638 XY(Installation:)S 289 x(Lang)S -2 x(uage)S 185 x(and)S 185 x
+(Market)S 7187 11684 XY(Supp)S -2 x(lement)S 7187 12879 XY F38(Order)S
+166 x(Number)S 2 x(:)S 248 x(AA-R71CA-)S 2 x(TE)S 7187 15569 XY F40
+(Revision/U)S -2 x(pdate)S 167 x(Information:)S 782 x F155(Revised)S
+166 x(for)S 166 x(ALL\203IN\2031)S 168 x(V)S -42 x(ersion)S 166 x(3.1)S
+7187 X 897 y F40(Operating)S 166 x(system:)S 14262 X F155(OpenVMS)S
+171 x(V)S -50 x(AX)S 169 x(V)S -41 x(ersion)S 170 x(6.1)S 171 x(or)S
+170 x(higher)S 171 x(and)S 14262 X 548 y(OpenVMS)S 166 x(Alpha)S 167 x
+(V)S -42 x(ersion)S 166 x(6.1)S 167 x(or)S 166 x(higher)S 7187 X 896 y
+F40(Software)S 167 x(version:)S 14262 X F155(V)S -42 x(ersion)S 166 x
+(3.2)S 7187 29567 XY F40(Digi)S -2 x(tal)S 167 x(Equipment)S 165 x(Corporation)S
+EP PP
+%%PageTrailer
+%%PageFonts: Helvetica Helvetica-Bold
+%%+ NewCenturySchlbk-Roman
+%%PageProcessColors:
+%%PageCustomColors: (BLACK)
+%
+%%Page: (II) 2
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 3899 3913 XY 18528 48 R 3899 4361 XY F161(June)S 166 x(1997)S 3899 X
+797 y F159(Possess)S -2 x(ion,)S 177 x(use,)S 177 x(or)S 174 x(copying)S
+175 x(of)S 174 x(the)S 175 x(software)S 174 x(described)S 173 x(in)S
+175 x(this)S 174 x(documentation)S 176 x(is)S 173 x(authorized)S 175 x
+(only)S 3899 X 448 y(pursuant)S 166 x(to)S 166 x(a)S 166 x(valid)S 164 x
+(written)S 167 x(license)S 165 x(from)S 166 x(Digital)S 165 x(or)S 166 x
+(an)S 166 x(authorized)S 166 x(sublicensor)S -31 x(.)S 3899 X 797 y
+(While)S 175 x(Digita)S -2 x(l)S 175 x(believes)S 174 x(the)S 176 x
+(information)S 175 x(included)S 174 x(in)S 175 x(this)S 175 x(publica)S
+-2 x(tion)S 176 x(is)S 174 x(correct)S 175 x(as)S 174 x(of)S 175 x(the)S
+176 x(date)S 174 x(of)S 3899 X 449 y(publica)S -2 x(tion,)S 166 x(it)S
+166 x(is)S 165 x(subject)S 166 x(to)S 166 x(change)S 167 x(without)S
+167 x(notice.)S 3899 X 797 y(Digital)S 177 x(Equipment)S 179 x(Corporation)S
+178 x(makes)S 179 x(no)S 180 x(representations)S 178 x(that)S 179 x
+(the)S 180 x(use)S 179 x(of)S 178 x(its)S 178 x(products)S 179 x(in)S
+179 x(the)S 3899 X 448 y(manner)S 168 x(describ)S -2 x(ed)S 167 x(in)S
+168 x(this)S 166 x(publicati)S -2 x(on)S 168 x(will)S 166 x(not)S 167 x
+(infringe)S 167 x(on)S 168 x(existing)S 167 x(or)S 167 x(future)S 168 x
+(patent)S 167 x(rights,)S 166 x(nor)S 168 x(do)S 3899 X 448 y(the)S
+167 x(descripti)S -2 x(ons)S 167 x(contained)S 167 x(in)S 167 x(this)S
+166 x(public)S -2 x(ation)S 167 x(imply)S 166 x(the)S 167 x(granting)S
+166 x(of)S 167 x(licenses)S 165 x(to)S 167 x(make,)S 167 x(use,)S 167 x
+(or)S 167 x(sell)S 3899 X 449 y(equipment)S 167 x(or)S 166 x(software)S
+165 x(in)S 166 x(accordance)S 166 x(with)S 166 x(the)S 167 x(descrip)S
+-2 x(tion.)S 3899 X 797 y(\251)S 166 x(Digita)S -2 x(l)S 166 x(Equipment)S
+166 x(Corporation)S 166 x(199)S -2 x(7.)S 3899 X 797 y(All)S 165 x(Rights)S
+165 x(Reserved.)S 3899 X 797 y(The)S 184 x(following)S 183 x(are)S 183 x
+(trademarks)S 183 x(of)S 184 x(Digita)S -2 x(l)S 183 x(Equipment)S 184 x
+(Corporation:)S 298 x(ACMS,)S 183 x(ALL\203IN\2031)S -2 x(,)S 188 x
+(CDA,)S 3899 X 448 y(DA)S -22 x(T)S -22 x(A)S -23 x(TRIEVE,)S 197 x
+(DEC,)S 198 x(DEC)S 197 x(Notes,)S 206 x(DEClas)S -2 x(er)S -29 x(,)S
+206 x(DECmail)S -2 x(,)S 206 x(DECmate,)S 206 x(DECnet,)S 206 x(DECprint,)S
+3899 X 448 y(DECsta)S -2 x(tion,)S 199 x(DECtrace,)S 198 x(DECwindows,)S
+198 x(Digita)S -2 x(l,)S 198 x(EDT)S -37 x(,)S 192 x(FMS,)S 192 x(LA,)S
+192 x(LN03,)S 197 x(LQP02,)S 197 x(MAILbus,)S 3899 X 449 y(MailW)S -23 x
+(orks,)S 202 x(MicroV)S -45 x(AX,)S 194 x(OpenVMS,)S 195 x(P)S -30 x
+(A)S -22 x(THWORKS,)S 194 x(T)S -37 x(eamLinks,)S 202 x(UL)S -23 x(TRIX,)S
+194 x(UNIBUS,)S 194 x(V)S -44 x(AX,)S 3899 X 448 y(V)S -45 x(AXcluster)S
+-30 x(,)S 191 x(V)S -45 x(AXmate,)S 191 x(V)S -45 x(AXsta)S -2 x(tion,)S
+192 x(VMS,)S 186 x(VMScluster)S -30 x(,)S 191 x(VMSmail,)S 190 x(VT)S
+-38 x(,)S 186 x(WPS\203PLUS)S(,)S 190 x(and)S 186 x(the)S 3899 X 448 y
+(DIGIT)S -22 x(AL)S 166 x(logo)S 3899 X 797 y(PostScript)S 165 x(is)S
+165 x(a)S 165 x(registered)S 166 x(trademark)S 165 x(of)S 166 x(Adobe)S
+166 x(Systems)S 166 x(Incorporated.)S 3899 X 449 y(Appleta)S -2 x(lk)S
+166 x(and)S 166 x(Macintosh)S 166 x(are)S 166 x(registered)S 165 x(trademarks)S
+166 x(of)S 166 x(Appl)S -2 x(e)S 167 x(Computer)S -29 x(,)S 166 x(Inc.)S
+3899 X 448 y(MacW)S -22 x(rite)S 165 x(is)S 165 x(a)S 166 x(registered)S
+165 x(trademark)S 166 x(of)S 166 x(Clari)S -2 x(s)S 166 x(Corporation.)S
+3899 X 448 y(HP)S 166 x(and)S 165 x(LaserJet)S 165 x(are)S 166 x(registered)S
+166 x(trademarks)S 165 x(of)S 166 x(Hewlett-Packard)S 164 x(Company)S
+-44 x(.)S 3899 X 449 y(IBM)S 163 x(and)S 164 x(Of\211ceV)S -18 x(ision)S
+163 x(are)S 163 x(registered)S 163 x(trademarks)S 163 x(of)S 163 x(Intern)S
+2 x(ational)S 162 x(Business)S 162 x(Machines)S 164 x(Corporation.)S
+3899 X 448 y(1-2-)S -2 x(3)S 166 x(and)S 166 x(Lotus)S 166 x(are)S 166 x
+(registered)S 165 x(trademarks)S 165 x(of)S 166 x(Lotus)S 166 x(Development)S
+168 x(Corporati)S -2 x(on.)S 3899 X 448 y(Microsoft,)S 165 x(MS\203DOS)S
+166 x(and)S 166 x(W)S -15 x(indows)S 166 x(are)S 165 x(registered)S
+166 x(trademarks)S 165 x(of)S 166 x(Microsoft)S 165 x(Corporation.)S
+3899 X 449 y(Motif)S 166 x(is)S 165 x(a)S 165 x(registered)S 166 x(trademark)S
+165 x(of)S 166 x(Open)S 167 x(Software)S 166 x(Foundation,)S 166 x(Inc.)S
+3899 X 448 y(W)S -22 x(ordPerfect)S 166 x(is)S 165 x(a)S 165 x(trademark)S
+166 x(of)S 166 x(W)S -22 x(ordPerfect)S 166 x(Corp.)S 3899 X 448 y(UNIX)S
+178 x(is)S 177 x(a)S 178 x(registered)S 178 x(trademark)S 178 x(in)S
+179 x(the)S 179 x(US)S 178 x(and)S 178 x(other)S 180 x(countries,)S
+182 x(licensed)S 177 x(exclusively)S 178 x(through)S 3899 X 449 y(X/Open)S
+166 x(Company)S 166 x(Ltd.)S 3899 X 797 y(All)S 165 x(other)S 167 x
+(trademarks)S 165 x(and)S 166 x(registered)S 165 x(trademarks)S 165 x
+(are)S 166 x(the)S 167 x(property)S 166 x(of)S 166 x(their)S 166 x(respective)S
+165 x(holders.)S 3899 X 797 y(This)S 165 x(documen)S 2 x(t)S 166 x(is)S
+165 x(avai)S -2 x(lable)S 165 x(on)S 167 x(CD-ROM.)S 3899 22294 XY(This)S
+165 x(documen)S 2 x(t)S 166 x(was)S 165 x(prepared)S 165 x(using)S 166 x
+(V)S -44 x(AX)S 165 x(DOCUMENT)S -38 x(,)S 166 x(V)S -37 x(ersion)S
+166 x(2.1.)S
+EP PP
+%%PageTrailer
+%%PageFonts: NewCenturySchlbk-Bold NewCenturySchlbk-Roman
+%%PageProcessColors:
+%%PageCustomColors: (BLACK)
+%
+% < Beginning of included file IGLOCAL_PROFILE_CONTENTS.DVI_PS >
+%%Page: (III) 3
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 2703 6852 XY 20628 48 R 19009 7901 XY F208(Contents)S 2703 10192 XY
+F28(1)S 499 x(ALL\203IN\2031)S(/Hebrew)S 167 x(Kit)S 3899 X 897 y F34
+(1.1)S 5692 X F151(About)S 166 x(Y)S -56 x(our)S 167 x(ALL\203IN\2031)S
+(/Hebrew)S 166 x(Kit)S 357 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x
+(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2031)S 3899 X
+598 y(1.1.1)S 6589 X F151(Distribution)S 165 x(Media)S 126 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2031)S 3899 X 597 y
+(1.1.2)S 6589 X F151(Savesets)S 165 x(Provided)S 339 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2032)S 3899 X 598 y(1.2)S
+5692 X F151(Disk)S 166 x(Space)S 166 x(Requirements)S 369 x(.)S 161 x
+(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x
+(.)S 22495 X F34(1\2032)S 3899 X 598 y(1.2.1)S 6589 X F151(Disk)S 174 x
+(Space)S 174 x(Required)S 175 x(on)S 175 x(the)S 174 x(System)S 174 x
+(Disk)S 174 x(or)S 175 x(Alternate)S 6589 X 598 y(W)S -28 x(orking)S
+167 x(Device)S 167 x(\(A)S -47 x(WD\))S 119 x(.)S 161 x(.)S 161 x(.)S
+160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X
+F34(1\2032)S 3899 X 597 y(1.2.2)S 6589 X F151(Disk)S 165 x(Space)S 166 x
+(for)S 166 x(Langu)S 2 x(age)S 166 x(Files)S 166 x(in)S 166 x(ALL\203IN\2031)S
+166 x(Areas)S 152 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2033)S 3899 X 598 y(1.3)S 5692 X
+F151(Information)S 166 x(for)S 166 x(the)S 167 x(Hebrew)S 165 x(Lang)S
+2 x(uage)S 166 x(Component)S 340 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S
+22495 X F34(1\2034)S 3899 X 598 y(1.4)S 5692 X F151(Information)S 166 x
+(for)S 166 x(the)S 167 x(Hebrew)S 165 x(Market)S 167 x(Component)S 314 x
+(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x
+(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2035)S
+2703 17548 XY F28(T)S -44 x(ables)S -652 x 18544 Y F34(1)S(\203)S(1)S
+6589 X F151(Savesets)S 165 x(Provided)S 167 x(with)S 166 x(the)S 166 x
+(ALL\203IN\2031)S(/Hebrew)S 166 x(Kit)S 216 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2032)S
+3899 X 698 y(1)S(\203)S(2)S 6589 X F151(Disk)S 170 x(Space)S 170 x(Required)S
+171 x(on)S 171 x(the)S 171 x(System)S 170 x(Disk)S 170 x(or)S 171 x
+(A)S -46 x(WD)S 170 x(During)S 6589 X 597 y(Installation)S 165 x(\(Blocks\))S
+148 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2033)S 3899 X
+698 y(1)S(\203)S(3)S 6589 X F151(Disk)S 165 x(Space)S 166 x(for)S 166 x
+(Langu)S 2 x(age)S 166 x(Files:)S 250 x(Full)S 166 x(Installation)S
+107 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2034)S 3899 X 697 y(1)S
+(\203)S(4)S 6589 X F151(Disk)S 174 x(Space)S 174 x(for)S 174 x(Languag)S
+2 x(e)S 174 x(Files:)S 266 x(Upgrade)S 175 x(from)S 174 x(V)S -46 x
+(ersion)S 6589 X 598 y(3.1)S 285 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X
+F34(1\2034)S 3899 X 697 y(1)S(\203)S(5)S 6589 X F151(Disk)S 171 x(Space)S
+171 x(for)S 171 x(Langu)S 2 x(age)S 172 x(Files:)S 259 x(Add,)S 173 x
+(Upgrade)S 172 x(or)S 172 x(Update)S 6589 X 598 y(Architecture)S 166 x
+(Support)S 246 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 160 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2034)S 3899 X
+697 y(1)S(\203)S(6)S 6589 X F151(Useful)S 166 x(Information)S 166 x
+(for)S 166 x(the)S 166 x(Hebrew)S 166 x(Languag)S 2 x(e)S 166 x(Component)S
+155 x(.)S 160 x(.)S 161 x(.)S 22495 X F34(1\2034)S 3899 X 698 y(1)S
+(\203)S(7)S 6589 X F151(Useful)S 166 x(Information)S 166 x(for)S 166 x
+(the)S 166 x(Market)S 167 x(Component)S 301 x(.)S 160 x(.)S 161 x(.)S
+161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 161 x(.)S 160 x(.)S
+161 x(.)S 22495 X F34(1\2035)S 0 SC -299 x 31061 Y F38(iii)S
+EP PP
+%%PageTrailer
+%%PageFonts: Helvetica-Bold Helvetica
+%%+ NewCenturySchlbk-Roman
+%%PageProcessColors:
+%%PageCustomColors: (BLACK)
+%%+ (FOOTCOLOR)
+%
+% < End of included file IGLOCAL_PROFILE_CONTENTS.DVI_PS >
+%%Page: (IV) 4
+%DEC_EDMS_BlankPage
+PP
+%%PageTrailer
+%%PageFonts:
+%%PageProcessColors:
+%%PageCustomColors:
+%
+%%Page: (1-1) 5
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 22329 6453 XY F8(1)S 2703 X 448 y 20628 48 R 13196 7919 XY F208
+(ALL\203IN\2031)S(/Hebrew)S 331 x(Kit)S 4796 10211 XY F151(This)S 157 x
+(chapter)S 158 x(describes)S 157 x(the)S 157 x(ALL\203IN\2031)S(/Hebrew)S
+158 x(V)S -46 x(ersion)S 157 x(3.2)S 158 x(kit.)S 250 x(This)S 157 x
+(kit)S 158 x(provides)S 4796 X 598 y(the)S 166 x(language)S 168 x(and)S
+166 x(market)S 166 x(components)S 167 x(for)S 166 x(ALL\203IN\2031)S
+166 x(V)S -46 x(ersion)S 166 x(3.2.)S 250 x(The)S 167 x(languag)S 2 x
+(e)S 4796 X 597 y(and)S 180 x(market)S 180 x(components)S 181 x(are)S
+180 x(installed)S 180 x(during)S 181 x(the)S 181 x(ALL\203IN\2031)S
+180 x(V)S -46 x(ersion)S 180 x(3.2)S 4796 X 598 y(installation)S 168 x
+(procedure.)S 256 x(Follow)S 169 x(the)S 169 x(instructions)S 169 x
+(in)S 169 x(the)S 338 x F152(ALL\203IN\2031)S 169 x(Installation:)S
+4796 X 598 y(Guide)S 166 x F151(to)S 166 x(install)S 165 x(this)S 166 x
+(kit.)S 4796 X 896 y(Use)S 166 x(the)S 168 x(information)S 167 x(in)S
+168 x(this)S 167 x(supplement)S 167 x(to)S 167 x(plan)S 168 x(and)S
+167 x(prepare)S 168 x(for)S 167 x(the)S 168 x(ALL\203IN\2031)S 4796 X
+598 y(V)S -47 x(ersion)S 167 x(3.2)S 166 x(installation.)S 249 x(See)S
+166 x(the)S 332 x F152(ALL\203IN\2031)S 166 x(Installation:)S 251 x
+(Guide)S F151(.)S 2703 15342 XY F24(1.1)S 398 x(About)S 233 x(Y)S -52 x
+(our)S 233 x(ALL\203IN\2031)S(/)S -2 x(Hebrew)S 232 x(Kit)S 4796 X 896 y
+F151(The)S 166 x(ALL\203IN\2031)S(/Hebrew)S 166 x(kit)S 166 x(has)S
+166 x(the)S 167 x(following)S 166 x(components:)S 4796 X 897 y(\201)S
+594 x(Hebrew)S 166 x(language)S 168 x(component.)S 4796 X 896 y(\201)S
+594 x(Hebrew)S 166 x(market)S 166 x(component)S 2703 19127 XY F28(1.1.1)S
+400 x(Distribution)S 201 x(Media)S 4796 X 797 y F151(The)S 176 x(ALL\203IN\2031)S
+(/Hebrew)S 177 x(kit)S 176 x(is)S 176 x(supplied)S 176 x(on)S 176 x
+(compact)S 176 x(disc)S 176 x(\(CD-ROM\).)S 175 x(For)S 177 x(V)S -56 x
+(AX)S 4796 X 598 y(upgrades,)S 167 x(it)S 165 x(is)S 166 x(also)S 165 x
+(supplied)S 166 x(on)S 167 x(TK50)S 165 x(cartridge)S 167 x(or)S 166 x
+(6250)S 166 x(bpi)S 166 x(magnetic)S 167 x(tape.)S 4796 X 897 y(The)S
+166 x(ALL\203IN\2031)S(/Hebrew)S 166 x(V)S -46 x(ersion)S 166 x(3.2)S
+167 x(tape)S 165 x(is)S 166 x(labeled)S 166 x(as)S 166 x(follows:)S
+4796 X 797 y F222(A12032)S 4796 X 896 y F151(The)S 166 x(ALL\203IN\2031)S
+(/Hebrew)S 166 x(V)S -46 x(ersion)S 166 x(3.2)S 167 x(cartridge)S 166 x
+(is)S 166 x(labeled)S 166 x(as)S 165 x(follows:)S 4796 X 797 y F222
+(A12032)S 0 SC 17844 31061 XY F38(ALL\203IN\2031)S(/Hebrew)S 151 x(Kit)S
+397 x F40(1\2031)S
+EP PP
+%%PageTrailer
+%%PageFonts: Helvetica-Bold NewCenturySchlbk-Roman
+%%+ NewCenturySchlbk-Italic Courier Helvetica
+%%PageProcessColors:
+%%PageCustomColors: (BLACK)
+%%+ (FOOTCOLOR)
+%
+%%Page: (1-2) 6
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 1807 2169 XY F32(ALL\203IN\203)S -2 x(1)S(/Hebrew)S 132 x(Kit)S
+1807 X 598 y(1.1)S 132 x(About)S 132 x(Y)S -40 x(our)S 133 x(ALL\203IN\203)S
+-2 x(1)S(/Hebrew)S 132 x(Kit)S 0 SC 1807 4313 XY F28(1.1.2)S 400 x(Savesets)S
+201 x(Provided)S 3899 X 797 y F151(T)S -31 x(able)S 166 x(1)S(\203)S
+(1)S 166 x(lists)S 165 x(the)S 166 x(savesets)S 165 x(provided)S 167 x
+(with)S 166 x(your)S 167 x(ALL\203IN\2031)S(/Hebrew)S 166 x(kit.)S 3899 6555 XY
+F36(T)S -37 x(able)S 151 x(1)S(\203)S(1)S 398 x(Savesets)S 149 x(Provided)S
+151 x(with)S 150 x(the)S 150 x(ALL\203IN\2031)S(/Hebrew)S 149 x(Kit)S
+3899 X 324 y 18528 24 R 3899 7377 XY F40(Component)S 9727 X(Saveset)S
+2 x(s)S 3899 X 299 y 18528 24 R 3899 8273 XY F155(Hebrew)S 150 x(language)S
+9727 X(A1LIL032.A)S 150 x(\(Contains)S 150 x(the)S 150 x F156(Release)S
+150 x(Notes)S 150 x(Part)S 150 x(1:)S 224 x(Language)S F155(\))S 9727 X
+698 y(A1LIL032.B)S 9727 X 697 y(A1LIL032.C)S 9727 X 697 y(A1LIL032.D)S
+9727 X 698 y(A1LIL032.E)S 9727 X 697 y(A1LIL032.F)S 9727 X 698 y(A1LIL032.G)S
+9727 X 697 y(A1LIL032.H)S 9727 X 697 y(A1LIL032.I)S 151 x(\(used)S 149 x
+(on)S 150 x(V)S -50 x(AX)S 149 x(only\))S 9727 X 698 y(A1LIL032.J)S
+151 x(\(used)S 149 x(on)S 150 x(Alpha)S 150 x(only\))S 9727 X 697 y
+(A1LIL032.K)S 9727 X 698 y(A1LIL032.L)S 9727 X 697 y(A1LIL032.M)S 3899 X
+747 y(Hebrew)S 150 x(market)S 9727 X(A1CIL032.A)S 150 x(\(Contains)S
+150 x(the)S 149 x F156(Release)S 151 x(Notes)S 150 x(Part)S 149 x(2:)S
+224 x(Market)S F155(\))S 9727 X 697 y(A1CIL032.B)S 9727 X 698 y(A1CIL032.C)S
+3899 X 747 y(Market)S 150 x(index)S 9727 X(A1C032.A)S -190 y F163(1)S
+3899 X 688 y 18528 24 R 3899 20389 XY(1)S 25 x 190 y F159(This)S 132 x
+(saveset)S 132 x(is)S 132 x(only)S 133 x(used)S 133 x(during)S 133 x
+(an)S 133 x(instal)S -2 x(lation)S 133 x(from)S 132 x(tape.)S 3899 X
+481 y 18528 24 R 1807 22554 XY F24(1.2)S 398 x(Disk)S 231 x(Space)S
+232 x(Requirements)S 3899 X 897 y F151(The)S 178 x(values)S 179 x(given)S
+179 x(in)S 178 x(this)S 177 x(section)S 178 x(are)S 178 x(required)S
+179 x(when)S 178 x(you)S 179 x(are)S 178 x(preparing)S 179 x(your)S
+3899 X 597 y(system)S 165 x(for)S 166 x(installation.)S 250 x(See)S
+166 x(the)S 332 x F152(ALL\203IN\2031)S 166 x(Installation:)S 250 x
+(Guide)S F151(.)S 1807 25144 XY F28(1.2.1)S 400 x(Disk)S 204 x(Space)S
+206 x(Required)S 205 x(on)S 205 x(the)S 205 x(System)S 205 x(Disk)S
+205 x(or)S 204 x(Alternate)S 205 x(W)S -10 x(orking)S 3535 X 698 y(Device)S
+200 x(\(A)S -33 x(WD\))S 3899 X 797 y F151(T)S -31 x(able)S 187 x(1)S
+(\203)S(2)S 187 x(gives)S 187 x(the)S 187 x(disk)S 187 x(space)S 186 x
+(requirement)S 188 x(for)S 187 x(installing)S 187 x(the)S 187 x(ALL\203IN\2031)S
+3899 X 597 y(/Hebrew)S 170 x(kit)S 171 x(on)S 170 x(the)S 171 x(system)S
+170 x(disk)S 170 x(or)S 170 x(alternate)S 171 x(working)S 171 x(device)S
+171 x(\(A)S -46 x(WD\))S 169 x(during)S 171 x(the)S 3899 X 598 y(installation.)S
+258 x(The)S 171 x(values)S 171 x(for)S 170 x(safety)S 171 x(and)S 170 x
+(non-safety)S 171 x(mode)S 170 x(apply)S 171 x(to)S 170 x(both)S 171 x
+(full)S 171 x(and)S 3899 X 598 y(upgrade)S 173 x(installations)S 172 x
+(of)S 172 x(ALL\203IN\2031)S 173 x(V)S -47 x(ersion)S 173 x(3.2.)S 263 x
+(For)S 173 x(information)S 173 x(about)S 172 x(safety)S 3899 X 598 y
+(and)S 166 x(non-safety)S 167 x(mode,)S 166 x(see)S 166 x(Chapter)S
+166 x(3)S 166 x(in)S 166 x(the)S 332 x F152(ALL\203IN\2031)S 166 x(Installation:)S
+251 x(Guide)S F151(.)S 0 SC 1807 31061 XY F40(1\2032)S 399 x F38(ALL\203IN\2031)S
+(/Hebrew)S 134 x(Kit)S
+EP PP
+%%PageTrailer
+%%PageFonts: Helvetica-Bold NewCenturySchlbk-Roman
+%%+ NewCenturySchlbk-Italic Helvetica
+%%PageProcessColors:
+%%PageCustomColors: (HEADCOLOR)
+%%+ (BLACK)
+%%+ (FOOTCOLOR)
+%
+%%Page: (1-3) 7
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 17788 2169 XY F32(ALL\203)S -2 x(IN\2031)S(/Hebrew)S 149 x(Kit)S
+15691 X 598 y(1.2)S 149 x(Disk)S 149 x(Space)S 148 x(Requirements)S
+0 SC 4796 4461 XY F36(T)S -37 x(able)S 134 x(1)S(\203)S(2)S 398 x(Disk)S
+121 x(Space)S 121 x(Required)S 122 x(on)S 122 x(the)S 121 x(System)S
+120 x(Disk)S 121 x(or)S 121 x(A)S -27 x(WD)S 120 x(During)S 122 x(Install)S
+2 x(ation)S 7422 X 598 y(\(Blocks\))S 4796 X 323 y 18528 24 R 4796 5880 XY
+F44(Instal)S -2 x(lation)S 133 x(T)S -29 x(ype)S 13046 X(V)S -29 x(AX)S
+19828 X(Alpha)S 10043 X 698 y(Safet)S -2 x(y)S 13740 X(Non-safety)S
+17437 X(Safety)S 21135 X(Non-safet)S -2 x(y)S 4796 X 299 y 18528 24 R
+4796 7474 XY F159(Hebrew)S 137 x(as)S 137 x(the)S 139 x(primary)S 4796 X
+499 y(language)S -141 y F163(1)S 10043 X -358 y F159(350)S 131 x(000)S
+13740 X(80)S 132 x(000)S 17437 X(400)S 132 x(000)S 21135 X(100)S 131 x
+(000)S 4796 8720 XY(Addi)S -2 x(tion)S 137 x(of)S 136 x(architecture)S
+4796 X 498 y(support)S 140 x(for)S 140 x(Hebrew)S 140 x(as)S 4796 X
+498 y(the)S 133 x(primary)S 132 x(language)S 10043 8720 XY(60)S 132 x
+(000)S 13740 X(35)S 132 x(000)S 17437 X(200)S 132 x(000)S 21135 X(100)S
+131 x(000)S 4796 10214 XY 18528 24 R 4796 10574 XY F163(1)S 25 x 141 y
+F159(This)S 132 x(is)S 132 x(the)S 133 x(disk)S 132 x(space)S 132 x
+(required)S 132 x(to)S 134 x(instal)S -2 x(l)S 133 x(all)S 131 x(the)S
+134 x(components)S 134 x(of)S 132 x(ALL\203IN\2031)S 131 x(V)S -37 x
+(ersion)S 133 x(3.2.)S 4796 X 480 y 18528 24 R 2703 12390 XY F28(1.2.2)S
+400 x(Disk)S 200 x(Space)S 200 x(for)S 199 x(Langu)S 2 x(age)S 200 x
+(Files)S 200 x(in)S 200 x(ALL\203IN\2031)S 200 x(Areas)S 4796 X 797 y
+F151(This)S 178 x(section)S 179 x(gives)S 180 x(the)S 179 x(disk)S 178 x
+(space)S 179 x(requirements,)S 183 x(in)S 179 x(blocks,)S 183 x(for)S
+178 x(installing)S 179 x(the)S 4796 X 598 y(language)S 178 x(\211les)S
+176 x(in)S 177 x(ALL\203IN\2031)S 177 x(areas)S 176 x(on)S 177 x(target)S
+177 x(disks.)S 270 x(The)S 178 x(following)S 176 x(disk)S 177 x(space)S
+4796 X 598 y(tables)S 165 x(are)S 166 x(provided:)S 4796 X 896 y 18528 24 R
+4796 15778 XY F40(T)S -34 x(ype)S 150 x(of)S 150 x(Installation)S 17597 X
+(Disk)S 150 x(Space)S 150 x(T)S -33 x(able)S 4796 X 298 y 18528 24 R
+4796 16674 XY F155(Full)S 158 x(installat)S 2 x(ion)S 158 x(of)S 159 x
+(ALL\203IN\2031)S 159 x(V)S -41 x(ersion)S 158 x(3.2)S 158 x(with)S
+159 x(Hebrew)S 4796 X 498 y(as)S 155 x(the)S 157 x(primary)S 156 x(language)S
+156 x(or)S 156 x(Hebrew)S 157 x(as)S 156 x(a)S 156 x(new)S 156 x(additiona)S
+2 x(l)S 4796 X 498 y(language.)S 17597 16674 XY(T)S -27 x(able)S 150 x
+(1)S(\203)S(3)S 4796 18418 XY(Upgrade)S 170 x(installa)S 2 x(tion)S
+170 x(from)S 170 x(ALL\203IN\2031)S 171 x(V)S -42 x(ersion)S 170 x(3.1)S
+170 x(or)S 4796 X 498 y(update)S 167 x(of)S 166 x(ALL\203IN\2031)S 167 x
+(V)S -41 x(ersion)S 166 x(3.2)S 166 x(with)S 166 x(Hebrew)S 167 x(as)S
+166 x(the)S 4796 X 498 y(primary)S 149 x(language)S 150 x(or)S 149 x
+(Hebre)S 2 x(w)S 149 x(as)S 149 x(an)S 150 x(additio)S 2 x(nal)S 149 x
+(language.)S 17597 18418 XY(T)S -27 x(able)S 150 x(1)S(\203)S(4.)S 4796 20161 XY
+(Add,)S 157 x(upgrade)S 157 x(or)S 156 x(update)S 158 x(architecture)S
+157 x(support)S 157 x(for)S 157 x(V)S -50 x(AX)S 155 x(or)S 4796 X 498 y
+(Alpha.)S 17597 X -498 y(T)S -27 x(able)S 150 x(1)S(\203)S(5.)S 4796 X
+797 y 18528 24 R 5692 22154 XY 7512 24 R 13507 22154 XY F36(Note)S 299 x
+7512 24 R 5692 23050 XY F151(If)S 172 x(are)S 173 x(not)S 172 x(installing)S
+173 x(WPS\203PLUS)S 173 x(with)S 172 x(ALL\203IN\2031)S 172 x(V)S -46 x
+(ersion)S 172 x(3.2,)S 175 x(you)S 174 x(can)S 5692 X 598 y(decrease)S
+161 x(the)S 160 x(languag)S 2 x(e)S 160 x(disk)S 161 x(requirements)S
+161 x(by)S 160 x(approximately)S 161 x(3000)S 161 x(blocks.)S 5692 X
+697 y 16740 24 R 0 SC 17844 31061 XY F38(ALL\203IN\2031)S(/Hebrew)S
+151 x(Kit)S 397 x F40(1\2033)S
+EP PP
+%%PageTrailer
+%%PageFonts: Helvetica-Bold NewCenturySchlbk-Roman
+%%+ Helvetica
+%%PageProcessColors:
+%%PageCustomColors: (HEADCOLOR)
+%%+ (BLACK)
+%%+ (FOOTCOLOR)
+%
+%%Page: (1-4) 8
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 1807 2169 XY F32(ALL\203IN\203)S -2 x(1)S(/Hebrew)S 149 x(Kit)S
+1807 X 598 y(1.2)S 149 x(Disk)S 148 x(Space)S 149 x(Requirements)S 0 SC
+3899 4461 XY F36(T)S -37 x(able)S 151 x(1)S(\203)S(3)S 398 x(Disk)S
+149 x(Space)S 150 x(for)S 150 x(Language)S 151 x(Files:)S 225 x(Full)S
+151 x(Install)S 2 x(ation)S 3899 X 324 y 18528 24 R 3899 5283 XY F40
+(ALL\203IN\2031)S 149 x(Area)S 11470 X(V)S -33 x(AX)S 17299 X(Alpha)S
+3899 X 299 y 18528 24 R 3899 6179 XY F155(Language)S 149 x(disk)S 11470 X
+(70)S 150 x(000)S 17299 X(90)S 150 x(000)S 3899 X 748 y(System)S 149 x
+(disk)S -191 y F163(2)S 11470 X 191 y F155(10)S 150 x(000)S 17299 X
+(25)S 150 x(000)S 3899 X 498 y 18528 24 R 3899 7784 XY F163(2)S 25 x
+191 y F159(Space)S 132 x(required)S 133 x(to)S 133 x(provide)S 132 x
+(ALL\203IN\2031)S 131 x(language)S 133 x(\211les)S 132 x(to)S 133 x
+(system)S 133 x(directories)S 3899 X 480 y 18528 24 R 3899 9900 XY F36
+(T)S -37 x(able)S 151 x(1)S(\203)S(4)S 398 x(Disk)S 149 x(Space)S 150 x
+(for)S 150 x(Language)S 151 x(Files:)S 225 x(Upgrade)S 150 x(from)S
+149 x(V)S -27 x(ersion)S 150 x(3.1)S 3899 X 323 y 18528 24 R 3899 10722 XY
+F40(ALL\203IN\2031)S 149 x(Area)S 11470 X(V)S -33 x(AX)S 17299 X(Alpha)S
+3899 X 298 y 18528 24 R 3899 11618 XY F155(Language)S 149 x(disk)S 11470 X
+(10)S 150 x(000)S 17299 X(18)S 150 x(000)S 3899 X 747 y(System)S 149 x
+(disk)S -190 y F163(2)S 11470 X 190 y F155(5)S 150 x(000)S 17299 X(20)S
+150 x(000)S 3899 X 498 y 18528 24 R 3899 13223 XY F163(2)S 25 x 191 y
+F159(Space)S 132 x(required)S 133 x(to)S 133 x(provide)S 132 x(ALL\203IN\2031)S
+131 x(language)S 133 x(\211les)S 132 x(to)S 133 x(system)S 133 x(directories)S
+3899 X 480 y 18528 24 R 3899 15338 XY F36(T)S -37 x(able)S 151 x(1)S
+(\203)S(5)S 398 x(Disk)S 185 x(Space)S 186 x(for)S 185 x(Language)S
+186 x(Fil)S 2 x(es:)S 295 x(Add,)S 195 x(Upgrade)S 185 x(or)S 185 x
+(Update)S 6542 X 598 y(Architecture)S 149 x(Supp)S 2 x(ort)S 3899 X
+324 y 18528 24 R 3899 16758 XY F40(ALL\203IN\2031)S 149 x(Area)S 11470 X
+(V)S -33 x(AX)S 17299 X(Alpha)S 3899 X 299 y 18528 24 R 3899 17655 XY
+F155(Language)S 149 x(disk)S 11470 X(5000)S 17299 X(10000)S 3899 X 747 y
+(System)S 149 x(disk)S -191 y F163(1)S 11470 X 191 y F155(5000)S 17299 X
+(15000)S 3899 X 498 y 18528 24 R 3899 19260 XY F163(1)S 25 x 190 y F159
+(Space)S 132 x(required)S 133 x(to)S 133 x(provide)S 132 x(ALL\203IN\2031)S
+131 x(language)S 133 x(\211les)S 132 x(to)S 133 x(system)S 133 x(directories)S
+3899 X 480 y 18528 24 R 1807 21425 XY F24(1.3)S 398 x(Information)S
+233 x(for)S 233 x(the)S 232 x(Hebrew)S 232 x(Language)S 232 x(Component)S
+3899 X 896 y F151(T)S -31 x(able)S 166 x(1)S(\203)S(6)S 166 x(provides)S
+166 x(information)S 167 x(for)S 166 x(the)S 166 x(Hebrew)S 166 x(language)S
+167 x(component.)S 3899 23766 XY F36(T)S -37 x(able)S 151 x(1)S(\203)S
+(6)S 398 x(Useful)S 150 x(Information)S 151 x(for)S 149 x(the)S 150 x
+(Hebrew)S 149 x(Language)S 151 x(Component)S 3899 X 324 y 18528 24 R
+3899 24588 XY F40(Information)S 8681 X(V)S -25 x(alue)S 12766 X(Used)S
+149 x(For)S 3899 X 299 y 18528 24 R 3899 25485 XY F155(Product)S 150 x
+(name)S 8681 X(A1LIL032)S 12766 X(Installati)S 2 x(on)S 3899 X 747 y
+(Language)S 149 x(name)S 8681 X(Hebrew)S 12766 X(File,)S 153 x(director)S
+2 x(y)S 152 x(and)S 153 x(logical)S 153 x(names,)S 153 x(and)S 153 x
+(for)S 153 x(the)S 12766 X 498 y(/LANGUAGE)S 148 x(quali\211er)S -231 x
+731 y(\(continued)S 150 x(on)S 150 x(next)S 150 x(page\))S 0 SC 1807 31061 XY
+F40(1\2034)S 399 x F38(ALL\203IN\2031)S(/Hebrew)S 150 x(Kit)S
+EP PP
+%%PageTrailer
+%%PageFonts: Helvetica-Bold NewCenturySchlbk-Roman
+%%+ Helvetica
+%%PageProcessColors:
+%%PageCustomColors: (HEADCOLOR)
+%%+ (BLACK)
+%%+ (FOOTCOLOR)
+%
+%%Page: (1-5) 9
+%%PageFonts: (atend)
+%%PageProcessColors: (atend)
+%%PageCustomColors: (atend)
+PaperHeight PaperWidth PM 0 0 XY
+0 SC 17771 2169 XY F32(ALL\203IN\203)S -2 x(1)S(/Hebrew)S 166 x(Kit)S
+9391 X 598 y(1.3)S 166 x(Information)S 167 x(for)S 166 x(the)S 166 x
+(Hebrew)S 165 x(Language)S 164 x(Component)S 0 SC 4796 4461 XY F36(T)S
+-37 x(able)S 150 x(1)S(\203)S(6)S 150 x(\(Cont.\))S 398 x(Useful)S 150 x
+(Informatio)S 2 x(n)S 149 x(for)S 150 x(the)S 149 x(Hebrew)S 149 x(Languag)S
+2 x(e)S 149 x(Component)S 4796 X 324 y 18528 24 R 4796 5283 XY F40(Information)S
+9578 X(V)S -25 x(alue)S 13662 X(Used)S 150 x(For)S 4796 X 299 y 18528 24 R
+4796 6329 XY F155(Language)S 149 x(code)S 9578 X(IL)S 13662 X(During)S
+149 x(installat)S 2 x(ion)S 4796 X 398 y 18528 24 R 2703 8222 XY F24
+(1.4)S 398 x(Information)S 233 x(for)S 233 x(the)S 233 x(Hebrew)S 231 x
+(Market)S 232 x(Component)S 4796 X 896 y F151(T)S -31 x(able)S 166 x
+(1)S(\203)S(7)S 166 x(provides)S 166 x(information)S 166 x(for)S 166 x
+(the)S 167 x(Hebrew)S 165 x(market)S 167 x(component.)S 4796 X 897 y
+(The)S 166 x(Hebrew)S 166 x(market)S 166 x(component)S 167 x(supports)S
+165 x(the)S 167 x(following)S 166 x(languages:)S 4796 X 897 y(\201)S
+594 x(Hebrew)S 4796 X 896 y(\201)S 594 x(English)S 167 x(\(for)S 166 x
+(Hebrew\))S 4796 13253 XY F36(T)S -37 x(able)S 150 x(1)S(\203)S(7)S
+399 x(Useful)S 149 x(Informatio)S 2 x(n)S 149 x(for)S 150 x(the)S 150 x
+(Market)S 148 x(Componen)S 2 x(t)S 4796 X 324 y 18528 24 R 4796 14075 XY
+F40(Information)S 12367 X(V)S -25 x(alue)S 18195 X(Used)S 150 x(For)S
+4796 X 299 y 18528 24 R 4796 14971 XY F155(Product)S 150 x(name)S 12367 X
+(A1CIL032)S 18195 X(Installa)S 2 x(tion)S 150 x(and)S 151 x(naming)S
+18195 X 498 y(of)S 150 x(savesets)S 4796 X 748 y(Market)S 150 x(name)S
+12367 X(IL)S 18195 X(Media)S 151 x(labeling)S 4796 X 747 y(Market)S
+150 x(code)S 12367 X(IL)S 18195 X(During)S 149 x(installat)S 2 x(ion)S
+4796 X 747 y(WPS\203PLUS)S 150 x(date)S 151 x(format)S 12367 X(dd-mmm-yyyy)S
+18195 X(WPS\203PLUS)S 4796 X 747 y(WPS\203PLUS)S 150 x(time)S 150 x
+(separator)S 12367 X(colon)S 150 x(\(:\))S 18195 X(WPS\203PLUS)S 8539 X
+747 y F157(ALL\203IN\2031)S 164 x(date)S 162 x(format:)S 4796 X 748 y
+F155(Alphanumeric)S 12367 X(DD-MMM-YYYY)S 18195 X(ALL\203IN\2031)S 4796 X
+747 y(Numeric)S 12367 X(MM/DD/YY)S 18195 X(ALL\203IN\2031)S 9159 X 747 y
+F157(Currency)S 164 x(format:)S 4796 X 747 y F155(Currency)S 12367 X
+(Dollar)S 150 x(\($\))S 18195 X(WPS\203PLUS)S 4796 X 747 y(Decimal)S
+149 x(separator)S 12367 X(dot)S 150 x(\(.\))S 18195 X(WPS\203PLUS)S
+4796 X 748 y(Thousand)S 149 x(separator)S 12367 X(comma)S 149 x(\(,\))S
+18195 X(WPS\203PLUS)S 4796 X 747 y(Page)S 149 x(size)S 12367 X(66)S
+18195 X(Printer)S 150 x(settings)S 4796 X 398 y 18528 24 R 0 SC 17828 31061 XY
+F38(ALL\203IN\2031)S(/Hebrew)S 167 x(Kit)S 397 x F40(1\2035)S
+EP PP
+%%PageTrailer
+%%PageFonts: Helvetica-Bold NewCenturySchlbk-Roman
+%%+ NewCenturySchlbk-Bold Helvetica
+%%PageProcessColors:
+%%PageCustomColors: (HEADCOLOR)
+%%+ (BLACK)
+%%+ (FOOTCOLOR)
+%
+%%Page: (1-6) 10
+%DEC_EDMS_BlankPage
+PP
+%%PageTrailer
+%%PageFonts:
+%%PageProcessColors:
+%%PageCustomColors:
+%
+%%Trailer
+%%Pages: 10
+%%BoundingBox: 0 0 504 648
+%%DocumentFonts: Courier Helvetica
+%%+ Helvetica-Bold NewCenturySchlbk-Roman
+%%+ NewCenturySchlbk-Bold NewCenturySchlbk-Italic
+%%DocumentNeededFonts: Courier Helvetica
+%%+ Helvetica-Bold NewCenturySchlbk-Roman
+%%+ NewCenturySchlbk-Bold NewCenturySchlbk-Italic
+%%DocumentProcessColors:
+%%DocumentCustomColors: (BLACK)
+%%+ (FOOTCOLOR)
+%%+ (HEADCOLOR)
+%%CMYKCustomColor: 0.0 0.0 0.0 1.0 (HEADCOLOR)
+%
+DVC$PSJob restore
+end %DEC_DVC$dict
+end %Color5044Dict
+%
+%EDMS_EndDocument
+EDM_eoj
+%EDMS_Begin_Finishing_Info
+%EDMS_Finishing_Info Document_ID: (AA-R71CA-TE)
+%EDMS_Finishing_Info Document_Title: ALL-IN-1 Installation: Language and
+%EDMS_Finishing_Info Document_Title2: Market Supplement (Hebrew Guide)
+%EDMS_Finishing_Info Product_Name: Language & Market Suppl-iw
+%EDMS_Finishing_Info Product_Version: 3.2
+%EDMS_Finishing_Info Electronic_Format: Electronic
+%EDMS_Finishing_Info Demand_Printable: No
+%EDMS_Finishing_Info Total_Pages: 10
+%EDMS_Finishing_Info Color_Count: 0
+%EDMS_Finishing_Info Text_Ink: 0 Black
+%EDMS_Finishing_Info Text_Ink: 1 All
+%EDMS_End_Finishing_Info
+%EDMS_Begin_Assembly_Info
+%EDMS_Assembly_Info: Folio_Page: (I)        Ordinal_Page:   1 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (II)       Ordinal_Page:   2 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (III)      Ordinal_Page:   3 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (IV)       Ordinal_Page:   4 Colors:
+%EDMS_Assembly_Info: Folio_Page: (1-1)      Ordinal_Page:   5 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (1-2)      Ordinal_Page:   6 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (1-3)      Ordinal_Page:   7 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (1-4)      Ordinal_Page:   8 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (1-5)      Ordinal_Page:   9 Colors: All
+%EDMS_Assembly_Info: Folio_Page: (1-6)      Ordinal_Page:  10 Colors:
+%EDMS_End_Assembly_Info
+%EDMS_Begin_Index_Area
+%EDMS_Index: 10734 455
+%+Header
+%EDMS_Index: 11316 475
+%+Prologue
+%EDMS_Index: 57924 1517
+%+Trailer
+%EDMS_Index: 58454 1538
+%+EDMS_Begin_Finishing_Info
+%EDMS_Index: 59044 1551
+%+EDMS_Begin_Assembly_Info
+%EDMS_Index: 60510 1597           
+%+EOF
+%EDMS_Index: 27234 999
+%+Page: (I) 1
+%EDMS_Index: 28350 1023
+%+Page: (II) 2
+%EDMS_Index: 33878 1108
+%+Page: (III) 3
+%EDMS_Index: 40075 1205
+%+Page: (IV) 4
+%EDMS_Index: 40183 1213
+%+Page: (1-1) 5
+%EDMS_Index: 43060 1263
+%+Page: (1-2) 6
+%EDMS_Index: 46877 1326
+%+Page: (1-3) 7
+%EDMS_Index: 50996 1394
+%+Page: (1-4) 8
+%EDMS_Index: 54791 1457
+%+Page: (1-5) 9
+%EDMS_Index: 57814 1509
+%+Page: (1-6) 10
+%EDMS_End_Index_Area
+%%EOF

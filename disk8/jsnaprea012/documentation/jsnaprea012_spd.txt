@@ -1,0 +1,535 @@
+ 
+
+
+
+
+
+
+              Software
+              Product
+              Description
+
+           _____________________________________________________________________
+
+             日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+
+            Version1.2Aソフトウェア仕様書
+
+          1  概要                               o  SNA Character String
+          日本語DECnet SNAプリンタ・エミ           (SCS)フォーマット(LUタイ
+          ュレータfor OpenVMS（以下，日本          プ1)および3270データ・ス
+          語PrEと呼ぶ）は，DECnet SNAゲー          トリームのフォーマット(LU
+          トウェイを通して，IBM [1]ホスト          タイプ3)のデータを受け取
+          に基づいたアプリケーションから           ることができます。
+
+          印刷可能なデータを受信できるよ        o  以下に示す3270データ・ス
+          うにするOpenVMSレイヤード・ソフ          トリーム命令を認識しま
+          トウェア・プロダクトです。これ           す。
+
+          らのアプリケーションは，本来シ           CR  − Carriage Return
+          ステム・ネットワーク体系(SNA)            DUP − Duplicate（セミコ
+          ネットワーキング環境にあるIBM                   ロンに変換）
+          3274クラスタ制御装置に接続され           EM  − End Message
+          ている，システム・モードのIBM            EUA − Erase Unprotected
+          3283型印刷装置の出力を生成する                  to Address
+          ために開発されたものです。IBMシ          FF  − Form Feed
+          ステムからOpenVMSシステムへのア          FM  − Field Mark（アスタ
+          クセスは，DECnet SNA Gatewayま                  リスクに変換）
+          たはVMS/SNAソフトウェアを通じて          GE  − Graphics Escape
+          実行されます。                                  （ハイフンに変換）
+
+          日本語PrEアクセス・ソフトウェア          NL  − Newline
+          を使用すると，OpenVMSユーザは受          PT  − Program Tab
+          け取った出力をOpenVMS Print              RA  − Repeat to Address
+          Symbiontを通じて印刷するか，ま           SA  − Set Attribute（文
+          たはディスク・ファイルにスプー                  字セット属性のみ）
+          ルするかのどちらかを選択できま           SBA − Set Buffer Address
+          す。                                     SF  − Start Fields
+
+              プリンタ・エミュレータの機        o  以下に示す3270データ・ス
+             能                                    トリームのコマンドをサポ
+
+          以下に，日本語PrEが提供する機能          ートします。
+          を示します。                             WRITE
+
+             o  DIGITALコマンド言語(DCL)
+                書式インタフェースを通じ           ERASE/WRITE
+                て構成および制御されてお
+                り，使いやすくなっていま           ERASE/WRITE ALTERNATE
+                す。
+          __________                               ERASE ALL UNPROTECTED
+             [1] IBMは米国International
+             Business Machines社の商標で
+
+             す。
+
+                                          DIGITAL                     1994年4月
+
+                                                                    AE-Q4Y3A-TE
+
+ 
+
+
+           日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+           Version1.2Aソフトウェア仕様書
+
+
+                                                o  最大128まで同時にセッショ
+                                                   ンを実行できます。
+
+             o  以下に示すSNA Character         o  他のユーザのアカウントでプ
+                String命令を認識します。           リント・ジョブを出すことが
+                BS  − Backspace                   できます。あたかもそのユー
+                CR  − Carriage Return             ザが要求をだしたかのように
+                FF  − Formfeed                    プリント・ジョブが実行され
+                GE  − Graphics Escape             ます。アカウンティング情報
+                       （ハイフンに変換）          はそのユーザのアカウントに
+                HT  − Horizontal Tab              記録されます。ユーザ名は最
+                IRS − Inter Record                大12文字までのシステム上で
+                       Separator                   有効な名前でなくてはなりま
+                LF  − Linefeed                    せん。
+
+                NL  − Newline                  o  複数のフォーム・タイプをサ
+                SA  − Set Attribute（文           ポートします。フォーム・タ
+                       字セットの選択の            イプは，数値またはフォーム
+                       み）                        名のどちらかを使用して指定
+                SHF − Set Horizontal              されます。これらのフォーム・
+                       Format                      タイプでは，印刷イメージ幅，
+                SVF − Set Vertical                書類の長さ，またはタイプを
+                       Format                      指示できます。これらのフォ
+                TRN − Transparency                ーム・タイプのコードはイン
+                VCS − Vertical Channel            ストレーション時に定義され
+                       Select                      ます。
+
+                VT  − Vertical Tab             o  セッションを中止すること
+
+                                                   なく，キュー名，フォー
+             o  以下に示すSNA Character            ム，数，コピー数，ユーザ
+                String命令を無視します。           名および出力ストリーム・
+                                                   ファイルの削除選択を変更
+                BEL − Bell                        できます。
+                ENP − Enable                   o  プリンタにスプールされた
+                       Presentation                出力ファイルを削除するこ
+                INP − Inhabit                     とができます。この設定は
+                       Presentation                ユーザが選択可能です。
+                SLD − Set Line Density         o  INIT SELF要求をIBMアプリ
+
+             o  ユーザ・インタフェースで           ケーションに送るオプショ
+                入力されたコマンドを使用           ンを提供します。
+
+                することにより，3283型印        o  LUにアクセスする際の付加
+                刷装置Program Attention            的な機密保護を提供するた
+                (PA1およびPA2)キーおよび           めにパスワードを利用して
+                CANCEL PRINTキーをサポー           LU機密保護をサポートしま
+                トします。                         す。この機能は，DECnet
+             o  Printer Authorization              SNA Gaterway-ST，DECnet
+                Matrix機能をサポートして           SNA Gateway-CTでサポート
+                いませんので，3283型印刷           されます。
+
+                装置のREPRINTキー機能をエ
+                ミュレートしません。
+
+             o  印刷すべきプリント・ジョ
+                ブを255枚までコピーできま
+                す。
+
+                                             2
+
+ 
+
+
+          日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+          Version1.2Aソフトウェア仕様書
+
+
+             o  外字登録機能を備えていま
+                す。外字登録機能では，IBM             DEC 10000モデル630 AXP
+                付加文字セットおよびユー              System,
+                ザ定義文字セット内の2914              DEC 10000モデル640 AXP
+                文字が登録できます。これ              System,
+                により，日本語PrEによる               DEC 10000モデル650 AXP
+                IBM付加文字セットおよびユ             System,
+                ーザ定義文字の印刷が可能              DEC 10000モデル660 AXP
+                になります。                          System,
+
+                                                VAX:  VAX 4000モデル100，
+          2  必要なハードウェアの最小構成             VAX 4000モデル200，
+                                                      VAX 4000モデル300，
+              適用プロセッサ                          VAX 4000モデル400，
+             AXP:  DEC 2000モデル200 AXP              VAX 4000モデル500，
+                   Server,                            VAX 4000モデル600，
+                   DEC 3000モデル300 AXP              VAX 6000モデル200シリ
+                   Workstation,                       ーズ，
+                   DEC 3000モデル300L AXP             VAX 6000モデル300シリ
+                   Workstation,                       ーズ，
+                   DEC 3000モデル400 AXP              VAX 6000モデル400シリ
+                   Workstation,                       ーズ，
+                   DEC 3000モデル400 AXP              VAX 6000モデル500シリ
+                   Server,                            ーズ，
+                   DEC 3000モデル500 AXP              VAX 6000モデル600シリ
+                   Wrokstation,                       ーズ，
+                   DEC 3000モデル500X AXP             VAX 7000モデル600シリ
+                   Workstation,                       ーズ，
+                   DEC 3000モデル500 AXP              VAX 8200，VAX 8250，VAX 8300，
+                   Server,                            VAX 8350，VAX
+                   DEC 4000モデル610 AXP              85XX，VAX 8600，
+                   System,                            VAX 8650，VAX 8700，
+                   DEC 4000モデル620 AXP              VAX 8800，
+                   System,                            VAX 8810，VAX 8820，
+                   DEC 7000モデル610 AXP              VAX 8830，
+                   System,                            VAX 8840，
+                   DEC 7000モデル620 AXP              VAX 9000モデル110，
+                   System,                            VAX 9000モデル210，
+                   DEC 7000モデル630 AXP              VAX 9000モデル300シリ
+                   System,                            ーズ，
+                   DEC 7000モデル640 AXP              VAX 9000モデル400シリ
+                   System,                            ーズ，
+                   DEC 7000モデル650 AXP              VAX 10000モデル600シリ
+                   System,                            ーズ，
+                   DEC 7000モデル660 AXP              VAXftモデル110，VAXft
+                   System,                            モデル310，
+                   DEC 10000モデル610 AXP             VAXftモデル410，VAXft
+                   System,                            モデル610，
+                   DEC 10000モデル620 AXP             VAXftモデル612，
+
+                   System,                      MicroVAX: MicroVAX II，
+                                                          MicroVAX 2000，
+
+
+
+
+
+                                             3
+
+ 
+
+
+           日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+           Version1.2Aソフトウェア仕様書
+
+
+
+                       MicroVAX 3100モデ                  VAXserver 3602，
+                       ル10/10E，                         VAXserver 3800，
+                       MicroVAX 3100モデ                  VAXserver 3900，
+                       ル20/20E，                         VAXserver 4000モデ
+                       MicroVAX 3100モデ                  ル200，
+                       ル30，                             VAXserver 4000モデ
+                       MicroVAX 3100モデ                  ル300，
+                       ル40，                             VAXserver 4000モデ
+                       MicroVAX 3100モデ                  ル500，
+                       ル80，                             VAXserver 6000モデ
+                       MicroVAX 3100モデ                  ル210/220，
+                       ル90，                             VAXserver 6000モデ
+                       MicroVAX 3300，                    ル310/320，
+                       MicroVAX 3400，                    VAXserver 6000モデ
+                       MicroVAX 3500，                    ル410/420，
+                       MicroVAX 3600，                    VAXserver 6000モデ
+                       MicroVAX 3800，                    ル510/520，
+                       MicroVAX 3900                      VAXserver 6000モデ
+             VAXstationVAXstation II，                    ル610，
+                       VAXstation 2000，                  VAXserver 6000モデ
+                       VAXstation 3100モ                  ル620，
+                       デル30，                           VAXserver 6000モデ
+                       VAXstation 3100モ                  ル630
+
+                       デル38，                  適用されないプロセッサ
+                       VAXstation 3100モ        o  VAX-11/730
+                       デル40，
+                       VAXstation 3100モ        o  VAX-11/750
+
+                       デル48，                 o  VAX-11/780
+                       VAXstation 3100モ        o  VAX-11/785
+                       デル76，
+                       VAXstation 3200，         プロセッサ制限事項
+                       VAXstation 3500，     スタンドアロンのMicroVAX 2000お
+                       VAXstation 3520，     よびVAXstation 2000では，TK50テ
+                       VAXstation 3540，     ープ駆動装置が必要です。
+                       VAXstation 4000
+                       VLC，                     必要なディスク容量
+                       VAXstation 4000モ     AXP Systems:
+                       デル60                   (Block Cluster Size=1の場合)
+                       VAXstation 4000モ
+                       デル90
+
+             VAXserver:VAXserver 3100モデ
+                       ル10/10E,
+                       VAXserver 3100モデ
+                       ル20/20E,
+                       VAXserver 3300，
+                       VAXserver 3400，
+                       VAXserver 3500，
+                       VAXserver 3600，
+
+
+
+
+
+                                             4
+
+ 
+
+
+          日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+          Version1.2Aソフトウェア仕様書
+
+
+                                             日本語PrEのインストールは，経験
+             インストール時:       約2100    豊富なお客様が行ってください。
+                                   ブロッ    あるいは日本DECのインストレーシ
+                                   ク        ョン・サービスをご利用くださ
+                                   (1050K    い。このサービスにより，経験を
+                                   バイ      積んだ日本DECのソフトウェアの技
+                                   ト)       術者によるソフトウェア・プロダ
+             システム運用時:       約1450    クトのインストレーションが提供
+                                   ブロッ    されます。
+                                   ク            インストレーションを行う前
+                                   (725K        に
+                                   バイ
+                                   ト)       当社のソフトウェア・インストレ
+          VAX Systems:                       ーション・サービスを利用される
+             (Block Cluster Size=1の場合)    前に，次のことを行ってくださ
+                                             い。
+
+             インストール時:       約1100       o  ターミナルを含む，すべて
+                                   ブロッ          の必要なハードウェアを事
+                                   ク              前にインストールしてくだ
+                                   (550K           さい。
+                                   バイ         o  当社の通信機器へのインタ
+                                   ト)             フェースに必要なモデム，
+             システム運用時:       約760           その他の機器，および設備
+                                   ブロッ          を入手，設置，そして試操
+                                   ク              作を行ってください。
+                                   (380K        o  Bell System 201C，208Aま
+                                   バイ            たは209A，AT&T 2596または
+                                   ト)             2556，Dataphone II
+
+          これらのディスク容量は，システ           (2096A，DIGITAL 2500また
+          ム・ディスク上で必要となるディ           は同等物)タイプ・モデム，
+          スク領域を表したものであり，概           またはヨーロッパにおける
+          数です。実際の値は，システムの           PTTが認可したモデム以外の
+          環境，構成，ソフトウェア・オプ           モデムに関して同じ操作を
+          ションに応じて異なります。               実行してください。
+
+                                                o  DECnet SNA Gatewayとプリ
+          3  インストレーション                    ンタ・エミュレータが通信
+          日本語PrEを使用するには，日本            するのに必要なIBMホスト・
+          DECがサポートするDECnet SNA              ソフトウェアを生成してお
+          Gateway構成が必要です。弊社がサ          いてください。
+
+          ポートするDECnet SNA Gatewayを        o  インストレーションで使用
+          最初に購入する際にGateway                するすべてのハードウェ
+          Installation/Orientation                 ア，通信設備およびターミ
+          Serviceも購入する必要がありま            ナルを，お客様と日本DECが
+          す。                                     合意した期間に利用できる
+                                                   ように準備しておいてくだ
+                                                   さい。
+
+                                             このプロダクトを効率的に使用す
+                                             るためには，以下の作業が必要と
+                                             なります。
+
+
+
+                                             5
+
+ 
+
+
+           日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+           Version1.2Aソフトウェア仕様書
+
+
+             o  インストレーション前の処
+                理を調整するために，当社        OpenVMS AXPシステム:
+                およびIBM のシステムの専         1.DECnet SNA Gateway環境
+                門家が共同で作業できるよ
+                うに準備しておいてくださ           o  日本語OpenVMS AXPオペ
+                い。                                  レーティング・システム
+             o  DECnet SNA Gatewayとプリ              V1.5
+
+                ンタ・エミュレータ・ソフ           o  DECnet-VAX V1.5
+
+                トウェアをサポートするた     以下に示すソフトウェアのいずれ
+                めにIBM構成要素作成パラメ    か1つが必要です。
+                ータを変更する必要があり           o  DECnet SNA Gateway CT
+                ます。                                V2.1 (SPD 29.76.xx)
+
+          4  必要なサポート                        o  DECnet SNA Gateway ST
+                                                      V1.2 (SPD 25.C6.xx)
+
+          IBMホスト・ベースのアプリケーシ    必要なハードウェアおよびソフト
+          ョン環境にアクセスしたいすべて     ウェアについてはそれぞれの『ソ
+          のOpenVMSノードを含む，ネットワ    フトウェア仕様書（SPD）』を参照
+          ーク構成とDECnetカスタマ・サポ     してください。
+          ート・プラン(適切な場合)を，お
+          客様と日本DECが協力して準備する
+          必要があります。                   6  注文情報
+
+          日本語PrEを日本DECが適切にサポ     最寄りの日本DECの各支店/営業所
+          ートするために，お客様は日本DEC    にお問い合わせください。
+
+          がサポートするDECnet SNA
+          Gatewayを準備しておかなければな    7  ソフトウェア・ライセンス
+          りません。
+          日本DECがDECnet SNA Gatewayをサ    本ソフトウェアは日本DEC標準販売
+          ポートするには，DECnet SNA         約款中のライセンス規定に基づい
+          Gatewayを最初に購入される際に，    て提供されます。
+
+          ゲートウェイ・オリエンテーショ     日本DECのライセンス条件とその方
+          ン/インストレーション・サービス    針についての詳細は，最寄りの日
+          (QSF0x-SZ)も同時に購入する必要     本DEC各支店/営業所にお問い合わ
+          があります。                       せください。
+
+          5  必要なソフトウェア*             8  ライセンス管理機能のサポート
+
+          OpenVMS VAXシステム:               本ソフトウェアはOpenVMSライセン
+              1.DECnet SNA Gateway環境       ス管理機能（LMF）をサポートして
+                                             います。本プロダクトのライセン
+                o  日本語OpenVMS VAXオペ     ス単位はCPUの性能に応じて割り当
+                   レーティング・システム    てられます。
+                   V6.0                      ライセンス管理機能の詳細は
+
+                o  DECnet-VAX V6.0           『OpenVMS Operating System
+
+          以下に示すソフトウェアのいずれ     Software Product Description
+          か1つが必要です。                  (SPD 25.01.xx)』またはOpenVMS
+                o  DECnet SNA Gateway CT     Operating Systemのドキュメン
+                   V2.1 (SPD 29.76.xx)       ト・セット中の『License
+                                             Management Facility Manual』を
+                o  DECnet SNA Gateway ST     参照してください。
+                   V1.2 (SPD 25.C6.xx)
+
+                                             6
+
+ 
+
+
+          日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+          Version1.2Aソフトウェア仕様書
+
+
+          9  ソフトウェア製品サービス        また，このソフトウェアは，他の
+          日本DECでは，様々なサービス・オ    IBMソフトウェアおよび機器と組み
+          プションを提供しています。詳細     合わせて使用したり，IBMがサポー
+          については，最寄りの日本DEC各支    トするソフトウェア以外のソフト
+          店/営業所にお問い合わせくださ      ウェアと組み合わせて使用しても
+          い。                               正しく機能します。ただし，適切
+                                             なテストを行っていない機器およ
+                                             びソフトウェア構成でご使用の際
+          10  提供媒体                       は，日本DECは本ソフトウェアに対
+          VAX Systems:                       して標準保証を提供していませ
+                                             ん。
+
+             テープ:   TK50ストリーム・テ    日本語PrEは次の表にあるのIBMソ
+                       ープまたは            フトウェア構成に対してテストさ
+                       9トラック1600BPI磁    れており，これらの構成に対して
+                       気テープ              保証されます。
+
+             CD-ROM
+
+          本製品は，「日本語OpenVMS
+          Consolidated Software
+          Distribution」の一部として，
+          CD-ROMでも利用可能となっていま
+          す。またソフトウェア・ドキュメ
+          ントは「日本語OpenVMS Online
+          Documentation Library」の一部と
+          してCD-ROMで利用可能となってい
+          ます。
+
+          11  保証
+
+          本ソフトウェアについては，日本
+          DEC所定のソフトウェア保証基準に
+          定められた保証が提供されます。
+
+              保証に関する制限事項
+
+              IBMがサポートする構成
+
+          本ソフトウェアは，以下に示すIBM
+          ソフトウェアで構成されたIBMシス
+          テム/370（30xxおよび43xxシリー
+          ズを含む）クラスのプロセッサ・
+          システムに対してテストされてお
+          り，これらのシステムに対して保
+          証されます。
+
+
+
+
+
+
+
+
+
+
+
+                                             7
+
+ 
+
+
+           日本語DECnet SNAプリンタ・エミュレータfor OpenVMS       SPD 19.26.01
+           Version1.2Aソフトウェア仕様書
+
+             _____________________________
+             ソフトウェ
+             ア・           バージョン    リリース
+             プロダクト_____番号__________番号
+
+             IBM_MVS/SP：_________________
+
+             CICS/OS/VS     1             6.1
+
+                            1             7.0
+
+                            3             2.1
+
+                            3             3.0
+
+             DSPRINT                      2.0
+
+
+             JES328X        2             1.0
+
+
+
+             IMS/VS         2             2.0
+
+             _____________________________
+             IBM_VM/SP：__________________
+
+             RSCS           2             1.0
+
+             _____________________________
+             IBM_VSE/SP：_________________
+
+             DICS/DOS/VS    1             6.0
+
+             VSE/ICCF_______2_____________1.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                             8

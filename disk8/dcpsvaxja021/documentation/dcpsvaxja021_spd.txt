@@ -1,0 +1,911 @@
+ 
+
+
+
+
+
+
+                                      HP
+
+Software
+Product
+Description
+
+_____________________________________________________________________________
+
+日本語Compaq DECprint Supervisor Version 2.1A
+for OpenVMS                                                      SPD 48.27.12
+   ソフトウェア仕様書
+
+1  仕様書の包含する範囲
+
+この文書は，日本語Compaq DECprint Supervisorソフトウェアの機能仕様を述べたも
+のです。本ソフトウェアは，日本語OpenVMSシステムから弊社指定の日本語PostScript
+プリンタをアクセスするために必要なレイヤード・ソフトウェアです。
+
+ 注意: PostScript言語は，テキスト，イメージおよびグラフィックスをページ上で混
+在させて表現ができる，装置に依存しないページ記述言語です。
+
+ここでは，日本語Compaq DECprint Supervisor for OpenVMSでサポートされる日
+本語PostScriptプリンタに関してのみ記述しています。標準版でサポートされるプ
+リンタについては『Compaq DECprint Supervisor for OpenVMS Software Product
+Description (SPD 44.15.xx)』を参照してください。
+
+2  製品の説明
+
+日本語Compaq DECprint Supervisor (DCPS) for OpenVMSは，日本語OpenVMS Alphaお
+よび日本語OpenVMS VAXシステム上で動作し，弊社指定の日本語PostScript[R]レベル
+1,レベル2およびレベル3プリンタへのアクセスを提供するレイヤード・ソフトウェア
+製品です。
+
+DCPSは特定の日本語PostScriptプリンタをドライブし，これらのプリンタのトレイや
+用紙選択および両面印刷などの特別な機能をサポートします。サポート対象のファイ
+ル・フォーマットには，PostScript，ANSI準拠のDIGITAL Printing Protocol Level 3
+(DEC PPL3)，HP PCLなどがあります。また，DCPSでは，用紙の片面への複数ページ印
+刷，レイアウト，自動データ・タイプ検出，高速イメージ印刷などの機能に加えて，
+多数のプリンタ言語用のトランスレータが提供されています。サポート対象のプリン
+タ・モデルのリストについては，「必要なハードウェア」の項を参照してください。
+
+日本語DECprint Supervisorソフトウェアは，次のソフトウェア・コンポーネントから
+構成されています。
+
+o  プリント・シンビオント
+
+   ホスト上に存在し，印刷要求を処理します。
+
+                                                                    2003年2月
+
+                                                                  AE-PZCDN-TE
+
+ 
+
+
+ 日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ ソフトウェア仕様書
+
+
+o  ネットワーク・ソフトウェア
+
+   以下のプロトコルを介して要求および関連データを送信します。
+
+   -  イーサネット上のTCP/IP (双方向raw TCP/IPソケット・プロトコルをサポート
+      するプリント・サーバまたはターミナル・サーバに接続されたプリンタの場合)
+
+   -  イーサネット上のTCP/IP (双方向raw TCP/IPソケット・プロトコルをサポート
+      するNIC (ネットワーク・インタフェース・カード)を持つプリンタの場合)
+
+   -  イーサネット上のDECnetまたはTCP/IP
+      (PrintServerプリンタ制御プロトコルとしてCPAP (Common Printer Access
+      Protocol)を使用)
+
+   -  LAT (Local Area Transport)
+
+   -  シリアル・ライン
+
+o  トランスレータ
+
+   PostScript以外のデータ構文のファイルをPostScript言語に変換します。
+
+o  ページ・フォーマット機能
+
+   複数のページ・イメージを用紙の片面に印刷したり，境界やマージン，ページ・オ
+   フセットを指定したりする機能。
+
+o  アプリケーション開発者のためのPostScriptツール
+
+   PostScriptエラー・ハンドラ，DIGITALおよび特定のCompaq PostScriptプリン
+   タに組み込まれているすべてのPostScriptテキスト・フォントで使用するため
+   のDIGITAL Multinational Character SetおよびISO Latin Alphabet Number 1
+   (ISO 8859/1)用のFont Encoding Vectorなど。
+
+PostScriptプリンタへのプリント・キューのある各ノードには，日本語DECprint
+Supervisorソフトウェアがインストールされていなければなりません。
+
+日本語DECprint Supervisorソフトウェアを実行しているシステムは，TCP/IP，
+DECnet，またはLATネットワーク上のプリンタに印刷要求を送信することができま
+す。ただし，すべてのプリンタがこれらのすべてのプロトコルをサポートしているわ
+けではありません。
+
+TCP/IPネットワーク上のプリンタと通信するには，システムに日本語Compaq TCP/IP
+Services for OpenVMSソフトウェアがインストールされていなければなりません。
+
+DIGITAL PrintServerプリンタについては，TCP/IPまたはDECnetプロトコルのどちらを
+使用しているかにかかわらず，ネットワーク上の少なくとも1つのシステムに日本語
+PrintServer Software (旧名称，日本語DEC PrintServerサポーティング・ホスト・ソ
+フトウェア)がインストールされていなければなりません。このソフトウェアについて
+は，『ソフトウェア仕様書(SPD 25.C2.xx，SPD 47.98.xxまたはSPD 25.M2.xx)』を参
+照してください。
+
+                                       2
+
+ 
+
+
+日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ソフトウェア仕様書
+
+
+印刷機能
+
+o  PostScriptファイルの印刷
+
+   プリント・シンビオントは，PostScriptファイルを変換せずにそのままプリンタに
+   渡します。日本語DECprint Supervisorは，PostScriptファイルを翻訳も変換もし
+   ません。このため，印刷されるPostScriptファイルは，プリンタが理解できる標準
+   のPostScriptレベル1，レベル2またはレベル3オペレータを使用して記述されてい
+   なければなりません。
+
+o  ANSI (DEC PPL3)および漢字テキスト・ファイルの印刷
+
+   日本語DECprint Supervisorは，ANSIおよび漢字テキスト・ファイルを出力装置で
+   印刷できるように変換します。ANSIファイルには，ASCIIテキスト，sixelグラフィ
+   ックス，およびDIGITALのANSI準拠Printing Protocol Level 3の他の機能が含まれ
+   ます。
+
+o  給紙トレイおよび排紙トレイの選択
+
+   INPUT_TRAY，SHEET_SIZEまたはPAGE_SIZEパラメータによって，給紙トレイを選択
+   することができ，OUTPUT_TRAYパラメータによって，排紙トレイを選択することが
+   できます。ただし，プリンタでこれらの機能をサポートしている場合に限ります。
+
+o  ページの印刷方向の指定
+
+   PAGE_ORIENTATIONパラメータによって，ページの印刷方向(ポートレート/ランドス
+   ケープ)を指定することができます。この指定は，PostScriptファイル以外にのみ
+   有効です。
+
+o  SIDESの指定
+
+   片面印刷，両面印刷，タンブル印刷をSIDESパラメータで指定することができま
+   す。ただし，プリンタでこれらの機能をサポートしている場合に限ります。
+
+o  ANSIテキスト・ファイルの印刷フォーマットの指定
+
+   /HEADER，/FORM，/SPACE，/FEED修飾子およびTABパラメータによって，ANSIテキス
+   ト・ファイルの印刷フォーマットを制御することができます。
+
+o  ANSIテキスト・ファイルのマージンの制御
+
+   DEFINE/FORMで設定されるマージンやページ設定，および自動改行や切捨てオプシ
+   ョンの制御機能を利用することができます。
+
+o  ステータスおよびエラー・メッセージの通知
+
+   ユーザの端末に送信されるステータスおよびエラー・メッセージを，プリント・ジ
+   ョブのトレーラー・ページやログ・ページに印刷したり，ログ・ファイルに書き込
+   んだり，あるいはオペレータ・コンソールに表示したりすることができます。
+
+                                       3
+
+ 
+
+
+ 日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ ソフトウェア仕様書
+
+
+o  装置制御モジュールの利用
+
+   基本的なデータ・タイプについて， /SETUP修飾子による装置制御モジュールが使
+   用できます。PostScriptモジュールには，プリント・コンテキストにおいてプリン
+   タで使用可能なPostScriptオペレータを含むことができます。
+
+o  会計情報収集機能
+
+   各プリント・ジョブに対して，印刷された用紙の枚数，RMSのGETサービスの回数，
+   QIOサービスの回数などの会計情報を提供することができます。「その他の必要な
+   ハードウェア」の項に注記されている場合を除き，この機能はすべてのCompaqプリ
+   ンタ，DIGITALプリンタおよびGENICOMプリンタでサポートされています。他のプリ
+   ンタではサポートされていません。
+
+o  PCLインタプリタへのアクセス
+
+   特定のプリンタに対してネイティブなPCLインタプリタへのアクセスを提供しま
+   す。ネイティブPCLインタプリタをサポートするプリンタは，「その他の必要なハ
+   ードウェア」の項に一覧表示してあります。
+
+o  TCP/IPでのPrintServerプリンタへの接続
+
+   CPAPプロトコルを使用してDECnetまたはTCP/IPインターコネクト上で，
+   PrintServerプリンタをサポートします。
+
+o  双方向raw TCP/IPソケット
+
+   双方向raw TCP/IPソケットをサポートするネットワーク・インタフェース・カー
+   ド，プリント・サーバ，およびターミナル・サーバ経由のプリンタをサポートしま
+   す。
+
+o  自動データ・タイプ検出および切り替え機能
+
+   日本語DECprint Supervisorでは，印刷ファイルのデータ・タイプをソフトウェア
+   が判断し，必要に応じて自動的に変換を行って，ファイルを印刷します。ファイル
+   のデータ・タイプを判断できないときは，
+   DATA_TYPE=AUTOMATICで設定されているデフォルトのデータ・タイプを使用しま
+   す。
+
+   DATA_TYPE=AUTOMATICで定義されているデータ・タイプを使用してファイルが印刷
+   されるとき，シンビオントはPostScriptコマンド(%!)へのスイッチを探します。検
+   出した場合は，PostScriptとして残りのファイルの処理を続行します。この切り替
+   えは，1つのファイルにつき，1度だけ許可されます。PostScript機能への切り替え
+   は，DCPSがファイルを処理するためにプリンタのネイティブPCLインタプリンタを
+   使用しているときには利用できません。
+
+o  さまざまなファイルの印刷
+
+   PostScript以外のデータ・タイプのファイルを，
+   PostScriptプリンタに印刷できます。このため，次のデータ・タイプをPostScript
+   に変換するためのトランスレータが提供されています。
+
+   -  DDIF (2値イメージ・サブセットのみ; DECwindows Motifソフトウェアが必要)
+
+                                       4
+
+ 
+
+
+日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ソフトウェア仕様書
+
+
+   -  PCL Level 4 (HP[R] LaserJet[R] IIDで利用)
+
+   -  IBM[R] Proprinter[R] XL24
+
+   -  ReGIS (白黒のみ)
+
+   -  VT284漢字ReGISグラフィックス・データ・タイプ(85カラム設定対応) [1]
+
+   -  VT284漢字ReGISグラフィックス・データ・タイプ(80カラム設定対応)[1]
+
+   -  Tektronix[R] 4010/4014
+
+   -  カタカナ文字セットTektronix互換データ・タイプ[1]
+
+   -  ASCIIファイルをフォーマットして番号を付けるASCII LISTトランスレータ
+
+      このトランスレータはテキストの各行に番号をふり，背景にグレイ・バーを入
+      れ，ファイル名とページ番号をつけます。
+
+o  NUMBER_UPパラメータ
+
+   NUMBER_UPパラメータによって，複数のページ・イメージを1枚の用紙の片面に印刷
+   することができます。
+
+o  ページ・レイアウト機能
+
+   LAYUP_DEFINITIONパラメータで，ページ・レイアウト機能を指定することができ
+   ます。ページ・レイアウト機能としては，ページ境界，用紙マージン，1ページ
+   おきのマージン切り替え，1枚の用紙のページ数，最初のページ，ページの順序
+   およびページ格子の指定を行うことができます。レイアップ定義オプションは，
+   LAYUP_DEFINITIONパラメータに対する引数として直接指定するか，またはレイアッ
+   プ定義ファイルに記述することによって間接的に指定することができます。
+
+o  PAGE_LIMITパラメータ
+
+   PAGE_LIMITパラメータによって，印刷されるファイルのページ範囲を指定すること
+   ができます。
+
+o  自動的なスケール
+
+   同じプリント・コマンドに，PAGE_SIZEとSHEET_SIZEパラメータで違うサイズが指
+   定された場合，用紙内に論理ページがおさまるよう自動的にスケールされます。
+
+o  複写
+
+   SHEET_COUNTパラメータによって，各用紙を指定枚数だけ複写することができま
+   す。
+
+_______________________
+  [1] このデータ・タイプは日本語DECprint Supervisor for OpenVMS Alphaシステ
+
+      ムではサポートされません。
+
+                                       5
+
+ 
+
+
+ 日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ ソフトウェア仕様書
+
+
+o  装置制御モジュールの利用
+
+   /SETUP修飾子によって，すべてのデータ・タイプで装置制御モジュールが利用でき
+   ます。ANSIモジュールは制御シーケンスを含むことができます。また，PCLモジュ
+   ールはバイナリ・フォント・データを含むことができます。
+
+ANSI (DEC PPL3)エミュレーション
+
+ANSIテキストおよびsixelグラフィックスの印刷は，DIGITALのANSI準拠PPL3プリンタ
+と互換性があります。
+
+注意: PostScriptプリンタは，機種により，印刷およびフォントの格納に利用できる
+仮想メモリの量が異なっています。フォントのダウンロードを必要とするファイル
+は，いくつかのプリンタでは異なって印刷されたり，印刷速度が遅かったり，あるい
+は印刷に失敗したりすることがあります。
+
+3  インストレーション
+
+本ソフトウェアを初めてお求めになるお客様には，弊社のインストレーション・サー
+ビスのご利用をお勧めします。このサービスでは，弊社のサービス・エンジニアがソ
+フトウェア製品のインストレーションを行います。
+
+お客様自身でインストールされる場合は，クラスタまたは非クラスタ環境でのOpenVMS
+プリント・キューの設定の知識，また，DECserver環境での印刷の場合はDECserverの
+管理についての知識のある方がインストールすべきです。それ以外のお客様は，プリ
+ンタ・ハードウェアのインストレーションを含めた，弊社のインストレーション・サ
+ービスをご利用になることをお勧めします。
+
+4  必要なハードウェア
+
+サポート対象のプロセッサ
+
+サポート対象のプロセッサについての詳細は，OpenVMS Operating System for
+OpenVMS AlphaあるいはOpenVMS Operating System for OpenVMS VAXのソフトウェ
+ア仕様書(SPD 25.01.xxおよび41.87.xx)を参照してください。
+
+その他の必要なハードウェア
+
+次のPostScriptプリンタのうち，少なくとも1台
+
+o  HP (旧DEC)
+
+      日本語PrintServer 17/600
+      日本語PrintServer 32 (LPS32-AJ,LPS32-CJ)
+      日本語PrintServer 32 plus (LPS32-LJ,LPS32-NJ)
+
+o  セイコーエプソン
+
+      InterLaser LP-8700PS3
+      InterLaser LP-9600SPD
+      EsperLaser LP-9200PS2
+
+                                       6
+
+ 
+
+
+日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ソフトウェア仕様書
+
+
+      EsperLaser LP-9200PS3
+      EsperLaser LP-8400PS3
+
+o  富士ゼロックス
+
+      DocuPrint 201PS [2]
+      DocuPrint C1250 [2]
+      Laser Press 4410
+
+o  沖データ
+
+      MICROLINE 1035PS
+      MICROLINE 1032PS
+      MICROLINE 2020N
+      MICROLINE 2030N
+      MICROLINE 3010c
+      MICROLINE 3020c
+      MICROLINE 3020cV
+      MICROLINE 900PSII LT
+      MICROLINE 903PSII
+      MICROLINE 903PSIII
+      MICROLINE 900PSIII LT
+      MICROLINE 703N3
+      MICROLINE 701N3
+      MICROLINE 7300PS
+      MICROLINE 9300PS
+
+o  リコー
+
+      PC Laser NX-500 [2] [3]
+      PC Laser NX-510 [2] [3]
+      PC Laser NX-1000 [3]
+      IPSiO NX700 [2] [3]
+      IPSiO NX710 [2] [3]
+      IPSiO NX720N [3]
+      IPSiO NX730 [3]
+      IPSiO NX800 [2] [3]
+      IPSiO NX810 [3]
+      IPSiO NX900 [3]
+      IPSiO NX910 [3]
+      IPSiO NX920 [3]
+      IPSiO NX1100 [3]
+      IPSiO Color 4100 [2] [3]
+      IPSiO Color 6500 [2] [3]
+      IPSiO Color 7100 [2] [3]
+      IPSiO Color 8000 [3]
+
+_______________________
+
+  [2] オプションのEthernetボードが必要です。
+
+  [3] オプションのPostScriptエミュレーションが必要です。
+
+                                       7
+
+ 
+
+
+ 日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ ソフトウェア仕様書
+
+
+      IPSiO Color 8100 [3]
+
+サポート対象のプリンタは，次のサポート対象のインターコネクトのうちの1つ以上を
+備えている必要があります。
+
+o  EIA-232 (RS-232)シリアル・ポート
+
+o  EIA-422 (RS-422)シリアル・ポート
+
+o  CPAP，LAT，または双方向raw TCP/IPソケット・プロトコルをサポートするイーサ
+   ネット・ポートまたはネットワーク・インタフェース・カード(NIC)
+
+o  プリント・サーバまたはターミナル・サーバを介して接続された双方向セントロニ
+   クス・パラレル・ポート
+
+ 注意: DCPSでは，次のタイプのプリンタ接続はサポートしていません。
+
+ -  単方向接続 (たとえば，単方向のパラレルまたはraw TCP/IPポート)
+
+ -  OpenVMSシステム上のパラレル・ポート
+
+ -  TelnetまたはLPDネットワーク・プロトコル
+
+次は，前述のインターコネクトを使用する際に適用される注意事項です。
+
+o  いくつかのプリンタではEIA-232シリアル・インタフェースはオプションで，別途
+   購入する必要があります。
+
+o  イーサネット・インタフェースでは，プリンタのイーサネット・ハードウェアをロ
+   ーカル・エリア・ネットワークに接続するためのアダプタを必要とする場合があり
+   ます。
+
+o  特定のDesktopおよびWorkgroupプリンタ
+   (PrintServerプリンタは含まない)用にサポートされているイーサネット・プロト
+   コルは，raw TCP/IPソケットおよびLATです。
+
+o  DIGITAL PrintServerプリンタ用にサポートされているイーサネット・プロトコル
+   は，DECnet CPAPおよびTCP/IP CPAPです。
+
+シリアル・ライン構成の場合，次のものが必要
+
+o  前掲のプリンタのうちの少なくとも1台
+
+o  コンバータ/アダプタ付きのEIA-232またはEIA-422用のシリアル・インタフェース
+   およびケーブル
+
+o  次のシリアル・インタフェースまたはサーバのうちの1つ
+
+   -  CVAXシリアル・インタフェース(CXA16, CXB16, CX08, DZQ-11; 9600ボー)
+
+   -  DHV11 (9600ボー;シリアル・インタフェース)
+
+   -  DZQ11 (9600ボー;シリアル・インタフェース)
+
+   -  DLV11 (9600ボー;シリアル・インタフェース)
+
+   -  DHU11 (9600ボー;シリアル・インタフェース)
+
+                                       8
+
+ 
+
+
+日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ソフトウェア仕様書
+
+
+   -  DMZ32 (4800ボー;シリアル・インタフェース)
+
+   -  DMF32 (9600ボー;シリアル・インタフェース)
+
+   -  DMB32 (9600ボー;シリアル・インタフェース)
+
+   -  DECserver 90Lおよび90L+ (38.4Kボー; LAT)
+
+   -  DECserver 90M (57.6Kボー; LATおよびraw TCP/IPソケット)
+
+   -  DECserver 90TL (57.6Kボー; LATおよびraw TCP/IPソケット)
+
+   -  DECserver 100 (9600ボー; LAT)
+
+   -  DECserver 200/MC (19.2Kボー; LAT)
+
+   -  DECserver 250 (19.2Kボー; LAT)
+
+   -  DECserver 300 (19.2Kボー; LAT)
+
+   -  DECserver 500 (9600ボー; LAT)
+
+   -  DECserver 550 (9600ボー; LAT)
+
+   -  DECserver 700シリーズ (115.2Kボー; LATおよびraw TCP/IPソケット)
+
+   -  DECserver 900シリーズ (115.2Kボー; LATおよびraw TCP/IPソケット)
+
+   -  MUXserver 100 (19.2Kボー; LAT)
+
+   -  MUXserver 300 (19.2Kボー; LAT)
+
+   -  NetRider 90 - DECserver 90Mを参照
+
+   -  NetRider 900 - DECserver 900シリーズを参照
+
+   -  LATprint (38.4Kボー; LAT)
+
+   -  RapidPrint 200 (115.2Kボー; LAT)
+
+DECserverまたはNetRider構成では，raw TCP/IPソケットをサポートするため
+に，DECserver Network Access Software (DNAS) V2.0以降および4メガバイト以
+上のメモリを必要とします。
+
+上記のすべてのインタフェースはEIA-232をサポートし，いくつかはEIA-422をサポー
+トします。お客様は，ホスト・シリアル・インタフェース，ケーブル，およびプリン
+タ・シリアル・インタフェースを適切に組み合わせて選択する必要があります。場合
+によっては，外部アダプタが必要になることがあります。
+
+o  プリンタの通信インタフェースは，8ビット，パリティ通信なしに設定する必要が
+   あります。
+
+o  インタフェースのボー・レートは，選択したホスト・インタフェース用に上記で指
+   定した値と同じか小さい値に設定する必要があります。
+
+o  フロー制御は，PostScriptのみのプリンタについてはXON/XOFFに，PostScript/PCL
+   5プリンタについてはDTR/CTS (ハードウェアとのハンドシェイク)に設定する必要
+   があります。
+
+                                       9
+
+ 
+
+
+ 日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ ソフトウェア仕様書
+
+
+パラレル・ポート構成の場合，次のものが必要
+
+o  少なくとも1台のプリンタ(前掲のリスト)
+
+o  双方向セントロニクス・パラレル・ポート・インタフェース
+
+o  次のプリント・サーバのうちの1つ
+
+   -  DIGITAL RapidPrint 200 (LAT)
+
+   -  DIGITAL RapidPrint 500 (raw TCP/IPソケットおよびLAT)
+
+   -  GENICOM MPS100 (raw TCP/IPソケットおよびLAT)
+
+プリンタをプリント・サーバに接続するためのパラレル・ケーブルも必要になる場合
+があります。
+
+raw TCP/IP構成の場合，次のものが必要
+
+o  少なくとも1台のプリンタ(前掲のリスト)
+
+o  双方向raw TCP/IPソケットを提供するNIC，プリント・サーバ，またはターミナ
+   ル・サーバ
+
+プリンタをプリント・サーバまたはターミナル・サーバに接続するためのケーブルも
+必要になる場合があります。
+
+PrintServer構成の場合，次のものが必要
+
+o  DIGITAL PrintServerプリンタ
+
+o  クライアント・システム用のイーサネット・コントローラ・インタフェース
+
+o  プリンタ用のイーサネット物理チャネルと次のいずれか1つ
+
+   -  イーサネット・トランシーバ(H4000または
+      H4004)
+
+   -  ローカル・ネットワーク・インターコネクト
+      (DELNI)
+
+   -  ThinWireイーサネット・ステーション・アダプタ(DESTA)
+
+   -  ThinWireインターコネクト(DEMPR)
+
+必要なディスク容量:
+
+ 日本語DECprint Supervisor for OpenVMS Alpha
+インストール時に必要    14,000ブロック
+な容量:                 (7.0 MB)
+
+                                      10
+
+ 
+
+
+日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ソフトウェア仕様書
+
+
+
+システム運用時に必      9,500ブロック
+要な容量(パーマネン     (4.8 MB)
+ト):
+
+ 日本語DECprint Supervisor for OpenVMS VAX
+インストール時に必要    14,000ブロック
+な容量:                 (7.0 MB)
+システム運用時に必      11,000ブロック
+要な容量(パーマネン     (5.5 MB)
+ト):
+
+これらのディスク容量は，システム・ディスク上で必要となるおおまかなディスク領
+域を表したものです。実際の値は，システムの環境，システム・ディスク・クラスタ
+のサイズ，構成，ソフトウェア・オプションに応じて異なります。
+
+
+5  必要なソフトウェア
+
+日本語Compaq DECprint Supervisor (DCPS) for OpenVMS V2.1Aソフトウェアは，次の
+バージョンのOpenVMSオペレーティング・システム上で動作します。
+
+o  日本語OpenVMS Alphaオペレーティング・システムV6.2，V7.2-2，V7.3および
+   V7.3-1
+
+o  日本語OpenVMS VAXオペレーティング・システムV5.5-2，V7.2およびV7.3
+
+ただし，各バージョンのオペレーティング・システムでは，特定のバージョンのネッ
+トワーク・ソフトウェアのみがサポートされます。サポートされるバージョンについ
+ては，次の項を参照してください。
+
+raw TCP/IP構成
+
+raw TCP/IP構成では，次のTCP/IP製品が必要です。
+
+o  日本語Compaq TCP/IP Services for OpenVMS
+
+サポートされるバージョンについては，表 1を参照してください。
+
+
+
+
+
+
+
+
+
+
+                                      11
+
+ 
+
+
+ 日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ ソフトウェア仕様書
+
+
+_____________________________________________________________________________
+
+表_1:_サポートされるTCP/IPのバージョン_______________________________________
+
+OpenVMS____________TCP/IP_Services___________________________________________
+
+Alpha V6.2         V4.2
+
+Alpha V7.2-2       V5.1 - V5.3
+
+Alpha V7.3         V5.1 - V5.3
+
+Alpha V7.3-1       V5.3
+
+VAX V5.5-2         V4.0
+
+VAX V7.2           V5.0A - V5.3
+
+VAX_V7.3___________V5.1_-_V5.3_______________________________________________
+
+PrintServerプリンタ構成
+
+PrintServerプリンタ構成では，サポーティング・ホストおよびPrintServer Software
+V4.0以降が必要です。詳細については，PrintServer Software SPD 48.09.xxを参照し
+てください。
+
+また，次の製品のうちの1つも必要です。
+
+o  DECnet for OpenVMS
+
+o  DECnet-Plus for OpenVMS
+
+o  日本語Compaq TCP/IP Services for OpenVMS
+
+サポートされるバージョンについては，表 1および 表 2を参照してください。
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                      12
+
+ 
+
+
+日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ソフトウェア仕様書
+
+
+_____________________________________________________________________________
+
+表_2:_サポートされるDECnetのバージョン_______________________________________
+
+OpenVMS_________DECnet______DECnet-Plus______________________________________
+
+Alpha V6.2      V6.2        V6.3
+
+Alpha V7.2-2    V7.2-2      V7.2-2
+
+Alpha V7.3      V7.3        V7.3
+
+Alpha V7.3-1    V7.3-1      V7.3-1
+
+VAX V5.5-2      V5.5-2      --
+
+VAX V7.2        V7.2        V7.2
+
+VAX_V7.3________V7.3________V7.3_____________________________________________
+
+DDIFイメージの印刷
+
+o  DECwindows Motifソフトウェア
+
+6  ソフトウェア・ライセンス
+
+本ソフトウェアは，弊社標準販売約款中のライセンス規定に基づいて提供されます。
+
+弊社のライセンス条件とその方針についての詳細は，最寄りの弊社の各支店/営業所に
+お問い合わせください。
+
+日本語DECprint Supervisor for OpenVMS
+
+本ライセンスは日本語OpenVMS VAXオペレーティング・システム(SPD 25.C4.xx)および
+日本語OpenVMS Alphaオペレーティング・システム(SPD 28.A9.xx)のライセンスに含ま
+れています。
+
+本ライセンスは，そのシステムからSPDに記述されているすべての日本語PostScriptプ
+リンタを制御し，すべての印刷機能を利用する目的において，日本語Compaq DECprint
+Supervisor V2.1A for OpenVMSソフトウェアを実行することを許可します。
+
+7  クラスタ環境
+
+本レイヤード・プロダクトは，正規のライセンスを持つVMScluster[4]構成の上にイン
+ストールされている場合，機能上の制限を受けません。本ソフトウェアで必要となる
+
+_______________________
+  [4] VMScluster構成については，『VMScluster Software Product Description (42.18.xx)』
+
+      に詳しく説明されており，CI，Ethernet，DSSIおよびSCSI構成も含まれます。
+
+                                      13
+
+ 
+
+
+ 日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ ソフトウェア仕様書
+
+
+特別なハードウェアについては，本SPDの「必要なハードウェア」の節に詳しく記述さ
+れています。
+
+OpenVMSテーラリング
+
+本レイヤード・プロダクトの全機能を得るには，次のOpenVMS構成要素が必要です。
+
+o  OpenVMS Required Saveset
+
+o  Network Support (PrintServerサポート用) [5]
+
+o  Secure User's Environment
+
+o  Utilities (DECserver接続のプリンタのサポート用) [5]
+
+o  DECwindows Application Files (DDIFエンコード2値イメージ・ファイルの印刷用)
+   [5]
+
+日本語OpenVMSのクラスおよびテーラリングについては，日本語OpenVMSオペレーティ
+ング・システムのソフトウェア仕様書を参照してください。
+
+8  オプション・ソフトウェア
+
+o  Distributed Queuing Service for OpenVMS (DQS) (SPD 28.80.xx)
+
+o  DECnet-Plus for OpenVMS Alpha (SPD 50.45.xx)または DECnet-Plus for OpenVMS
+   VAX (SPD 25.03.xx) (PrintServerプリンタへの通信プロトコルとしてDECnetを使
+   用する場合)
+
+o  日本語Compaq TCP/IP Services for OpenVMS (SPD 28.B4.xx) (PrintServerプリン
+   タ，およびraw TCP/IPソケット・プロトコルをサポートするNIC，プリント・サー
+   バ，ターミナル・サーバを使用するプリンタとの通信プロトコルとしてTCP/IPを使
+   用する場合)
+
+9  バージョンアップの考慮
+
+本製品の将来のバージョンでは，必要なハードウェアおよびソフトウェアの最小構成
+が変更されることがあります。
+
+10  提供媒体
+
+OpenVMS VAXシステム:
+
+   CD-ROM
+
+_______________________
+  [5] これらはオプション機能ですので，該当する機能を使用しない場合には必要あ
+
+      りません。
+
+                                      14
+
+ 
+
+
+日本語Compaq DECprint Supervisor Version 2.1A   for OpenVMS      SPD 48.27.12
+ソフトウェア仕様書
+
+
+OpenVMS Alphaシステム:
+
+   CD-ROM
+
+マニュアルのみ:
+
+   日本語DECprint Supervisorのハードコピー・マニュアルを注文する際は，注文番
+   号QA-09NJA-GZを使用してください。マニュアル・セットはVAXおよびAlphaプラッ
+   トフォームで共通です。
+
+DCPSのソフトウェアは，OpenVMS AlphaおよびVAXのソフトウェア製品ライブラリ
+CD-ROMでも提供されています。
+
+DCPSのドキュメントは，OpenVMS AlphaおよびVAXのオンライン・ドキュメント・ライ
+ブラリCD-ROMでも提供されています。
+
+11  注文情報
+
+本製品のインストレーション・キットは，OpenVMS VAX版とOpenVMS Alpha版に分かれ
+ています。詳しくは，最寄りの弊社の各支店/営業所にお問い合わせください。
+
+提供されるライセンス，サービスおよび媒体の詳細については，最寄りの弊社の各支
+店/営業所にお問い合わせください。
+
+12  ソフトウェア製品サービス
+
+弊社では，さまざまなサービス・オプションを提供しています。詳細については，最
+寄りの弊社各支店/営業所にお問い合わせください。
+
+13  保証
+
+本ソフトウェアについては，弊社所定のソフトウェア保証基準に定められた保証が提
+供されます。
+
+(c) 2003日本ヒューレット・パッカード株式会社
+
+Compaq，Compaqロゴ，Alpha，DCPS，DECnet，OpenVMS，VAXおよびVMSは，米国および
+他の国におけるCompaq Information Technologies Group, L.P.の商標です。
+
+このドキュメントに記載されているその他の製品名は，各社の商標または登録商標で
+す。
+
+本書に記載されている事項は，予告なく変更されることがありますので，あらかじめ
+ご承知おきください。万一，本書の記述に誤りがあった場合でも，コンパックは一切
+その責任を負いかねます。
+
+
+
+                                      15

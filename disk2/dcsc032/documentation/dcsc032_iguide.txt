@@ -1,0 +1,2748 @@
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Digital_Cartridge_Server_Component_for_OpenVMS______
+                    Installation Guide
+
+
+                    Order Number: AA-PEBXD-TE
+
+                    February 1995
+
+                    This guide describes how to install the Digital
+                    Cartridge Server Component (DCSC) for OpenVMS.
+                    It describes the required hardware and software,
+                    installation procedure, what to do after
+                    installation, and how to run the Installation
+                    Verification Procedure.
+
+
+
+
+
+
+
+                    Revision Update Information:  This is a revised
+                                                  guide.
+
+                    Operating System and Version: OpenVMS Version 5.5-2
+                                                  or higher
+
+                    Software Version:             DCSC Version 3.0
+
+                    Digital Equipment Corporation
+                    Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+              ________________________________________________________________
+
+              First Printing, February 1991
+              Revised, September 1991
+              Revised, May 1993
+              Revised, October 1993
+              Revised, February 1995
+
+              The information in this document is subject to change
+              without notice and should not be construed as a commitment
+              by Digital Equipment Corporation. Digital Equipment
+              Corporation assumes no responsibility for any errors that
+              may appear in this document.
+
+              The software described in this document is furnished under
+              a license and may be used or copied only in accordance with
+              the terms of such license.
+
+              Possession, use, duplication, or dissemination of the
+              software described in this documentation is authorized
+              only pursuant to a valid written license from Digital or
+              the third-party owner of the software copyright.
+
+              No responsibility is assumed for the use or reliability
+              of software on equipment that is not supplied by Digital
+              Equipment Corporation.
+
+              Copyright © Digital Equipment Corporation 1991, 1995.
+
+              All Rights Reserved.
+
+              The postpaid Reader's Comments forms at the end of this
+              document request your critical evaluation to assist in
+              preparing future documentation.
+
+              DECnet, OpenVMS, RA, TU, ULTRIX, VAX, VAX C, VAXcluster,
+              VMScluster, VT, Alpha AXP and the DIGITAL logo are
+              trademarks of Digital Equipment Corporation.
+
+              StorageTek, CLS, and Nearline are registered trademarks of
+              Storage Technology Corporation.
+              VM and IBM are registered trademarks of International
+              Business Machines.
+              UNIX is a registered trademark of UNIX System Laboratories,
+              Inc.
+
+              This document is available on CDROM.
+
+              This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                              Contents
+
+
+
+     Preface...................................................      v
+
+     1  Preparing to Install the Digital Cartridge Server
+        Component
+
+           1.1   Prerequisite Hardware.........................    1-1
+           1.2   Prerequisite and Optional Software............    1-2
+           1.3   License Registration..........................    1-3
+           1.4   DEC TCP/IP Services for OpenVMS
+                 Requirements..................................    1-4
+           1.5   Installation Procedure Requirements...........    1-4
+           1.5.1     Privileges and Disk Space.................    1-4
+           1.5.2     System Parameters.........................    1-5
+           1.5.2.1     Checking System Parameter Values........    1-7
+           1.5.2.2     Changing System Parameter Values with
+                       AUTOGEN.................................    1-7
+           1.5.3     Installation Account Quotas...............    1-9
+           1.5.4     Modifying Account Quotas..................    1-9
+           1.5.5     Backing Up Your System Disk...............   1-10
+
+     2  Installing the Digital Cartridge Server Component
+
+           2.1   The Installation Procedure....................    2-1
+           2.2   Error Recovery................................   2-12
+           2.2.1     Installation Failure......................   2-12
+           2.2.2     Nonfatal Errors...........................   2-13
+
+
+
+
+
+
+
+
+                                                                   iii
+
+ 
+
+
+
+
+
+
+
+        3  After Installing the Digital Cartridge Server Component
+
+              3.1   Editing the System Files......................    3-1
+              3.2   Editing the DCSC Configuration File...........    3-2
+              3.3   Starting Up the System........................    3-2
+              3.4   VMScluster Postinstallation Procedures........    3-3
+              3.4.1     Loading the DCSC License on the Other
+                        VMScluster Nodes..........................    3-3
+              3.4.2     Replacing the DCLTABLES.EXE on the Other
+                        VMScluster Nodes..........................    3-4
+              3.4.3     Starting Up the DCSC Software on Other
+                        VMScluster Nodes..........................    3-5
+              3.5   User Account Requirements.....................    3-5
+              3.5.1     Privileges................................    3-5
+              3.5.2     Quotas....................................    3-6
+              3.6   File Protections..............................    3-6
+              3.7   Determining and Reporting Problems............    3-6
+
+        4  Installation Verification Procedure
+
+        A  Sample Installation
+
+
+        B  Files and Logical Names Installed on Your System
+
+
+        Tables
+
+              1-1       Hardware Requirements for Installing
+                        DCSC......................................    1-2
+
+              1-2       Prerequisite and Optional Software........    1-2
+
+              1-3       Minimum Required System Parameter Values
+                        (VAX OpenVMS).............................    1-6
+
+              1-4       Minimum Required System Parameter Values
+                        (Alpha AXP OpenVMS).......................    1-6
+
+              3-1       User Account Quotas for Using DCSC........    3-6
+
+
+
+
+
+        iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              The Digital Cartridge Server Component (DCSC) for
+              OpenVMS[TM] software provides VAX[TM] and Alpha AXP[TM]
+              computer users with access to tape cartridges within
+              automated tape libraries. Access is provided by the DCSC
+              server software which, in turn, accesses a central library
+              server that controls all of the resources within the
+              configuration.
+
+              This guide describes how to install the DCSC software on a
+              computer running OpenVMS operating software, Version 5.5-2
+              or higher. It describes the required hardware and software,
+              installation procedure, what to do after installation, and
+              how to run the Installation Verification Procedure (IVP).
+
+        Audience
+
+              This guide is for anyone who needs to install the DCSC
+              software on an OpenVMS operating system. You must have
+              SYSTEM PRIVILEGES (SETPRV) to install the software.
+              In addition, you must be familiar with the OpenVMS
+              Installation Procedure (VMSINSTAL) and know how to set
+              the parameters and process quotas for your system.
+
+        Document Structure
+
+              This guide is structured as follows:
+
+              o  Chapter 1, Preparing to Install the Digital Cartridge
+                 Server Component, describes requirements for installing
+                 the DCSC software, VMScluster[TM] considerations, and
+                 software and hardware prerequisites.
+
+              o  Chapter 2, Installing the Digital Cartridge Server
+                 Component, explains how to install the DCSC. It also
+                 describes each installation procedure question.
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+              o  Chapter 3, After Installing the Digital Cartridge Server
+                 Component, describes the various tasks that you need to
+                 perform after installing the DCSC.
+
+              o  Chapter 4, Installation Verification Procedure, explains
+                 how to run the IVP.
+
+              o  Appendix A, Sample Installation, contains a sample
+                 installation of DCSC. This sample was run on a system
+                 that had no previous version of DCSC installed.
+
+              o  Appendix B, Files and Logical Names Installed on Your
+                 System, provides a list of the logical names that are
+                 entered into the system logical name tables.
+
+        Related Documentation
+
+              The following guides, including this guide, comprise the
+              DCSC documentation set:
+
+              o  Digital Cartridge Server Component for OpenVMS System
+                 Manager's Guide - This guide describes how to manage
+                 a system after the DCSC is installed. It describes its
+                 environment, how to use the Configuration File Editor,
+                 and includes tips for troubleshooting and handling
+                 errors.
+
+              o  Digital Cartridge Server Component for OpenVMS
+                 Programmer's Reference Guide - This guide provides a
+                 reference for programmers who need to use the DCSC Run-
+                 Time Library routines to create applications. It also
+                 provides an overview of the routines and C examples.
+
+              o  Digital Cartridge Server Component for OpenVMS User's
+                 Reference Guide - This guide summarizes the main
+                 functions of the DCSC, highlighting the functions
+                 performed by the computer operator, such as mounting and
+                 dismounting tapes. In addition, it provides a command
+                 description section.
+
+              The following guides provide information on the ACS library
+              and the DEC TCP/IP Services for OpenVMS (also known as UCX)
+              software:
+
+              o  TC44-AA/BA STI to ACS library Interconnect Hardware
+                 Installation Guide
+
+              o  KCM44 Tape Controller User Guide
+
+        vi
+
+ 
+
+
+
+
+
+
+
+              o  DEC TCP/IP Services for OpenVMS System Manager's Guide
+
+              For more information on using LMF, see the OpenVMS License
+              Management Utility Manual.
+
+        Conventions______________________________________________________
+
+              Convention____________Meaning______________________________
+
+              Enter                 The word enter means to type
+                                    information at the keyboard, and
+                                    then press the Return key.
+
+              Return key            The Return key is not shown in
+                                    formats and examples. Assume that
+                                    you must press Return after typing a
+                                    command or other input to the system
+                                    unless instructed otherwise.
+
+              Ctrl/x                This key sequence is sometimes in an
+                                    instruction. It means to press the
+                                    x key while holding down the Ctrl
+                                    key. For example, Ctrl/Y means press
+                                    the Ctrl key and the letter Y key
+                                    simultaneously.
+
+              $ SHOW TIME           Command examples are in monospaced
+              28-OCT-93 11:55:22    type, and show all user-entered
+
+                                    commands in bold letters. Displays or
+                                    output lines of prompting characters
+                                    that the system prints are shown in
+                                    regular type.
+
+              RUN AUTHORIZE         Uppercase words in examples represent
+                                    commands. Enter all uppercase words
+                                    exactly as they are displayed in this
+                                    guide.
+
+              filename              Lowercase words in examples tell
+                                    you to supply an input value, not to
+              ______________________enter_the_literal_word.______________
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+              Preparing to Install the Digital Cartridge Server Component
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing the Digital Cartridge Server
+              Component (DCSC) for OpenVMS.
+
+              Your bill of materials (BOM) and Indented Bills Report
+              (BIL) specify the number and contents of your media.
+              Be sure to verify the contents of your kit with this
+              information. If your kit is damaged or if you find
+              that parts of it are missing, contact your Digital
+              representative.
+
+              DCSC provides online release notes. Digital strongly
+              recommends that you read the release notes before
+              proceeding with the installation. For information on
+              reviewing the release notes, see the description of the
+              OPTIONS N parameter in Section 2.1.
+
+        1.1 Prerequisite Hardware
+
+              Table 1-1 describes the hardware items needed to install
+              the DCSC software.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          Preparing to Install the Digital Cartridge Server Component 1-1
+
+ 
+
+
+
+        Preparing to Install the Digital Cartridge Server Component
+        1.1 Prerequisite Hardware
+
+
+              Table_1-1_Hardware_Requirements_for_Installing_DCSC________
+
+              Item__________Purpose______________________________________
+
+              TC44-AA       Provides the data conversion between the
+              or TC44-BA    Digital Standard Tape Interconnect (STI) and
+                            the Federal Information Processing Standard
+                            (FIPS) interface through an HSC40 or HSC70 to
+                            the ACS library.
+
+              KCM44         Provides the data conversion between the
+                            Digital XMI backplane and the Federal
+                            Information Processing Standard (FIPS)
+                            interface.
+
+              STI Cables    Connects the TC44 to the HSC. The STI cable
+                            part numbers are BC26V-xx (xx = length in
+                            feet).
+
+              FIPS60        Connects the TC44 to the ACS library
+              Cables________hardware.____________________________________
+
+              See the TC44-AA/BA STI to ACS library Interconnect Hardware
+              Installation Guide or KCM44 Tape Controller User Guide for
+              details on the hardware configuration requirements before
+              you install the DCSC software.
+
+        1.2 Prerequisite and Optional Software
+
+              Table 1-2 describes the software that must be installed
+              on your system before you install DCSC. The table also
+              includes information about optional software that you
+              can use with DCSC. The Software Product Description (SPD)
+              contains a complete list of the prerequisite and optional
+              software and the required version numbers.
+
+              Table_1-2_Prerequisite_and_Optional_Software_______________
+
+              Prerequisite_Products___Purpose____________________________
+
+              DEC TCP/IP Services     Communication between DCSC and ACS
+              for OpenVMS (UCX)       library software
+              Version 3.1
+
+                                                 (continued on next page)
+
+        1-2 Preparing to Install the Digital Cartridge Server Component
+
+ 
+
+
+
+              Preparing to Install the Digital Cartridge Server Component
+                                   1.2 Prerequisite and Optional Software
+
+
+              Table_1-2_(Cont.)_Prerequisite_and_Optional_Software_______
+
+              Optional_Products_______Purpose____________________________
+
+              VAX C Version 3.0       VAX Application development
+
+              DEC C Version 1.3       VAX and Alpha AXP Application
+                                      development
+
+              Storage Library System  Automated data backup and restore
+              (SLS)_V2.3_________________________________________________
+
+        1.3 License Registration
+
+              Before you install and run DCSC, you must register the DCSC
+              license through the OpenVMS License Management Facility
+              (LMF) in accordance with the license agreement signed
+              by your site. The license registration information is
+              contained in the Product Authorization Key (PAK). The PAK
+              is a certificate that has information about the license to
+              run the software. It is shipped with DCSC or to a location
+              based on your license order.
+
+              If you are installing DCSC as an update on a node or
+              VMScluster already licensed for this software, you have
+              already completed the PAK registration requirements.
+
+              You must register and load your license, and configure
+              and start up the DCSC before you run the IVP and use the
+              software.
+
+              To register a license under OpenVMS, first log in to the
+              system manager's account, SYSTEM. Then choose one of the
+              following options for registering a license:
+
+              o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+                 prompts you for information, respond with data from your
+                 License PAK.
+
+              o  Enter the LICENSE REGISTER command with the appropriate
+                 qualifiers that correspond to License PAK information at
+                 the DCL ($) prompt.
+
+              If you plan to install DCSC on more than one node in a
+              VMScluster, you will need to register the DCSC license on
+              the other nodes after you complete this installation. See
+              Section 3.4 for additional VMScluster postinstallation
+              procedures.
+
+          Preparing to Install the Digital Cartridge Server Component 1-3
+
+ 
+
+
+
+        Preparing to Install the Digital Cartridge Server Component
+        1.4 DEC TCP/IP Services for OpenVMS Requirements
+
+
+        1.4 DEC TCP/IP Services for OpenVMS Requirements
+
+              After installing the DEC TCP/IP Services for OpenVMS (UCX)
+              software, you must increase the number of device sockets.
+              To do this, add the following line to the command procedure
+              SYS$MANAGER:UCX$INET_SET_INTERFACES.COM:
+
+              $ UCX SET COMMUNICATION/DEVICE_SOCKETS=300
+
+              Add the command line on each node of the cluster that is
+              running the DEC TCP/IP Services for OpenVMS software. This
+              command line must be added immediately after the other $
+              UCX SET commands in the command procedure.
+
+        1.5 Installation Procedure Requirements
+
+              Depending on your type of media and system configuration,
+              the installation procedure takes approximately 5 to 20
+              minutes, using VMSINSTAL. This includes running the IVP and
+              editing the DCSC system startup and configuration files.
+
+              The installation procedure checks the following:
+
+              o  Whether you are running the required version of the
+                 OpenVMS operating system
+
+              o  Whether you are running the required version of the DEC
+                 TCP/IP Services for OpenVMS software
+
+              o  Whether you have installed the license for DCSC
+
+              o  Whether you have enough disk space to install DCSC
+
+              o  Whether you have the minimum required system parameter
+                 values
+
+              The following sections discuss the various requirements for
+              installing the DCSC.
+
+        1.5.1 Privileges and Disk Space
+
+              To install DCSC, you must be logged in to an account that
+              has SETPRV, or at least CMKRNL, WORLD, or SYSPRV privilege.
+              Digital recommends that you use the system manager's
+              account (SYSTEM) to install DCSC.
+
+        1-4 Preparing to Install the Digital Cartridge Server Component
+
+ 
+
+
+
+              Preparing to Install the Digital Cartridge Server Component
+                                  1.5 Installation Procedure Requirements
+
+
+                ________________________ Note ________________________
+
+                VMSINSTAL turns off BYPASS privilege at the start of
+                the installation.
+
+                ______________________________________________________
+
+              On a OpenVMS System, the DCSC requirements for free disk
+              storage space are different during installation and after
+              installation. You must have at least 8000 free blocks
+              before you start the installation. After installation,
+              DCSC permanently uses 7500 blocks. These figures are the
+              minimum space requirements. Extra disk space is needed for
+              the log files that are generated during the DCSC server
+              operation if logging is enabled.
+
+              The DCSC requirements for free disk storage space on
+              an Alpha AXP system are different during installation
+              and after installation. You must have at least 20,000
+              free blocks before you start the installation. After
+              installation, DCSC permanently uses 17,000 blocks. These
+              figures are the minimum space requirements. Extra disk
+              space is needed for the log files that are generated during
+              the DCSC server operation if logging is enabled.
+
+              To determine the number of free blocks on the disk, enter
+              the following command at the DCL prompt:
+
+              $ SHOW DEVICE device-name:
+
+              The following describes the device-name parameter:
+
+              device-name
+              The name of the device on which you plan to install the
+              software. For example, SYS$SYSDEVICE: is the device name
+              for the system disk. Be sure to check the free space of the
+              disk on which the software will be installed.
+
+        1.5.2 System Parameters
+
+              When installing DCSC on a OpenVMS System, certain system
+              parameter values are recommended. The minimum required
+              values are listed in Table 1-3.
+
+
+          Preparing to Install the Digital Cartridge Server Component 1-5
+
+ 
+
+
+
+        Preparing to Install the Digital Cartridge Server Component
+        1.5 Installation Procedure Requirements
+
+
+              Table 1-3 Minimum Required System Parameter Values (VAX
+              __________OpenVMS)_________________________________________
+
+              System_Parameter___________Minimum_Required_Value__________
+
+              GBLPAGES                   n + 4300
+
+              GBLPAGFIL                  n + 4300
+
+              GBLSECTIONS________________n_+_2___________________________
+
+              For a successful installation of DCSC, the value for the
+              GBLPAGES parameter must be 4300 or greater. Add 4300 to
+              the current value for this parameter to get the new system
+              value with which to update SYSGEN.
+
+              In addition, the value for the GBLSECTIONS parameter
+              must be 2 or greater. Add 2 to the current value for this
+              parameter to get the new system value with which to update
+              SYSGEN.
+
+              When installing DCSC on an Alpha AXP System, certain system
+              parameter values are recommended. The minimum required
+              values are listed in Table 1-4.
+
+              Table 1-4 Minimum Required System Parameter Values (Alpha
+              __________AXP_OpenVMS)_____________________________________
+
+              System_Parameter___________Minimum_Required_Value__________
+
+              GBLPAGES                   n + 5000
+
+              GBLPAGFIL                  n + 313
+
+              GBLSECTIONS________________n_+_3___________________________
+
+              For a successful installation of DCSC on an Alpha AXP
+              system, the value for the GBLPAGES parameter is defined
+              in pagelets which are 512 bytes. Add 5000 to the current
+              value for this parameter to get the new system value with
+              which to update SYSGEN.
+
+              For Alpha AXP hardware, GBLPAGFIL, in pages, is machine
+              dependent. Pages vary in size from 8KB to 64KB. For the
+              current Alpha AXP, the page size is 8KB.
+
+        1-6 Preparing to Install the Digital Cartridge Server Component
+
+ 
+
+
+
+              Preparing to Install the Digital Cartridge Server Component
+                                  1.5 Installation Procedure Requirements
+
+
+              In addition, the value for the GBLSECTIONS parameter
+              must be 3 or greater. Add 3 to the current value for this
+              parameter to get the new system value with which to update
+              SYSGEN.
+
+        1.5.2.1 Checking System Parameter Values
+
+              To check the values of your system parameters, invoke
+              SYSGEN by entering the following command at the DCL prompt:
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN>
+
+              At the SYSGEN> prompt, enter the SHOW command to display
+              the current value of a system parameter. For example:
+
+              SYSGEN> SHOW GBLPAGES
+
+              After you check the parameters with the SHOW command, exit
+              SYSGEN and return to the DCL level by entering the EXIT
+              command at the SYSGEN> prompt:
+
+              SYSGEN> EXIT
+              $
+
+              If you need to increase the parameters, use the AUTOGEN
+              command procedure, as described in the following section.
+
+        1.5.2.2 Changing System Parameter Values with AUTOGEN
+
+              Use AUTOGEN to change the system parameters. AUTOGEN
+              automatically adjusts values for parameters that are
+              associated with the values you manually reset.
+
+              To change system parameters with AUTOGEN, edit the
+              following file:
+
+              SYS$SYSTEM:MODPARAMS.DAT
+
+              To modify any of the parameter values in the file, delete
+              the current value associated with that parameter and enter
+              the new value.
+
+              To add a new parameter, add a line to the file that
+              includes both the name of the parameter and its value.
+              For example:
+
+              GBLPAGFIL = 10240     !Minimum global pages needed
+
+              To modify incremental parameters such as GBLPAGES and
+              GBLSECTIONS, use the MIN_ prefix.
+
+          Preparing to Install the Digital Cartridge Server Component 1-7
+
+ 
+
+
+
+        Preparing to Install the Digital Cartridge Server Component
+        1.5 Installation Procedure Requirements
+
+
+        The following example limits the global page setting to
+        12740, which is the 10240 minimum value required by the
+        system (shown in the previous example) plus the 4300
+        required by DCSC on the VAX.
+
+        MIN_GBLPAGES = 12740    !Minimum global pages needed including 4300
+        !                       !required by DCSC on the VAX
+
+                ________________________ Note ________________________
+
+                Do not use a value that exceeds the amount of page
+                file space available on the system when setting the
+                page file quota.
+
+                ______________________________________________________
+
+              After you make all the changes, exit from the editor and
+              execute the AUTOGEN procedure to recalculate the system
+              parameters. To do this, enter the following command at the
+              DCL prompt:
+
+              $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT
+
+              When you specify the REBOOT parameter, AUTOGEN performs
+              an automatic system shutdown and then reboots the system.
+              When the system is rebooted, the new parameter values take
+              effect.
+
+                ________________________ Note ________________________
+
+                If any users are logged in to the system, they are
+                immediately disconnected during the shutdown.
+
+                ______________________________________________________
+
+              If the SAVE option was chosen at system shutdown time,
+              AUTOGEN automatically adjusts the SYSGEN parameters based
+              on the consumption of resources since the last reboot.
+              If you do not want to take advantage of this automatic
+              adjustment, include the NOFEEDBACK qualifier on the AUTOGEN
+              command line, as follows:
+
+              $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT NOFEEDBACK
+
+              For more information about using AUTOGEN, see the OpenVMS
+              System Management Subkit.
+
+        1-8 Preparing to Install the Digital Cartridge Server Component
+
+ 
+
+
+
+              Preparing to Install the Digital Cartridge Server Component
+                                  1.5 Installation Procedure Requirements
+
+
+        1.5.3 Installation Account Quotas
+
+              When you invoke VMSINSTAL, it checks the following:
+
+              o  Whether you have set your default device and directory
+                 to SYS$UPDATE
+
+              o  Whether you are logged in to a privileged account
+
+              o  Whether you have adequate quotas for installation
+
+              o  Whether any users are logged in to the system
+
+              VMSINSTAL has the following minimum requirements for the
+              installation account quotas:
+
+                 ASTLM = 24
+                 BIOLM = 18
+                 BYTLM = 32768
+                 DIOLM = 18
+                 ENQLM = 30
+                 FILLM = 20
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation.
+
+              To continue, enter YES. To stop the installation process
+              and correct the situation, enter NO or press the
+              Return key. Then, correct the problem and restart the
+              installation.
+
+        1.5.4 Modifying Account Quotas
+
+              User account quotas are stored in the SYSUAF.DAT file. If
+              you need to verify and change user account quotas, use the
+              OpenVMS Authorize Utility (AUTHORIZE). To do this, log in
+              to a privileged account, set your directory to SYS$SYSTEM,
+              and run AUTHORIZE, as shown in the following example:
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF>
+
+              At the UAF> prompt, enter the SHOW command with the account
+              name to check its quota. For example, to check the SYSTEM
+              account quotas, enter the following command:
+
+              UAF> SHOW SYSTEM
+
+              To change a quota, enter the MODIFY command.
+
+          Preparing to Install the Digital Cartridge Server Component 1-9
+
+ 
+
+
+
+        Preparing to Install the Digital Cartridge Server Component
+        1.5 Installation Procedure Requirements
+
+
+              The following example changes the FILLM quota for the
+              SYSTEM account using the MODIFY command, and then exits
+              from the utility:
+
+              UAF> MODIFY SYSTEM/FILLM=20
+              UAF> EXIT
+
+              After you exit from the OpenVMS Authorize Utility, the
+              system displays messages indicating whether changes were
+              made. Once the changes have been made, you must log out and
+              log in again before the new quotas take effect.
+
+              For more information on modifying account quotas, see the
+              description of the OpenVMS Authorize Utility in the OpenVMS
+              System Management Subkit.
+
+        1.5.5 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if you
+              have backed up your system disk. Digital recommends that
+              you back up a system disk before installing any software
+              product.
+
+              Use the backup procedures that are established at your
+              site. For details on performing a system disk back up, see
+              the section on the BACKUP Utility in the OpenVMS System
+              Management Subkit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        1-10 Preparing to Install the Digital Cartridge Server Component
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                        Installing the Digital Cartridge Server Component
+
+
+              This chapter describes how to install the Digital Cartridge
+              Server Component (DCSC) for OpenVMS. It also contains a
+              step-by-step description of the installation procedure
+              using VMSINSTAL and error and recovery information.
+
+        2.1 The Installation Procedure
+
+              The installation procedure consists of a series of
+              questions and informational messages. See Appendix A for
+              a sample installation.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all the files it has created up to that point and
+              exits. You can then restart the installation.
+
+              1. Invoke the VMSINSTAL command procedure.
+
+                 VMSINSTAL is located in the SYS$UPDATE directory.
+                 To start the installation, invoke VMSINSTAL from a
+                 privileged account, such as the SYSTEM account, as
+                 follows:
+
+                 $ @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                 The following list defines the VMSINSTAL parameters:
+
+                 saveset-name
+                 The installation name for the component. The following
+                 is an example of the installation name for DCSC:
+
+                 DCSC030
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 media. For example, MTA0: is the device name for a tape
+                 drive. It is not necessary to use the console drive for
+                 this installation. However, if you do use the console
+
+                    Installing the Digital Cartridge Server Component 2-1
+
+ 
+
+
+
+        Installing the Digital Cartridge Server Component
+        2.1 The Installation Procedure
+
+
+                 drive, you should replace any media you removed once the
+                 installation is complete.
+
+                 OPTIONS N
+                 An optional parameter that indicates you want to see
+                 the question on release notes. If you do not include
+                 the OPTIONS N parameter, VMSINSTAL does not ask you
+                 to choose an option for reviewing the release notes.
+                 Digital recommends that you read the release notes
+                 before proceeding with the installation, in case they
+                 contain additional information about the installation.
+
+                ________________________ Note ________________________
+
+                If you are restarting the installation and have
+                already reviewed the release notes, you do not need to
+                specify OPTIONS N.
+
+                ______________________________________________________
+
+                 There are several other options you can select when you
+                 invoke VMSINSTAL. They are as follows:
+
+                 o  A - Auto-answer Option
+
+                    Initially creates a file that contains your answers
+                    to VMSINSTAL questions and prompts. You can then use
+                    the option and the answer file to save time during
+                    a reinstallation (typically after upgrading your
+                    system).
+
+                 o  G - Get Saveset Option
+
+                    Lets you temporarily store product save sets on a
+                    magnetic tape or in a disk directory.
+
+                 o  L - File Log Option
+
+                    Logs all activity on the terminal during
+                    installation.
+
+                 o  R - Alternate Root Option
+
+                    Lets you install the product to a system root other
+                    than that of the running system.
+
+                 See the OpenVMS documentation on software installation
+                 in the OpenVMS System Management Subkit for detailed
+                 information on these options.
+
+        2-2 Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                        Installing the Digital Cartridge Server Component
+                                           2.1 The Installation Procedure
+
+
+                 If you specify more than one option, separate the option
+                 letters with commas. For example:
+
+                 $ @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N,A
+
+                 The following example invokes VMSINSTAL to install DCSC
+                 from tape drive MTA0: and uses the OPTIONS N release
+                 notes parameter.
+
+                 $ @SYS$UPDATE:VMSINSTAL DCSC030 MTA0: OPTIONS N
+
+                 The system displays the following response:
+
+                    OpenVMS AXP Software Product Installation Procedure V6.1
+
+                 It is 7-FEB-1995 at 11:12.
+
+                 Enter a question mark (?) at any time for help.
+
+                 If you do not supply either the product name or the
+                 device name when you invoke VMSINSTAL, it asks you for
+                 this information later in the installation procedure.
+
+              2. Confirm system backup.
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 BACKUP.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 You should always back up your system disk before
+                 performing an installation. If you are satisfied with
+                 the BACKUP of your system disk, press Return. Otherwise,
+                 enter NO to stop the installation. After you back up
+                 your system disk, you can restart the installation.
+
+              3. Mount the media.
+
+                 Mount the first distribution volume on the device
+                 you specified when you invoked VMSINSTAL. The device
+                 name automatically appears in the system message. For
+                 example,
+
+                 Please mount the first volume of the set on MTA0:.
+
+                 VMSINSTAL then asks you if you are ready to continue
+                 with the installation.
+
+                    Installing the Digital Cartridge Server Component 2-3
+
+ 
+
+
+
+        Installing the Digital Cartridge Server Component
+        2.1 The Installation Procedure
+
+
+                 * Are you ready? YES
+
+                 o  Enter YES if you are ready to continue.
+
+                    VMSINSTAL displays a message that the media
+                    containing the DCSC has been mounted on the specified
+                    device and that the installation has begun.
+
+                    %MOUNT-I-MOUNTED, DCSC MOUNTED ON _$$MTA0:  (NODE1)
+                    The following products will be processed:
+                      DCSC 3.0
+
+                        Beginning installation of DCSC V3.0 at 11:15
+
+                    %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                 o  Enter NO at the Are you ready? question if you
+                    entered the wrong device name when you invoked
+                    VMSINSTAL and need to restart the installation.
+
+                    To abort the installation for other reasons, press
+                    Ctrl/Y.
+
+              4. Mount additional media volumes.
+
+                 If your installation kit contains more than one volume,
+                 VMSINSTAL asks you to mount the additional volumes and
+                 to indicate when you are ready for the installation to
+                 proceed.
+
+                 %BACKUP-I-READYREAD, mount volume 2 on _MTA0: for reading
+
+                 Enter "YES" when ready:
+
+              5. Select a release notes option.
+
+                 If you specified the OPTIONS N parameter when you
+                 invoked VMSINSTAL, you are now asked to choose one
+                 of four options for reviewing the release notes, as
+                 follows:
+
+
+
+
+
+        2-4 Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                        Installing the Digital Cartridge Server Component
+                                           2.1 The Installation Procedure
+
+
+                 Release notes included with this kit are always copied 
+                 to SYS$HELP.
+
+                 Additional Release Notes Options:
+
+                         1.  Display release notes
+                         2.  Print release notes
+                         3.  Both 1 and 2
+                         4.  None of the above
+
+                 * Select option [2]:
+
+                 If you select option 1, VMSINSTAL immediately displays
+                 the release notes on the console terminal. You can
+                 terminate the display at any time by pressing Ctrl/C.
+
+                 If you select option 2, VMSINSTAL asks you for the name
+                 of the print queue that you want to use:
+
+                 * Queue name [SYS$PRINT]:
+
+                 Press Return to send the file to the default output
+                 print device, or enter another queue name.
+
+                 If you select option 3, VMSINSTAL immediately displays
+                 the release notes on the console terminal, and then asks
+                 you for the name of the print queue.
+
+                 If you have already reviewed the release notes and are
+                 restarting the installation, select option 4.
+
+                ________________________ Note ________________________
+
+                A hardcopy version of the release notes is included
+                with the DCSC documentation set.
+
+                ______________________________________________________
+
+                 Next, VMSINSTAL displays the following question:
+
+                 * Do you want to continue the installation [N]?: YES
+                 %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                                                 moved to SYS$HELP.
+
+                 To continue the installation, enter YES. Otherwise,
+                 press Return. In either case, the release notes are
+                 copied to the following file in SYS$HELP:
+
+                 SYS$HELP:DCSC030.RELEASE_NOTES
+
+                    Installing the Digital Cartridge Server Component 2-5
+
+ 
+
+
+
+        Installing the Digital Cartridge Server Component
+        2.1 The Installation Procedure
+
+
+                 After the installation, you can enter the following
+                 command to review the release notes:
+
+                 $ TYPE SYS$HELP:DCSC030.RELEASE_NOTES
+
+                ________________________ Note ________________________
+
+                The name of the release notes file installed by
+                VMSINSTAL consists of the current product name and
+                version number. Do not delete the release notes for
+                the previous versions of DCSC.
+
+                ______________________________________________________
+
+              6. Insure that DCSC is not running on your system.
+
+                 If DCSC is already installed on your system, you
+                 should be sure to shut it down prior to starting the
+                 installation.
+
+              ******************************************************************
+                        Digital Cartridge Server Component for VMS, V3.0
+
+                                   Installation Procedure
+
+             Copyright Digital Equipment Corporation 1991,1993.  All 
+             rights reserved. Restricted Rights: Use, duplication, or 
+             disclosure by the U.S. Government is subject to restrictions  
+             as set forth in subparagraph (c) (1) (ii) of
+             DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 
+             Alt.III, as applicable.
+
+             This software is proprietary to and embodies the confidential 
+             technology of Digital Equipment Corporation.  Possession, use 
+             or copying of this software and media is authorizied only 
+             pursuant to a valid written license from Digital or an 
+             authorized sublicensor.
+             *****************************************************************
+
+             *********************************************************
+
+             Before running this installation procedure, it is
+             advisable to shut down DCSC. Issue a Show System
+             command and verify that DCSC$SUPERVISOR is not active.
+
+             DCSC FILES MAY BECOME CORRUPTED IF DCSC IS RUNNING
+             AND YOU CONTINUE THE INSTALLATION PROCEDURE.
+
+             *********************************************************
+
+        2-6 Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                        Installing the Digital Cartridge Server Component
+                                           2.1 The Installation Procedure
+
+
+                 * Do you want to continue [YES]?
+
+              7. Verify existence of prerequisite software.
+
+                 The installation procedure displays a list of the
+                 required software and then asks if you want to continue.
+
+                 *********************************************************
+
+                 Before you install the DCSC software, verify that the
+                 following software is installed.
+
+                 OpenVMS Version 1.5 or later
+                 UCX Version 3.1 or later
+                     (UCX is only required on the MASTER node)
+
+                         *********************************************************
+
+                 * Do you want to continue [YES]?
+
+                 The installation procedure checks to make sure that
+                 the prerequisite software is installed. If it is not,
+                 the installation will fail. If you do not have the
+                 prerequisite software installed on your system, you
+                 must answer NO to this question. Stop the installation
+                 now, install the prerequisite software, then restart the
+                 DCSC installation.
+
+              8. Respond to license registration queries.
+
+                 The installation procedure displays license information
+                 about your product, then asks if you have registered and
+                 loaded your PAK, as follows:
+
+                         Product:      CARTRIDGE-SERVER-V
+                         Producer:     DEC
+                         Version:      3.0
+                         Release Date: 26-AUG-1991
+
+                 * Does this product have an authorization key registered 
+                    and loaded?
+
+                 If you have not registered and loaded your PAK, you must
+                 answer NO to this question; otherwise, the installation
+                 procedure will fail. Stop the installation now, register
+                 and load your PAK, then restart the installation.
+
+                    Installing the Digital Cartridge Server Component 2-7
+
+ 
+
+
+
+        Installing the Digital Cartridge Server Component
+        2.1 The Installation Procedure
+
+
+              9. Purge files.
+
+                 You have the option of purging files from previous
+                 versions of the DCSC that are superseded by this
+                 installation.
+
+                     During this installation, new files will be provided 
+                     to replace existing versions.  You may purge these 
+                     older versions to save disk space, or keep
+                     them if you feel they may be of use.  Purging is 
+                     recommended.
+
+               * Do you want to purge files replaced by this installation [YES]?
+
+                 Purging the files is recommended; however, if you need
+                 to keep the previous versions, enter NO in response to
+                 this question.
+
+              10.Choose the Installation Verification Procedure (IVP)
+                 option.
+
+                 The installation procedure now asks if you want to run
+                 the IVP option after you install DCSC:
+
+                 * Do you want to run the IVP after the installation [YES]?
+
+                 It is recommended that you run the IVP after DCSC
+                 is installed to verify that the installation was
+                 successful. Press Return to accept the default (YES)
+                 in response to this question.
+
+              11.Specify the directory structure to contain all of the
+                 files.
+
+                 The installation procedure now asks for the directory
+                 specification where the files can be placed:
+
+                 * Enter the device and directory where [DCSC$SERVER] should
+                   be created [SYS$SYSDEVICE:[VMS$COMMON:]]:
+
+                 * Enter the device and directory where [DCSC$SERVER] should
+                   be created [SYS$SYSDEVICE:[VMS$COMMON]]:
+
+                 The default area is on your system disk. If you want
+                 to place your DCSC files elsewhere, enter a valid
+                 device and directory specification, and the directory
+                 [DCSC$SERVER] will be placed in that location.
+
+                 If this is a reinstallation and DCSC$DIR is already
+                 defined, the installation procedure will verify the
+                 directory structure and ask if you want to change the
+                 location.
+
+        2-8 Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                        Installing the Digital Cartridge Server Component
+                                           2.1 The Installation Procedure
+
+
+              12.Choose to convert data files.
+
+                 If this is an upgrade from the previous version of DCSC,
+                 the installation procedure has the ability to convert
+                 the data files to be compatible with the new version. If
+                 for some reason you would like to delay this conversion,
+                 you may enter NO in response to this question.
+
+                 Running the conversion utility is only necessary if you
+                 are upgrading from version 1.1. If you are currently
+                 running either version 2.0 or 2.0A, your files are
+                 already in an appropriate format for version 3.0.
+
+                        *********************************************************
+
+                         You should run the conversion utility in order to
+                         convert Version 1.1 files to Version 2.0 format.
+                         FAILURE TO DO SO MAY CAUSE FILE INCOMPATIBILITIES.
+
+                        *********************************************************
+
+                 * Do you want to run the conversion [YES]?
+
+
+              13.Read informational messages.
+
+                 Now the installation procedure displays several
+                 informational messages on the status of the
+                 installation. There are no further questions. If the
+                 installation procedure has been successful up to this
+                 point, VMSINSTAL moves the new or modified files to
+                 their target directories, updates help files, updates
+                 the DCL tables, if necessary, and purges previous file
+                 versions, if specified.
+
+                ________________________ Note ________________________
+
+                If you are installing DCSC on a device other than
+                the system device, the system directory informational
+                messages (-I-SYSDIR) are not displayed.
+
+                ______________________________________________________
+
+
+
+                    Installing the Digital Cartridge Server Component 2-9
+
+ 
+
+
+
+        Installing the Digital Cartridge Server Component
+        2.1 The Installation Procedure
+
+
+                 The following messages are displayed:
+
+                      *********************************************************
+
+                        All questions regarding the installation have now
+                        been asked.  The installation of DCSC V3.0
+                        will take approximately 10 minutes.
+
+                       *********************************************************
+
+                 %DCSC-I-INSBEG, Beginning installation....
+                 %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+                 %CREATE-I-EXISTS, $1$DUA14:[000000] already exists
+                 %CREATE-I-EXISTS, $1$DUA14:[000000.DCSC$SERVER] already exists
+                 %DCSC-I-INSCONT, Continuing installation....
+                 %DCSC-I-FILEPROT, Setting protection on product files....
+                 %DCSC-I-INSDCL, Installing DCL command....
+                 %DCSC-I-INSHELP, Installing DCL help....
+
+                       *********************************************************
+
+                          A list of DCSC V3.0 files installed
+                          on your OpenVMS system can be found in
+                          DCSC$DIR:[DCSC$SERVER]DCSC$FILE_LIST.TXT.
+
+                       *********************************************************
+
+                 %VMSINSTAL-I-MOVEFILES, Files will now be moved to their
+                                                           target directories...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        2-10 Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                        Installing the Digital Cartridge Server Component
+                                           2.1 The Installation Procedure
+
+
+              14.Execute DCSC$STARTUP command procedure.
+
+                 The installation procedure now executes the
+                 DCSC$STARTUP.COM procedure using the SETUP parameter.
+                 This parameter ensures that the STARTUP procedure
+                 defines only the system logical names that are used
+                 by DCSC. These logicals must be defined for the IVP to
+                 complete successfully.
+
+                 (LNM$SYSTEM_TABLE)
+
+                   "DCSC$ACSLIB_DEFAULT" = "1"
+                   "DCSC$BACKUP_ENABLE" = "FALSE"
+                   "DCSC$CAP_ACS_DEFAULT" = "0"
+                   "DCSC$CAP_CAP_DEFAULT" = "0"
+                   "DCSC$CAP_LSM_DEFAULT" = "0"
+                   "DCSC$CONFIG_FILE" = "DCSC$FILES:DCSC$CONFIG.DAT"
+                   "DCSC$DIR" = "$1$DUA14:[000000.]"
+                   "DCSC$DISMOUNT_ENABLE" = "FALSE"
+                   "DCSC$ENABLE_CHANNEL_LOG" = "TRUE"
+                   "DCSC$ENABLE_ORH_LOG" = "TRUE"
+                   "DCSC$ERROR_LOG" = "DCSC$LOGS:DCSC$ERROR.LOG"
+                   "DCSC$EXAMPLES" = "DCSC$DIR:[DCSC$SERVER.EXAMPLES]"
+                   "DCSC$EXE" = "DCSC$DIR:[DCSC$SERVER.IMAGES]"
+                   "DCSC$FILES" = "DCSC$DIR:[DCSC$SERVER.FILES]"
+                   "DCSC$LIBRARY" = "DCSC$DIR:[DCSC$SERVER.LIBRARY]"
+                   "DCSC$LOGS" = "DCSC$DIR:[DCSC$SERVER.LOGS]"
+                   "DCSC$MSG_SHARE" = "DCSC$EXE:DCSC$MSG_SHARE.EXE"
+                   "DCSC$ORH_IGNORE_BAD_MSG" = "FALSE"
+                   "DCSC$PRINT_FILE" = "DCSC$FILES:DCSC$CONFIG.LIS"
+                   "DCSC$RESPONSE" = "DCSC$DIR:[DCSC$SERVER.RESP_FILES]"
+                   "DCSC$RTL_SHARE" = "DCSC$EXE:DCSC$RTL_SHARE.EXE"
+                   "DCSC$SPVSR_LOG" = "DCSC$LOGS:DCSC$SPVSR.LOG"
+                   "DCSC$TRACE_LOG" = "DCSC$LOGS:DCSC$TRACE.LOG"
+
+                 %DCSC-I-LOGICALS, Logical names have been established
+
+              15.Run IVP, if the IVP option was chosen.
+
+                 If you answered Yes to the question, Do you want to run
+                 the IVP after the installation?  the IVP automatically
+                 runs. If you answered NO, this step is skipped. See
+                 Chapter 4 for a sample of the output generated by the
+                 IVP.
+
+              16.End the installation procedure.
+
+                   Installing the Digital Cartridge Server Component 2-11
+
+ 
+
+
+
+        Installing the Digital Cartridge Server Component
+        2.1 The Installation Procedure
+
+
+                 The following messages indicate that the entire
+                 installation procedure is complete:
+
+                 Installation of DCSC 3.0 completed at 11:16
+                 Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+                 Creating installation data file: 
+                    VMI$ROOT:[SYSUPD]DCSC030.VMI_DATA
+
+                 Enter the products to be processed from the next 
+                 distribution volume set.
+                 
+                 * Products:
+                 VMSINSTAL procedure done at 11:17
+
+                 You can now log out of the privileged account, as
+                 follows:
+
+                 $ LOGOUT
+                 SYSTEM     logged out at  29-OCT-1993 13:15:15.15
+
+                 VMSINSTAL deletes or changes entries in the process
+                 symbol tables during the installation. Therefore, if you
+                 are going to continue using the system manager's account
+                 and you want to restore these symbols, log out and log
+                 in again.
+
+        2.2 Error Recovery
+
+              The next two sections contain information on the conditions
+              that can cause the DCSC installation to fail and the error
+              messages that are generated.
+
+        2.2.1 Installation Failure
+
+              If the installation fails, VMSINSTAL displays the following
+              message:
+
+              %VMSINSTAL-E-INSFAIL, The installation of DCSC 3.0 has failed.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  The operating system version is incorrect.
+
+              o  A prerequisite software version is incorrect.
+
+              o  Quotas necessary for successful installation are
+                 insufficient.
+
+              o  Disk space necessary for successful installation is
+                 insufficient.
+
+        2-12 Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                        Installing the Digital Cartridge Server Component
+                                                       2.2 Error Recovery
+
+
+              o  System parameter values for successful installation are
+                 insufficient.
+
+              o  The OpenVMS help library is currently in use.
+
+              o  The product license has not been registered and loaded.
+
+              For descriptions of the error messages generated by
+              these conditions, see the OpenVMS documentation on
+              system messages, recovery procedures, and OpenVMS
+              software installation. If you are notified that any of
+              these conditions exist, take the appropriate action as
+              described in the message. For information on installation
+              requirements, see Chapter 1.
+
+        2.2.2 Nonfatal Errors
+
+              During the selection of the device and directory for the
+              DCSC files, several checks are performed to ensure that the
+              DEVICE:[DIRECTORY] you are specifying is valid, nonrooted,
+              and on a disk. If not, one of the following error messages
+              is generated:
+
+              o  The logical name DCSC$ROOT is already defined to be
+                 DEVICE:[DIRECTORY] but this does not refer to a valid
+                 [DCSC$DIR] directory tree.
+
+              o  DEVICE:[DIRECTORY] is an invalid device.
+
+              o  The device DEVICE:[DIRECTORY] is not a disk.
+
+              o  Rooted directories are not valid as an installation
+                 location.
+
+              o  Bad syntax in directory name specification.
+
+              o  Detected the string DCSC$DIR in your directory response.
+                 Nesting [DCSC$DIR] trees is not permitted.
+
+              o  DEVICE:[DIRECTORY] is an invalid directory
+                 specification. Directory not found.
+
+              If you receive any of these messages, you will be asked to
+              reenter the location and continue.
+
+                   Installing the Digital Cartridge Server Component 2-13
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                  After Installing the Digital Cartridge Server Component
+
+
+              This chapter describes the following tasks that are
+              performed after installing the Digital Cartridge Server
+              Component (DCSC) for OpenVMS:
+
+              o  Editing the system startup and shutdown files
+
+              o  Editing the DCSC configuration file
+
+              o  Starting up the system
+
+              o  Making the DCSC available on a VMScluster system
+
+              o  Setting user account privileges and quotas
+
+              o  Reporting problems
+
+        3.1 Editing the System Files
+
+              You must edit the system startup and shutdown files to
+              provide automatic startup and shutdown of DCSC when your
+              system is rebooted. To do this, perform these steps:
+
+              1. Add the following command line, which starts DCSC, to
+                 the system startup file, SYS$STARTUP:SYSTARTUP_V5.COM,
+                 or for VAX/VMX V6.1 systems SYS$STARTUP:SYSTARTUP_
+                 VMS.COM.
+
+                 $ @SYS$STARTUP:DCSC$STARTUP.COM
+
+              2. Add the following command line to the system shutdown
+                 file, SYS$STARTUP:SYSHUTDWN.COM:
+
+                 $ @SYS$MANAGER:DCSC$SHUTDOWN.COM
+
+
+
+              After Installing the Digital Cartridge Server Component 3-1
+
+ 
+
+
+
+        After Installing the Digital Cartridge Server Component
+        3.2 Editing the DCSC Configuration File
+
+
+        3.2 Editing the DCSC Configuration File
+
+              Before you can run DCSC, you must set certain parameters.
+              These parameters are kept in a configuration file that
+              must be edited before you start up the software. The
+              DCSC software includes a menu-driven system called the
+              Configuration File Editor. This editor lets you configure
+              your system and create the configuration file used by the
+              software at startup.
+
+              Before you can invoke the Configuration File Editor,
+              several DCSC logical names must be defined. To define these
+              logicals, run the DCSC$STARTUP command procedure from the
+              SYSTEM account. The STARTUP command procedure is located in
+              the SYS$STARTUP directory. Include the SETUP parameter, as
+              follows:
+
+              $ @SYS$STARTUP:DCSC$STARTUP SETUP
+
+                ________________________ Note ________________________
+
+                You must enter the SETUP parameter to ensure that only
+                the logical definitions portion of the DCSC$STARTUP
+                command procedure, and not the full startup command
+                procedure, is executed.
+
+                ______________________________________________________
+
+              After running the STARTUP command procedure, you can invoke
+              the Configuration File Editor. See the Digital Cartridge
+              Server Component for OpenVMS System Manager's Guide for
+              information on how to use the Configuration File Editor.
+
+        3.3 Starting Up the System
+
+              After you edit the configuration file with the required
+              information about your particular configuration, run the
+              DCSC$STARTUP.COM procedure. Include the COLD parameter to
+              fully start up the software, allocate all the resources
+              identified in the configuration file to the DCSC server,
+              and prepare it to accept user requests.
+
+                ________________________ Note ________________________
+
+                The COLD startup parameter should only be used for
+                the initial startup after installation. DO NOT use the
+
+        3-2 After Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                  After Installing the Digital Cartridge Server Component
+                                               3.3 Starting Up the System
+
+
+                COLD start after an UPGRADE from an earlier version of
+                DCSC.
+
+                ______________________________________________________
+
+              To start up the DCSC for the first time, enter the
+              following command:
+
+              $ @SYS$STARTUP:DCSC$STARTUP COLD
+
+              Use the COLD parameter for only the initial start up of
+              the system. For subsequent startups or after upgrading the
+              existing DCSC software, use the WARM parameter.
+
+        3.4 VMScluster Postinstallation Procedures
+
+              To run the DCSC software on the other member nodes in the
+              VMScluster, you must complete the following tasks:
+
+              1. Load the DCSC PAK on the other VMScluster nodes.
+
+              2. Replace the old DCLTABLES.EXE image with the updated
+                 DCLTABLES.EXE using the Install Utility on the other
+                 VMScluster nodes.
+
+              3. Start up the DCSC software on the other VMScluster
+                 nodes.
+
+                ________________________ Note ________________________
+
+                DCSC must be configured to allow each node access.
+                See the Digital Cartridge Server Component for OpenVMS
+                System Manager's Guide for more information.)
+
+                ______________________________________________________
+
+        3.4.1 Loading the DCSC License on the Other VMScluster Nodes
+
+              To load the DCSC license on other VMScluster nodes, first
+              log in to the SYSTEM account. Then choose one of the
+              following for loading a license:
+
+              o  Invoke the System Management Utility (SYSMAN), and use
+                 the DO command to execute the LICENSE LOAD command on
+                 the other VMScluster nodes, as follows:
+
+              After Installing the Digital Cartridge Server Component 3-3
+
+ 
+
+
+
+        After Installing the Digital Cartridge Server Component
+        3.4 VMScluster Postinstallation Procedures
+
+
+                 $ RUN SYS$SYSTEM:SYSMAN
+                 SYSMAN> SET ENVIRONMENT/CLUSTER
+                 SYSMAN> DO LICENSE LOAD CARTRIDGE-SERVER-V
+                 SYSMAN> EXIT
+                 $ LOGOUT
+
+                 You only issue the DO LICENSE LOAD command once; it will
+                 execute on all the VMScluster nodes.
+
+              o  Log in to the SYSTEM account on each VMScluster node.
+                 Issue the LICENSE LOAD command from the DCL prompt on
+                 each node, as follows:
+
+                 $ LICENSE LOAD CARTRIDGE-SERVER-V
+                 $ LOGOUT
+
+        3.4.2 Replacing the DCLTABLES.EXE on the Other VMScluster Nodes
+
+              To replace the DCLTABLES.EXE image installed in memory
+              on the other VMScluster nodes, first log in to the SYSTEM
+              account. Then choose one of the following for replacing the
+              image:
+
+              o  Invoke the SYSMAN Utility, and use the DO command
+                 to execute the INSTALL REPLACE command on the other
+                 VMScluster nodes, as follows:
+
+                 $ RUN SYS$SYSTEM:SYSMAN
+                 SYSMAN> SET ENVIRONMENT/CLUSTER
+                 SYSMAN> DO INSTALL REPLACE -
+                  SYS$SHARE:DCLTABLES.EXE/OPEN/HEAD/SHARE
+                 SYSMAN> EXIT
+                 $ LOGOUT
+
+                 You only issue the DO INSTALL REPLACE command once; it
+                 will execute on all the VMScluster nodes.
+
+              o  Log in to the SYSTEM account on each VMScluster node.
+                 Issue the INSTALL REPLACE command from the DCL prompt on
+                 each node, as follows:
+
+                 $ INSTALL REPLACE SYS$SHARE:DCLTABLES.EXE/OPEN/HEAD/SHARE
+                 $ LOGOUT
+
+
+
+        3-4 After Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                  After Installing the Digital Cartridge Server Component
+                               3.4 VMScluster Postinstallation Procedures
+
+
+        3.4.3 Starting Up the DCSC Software on Other VMScluster Nodes
+
+              To start up the DCSC software on the other nodes of a
+              VMScluster, first log in to the SYSTEM account. Then choose
+              one of the following methods for starting up the software:
+
+              o  Invoke the SYSMAN Utility and use the DO command to
+                 execute the SYS$STARTUP:DCSC$STARTUP command file on all
+                 nodes of the VMScluster, as follows:
+
+                 $ RUN SYS$SYSTEM:SYSMAN
+                 SYSMAN> SET ENVIRONMENT/CLUSTER
+                 SYSMAN> DO @SYS$STARTUP:DCSC$STARTUP
+                 SYSMAN> EXIT
+                 $ LOGOUT
+
+                 You only issue the DO @SYS$STARTUP:DCSC$STARTUP command
+                 once; it will execute on all the VMScluster nodes.
+
+              o  Log in to the SYSTEM account on each VMScluster node.
+                 Enter the @SYS$STARTUP:DCSC$STARTUP command from the DCL
+                 prompt on each node, as follows:
+
+                 $ @SYS$STARTUP:DCSC$STARTUP
+                 $ LOGOUT
+
+                 The default parameter is WARM for both startup methods.
+                 See the Digital Cartridge Server Component for OpenVMS
+                 System Manager's Guide for more information on starting
+                 up the system.
+
+        3.5 User Account Requirements
+
+              To work with DCSC, each user account on your system must
+              have certain privileges and quotas. The next two sections
+              describe these requirements.
+
+        3.5.1 Privileges
+
+              The minimum privileges a user account must have to use DCSC
+              are TMPMBX and NETMBX privileges. Use the VMS Authorize
+              Utility (AUTHORIZE) to determine whether users have these
+              privileges.
+
+
+              After Installing the Digital Cartridge Server Component 3-5
+
+ 
+
+
+
+        After Installing the Digital Cartridge Server Component
+        3.5 User Account Requirements
+
+
+        3.5.2 Quotas
+
+              Each user account must have sufficient quotas to use DCSC.
+              Table 3-1 summarizes these required user account quotas.
+
+              Table_3-1_User_Account_Quotas_for_Using_DCSC_______________
+
+              Account_Quota____Value_____________________________________
+
+              WSDEF            1024[1]
+
+              WSQUOTA          2048
+              [1]DCSC_does_not_have_specific_required_values_for_WSEXT___
+
+              and WSQUO; however, they must be equal to or greater than
+              the WSDEF value.
+              ___________________________________________________________
+
+              See Section 1.5.4 for a description of how to modify
+              account quotas.
+
+        3.6 File Protections
+
+              Due to the nature of the DCSC software and in
+              particular, the CARTRIDGE SAVE function, the file
+              DCSC$FILES:DCSC$SAVESET.DAT will have W:REWD priviledges.
+              This protection may be changed if the site is not going
+              to use the CARTRIDGE SAVE feature or if the users of the
+              CARTRIDGE SAVE command are given alternate means of access
+              to this file.
+
+        3.7 Determining and Reporting Problems
+
+              If you encounter a problem while using DCSC, report it to
+              Digital Equipment Corporation. Depending on the nature of
+              the problem and the type of support you have, take one of
+              the following actions:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              o  Fill out and submit a Reader's Comments form if the
+                 problem has to do with the DCSC documentation. There
+                 are Reader's Comments forms at the back of each hardcopy
+                 guide. Use the form from the guide in which you found
+                 the error. Include the section and page number.
+
+        3-6 After Installing the Digital Cartridge Server Component
+
+ 
+
+
+
+                  After Installing the Digital Cartridge Server Component
+                                   3.7 Determining and Reporting Problems
+
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of the warranty. If you
+              encounter a problem during the warranty period, report
+              the problem as previously indicated, or follow alternate
+              instructions provided by Digital for reporting SPD
+              nonconformance problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              After Installing the Digital Cartridge Server Component 3-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        4
+        _________________________________________________________________
+
+                                      Installation Verification Procedure
+
+
+              The Installation Verification Procedure (IVP) is usually
+              run at the end of the installation procedure to verify that
+              the software is correctly installed. The IVP can also be
+              run standalone, for example, after a system failure to make
+              sure users can access the software.
+
+              Before you run the IVP, make sure you have completed the
+              following tasks:
+
+              o  Registered and loaded the CARTRIDGE-SERVER-V PAK.
+
+                 If you are installing DCSC on a VMScluster, you must
+                 load the license on each of the other VMScluster member
+                 nodes. See Section 3.4 for more information on loading
+                 the license on the other VMScluster nodes.
+
+              o  Started up the DCSC software using the DCSC$STARTUP.COM
+                 procedure in SYS$STARTUP.
+
+                 The DCSC system logical names are defined by using
+                 the SETUP parameter, which is passed to the startup
+                 procedure, or by doing a complete startup using the WARM
+                 or COLD parameters. If specific DCSC logicals are not
+                 defined, the IVP will fail.
+
+              To run the IVP standalone, execute the following command:
+
+              $ @SYS$TEST:DCSC$IVP.COM
+
+              The following is a sample of the output generated by the
+              IVP:
+
+
+
+
+
+                                  Installation Verification Procedure 4-1
+
+ 
+
+
+
+        Installation Verification Procedure
+
+
+
+              $ @SYS$TEST:DCSC$IVP
+
+                      *********************************************************
+                      *                                                       *
+                      *    Beginning Digital Cartridge Server Component V3.0  *
+                      *       Installation Verification Procedure (IVP)       *
+                      *                                                       *
+                      *   Copyright Digital Equipment Corporation 1991,1993.  *
+                      *     All rights reserved.                              *
+                      *                                                       *
+                      *   Restricted Rights: Use, duplication, or disclosure  *
+                      *     by the U.S. Government is subject to restrictions *
+                      *     as set forth in subparagraph (c) (1) (ii) of      *
+                      *     DFARS 252.227-7013, or in FAR 52.227-19, or in    *
+                      *     FAR 52.227-14 Alt.III, as applicable.             *
+                      *                                                       *
+                      *   This software is proprietary to and embodies the    *
+                      *     confidential technology of Digital Equipment      *
+                      *     Corporation.  Possession, use or copying of this  *
+                      *     software and media is authorizied only pursuant   *
+                      *     to a valid written license from Digital or an     *
+                      *     authorized sublicensor.                           *
+                      *                                                       *
+                      *********************************************************
+
+                      Installation verification begun at  7-FEB-1995 11:16:28.81
+
+                      Initializing the IVP...
+
+                      Testing for correct version of VMS...
+
+                              ...VMS version OK.
+
+                      Testing for required license...
+
+                              ...product license OK.
+
+                      Testing for prerequisite software...
+
+                              ...prerequisite software found.
+
+                      Testing for DCSC directories in DCSC$DIR...
+
+                              ...DCSC directories found.
+
+                      Testing for system-wide logical names...
+
+        4-2 Installation Verification Procedure
+
+ 
+
+
+
+                                      Installation Verification Procedure
+
+
+
+                              ...logical names defined.
+
+                      Testing for DCSC V3.0 files...
+
+                              ...DCSC files found.
+
+                      Testing for correct version of DCSC...
+
+                              ...DCSC version OK.
+
+                      * * *  All tests have completed successfully. * * *
+
+                      Installation verification finished at  
+                      7-FEB-1995 11:16:31.31
+
+              *****************************************************************
+
+                                 Successful Installation Verification of
+                                 Digital Cartridge Server Component V3.0
+
+              ***************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Installation Verification Procedure 4-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                                      Sample Installation
+
+
+              This appendix contains a sample installation of DCSC.
+              This sample was run on an Alpha AXP[TM] system that had
+              no previous version of DCSC installed.
+
+              $ @SYS$UPDATE:VMSINSTAL
+
+                      OpenVMS AXP Software Product Installation Procedure V6.1
+
+              It is 7-FEB-1995 at 11:12.
+
+              Enter a question mark (?) at any time for help.
+
+              %VMSINSTAL-W-NOTSYSTEM, You are not logged in to 
+              the SYSTEM account.
+              
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                      OLIVER
+                      MYERS
+
+              * Do you want to continue anyway [NO]? YES
+              * Are you satisfied with the backup of your system disk [YES]?
+              * Where will the distribution volumes be mounted: USER1:[MYERS]
+
+              Enter the products to be processed from the first 
+              distribution volume set.
+
+              * Products: DCSC030
+              * Enter installation options you wish to use (none):
+              The following products will be processed:
+
+                DCSC V3.0
+
+                      Beginning installation of DCSC 3.0 at 11:12
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+                 **************************************************************
+                        Digital Cartridge Server Component for VMS, V3.0
+
+                                    Installation Procedure
+
+                                            Sample Installation A-1
+
+ 
+
+
+
+        Sample Installation
+
+
+
+                 Copyright Digital Equipment Corporation 1991,1993.  
+                 All rights reserved. Restricted Rights: Use, duplication, 
+                 or disclosure by the U.S. Government is subject to  
+                 restrictions  as set forth in subparagraph (c) (1) (ii) of
+                 DFARS 252.227-7013, or in FAR 52.227-19, or in 
+                 FAR 52.227-14 Alt.III, as applicable.
+
+                 This software is proprietary to and embodies the 
+                 confidential technology of Digital Equipment Corporation.  
+                 Possession, use or copying of this software and media is 
+                 authorizied only pursuant to a valid written
+                 license from Digital or an authorized sublicensor.
+                 *************************************************************************
+
+                     *********************************************************
+
+                         Before running this installation procedure, it is
+                         advisable to shut down DCSC. Issue a Show System
+                         command and verify that DCSC$SUPERVISOR is not active.
+
+                         DCSC FILES MAY BECOME CORRUPTED IF DCSC IS RUNNING
+                         AND YOU CONTINUE THE INSTALLATION PROCEDURE.
+
+                      *********************************************************
+
+              * Do you want to continue [YES]?
+
+                     *********************************************************
+
+                         Before you install the DCSC software, verify that the
+                         following software is installed.
+
+                            OpenVMS Version 1.5 or later
+                            UCX Version 3.1 or later
+                                 (UCX is only required on the MASTER node)
+
+                      *********************************************************
+
+              * Do you want to continue [YES]?
+
+                      Product:      CARTRIDGE-SERVER-V
+                      Producer:     DEC
+                      Version:      3.0
+                      Release Date: 26-AUG-1991
+
+              * Does this product have an authorization key registered and 
+                loaded? YES
+
+        A-2 Sample Installation
+
+ 
+
+
+
+                                                      Sample Installation
+
+
+
+                  During this installation, new files will be provided to 
+                  replace existing versions.  You may purge these older 
+                  versions to save disk space, or keep
+                  them if you feel they may be of use.  Purging is recommended.
+              
+             * Do you want to purge files replaced by this installation [YES]?
+
+                 Most products provide an Installation Verification 
+                 Procedure (IVP) which verifies the completeness and 
+                 accuracy of the installation.
+                 
+                 You may wish to run the IVP immediately after installation.
+              * Do you want to run the IVP after the installation [YES]?
+
+              * Enter the device and directory where [DCSC$SERVER] should
+                be created [SYS$SYSDEVICE:[VMS$COMMON]]: $1$DUA14:[000000]
+
+                   *********************************************************
+
+                     All questions regarding the installation have now
+                     been asked.  The installation of DCSC V3.0
+                     will take approximately 10 minutes.
+
+                    *********************************************************
+
+              %DCSC-I-INSBEG, Beginning installation....
+              %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+              %CREATE-I-EXISTS, $1$DUA14:[000000] already exists
+              %DCSC-I-INSCONT, Continuing installation....
+              %DCSC-I-FILEPROT, Setting protection on product files....
+              %DCSC-I-INSDCL, Installing DCL command....
+              %DCSC-I-INSHELP, Installing DCL help....
+
+                    *********************************************************
+
+                       A list of DCSC V3.0 files installed
+                       on your OpenVMS system can be found in
+                       DCSC$DIR:[DCSC$SERVER]DCSC$FILE_LIST.TXT.
+
+                    *********************************************************
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their 
+              target directories...
+
+                      *********************************************************
+                      *                                                       *
+                      *   Digital Cartridge Server Component for VMS, V2.1    *
+                      *  Copyright 1991, 1993, Digital Equipment Corporation  *
+                      *                                                       *
+                      *********************************************************
+
+              (LNM$SYSTEM_TABLE)
+
+                                                  Sample Installation A-3
+
+ 
+
+
+
+        Sample Installation
+
+
+
+                "DCSC$ACSLIB_DEFAULT" = "1"
+                "DCSC$BACKUP_ENABLE" = "FALSE"
+                "DCSC$CAP_ACS_DEFAULT" = "0"
+                "DCSC$CAP_CAP_DEFAULT" = "0"
+                "DCSC$CAP_LSM_DEFAULT" = "0"
+                "DCSC$CONFIG_FILE" = "DCSC$FILES:DCSC$CONFIG.DAT"
+                "DCSC$DIR" = "$1$DUA14:[000000.]"
+                "DCSC$DISMOUNT_ENABLE" = "FALSE"
+                "DCSC$ENABLE_CHANNEL_LOG" = "TRUE"
+                "DCSC$ENABLE_ORH_LOG" = "TRUE"
+                "DCSC$ERROR_LOG" = "DCSC$LOGS:DCSC$ERROR.LOG"
+                "DCSC$EXAMPLES" = "DCSC$DIR:[DCSC$SERVER.EXAMPLES]"
+                "DCSC$EXE" = "DCSC$DIR:[DCSC$SERVER.IMAGES]"
+                "DCSC$FILES" = "DCSC$DIR:[DCSC$SERVER.FILES]"
+                "DCSC$LIBRARY" = "DCSC$DIR:[DCSC$SERVER.LIBRARY]"
+                "DCSC$LOGS" = "DCSC$DIR:[DCSC$SERVER.LOGS]"
+                "DCSC$MSG_SHARE" = "DCSC$EXE:DCSC$MSG_SHARE.EXE"
+                "DCSC$ORH_IGNORE_BAD_MSG" = "FALSE"
+                "DCSC$PRINT_FILE" = "DCSC$FILES:DCSC$CONFIG.LIS"
+                "DCSC$RESPONSE" = "DCSC$DIR:[DCSC$SERVER.RESP_FILES]"
+                "DCSC$RTL_SHARE" = "DCSC$EXE:DCSC$RTL_SHARE.EXE"
+                "DCSC$SPVSR_LOG" = "DCSC$LOGS:DCSC$SPVSR.LOG"
+                "DCSC$TRACE_LOG" = "DCSC$LOGS:DCSC$TRACE.LOG"
+
+              %DCSC-I-LOGICALS, Logical names have been established
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-4 Sample Installation
+
+ 
+
+
+
+                                                      Sample Installation
+
+
+
+                      *********************************************************
+                      *                                                       *
+                      *    Beginning Digital Cartridge Server Component V3.0  *
+                      *       Installation Verification Procedure (IVP)       *
+                      *                                                       *
+                      *   Copyright Digital Equipment Corporation 1991,1993.  *
+                      *     All rights reserved.                              *
+                      *                                                       *
+                      *   Restricted Rights: Use, duplication, or disclosure  *
+                      *     by the U.S. Government is subject to restrictions *
+                      *     as set forth in subparagraph (c) (1) (ii) of      *
+                      *     DFARS 252.227-7013, or in FAR 52.227-19, or in    *
+                      *     FAR 52.227-14 Alt.III, as applicable.             *
+                      *                                                       *
+                      *   This software is proprietary to and embodies the    *
+                      *     confidential technology of Digital Equipment      *
+                      *     Corporation.  Possession, use or copying of this  *
+                      *     software and media is authorizied only pursuant   *
+                      *     to a valid written license from Digital or an     *
+                      *     authorized sublicensor.                           *
+                      *                                                       *
+                      *********************************************************
+
+                      Installation verification begun at  7-FEB-1995 11:16:28.81
+
+                      Initializing the IVP...
+
+                      Testing for correct version of VMS...
+
+                              ...VMS version OK.
+
+                      Testing for required license...
+
+                              ...product license OK.
+
+                      Testing for prerequisite software...
+
+                              ...prerequisite software found.
+
+                      Testing for DCSC directories in DCSC$DIR...
+
+                              ...DCSC directories found.
+
+                      Testing for system-wide logical names...
+
+                              ...logical names defined.
+
+                                                  Sample Installation A-5
+
+ 
+
+
+
+        Sample Installation
+
+
+
+                      Testing for DCSC V3.0 files...
+
+                              ...DCSC files found.
+
+                      Testing for correct version of DCSC...
+
+                              ...DCSC version OK.
+
+                      * * *  All tests have completed successfully. * * *
+
+                      Installation verification finished at  7-FEB-1995 
+                      11:16:31.31
+
+              ************************************************************
+
+                                 Successful Installation Verification of
+                                 Digital Cartridge Server Component V3.0
+
+              ************************************************************
+
+                      Installation of DCSC 3.0 completed at 11:16
+
+                  Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+                  Creating installation data file: VMI$ROOT:[SYSUPD]DCSC030.VMI_DATA
+
+              Enter the products to be processed from the next 
+                 distribution volume set.
+              * Products:
+              VMSINSTAL procedure done at 11:17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-6 Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                         Files and Logical Names Installed on Your System
+
+
+              The DCSC installation procedure installs a number of
+              files on your system and defines several logical names.
+              A complete list of these files is located in the directory
+              DCSC$DIR:[DCSC$SERVER] in the file DCSC$FILE_LIST.TXT.
+
+              The following logical names are entered into the system
+              logical name table when DCSC is installed. These names are
+              stored in the startup file, SYS$STARTUP:DCSC$STARTUP.COM.
+              They are automatically entered into the system logical name
+              table whenever the system reboots or whenever the software
+              is invoked.
+
+              If you need to customize any of the logicals, you should
+              create the file SYS$STARTUP:DCSC$LOCAL_STARTUP.COM. This
+              command procedure will be executed prior to starting DCSC.
+              Logical definitions in this file take precedence over the
+              defaults.
+
+              o  DCSC$ACSLIB_DEFAULT
+
+              o  DCSC$BACKUP_ENABLE
+
+              o  DCSC$CAP_ACS_DEFAULT
+
+              o  DCSC$CAP_CAP_DEFAULT
+
+              o  DCSC$CAP_LSM_DEFAULT
+
+              o  DCSC$CONFIG_FILE
+
+              o  DCSC$DIR
+
+              o  DCSC$DISMOUNT_ENABLE
+
+              o  DCSC$ENABLE_CHANNEL_LOG
+
+              o  DCSC$ENABLE_ORH_LOG
+
+              o  DCSC$ERROR_LOG
+
+                     Files and Logical Names Installed on Your System B-1
+
+ 
+
+
+
+        Files and Logical Names Installed on Your System
+
+
+
+              o  DCSC$EXAMPLES
+
+              o  DCSC$EXE
+
+              o  DCSC$FILES
+
+              o  DCSC$LIBRARY
+
+              o  DCSC$LOGS
+
+              o  DCSC$MSG_SHARE
+
+              o  DCSC$ORH_IGNORE_BAD_MSG
+
+              o  DCSC$PRINT_FILE
+
+              o  DCSC$RESPONSE
+
+              o  DCSC$RTL_SHARE
+
+              o  DCSC$SPVSR_LOG
+
+              o  DCSC$TRACE_LOG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        B-2 Files and Logical Names Installed on Your System

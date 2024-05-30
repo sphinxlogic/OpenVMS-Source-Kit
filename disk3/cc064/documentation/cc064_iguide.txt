@@ -1,0 +1,2948 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Compaq_C____________________________________________
+                    Installation Guide for OpenVMS VAX Systems
+
+                    Order Number: AA-PXWXF-TE
+
+
+                    February 2001
+
+                    This guide contains instructions for installing
+                    Compaq C on a VAX processor system running the
+                    OpenVMS operating system.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This revised manual
+                                                  supersedes the DEC C
+                                                  Installation Guide for
+                                                  OpenVMS VAX Systems,
+                                                  (Order No. AA-PXWXE-TE)
+
+                    Operating System & Version:   OpenVMS VAX Version
+                                                  5.5-2 or higher.
+                                                  Future maintenance
+                                                  releases may
+                                                  require higher
+                                                  versions.
+
+                    Software Version:             Compaq C Version 6.4 or
+                                                  higher for OpenVMS VAX
+                                                  Systems
+
+                    Compaq Computer Corporation
+                    Houston, Texas
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          First Printing, May 1993
+          Revised, February 2001
+
+          © 2001 Compaq Computer Corporation.
+
+          COMPAQ, the Compaq logo, VAX, Alpha, VMS, and OpenVMS are
+          registered in the U.S. Patent and Trademark Office. All
+          other product names mentioned herein may be trademarks of
+          their respective companies.
+
+          Confidential computer software. Valid license from Compaq
+          required for possession, use, or copying. Consistent with
+          FAR 12.211 and 12.212, Commercial Computer Software,
+          Computer Software Documentation, and Technical Data for
+          Commercial Items are licensed to the U.S. Government under
+          vendor's standard commercial license.
+
+          Compaq shall not be liable for technical or editorial
+          errors or omissions contained herein. The information
+          in this document is provided as is without warranty of
+          any kind and is subject to change without notice. The
+          warranties for Compaq products are set forth in the express
+          limited warranty statements accompanying such products.
+          Nothing herein should be construed as constituting an
+          additional warranty.
+
+          This document is available on CD-ROM.
+
+          This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing for Compaq C Installation
+
+        1.1   Required Operating System Components..........    1-1
+        1.2   Prerequisite Software.........................    1-2
+        1.3   Optional Software.............................    1-2
+        1.4   License Registration..........................    1-2
+        1.5   Installation Procedure Requirements...........    1-3
+        1.5.1     Privileges and Disk Space.................    1-4
+        1.5.2     Process Account Quotas....................    1-4
+        1.5.3     System Parameters.........................    1-5
+        1.5.3.1     Calculating the Values for
+                    CONTIG_GBLPAGES and FREE_GBLSECTS.......    1-6
+        1.5.3.2     Changing System Parameter Values with
+                    AUTOGEN.................................    1-7
+        1.5.4     Backing Up Your System Disk...............    1-8
+        1.6   Installing and Using Multiple Compiler
+              Versions......................................    1-9
+        1.6.1     Displaying and Selecting the Compiler
+                  Version...................................    1-9
+        1.6.2     Side Effects and Restrictions on Multiple
+                  Versions..................................   1-11
+        1.6.3     Installation Procedure Changes............   1-12
+
+  2  Installing Compaq C
+
+        2.1   Installation Procedure........................    2-1
+        2.2   Error Recovery................................   2-12
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    3  After Installing Compaq C
+
+          3.1   Running the Installation Verification
+                Procedure Separately..........................    3-1
+          3.2   Editing and Organizing System Files...........    3-2
+          3.3   VAXcluster Considerations.....................    3-4
+          3.4   User Account Requirements.....................    3-5
+          3.4.1     Privileges................................    3-5
+          3.4.2     User Account Quotas.......................    3-5
+          3.5   Enhancing Compaq C Performance................    3-6
+          3.5.1     Tuning Your System........................    3-6
+          3.5.2     Installing Compaq C as a Shared Image.....    3-6
+          3.6   Getting Help and Reporting Problems...........    3-7
+
+    A  Sample Installations
+
+          A.1   New Installation..............................    A-1
+          A.2   Upgrade Installation..........................    A-4
+          A.3   Installation with Old Compiler as Default.....    A-8
+
+    Tables
+
+          1         Conventions Used in this Guide............     vi
+
+          1-1       Disk Space Requirements...................    1-4
+
+          1-2       Process Account Quotas for the Installing
+                    Account...................................    1-5
+
+          1-3       Global Sections and Pages Required........    1-6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+        Purpose of this Guide
+
+              This guide describes how to install Compaq C on VAX
+              processors that are running the OpenVMS operating system.
+
+              Keep this guide with your distribution kit. You will need
+              it to install maintenance updates or to reinstall Compaq C
+              for any other reason.
+
+              You may send comments or suggestions regarding this
+              guide, or any Compaq C document, by electronic mail to
+              the following Internet address:
+
+              c_docs@compaq.com
+
+        Intended Audience
+
+              The audience for this guide is the system manager who
+              installs Compaq C software.
+
+        Structure of this Document
+
+              This guide is organized as follows:
+
+              o  Chapter 1 describes the operating system and hardware
+                 requirements for Compaq C installation and related
+                 procedures that you complete before installing Compaq C.
+
+              o  Chapter 2 describes the step-by-step instructions for
+                 the installation.
+
+              o  Chapter 3 describes actions and considerations after
+                 the installation, including running the Installation
+                 Verification Procedure (IVP).
+
+              o  Appendix A contains sample listings for Compaq C
+                 installation.
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+    Manuals in the Compaq C Documentation Set
+
+          In addition to this guide, the Compaq C documentation set
+          for OpenVMS VAX systems includes the following books:
+
+          o  Compaq C Migration Guide for OpenVMS VAX Systems
+
+          o  Compaq C Language Reference Manual
+
+          o  Compaq C User's Guide for OpenVMS Systems
+
+          o  Compaq C Run-Time Library Reference Manual for OpenVMS
+             Systems
+
+    Related Manuals
+
+          For information on OpenVMS system management, see the
+          following documents in the OpenVMS documentation set:
+
+          o  OpenVMS System Manager's Manual
+
+          o  Guide to Maintaining a VMS System
+
+          o  OpenVMS License Management Utility Manual
+
+          o  Guide to OpenVMS Performance Management
+
+          For help understanding OpenVMS system error messages,
+          see the OpenVMS System Messages and Recovery Procedures
+          Reference Manual or the online HELP/MESSAGE facility.
+
+    Conventions
+
+          Table 1 lists the conventions used in this guide.
+
+          Table_1_Conventions_Used_in_this_Guide_____________________
+
+          Convention_____________Description_________________________
+
+          UPPERCASE TEXT         Uppercase letters indicate the name
+                                 of a command, a file, a parameter, a
+                                 procedure, or utility.
+
+                                             (continued on next page)
+
+    vi
+
+ 
+
+
+
+
+
+
+
+              Table_1_(Cont.)_Conventions_Used_in_this_Guide_____________
+
+              Convention_____________Description_________________________
+
+              $                      Monospace boldface text represents
+              @SYS$UPDATE:VMSINSTAL  user input in interactive examples
+                                     in the hardcopy and online versions
+                                     of this guide.
+
+              $                      The dollar sign is used to indicate
+                                     the DCL prompt. This prompt may be
+                                     different on your system.
+
+              Ctrl/x                 The key combination Ctrl/X indicates
+                                     that you must press the key labeled
+                                     Ctrl while you simultaneously press
+                                     another key, for example, Ctrl/Y or
+                                     Ctrl/Z.
+
+              <Return>               In procedures, a key name is shown
+                                     enclosed to indicate that you press
+                                     a key on the keyboard.
+
+              .                      Vertical ellipsis in an example
+              .                      means that information not directly
+              .                      related to the example has been
+                                     omitted.
+
+              file-spec, . . .       Horizontal ellipsis indicates that
+                                     additional parameters, values, or
+                                     information can be entered.
+
+              [ ]                    Square brackets indicate that the
+                                     enclosed item is optional. (Square
+                                     brackets are not, however, optional
+                                     in the syntax of a directory name
+                                     in a file specification or in the
+                                     syntax of a substring specification
+                                     in an assignment statement.)
+
+              VMS system             All references to VMS system refer
+              _______________________to_the_OpenVMS_operating_system.____
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                      Preparing for Compaq C Installation
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing Compaq C for OpenVMS VAX Systems.
+
+              This guide applies to Compaq C for OpenVMS VAX Version
+              6.4 and all subsequent maintenance releases up to the
+              next release of the product that includes an updated
+              installation guide.
+
+              Your bill of materials (BOM) and indented bills report
+              (BIL) specify the number and contents of your media.
+              Be sure to verify the contents of your kit with this
+              information. If your kit is damaged or if you find
+              that parts of it are missing, contact your Compaq
+              representative.
+
+              Compaq C provides separate online release notes. The
+              release notes contain installation-related notes and a
+              summary of technical changes, known problems, restrictions,
+              and incompatibilities. Reading the release notes before
+              proceeding with the installation is strongly recommended.
+              For information on accessing the online release notes, see
+              Section 2.1.
+
+        1.1 Required Operating System Components
+
+              Compaq C for OpenVMS VAX Systems, Version 6.4 requires
+              OpenVMS VAX Version 5.5-2 or higher.
+
+              The OpenVMS VAX (formerly VAX VMS) operating system comes
+              with a variety of support options, including such features
+              as networking and RMS journaling. To use Compaq C, your
+              system should be running a version of OpenVMS that includes
+              the following:
+
+              o  Programming support
+
+              o  Utilities
+
+                                  Preparing for Compaq C Installation 1-1
+
+ 
+
+
+
+
+
+
+
+        1.2 Prerequisite Software
+
+              If you are installing Compaq C on OpenVMS VAX Version 5.5-2
+              or Version 6.0, you must first install the Compaq C/C++
+              Run-Time Components kit. See the Compaq C/C++ Run-Time
+              Components for OpenVMS VAX Reference and Installation Guide
+              .
+
+        1.3 Optional Software
+
+              See the Software Support Addendum (SSA) that comes with
+              the Software Product Description (SPD) for a complete list
+              of prerequisite and optional software products and their
+              required version numbers.
+
+              Note that Compaq C and VAX C can coexist on your system.
+              The CC command is used to invoke either the VAX C or
+              Compaq C compiler. If your system has a VAX C compiler
+              already installed on it, you have the option of specifying
+              which compiler will be invoked by default whenever just
+              the CC command verb is used. To invoke the compiler that
+              is not the default, use the CC command with the appropriate
+              qualifier: /DECC for the Compaq C compiler, or /VAXC for
+              the VAX C compiler. See the Compaq C release notes for more
+              information.
+
+        1.4 License Registration
+
+              Before you install and run Compaq C Version 6.4 on a newly
+              licensed node or cluster, you must first register a License
+              Product Authorization Key (License PAK) using the License
+              Management Facility (LMF). The License PAK may be shipped
+              along with the kit if you ordered the license and media
+              together; otherwise, it is shipped separately to a location
+              based on your license order.
+
+              If you are installing Compaq C as an update on a node
+              or cluster already licensed for this software, you
+              have already completed the License PAK registration
+              requirements.
+
+              If you are installing prerequisite or optional software
+              along with Compaq C, review the PAK status and install the
+              PAKs for any prerequisite or optional software before you
+              install Compaq C.
+
+        1-2 Preparing for Compaq C Installation
+
+ 
+
+
+
+
+
+
+
+              You must register and load your license for Compaq C
+              before you start the installation to run the Installation
+              Verification Procedure (IVP) and use the software.
+
+              To register a license under OpenVMS VAX, first log in
+              to the system manager's account, SYSTEM. You then have a
+              choice of two ways to perform the registration:
+
+              o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+                 prompts you for information, respond with data from your
+                 License PAK.
+
+              o  At the DCL prompt, enter the LICENSE REGISTER command
+                 with the appropriate qualifiers that correspond to the
+                 License PAK information.
+
+              If you plan to use Compaq C on more than one node in a
+              VAXcluster, you will need to perform a license load on
+              the other nodes after you complete this installation. See
+              Section 3.3.
+
+              For complete information on using LMF, see the VMS License
+              Management Utility Manual.
+
+        1.5 Installation Procedure Requirements
+
+              This section discusses various requirements for installing
+              Compaq C.
+
+              Each installation takes approximately 10 to 60 minutes,
+              depending on your type of media and your system
+              configuration.
+
+              Installing Compaq C and running the Installation
+              Verification Procedure (IVP) on a standalone VAXstation
+              4000-60 system takes approximately 15 minutes.
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can type YES to
+              continue. To stop the installation process and correct
+              the situation, type NO or press Return. Then correct the
+              problem and restart the installation.
+
+
+                                  Preparing for Compaq C Installation 1-3
+
+ 
+
+
+
+
+
+
+
+        1.5.1 Privileges and Disk Space
+
+              To install Compaq C, you must be logged in to an account
+              that has SETPRV or at least the following privileges:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              VMSINSTAL turns off BYPASS privilege at the start of the
+              installation.
+
+              The Compaq C requirements for free disk storage space are
+              different during installation and after installation.
+              Table 1-1 lists the storage requirements. You can now
+              install the C documentation in .ps, .txt, and .html
+              formats. The installation default is to not install the
+              documentation, but if you do, note the additional disk
+              space required.
+
+              Table_1-1_Disk_Space_Requirements__________________________
+
+                               Blocks During         Blocks After
+              Kit______________Installation__________Installation________
+
+              Compiler only    100,000                80,000
+
+              Compiler and     180,000               120,000
+              documentation______________________________________________
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following DCL command:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+        1.5.2 Process Account Quotas
+
+              The account you use to install Compaq C must have
+              sufficient quotas to enable you to perform the
+              installation. Table 1-2 summarizes the process quotas
+              required for the installation account.
+
+
+        1-4 Preparing for Compaq C Installation
+
+ 
+
+
+
+
+
+
+
+              Table_1-2_Process_Account_Quotas_for_the_Installing_Account
+
+              ASTLM            190
+
+              BIOLM            160
+
+              DIOLM            160
+
+              ENQLM            4000
+
+              FILLM            300
+
+              PGFLQUOTA________20,480____________________________________
+
+              User account quotas are stored in the file SYSUAF.DAT. Use
+              the OpenVMS Authorize Utility (AUTHORIZE) to verify and
+              change process quotas for the installation account. (Some
+              sites may restrict the use of the OpenVMS Authorize Utility
+              to certain accounts or people.) For example, to change the
+              BIOLM quota for the account-name installation account, you
+              might enter the following command sequence:
+
+              $ RUN SYS$SYSTEM:AUTHORIZE
+              UAF> MODIFY account-name/BIOLM = 160
+              UAF> SHOW account-name
+              UAF> EXIT
+              $ LOGOUT
+
+              After the quotas for the installation account have been
+              changed, log out of the installation account and log in
+              again for the new quotas to take effect. You can then
+              proceed with the installation.
+
+              For more information on modifying account quotas, see the
+              description of the Authorize Utility in the OpenVMS System
+              Management Subkit.
+
+        1.5.3 System Parameters
+
+              Installing Compaq C requires certain system parameter
+              settings.
+
+              The minimum number of contiguous free global pages and
+              global sections needed for the installation depends on
+              whether
+              SYS$SYSTEM:DECC$COMPILER.EXE was previously installed as a
+              shared known image. See Table 1-3.
+
+                                  Preparing for Compaq C Installation 1-5
+
+ 
+
+
+
+
+
+
+
+              Table_1-3_Global_Sections_and_Pages_Required_______________
+
+              Previously
+              Installed as   Global
+              Shared?________Sections_____Global_Pages___________________
+
+              No             1            Sufficient number of
+                                          contiguous free global
+                                          pages to contain the file
+                                          SYS$LIBRARY:DCLTABLES.EXE
+
+              Yes            4            Approximately 2000 contiguous
+                                          free global pages plus
+                                          a sufficient number of
+                                          contiguous free global
+                                          pages to contain the file
+              ____________________________SYS$LIBRARY:DCLTABLES.EXE______
+
+              These values represent the number of contiguous free global
+              pages and global sections required for the installation,
+              not the total number you need to run your system and other
+              software.
+
+                ________________________ Note ________________________
+
+                You must ensure that your system has the necessary
+                global page and global section SYSGEN quotas for the
+                installation. Failure to do so could cause the DCL
+                tables to be corrupted in some situations.
+
+                ______________________________________________________
+
+        1.5.3.1 Calculating the Values for CONTIG_GBLPAGES and
+                FREE_GBLSECTS
+
+              To install and run Compaq C, you must have sufficient
+              contiguous free global pages and free global sections.
+              You must first find out how many free global pages and
+              sections you have on your system. Use AUTOGEN if you need
+              to increase the CONTIG_GBLPAGES and FREE_GBLSECTS system
+              parameters.
+
+              Enter the following DCL command to determine the number of
+              global pages required by SYS$LIBRARY:DCLTABLES.EXE:
+
+              $ DIR/SIZE SYS$LIBRARY:DCLTABLES.EXE
+
+        1-6 Preparing for Compaq C Installation
+
+ 
+
+
+
+
+
+
+
+              This command returns the size (in blocks) of
+              SYS$LIBRARY:DCLTABLES.EXE. As an approximation, use this
+              figure as the number of global pages needed for the file.
+
+              You can use the WRITE command with the F$GETSYI lexical
+              function to find the number of contiguous free global pages
+              and free global sections. The following example shows how
+              to get this information at your terminal (the default for
+              SYS$OUTPUT):
+
+              $ WRITE SYS$OUTPUT F$GETSYI("CONTIG_GBLPAGES")
+              15848
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+              24
+
+              If the value of contiguous free global pages or free
+              global sections is less than the value required (see
+              Section 1.5.3), you must increase the system parameter
+              setting.
+
+              Section 1.5.3.2 describes the procedures for increasing
+              these values using AUTOGEN.
+
+        1.5.3.2 Changing System Parameter Values with AUTOGEN
+
+              If you do not have enough contiguous free global pages or
+              free global sections to install Compaq C, you can do either
+              of the following:
+
+              o  Delete an existing known image using the OpenVMS Install
+                 Utility.
+
+              o  Use the AUTOGEN command procedure to increase the
+                 GBLPAGES or GBLSECTIONS system parameters.
+
+              AUTOGEN automatically adjusts values for parameters that
+              are associated with the values you reset manually. To
+              change system parameters with AUTOGEN, edit the following
+              file:
+
+              SYS$SYSTEM:MODPARAMS.DAT
+
+              Use an editor to access the file. To change a parameter
+              value listed in this file, delete the current value
+              associated with that parameter and enter the new value.
+
+                                  Preparing for Compaq C Installation 1-7
+
+ 
+
+
+
+
+
+
+
+              To add a new parameter, add a line to the file that
+              includes both the name of the parameter and its value.
+              For example:
+
+              WSMAX = 8096
+
+              To modify incremental parameters such as GBLPAGES and
+              GBLSECTIONS, use ADD_GBLPAGES and ADD_GBLSECTIONS,
+              respectively. The following example increases the global
+              page setting by 2000:
+
+              ADD_GBLPAGES = 2000
+
+              Be aware that when you set the page file quota, you should
+              not use a value that exceeds the amount of page file space
+              available on the system.
+
+              After you make all your changes, exit from the editor and
+              execute the AUTOGEN procedure to recalculate your system
+              parameters. Enter the following command to recalculate your
+              system parameters and reboot the system:
+
+              $ @SYS$UPDATE:AUTOGEN SAVPARAMS REBOOT
+
+              When you specify REBOOT, AUTOGEN performs an automatic
+              system shutdown and then reboots the system. Any users
+              logged on to the system are immediately disconnected during
+              the shutdown. The automatic reboot puts the new parameter
+              values into effect.
+
+              The AUTOGEN Utility automatically adjusts some of the
+              SYSGEN parameters based on the consumption of resources
+              since the last reboot. If you do not want to take advantage
+              of this automatic adjustment, include the NOFEEDBACK
+              qualifier on the AUTOGEN command line.
+
+              For more information about using AUTOGEN, see the OpenVMS
+              System Management Subkit.
+
+        1.5.4 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if you
+              have backed up your system disk. Doing a system disk backup
+              before installing any software is strongly recommended.
+
+              Use the backup procedures that are established at your
+              site. For details on performing a system disk backup, see
+              the section on the Backup Utility in the OpenVMS System
+              Management Subkit.
+
+        1-8 Preparing for Compaq C Installation
+
+ 
+
+
+
+
+
+
+
+        1.6 Installing and Using Multiple Compiler Versions
+
+              Compaq C Version 6.4 provides initial support for
+              installing and using multiple versions of the compiler
+              on the same node.
+
+              During installation of Version 6.4, if a Version 6.0 or
+              Version 6.2 of the compiler is already installed, you
+              have the opportunity to preserve that compiler rather
+              than overwrite it. If you choose to preserve the currently
+              installed compiler, you are then given a choice to keep
+              the currently installed compiler as the system default and
+              install the new compiler as an alternate.
+
+              By default, the currently installed system compiler is
+              preserved by making it an alternate compiler and installing
+              the new compiler as the system default. Users can make
+              the choice to use an alternate compiler instead of the
+              installed system compiler by running a command procedure
+              that changes the behavior of the cc command for the process
+              that invokes it.
+
+              Some details of the following description may change, but
+              the mechanism is essentially as follows.
+
+        1.6.1 Displaying and Selecting the Compiler Version
+
+              This kit provides two command procedures to display and
+              control which Compaq C compiler is used by a process:
+
+              o  SYS$SYSTEM:DECC$SHOW_VERSIONS.COM
+
+                 This procedure displays the Compaq C compilers available
+                 on the system, along with their version numbers. It also
+                 displays which compiler is the default for the current
+                 process. The procedure takes an optional version-number
+                 argument. Examples:
+
+                 $ @sys$system:decc$show_versions.com
+
+                 The following Compaq C compiler(s) are available in
+                 SYS$SYSTEM:
+
+
+
+                                  Preparing for Compaq C Installation 1-9
+
+ 
+
+
+
+
+
+
+
+                 Filename                      Version
+                 ---------------------------------------
+                 DECC$COMPILER.EXE             V6.4-005
+                 DECC$COMPILER_T06_04-002.EXE  T6.4-002
+                 DECC$COMPILER_T06_04-001.EXE  T6.4-001
+                 DECC$COMPILER_V06_00-001.EXE  V6.0-001    Process Default
+                 DECC$COMPILER_V06_02-008.EXE  V6.2-008
+
+                 $ @sys$system:decc$show_versions.com V6.0
+
+                 The following Compaq C compiler(s) are available in
+                 SYS$SYSTEM:
+
+                 Filename                      Version
+                 ---------------------------------------
+                 DECC$COMPILER_V06_00-001.EXE  V6.0-001    Process Default
+
+              o  SYS$SYSTEM:DECC$SET_VERSION.COM
+
+                 This procedure sets up process logicals that point
+                 to an alternate Compaq C compiler in SYS$SYSTEM, or
+                 it removes the process logicals to revert to using
+                 the default system compiler. The procedure takes one
+                 argument, a version number or the keyword SYSTEM.
+                 If no arguments are specified you are prompted for
+                 them. The SYSTEM argument selects the installed
+                 system compiler, which is the one displayed with the
+                 filename DECC$COMPILER.EXE in the output of decc$show_
+                 versions.com. Alternate compilers are shown in that
+                 output with their version number appended to the simple
+                 filename (DECC$COMPILER_V06_02-008.EXE in the previous
+                 example).
+
+                 To select a compiler, pass a full ident string or enough
+                 of the ident string to be unique. For example: to select
+                 the V6.2-008 compiler from the previous list, pass
+                 V6.2-008 or V6.2 to the decc$set_version.com routine.
+                 However, to select a 6.4 compiler, a full ident string
+                 is required to distinguish between the V6.4-005, T6.4-
+                 001, and the T6.4-002 compiler:
+
+        @sys$system:decc$set_version.com V6.2-008
+
+        @sho logical DECC$*
+
+        (LNM$PROCESS_TABLE)
+
+        1-10 Preparing for Compaq C Installation
+
+ 
+
+
+
+
+
+
+
+          "DECC$COMPILER" =
+            "SYS$SYSTEM:DECC$COMPILER_V06_02-008.EXE"
+          "DECC$MSG_SHR" =
+            "SYS$MESSAGE:DECC$MSG_SHR_V06_02-008.EXE"
+
+        $ @decc$set_version.com 6.4
+
+        The following 6.4 Compaq C compiler(s) are available in
+        SYS$SYSTEM:
+
+        Filename                      Version
+        ---------------------------------------
+        DECC$COMPILER.EXE             V6.4-005
+        DECC$COMPILER_T06_04-001.EXE  T6.4-001
+        DECC$COMPILER_T06_04-002.EXE  T6.4-002
+
+Ambiguous version number, please be specify a full version number, ex: V6.4-005
+Version number : V6.4-005
+
+$ sho logical DECC$COMPILER
+"DECC$COMPILER" = "SYS$SYSTEM:DECC$COMPILER_V06_04-005.EXE" (LNM$PROCESS_TABLE)
+$ sho logical DECC$msg_shr
+"DECC$MSG_SHR" = "SYS$MESSAGE:DECC$MSG_SHR_V06_04-005.EXE" (LNM$PROCESS_TABLE)
+
+                 When this procedure is run in a process, subsequent cc
+                 commands invoke the selected compiler version (until the
+                 procedure is run again). The process-level logicals used
+                 do not affect other processes or users on the system.
+
+        1.6.2 Side Effects and Restrictions on Multiple Versions
+
+              When you install this kit, it provides the latest CLD file
+              (to established DCL tables), the latest decc$rtldef.tlb,
+              and the latest documentation, even if you select the option
+              of having the new compiler as the alternate compiler. The
+              new CLD file and the new decc$rtldef.tlb do not adversely
+              impact a preexisting Version 6-based compiler because they
+              are upwardly compatible. However, if you attempt to use
+              a new compiler option with an older compiler, you will no
+              longer get a DCL error that the option is not supported.
+              Instead, the option will be silently ignored. For example,
+              note that before installation of Version 6.4, the following
+              would have produced: "%DCL-W-IVQUAL, unrecognized qualifier
+              ...."
+
+                                 Preparing for Compaq C Installation 1-11
+
+ 
+
+
+
+
+
+
+
+              $@sys$system:decc$set_version.com 6.2
+              $ cc /first_include foo.c  ! /first_include new in 6.4
+              $ !No complaint
+
+              And because you must have the newest CLD file and header
+              files in order to use the newest compiler, if you run
+              an older installation procedure to put an older compiler
+              back on your system, you must then re-run the Version 6.4
+              installation to get the newest files.
+
+              Note that there are two logical names involved in
+              establishing the compiler version: one for the compiler
+              image and one for its message file. This version of the
+              compiler issues a diagnostic if it is invoked with the
+              wrong version of the message file, but prevous versions of
+              the compiler do not detect this situation. If you find that
+              an older version of the compiler is issuing diagnostics
+              that do not make sense for the code construct they are
+              attached to, or if the message text is missing and only
+              a message number is issued, check that you have matched
+              versions of the files designated by the two logicals
+              using the command "$ show logical decc$compiler*". The
+              response should show matching version-numbered files as
+              in the example that selects the Version 6.2 compiler.
+              Or if you are using the system compiler, the response
+              should be "%SHOW-S-NOTRAN, no translation for logical name
+              DECC$COMPILER*".
+
+        1.6.3 Installation Procedure Changes
+
+              When you install Compaq C Version 6.4 on a system that
+              already has a Version 6.0 or higher compiler installed, you
+              are given the chance to preserve the currently installed
+              system compiler. To do this, answer YES to the following
+              question (the xxx will be replaced by the full version
+              number of the existing system compiler):
+
+              "Should the existing xxx system compiler be preserved [NO]:"
+
+              If you answer NO, the installation proceeds in the
+              traditional manner, overwriting the currently installed
+              system compiler.
+
+
+
+        1-12 Preparing for Compaq C Installation
+
+ 
+
+
+
+
+
+
+
+              If you answer YES, you are then asked an additional
+              question. To get the traditional behavior of installing
+              the kit compiler as the system default, answer NO to the
+              question:
+
+   "Should this xxx system compiler remain the default when cc is typed [NO]:"
+
+              Because you have previously asked to preserve the existing
+              system compiler, that compiler is made an alternate
+              compiler before the new system compiler is installed
+              from the kit. If you answer YES to the question, the kit
+              compiler is installed as an alternate compiler with a name
+              that is based on its ident, and the existing system default
+              compiler remains the default.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                 Preparing for Compaq C Installation 1-13
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                                      Installing Compaq C
+
+
+              This chapter explains how to install Compaq C:
+
+              o  Section 2.1 contains a step-by-step description of the
+                 installation procedure.
+
+              o  Section 2.2 covers error recovery considerations.
+
+        2.1 Installation Procedure
+
+              The Compaq C installation procedure consists of a series
+              of questions and informational messages. See Appendix A for
+              sample installations.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can then start the installation again.
+
+              Defaults appear in brackets ([]) throughout the
+              installation procedure.
+
+              1. Log in to a privileged account and set your default
+                 device and directory to SYS$UPDATE, where VMSINSTAL
+                 resides.
+
+                 Username: SYSTEM
+                 Password:
+                 $ SET DEFAULT SYS$UPDATE
+
+              2. Invoke VMSINSTAL.
+
+                 @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+
+
+
+                                                  Installing Compaq C 2-1
+
+ 
+
+
+
+
+
+
+
+                 saveset-name
+                 The installation name for the component. For Compaq C,
+                 use the following installation name:
+
+                 CC06n
+
+                 Where n represents the minor (point) release number of
+                 Compaq C, such as CC064 for Version 6.4. Refer to the
+                 label on the Compaq C distribution kit or the Compaq C
+                 BOM or BIL for the maintenance update number of your
+                 kit.
+
+                 device-name
+                 The name of the device on which you plan to mount
+                 the media, or the name of the device:[directory]
+                 that contains the save sets. For example, DKA400: is
+                 the device name used in examples in this guide. The
+                 directory is [CC06n.KIT], where n is the minor release
+                 number.
+
+                 To specify the device name on the @VMSINSTAL command
+                 line, type:
+
+                 DKA400:[CC06n.KIT]
+
+                 OPTIONS N
+                 An optional parameter that indicates you want to see
+                 the question on release notes. If you do not include the
+                 OPTIONS N parameter, VMSINSTAL does not ask you about
+                 the release notes. You should review the release notes
+                 before proceeding with the installation in case they
+                 contain additional information about the installation.
+                 If you are restarting the installation and have already
+                 reviewed the release notes, you do not need to specify
+                 OPTIONS N.
+
+                 There are several other options you can select when you
+                 invoke VMSINSTAL:
+
+                 o  Auto_answer (A): Initially creates a file that
+                    contains your answers to VMSINSTAL questions
+                    and prompts. This option, and the answer file it
+                    produces, can save time during a reinstallation
+                    (typically after upgrading your system).
+
+        2-2 Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+                 o  Get save set (G): Stores product save sets
+                    temporarily on a magnetic tape or in a disk
+                    directory.
+
+                 o  File log (L): Logs all activity to the terminal
+                    during installation.
+
+                 o  Alternate root (R): Installs the product to a system
+                    root other than that of the running system.
+
+                 See the OpenVMS documentation on software installation
+                 in the OpenVMS System Management Subkit for detailed
+                 information on these options. If you specify more
+                 than one option, separate the options with commas (for
+                 example: OPTIONS A,N).
+
+                 The following example invokes VMSINSTAL to install
+                 Compaq C and shows the system response. This example
+                 uses the OPTIONS N release note parameter.
+
+                 $ @SYS$UPDATE:VMSINSTAL CC06n DKA400:[CC06n.KIT] OPTIONS N
+
+                   OpenVMS VAX Software Product Installation Procedure V5.5-2
+
+                 It is dd-mmm-yyyy at hh:mm.
+                 Enter a question mark (?) at any time for help.
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure. VMSINSTAL does
+                 not prompt you for any options, so be sure to include
+                 OPTIONS N on the VMSINSTAL command line to access the
+                 release notes during the installation.
+
+                 When you invoke VMSINSTAL, it checks for the following
+                 requirements:
+
+                 o  Whether you logged in to a privileged account. We
+                    recommend that you install software from the system
+                    manager's account with your default device and
+                    directory set to SYS$UPDATE.
+
+                 o  Whether you have adequate quotas for installation.
+                    VMSINSTAL checks for the quota values shown in
+                    Section 1.5.
+
+                                                  Installing Compaq C 2-3
+
+ 
+
+
+
+
+
+
+
+                 o  Whether any users are logged in to the system. If
+                    users are logged in, you are asked whether you
+                    want to continue the installation. If you want
+                    to continue, enter YES. If you want to stop the
+                    installation, press Return.
+
+              3. Confirm system backup.
+
+                * Are you satisfied with the backup of your system disk [YES]?
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. You should always back up your system disk
+                 before performing an installation. If you are satisfied
+                 with the backup of your system disk, press Return.
+                 Otherwise, enter NO to discontinue the installation.
+                 After you back up your system disk, you can restart the
+                 installation.
+
+              4. Mount the media.
+
+                 If you omitted the device name in the VMSINSTAL command
+                 line, the following prompt appears:
+
+            Where will the distribution volumes be mounted: DKA400:[CC06n.KIT]
+
+                 If this prompt appears, enter the name of the
+                 distribution (media) device and directory the contains
+                 the Compaq C kit (save set). For example, if the media
+                 is contained on a CD located on unit DKA400:, enter
+                 DKA400:[CC06n.KIT] in reply to this question (where n is
+                 the minor release number.)
+
+                 Depending on the type of device and whether the device
+                 is already mounted, the following prompt may or may not
+                 appear:
+
+                 Please mount the first volume of the set on DKA400:.
+                 * Are you ready? YES
+                 %MOUNT-I-MOUNTED, Compaq C mounted on DKA400:
+
+                 If you have not already done so, you should now insert
+                 the distribution volume on the device you specified when
+                 you invoked VMSINSTAL. The device name appears in the
+                 line preceding the question. VMSINSTAL then asks you if
+                 you are ready to continue with the installation.
+
+        2-4 Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+                 If you enter YES to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 Compaq C has been mounted on the specified device and
+                 that the installation has started.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter NO
+                 in response to the "Are you ready?" question. To abort
+                 the installation for other reasons, press Ctrl/Y.
+
+              5. Verify the product being installed
+
+                 The following products will be processed:
+                   CC V6.n
+
+                     Beginning installation of CC V6.n at 20:00
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                 The product name and version are displayed. The save set
+                 (A) is restored to a subdirectory of SYS$UPDATE.
+
+              6. Select a release notes option.
+
+           Release notes included with this kit are always copied to SYS$HELP.
+
+                 Additional Release Notes Options:
+
+                     1.  Display release notes
+                     2.  Print release notes
+                     3.  Both 1 and 2
+                     4.  None of the above
+
+                 * Select option [2]:
+
+                 If you specified OPTIONS N when you invoked VMSINSTAL,
+                 you are asked to choose one of the four options for
+                 reviewing the release notes.
+
+                 o  Select option 1 to immediately display the release
+                    notes online. You can terminate the display at any
+                    time by pressing Ctrl/C.
+
+                 o  Select option 2 to print the release notes. You are
+                    prompted for the name of the print queue that you
+                    want to use:
+
+                    * Queue name [SYS$PRINT]:
+
+                                                  Installing Compaq C 2-5
+
+ 
+
+
+
+
+
+
+
+                    Either press Return to send the file to the default
+                    output print device (SYS$PRINT) or enter another
+                    queue name.
+
+                 o  Select option 3 to immediately display the release
+                    notes online and then be prompted for a queue name
+                    for the printed version.
+
+                 o  Select option 4 if you have already reviewed the
+                    release notes and are restarting the installation.
+
+                 Next, VMSINSTAL displays the following question:
+
+                 * Do you want to continue the installation [N]?: YES
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                 To continue the installation, enter YES. Otherwise,
+                 press Return. In either case, the release notes are
+                 copied to the following file in the SYS$HELP directory
+                 (where n is the minor version number):
+
+                 SYS$HELP:CC06n.RELEASE_NOTES
+
+                ________________________ Note ________________________
+
+                The name of the release notes file installed by
+                VMSINSTAL consists of the current product name and
+                version number. Do not delete release notes for
+                previous versions of Compaq C (if any).
+
+                ______________________________________________________
+
+              7. Respond to license registration queries.
+
+                 Compaq C supports the OpenVMS License Management
+                 Facility (LMF). The installation procedure displays
+                 license information about your product, asks if you want
+                 Compaq C documentation installed, and asks if you have
+                 registered and loaded your Product Authorization Key
+                 (PAK) for Compaq C. The following is an example of such
+                 information:
+
+                 Compaq C Version 6.4 for OpenVMS VAX Systems
+
+                   Copyright 2001 Compaq Computer Corporation
+
+    Compaq and the Compaq logo Registered in U.S. Patent and Trademark Office.
+
+        2-6 Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+        Confidential computer software. Valid license from Compaq required for
+        possession, use or copying. Consistent with FAR 12.211 and 12.212,
+        Commercial Computer Software, Computer Software Documentation, and
+        Technical Data for Commercial Items are licensed to the U.S. Government
+        under vendor's standard commercial license.
+
+                      Product:       C
+                      Producer:      DEC
+                      Version:       6.4
+                      Release Date:  dd-mmm-yyyy
+
+     * Does this product have an authorization key registered and loaded?: YES
+
+                 If you have not registered and loaded your PAK, you
+                 must answer NO to this question. You have to register
+                 and load your PAK to run the Installation Verification
+                 Procedure (IVP). If you have not done so, you should
+                 stop the installation, register and load your PAK, and
+                 then restart the installation.
+
+              8. Decide whether to install the documentation.
+
+           HTML, postscript and text versions of the Compaq C Users Guide,
+           Language Reference Manual and RTL Reference Manual may be optionally
+           installed into SYS$COMMON:[SYSHLP.CC$VAX_HELP_064].
+           These documents consume approximately 40000 blocks.
+
+                * Should these manuals be provided [NO]: yes <Return>
+
+                 If you have adequate disk space and wish to install the
+                 C documentation, enter Yes. Once the documentation is
+                 installed, you can browse the HTML version by opening
+                 the following file from your browser:
+
+                 SYS$COMMON:[SYSHLP.CC$VAX_HELP_064]INDEX.HTM
+
+              9. Read information about Release Notes.
+
+            This kit contains a file summarizing the new features, changes,
+            restrictions, and compatibility issues in this release of Compaq C.
+            This file is named CC064.RELEASE_NOTES and has been placed in
+            SYS$HELP:.
+
+            This file contains information valuable to Compaq C programmers.
+            Please inform your user community of this file's existence.
+
+              10.Choose the IVP option.
+
+                                                  Installing Compaq C 2-7
+
+ 
+
+
+
+
+
+
+
+                 The installation procedure asks if you want to run the
+                 IVP. The IVP for Compaq C checks to be sure that the
+                 installation is successful. It is recommended that you
+                 run the IVP by answering YES to the following prompt:
+
+                 This kit contains an Installation Verification Procedure (IVP)
+                 to verify the correct installation of Compaq C.  The IVP will
+                 be left in:
+
+                         SYS$COMMON:[SYSTEST]DECC$IVP.COM
+
+                 After the installation is complete, you can invoke the command
+                 file at any time to verify that Compaq C is installed and
+                 working correctly.
+
+                 * Do you want to run the IVP after the installation [YES]?
+
+                 After Compaq C is installed, you can run the IVP
+                 independently to verify that the software is available
+                 on your system. You might need to run the IVP after
+                 a system failure to make sure that users can access
+                 Compaq C.
+
+              11.Choose the default for the CC command.
+
+                 You will see the prompts described in this step only if
+                 your system has a VAX C compiler installed.
+
+                 The CC command is used to invoke either the VAX C
+                 or Compaq C compiler. If your system has a VAX C
+                 compiler already installed on it, you have the option
+                 of specifying which compiler will be invoked by default
+                 whenever just the CC command verb is used. To invoke
+                 the compiler that is not the default, use the CC command
+                 with the appropriate qualifier: /DECC for the Compaq C
+                 compiler, or /VAXC for the VAX C compiler.
+
+                 If VAX C is installed on your system, you can choose the
+                 default to use for the CC command:
+
+
+
+
+
+
+        2-8 Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+       A VAX C compiler was found on your system. The CC command will have
+       the capability to invoke the Compaq C compiler via the command CC/DECC.
+       The CC command will also have the capability to invoke the VAX C
+       compiler via the command CC/VAXC. You have the choice of the CC
+       command defaulting to execute either:
+                     - the Compaq C compiler [DECC]
+                     - the VAX C compiler [VAXC]
+       If you choose DECC as the default, existing command files using CC to
+       invoke VAX C may not work.  Other layered products expecting CC to
+       invoke VAX C during their installation procedure may not install.
+
+         * The default compiler when only CC is specified, VAXC or DECC [DECC]:
+
+                 Either press Return to accept DECC as the default, or
+                 enter VAXC.
+
+                 If VAX C is not installed on the system, the following
+                 information is displayed:
+
+        VAX C is not installed on the system. Should you install VAX C at
+        some future time, you must reinstall Compaq C to provide a command line
+        definition for the CC command that can invoke either product.
+
+              12.Purge files.
+
+             * Do you want to purge files replaced by this installation [YES]?
+
+                 The directories SYS$HELP, SYS$MESSAGE, SYS$SYSTEM,
+                 DECC$LIBRARY, and SYS$TEST may contain previous versions
+                 of Compaq C files. These files are replaced during the
+                 installation with new files, but the old files are not
+                 automatically purged. Purging is recommended.
+
+                 In response to the purging prompt, press Return to purge
+                 the files or enter NO to keep them.
+
+              13.Read informational messages.
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation. There are no further
+                 questions. If the installation procedure has been
+                 successful up to this point, VMSINSTAL moves the new
+                 or modified files to their target directories, updates
+                 help files, and updates DCL tables, if necessary. If you
+                 chose to have files purged, that work is done now. The
+                 following messages are displayed:
+
+                                                  Installing Compaq C 2-9
+
+ 
+
+
+
+
+
+
+            You have answered all of the questions for this installation.  The
+            installation will now execute in 10 to 60 minutes without further
+            intervention, depending on your configuration, installation media,
+            and so forth.
+
+            The C Runtime Library headers and Starlet headers are installed as
+            a Text Library (.TLB).  The traditional text form  of the headers
+            (.H files) are also provided for  reference  purposes only) in
+            the directories: SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+            SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C].
+
+            Please note that the compiler does not search the reference areas
+            SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+            SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C] during compilation.
+            Instead headers are taken from the text library.
+
+            %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                                                       VMI$ROOT:[SYSTEST.DECC].
+
+                     Your OpenVMS system will now be updated to include the
+                     following new and modified files:
+
+                     [SYSEXE]DECC$COMPILER.EXE              [new]
+                     [SYSHLP]HELPLIB.HLB                    [modified]
+                     [SYSHLP]CC$HELP*.HTML                  [new]
+                     [SYSHLP]CC06n.RELEASE_NOTES            [new]
+                     [SYSHLP]CC06n_RELEASE_NOTES.PS         [new]
+                     [SYSLIB]DCLTABLES.EXE                  [modified]
+                     [SYSLIB]DECC$RTLDEF.TLB                [new]
+                     [SYSLIB]DECC$COMPILED_PRINTF.OLB       [new]
+                     [DECC$LIB.REFERENCE.SYS$STARLET_C]*.H  [new]
+                     [DECC$LIB.REFERENCE.DECC$RTLDEF]*.H    [new]
+                     [SYSMSG]DECC$MSG_SHR.EXE               [new]
+                     [SYS$STARTUP]DECC$STARTUP.COM          [new]
+                     [SYSTEST]DECC$IVP.COM                  [new]
+                     [SYSTEST.DECC]DECC$IVP*.*              [new]
+
+               The file SYS$STARTUP:DECC$STARTUP.COM contains commands to be
+               executed at system startup to allow for the best compilation
+               performance.  You may want to invoke this command file from your
+               system's site specific startup file. This command file does not
+               have to be invoked for correct operation of Compaq C.
+
+
+
+        2-10 Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+                 The end of the installation is indicated by the
+                 following message:
+
+               %VMSINSTAL-I-MOVEFILES, files will now be moved to their target
+                                                                directories...
+
+              14.Observe the IVP.
+
+                 If you chose to run the IVP, VMSINSTAL now invokes the
+                 IVP to verify that Compaq C was installed successfully:
+
+                   Beginning COMPAQ C V6.n Installation Verification Procedure
+
+     Copyright 2001 Compaq Computer Corporation
+
+     Compaq and the Compaq logo Registered in U.S. Patent and Trademark Office.
+
+     Confidential computer software. Valid license from Compaq required for
+     possession, use or copying. Consistent with FAR 12.211 and 12.212,
+     Commercial Computer Software, Computer Software Documentation, and
+     Technical Data for Commercial Items are licensed to the U.S. Government
+     under vendor's standard commercial license.
+
+                   Image Check Complete
+                   License Check Complete
+                   Version Check Complete
+                   Message Check Complete
+                   Header Check Complete
+                   Run Time Library Check Complete
+
+                 COMPAQ C V6.n Installation Verification Procedure Successful
+
+                       Installation of CC V6.n completed at hh.mm
+
+                       VMSINSTAL procedure done at hh:mm
+
+              15.The installation procedure ends.
+
+                    Installation of CC V6.n completed at hh:mm
+
+                 Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+              Creating installation data file: VMI$ROOT:[SYSUPD]CC06n.VMI_DATA
+
+                    VMSINSTAL procedure done at hh:mm
+
+                 $ LOGOUT
+                 SYSTEM     logged out at dd-mmm-yyyy hh:mm:ss.ss
+
+                                                 Installing Compaq C 2-11
+
+ 
+
+
+
+
+
+
+
+                 When the installation is complete, you can choose to
+                 install more products or to log out (as shown here).
+                 If you removed any media from the console drive before
+                 beginning the installation, you should replace it now.
+
+                 Be aware that VMSINSTAL deletes or changes entries
+                 in the process symbol tables during the installation.
+                 Therefore, if you are going to continue using the system
+                 manager's account and you want to restore these symbols,
+                 you should log out and log in again.
+
+        2.2 Error Recovery
+
+              If errors occur during the installation itself or when
+              the Installation Verification Procedure (IVP) is running,
+              VMSINSTAL displays failure messages. If the installation
+              fails, you see the following message:
+
+           %VMSINSTAL-E-INSFAIL, The installation of Compaq C V6.n has failed.
+
+              If the IVP fails, you see these messages:
+
+              The Compaq C V6.n Installation Verification Procedure failed.
+
+              %VMSINSTAL-E-IVPFAIL, The IVP for Compaq C V6.n has failed.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  The operating system version is incorrect.
+
+              o  A prerequisite software version is incorrect.
+
+              o  Quotas necessary for successful installation are
+                 insufficient.
+
+              o  System parameter values for successful installation are
+                 insufficient.
+
+              o  The OpenVMS help library is currently in use.
+
+              o  The product license has not been registered and loaded.
+
+              For descriptions of the error messages generated by these
+              conditions, see the OpenVMS documentation on system
+              messages, recovery procedures, and OpenVMS software
+              installation. If you are notified that any of these
+              conditions exist, you should take the appropriate action as
+              described in the message. For information on installation
+              requirements, see Section 1.5.
+
+        2-12 Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+              If the installation fails, you must restart the
+              installation procedure from step 2 in Section 2.1. For
+              an explanation of any system messages, see the OpenVMS
+              System Messages and Recovery Procedures Reference Manual
+              or the online HELP/MESSAGE facility. If the installation
+              fails due to an IVP failure, contact a Compaq field service
+              representative.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                 Installing Compaq C 2-13
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                                After Installing Compaq C
+
+
+              Compaq C is now installed and can be invoked by all users
+              with the CC command.
+
+              The installation procedure modifies the DCL command table
+              so that the CC command is recognized and processed.
+              However, the previous command table is still in effect
+              for those users who are currently logged in. All logged-in
+              users who want to use the CC command must log out and log
+              in again, or use the following DCL command:
+
+              $ SET COMMAND /TABLES=SYS$LIBRARY:DCLTABLES
+
+              You can perform the following system management tasks after
+              Compaq C is installed:
+
+              o  Running the Installation Verification Procedure (IVP)
+                 separately
+
+              o  Editing the system startup and shutdown files
+
+              o  Modifying system parameter settings
+
+              o  Making the product usable on a VAXcluster
+
+              o  Setting user account quotas
+
+              o  Tailoring your system
+
+              o  Enhancing performance
+
+              o  Reporting problems
+
+        3.1 Running the Installation Verification Procedure Separately
+
+              You usually run the IVP during installation. If you want to
+              run the Compaq C IVP separately to ensure the integrity of
+              installed files should system problems occur, execute the
+              following command procedure:
+
+              $ @SYS$SYSROOT:[SYSTEST]DECC$IVP
+
+                                            After Installing Compaq C 3-1
+
+ 
+
+
+
+
+
+
+
+              If the IVP fails for any reason, the following message is
+              displayed:
+
+              Compaq C VERSION 6.n TEST FAILED
+
+        3.2 Editing and Organizing System Files
+
+              To provide for automatic startup of Compaq C when your
+              system is rebooted, add the command line that starts
+              Compaq C to the system startup file, SYS$MANAGER:SYSTARTUP_
+              VMS.COM (V5.0 and later) or SYS$MANAGER:SYSTARTUP_V5.COM
+              (V5.x systems):
+
+              $ @SYS$STARTUP:CCXX$STARTUP.COM
+
+              You must invoke this command procedure to define the
+              logical names that the compiler needs to find the Compaq C
+              header source files and any Compaq C++ class library header
+              files.
+
+                ________________________ Note ________________________
+
+                SYS$STARTUP:CCXX$STARTUP.COM initializes the Compaq C
+                and Compaq C++ compile-time environment only.
+                To initialize the DEC C/C++ Run-Time Components
+                environment on applicable OpenVMS VAX systems,
+                execute SYS$STARTUP:CRT$STARTUP.COM according to the
+                instructions in the installation guide for that kit.
+
+                ______________________________________________________
+
+              If your system has DEC C++ for OpenVMS VAX Version 1.1
+              installed, be sure to note the following changes and
+              required actions:
+
+              o  DEC C++ for OpenVMS VAX Version 1.2 has succeeded
+                 Version 1.1. Compaq recommends that you upgrade to
+                 Version 1.2, which has many problem fixes and a new
+                 installation and startup procedure that cooperates with
+                 the procedures used by this Compaq C installation.
+
+              o  Beginning with DEC C++ for OpenVMS VAX Version 1.2
+                 and and DEC C for OpenVMS VAX Version 4.0, the
+                 default locations for the top-level directories
+                 dev:[DECC$LIBRARY] and dev:[CXX$LIBRARY] have changed
+                 to SYS$COMMON:[DECC$LIB] and SYS$COMMON:[CXX$LIB],
+                 respectively.
+
+        3-2 After Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+                 After installing DEC C for OpenVMS VAX Version 4.0 or
+                 higher, the system logical DECC$LIBRARY_INCLUDE points
+                 to a new header area. Therefore, if your system has
+                 DEC C++ for OpenVMS VAX Version 1.1 installed, be sure
+                 to take note of the old location before installing
+                 Compaq C.
+
+              o  With DEC C Version 4.0 and higher, the location for
+                 the library form of the DEC C headers has changed from
+                 that used in previous DEC C and DEC C++ versions. The
+                 old location was dev:[DECC$LIBRARY.INCLUDE]. The new
+                 location is SYS$LIBRARY.
+
+              o  The DEC C Version 4.0 and higher startup is called
+                 CCXX$STARTUP.COM and is shared by Compaq C and
+                 Compaq C++. This startup file obsoletes both
+                 CC$STARTUP.COM (used in previous test versions of DEC C)
+                 and CXX$STARTUP.COM (if DEC C++ for OpenVMS VAX Version
+                 1.1 is installed on your system).
+
+                 Delete CC$STARTUP.COM and CXX$STARTUP.COM and remove
+                 them from SYS$STARTUP:SYSTARTUP_xxx.COM.
+
+                 As a reminder to do this, the Compaq C installation
+                 creates stub copies of both CC$STARTUP.COM and
+                 CXX$STARTUP.COM that do nothing but announce that the
+                 old versions of these files are obsolete and should be
+                 deleted.
+
+              In summary, unless you want to reuse the obsolete default
+              directories for DECC$LIBRARY_INCLUDE, you should remove
+              the following files from the old areas (dev is selected
+              during DEC C++ Version 1.1 installation; it defaults to
+              SYS$SYSDEVICE):
+
+              dev:[DECC$LIBRARY...]*.*;*
+              dev:[000000]DECC$LIBRARY.dir;*
+              SYS$STARTUP:CXX$STARTUP.COM
+              SYS$STARTUP:CC$STARTUP.COM
+              SYS$COMMON[SYSTEST.DECC...]*.*;*
+              SYS$COMMON[SYSTEST]DECC.dir;*
+              SYS$HELP:CC013.RELEASE_NOTES;*
+
+
+
+                                            After Installing Compaq C 3-3
+
+ 
+
+
+
+
+
+
+
+              If you are installing the DEC C Version 4.0 (or higher)
+              files into the same areas as you chose for the C header
+              files when installing DEC C++ Version 1.1, you can either
+              delete the entire directory tree dev:[DECC$LIBRARY...]
+              before installing the new version, or delete only the
+              following files after installing Compaq C:
+
+              SYS$STARTUP:CXX$STARTUP.COM;*
+              SYS$STARTUP:CC$STARTUP.COM;*
+              dev:[DECC$LIBRARY.SYSTEM]*.*;*
+              dev:[DECC$LIBRARY]SYSTEM.dir;*
+              dev:[DECC$LIBRARY.CRTL]*.*;*
+              dev:[DECC$LIBRARY]CRTL.dir;*
+              dev:[DECC$LIBRARY.INCLUDE]DECC$RTLDEF.TLB_OLD;*
+              SYS$COMMON[SYSTEST.DECC...]*.*;*
+              SYS$COMMON[SYSTEST]DECC.dir;*
+
+              If you have a system logical or one or more options files
+              that point to the old linker and the old run-time libraries
+              (RTLs) that resided in dev:[CXX$LIBRARY.SYSTEM]LINK.EXE and
+              dev:[DECC$LIBRARY.CRTL]*.*, you should remove them. That
+              linker is obsolete and the RTLs are made obsolete by the
+              DEC C/C++ Run-Time Components Version 6.0 for OpenVMS VAX
+              kit (or by your Version 6.0 or later OpenVMS VAX system).
+
+        3.3 VAXcluster Considerations
+
+              If you want to run Compaq C on multiple nodes of a
+              VAXcluster, first check to see that you have the
+              appropriate software license (see Section 1.4). Then
+              perform the following steps after you install Compaq C:
+
+              1. Enter the LICENSE LOAD command, as described in the
+                 OpenVMS License Management Utility Manual, to activate
+                 the license on each node in the VAXcluster on which
+                 Compaq C is to be executed.
+
+              2. Log in to the installation node and use the OpenVMS
+                 INSTALL Utility to determine whether DECC$COMPILER.EXE
+                 is a known image:
+
+                 $ INSTALL
+                 INSTALL> LIST SYS$SYSTEM:DECC$COMPILER.EXE
+
+
+        3-4 After Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+                 If the output of the preceding LIST command shows
+                 DECC$COMPILER.EXE to be a known image, perform all
+                 of the following steps. Otherwise, perform all of the
+                 following steps except step 5.
+
+              3. Log in to a node on the cluster.
+
+              4. Update the DCL tables on all nodes, if enough global
+                 pages are available:
+
+          SYSMAN>SET ENV/CLUSTER
+          SYSMAN>DO -
+   IF F$GETSYI("CONTIG_GBLPAGES").GT.F$FILE("SYS$SHARE:DCLTABLES.EXE","EOF") -
+          THEN INSTALL REPLACE SYS$SHARE:DCLTABLES
+
+              5. If DECC$COMPILER.EXE was established as a known image
+                 using the INSTALL utility, enter the following commands:
+
+                    $INSTALL
+                    INSTALL> REPLACE SYS$SYSTEM:DECC$COMPILER.EXE
+
+                 This command replaces the INSTALL entry for
+                 DECC$COMPILER.EXE.
+
+                 Repeat this step only for those nodes of the cluster on
+                 which you activated the Compaq C license in step 1. (In
+                 most cases, all the nodes will be licensed.)
+
+        3.4 User Account Requirements
+
+              To work with Compaq C, user accounts on your system must
+              have certain privileges and quotas. The following sections
+              contain information on these requirements.
+
+        3.4.1 Privileges
+
+              To use Compaq C, each account must have at least the TMPMBX
+              and NETMBX privileges. Use the OpenVMS Authorize Utility to
+              determine whether users have the privileges they require.
+
+        3.4.2 User Account Quotas
+
+              To use Compaq C, a user account does not need to meet
+              any special quota requirements. However, for users who
+              will be compiling very large programs (many program units
+              compiled together), consider adjusting working set (WSDEF,
+              WSQUOTA, WSEXTENT) and pagefile (PGFLQUOTA) account quotas
+              to improve performance.
+
+                                            After Installing Compaq C 3-5
+
+ 
+
+
+
+
+
+
+
+              See Section 1.5.2 for a description of how to verify and
+              change account quotas.
+
+        3.5 Enhancing Compaq C Performance
+
+              The following sections include information on system tuning
+              and explain how to install Compaq C as a shared image.
+
+        3.5.1 Tuning Your System
+
+              After you install Compaq C, you might want to adjust your
+              system to enhance performance or lower the use of some
+              system resources. Information about tuning your system is
+              included in the Guide to OpenVMS Performance Management.
+
+        3.5.2 Installing Compaq C as a Shared Image
+
+              If you expect Compaq C to be used extensively on your
+              system, you can reduce the system overhead and memory
+              requirements by installing it as a shared image.
+
+              To install Compaq C as a shared image on a system that
+              is currently running, use the OpenVMS INSTALL utility. We
+              recommend that you install Compaq C as shared on a system
+              that has been rebooted recently, because the available
+              space in the global page table is less likely to be
+              fragmented.
+
+              To install Compaq C as a shared image:
+
+              1. Make sure your system has the required number of
+                 available global pages and global sections. See
+                 Section 1.5.3.1.
+
+              2. After you have reset the system parameter values, invoke
+                 the OpenVMS INSTALL utility from a privileged account
+                 and install Compaq C as a shared image by entering the
+                 following commands:
+
+                 $ INSTALL
+          INSTALL> ADD SYS$SYSTEM:DECC$COMPILER.EXE/OPEN/SHARED/HEADER_RESIDENT
+          INSTALL> ADD SYS$MESSAGE:DECC$MSG_SHR.EXE/OPEN/SHARED/HEADER_RESIDENT
+          INSTALL> EXIT
+
+
+        3-6 After Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+              3. Add the following lines to the appropriate system
+                 startup command file so that Compaq C is available as
+                 a shared image each time the system is started. (If your
+                 site has modularized its startup procedures, be sure you
+                 add the lines to the correct file.) The default startup
+                 command file for OpenVMS Version 5.5-2, for example, is
+                 SYS$STARTUP:SYSTARTUP_V5.COM.
+
+                 $ INSTALL
+                 ADD SYS$SYSTEM:DECC$COMPILER.EXE/OPEN/SHARED/HEADER_RESIDENT
+                 ADD SYS$MESSAGE:DECC$MSG_SHR.EXE/OPEN/SHARED/HEADER_RESIDENT
+                 EXIT
+
+              When you install Compaq C as a shared image you need to
+              increase the global pages and global sections parameters as
+              described in Section 1.5.3.1.
+
+        3.6 Getting Help and Reporting Problems
+
+              If an error occurs while Compaq C is in use and you believe
+              the error is caused by a problem with the product, please
+              report it to Compaq.
+
+              If you have a Software Product Services Support Agreement,
+              contact your Customer Support Center (CSC) by telephone or
+              by using the electronic means provided with your support
+              agreement (such as DSNlink). The CSC provides telephone
+              support for high-level advisory and remedial assistance.
+              When you initially contact the CSC, indicate the following:
+
+              o  The name and version number of the operating system you
+                 are using
+
+              o  The version number of Compaq C you are using
+
+              o  The hardware system you are using (such as a model
+                 number)
+
+              o  A brief description of the problem (one sentence if
+                 possible)
+
+              o  How critical the problem is
+
+              Whether you submit information electronically or contact
+              the appropriate support specialist by telephone, please
+              take the following steps:
+
+              1. Describe as accurately as possible the circumstances
+                 and state of the system when the problem occurred.
+
+                                            After Installing Compaq C 3-7
+
+ 
+
+
+
+
+
+
+
+                 Include the description and version number of the
+                 Compaq C compiler being used. Demonstrate the problem
+                 with specific examples.
+
+              2. Reduce the problem to as small a size as possible.
+
+              3. Remember to include listings of any command files,
+                 INCLUDE files, or relevant data files, and so forth.
+
+              4. Provide a listing of the program.
+
+              5. If the program is longer than 50 lines, submit a copy
+                 of it on machine-readable media (diskette or magnetic
+                 tape).
+
+              6. Report only one problem per report. This will facilitate
+                 a faster response.
+
+              7. Mail the problem report to Compaq.
+
+              If the problem is related to Compaq C documentation, you
+              can report the problem to the CSC (if you have a Software
+              Product Services Support Agreement and the problem is
+              severe); otherwise, send your comments about Compaq C
+              documentation to the following Internet address:
+
+              c_docs@compaq.com
+
+              To obtain information about purchasing a Compaq Software
+              Product Services Support Agreement or other support
+              services, please contact your local Compaq sales
+              representative.
+
+
+
+
+
+
+
+
+
+
+
+
+
+        3-8 After Installing Compaq C
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                                     Sample Installations
+
+
+              This appendix contains sample installations of the
+              components on the Compaq C kit. Be aware that this is only
+              a sample. Sometimes the installation procedure is modified
+              in maintenance updates of this product.
+
+              Because this installation guide is not always revised
+              for maintenance updates, be sure to read the Read Before
+              Installing Compaq C for OpenVMS VAX Systems, Version 6.n
+              letter before you install this product. This letter notes
+              any significant changes to the installation samples shown
+              here.
+
+              Depending on which layered products you have on your
+              system, you might see additional messages and questions
+              when you perform your installation.
+
+              The sample installations assume that DECnet has been shut
+              down, and that no users are logged on to your system. The
+              Installation Verification Procedure (IVP) runs at the end
+              of the installations.
+
+        A.1 New Installation
+
+              This sample was run on a system that had no previous
+              version of Compaq C installed.
+
+              $ @sys$update:vmsinstal CC064 DKA400:[CC064.KIT] options n
+
+                 OpenVMS VAX Software Product Installation Procedure X7.2-72B
+
+              It is 22-JAN-2001 at 09:48.
+
+              Enter a question mark (?) at any time for help.
+
+        * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+              The following products will be processed:
+
+                CC V6.4
+
+                                                 Sample Installations A-1
+
+ 
+
+
+
+
+
+
+
+                      Beginning installation of CC V6.4 at 09:48
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+           Release notes included with this kit are always copied to SYS$HELP.
+
+                  Additional Release Notes Options:
+
+                      1.  Display release notes
+                      2.  Print release notes
+                      3.  Both 1 and 2
+                      4.  None of the above
+
+              * Select option [2]: <Return>
+              * Queue name [SYS$PRINT]: <Return>
+              Job CC064 (queue LP29_B, entry 166) started on LP29_B
+              * Do you want to continue the installation [NO]? yes <Return>
+
+   %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                Compaq C Version 6.4 for OpenVMS VAX Systems
+
+                Copyright 2001 Compaq Computer Corporation
+
+     Compaq and the Compaq logo Registered in U.S. Patent and Trademark Office.
+
+     Confidential computer software. Valid license from Compaq required for
+     possession, use or copying. Consistent with FAR 12.211 and 12.212,
+     Commercial Computer Software, Computer Software Documentation, and
+     Technical Data for Commercial Items are licensed to the U.S. Government
+     under vendor's standard commercial license.
+
+                      Product:      C
+                      Producer:     DEC
+                      Version:      6.4
+                      Release Date: 05-JAN-2001
+
+* Does this product have an authorization key registered and loaded? 
+                                                                yes <Return>
+
+           HTML, postscript and text versions of the Compaq C Users Guide,
+           Language Reference Manual and RTL Reference Manual may be optionally
+           installed into SYS$COMMON:[SYSHLP.CC$VAX_HELP_064].
+           These documents consume approximately 40000 blocks.
+
+              * Should these manuals be provided [NO]: yes <Return>
+
+            This kit contains a file summarizing the new features, changes,
+            restrictions, and compatibility issues in this release of Compaq C.
+            This file is named CC064.RELEASE_NOTES and has been placed in
+            sys$common:[syshlp.cc$vax_help064]
+
+        A-2 Sample Installations
+
+ 
+
+
+
+
+
+
+             This file contains information valuable to Compaq C programmers.
+             Please inform your user community of this file's existence.
+
+             This kit contains a file summarizing the new features, changes,
+             restrictions, and compatibility issues in this release of Compaq C.
+             This file is named CC064.RELEASE_NOTES and has been placed in
+             sys$common:[syshlp.cc$vax_help064]
+
+             This file contains information valuable to Compaq C programmers.
+             Please inform your user community of this file's existence.
+
+* The default compiler when only CC is specified, VAXC or DECC [DECC]: <Return>
+
+                  This kit contains an Installation Verification Procedure (IVP)
+                  to verify the correct installation of Compaq C.  The IVP will
+                  be left in:
+
+                      SYS$COMMON:[SYSTEST]DECC$IVP.COM
+
+                  After the installation is complete, you can invoke the command
+                  file at any time to verify that Compaq C is installed and
+                  working correctly.
+
+     * Do you want to run the IVP after the installation [YES]? no <Return>
+
+     * Do you want to purge files replaced by this installation [YES]? <Return>
+
+     All questions have been answered. The installation will take a few minutes.
+
+             The C Runtime Library headers and Starlet headers are installed as
+             a Text Library (.TLB).  The traditional text form  of the headers
+             (.H files) is also provided (for  reference  purposes only) in
+             the directories: SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+             SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C].
+
+             Please note that the compiler does not search the reference areas
+             SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+             SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C] during compilation.
+             Instead headers are taken from the text library.
+
+                  Please add SYS$STARTUP:CCXX$STARTUP.COM to the system startup
+                  procedure called SYS$STARTUP:SYSTARTUP_xxx.
+
+       To use Compaq C for OpenVMS VAX on other VAX nodes of a VMScluster
+       enter the command "$ @SYS$STARTUP:CCXX$STARTUP.COM" from a privileged
+       account on each such node.  This will install Compaq C images and define
+       "DECC$*" system-wide logical names.
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+                                                 Sample Installations A-3
+
+ 
+
+
+
+
+
+
+
+                      The CXXDEMANGLE utility appears on this system.
+                      Installation of the kit version will not be performed.
+
+                  Your OpenVMS system will now be modified to include the
+                  following new and modified files:
+
+                  [SYSEXE]DECC$COMPILER.EXE             [new]
+                  [SYSMSG]DECC$MSG_SHR.EXE              [new]
+                  [SYSHLP]HELPLIB.HLP                   [modified]
+                  [SYSHLP.CC$VAX_HELP_064]*.*           [new]
+                  [SYSHLP]CC064.RELEASE_NOTES           [new]
+                  [SYSLIB]DCLTABLES.EXE                 [modified]
+                  [SYSLIB]DECC$RTLDEF.TLB               [new]
+                  [DECC$LIB.REFERENCE.SYS$STARLET_C]*.H [new]
+                  [DECC$LIB.REFERENCE.DECC$RTLDEF]*.H   [new]
+                  [SYSLIB]DECC$OLB.EXE                  [new]
+                  [SYSLIB]DECC$OLB.README               [new]
+                  [SYSLIB]DECC$OLB.OLB                  [new]
+                  [SYS$STARTUP]CCXX$STARTUP.COM         [modified]
+                  [SYSEXE]DECC$SET_VERSIONS.COM         [new]
+                  [SYSEXE]DECC$SHOW_VERSIONS.COM        [new]
+                  [SYSTEST]DECC$IVP.COM                 [modified]
+
+              The file SYS$STARTUP:CCXX$STARTUP.COM contains commands to be
+              executed at system startup to allow for the best compilation
+              performance.  You may want to invoke this command file from your
+              system's site specific start up file.  This command file does not
+              have to be invoked for correct operation of Compaq C.
+
+ %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                      Installation of CC V6.4 completed at 10:02
+
+                      VMSINSTAL procedure done at 10:02
+
+        A.2 Upgrade Installation
+
+              This sample was run on a system that had a previous version
+              of Compaq C installed. The system is upgraded to the
+              new version of the compiler, which becomes the default
+              compiler. The old compiler is retained as an alternative
+              compiler.
+
+
+
+        A-4 Sample Installations
+
+ 
+
+
+
+
+
+
+
+              $ @sys$update:vmsinstal CC064 DKA400:[CC064.KIT]
+
+                OpenVMS VAX Software Product Installation Procedure X7.2-72B
+
+              It is 17-JAN-2001 at 14:50.
+
+              Enter a question mark (?) at any time for help.
+
+           %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                      UCX$NTPD
+              * Do you want to continue anyway [NO]? yes
+        * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+              The following products will be processed:
+
+                CC V6.4
+
+                      Beginning installation of CC V6.4 at 14:50
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                Compaq C Version 6.4 for OpenVMS VAX Systems
+
+                Copyright 2001 Compaq Computer Corporation
+
+     Compaq and the Compaq logo Registered in U.S. Patent and Trademark Office.
+
+     Confidential computer software. Valid license from Compaq required for
+     possession, use or copying. Consistent with FAR 12.211 and 12.212,
+     Commercial Computer Software, Computer Software Documentation, and
+     Technical Data for Commercial Items are licensed to the U.S. Government
+     under vendor's standard commercial license.
+
+                  A C V6.0-001 compiler was found on your system.
+                  Type YES to keep this compiler on your system either as
+                  the default system compiler, or as an alternate compiler.
+                  Type NO to supersede C V6.0-001.
+
+   Should the existing V6.0-001 system compiler be preserved [NO]: yes <Return>
+
+   Type NO to have the compiler on this kit become the default system compiler
+   and to have the currently installed compiler saved as an alternate compiler.
+   Type YES to keep the current system compiler as the default compiler,
+   and to have the compiler on this kit available as an alternate compiler.
+   Alternate compilers can be invoked with the cc command after invoking
+   sys$common:[sysexe]decc$set_version.com passing a version_number.
+
+* Should this V6.0-001 system compiler remain the default when cc is typed 
+                                                              [NO]: no <Return>
+
+                                                 Sample Installations A-5
+
+ 
+
+
+
+
+
+
+
+                      Product:      C
+                      Producer:     DEC
+                      Version:      6.4
+                      Release Date: 05-JAN-2001
+
+* Does this product have an authorization key registered and loaded? 
+                                                                yes <Return>
+
+         HTML, postscript and text versions of the Compaq C Users Guide,
+         Language Reference Manual and RTL Reference Manual may be optionally
+         installed into SYS$COMMON:[SYSHLP.CC$VAX_HELP_064].
+         These documents consume approximately 40000 blocks.
+
+              * Should these manuals be provided [NO]: yes <Return>
+
+         This kit contains a file summarizing the new features, changes,
+         restrictions, and compatibility issues in this release of Compaq C.
+         This file is named CC064.RELEASE_NOTES and has been placed in
+         sys$common:[syshlp.cc$vax_help064]
+
+             This file contains information valuable to Compaq C programmers.
+             Please inform your user community of this file's existence.
+
+* The default compiler when only CC is specified, VAXC or DECC [DECC]: <Return>
+
+                  This kit contains an Installation Verification Procedure (IVP)
+                  to verify the correct installation of Compaq C.  The IVP will
+                  be left in:
+
+                      SYS$COMMON:[SYSTEST]DECC$IVP.COM
+
+                  After the installation is complete, you can invoke the command
+                  file at any time to verify that Compaq C is installed and
+                  working correctly.
+
+     * Do you want to run the IVP after the installation [YES]? <Return>
+
+     * Do you want to purge files replaced by this installation [YES]? <Return>
+
+     All questions have been answered. The installation will take a few minutes.
+
+      The C Runtime Library headers and Starlet headers are installed as
+      a Text Library (.TLB).  The traditional text form  of the headers
+      (.H files) is also provided (for  reference  purposes only) in
+      the directories: SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+      SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C].
+
+      Please note that the compiler does not search the reference areas
+      SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+      SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C] during compilation.
+      Instead headers are taken from the text library.
+
+        A-6 Sample Installations
+
+ 
+
+
+
+
+
+
+
+                  Please add SYS$STARTUP:CCXX$STARTUP.COM to the system startup
+                  procedure called SYS$STARTUP:SYSTARTUP_xxx.
+
+       To use Compaq C for OpenVMS VAX on other VAX nodes of a VMScluster
+       enter the command "$ @SYS$STARTUP:CCXX$STARTUP.COM" from a privileged
+       account on each such node.  This will install Compaq C images and define
+       "DECC$*" system-wide logical names.
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+                      The CXXDEMANGLE utility appears on this system.
+                      Installation of the kit version will not be performed.
+
+                  Your OpenVMS system will now be modified to include the
+                  following new and modified files:
+
+                  [SYSEXE]DECC$COMPILER_V06_00-001.EXE   [renamed]
+                  [SYSMSG]DECC$MSG_SHR_V06_00-001.EXE    [renamed]
+                  [SYSEXE]DECC$COMPILER.EXE              [new]
+                  [SYSMSG]DECC$MSG_SHR.EXE               [new]
+                  [SYSHLP]HELPLIB.HLP                    [modified]
+                  [SYSHLP.CC$VAX_HELP_064]*.*            [new]
+                  [SYSHLP]CC064.RELEASE_NOTES            [new]
+                  [SYSLIB]DCLTABLES.EXE                  [modified]
+                  [SYSLIB]DECC$RTLDEF.TLB                [new]
+                  [DECC$LIB.REFERENCE.SYS$STARLET_C]*.H  [new]
+                  [DECC$LIB.REFERENCE.DECC$RTLDEF]*.H    [new]
+                  [SYSLIB]DECC$OLB.EXE                   [new]
+                  [SYSLIB]DECC$OLB.README                [new]
+                  [SYSLIB]DECC$OLB.OLB                   [new]
+                  [SYS$STARTUP]CCXX$STARTUP.COM          [modified]
+                  [SYSEXE]DECC$SET_VERSIONS.COM          [new]
+                  [SYSEXE]DECC$SHOW_VERSIONS.COM         [new]
+                  [SYSTEST]DECC$IVP.COM                  [modified]
+
+             The file SYS$STARTUP:CCXX$STARTUP.COM contains commands to be
+             executed at system startup to allow for the best compilation
+             performance.  You may want to invoke this command file from your
+             system's site specific start up file.  This command file does not
+             have to be invoked for correct operation of Compaq C.
+
+%VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                  Beginning COMPAQ C V6.4 Installation Verification Procedure
+
+                  Copyright 2001 Compaq Computer Corporation
+
+     Compaq and the Compaq logo Registered in U.S. Patent and Trademark Office.
+
+                                                 Sample Installations A-7
+
+ 
+
+
+
+
+
+
+        Confidential computer software. Valid license from Compaq required for
+        possession, use or copying. Consistent with FAR 12.211 and 12.212,
+        Commercial Computer Software, Computer Software Documentation, and
+        Technical Data for Commercial Items are licensed to the U.S. Government
+        under vendor's standard commercial license.
+
+                  Image Check Complete
+                  License Check Complete
+                  Version Check Complete
+                  Message Check Complete
+                  Header Check Complete
+                  Run Time Library Check Complete
+
+                  COMPAQ C V6.4 Installation Verification Procedure Successful
+
+                      Installation of CC V6.4 completed at 15:04
+
+                      VMSINSTAL procedure done at 15:04
+
+        A.3 Installation with Old Compiler as Default
+
+              This sample was run on a system that had a previous version
+              of Compaq C installed. In this sample, the new version of
+              the compiler is installed, but the previous version of the
+              compiler is kept and made the default compiler.
+
+              The installation procedure prompts you to designate one of
+              the compiler versions as the system default compiler. See
+              Section 1.6 for more information on installing and using
+              multiple compiler versions.
+
+              $ @sys$update:vmsinstal CC064 DKA400:[CC064.KIT]
+
+                  OpenVMS VAX Software Product Installation Procedure X7.2-72B
+
+              It is 17-JAN-2001 at 11:00.
+
+              Enter a question mark (?) at any time for help.
+
+           %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                      UCX$NTPD
+              * Do you want to continue anyway [NO]? yes <Return>
+    * Are you satisfied with the backup of your system disk [YES]? yes <Return>
+
+              The following products will be processed:
+
+                CC V6.4
+
+                      Beginning installation of CC V6.4 at 11:00
+
+        A-8 Sample Installations
+
+ 
+
+
+
+
+
+
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                Compaq C Version 6.4 for OpenVMS VAX Systems
+
+                Copyright 2001 Compaq Computer Corporation
+
+     Compaq and the Compaq logo Registered in U.S. Patent and Trademark Office.
+
+     Confidential computer software. Valid license from Compaq required for
+     possession, use or copying. Consistent with FAR 12.211 and 12.212,
+     Commercial Computer Software, Computer Software Documentation, and
+     Technical Data for Commercial Items are licensed to the U.S. Government
+     under vendor's standard commercial license.
+
+                  A C V6.0-001 compiler was found on your system.
+                  Type YES to keep this compiler on your system either as
+                  the default system compiler, or as an alternate compiler.
+                  Type NO to supersede C V6.0-001.
+
+* Should the existing V6.0-001 system compiler be preserved [NO]: yes <Return>
+
+   Type NO to have the compiler on this kit become the default system compiler
+   and to have the currently installed compiler saved as an alternate compiler.
+   Type YES to keep the current system compiler as the default compiler,
+   and to have the compiler on this kit available as an alternate compiler.
+   Alternate compilers can be invoked with the cc command after invoking
+   sys$common:[sysexe]decc$set_version.com passing a version_number.
+
+* Should this V6.0-001 system compiler remain the default when cc is typed 
+                                                            [NO]: yes <Return>
+
+                      Product:      C
+                      Producer:     DEC
+                      Version:      6.4
+                      Release Date: 05-JAN-2001
+
+* Does this product have an authorization key registered and loaded? 
+                                                                 yes <Return>
+
+           HTML, postscript and text versions of the Compaq C Users Guide,
+           Language Reference Manual and RTL Reference Manual may be optionally
+           installed into SYS$COMMON:[SYSHLP.CC$VAX_HELP_064].
+           These documents consume approximately 40000 blocks.
+
+              * Should these manuals be provided [NO]: yes <Return>
+
+           This kit contains a file summarizing the new features, changes,
+           restrictions, and compatibility issues in this release of Compaq C.
+           This file is named CC064.RELEASE_NOTES and has been placed in
+           sys$common:[syshlp.cc$vax_help064]
+
+                                                 Sample Installations A-9
+
+ 
+
+
+
+
+
+
+
+           This file contains information valuable to Compaq C programmers.
+           Please inform your user community of this file's existence.
+
+                  This kit contains an Installation Verification Procedure (IVP)
+                  to verify the correct installation of Compaq C.  The IVP will
+                  be left in:
+
+                      SYS$COMMON:[SYSTEST]DECC$IVP.COM
+
+                  After the installation is complete, you can invoke the command
+                  file at any time to verify that Compaq C is installed and
+                  working correctly.
+
+      * Do you want to purge files replaced by this installation [YES]?<Return>
+
+    All questions have been answered. The installation will take a few minutes.
+
+        The C Runtime Library headers and Starlet headers are installed as
+        a Text Library (.TLB).  The traditional text form  of the headers
+        (.H files) is also provided (for  reference  purposes only) in
+        the directories: SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+        SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C].
+
+        Please note that the compiler does not search the reference areas
+        SYS$COMMON:[DECC$LIB.REFERENCE.DECC$RTLDEF] and
+        SYS$COMMON:[DECC$LIB.REFERENCE.SYS$STARLET_C] during compilation.
+        Instead headers are taken from the text library.
+
+        Please add SYS$STARTUP:CCXX$STARTUP.COM to the system startup
+        procedure called SYS$STARTUP:SYSTARTUP_xxx.
+
+        To use Compaq C for OpenVMS VAX on other VAX nodes of a VMScluster
+        enter the command "$ @SYS$STARTUP:CCXX$STARTUP.COM" from a privileged
+        account on each such node.  This will install Compaq C images and define
+        "DECC$*" system-wide logical names.
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+                      The CXXDEMANGLE utility appears on this system.
+                      Installation of the kit version will not be performed.
+
+                  Your OpenVMS system will now be modified to include the
+                  following new and modified files:
+
+
+        A-10 Sample Installations
+
+ 
+
+
+
+
+
+
+
+                  [SYSEXE]DECC$COMPILER_V06_04-005.EXE  [new]
+                  [SYSMSG]DECC$MSG_SHR_V06_04-005.EXE   [new]
+                  [SYSHLP]HELPLIB.HLP                   [modified]
+                  [SYSHLP.CC$VAX_HELP_064]*.*           [new]
+                  [SYSHLP]CC064.RELEASE_NOTES           [new]
+                  [SYSLIB]DCLTABLES.EXE                 [modified]
+                  [SYSLIB]DECC$RTLDEF.TLB               [new]
+                  [DECC$LIB.REFERENCE.SYS$STARLET_C]*.H [new]
+                  [DECC$LIB.REFERENCE.DECC$RTLDEF]*.H   [new]
+                  [SYSLIB]DECC$OLB.EXE                  [new]
+                  [SYSLIB]DECC$OLB.README               [new]
+                  [SYSLIB]DECC$OLB.OLB                  [new]
+                  [SYS$STARTUP]CCXX$STARTUP.COM         [modified]
+                  [SYSEXE]DECC$SET_VERSIONS.COM         [new]
+                  [SYSEXE]DECC$SHOW_VERSIONS.COM        [new]
+                  [SYSTEST]DECC$IVP.COM                 [modified]
+
+            The file SYS$STARTUP:CCXX$STARTUP.COM contains commands to be
+            executed at system startup to allow for the best compilation
+            performance.  You may want to invoke this command file from your
+            system's site specific start up file.  This command file does not
+            have to be invoked for correct operation of Compaq C.
+
+%VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                      Installation of CC V6.4 completed at 11:14
+
+                      VMSINSTAL procedure done at 11:14
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                Sample Installations A-11

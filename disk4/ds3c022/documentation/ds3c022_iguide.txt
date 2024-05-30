@@ -1,0 +1,812 @@
+
+	DECserver 300
+	---------------------------
+
+
+	Software Installation (VMS)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	Order Number: AA-NE45C-TE
+
+	
+
+DECserver 300
+-------------------------------
+
+
+Software Installation (VMS)
+
+December 1991
+
+This manual provides the procedure to install the DECserver 300 distribution 
+software onto VMS systems, configure these systems as down-line load hosts, and 
+down-line load the DECserver 300 image.  This manual is intended for the VMS 
+system manager or network manager.
+
+Supersession/Update Information:	This is a revised manual.
+
+Operating System and Version:		VMS V5.0
+
+Software Version:			DECserver 300 V2.1
+
+This manual applies to Version 2.1 of the DECserver 300 software and Version 
+5.0 of the VMS operating system, and all subsequent maintenance releases up to 
+the next major product release.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	Order Number: AA-NE45C-TE
+
+
+
+
+
+
+
+
+The information in this document is subject to change without notice and should 
+not be construed as a commitment by Digital Equipment Corporation. Digital 
+Equipment Corporation assumes no responsibility for any errors that may appear 
+in this document.
+
+The software described in this document is furnished under a license and may 
+only be used or copied in accordance with the terms of such license.
+
+No responsibility is assumed for the use or reliability of software on 
+equipment that is not supplied by Digital or its affiliated companies.
+
+Restricted Rights: Use, duplication, or disclosure by the U.S. Government is 
+subject to restrictions as set forth in subparagraph (c)(1)(ii) of the Rights 
+in Technical Data and Computer Software clause at DFARS 252.227-7013.
+
+Copyright  1991 by Digital Equipment Corporation
+All Rights Reserved
+
+The following are trademarks of Digital Equipment Corporation:  BI, DEC, 
+DECnet, DECserver,
+DELNI, LAT, MicroVAX, ThinWire, ULTRIX, UNIBUS, VAX, VAXcluster, VAXstation, 
+VMS, 
+VT220, and the Digital logo.
+
+
+IBM is a registered trademark of International Business Machines Corporation.
+UNIX is a registered trademark of UNIX System Laboratories, Inc. 
+Vitalink is a registered trademark of Vitalink Communications Corporation.
+
+
+
+
+
+
+
+
+
+
+
+ ---------------------------------------------------------------------------
+ |This manual was produced by Telecommunications and Networks Publications.|
+ ---------------------------------------------------------------------------
+
+
+
+ 
+
+
+				Preface
+
+Intended Audience
+
+  This document provides a system manager or network manager the procedures 
+  needed to install the terminal server software on a VMS[TM] load host.
+
+  The system manager or network manager should be familiar with both DECnet[TM] 
+  Phase IV network management concepts and the VMS operating system. 
+
+Structure of This Document
+
+  This document consists of one continuous procedure,  which is divided as 
+  follows:
+
+  o	Preparing to install the software
+
+  o	Using VMSINSTAL
+
+  o	Using DSVCONFIG
+
+  o	Down-line loading the software
+
+  o	Completing the installation
+
+  o	Installing software on additional VMS hosts
+
+  This document also includes:
+
+  o	What to do if the installation fails
+
+  o	DECserver[TM] 300 distribution files
+
+								
+
+
+Conventions Used in This Manual 
+
+  To use this manual effectively, you should be familiar with the conventions 
+  discussed in this section:
+
+  o	All numbers are decimal unless otherwise noted.
+
+  o	All Ethernet addresses are hexadecimal.
+
+
+  ----------------------------------------------------------------------------
+
+  Convention	Meaning 
+  ----------------------------------------------------------------------------
+
+
+  Special type	This special type indicates system output or user input.  
+		System output is in black type; user input is in red type.
+
+  UPPERCASE	VMS commands, node names, directory names, and file names 
+		appear in uppercase letters.
+
+  italic	Italic type in command syntax indicates variables  for  which 
+		either you or the system supplies a value.
+
+  [ key ]	Press the specified key.  For example,  means that you should 
+		press the Return key.
+
+  Ctrl/X	Hold down the Control key and simultaneously press the key 
+		specified by x.  The server displays this key combination as 
+		^x.
+  -----------------------------------------------------------------------------
+	
+
+ 
+
+
+
+			Installation Procedure
+			----------------------
+The following lists the topics provided in this document to install the 
+terminal server  software on a VMS load host:
+
+O	Preparing to install the software
+
+O	Using VMSINSTAL
+
+O	Using DSVCONFIG
+
+O	Down-line loading the software
+
+O	Completing the installation
+
+O	Installing software on additional VMS hosts
+
+At the end of this manual is a procedure that describes the steps to be taken 
+if the installation fails.  The final section of this document provides a list 
+of the distribution  files.
+
+
+
+Preparing to Install the Software
+
+  Perform the following tasks before you install the terminal server software 
+  on your system (referred to as the load host in this procedure):
+
+  1. Check your load host for the following:
+
+     a.	VMS  V5.0 or any subsequent maintenance release up to the next major 
+	product release is installed.
+
+     b. DECnet VAX[TM] Phase IV is running.
+
+     c.	The Ethernet controller is on the same Ethernet as the terminal server.
+
+  2. Ensure that the CMKRNL and SYSPRV privileges are set.
+
+  3. Verify that the load host has 2500 blocks of available disk space (2000 
+     after installation), and an additional 2048 blocks for each up-line dump.
+
+  4. Backup the system before installing the software.
+
+  5. Mount the software media on an appropriate device drive, unless you are 
+     installing from save sets copied from another load host.
+
+  6. Make a note of  the terminal server DECnet node address, DECnet node 
+     name (supplied by the network manager), and the Ethernet hardware address 
+     (supplied by the hardware installer).
+
+  Installation requires approximately 5 minutes to complete.
+
+				NOTE
+
+		License Management Facility (LMF) is not required.
+
+ 
+
+Using VMSINSTAL
+
+  Perform the following to install the terminal server software on the load 
+  host.  To stop the installation at any time,  press Ctrl/Y.  
+
+  7. Log in to the system manager account.
+
+  8. Enter the @SYS$UPDATE VMSINSTAL DS3021 your-device-identifier 
+     OPTIONS N command to start VMSINSTAL.  Substitute your device identifier 
+     for your-device-identifier where the distribution medium is mounted.
+
+  9. If there are any active processes, VMSINSTAL lists them and asks if you 
+     want to continue.  Enter YES to continue the installation. 
+
+  10. Press Return if you have backed up your system disk,  and enter YES if 
+      you mounted the software media on the appropriate device. 
+
+
+  ----------------------------------------------------------------------------
+  $ @SYS$UPDATE:VMSINSTAL DS3021  your-device-identifier OPTIONS N 
+
+  VAX/VMS Software Product Installation Procedure Vn.n
+
+  It is 11-APR-1991 at 14:08.
+  Enter a question mark (?) at any time for help.
+
+  %VMSINSTAL-W-ACTIVE, The following processes are still active:
+  MIKE_VCS
+  VCS Task 542.1
+  VCS Task 193.0
+  * Do you want to continue anyway
+  [NO]? YES 
+  
+  * Are you satisfied with the backup of your system disk[YES]?
+  
+  Please mount the first volume of the set on xxxx:.
+  * Are you ready? Y 
+  %MOUNT-I-MOUNTED, DS3 mounted on SYSTEM$xxxx:
+  -----------------------------------------------------------------------------
+
+
+Using VMSINSTAL (cont.)
+
+  11. Select option 2 (recommended) to print the release notes.   Press the 
+      Return key to print the release notes on the default printer or specify 
+      another print queue.                   
+
+      If you select option 1, the release notes scroll on your terminal.  Be 
+      aware that the release notes file can contain as many as 30 screens.
+
+  12.Enter YES to continue the installation.
+
+
+  ----------------------------------------------------------------------------
+  The following products will be processed:
+  DS3 V2.1
+
+  Beginning installation of DS3 V2.1 at 14:08
+
+  %VMSINSTAL-I-RESTORE, Restoring product save set A...
+ 
+  Release notes included with this kit are always copied to SYS$HELP.
+
+  Additional Release Notes Options:
+
+  1.  Display release notes
+  2.  Print release notes
+  3.  Both 1 and 2
+  4.  None of the above
+
+  * Select option [2]: 
+  * Queue name [SYS$PRINT]: 
+  Job DS3020.RELEASE_NOTES (queue SYS$PRINT, entry 314) started on SYS$PRINT
+
+
+  * Do you want to continue the installation [NO]? YES
+  ----------------------------------------------------------------------------  
+
+
+
+Using VMSINTAL (cont.) 
+
+  13. Press the Return key to run the Installation Verification Procedure 
+      (IVP), which is recommended.  The IVP verifies that the DECSERVER 
+      directory exists, all the files from the distribution kit are in the 
+      directory, and the release notes are in the SYS$HELP directory.  
+
+  14. If your system is part of a VAXcluster system, use the CREATE/DIRECTORY 
+      command on each VAXcluster node after exiting VMSINSTAL so that the 
+      other nodes can execute the terminal server software.  You can do this 
+      after you finish this installation procedure.
+
+  ----------------------------------------------------------------------------
+  * Do you want to run the IVP after installation [YES]?
+  %VMSINSTAL-I-RESTORE, Restoring product save set B...
+  %VMSINSTAL-I-SYSDIR, This product creates a system directory [DECSERVER]
+
+  If you intend to execute this layered product on other nodes in your 
+  VAXcluster, and you have the appropriate software license, you must 
+  prepare the system-specific roots on the other nodes by issuing the 
+  following command on each node (using a suitably privileged account):
+
+  $ CREATE/DIRECTORY SYS$SPECIFIC:[DECSERVER]
+  /PROTECTION=(S:RWED,O:RWED, G:WER,W)
+  
+  -----------------------------------------------------------------------------
+
+
+
+Using VMSINSTAL (cont.)
+
+  15. If you receive one of the following messages, perform the procedure 
+      described within the message to update the MOM$LOAD logical name.
+
+  One possible message:
+
+
+  -----------------------------------------------------------------------------
+  Your installation is now complete. After exiting from VMSINSTAL:
+
+  1. Modify the definition of MOM$LOAD in your system start-up file, 
+  SYS$MANAGER:SYSTARTUP_V5.COM, to resemble the following:
+
+  $ DEFINE/SYSTEM/EXEC/NAME=NO_ALIAS/NOLOG -
+	MOM$LOAD -
+	SYS$SYSROOT:[MOM$SYSTEM], -
+	SYS$SYSROOT:[DECSERVER]
+
+  This command ensures that the location of the server image is defined each 
+  time the system is rebooted, necessary for successful down-line loading.
+  ----------------------------------------------------------------------------
+
+
+  Another possible message:
+
+
+  ----------------------------------------------------------------------------
+  Your installation is now complete. After exiting from VMSINSTAL:
+
+  1. Add the following  command to your system start-up file, 
+  SYS$MANAGER:SYSTARTUP_V5.COM, to resemble the following:
+
+  $ DEFINE/SYSTEM/EXEC/NAME=NO_ALIAS/NOLOG -
+	MOM$LOAD -
+	SYS$SYSROOT:[DECSERVER]
+
+  This command ensures that the location of the server image is defined each 
+  time the system is rebooted, necessary for successful down-line loading.
+  ----------------------------------------------------------------------------
+
+
+     MOM$LOAD is a logical name that your load host uses to find the image 
+     file of any product that must be down-line loaded. For each product, 
+     MOM$LOAD has an associated equivalent string that specifies the location 
+     of the product image file.  
+
+     If you do not get either of these messages,  no modifications to the 
+     system start-up file are necessary.
+
+
+
+Using VMSINSTAL (cont.)
+
+  16. VMSINSTAL is completed. Proceed to step 17. 
+
+  This IVP command procedure is for informational purposes.   You do not need 
+  to run it again at this time.
+
+
+  ----------------------------------------------------------------------------
+  2. Configure the server into your host's database.  Execute a command 
+  procedure called DSVCONFIG.COM.  This command procedure is in the 
+  SYS$ROOT:[DECSERVER] directory.  If you have already executed this procedure 
+  from previous installations, you only need to configure  additional units. 
+  All previously defined units will still be configured.
+
+  The Installation Verification Procedure (IVP) for the DECserver 300 can be 
+  found in SYS$TEST and may be run at any time by executing the command 
+  procedure DS3$IVP.COM.
+
+  VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+  Beginning installation verification procedure for DECserver 300 V2.1 completed 
+  at 14:30
+
+  VMSINSTAL procedure done at 14:30
+  $
+  ----------------------------------------------------------------------------
+
+
+Using DSVCONFIG             
+
+  17. If you are using the optional Terminal Server Manager (TSM) software, 
+      do not use the DSVCONFIG procedure; instead, refer to Terminal Server 
+      Manager Installation and Use to configure the load host database.
+
+  DSVCONFIG checks for data file DSVCONFIG.DAT in SYS$SYSROOT:[DECSERVER] or 
+  SYS$COMMON:[DECSERVER] for VAXcluster systems.  It finds one of three 
+  situations:
+
+  o	The file does not exist. The procedure creates DSVCONFIG.DAT.
+
+  o	The file exists and is formatted correctly.
+
+  o	The file exists but not in the correct format. The procedure 
+	reformats the file.
+
+  Each VAXclusterTM node might have an older version of  DSVCONFIG.DAT. In this 
+  case, DSVCONFIG copies the terminal server entries from that data file into 
+  the DSVCONFIG.DAT file on SYS$COMMON:[DECSERVER], and renames the  file in 
+  SYS$SPECIFIC so that the DSVCONFIG.DAT file in SYS$COMMON is used thereafter.
+
+				CAUTION
+
+  Do not execute any DECnet commands that  are part of DSVCONFIG separate from 
+  the DSVCONFIG procedure.  Otherwise, DECnet databases could be changed with-
+  out changing DSVCONFIG.DAT, causing a synchronization problem.
+
+
+
+Using DSVCONFIG (cont.)            
+
+  18. Set the default to MOM$LOAD and start DSVCONFIG as shown in the 
+      example.  You might get merging messages if you are on a VAXcluster 
+      system.
+
+  19. Select option 2 to add a new terminal server.             
+
+
+  ----------------------------------------------------------------------------
+  $ SET DEFAULT MOM$LOAD: 
+  $ @DSVCONFIG 
+
+
+  You must assign a unique DECnet node  name  and  DECnet  node address for 
+  each new DECserver unit.
+
+  Press <RET> to start, or <CTRL/Z> to exit...      
+
+
+
+
+  DECserver Configuration Procedure Version: Vn.n
+
+  Menu of Options
+  1 - List known DECservers
+  2 - Add a DECserver
+  3 - Swap an existing DECserver
+  4 - Delete an existing DECserver
+  5 - Restore existing DECservers
+  CTRL/Z - Exit from this procedure
+  Your selection? 2 
+  ----------------------------------------------------------------------------
+
+
+Using DSVCONFIG  (cont.)
+
+  20. Enter the following:
+
+      -	DS300 for the DECserver type
+
+      -	DECnet node name and address
+
+        DSVCONFIG determines the validity of the node name entered.  If you 
+        get an error here, choose another node name.  The one you specified 
+        is in use.
+
+      -	Terminal server Ethernet address
+
+  21. DSVCONFIG determines the load host service circuit-ID and displays this 
+      ID as the default.  Press the Return key to select the default service 
+      circuit-ID.
+
+      DSVCONFIG adds the entry for the new terminal server to the databases 
+      and sets SERVICE ENABLED on the specified service circuit,  which is 
+      necessary for down-line loading.   If you get an error from DECnet while
+      adding a terminal server, use option 4 to remove the entry, correct the 
+      problem, then try again.
+
+
+  ----------------------------------------------------------------------------
+  Type ? at any time for help on a question.
+  Type CTRL/Z for any question to return to the menu without adding the unit.
+
+  DECserver type? DS300
+  DECnet node name for unit? xxxxxx
+  DECnet node address for unit? xx.xxxx
+  Ethernet address of unit? xx-xx-xx-xx-xx-xx 
+
+  DECnet Service Circuit-ID? [UNA-0]
+
+  If you get an error message now, the new DECserver unit will not be 
+  completely added, and you should use menu item #4 (Delete an existing 
+  DECserver) to remove it from the list of known DECservers. 
+  ----------------------------------------------------------------------------
+
+
+Using DSVCONFIG  (cont.)
+
+  22. Press the Return key to continue DSVCONFIG.
+
+  23. Press Ctrl/Z to exit DSVCONFIG.
+
+
+  ----------------------------------------------------------------------------
+  Please hit <RETURN> to continue.
+
+  DECserver Configuration Procedure Version: Vn.n
+
+  Menu of Options
+
+  1 - List known DECservers
+  2 - Add a DECserver
+  3 - Swap an existing DECserver
+  4 - Delete an existing DECserver
+  5 - Restore existing DECservers
+  CTRL/Z - Exit from this procedure
+  Your selection? 
+  $ 
+  ----------------------------------------------------------------------------
+
+
+Down-Line Loading the Software
+
+  If you are installing a new terminal server,  down-line loading of the 
+  software image is done automatically during power up of the hardware.  If 
+  this is the case, do not  perform steps 24 through 28; instead, proceed to 
+  step 29.
+
+  24. Enter the NCP CONNECT NODE node-name command to connect to the terminal 
+      server. (Substitute your terminal server DECnet node name for node-name.)
+      If a maintenance password has been defined by the terminal server 
+      manager, use the following command: CONNECT NODE node-name SERVICE 
+      PASSWORD password. (Substitute your terminal server maintenance password
+      for password.) 
+
+  25. Press the Return key to get the terminal server prompt.  Enter the 
+      log-in password.  ACCESS is the terminal server default log-in password.
+
+  26. Enter your user name (a string of 1 to 16 characters).
+
+  27. Use the SET PRIVILEGED command and enter the password. The default 
+      password is SYSTEM.
+
+  28. Use the INITIALIZE command to  down-line load the terminal server image 
+      to the terminal server.  The qualifier, DELAY xx, causes the terminal 
+      server to wait xx minutes before initializing.  This permits any 
+      existing users time to log off.  You must also wait xx minutes before 
+      you can continue with the procedure.
+
+
+  ----------------------------------------------------------------------------
+  $ MCR NCP 
+  NCP> CONNECT NODE node-name 
+  Console connected (press Ctrl/D when finished)
+  
+
+  # ACCESS  (not echoed)
+  DECserver 300 Terminal Server V2.0 (BLn.n)- 
+  LAT V5.1
+
+  Please type HELP if you need assistance
+  Enter username>  SWINSTALLER 
+  Local> SET PRIVILEGED 
+  Password> SYSTEM (not echoed) 
+  Local> INITIALIZE DELAY xx
+  ----------------------------------------------------------------------------
+
+
+Down-Line Loading the Software (cont.)
+
+  Perform steps 29 through 34 to verify the down-line load. 
+
+  29. Enter the NCP CONNECT NODE node-name command to connect to the terminal 
+      server.  (Substitute your terminal server DECnet node name for 
+      node-name.)  If a maintenance password has been defined by the terminal 
+      server manager,  use the following command: CONNECT NODE node-name 
+      SERVICE PASSWORD password.  (Substitute your terminal server maintenance
+      password for password.)
+
+  30. Press the Return key to get the terminal server prompt.  Enter the 
+      log-in password.  ACCESS is the terminal server default log-in password.
+
+  31. Read the identification message to ensure the latest version (Vn.n) of 
+      the terminal server image was down-line loaded. 
+
+  32. Enter your user name (any string of 1 to 16 characters).
+
+  33. Press Ctrl/D to return to the NCP prompt. 
+
+  34. Enter EXIT to return to the VMS system prompt. 
+
+  If this installation is a software upgrade, either you or the network manager 
+  can now reload all existing terminal servers. 
+
+
+  ----------------------------------------------------------------------------
+  $ MCR NCP 
+  NCP> CONNECT NODE node-name 
+  Console connected (press CTRL/D when finished)
+
+
+  # ACCESS  (not echoed)
+  DECserver 300 Terminal Server V2.1 (BLn.n) - 
+  LAT V5.1
+ 
+  Please type HELP if you need assistance
+  Enter username>  SWINSTALLER 
+  Local> 
+  NCP> exit
+  $
+  ----------------------------------------------------------------------------
+
+
+
+
+Completing the Installation
+
+  Perform the following if the installation is complete:
+
+  35. Optionally, you should install the kit on at least two load hosts.  
+      Also, you should have one load host for every 10 terminal servers.
+
+  36. Inform the system manager or network manager that the installation is 
+      complete.
+
+  37. Give this document to the person who will be managing the terminal 
+      server.
+
+Installing Software on Additional VMS Hosts                             
+
+  To install the server distribution software onto an additional VMS load host 
+  that is not a member of a VAXcluster system, follow these steps:
+
+  1. Invoke VMSINSTAL at the original load host, as follows.  (Substitute 
+     your device drive identifier for your-device-identifier.)
+
+     $ @VMSINSTAL DS3021  your-device-identifier OPTIONS G SYS$UPDATE:
+
+     OPTIONS G stores the save sets in the SYS$UPDATE directory.
+
+  2. Copy the save sets from the original load host to the alternate load 
+     host's SYS$UPDATE directory. The save sets are DS3nnn.A and DS3nnn.B, 
+     where nnn is the version number of the DECserver 300 software.  For 
+     example, nnn  equals 021 for version 2.1.
+
+  3. Run VMSINSTAL on the alternate load  host.
+
+
+
+What To Do If the Installation Fails
+
+  Perform the following if the installation fails:
+
+  1. If the down-line load fails, it could be that service on the circuit is 
+     disabled.  The following command shows how to check service circuit 
+     BNA-0.  Substitute your load host service circuit-ID for BNA-0. 
+
+     $ MCR NCP 
+     NCP> SHOW CIR BNA-0 CHAR 
+
+
+     a. If the display shows that the service is disabled, enter the following 
+        command to check if there are any users or applications using the 
+        circuit:
+
+        NCP> SHOW KNOWN LINKS 
+
+     b. If there are no known links active, enter the following commands to 
+        enable service circuit BNA-0.  Enabling the circuit disconnects the 
+        active links. 
+
+        NCP> SET CIR BNA-0 STATE OFF
+        NCP> SET CIR BNA-0 SERVICE ENABLED
+        NCP> SET CIR BNA-0 STATE ON
+        NCP> EXIT
+        $
+
+  2. If your load host has more than one Ethernet controller, be sure that 
+     the correct service circuit-ID was used during the DSVCONFIG procedure.
+     If you do not know the load host service circuit-ID, use the NCP command 
+     SHOW ACTIVE CIRCUITS to display active circuit characteristics.
+
+     NCP> show active circuit
+                       
+     Active circuit Volatile Summary as of 6-SEP-1991
+
+     Circuit     State     Loopback      Adjacent                               
+                           Name          Routing Node
+
+     SVA-0       on                      4.378 (LKGRT3)  
+
+     NCP> exit
+
+  3. If you still have problems,  refer to DECserver 300 Problem Solving or 
+     inform your system manager. 
+
+
+
+DECserver 300 Distribution Files
+----------------------------------------------------------------------------
+File Name				Description
+----------------------------------------------------------------------------
+
+SYS$TEST:DS3$IVP.COM			Installation verification procedure.
+
+The following files are located in SYS$SYSROOT: or SYS$COMMON:[DECSERVER]:
+
+DSVCONFIG.COM				Configuration procedure.
+DSVCONFIG.DAT				Data file used by DSVCONFIG.COM.
+TSM$DS3_nnn_DEFAULTS.COM		File used by the Terminal Server 
+					Manager (TSM) software.
+
+DS3_UNIX_SPOOL.C			The sample C program file is used for 
+					DECserver 300 spooling. 	
+
+DS3_021_CRASH_DISPLAY.COM		Crash dump identification procedure.
+DS3__021_RELEASE_NOTES			Release notes. 
+SH1601ENG.SYS				DECserver 300 software image.
+TSM$DS3_V21_ADD_LOCAL_SERVICE.COM 	File used by the TSM software.
+TSM$DS3_V21_DEDIC_SERV_PRINTER.COM	File used by the TSM software.
+TSM$DS3_V21_DEDIC_SERV_TERM.COM		File used by the TSM software. 
+TSM$DS3_V21_DSR_DTR_TERM.COM		File used by the TSM software.
+TSM$DS3_V21_GET_CHAR.COM		File used by the TSM software.
+TSM$DS3_V21_HOST_INIT_PRINTER.COM	File used by the TSM software.
+TSM$DS3_V21_PC_TERM_OR_SERV.COM		File used by the TSM software.
+TSM$DS3_V21_PORT_DEFAULT.COM		File used by the TSM software.
+
+CHAR_MIB.TXT				Management Information Base (MIB) 
+					for user reference.
+
+RFC_1158.TXT				MIB file for user reference.
+RS_232_MIB.TXT				MIB file for user reference.
+
+----------------------------------------------------------------------------
+

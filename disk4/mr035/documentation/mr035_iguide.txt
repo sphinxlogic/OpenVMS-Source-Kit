@@ -1,0 +1,4361 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     VAX_Message_Router____________________________
+                     Installation Guide
+
+                     Order Number: AA-Q1RMB-TE
+
+                     Revision/Update Information: Version 3.5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital Equipment Corporation
+                     Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           Fifth Printing, July 1998
+
+           Digital Equipment Corporation makes no representations
+           that the use of its products in the manner described in
+           this publication will not infringe on existing or future
+           patent rights, nor do the descriptions contained in this
+           publication imply the granting of licenses to make, use,
+           or sell equipment or software in accordance with the
+           description.
+
+           Possession, use, or copying of the software described in
+           this publication is authorized only pursuant to a valid
+           written license from Digital or an authorized sublicensor.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           © Digital Equipment Corporation 1987, 1998. All Rights
+           Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: DECnet, MAILbus, Message Router, MicroVAX,
+           OpenVMS, VAX, VAXcluster, VAX DOCUMENT, VMS, and the
+           DIGITAL logo.
+
+           This document was prepared using VAX DOCUMENT, Version
+           2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Introduction
+
+      1.1  Introducing Message Router......................     1-1
+      1.2  Installing and Configuring Message Router.......     1-1
+      1.2.1   The Installation Procedure ...................    1-2
+      1.2.2   The Configuration Procedure ..................    1-3
+      1.3  Handling Installation Errors....................     1-4
+
+   2  Preparing to Install Message Router
+
+      2.1  Preparation Checklist...........................     2-1
+      2.2  Prerequisite Software and Hardware..............     2-1
+      2.2.1   Checking the DECnet Product Authorization Key
+              (PAK).........................................    2-2
+      2.2.2   Tailoring OpenVMS  ...........................    2-2
+      2.3  SYSTEM Account Quotas...........................     2-3
+      2.4  System Resource Requirements....................     2-4
+      2.5  Completing Preparation..........................     2-5
+      2.6  Preparing to Install Message Router on a
+           VAXcluster or Local Area VAXcluster.............     2-8
+      2.7  Further Preparations for an Upgrade Installation
+           or Reinstallation...............................     2-9
+
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     3  Installing Message Router
+
+         3.1  Starting the Installation.......................    3-1
+         3.2  Running the Installation Procedure..............    3-5
+
+     4  Running the IVP
+
+         4.1  Introduction....................................    4-1
+         4.2  Running the IVP.................................    4-1
+         4.3  Checking the IVP................................    4-4
+
+     5  After the Installation
+
+         5.1  Tailoring OpenVMS...............................    5-2
+
+     A  Installation Save Sets
+
+
+     B  Sample Installation Procedure
+
+     C  Location of the Message Router Software
+
+
+     Index
+
+
+     Figures
+
+         1      Message Router Documentation Map .............    vii
+
+         C-1    Message Router Directory Structure ...........    C-2
+
+     Tables
+
+         2-1    Account Quota Values .........................    2-3
+
+         2-2    SYSGEN Parameter Values ......................    2-4
+
+         2-3    SYSGEN Minimum PQL Parameter Values ..........    2-4
+
+         C-1    Location of the Transfer Service Files .......    C-3
+
+         C-2    Location of the Management Service Files .....    C-5
+
+         C-3    Location of the Directory Service Files ......    C-8
+
+         C-4    Location of the Help Libraries and Release
+                Notes.........................................    C-9
+
+     iv
+
+ 
+
+
+
+
+
+
+           C-5     Message Router Images Installed with
+                   Privileges....................................    C-9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              Purpose of This Book
+
+              This book describes how to install Message Router[TM]
+              Version 3.5 on an OpenVMS[TM] operating system. It also
+              describes how to upgrade from Message Router Version 3.3.
+
+              Intended Audience
+
+              This book is intended for the person responsible for
+              installing Message Router. That person must be familiar
+              with OpenVMS VAX[TM] system management and DECnet[TM],
+              and have access to the SYSTEM account on the OpenVMS VAX
+              system.
+
+              How This Book Is Organized
+
+              This book has five chapters and three appendixes:
+
+              o  Chapter 1 introduces:
+
+                 -  The installation procedure
+
+                 -  The configuration procedure
+
+              o  Chapter 2 describes the tasks that you have to carry
+                 out before installing Message Router and lists the
+                 prerequisite hardware and software
+
+              o  Chapter 3 describes the installation procedure
+
+              o  Chapter 4 describes the installation verification
+                 procedure (IVP), which checks that the software is
+                 installed correctly on the system
+
+              o  Chapter 5 lists the tasks that you must carry out
+                 immediately after installation
+
+              o  Appendix A lists the items in the distribution kit
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+           o  Appendix B contains a log of a typical Message Router
+              installation on OpenVMS Version 5.5-2
+
+           o  Appendix C lists the location of the Message Router
+              software
+
+           How to Use This Book
+
+           Read Chapter 1 and Chapter 2 before starting the
+           installation.
+
+           Use the rest of the book during the installation
+           procedure. Remember that the installation Help text can
+           give you most of the information that you are likely to
+           need during the installation.
+
+           Related Documents
+
+           You may find the following books useful:
+
+           Introduction to MAILbus
+
+           Introduction to Message Router
+
+           VAX Message Router Configuration Guide
+
+           VAX Message Router Management Guide
+
+           VAX Message Router Management Reference Manual
+
+           You may also need to refer to:
+
+           Introduction to VMS System Management
+
+           OpenVMS Version 5.5 Upgrade and Installation Manual
+
+           VMS VAXcluster Manual
+
+           VMS Authorize Utility Manual
+
+           VMS License Management Utility Manual
+
+           Guide to VMS Performance Management
+
+           Figure 1 shows how to use the publications provided with
+           Message Router.
+
+     vi
+
+ 
+
+
+
+
+
+
+              Figure 1 Message Router Documentation Map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+           Figure 1 (Cont.) Message Router Documentation Map
+
+                  ---------------------------------------
+                 |Read the Introduction to Message Router|
+                  ---------------------------------------
+                                    |
+              ------------------------------------------------
+             |Read the release notes. See the VAX Message     |
+             |Router Installation Guide for details of how    |
+             | to print them.                                 |
+              ------------------------------------------------
+                                    |
+              ------------------------------------------------
+             |Read the VAX Message Router Configuration       |
+             | Guide for details of planning your network.    |
+              ------------------------------------------------
+                                    |
+              ------------------------------------------------
+             |Read the VAX Message Router Installation Guide  |
+             |for details of how to install Message Router.   |
+              ------------------------------------------------
+                                    |
+              ------------------------------------------------
+             |Read the VAX Message Router Configuration Guide |
+             |for details of how to configure Message Router  |
+              ------------------------------------------------
+                                    |
+            ---------------------------------------------------
+           |Read the VAX Message Router Management Guide for   |
+           |details of how to manage Message Router. Refer to  |
+           |the VAX Message Router Management Action Procedures|
+           |and the VAX Message Router Management Reference    |
+           |Manual for further management information.         |
+            ---------------------------------------------------
+                                                          MIG0058
+
+
+
+
+
+
+
+
+
+
+     viii
+
+ 
+
+
+
+
+
+
+              Conventions
+
+              The following conventions are used in this book:
+
+
+              this          Indicates commands or responses that you
+              typeface      type.
+                            Unless otherwise stated, press Return after
+                            each command or response.
+
+              variable      Represents variables to type in commands or
+                            responses.
+
+
+              this          Indicates prompts and messages from the
+              typeface      computer.
+
+              $             A dollar sign ($) is the default user
+                            prompt.
+
+
+              []            Brackets are used after questions to
+                            enclose the default answer. Press Return
+                            to accept the default. Brackets also denote
+                            a directory specification.
+
+              ...           Horizontal ellipses indicate that additional
+                            text can be entered.
+                            In the MB$CONTROL command, horizontal
+                            ellipses indicate that you can include
+                            identifiers for the MAILbus[TM] Gateways,
+                            for example, MRG for the Message Router
+                            VMSmail Gateway.
+
+
+              VMSmail       Refers to the OpenVMS Mail Utility.
+
+              Press         Indicates that you make one keystroke with
+                            an editing or command key, for example,
+                            press Return.
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+
+           Type          Indicates characters that you type at the
+                         keyboard.
+
+
+           Ctrl/Z        Indicates that you hold down the Ctrl key
+                         while pressing the other key (Z).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     x
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                                            Introduction
+
+
+
+        1.1 Introducing Message Router
+
+              Message Router is part of MAILbus. MAILbus comprises
+              Message Router and its Gateways, for example, the Message
+              Router VMSmail Gateway. Refer to the Introduction to
+              MAILbus for details of MAILbus.
+
+              Message Router has three components:
+
+              o  A message transfer component, called the Transfer
+                 Service, that transfers messages from one node to
+                 another. The management utility MRMAN is used to manage
+                 this component.
+
+              o  A directory component, called the Directory Service,
+                 which keeps a record of users in the network who can
+                 send and receive mail. The management utility MBMAN is
+                 used to manage this component.
+
+              o  A set of management service routines, called the
+                 Management Service, which comprises the exception
+                 reporting routines and the management command
+                 procedures.
+
+              These components are installed together and the instruc-
+              tions for installing them are in this book.
+
+        1.2 Installing and Configuring Message Router
+
+              You cannot use Message Router until you have installed
+              and configured it. It is important that you plan the
+              installation and configuration of Message Router before
+              you start the installation. Read the VAX Message Router
+              Configuration Guide for information about planning your
+              mail network before installing Message Router Version 3.5.
+
+              This book deals with the installation of Message Router on
+              OpenVMS Version 5.5-2, 6.2 and 7.1.
+
+                                                        Introduction 1-1
+
+ 
+
+
+
+
+
+
+           Customers who have Message Router V3.2 or later can
+           upgrade to V3.5 directly. Customers who have earlier
+           Versions need to install atleast V3.2 and then upgrade
+           to V3.5.
+
+           Message Router checks for the DECnet product license.
+           You must use the VMS License Management Utility to
+           register the DECnet product license before starting the
+           installation procedure. See the VMS License Management
+           Utility Manual for details of how to use the VMS License
+           Management Utility.
+
+              ________________________Note ________________________
+
+              An attempt to run Message Router Version 3.5 on
+              OpenVMS Version 5.5-2, 6.2 and 7.1 will fail if you
+              have not registered the DECnet license.
+
+              _____________________________________________________
+
+           The Message Router X.400 Gateway (MRX) requires Message
+           Router to be configured before you install it. The
+           other MAILbus Gateways do not. Therefore, after you
+           have installed Message Router, you can either install
+           all the MAILbus Gateways, except MRX, that you want
+           to use, or configure Message Router. It is slightly
+           quicker to install everything you need first. However,
+           you must configure Message Router before installing MRX
+           or configuring any of the other Gateways that you want to
+           use.
+
+     1.2.1 The Installation Procedure
+
+           You do not need to install Message Router on every node
+           that is going to use its services. Some User Agents
+           and Gateways can use the Transfer Service and Directory
+           Service components of Message Router remotely.
+
+              ________________________Note ________________________
+
+              The Message Router VMSmail Gateway does not use the
+              Directory Service.
+
+              _____________________________________________________
+
+     1-2 Introduction
+
+ 
+
+
+
+
+
+
+              It does not matter on which node you install Message
+              Router first in a VAXcluster[TM] or a network. However,
+              if you are going to use the Directory Service, the first
+              node you configure must be the Directory Service master
+              node. See the VAX Message Router Configuration Guide for
+              more information about configuration. There are special
+              considerations when installing on a VAXcluster or Local
+              Area VAXcluster (see Section 2.6).
+
+              This guide explains how to install Message Router on an
+              OpenVMS operating system using VMSINSTAL. VMSINSTAL is
+              a command procedure used to install optional software
+              products on an OpenVMS operating system. Basic knowledge
+              of VMSINSTAL is required to perform the installation.
+
+              You can check that the installation has succeeded by
+              running the installation verification procedure (IVP)
+              after the installation is complete. The IVP, if you
+              request it, runs automatically after the installation and
+              is described fully in Chapter 4. If the IVP is successful,
+              the Message Router software resides on your system, but
+              cannot be used until it is configured.
+
+              The procedure to install Message Router and run the IVP
+              should take about 60 minutes, depending on the system
+              configuration and type of media used. The installation
+              procedure is the same, regardless of the distribution
+              media.
+
+              You can use your Message Router Version 3.5 system
+              alongwith Message Router Version 3.2 and 3.3 system in
+              the same network.
+
+        1.2.2 The Configuration Procedure
+
+              The configuration procedure for Message Router is
+              described in the VAX Message Router Configuration Guide.
+              For details of how to install and configure other MAILbus
+              products, such as the Message Router VMSmail Gateway,
+              refer to the relevant installation and management guides.
+
+
+
+
+
+                                                        Introduction 1-3
+
+ 
+
+
+
+
+
+
+     1.3 Handling Installation Errors
+
+           It is a good idea to take a log of the installation
+           procedure to keep a record of any errors. If you receive
+           an unexpected error message during the installation, do
+           the following:
+
+           1. Check that you have responded to the prompts correctly.
+
+           2. If you have made a mistake and have been re-prompted,
+              enter the correct information.
+
+           3. If re-entering the information fails, restart the
+              installation.
+
+           4. If the installation fails again at the same point,
+              contact Digital as follows:
+
+              o  Contact your Customer Support Center, if you have a
+                 service contract
+
+              o  Contact your local Digital office to arrange for a
+                 service contract, if you do not have one
+
+           Turn to Chapter 2 to prepare for installation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     1-4 Introduction
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                     Preparing to Install Message Router
+
+
+
+        2.1 Preparation Checklist
+
+              Prepare for installation as follows:
+
+              1. Check that the distribution kit is complete and correct
+                 according to the bill of materials included with the
+                 kit.
+
+                 The distribution medium contains all the files
+                 listed in Appendix A and may be a magnetic tape or
+                 an optical disk. The type of media depends on your
+                 system hardware.
+
+              2. Check that you have a Software Product Description
+                 (SPD).
+
+              3. Check that your system has the prerequisite software
+                 and hardware. See Section 2.2.
+
+        2.2 Prerequisite Software and Hardware
+
+              To install Message Router Version 3.5 you must have:
+
+              o  Version 5.5-2, 6.2 and 7.1 Year 2000 ECO patches
+                 installed
+
+              o  A valid VAX or MicroVAX system configuration.
+
+                 Note that you cannot use node names longer that six
+                 characters with Message Router. Therefore, on DECnet
+                 /OSI systems, the node name synonym database must
+                 be accessible on the node where Message Router is
+                 installed.
+
+              o  A registered Product Authorization Key (PAK) for
+                 DECnet. Section 2.2.1 describes how to make sure that
+                 the DECnet PAK is registered.
+
+                                 Preparing to Install Message Router 2-1
+
+ 
+
+
+
+
+
+
+           o  A minimum of 19000 free blocks on the system disk
+              available for installation and 9000 blocks available
+              permanently.
+
+           o  Disk space to hold messages, directory database files,
+              and queue files. Initially, you need about 30000 free
+              blocks on the target disk. This is the disk where the
+              Message Router directories are to be created.
+
+           o  OpenVMS[TM] for VAX[TM] Version 5.5-2, Version 6.2, or
+              Version 7.1.
+
+           o  OpenVMS[TM]/VAX Version 5.5-2 either DECnet VAX Version
+              5.5-2 or DECnet/OSI [R] Version 5.6B.
+
+           o  OpenVMS[TM]/VAX Version 6.2 either DECnet VAX Version
+              6.2 or DECnet/OSI [R] Version 6.3.
+
+           o  OpenVMS[TM]/VAX Version 7.1 either DECnet VAX or DECnet
+              /OSI [R] Version 7.1.
+
+     2.2.1 Checking the DECnet Product Authorization Key (PAK)
+
+           You must ensure that a DECnet PAK is registered and active
+           before starting the installation. To do this, type the
+           following command:
+
+           $ LICENSE LIST /FULL license
+
+           where license is either DVNETRTG or DVNETEND.
+
+           Details of the DECnet license are displayed. Check that
+           the license is active. If it is not, you must load and
+           register either of the PAKs for DECnet as described in the
+           VMS License Management Utility Manual.
+
+     2.2.2 Tailoring OpenVMS
+
+           You must check that appropriate OpenVMS software is
+           available on your system. Do this using the OpenVMS
+           Tailoring utility. The tailoring utility enables you to
+           add and remove software from the OpenVMS system. You can
+           use the OpenVMS Tailoring utility on any VAX system, but
+           you are more likely to need it on a MicroVAX.
+
+           Message Router Version 3.5 requires the following classes
+           of OpenVMS files:
+
+           o  OpenVMS Required Saveset
+
+     2-2 Preparing to Install Message Router
+
+ 
+
+
+
+
+
+
+              o  Network Support
+
+              o  Programming Support
+
+              o  Secure User's Environment
+
+              o  Utilities
+
+              If any of these classes are missing, use the OpenVMS
+              Tailoring utility (VMSTAILOR) to install them. Refer to
+              OpenVMS Version 5.5 Upgrade and Installation Manual for
+              details of VMSTAILOR.
+
+        2.3 SYSTEM Account Quotas
+
+              You must ensure that the SYSTEM account is set up with
+              sufficient quota to install and run Message Router.
+              Table 2-1 shows the minimum values applicable to the
+              SYSTEM account.
+
+              Table_2-1_Account_Quota_Values____________________________
+
+              Account_______________Quota_______________________________
+
+              ASTLM                    40
+
+              BIOLM                    40
+
+              BYTLM                 35000
+
+              DIOLM                    40
+
+              ENQLM                   400
+
+              FILLM                   100
+
+              PGFLQUOTA             10000
+
+              PRCLM                    10
+
+              TQELM____________________20_______________________________
+
+              You can modify the account quotas using the Authorize
+              utility. Refer to the VMS Authorize Utility Manual for
+              details of how to do this. You need to log out and log in
+              again for the new values to take effect.
+
+                                 Preparing to Install Message Router 2-3
+
+ 
+
+
+
+
+
+
+     2.4 System Resource Requirements
+
+           You must ensure that the SYSGEN parameters are set to
+           allow sufficient quota to install and run Message Router.
+           It is important that your system is tailored before
+           you make the checks. Tables 2-2 and 2-3 show the SYSGEN
+           parameters required by Message Router.
+
+           Before you begin the installation, ensure that the system
+           parameter settings are sufficiently high, taking into
+           consideration the requirements of other applications on
+           your system.
+
+           Table_2-2_SYSGEN_Parameter_Values_________________________
+
+           Parameter_____________Value_______________________________
+
+           GBLPAGES              6000 free global pages available
+
+           GBLSECTIONS             50 free global sections available
+
+           GBLPAGFIL             1500 free pages
+
+           PROCSECTCNT           A minimum of 32 process sections
+
+           CLISYMTBL______________250_pages__________________________
+
+           Use the following commands to find the number of available
+           global pages and global sections:
+
+           $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+           $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+
+           Table_2-3_SYSGEN_Minimum_PQL_Parameter_Values_____________
+
+           Parameter_____________Value_______________________________
+
+           PQL_MASTLM               24
+
+           PQL_MBIOLM               18
+
+           PQL_MBYTLM            30000
+
+           PQL_MDIOLM               18
+
+           PQL_MENQLM              400
+
+           PQL_MFILLM               20
+
+                                             (continued on next page)
+
+     2-4 Preparing to Install Message Router
+
+ 
+
+
+
+
+
+
+              Table_2-3_(Cont.)_SYSGEN_Minimum_PQL_Parameter_Values_____
+
+              Parameter_____________Value_______________________________
+
+              PQL_MPGFLQUOTA        10000
+
+              PQL_MPRCLM                1
+
+              PQL_MTQELM_______________20_______________________________
+
+              To modify the values for any of these parameters, edit the
+              file
+              SYS$SYSTEM:MODPARAMS.DAT. For the GBLPAGES, GBLSECTIONS
+              and GBLPAGFIL parameters, make incremental changes
+              to the parameter values by including ADD_parameter in
+              MODPARAMS.DAT; for example, ADD_GBLPAGES=6000.
+
+              For the other parameters, specify minimum values for the
+              parameters by including MIN_parameter in MODPARAMS.DAT;
+              for example,
+              MIN_PQL_MASTLM=24.
+
+              Run AUTOGEN to recalculate and set your system parameters.
+              Type:
+
+              $ @SYS$UPDATE:AUTOGEN SAVPARAMS SETPARAMS [NO]FEEDBACK
+
+              The next time you reboot your system these parameters take
+              effect.
+
+        2.5 Completing Preparation
+
+              Follow these steps before invoking VMSINSTAL:
+
+              1. Log in to the privileged system manager's account.
+
+              2. Back up your system disk.
+
+                 If a system failure occurs at a critical point during
+                 the installation, some files may be corrupted. Also,
+                 you are given the choice of purging old files during
+                 the installation.
+
+              3. Ensure that there are at least 19000 blocks available
+                 on the system disk for the installation of Message
+                 Router. A new installation of Message Router needs
+                 9000 blocks on the system disk and 30000 blocks on the
+                 target disk. You may need more space on the target disk
+                 if you have a large message area.
+
+                                 Preparing to Install Message Router 2-5
+
+ 
+
+
+
+
+
+
+           4. Make sure you have enough disk space to hold your
+              expected message traffic. In addition to the Message
+              Router software, Message Router needs disk space to
+              hold messages, directory database files, and queue
+              files in its database. You need to estimate your
+              expected message traffic and make sure that you have
+              enough disk space to hold these messages.
+
+              As a guide, the initial software in the Message Router
+              directories needs approximately 1000 blocks of disk
+              space. Allow a further 29000 for messages and database
+              files.
+
+           5. If you have not already done so, check that there
+              are no active users on the system using the following
+              command:
+
+              $ SHOW USERS
+
+              The system lists the active users currently on the
+              system.
+
+              If there are any users active on the system, ask them
+              to log out by typing:
+
+              $ REPLY /BELL /USERNAME "PLEASE LOG OUT"
+
+           6. You may want to keep a record of the installation
+              procedure. You can do this either by using the
+              operator's console, which is usually a hardcopy
+              terminal, or by keeping a log, as follows:
+
+              $ SET HOST 0 /LOG=filename
+
+              where filename is the name of the file that is to
+              contain the installation log.
+
+           7. If you are installing Message Router for the first time
+              on the system, decide which device the Message Router
+              directories (the MB$ directory tree) are to reside on
+              initially. You are advised to use a device other than
+              the system disk for the Message Router directories.
+
+              The device name that you supply must be a logical
+              device name and not a physical device name. For
+              example, use USER1 and not $1$DUA1.
+
+              You are recommended not to use a rooted logical, such
+              as SYS$SYSROOT, as a device name.
+
+     2-6 Preparing to Install Message Router
+
+ 
+
+
+
+
+
+
+                 If you have already installed Message Router Version
+                 3.2 or Version 3.3, you must continue to use the same
+                 device for the Message Router directories.
+
+                 Note the name of the device here:
+
+                 _________________________________
+
+              8. If you are installing Message Router for the first time
+                 on the system, choose a user identification code (UIC)
+                 for the MBMANAGER account and record it in the space
+                 below. Do not choose a DECnet or system UIC; if you
+                 do, the installation may fail. The UIC must be unique
+                 to Message Router. Digital recommends that the Message
+                 Router UIC is in a group of its own.
+
+                 If you have already installed Message Router Version
+                 3.2 or Version 3.3, you must continue to use the same
+                 UIC for the MBMANAGER account.
+
+                 UIC of the MBMANAGER account [________,________].
+
+                 You must also choose a password for the MBMANAGER
+                 account.
+
+                 The password must contain at least eight and not more
+                 than 31 characters.
+
+              9. Ensure that you have started the system job queue
+                 manager. Use the following command to see whether the
+                 queue manager is running:
+
+                 $ SHOW QUEUE /BATCH
+
+                 If this command completes successfully, the queue
+                 manager is running. If it does not, edit the system
+                 startup file to include the following line:
+
+                 $ START /QUEUE /MANAGER /BUFFER_COUNT=10 /EXTEND_QUANTITY=25
+
+                 You can execute the above command immediately without
+                 having to wait until the next system restart to start
+                 the queue manager.
+
+              If the DECnet PAK is not loaded and registered, refer to
+              the VMS License Management Utility Manual for details
+              of how to load and register it before starting the
+              Installation Procedure.
+
+                                 Preparing to Install Message Router 2-7
+
+ 
+
+
+
+
+
+
+           The rest of the preparation depends on the type of
+           installation, as follows:
+
+           o  If you are installing on a VAXcluster, see Section 2.6
+
+           o  If you are upgrading from Version 3.2, 3.3 or
+              reinstalling, see Section 2.7
+
+           In all other cases, for example a new installation on a
+           single node, you have finished preparing for installation.
+           Turn to Chapter 3.
+
+     2.6 Preparing to Install Message Router on a VAXcluster or
+         Local Area VAXcluster
+
+           This section describes ways of installing Message Router
+           in a cluster. Refer to the VMS VAXcluster Manual for
+           details of definitions and terminology used. The section
+           also describes the different cluster configurations that
+           you can set up for Message Router.
+
+           If you are upgrading Message Router on a VAXcluster, make
+           sure that you delete all versions of the MB$LOCATION.COM
+           file from the SYS$SPECIFIC:[SYSMGR] directory on all nodes
+           in the cluster before you install Message Router V3.5.
+
+           When you upgrade your Message Router system, you must
+           re-create the configuration database when you first run
+           the MAILbus[TM] Configuration Procedure on your V3.5
+           system. To do this, use the MB$CONFIG CREATE MB command.
+           Full instructions on how to do this are given in the VAX
+           Message Router Configuration Guide.
+
+           You can run Message Router on any OpenVMS Version 5.5-
+           2 VAXcluster or Local Area VAXcluster configuration.
+           However, you must make sure that the DECnet license is
+           registered on each node in the cluster. (The VMS License
+           Management Utility Manual describes how to register your
+           license.)
+
+           In a VAXcluster, all the nodes may share a single
+           SYSUAF.DAT file and DECnet database or one group of nodes
+           may share one set of resources, and another group may
+           share a different set of resources. Also, in a cluster,
+           there may be a single system disk or multiple system
+           disks.
+
+     2-8 Preparing to Install Message Router
+
+ 
+
+
+
+
+
+
+              Irrespective of how your cluster is defined, there must be
+              only one Message Router environment within the cluster.
+              However, Message Router does not need to be installed and
+              configured on all nodes in a cluster.
+
+              Choose the set of nodes that you want Message Router
+              to run on, and make sure you install it such that the
+              installation satisfies the following two constraints:
+
+              o  It modifies all the SYSUAF.DAT files and DECnet
+                 databases that are shared by those nodes
+
+              o  It modifies all the system disks that are used by those
+                 nodes
+
+              To satisfy both of these constraints, you may need to
+              perform more than one installation. However, all the
+              installations of Message Router on a cluster must use
+              the same Message Router environment, that is, the same MB$
+              directory structure and associated data files.
+
+              When you have installed Message Router, you must configure
+              it. As part of configuration you can choose whether to
+              enable the use of the cluster alias, if one is defined.
+              You can also choose to start a minimum set of Message
+              Router processes on some of the nodes in the cluster.
+              These options are described in the VAX Message Router
+              Configuration Guide.
+
+              If you are upgrading or reinstalling Message Router,
+              continue at Section 2.7. Otherwise, turn to Chapter 3
+              for details of the installation procedure.
+
+        2.7 Further Preparations for an Upgrade Installation or
+            Reinstallation
+
+              You can upgrade to Message Router V3.5 from either V3.3 or
+              V3.2. You cannot upgrade from earlier versions of Message
+              Router to V3.5.
+
+              Message Router runs on either DECnet/VAX Phase IV or
+              DECnet/OSI for OpenVMS VAX. However, Message Router
+              does not accept node names longer than six characters.
+              Therefore, the node name synonym database must be
+              accessible when Message Router is running on DECnet/OSI
+              for OpenVMS VAX.
+
+                                 Preparing to Install Message Router 2-9
+
+ 
+
+
+
+
+
+
+           It is not supported to run Message Router V3.5 on a
+           VAXcluster[TM] that is running a mixture of DECnet/VAX
+           Phase IV and DECnet/OSI for OpenVMS VAX.
+
+           Prepare your system for installation as follows:
+
+           o  If Message Router is running, stop it and all MAILbus
+              components with the following command:
+
+              $ @SYS$MANAGER:MB$CONTROL STOP=(ER,...,DDS,TS,MS)
+
+              where ... is a list of the identifiers of other MAILbus
+              components that are installed on your system.
+
+              You must use this command on every node in a VAXcluster.
+
+              If you are reinstalling Message Router Version 3.5 and
+              have customized any files to your own requirements,
+              do not select purging in Step 3 in Section 3.2. After
+              installation, you will find a later version of the
+              files superseding your customized version. To use
+              your customized files, check that they meet your
+              requirements and then delete the newer version of the
+              files you do not need.
+
+           o  Back up your queue file, MRMAILBOX.DAT, mailbox direc-
+              tory file,
+              MRMDIRECT.DAT, and message file(s), MRn.NBS. If a
+              system failure occurs at a critical point during the
+              installation, some files may be corrupted.
+
+           o  Back up the Directory Service database directory,
+              [MB$.DDS.DB], in case of system failure during the
+              installation.
+
+           o  During the installation, you are given the option of
+              purging files from a previous installation. If you
+              purge your files, as recommended, you must also remove
+              the following jobs from the batch queue:
+
+              -  MR$TIDY.COM
+
+              -  DDS$TIDY.COM
+
+              -  DDS$DEFER.COM
+
+              -  DDS$REFRESH.COM
+
+     2-10 Preparing to Install Message Router
+
+ 
+
+
+
+
+
+
+                 If you do not remove all these jobs from the batch
+                 queues, they will fail when they execute, because the
+                 files they refer to have been purged.
+
+                 To remove these jobs from the batch queue, type the
+                 following commands:
+
+                 $ SHOW QUEUE queuename /ALL
+
+                 where queuename is the name of the batch queue the jobs
+                 are running on. The default queue name is MB$BATCH.
+
+                 This shows the list of all the jobs queued to run on
+                 the specified batch queue.
+
+                 Examine the queue for the above entries and make a note
+                 of the entry numbers. You can delete the entries from
+                 the queue by typing:
+
+                 $ DELETE /ENTRY=entrynumber queuename
+
+                 where entrynumber is the entry number noted and
+                 queuename is the name of the batch queue. Delete each
+                 entry noted.
+
+              o  If you were running exception reporting in your
+                 previous installation, you must also delete the
+                 following jobs:
+
+                 -  MB$NET from the batch queue MB$BATCH_nodename
+
+                 -  MB$DDS from the batch queue MB$BATCH_nodename
+
+                 -  MB$TS from the batch queue MB$BATCH_nodename
+
+                 where nodename is the name of the node you are using.
+
+                 You must delete these jobs for each node in the
+                 cluster.
+
+              o  If you are upgrading Message Router, you must install
+                 Message Router Version 3.5 on the same device as
+                 Message Router Version 3.3. If you want to move either
+                 all or part of Message Router to another disk, use
+                 the configuration procedure, MB$CONFIG. Refer to the
+                 VAX Message Router Configuration Guide for information
+                 about moving Message Router files.
+
+              Turn to Chapter 3.
+
+                                Preparing to Install Message Router 2-11
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                               Installing Message Router
+
+
+
+        3.1 Starting the Installation
+
+              This chapter explains how to install Message Router. It is
+              assumed that you have completed the preparations described
+              in Chapter 2 before you install Message Router. If you
+              have not registered and loaded the DECnet PAK, refer to
+              the VMS License Management Utility Manual.
+
+              VMSINSTAL is interactive and takes you step by step
+              through the installation. Each step is fully described
+              in this chapter. Remember that you can get on-line help by
+              typing a question mark (?) in response to a prompt.
+
+              With the exception of the VMSINSTAL command (shown below)
+              to install Message Router V3.5, the installation procedure
+              is the same as for Message Router V3.3. Refer to the
+              VAX Message Router Installation Guide for details of the
+              installation procedure.
+
+              Customers who have Message Router V3.2 or later can
+              upgrade to V3.5 directly. Customers who have earlier
+              Versions need to install atleast V3.2 and then upgrade
+              to V3.5.
+
+              If possible keep a log of the installation procedure. To
+              do this type:
+
+              $ SET HOST 0 /LOG=filename
+
+              where filename is the name of the file that is to contain
+              the installation log.
+
+                ________________________Note  ________________________
+
+                Do not use the VMSINSTAL alternate root option,
+                OPTION R. Message Router does not support this
+
+                                           Installing Message Router 3-1
+
+ 
+
+
+
+
+
+
+              option in VMSINSTAL.
+
+              _____________________________________________________
+
+           Perform the following steps to install Message Router:
+
+           1. Log in to the SYSTEM account and type the following
+              command:
+
+              $ @SYS$UPDATE:VMSINSTAL MR035 device OPTIONS N
+
+              where:
+
+              a. MR035 identifies the product being installed
+
+              b. device is the name of the device where the
+                 distribution medium is to be mounted, for example,
+                 MTA0
+
+              c. OPTIONS N provides the option of reading or printing
+                 the on-line release notes
+
+              ________________________Note ________________________
+
+              If this is a reinstallation of Message Router
+              Version 3.5, you can omit the parameter OPTIONS
+              N, if you have already read the release notes.
+
+              _____________________________________________________
+
+           2. The procedure starts and displays:
+
+                     OpenVMS VAX Software Product Installation Procedure V3.5
+
+              It is dd-mmm-yyyy at hh:mm.
+              Enter a question mark (?) at any time for help
+
+              where dd-mmm-yyyy and hh:mm are the current date and
+              time, and x.x is the OpenVMS version number.
+
+           3. You may receive one or more of the following warning
+              messages:
+
+              %VMSINSTAL-W-LOWQUOTA, One or more account quotas may be too low.
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+
+              If you receive any warning messages, you are advised
+              to exit from the installation procedure and fix the
+              problem, as described in Chapter 2. Then restart the
+              installation.
+
+     3-2 Installing Message Router
+
+ 
+
+
+
+
+
+
+                 If there are any active system processes, the procedure
+                 lists them and asks:
+
+                 * Do you want to continue anyway [NO]?
+
+                 It is not advisable to continue. In particular, it
+                 is not advisable to continue if there are any active
+                 processes that use the Directory Service. Press RETURN
+                 to halt VMSINSTAL and ask users to log out (see step
+                 5 of Section 2.5). Then restart the installation
+                 procedure.
+
+                 If there are no active system processes or if you want
+                 to continue the installation regardless of the warning
+                 messages, type YES.
+
+              4. The procedure asks:
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 If the system disk has not recently been backed up,
+                 type NO to abort the installation, and make a backup
+                 copy. Otherwise, press RETURN to accept the default
+                 answer of YES.
+
+              5. The procedure instructs you to mount the distribution
+                 volume:
+
+                 Please mount the first volume of the set on device
+
+                 * Are you ready?
+
+                 where device is the device name you supplied in step 1.
+
+                 Mount the first distribution volume on the device. When
+                 you have mounted the distribution volume, type YES.
+
+              6. The procedure confirms that the volume has been
+                 successfully mounted and displays:
+
+                 %MOUNT-I-MOUNTED, MR mounted on _device
+
+                 The following products will be processed:
+
+                   MR V3.5
+
+                  Beginning installation of MR V3.5 at hh:mm
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set A...
+
+                                           Installing Message Router 3-3
+
+ 
+
+
+
+
+
+
+           7. If you have not specified OPTIONS N, the installation
+              continues at Section 3.2. Otherwise, the procedure
+              displays a menu of options relating to the release
+              notes.
+
+                  Release notes included with this kit are always copied to SYS$HELP.
+
+                  Additional Release Notes Options:
+
+               1.  Display release notes
+               2.  Print release notes
+               3.  Both 1 and 2
+               4.  None of the above
+
+              * Select option [2]:
+              * Do you want to continue the installation [NO]?
+
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+              Release notes are available online and can be displayed
+              and printed as required. Select the option you require.
+
+              If you select the option to print the release notes,
+              the procedure displays:
+
+              * Queue name[SYS$PRINT]:
+
+              Enter the name of a print queue. The procedure then
+              displays a message indicating that the release notes
+              have been successfully queued to the printer. If you do
+              not specify a print queue, the output is directed to
+              SYS$PRINT by default.
+
+           8. The procedure asks:
+
+              * Do you want to continue the installation [NO]?
+
+              You are advised to exit from the installation and read
+              the release notes. Press RETURN to accept the default
+              answer of NO. Otherwise, type YES.
+
+              When you have read the release notes, you can restart
+              the installation procedure, starting from step 1 of
+              this section, omitting the parameter OPTIONS N.
+
+     3-4 Installing Message Router
+
+ 
+
+
+
+
+
+
+        3.2 Running the Installation Procedure
+
+              1. The procedure confirms that the product's release notes
+                 have been moved to SYS$HELP, if appropriate, with the
+                 following message:
+
+                 %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to
+                 SYS$HELP.
+
+                 VMSINSTAL displays copyright information followed by
+                 details of the product's license:
+
+                         Product:        DECNET-VAX FULL or DECNET-VAX END
+                         Producer:       DEC
+                         Version:        5.0
+                         Release Date:   dd-mmm-yyyy
+
+                 where dd-mmm-yyyy is the release date. Refer to the VMS
+                 License Management Utility Manual for details of the
+                 release date.
+
+                 VMSINSTAL displays:
+
+                 * Does this product have an authorization key registered and loaded?
+
+                 If you have not registered and loaded the PAK for
+                 DECnet, type NO to abort the installation, and refer
+                 to the VMS License Management Utility Manual. When you
+                 have registered and loaded the DECnet PAK, start the
+                 installation procedure again.
+
+                 If the PAK for DECnet is registered and loaded, type
+                 YES.
+
+              2. VMSINSTAL displays:
+
+                 * Do you want help text printed before every question [NO]?
+
+                 Help is available for all questions asked during the
+                 installation. If you want to see the explanation before
+                 each question, type YES and press RETURN. Otherwise,
+                 press RETURN.
+
+                ________________________Note  ________________________
+
+                If you choose not to see all the help, you can still
+                get help for any question by typing a question mark
+                (?) as a response.
+
+                _____________________________________________________
+
+                                           Installing Message Router 3-5
+
+ 
+
+
+
+
+
+
+           3. VMSINSTAL displays:
+
+              * Do you want to purge files replaced by this installation [YES]?
+
+              If you want the installation procedure to purge files
+              replaced by this installation, press RETURN. Otherwise,
+              type NO and press RETURN.
+
+           4. VMSINSTAL displays:
+
+              * Do you want to run the IVP after the installation [YES]?
+
+              An installation verification procedure (IVP) is
+              provided to indicate whether the installation has
+              succeeded. If you want to run the IVP immediately after
+              the installation has finished, press RETURN. If you
+              do not want to run the procedure, type NO and press
+              RETURN.
+
+              You are strongly recommended to run the IVP after
+              installation.
+
+           5. VMSINSTAL displays:
+
+              * What device is to be used for the MBMANAGER account:
+
+              If a previous device name can be found for the
+              MBMANAGER account, this is offered as a default. Press
+              RETURN to accept the default location provided, or
+              enter the device name noted in step 7 of Section 2.5.
+              VMSINSTAL checks that the specified device is
+              available. If the specified device is unavailable,
+              VMSINSTAL displays an error message and returns to this
+              question.
+
+           6. VMSINSTAL displays:
+
+              * What is the UIC for the MBMANAGER account:
+
+              If this is a new installation enter the UIC noted in
+              step 8 of Section 2.5. For any other installation, if a
+              default is offered, you must accept it.
+
+           7. If this is an upgrade installation or you are
+              reinstalling Message Router Version 3.5, VMSINSTAL
+              displays:
+
+              * Do you want to keep the same Message Router passwords [NO] ?
+
+              You are advised to change the passwords, so press
+              RETURN to accept the default. Go to the next step.
+
+     3-6 Installing Message Router
+
+ 
+
+
+
+
+
+
+                 If you want to keep the same Message Router passwords,
+                 type YES and press RETURN. The procedure continues at
+                 step 10.
+
+              8. VMSINSTAL displays:
+
+                      You will now be prompted for the password for the Message Router
+                      accounts, and then for a confirmation of the password.
+
+                 * What is the password for the Message Router accounts:
+
+                 Enter the password of the Message Router accounts.
+
+                 You must not include certain strings in your password.
+                 If you include any of these strings, the password is
+                 rejected and the installation procedure displays an
+                 error message asking you to enter the password again.
+
+                 The strings that must not be included are: DDS, GATE,
+                 MAIL, MANAGER, MESSAGE, NET, PASSWORD, ROUTER.
+
+              9. VMSINSTAL displays:
+
+                 * Confirm the password for the Message Router accounts:
+
+                 Re-type the password. If the password entered here does
+                 not correspond to the password entered in the previous
+                 step, VMSINSTAL displays an error message and returns
+                 to the previous step.
+
+              10.VMSINSTAL displays:
+
+                  You have answered all the questions for the Message Router
+                  installation.  Message Router is now being installed.  The
+                  installation takes approximately 60 minutes depending
+                  on the system configuration and media type.
+
+              11.The procedure displays a series of messages that tells
+                 you that the generation phase of the Message Router
+                 installation is proceeding. There is a pause between
+                 each message.
+
+                 If this is an upgrade installation or reinstallation,
+                 the procedure continues at step 12; otherwise, the
+                 following messages are displayed:
+
+                 %MR-I-CREACC, Creating the MBMANAGER account
+                 %MR-I-CREACC, Creating the MBWATCH account
+                 %MR-I-CREACC, Creating the MRNET account
+                 %MR-I-CREACC, Creating the DDSNET account
+
+                                           Installing Message Router 3-7
+
+ 
+
+
+
+
+
+
+              If the installation procedure finds an account or
+              directory it does not expect, the following message
+              is displayed:
+
+              %MR-I-ACCEXIST, accountname account already existed.
+
+                      The account already exists. It should only exist where
+                      Message Router is reinstalled.
+
+                      The installation is continuing.
+
+                      You are advised to check that the modified account does
+                      not have another use.
+
+              The string accountname is the name of the account.
+
+              Other messages relating to this warning may also be
+              displayed.
+
+              The installation procedure continues. If you are
+              installing Message Router on a node where OpenVMS
+              DECnet is running, the following messages are
+              displayed:
+
+              %MR-I-IGNERR,  Ignore the following reports which may occur on NCP
+              object definition:
+
+              Ignore> %NCP-I-NMLRSP, listener response - Unrecognised component, Object
+
+              Ignore> %NCP-I-UNRCMP, listener response - Unrecognised component, Object
+
+              The installation procedure continues.
+
+              %MR-I-CHECDIRS, Checking directories
+              %MR-I-DEVICE, Checking Message Router device device:
+              %MR-I-CHECQUOT, Checking quota use on device:
+
+              The installation procedure creates the directories
+              required by Message Router. As each directory is
+              created, the installation procedure displays a message
+              informing you that the directory is being created, for
+              example:
+
+              %MR-I-CREMRDIR, Creating directory device:[MB$]
+              %MR-I-DEVICE, Checking Message Router device device:
+              %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+              device:[MB$].
+
+              The installation procedure continues at step 13.
+
+     3-8 Installing Message Router
+
+ 
+
+
+
+
+
+
+              12.If this is an upgrade installation or reinstallation,
+                 the following messages are displayed:
+
+                 %MR-I-MODACC, Modifying the MBMANAGER account
+                 %MR-I-MODACC, Modifying the MBWATCH account
+                 %MR-I-MODACC, Modifying the MRNET account
+                 %MR-I-MODACC, Modifying the DDSNET account
+
+                 If the installation procedure finds an account or
+                 directory it does not expect, the following message
+                 is displayed:
+
+                 %MR-I-ACCEXIST, accountname account already existed.
+
+                         The account already exists. It should only exist where
+                         Message Router is reinstalled.
+
+                         The installation is continuing.
+
+                         You are advised to check that the modified account does
+                         not have another use.
+
+                 where accountname is the name of the account.
+
+                 Other messages relating to this warning may also be
+                 displayed.
+
+                 The installation procedure continues. If you are
+                 installing Message Router on a node where OpenVMS
+                 DECnet is running, the following messages are
+                 displayed:
+
+                 %MR-I-IGNERR,  Ignore the following reports which may occur on NCP object
+                 definition:
+
+                 Ignore> %NCP-I-NMLRSP, listener response - Unrecognized component, Object
+
+                 The installation procedure continues.
+
+                 %MR-I-CHECDIRS, Checking directories
+                 %MR-I-DEVICE, Checking Message Router device device:
+                 %MR-I-CHECQUOT, Checking quota use on device:
+
+                 The installation procedure continues at step 13.
+
+              13.After checking for or creating the directories, the
+                 installation procedure continues.
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set B...
+                 %MR-I-LNKDDS, Linking the DDS images
+
+                                           Installing Message Router 3-9
+
+ 
+
+
+
+
+
+
+              The installation procedure displays messages informing
+              you which images are being linked.
+
+              The installation procedure continues.
+
+              %MR-I-SETDDSFILES, Setting DDS file ownership and protection
+              %MR-I-ASGNDDSFILES, Assigning DDS files to target directories
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set C...
+              %MR-I-LNKMR, Linking the TS images
+
+              The installation procedure displays messages informing
+              you which images are being linked.
+
+              The installation procedure continues.
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set D...
+              %VMSINSTAL-I-RESTORE, Restoring product save set E...
+              %VMSINSTAL-I-RESTORE, Restoring product save set F...
+              %VMSINSTAL-I-RESTORE, Restoring product save set G...
+              %MR-I-LNKMBMAN, Linking the MR Management images
+
+              The installation procedure displays messages informing
+              you which images are being linked.
+
+              The installation procedure continues.
+
+              %MR-I-CREMRDIR, Creating directory SYS$SYSROOT:[SYSTEST.MB]
+              %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                 VMI$ROOT:[SYSTEST.MB].
+              %MR-I-SETMBFILES, Setting MR file ownership and protection
+              %MR-I-ASGNMBFILES, Assigning MR files to target directories
+
+           14.After VMSINSTAL has marked the files for moving to
+              the Message Router directories, more messages are
+              displayed.
+
+              The generation phase of the Message Router installation is now complete.
+
+                   In order to tailor Message Router to your requirements, you
+                 must use the configuration procedure, SYS$MANAGER:MB$CONFIG.COM.
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+              directories...
+
+           If you have chosen to run the IVP, turn to Chapter 4 and
+           follow the instructions there. You are advised to run
+           the IVP to check that the installation has completed
+           successfully. If you are not running the IVP, turn to
+           Chapter 5.
+
+     3-10 Installing Message Router
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                                         Running the IVP
+
+
+
+        4.1 Introduction
+
+              The installation verification procedure (IVP) checks
+              that all components of Message Router have been installed
+              correctly. If you selected the IVP in the installation,
+              VMSINSTAL automatically runs the IVP when the installation
+              is completed. It is advisable to select the IVP because it
+              checks that Message Router has been installed properly.
+
+              The IVP sets up a test database to check that the
+              installation is correct, so you do not need to configure
+              Message Router before running the IVP.
+
+              A successful IVP does not mean that Message Router is
+              ready to use. Before you use Message Router, you must
+              use the MAILbus Configuration Procedure, MB$CONFIG,
+              to configure or reconfigure Message Router to your own
+              requirements. See the VAX Message Router Configuration
+              Guide for details of how to configure or reconfigure
+              Message Router.
+
+              The IVP produces a message to either confirm that all com-
+              ponents of Message Router have been installed successfully
+              or to indicate that it has failed. Section 4.3 provides
+              more information about the success and failure messages.
+
+        4.2 Running the IVP
+
+              If you requested to run the IVP, VMSINSTAL runs it. The
+              following is an example of the display from the IVP:
+
+                              IVP   for   Message  Router
+
+                                    Version V3.5-317
+
+                                                     Running the IVP 4-1
+
+ 
+
+
+
+
+
+
+               This is the installation verification procedure (IVP) for Message
+               Router. It checks that the components of Message Router are
+               installed successfully on your system.
+
+             © Digital Equipment Corporation 1978, 1998. All rights reserved.
+
+                   Starting Management Service
+
+           ------------------------------------------------------------------
+
+                           TRANSFER SERVICE V3.5-317 IVP
+
+                   This is the installation verification procedure (IVP) for the
+                   Transfer Service. It tests whether or not the Transfer Service
+
+                   is successfully installed on your system.
+                   The procedure starts by checking that all the files for the
+                   Transfer Service exist and are the correct size. It then
+                   starts MRMAN.
+
+                   The verification procedure creates a test mailbox, using the
+                   MRMAN utility, and sends a test message to the mailbox.
+
+                   The verification procedure fetches the test message from the
+                   mailbox and displays it, and then shuts down MRMAN.
+
+                   The IVP has not completed successfully until you have
+                   received this test message.
+
+            ------------------------------------------------------------------
+
+                   Transfer Service V3.5-317 file check
+                   The total number of files is 25.
+                   All files exist and are the correct size.
+                   End of Transfer Service V3.5-317 file check.
+
+           ------------------------------------------------------------------
+
+                   This is MRMAN V3.5-317
+
+                   Starting Transfer Service
+
+                   This is MRMAN V3.5-317
+
+           %Added MB$TSIVP,
+                   This is MRMAN V3.5-317
+           %MRMAN-S-IDENTIFY, Using mailbox MB$TSIVP at node MOURYA
+           % Message from: MB$TSIVP
+           % Subject:  TEST
+           **************************************************
+
+     4-2 Running the IVP
+
+ 
+
+
+
+
+
+
+               Output of this test message indicates
+               that the Transfer Service V3.5-317 is
+               installed successfully on your system.
+
+              **************************************************
+              %Finished reading from mailbox MB$TSIVP
+              %Directory entry MB$TSIVP deleted
+
+                       Shutting down the Transfer Service
+
+                      The Transfer Service V3.5-317 IVP was successful
+                              END OF TS V3.5-317 IVP
+
+              ==================================================================
+
+                              DIRECTORY SERVICE V3.5-317 IVP
+
+                      This is the installation verification procedure (IVP) for the
+                      Directory Service. It tests whether or not the Directory Service
+                      is successfully installed on your system.
+
+                      The procedure completes the following steps:
+
+                      1.  Checks that the Directory Service files exist and that they
+                          are the correct size
+
+                      2.  Retrieves preset entries from the database
+
+              ------------------------------------------------------------------
+
+                      Directory Service V3.5-317 file check
+                      The total number of files is 8.
+                      All files exist and are the correct size.
+                      End of Directory Service V3.5-317 file check.
+
+              ------------------------------------------------------------------
+
+                              Starting the Directory Service
+
+                      The Directory Service V3.5-317 IVP was successful
+
+                              END OF DDS V3.5-317 IVP
+
+                      Shutting down Directory Service
+
+              ==================================================================
+
+                              MANAGEMENT SERVICE V3.5-317 IVP
+
+                                                     Running the IVP 4-3
+
+ 
+
+
+
+
+
+
+                   This is the installation verification procedure (IVP) for
+                   Management Service. It tests whether or not the Management
+                   Service is successfully installed on your system.
+
+                   The procedure checks that the Management Services files exist
+                   and that they are the correct size.
+
+           ------------------------------------------------------------------
+
+                   Management Service V3.5-317 file check
+                   The total number of files is 70.
+                   All files exist and are the correct size.
+                   End of Management Service V3.5-317 file check.
+
+           ------------------------------------------------------------------
+
+                   The Management Service V3.5-317 IVP was successful
+
+                           END OF MS V3.5-317 IVP
+
+           ==================================================================
+
+                   Installation verification was successfully performed for all
+                   3 components of Message Router
+
+                   Shutting down Management Service
+
+                   The Message Router V3.5-317 IVP completed successfully
+
+           where hh:mm represents the current time in hours and
+           minutes.
+
+                   Installation of MR V3.5 completed at hh:mm
+
+                   VMSINSTAL procedure done at hh:mm
+
+     4.3 Checking the IVP
+
+           If the IVP has been successful, it displays:
+
+                   The Message Router V3.5-317 IVP completed successfully
+
+                   Installation of MR V3.5 completed at hh:mm
+
+                   VMSINSTAL procedure done at hh:mm
+
+           If the IVP fails, the IVP displays:
+
+           Please re-install Message Router
+
+           If you receive this message, you must re-install Message
+           Router.
+
+     4-4 Running the IVP
+
+ 
+
+
+
+
+
+
+              If the IVP fails, but does not indicate the reason for the
+              failure, you can set VERIFY on the installation procedure,
+              so that the IVP displays more information on your screen.
+
+              You can specify the component of Message Router you want
+              verified by using one of the following commands before
+              starting the installation procedure:
+
+              $ VFY$TSCVP=1
+              $ VFY$DDSVP=1
+              $ VFY$MBMBVP=1
+
+              where:
+
+              o  TSCVP specifies the Transfer Service component
+
+              o  DDSVP specifies the Directory Service component
+
+              o  MBMBVP specifies the Management Service component
+
+              You can use any or all of these commands before the same
+              installation procedure. You then install Message Router in
+              the usual way.
+
+              Turn to Chapter 5 for details of what to do after a
+              successful installation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     Running the IVP 4-5
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       5
+        ________________________________________________________________
+
+                                                  After the Installation
+
+
+
+              After the installation has been completed, you should:
+
+              1. Pass on details of the installation to the person doing
+                 the configuration. Specifically, note the name of the
+                 device on which you installed Message Router and pass
+                 this information to the person who will be configuring
+                 Message Router.
+
+              2. Tune some of the system values to enhance performance
+                 for your users. Details of how to tune your OpenVMS
+                 system are given in the Guide to VMS Performance
+                 Management.
+
+              3. Remove any unwanted OpenVMS utilities or files using
+                 VMSTAILOR, see Section 5.1.
+
+              When you have completed the tasks you can install
+              other MAILbus components, as described in the relevant
+              installation guides, or you can configure Message Router
+              Version 3.5 as described in the VAX Message Router
+              Configuration Guide. You cannot run Message Router unless
+              it is configured.
+
+              Specifically, on a VAXcluster you can choose whether to
+              enable the use of the cluster alias, if one is defined.
+              You can also choose to start a minimum set of Message
+              Router processes on some of the nodes in the cluster.
+              These options are described in the VAX Message Router
+              Configuration Guide.
+
+                ________________________Note  ________________________
+
+                Before you can install the Message Router X.400
+                Gateway (MRX) you must configure Message Router.
+
+                                              After the Installation 5-1
+
+ 
+
+
+
+
+
+
+              However, you can install the other MAILbus Gateways
+              before you configure Message Router.
+
+              _____________________________________________________
+
+
+     5.1 Tailoring OpenVMS
+
+           The Object and Shareable Image Libraries are needed only
+           during the installation of Message Router. As they are
+           not needed to run Message Router, you can release some
+           disk space by removing them from your VAX or MicroVAX. If
+           you are using a MicroVAX, releasing disk space might be
+           particularly useful.
+
+           To remove the libraries from your system, first check
+           that no one is using the software. If it is not being
+           used, log in to the SYSTEM account and use the OpenVMS
+           Tailoring Utility (VMSTAILOR) to tailor the software off
+           your system. Refer to OpenVMS Version 5.5 Upgrade and
+           Installation Manual for details of VMSTAILOR.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     5-2 After the Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                  Installation Save Sets
+
+
+
+              This appendix contains a list of the files contained in
+              the seven installation save sets.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                              Installation Save Sets A-1
+
+ 
+
+
+
+
+
+
+           The files supplied in installation save set A are:
+
+           DDS$PROTN.COM
+           DDS$FILES.DAT
+           DDS$IMAGES.DAT
+           MR$PROTN.COM
+           MR$FILES.DAT
+           MR$IMAGES.DAT
+           MR$POSTPRO.COM
+           MB$PROTN.COM
+           MB$FILES.DAT
+           MB$IMAGES.DAT
+           MB$POSTPRO.COM
+           MR$DELETE_SPECIFIC.COM
+           KITINSTAL.COM
+           MBREPLACE.TPU
+           MR$SYSGEN.DAT
+           MR035.RELEASE_NOTES
+           MB$CVP.COM
+           MB$CVPSETUP.COM
+           MB$CVPFILES.COM
+           MB$DDSCVP.COM
+           MB$MSCVP.COM
+           MB$TSCVP.COM
+           MR$COPYRIGHT.OBJ
+           XPORT.OLB
+           XPORTMSG.EXE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     A-2 Installation Save Sets
+
+ 
+
+
+
+
+
+
+              The files supplied in installation save set B are:
+
+              DDS$LINK.COM
+              DDSSERV.OLB
+              DDSLSTN.OLB
+              DDSCALL.OLB
+              DDSMISC.OLB
+              DDSMUNGE.OLB
+              DDSDB.OLB
+              DDSNET.OLB
+              DDSCOMMON.OLB
+              DDSFACI.OLB
+              DDSTREED.OLB
+              DDSFILED.OLB
+              DDS$MSG.OBJ
+              DDS$SHAR_UNIVERSAL.OPT
+              DDS$START.COM
+              DDS$_STOP.DAT
+              DDS$CVP.DAT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                              Installation Save Sets A-3
+
+ 
+
+
+
+
+
+
+           The files supplied in installation save set C are:
+
+           MR$LINK.COM
+           MR.OLB
+           MRVMS.OLB
+           MRMIS.OLB
+           MRMAN.OLB
+           MRLOG.OLB
+           MRSTAT.OLB
+           NBS.OLB
+           MRMSG.OLB
+           MRAPPSHAR.OLB
+           MRAPPMSG.OBJ
+           MB$TALK_NOTIFY_TEMPLATE.COM
+           MB$TALK_SCHEDULE_TEMPLATE.COM
+           MB$TALK_RUN_TEMPLATE.COM
+           MB$TALK_NOTIFY_DEF.COM
+           MB$TALK_SCHEDULE_DEF.COM
+           MB$TALK_RUN_DEF.COM
+           MRMWRK.COM
+           MR$TIDY.COM
+           MR$COMPRESS.COM
+           MB$REPOST.COM
+           MR$NODES_DEF.DAT
+           MRSTOP.DAT
+           MRMAN.HLB
+           MRLISTEN.COM
+           MR$CVP.DAT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     A-4 Installation Save Sets
+
+ 
+
+
+
+
+
+
+              The files supplied in installation save set D are:
+
+              MB$LOCATION_TEMPLATE.COM
+              MB$DDS_ADD_TEMPLATE.COM
+              MB$DDS_UPDATE_TEMPLATE.COM
+              MB$CONTROL.COM
+              MB$$ER_START.COM
+              MB$$ER_STOP.COM
+              MB$$MS_START.COM
+              MB$$MS_STOP.COM
+              MB$$TS_START.COM
+              MB$$TS_STOP.COM
+              MB$$DDS_START.COM
+              MB$$DDS_STOP.COM
+              DDS$TIDY.COM
+              DDS$COMPRESS.COM
+              DDS$BACKUP.COM
+              DDS$INQUE.FDL
+              DDS$NETQUE.FDL
+              DDS$NIF.FDL
+              DDS$OUTQUE.FDL
+              DDS$PERM_DB.FDL
+              DDS$PERM_AIF.FDL
+              DDS$CACHE_DB.FDL
+              DDS$CACHE_AIF.FDL
+              DDS$DEFER.COM
+              DDS$REFRESH.COM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                              Installation Save Sets A-5
+
+ 
+
+
+
+
+
+
+           The files supplied in installation save set E are:
+
+           MRMAILBOX.FDL
+           MRMDIRECT.FDL
+           MBMAN.OLB
+           MBUTIL.OLB
+           MB$MSG.OBJ
+           MB$MSG_CONFIG.OBJ
+           MB$LINK.COM
+           MB$CONFIG.HLB
+           MB$A1_CONFIG.HLB
+           MBMAN.HLB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     A-6 Installation Save Sets
+
+ 
+
+
+
+
+
+
+              The files supplied in installation save set F are:
+
+              MB$MBMANAGER.COM
+              MB$MRNET.COM
+              MB$DDSNET.COM
+              MB$MBWATCH.COM
+              MB$INIT.COM
+              MB$MAILER.COM
+              MB$ADDREP.COM
+              MB$CHECKDEV.COM
+              MB$ERRORS.DATMB$A1_ERRORS.DAT
+              MB$VERSION.DAT
+              MB$STOP.DAT
+              MB$TS_ER.COM
+              MB$DDS_ER.COM
+              MB$NET_ER.COM
+              MB$A1_ER.COM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                              Installation Save Sets A-7
+
+ 
+
+
+
+
+
+
+           The files supplied in installation save set G are:
+
+           MB$CONFIG.COM
+           MB$CONFIG.FDL
+           MB$CNFTXN.FDL
+           MB$$TS_CONFIG.COM
+           MB$$DDS_CONFIG.COM
+           MB$$ER_CONFIG.COM
+           MB$$A1_CONFIG.COM
+           MB$$MS_CONFIG.COM
+           MB$MR$CONFIG$CUSTOMIZED.DAT
+           MB$A1$CONFIG$CUSTOMIZED.DAT
+           MB$MR$CONFIG$DEFAULT.DAT
+           MB$A1$CONFIG$DEFAULT.DAT
+           DDS_PERM_DB.DAT
+           DDS_PERM_AIF.DAT
+           DDS_CACHE_DB.DAT
+           DDS_CACHE_AIF.DAT
+           DDS_OUTQUE.DAT
+           DDS_NETQUE.DAT
+           DDS_INQUE.DAT
+           DDS_NIF.DAT
+           DDS_CONFIG.DAT
+           MB$CNFDB_IVP.DAT
+           MRINIT.DAT
+           MB$CVP.DAT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     A-8 Installation Save Sets
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                          Sample Installation Procedure
+
+
+
+              This appendix contains example logs of an installation
+              of Message Router on OpenVMS Version 5.5-2. There are
+              minor differences between an installation log on a node
+              where DECnet is running and on a node where DECnet/OSI is
+              running. This appendix contains examples of both logs.
+
+              Installation on a Node Where DECnet is Running
+
+        $ @sys$update:vmsinstal mr035 DUA0: OPTIONS N
+
+        OpenVMS VAX Software Product Installation Procedure V7.1
+
+        It is 17-JUL-1998 at 18:44.
+        Enter a question mark (?) at any time for help.
+
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          MR V3.5
+
+                Beginning installation of MR V3.5 at 18:44
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+        © Digital Equipment Corporation 1978, 1998. All rights reserved.
+
+        Restricted Rights: Use, duplication, or disclosure by the U.S. Government is
+        subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+        DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+        as applicable.
+
+        This software is proprietary to and embodies the confidential technology of
+        Digital Equipment Corporation. Possession, use, or copying of this software
+        and media is authorized only pursuant to a valid written license from Digital
+        or an authorized sublicensor.
+
+                                      Sample Installation Procedure  B-1
+
+ 
+
+
+
+
+
+
+             Product:      DECNET-VAX FULL or DECNET-VAX END
+             Producer:     DEC
+             Version:      5.0
+             Release Date: 22-JUN-1989
+
+     * Does this product have an authorization key registered and loaded? y
+     * Do you want help text printed before every question [NO]?
+     * Do you want to purge files replaced by this installation [YES]?
+     * Do you want to run the IVP after the installation [YES]?
+     * What device is to be used for the MBMANAGER account: dka100:
+     * What is the UIC for the MBMANAGER account: [24,24]
+
+          You will now be prompted for the password for the Message Router
+          accounts, and then for a confirmation of the password.
+
+     * What is the password for the Message Router accounts:
+     * Confirm the password for the Message Router accounts:
+
+             You have answered all the questions for the Message Router
+             installation.  Message Router is now being installed.  The
+             installation will take approximately 60 minutes depending
+             on system configuration and media type.
+
+     %MR-I-CREACC, Creating the MBMANAGER account
+     %MR-I-CREACC, Creating the MBWATCH account
+     %MR-I-CREACC, Creating the MRNET account
+     %MR-I-CREACC, Creating the DDSNET account
+
+     %MR-I-IGNERR,  Ignore the following reports which may occur on NCP object definition:
+
+     Ignore> %NCP-I-NMLRSP, listener response - Unrecognised component, Object
+     Ignore> %NCP-E-UNRCMP, listener response - Unrecognised component, Object
+
+     %NCP-W-UNRCMP, Unrecognized component , Object
+     %NCP-W-UNRCMP, Unrecognized component , Object
+
+
+
+
+
+
+
+
+
+
+     B-2 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+        %MR-I-CHECDIRS, Checking directories
+        %MR-I-DEVICE, Checking Message Router device DKA100:
+        %MR-I-CHECQUOT, Checking quota use on DKA100:
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MR]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MR].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MR.WRK]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MR.WRK].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MR.MSG1]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MR.MSG1].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MR.MSG2]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MR.MSG2].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MR.SCR]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MR.SCR].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MR.DB]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MR.DB].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MB]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MB].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.TOOLS]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.TOOLS].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MB.MB$COM]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MB.MB$COM].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MB.MB$WORK]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MB.MB$WORK].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.MB.MB$SCRATCH]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.MB.MB$SCRATCH].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.DDS]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.DDS].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.DDS.WRK]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.DDS.WRK].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.DDS.SCR]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.DDS.SCR].
+        %MR-I-CREMRDIR, Creating directory DKA100:[MB$.DDS.DB]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA100:[MB$.DDS.DB].
+
+
+
+
+
+
+
+
+
+
+                                      Sample Installation Procedure  B-3
+
+ 
+
+
+
+
+
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+     %MR-I-LNKDDS, Linking the DDS images
+     %MR-I-LNKDDSMSG,  ...Linking the DDS Message file
+     %MR-I-LNKDDSSHAR,  ...Linking the DDS shareable image
+     %MR-I-LNKDDSSERV,  ...Linking the DDS Server
+     %MR-I-LNKDDSLSTN,  ...Linking the DDS Listener
+     %MR-I-LNKDDSEXTP,  ...Linking the DDS external processors
+     %MR-I-LNKDDSTMPUPD,  ...Linking the DDS Template Update Utility
+     %MR-I-SETDDSFILES, Setting DDS file ownership and protection
+     %MR-I-ASGNDDSFILES, Assigning DDS files to target directories
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+     %MR-I-LNKMR, Linking the TS images
+     %MR-I-LNKMRMSG,  ...Linking the TS Message file
+     %MR-I-LNKMRTALK,  ...Linking the TS Talker
+     %MR-I-LNKMRLSTN,  ...Linking the TS Listener
+     %MR-I-LNKMRMAN,  ...Linking the TS Manager
+     %LINK-I-DATMISMCH, creation date of 16-OCT-1997 12:17 in shareable image
+     SYS$COMMON:[SYSLIB]LBRSHR.EXE;2
+
+             differs from date of 24-NOV-1996 19:18 in shareable image library
+     SYS$COMMON:[SYSLIB]IMAGELIB.OLB;1
+     %MR-I-LNKMRLOG,  ...Linking the TS Logger
+     %MR-I-LNKMRSHAR,  ...Linking the TS Shareable image
+     %MR-I-LNKMRNBS,  ...Linking the TS NBS Dump utility
+     %MR-I-LNKMRSTATS,  ...Linking the TS Statistics utility
+     %MR-I-SETMRFILES, Setting TS file ownership and protection
+     %MR-I-ASGNMRFILES, Assigning TS files to target directories
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set E ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set F ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+     %MR-I-LNKMBMAN, Linking the MR Management images
+     %MR-I-LNKMBUTIL,  ...Linking the MB Utility
+     %LINK-I-DATMISMCH, creation date of 16-OCT-1997 12:17 in shareable image
+     SYS$COMMON:[SYSLIB]LBRSHR.EXE;2
+
+             differs from date of 24-NOV-1996 19:18 in shareable image library
+     SYS$COMMON:[SYSLIB]IMAGELIB.OLB;1
+     %MR-I-LNKMBMAN,  ...Linking the MB Manager
+     %LINK-I-DATMISMCH, creation date of 16-OCT-1997 12:17 in shareable image
+     SYS$COMMON:[SYSLIB]LBRSHR.EXE;2
+
+
+     B-4 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+                differs from date of 24-NOV-1996 19:18 in shareable image library
+        SYS$COMMON:[SYSLIB]IMAGELIB.OLB;1
+        %MR-I-LNKMBMSG,  ...Linking the MB Message File
+        %MR-I-CREMRDIR, Creating directory SYS$SYSROOT:[SYSTEST.MB]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSTEST.MB].
+        %MR-I-SETMBFILES, Setting MR Management file ownership and protection
+        %MR-I-ASGNMBFILES, Assigning MR Management files to target directories
+
+        The generation phase of the Message Router installation is now complete.
+
+           In order to tailor Message Router to your requirements, you
+           must use the configuration procedure, SYS$MANAGER:MB$CONFIG.COM.
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                        IVP   for   Message  Router
+
+                              Version V3.5-317
+
+            This is the installation verification procedure (IVP) for Message
+            Router. It checks that the components of Message Router are
+            installed successfully on your system.
+
+          © Digital Equipment Corporation 1978, 1998. All rights reserved.
+
+                Starting Management Service
+
+        ------------------------------------------------------------------
+
+                        TRANSFER SERVICE V3.5-317 IVP
+
+                This is the installation verification procedure (IVP) for the
+                Transfer Service. It tests whether or not the Transfer Service
+                is successfully installed on your system.
+                The procedure starts by checking that all the files for the
+                Transfer Service exist and are the correct size. It then
+                starts MRMAN.
+
+                The verification procedure creates a test mailbox, using the
+                MRMAN utility, and sends a test message to the mailbox.
+
+                The verification procedure fetches the test message from the
+                mailbox and displays it, and then shuts down MRMAN.
+
+                The IVP has not completed successfully until you have
+                received this test message.
+
+        ------------------------------------------------------------------
+
+                                      Sample Installation Procedure  B-5
+
+ 
+
+
+
+
+
+
+             Transfer Service V3.5-317 file check
+             The total number of files is 25.
+             All files exist and are the correct size.
+             End of Transfer Service V3.5-317 file check.
+
+     ------------------------------------------------------------------
+
+             This is MRMAN V3.5-317
+
+             Starting Transfer Service
+
+             This is MRMAN V3.5-317
+
+     %Added MB$TSIVP,
+                             This is MRMAN V3.5-317
+     %MRMAN-S-IDENTIFY, Using mailbox MB$TSIVP at node MOURYA
+     % Message from: MB$TSIVP
+     % Subject:  TEST
+     **************************************************
+
+      Output of this test message indicates
+      that the Transfer Service V3.5-317 is
+      installed successfully on your system.
+
+     **************************************************
+     %Finished reading from mailbox MB$TSIVP
+     %Directory entry MB$TSIVP deleted
+
+              Shutting down the Transfer Service
+
+             The Transfer Service V3.5-317 IVP was successful
+                     END OF TS V3.5-317 IVP
+
+     ==================================================================
+
+                     DIRECTORY SERVICE V3.5-317 IVP
+
+             This is the installation verification procedure (IVP) for the
+             Directory Service. It tests whether or not the Directory Service
+             is successfully installed on your system.
+
+             The procedure completes the following steps:
+
+             1.  Checks that the Directory Service files exist and that they
+                 are the correct size
+
+             2.  Retrieves preset entries from the database
+
+     ------------------------------------------------------------------
+
+     B-6 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+                Directory Service V3.5-317 file check
+                The total number of files is 8.
+                All files exist and are the correct size.
+                End of Directory Service V3.5-317 file check.
+
+        ------------------------------------------------------------------
+
+                        Starting the Directory Service
+
+                The Directory Service V3.5-317 IVP was successful
+
+                        END OF DDS V3.5-317 IVP
+
+                Shutting down Directory Service
+
+        ==================================================================
+
+                        MANAGEMENT SERVICE V3.5-317 IVP
+
+                This is the installation verification procedure (IVP) for
+                Management Service. It tests whether or not the Management
+
+                Service is successfully installed on your system.
+
+                The procedure checks that the Management Services files exist
+                and that they are the correct size.
+
+        ------------------------------------------------------------------
+
+                Management Service V3.5-317 file check
+                The total number of files is 70.
+                All files exist and are the correct size.
+                End of Management Service V3.5-317 file check.
+
+        ------------------------------------------------------------------
+
+                The Management Service V3.5-317 IVP was successful
+
+                        END OF MS V3.5-317 IVP
+
+        ==================================================================
+
+                Installation verification was successfully performed for all
+
+                 3 components of Message Router
+
+                Shutting down Management Service
+
+                The Message Router V3.5-317 IVP completed successfully
+
+                Installation of MR V3.5 completed at 18:55
+
+                VMSINSTAL procedure done at 18:55
+
+                                      Sample Installation Procedure  B-7
+
+ 
+
+
+
+
+
+
+           Installation on a Node Where DECnet/OSI is Running
+
+
+      $ @sys$update:vmsinstal mr035 DKA200: OPTIONS N
+
+      OpenVMS VAX Software Product Installation Procedure V7.1
+
+     It is 1-JUL-1998 at 11:03.
+
+     Enter a question mark (?) at any time for help.
+
+     * Are you satisfied with the backup of your system disk [YES]?
+
+     The following products will be processed:
+
+       MR V3.5
+
+             Beginning installation of MR V3.5 at 11:03
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+     %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+     © Digital Equipment Corporation 1978, 1998. All rights reserved.
+
+     Restricted Rights: Use, duplication, or disclosure by the U.S. Government is
+     subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+     DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+     as applicable.
+
+     This software is proprietary to and embodies the confidential technology of
+     Digital Equipment Corporation. Possession, use, or copying of this software
+     and media is authorized only pursuant to a valid written license from Digital
+     or an authorized sublicensor.
+
+             Product:      DECNET-VAX FULL or DECNET-VAX END
+             Producer:     DEC
+             Version:      5.0
+             Release Date: 22-JUN-1989
+
+     * Does this product have an authorization key registered and loaded? y
+     * Do you want help text printed before every question [NO]?
+     * Do you want to purge files replaced by this installation [YES]?
+     * Do you want to run the IVP after the installation [YES]?
+     * What device is to be used for the MBMANAGER account: dka200:
+     * What is the UIC for the MBMANAGER account: [24,24]
+
+          You will now be prompted for the password for the Message Router
+           accounts, and then for a confirmation of the password.
+
+     B-8 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+        * What is the password for the Message Router accounts:
+        * Confirm the password for the Message Router accounts:
+
+                You have answered all the questions for the Message Router
+                installation.  Message Router is now being installed.  The
+                installation will take approximately 60 minutes depending
+                on system configuration and media type.
+
+        %MR-I-CREACC, Creating the MBMANAGER account
+        %MR-I-CREACC, Creating the MBWATCH account
+        %MR-I-CREACC, Creating the MRNET account
+        %MR-I-CREACC, Creating the DDSNET account
+
+        %MR-I-CHECDIRS, Checking directories
+        %MR-I-DEVICE, Checking Message Router device DKA200:
+        %MR-I-CHECQUOT, Checking quota use on DKA200:
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MR]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MR].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MR.WRK]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MR.WRK].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MR.MSG1]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MR.MSG1].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MR.MSG2]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MR.MSG2].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MR.SCR]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MR.SCR].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MR.DB]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MR.DB].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MB]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MB].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.TOOLS]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.TOOLS].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MB.MB$COM]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MB.MB$COM].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MB.MB$WORK]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MB.MB$WORK].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.MB.MB$SCRATCH]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MB.MB$SCRATCH].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.DDS]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.DDS].
+        %MR-I-CREMRDIR, Creating directory DKA200:[MB$.DDS.WRK]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.DDS.WRK].
+
+                                      Sample Installation Procedure  B-9
+
+ 
+
+
+
+
+
+
+     %MR-I-CREMRDIR, Creating directory DKA200:[MB$.DDS.SCR]
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.DDS.SCR].
+     %MR-I-CREMRDIR, Creating directory DKA200:[MB$.DDS.DB]
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.DDS.DB].
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+     %MR-I-LNKDDS, Linking the DDS images
+     %MR-I-LNKDDSMSG,  ...Linking the DDS Message file
+     %MR-I-LNKDDSSHAR,  ...Linking the DDS shareable image
+     %MR-I-LNKDDSSERV,  ...Linking the DDS Server
+     %MR-I-LNKDDSLSTN,  ...Linking the DDS Listener
+     %MR-I-LNKDDSEXTP,  ...Linking the DDS external processors
+     %MR-I-LNKDDSTMPUPD,  ...Linking the DDS Template Update Utility
+     %MR-I-SETDDSFILES, Setting DDS file ownership and protection
+     %MR-I-ASGNDDSFILES, Assigning DDS files to target directories
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+     %MR-I-LNKMR, Linking the TS images
+     %MR-I-LNKMRMSG,  ...Linking the TS Message file
+     %MR-I-LNKMRTALK,  ...Linking the TS Talker
+     %MR-I-LNKMRLSTN,  ...Linking the TS Listener
+     %MR-I-LNKMRMAN,  ...Linking the TS Manager
+     %LINK-I-DATMISMCH, creation date of 16-OCT-1997 12:17 in shareable image
+     SYS$COMMON:[SYSLIB]LBRSHR.EXE;2
+
+             differs from date of 24-NOV-1996 19:18 in shareable image library
+     SYS$COMMON:[SYSLIB]IMAGELIB.OLB;1
+     %MR-I-LNKMRLOG,  ...Linking the TS Logger
+     %MR-I-LNKMRSHAR,  ...Linking the TS Shareable image
+     %MR-I-LNKMRNBS,  ...Linking the TS NBS Dump utility
+     %MR-I-LNKMRSTATS,  ...Linking the TS Statistics utility
+     %MR-I-SETMRFILES, Setting TS file ownership and protection
+     %MR-I-ASGNMRFILES, Assigning TS files to target directories
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set E ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set F ...
+     %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+     %MR-I-LNKMBMAN, Linking the MR Management images
+     %MR-I-LNKMBUTIL,  ...Linking the MB Utility
+     %LINK-I-DATMISMCH, creation date of 16-OCT-1997 12:17 in shareable image
+     SYS$COMMON:[SYSLIB]LBRSHR.EXE;2
+
+
+
+     B-10 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+                differs from date of 24-NOV-1996 19:18 in shareable image library
+        SYS$COMMON:[SYSLIB]IMAGELIB.OLB;1
+        %MR-I-LNKMBMAN,  ...Linking the MB Manager
+        %LINK-I-DATMISMCH, creation date of 16-OCT-1997 12:17 in shareable image
+        SYS$COMMON:[SYSLIB]LBRSHR.EXE;2
+
+                differs from date of 24-NOV-1996 19:18 in shareable image library
+        SYS$COMMON:[SYSLIB]IMAGELIB.OLB;1
+        %MR-I-LNKMBMSG,  ...Linking the MB Message File
+        %MR-I-CREMRDIR, Creating directory SYS$SYSROOT:[SYSTEST.MB]
+        %VMSINSTAL-I-SYSDIR, This product creates system disk directory  VMI$ROOT:[SYSTEST.MB].
+        %MR-I-SETMBFILES, Setting MR Management file ownership and protection
+        %MR-I-ASGNMBFILES, Assigning MR Management files to target directories
+
+        The generation phase of the Message Router installation is now complete.
+
+             In order to tailor Message Router to your requirements, you
+             must use the configuration procedure, SYS$MANAGER:MB$CONFIG.COM.
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                        IVP   for   Message  Router
+
+                              Version V3.5-317
+
+            This is the installation verification procedure (IVP) for Message
+             Router. It checks that the components of Message Router are
+            installed successfully on your system.
+
+          © Digital Equipment Corporation 1978, 1998. All rights reserved.
+
+                Starting Management Service
+
+        -----------------------------------------------------------------
+
+                        TRANSFER SERVICE V3.5-317 IVP
+
+                This is the installation verification procedure (IVP) for the
+                Transfer Service. It tests whether or not the Transfer Service
+
+                is successfully installed on your system.
+                The procedure starts by checking that all the files for the
+                Transfer Service exist and are the correct size. It then
+                starts MRMAN.
+
+                The verification procedure creates a test mailbox, using the
+                MRMAN utility, and sends a test message to the mailbox.
+
+                The verification procedure fetches the test message from the
+                mailbox and displays it, and then shuts down MRMAN.
+
+                                     Sample Installation Procedure  B-11
+
+ 
+
+
+
+
+
+
+             The IVP has not completed successfully until you have
+             received this test message.
+
+      ------------------------------------------------------------------
+             Transfer Service V3.5-317 file check
+             The total number of files is 25.
+             All files exist and are the correct size.
+             End of Transfer Service V3.5-317 file check.
+
+     ------------------------------------------------------------------
+
+             This is MRMAN V3.5-317
+
+             Starting Transfer Service
+
+             This is MRMAN V3.5-317
+     %Added MB$TSIVP,
+                             This is MRMAN V3.5-317
+     %MRMAN-S-IDENTIFY, Using mailbox MB$TSIVP at node MOURYA
+     % Message from: MB$TSIVP
+     % Subject:  TEST
+     **************************************************
+
+      Output of this test message indicates
+      that the Transfer Service V3.5-317 is
+      installed successfully on your system.
+
+     **************************************************
+     %Finished reading from mailbox MB$TSIVP
+     %Directory entry MB$TSIVP deleted
+
+              Shutting down the Transfer Service
+
+             The Transfer Service V3.5-317 IVP was successful
+                     END OF TS V3.5-317 IVP
+
+     ==================================================================
+
+                     DIRECTORY SERVICE V3.5-317 IVP
+
+             This is the installation verification procedure (IVP) for the
+             Directory Service. It tests whether or not the Directory Service
+             is successfully installed on your system.
+
+             The procedure completes the following steps:
+
+             1.  Checks that the Directory Service files exist and that they
+                 are the correct size
+
+             2.  Retrieves preset entries from the database
+
+     B-12 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+        ------------------------------------------------------------------
+
+                Directory Service V3.5-317 file check
+                The total number of files is 8.
+                All files exist and are the correct size.
+                End of Directory Service V3.5-317 file check.
+
+        ------------------------------------------------------------------
+
+                        Starting the Directory Service
+
+                The Directory Service V3.5-317 IVP was successful
+
+                        END OF DDS V3.5-317 IVP
+
+                Shutting down Directory Service
+
+        ==================================================================
+
+                        MANAGEMENT SERVICE V3.5-317 IVP
+
+                This is the installation verification procedure (IVP) for
+                Management Service. It tests whether or not the Management
+
+                Service is successfully installed on your system.
+
+                The procedure checks that the Management Services files exist
+                and that they are the correct size.
+
+        ------------------------------------------------------------------
+
+                Management Service V3.5-317 file check
+                The total number of files is 70.
+                All files exist and are the correct size.
+                End of Management Service V3.5-317 file check.
+
+        ------------------------------------------------------------------
+
+                The Management Service V3.5-317 IVP was successful
+
+                        END OF MS V3.5-317 IVP
+
+        ==================================================================
+
+                Installation verification was successfully performed for all
+
+                 3 components of Message Router
+
+                Shutting down Management Service
+
+                The Message Router V3.5-317 IVP completed successfully
+
+                Installation of MR V3.5 completed at 11:14
+
+                                     Sample Installation Procedure  B-13
+
+ 
+
+
+
+
+
+
+             VMSINSTAL procedure done at 11:15
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     B-14 Sample Installation Procedure
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       C
+        ________________________________________________________________
+
+                                 Location of the Message Router Software
+
+
+
+              This appendix contains a description of the Message Router
+              Directory structure and location of the Message Router
+              files. It also lists the Message Router images that are
+              installed with privileges.
+
+              Figure C-1 shows the directory structure of the Message
+              Router software.
+
+              Tables C-1, C-2, C-3, and C-4 show the files that are
+              installed by Message Router. When you have completed
+              the installation, the Message Router software occupies
+              about 10000 blocks of disk space. The file protection
+              codes are the recommended settings that are issued in the
+              distribution kit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Location of the Message Router Software C-1
+
+ 
+
+
+
+
+
+
+           Figure C-1 Message Router Directory Structure
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            MB$
+                                             |
+                                             |
+                 -------------------------------------------------------
+                 |                   |                   |             |
+                MR                  DDS                  MB          TOOLS
+                 |                   |                   |
+           ----------------     -----------      -----------------
+           |    |    |    |     |    |    |      |       |       |
+           |    |    |    |     |    |    |      |       |       |
+           WRK  DB  SCR  MSGn  WRK   DB  SCR   MB$WORK MB$COM  MB$SCRATCH
+
+                                                                   MIG0061
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     C-2 Location of the Message Router Software
+
+ 
+
+
+
+
+
+
+
+
+              Table_C-1_Location_of_the_Transfer_Service_Files__________
+
+              Directory_and_File______________Protection_(S,O,G,W)______
+
+              SYS$COMMON:[SYSEXE]
+
+              MRTALK.EXE                      (RWED,RWED,RE,RE)
+
+              MRLSTN.EXE                      (RWED,RWED,RE,RE)
+
+              MRLOG.EXE                       (RWED,RWED,RE,RE)
+
+              MRSTAT.EXE                      (RWED,RWED,RE,RE)
+
+              MRMAN.EXE                       (RWED,RWED,,)
+
+              MRLISTEN.COM                    (RWED,RWED,RE,RE)
+
+              [MB$.MR.WRK]
+
+              MRSTOP.DAT                      (RWED,RWED,RE,)
+
+              MB$TALK_RUN_TEMPLATE.COM        (RWED,RWED,RE,RE)
+
+              MB$TALK_SCHEDULE_TEMPLATE.COM   (RWED,RWED,RE,RE)
+
+              MB$TALK_NOTIFY_TEMPLATE.COM     (RWED,RWED,RE,RE)
+
+              MB$TALK_RUN_DEF.COM             (RWED,RWED,RE,RE)
+
+              MRMWRK.COM                      (RWED,RWED,RE,RE)
+
+              MR$NODES_DEF.DAT                (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSLIB]
+
+              MRAPPSHAR.EXE                   (RWED,RWED,RE,RE)
+
+              MRSHAR.EXE                      (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSMSG]
+
+              MRMSG.EXE                       (RWED,RWED,RE,RE)
+
+              MRAPPMSG.EXE                    (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSMGR]
+
+              MB$TALK_NOTIFY_DEF.COM          (RWED,RWED,RE,RE)
+
+                                                (continued on next page)
+
+                             Location of the Message Router Software C-3
+
+ 
+
+
+
+
+
+
+           Table_C-1_(Cont.)_Location_of_the_Transfer_Service_Files__
+
+           Directory_and_File______________Protection_(S,O,G,W)______
+
+           MB$TALK_SCHEDULE_DEF.COM        (RWED,RWED,RE,RE)
+
+           MR$TIDY.COM                     (RWED,RWED,RE,RE)
+
+           [MB$.TOOLS]
+
+           MR$COMPRESS.COM                 (RWED,RWED,RE,RE)
+
+           MB$REPOST.COM                   (RWED,RWED,RE,RE)
+
+           MRNBSDMP.EXE                    (RWED,RWED,RE,RE)
+
+           MR$CVP.DAT______________________(RWED,RE,RE,RE)___________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     C-4 Location of the Message Router Software
+
+ 
+
+
+
+
+
+
+              Table_C-2_Location_of_the_Management_Service_Files________
+
+              Directory_and_File______________Protection_(S,O,G,W)______
+
+              SYS$COMMON:[SYSTEST.MB]
+
+              MB$CVP.COM                      (RWED,RE,RE,)
+
+              MB$CVPSETUP.COM                 (RWED,RE,RE,)
+
+              MB$CVPFILES.COM                 (RWED,RE,RE,)
+
+              MB$DDSCVP.COM                   (RWED,RE,RE,)
+
+              MB$MSCVP.COM                    (RWED,RE,RE,)
+
+              MB$TSCVP.COM                    (RWED,RE,RE,)
+
+              SYS$COMMON:[SYSMSG]
+
+              XPORTMSG.EXE                    (RWED,RWED,RE,RE)
+
+              MB$MSG_CONFIG.EXE               (RWED,RWED,RE,RE)
+
+              MB$MSG.EXE                      (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSMGR]
+
+              MB$CONFIG.COM                   (RWED,RWED,RE,RE)
+
+              MB$$TS_CONFIG.COM               (RWED,RWED,RE,RE)
+
+              MB$$DDS_CONFIG.COM              (RWED,RWED,RE,RE)
+
+              MB$$ER_CONFIG.COM               (RWED,RWED,RE,RE)
+
+              MB$$A1_CONFIG.COM               (RWED,RWED,RE,RE)
+
+              MB$CONTROL.COM                  (RWED,RWED,RE,RE)
+
+              MB$$ER_START.COM                (RWED,RWED,RE,RE)
+
+              MB$$ER_STOP.COM                 (RWED,RWED,RE,RE)
+
+              MB$$MS_START.COM                (RWED,RWED,RE,RE)
+
+              MB$$MS_STOP.COM                 (RWED,RWED,RE,RE)
+
+              MB$$TS_START.COM                (RWED,RWED,RE,RE)
+
+              MB$$TS_STOP.COM                 (RWED,RWED,RE,RE)
+
+              MB$LOCATION.COM                 (RWED,RWED,RE,RE)
+
+              MB$CONFIG.FDL                   (RWED,RWED,RE,)
+
+              MB$$DDS_START.COM               (RWED,RWED,RE,RE)
+
+                                                (continued on next page)
+
+                             Location of the Message Router Software C-5
+
+ 
+
+
+
+
+
+
+           Table C-2 (Cont.) Location of the Management Service
+           __________________Files___________________________________
+
+           Directory_and_File______________Protection_(S,O,G,W)______
+
+           MB$$DDS_STOP.COM                (RWED,RWED,RE,RE)
+
+           MB$$MS_CONFIG.COM               (RWED,RWED,RE,RE)
+
+           MB$CNFTXN.FDL                   (RWED,RWED,RE,)
+
+           MB$DDS_ADD_TEMPLATE.COM         (RWED,RWED,RE,RE)
+
+           MB$DDS_UPDATE_TEMPLATE.COM      (RWED,RWED,RE,RE)
+
+           [MB$.TOOLS]
+
+           MB$LOCATION_TEMPLATE.COM        (RWED,RWED,RE,RE)
+
+           MB$CVP.DAT                      (RWED,RE,RE,RE)
+
+           MB$MBMANAGER.COM                (RWED,RWED,RE,RE)
+
+           MB$MBWATCH.COM                  (RWED,RWED,RE,RE)
+
+           SYS$COMMON:[SYSHLP]
+
+           MB$CONFIG.HLB                   (RWED,RWED,RE,RE)
+
+           MRMAN.HLB                       (RWED,RWED,RE,RE)
+
+           MBMAN.HLB                       (RWED,RWED,RE,RE)
+
+           MB$A1_CONFIG.HLB                (RWED,RWED,RE,RE)
+
+           [MB$.MB.MB$COM]
+
+           MB$INIT.COM                     (RWED,RWED,RE,RE)
+
+           MB$MAILER.COM                   (RWED,RWED,RE,RE)
+
+           MB$ADDREP.COM                   (RWED,RWED,RE,RE)
+
+           MB$CHECKDEV.COM                 (RWED,RWED,RE,RE)
+
+           MB$ERRORS.DAT                   (RWED,RWED,RE,RE)
+
+           MB$TS_ER.COM                    (RWED,RWED,RE,RE)
+
+           MB$DDS_ER.COM                   (RWED,RWED,RE,RE)
+
+           MB$NET_ER.COM                   (RWED,RWED,RE,RE)
+
+           MB$A1_ER.COM                    (RWED,RWED,RE,RE)
+
+                                             (continued on next page)
+
+     C-6 Location of the Message Router Software
+
+ 
+
+
+
+
+
+
+              Table C-2 (Cont.) Location of the Management Service
+              __________________Files___________________________________
+
+              Directory_and_File______________Protection_(S,O,G,W)______
+
+              MB$A1_ERRORS.DAT                (RWED,RWED,RE,RE)
+
+              [MB$.MB.MB$WORK]
+
+              MB$VERSION.DAT                  (RWED,RWED,RE,RE)
+
+              MB$MR$CONFIG$CUSTOMIZED.DAT     (RWED,RWED,RE,RE)
+
+              MB$A1$CONFIG$CUSTOMIZED.DAT     (RWED,RWED,RE,RE)
+
+              MB$MR$CONFIG$DEFAULT.DAT        (RWED,RWED,RE,RE)
+
+              MB$A1$CONFIG$DEFAULT.DAT        (RWED,RWED,RE,RE)
+
+              MB$STOP.DAT                     (RWED,RWED,RE,RE)
+
+              DDS$CACHE_AIF.FDL               (RWED,RWED,RE,RE)
+
+              DDS$CACHE_DB.FDL                (RWED,RWED,RE,RE)
+
+              DDS$INQUE.FDL                   (RWED,RWED,RE,RE)
+
+              DDS$NETQUE.FDL                  (RWED,RWED,RE,RE)
+
+              DDS$NIF.FDL                     (RWED,RWED,RE,RE)
+
+              DDS$OUTQUE.FDL                  (RWED,RWED,RE,RE)
+
+              DDS$PERM_AIF.FDL                (RWED,RWED,RE,RE)
+
+              DDS$PERM_DB.FDL                 (RWED,RWED,RE,RE)
+
+              SYS$COMMON:[SYSEXE]
+
+              MBMAN.EXE                       (RWED,RWED,RE,RE)
+
+              MBUTIL.EXE                      (RWED,RWED,RE,RE)
+
+              MB$MRNET.COM                    (RWED,RWED,RWED,RE)
+
+              MB$DDSNET.COM___________________(RWED,RWED,RWED,RE)_______
+
+                             Location of the Message Router Software C-7
+
+ 
+
+
+
+
+
+
+           Table_C-3_Location_of_the_Directory_Service_Files_________
+
+           Directory_and_Files_____________Protection_(S,O,G,W)______
+
+           SYS$COMMON:[SYSMGR]
+
+           DDS$TIDY.COM                    (RWED,RWED,RE,RE)
+
+           DDS$DEFER.COM                   (RWED,RWED,RE,RE)
+
+           DDS$REFRESH.COM                 (RWED,RWED,RE,RE)
+
+           DDS$START.COM                   (RWED,RWED,RE,RE)
+
+           DDS$BACKUP.COM                  (RWED,RWED,RE,RE)
+
+           SYS$COMMON:[SYSEXE]
+
+           DDS$SERV.EXE                    (RWED,RWED,RE,RE)
+
+           DDS$LSTN.EXE                    (RWED,RWED,RE,RE)
+
+           SYS$COMMON:[SYSLIB]
+
+           DDS$SHAR.EXE                    (RWED,RWED,RE,RE)
+
+           DDS$CALLOUT.EXE                 (RWED,RWED,RE,RE)
+
+           SYS$COMMON:[SYSMSG]
+
+           DDS$MSG.EXE                     (RWED,RWED,RE,RE)
+
+           [MB$.TOOLS]
+
+           DDS$COMPRESS.COM                (RWED,RWED,RE,RE)
+
+           DDS$CVP.DAT_____________________(RWED,RE,RE,RE)___________
+
+
+
+
+
+
+
+
+     C-8 Location of the Message Router Software
+
+ 
+
+
+
+
+
+
+              Table C-4 Location of the Help Libraries and Release
+              __________Notes___________________________________________
+
+              Directory_and_Files_____________Protection_(S,O,G,W)______
+
+              SYS$COMMON:[SYSHLP]
+
+              MR035.RELEASE_NOTES             (RWED,RWED,RWED,RE)
+
+              MB$CONFIG.HLB                   (RWED,RWED,RE,RE)
+
+              MBMAN.HLB                       (RWED,RWED,RE,RE)
+
+              MRMAN.HLB_______________________(RWED,RWED,RE,RE)_________
+
+              For Version 3.5 reinstallations, any existing messages are
+              moved to new message areas. Standard files are moved into
+              the new database structure, but the old directories (with
+              any extra files they held) are not deleted.
+
+              Table C-5 shows the Message Router images that are in-
+              stalled with privileges and their associated privileges.
+
+              Table_C-5_Message_Router_Images_Installed_with_Privileges_
+
+              Installed_Image__Privileges_______________________________
+
+              DDS$LSTN         CMKRNL, SYSNAM, DETACH, TMPMBX, OPER,
+                               NETMBX, SYSGBL, SYSPRV, SYSLCK
+
+              DDS$SERV         CMKRNL, SYSNAM, DETACH, TMPMBX, OPER,
+                               NETMBX, SYSGBL, SYSPRV, SYSLCK
+
+              MBMAN            CMKRNL, SYSGBL, SYSPRV, BYPASS, SYSLCK
+
+              MBUTIL           SYSGBL, SYSPRV, BYPASS, SYSLCK
+
+              MRLOG            SYSNAM, GROUP, PRMMBX, OPER, NETMBX,
+                               SYSLCK
+
+              MRLSTN           CMKRNL, SYSNAM, GROUP, WORLD, OPER,
+                               EXQUOTA, NETMBX, SYSPRV, SYSLCK
+
+              MRMAN            CMKRNL, DETACH, GROUP, PRMMBX, WORLD,
+                               OPER, EXQUOTA, NETMBX, SYSPRV, SYSLCK
+
+              MRTALK           CMKRNL, DETACH, GROUP, PRMMBX, WORLD,
+              _________________OPER,_EXQUOTA,_NETMBX,_SYSPRV,_SYSLCK____
+
+                             Location of the Message Router Software C-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+
+     A__________________________          F__________________________
+
+     Account Quotas,  2-3                 Free blocks required, 2-2
+
+     B__________________________          H__________________________
+
+     Back up,  2-5, 3-3                   Help, 3-1, 3-5
+
+     C__________________________          I__________________________
+
+     Configuration,  1-3                  Installation
+       Message Router, 1-1                 after,  5-1
+       passing on information,             help,  3-1
+         5-1                               Message Router,  1-1
+       procedure, 1-3                      overview,  1-3
+
+                                           preparing for,  2-1, 2-5
+     D__________________________           procedure,  3-5
+
+     DECnet,  2-1                          reinstallation,  2-8
+       license, 1-1, 2-1, 2-2              sample,  B-1
+     DECnet/OSI,  2-1                      starting,  3-1
+     Digital                               time,  1-3
+       how to contact, 1-4                 upgrade,  2-8
+     Directory Service,  1-1               VAXcluster,  2-8
+     Distribution kit                     Installation save sets
+       checking, 2-1                       list of files,  A-1
+
+                                          installation verification
+     E__________________________            procedure
+
+     Errors                                see IVP
+       installation, 1-4                  IVP, 1-3, 1-4, 3-6
+       reporting, 1-4                      overview,  4-1
+                                           question,  3-6
+                                           running,  4-1
+                                           setting VERIFY,  4-4
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+                                          Purging, 3-6
+     L__________________________
+
+     License,  2-2                        Q__________________________
+
+     License Management Utility,          Quota
+        3-5                                account,  2-3
+     Licensing
+       Message Router, 1-1                R__________________________
+
+     M                                    Removing software from
+     ___________________________            OpenVMS,  5-2
+     MAILbus                              Reporting errors, 1-4
+       shutting down, 2-10                Running the IVP, 4-1
+     Management Service,  1-1
+     MBMANAGER                            S__________________________
+       password, 2-7                      Sample installation, B-1
+       UIC, 2-7                           Shutting down
+     Message Router                        MAILbus,  2-10
+       components, 1-1                     Message Router,  2-10
+       reinstallation, 3-6
+       shutting down, 2-10                Software Product
+     Message traffic,  2-6                  Description
+     MicroVAX                              see SPD
+       checking software is               Software versions
+         installed,  2-2                   OpenVMS,  2-2
+       removing software, 5-2             SPD, 2-1
+                                          Starting installation, 3-1
+     O__________________________          Support Center, 1-4
+     OpenVMS                              SYSGEN parameters, 2-4
+
+       software version, 2-2              T
+                                          ___________________________
+     P__________________________          Transfer Service, 1-1
+
+     PAK,  2-2                            U
+     Password                             ___________________________
+       MBMANAGER account, 2-7             UIC, 3-6
+       Message Router accounts,            MBMANAGER account,  2-7
+         3-6
+     Preparing                            V__________________________
+       for installation, 2-1              VAXcluster
+       VAXcluster, 2-8                     preparing for
+     Prerequisite software and                installation,  2-8
+        hardware, 2-1                     VMSINSTAL, 1-3, 3-1
+
+     Product Authorization Key             invoking,  3-2
+
+       See also PAK
+
+     Index-2
+
+ 
+
+
+
+
+
+
+        VMSTAILOR, 2-3, 5-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                 Index-3

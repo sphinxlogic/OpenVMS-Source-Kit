@@ -1,0 +1,2355 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    DIGITAL SNA
+                    Domain_Gateway______________________________________
+                    Installation (OpenVMS)
+
+                    Part Number: AA-PQCGD-TE
+
+
+                    May 1997
+
+                    This document describes how to install the Domain
+                    Gateway software on the OpenVMS operating system.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This is a revised
+                                                  manual.
+
+                    Operating System:             OpenVMS VAX
+                                                  OpenVMS Alpha
+
+                    Software Version:             DIGITAL SNA Domain
+                                                  Gateway V2.1
+
+ 
+
+
+
+
+
+
+
+          Electronic Data Systems Corporation and Digital Equipment
+          Corporation make no representations that the use of their
+          products in the manner described in this publication will
+          not infringe on existing or future patent rights, nor do
+          the descriptions contained in this publication imply the
+          granting of licenses to make, use, or sell equipment or
+          software in accordance with the description.
+
+          Possession, use, or copying of the software described in
+          this publication is authorized only pursuant to a valid
+          written license from DIGITAL or an authorized sublicensor.
+
+          The information in this document is subject to change
+          without notice and should not be construed as a commitment
+          from Electronic Data Systems Corporation or Digital
+          Equipment Corporation. Electronic Data Systems Corporation
+          and Digital Equipment Corporation assume no responsibility
+          for any errors that may appear in this document.
+
+          DIGITAL conducts its business in a manner that conserves
+          the environment and protects the safety and health of its
+          employees, customers, and the community.
+
+          Copyright © 1997 Electronic Data Systems Corporation. All
+          Rights Reserved.
+
+          Copyright © 1994 Digital Equipment Corporation. All Rights
+          Reserved.
+
+          The following are trademarks of Digital Equipment
+          Corporation: DIGITAL SNA Domain Gateway, DECnet, OpenVMS,
+          VAX, VMScluster, and the DIGITAL logo.
+
+          The following are third-party trademarks:
+
+             IBM is a registered trademark of International Business
+             Machines Corporation. CICS, DISOSS, Displaywriter,
+             MVS/ESA, MVS/XA, NetView, PROFS, TSO, VM/ESA, VM/SP,
+             VM/XA, and VTAM are trademarks of International Business
+             Machines Corporation.
+             MS-DOS is a registered trademark of Microsoft
+             Corporation.
+
+          This document is available on CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing to Install the DIGITAL SNA Domain Gateway
+     Software
+
+        Inspecting the Distribution Kit.....................    1-1
+        Verifying Required Operating System Components......    1-1
+        Verifying Prerequisite Hardware.....................    1-1
+        Verifying Prerequisite and Optional Software........    1-2
+        Registering the License Product Authorization Key
+        (PAK)...............................................    1-2
+        Special Considerations for Installing the Domain
+        Gateway Software....................................    1-3
+        Special Considerations for Installing the Domain
+        Gateway Software on a VMScluster System.............    1-4
+        Verifying Installation Procedure Requirements.......    1-5
+        Privileges and Disk Space...........................    1-5
+        VMSINSTAL Requirements..............................    1-6
+        Backing Up Your System Disk.........................    1-7
+
+  2  Installing the DIGITAL SNA Domain Gateway Software
+
+        The Installation Dialog.............................    2-1
+        Error Recovery......................................   2-10
+
+
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    3  After Installing the DIGITAL SNA Domain Gateway
+       Software
+
+          Running the Installation Verification Procedure
+          Separately..........................................    3-1
+          Preparing the IBM SNA Environment...................    3-1
+          Configuring and Loading the Domain Gateway
+          Product.............................................    3-2
+          Running the Primary Logical Unit Installation
+          Verification Procedure..............................    3-3
+          Determining and Reporting Problems..................    3-7
+
+    A  Sample Installation Output
+
+          Sample Management Node Installation.................    A-1
+          Sample Load Host Installation.......................    A-3
+
+    B  Files Installed on Your System
+
+
+    Tables
+
+          1-1       Disk Space Requirements...................    1-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              The DIGITAL SNA Domain Gateway-CT and DIGITAL SNA Domain
+              Gateway-ST are combination hardware and software systems
+              that allow communication between non-SNA networks (DECnet
+              and TCP/IP) and IBM SNA (Systems Network Architecture)
+              networks.
+
+              This manual explains how to install the Domain Gateway
+              software on VAX processors that are running the OpenVMS VAX
+              operating system and on Alpha processors that are running
+              the OpenVMS Alpha operating system.
+
+              Keep this document with your distribution kit. You will
+              need it if you need to reinstall the Domain Gateway
+              software.
+
+        Intended Audience
+
+              The audience for this guide is the system manager
+              responsible for installing the Domain Gateway software.
+
+        Document Structure
+
+              This guide is organized as follows:
+
+              Chapter 1        Describes the operating system and
+                               hardware requirements for the Domain
+                               Gateway installation and related
+                               procedures that you must complete before
+                               installing the Domain Gateway software.
+
+              Chapter 2        Describes the step-by-step instructions
+                               for the installation.
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+
+          Chapter 3        Describes the Installation Verification
+                           Procedure (IVP) and postinstallation
+                           procedures that you must complete in order
+                           to use the Domain Gateway product.
+
+          Appendix A       Contains sample listings of Domain Gateway
+                           software installations.
+
+          Appendix B       Contains a list of files added to your
+                           system as a result of installing the
+                           Domain Gateway software.
+
+    Associated Documents
+
+          The DIGITAL SNA Domain Gateway product documentation
+          consists of the following six manuals: two installation
+          manuals, a planning and configuration manual, a management
+          manual, an NCL reference manual, and a manual describing
+          the modifications necessary to IBM systems that communicate
+          with the Gateway.
+
+          This manual, DIGITAL SNA Domain Gateway Installation
+          (OpenVMS) and the DIGITAL SNA Domain Gateway Installation
+          (DIGITAL UNIX) manual describe the steps you take to
+          install the Domain Gateway software.
+
+          The DIGITAL SNA Domain Gateway Planning and Configuration
+          manual describes the activities you need to do to plan
+          for a Domain Gateway. The manual contains a series of
+          worksheets that allow you to organize all the information
+          you need to configure a Gateway. The manual then describes
+          how to use the Configuration utility to create a Gateway
+          configuration file. Finally, the manual describes how to
+          create a loadable management file and how to load this file
+          and the system image onto the Gateway hardware.
+
+          The DIGITAL SNA Domain Gateway Management manual describes
+          the tasks necessary to monitor and modify a running Domain
+          Gateway.
+
+          The DIGITAL SNA Domain Gateway NCL Reference manual
+          describes, in a reference format, the Network Control
+          Language (NCL) commands used to manage the SNA components
+          of the Domain Gateway. It also describes the event logging
+          messages generated by these components.
+
+    vi
+
+ 
+
+
+
+
+
+
+
+              The DIGITAL SNA Domain Gateway Guide to IBM Resource
+              Definition manual describes, in detail, the modifications
+              that an IBM system programmer needs to make to all IBM
+              systems that communicate with the Domain Gateway. These
+              changes are made to the IBM communications software (called
+              VTAM), the IBM operating system, and IBM programs. This
+              manual should be made available to IBM system programmers
+              responsible for IBM systems that communicate with the
+              Gateway. The system programmers will also want to read
+              the management manual.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+          Before you use the manuals in the DIGITAL SNA Domain
+          Gateway documentation set, you should be familiar with
+          the material in the following IBM manuals:
+
+          o  Systems Network Architecture-Concepts and Products
+             (GC30-3072-x)
+
+          o  Systems Network Architecture-Technical Overview (GC30-
+             3073-x)
+
+          In addition to the SNA material in those two IBM manuals,
+          you should have available the following VTAM manuals:
+
+          o  Planning and Reference for Netview Network Control
+             Program Virtual Telecommunications Access Method (SC31-
+             6092-x)
+
+          o  VTAM Network Implementation Guide (SC31-6404-x for VTAM
+             V3R3)
+
+          The DEC ChannelServer (DESNA) documentation consists of the
+          following manuals:
+
+          o  DEC ChannelServer Hardware Installation Guide
+
+          o  DEC ChannelServer Hardware Troubleshooting Guide
+
+          The DEC ChannelServer II (DESNB) documentation consists of
+          the following manuals:
+
+          o  DEC ChannelServer II Installation
+
+          o  DEC ChannelServer II Problem Solving
+
+          The DEC MicroServer (DEMSA) documentation consists of the
+          following manual:
+
+          o  Installing the DEC MicroServer
+
+          The DEC MicroServer-SP (DEMSB) documentation consists of
+          the following manual:
+
+          o  Installing the DEC MicroServer-SP
+
+          In addition, the following DECnet manuals contain
+          information about general DECnet concepts and the Network
+          Control Language (NCL):
+
+          o  DECnet Network Management
+
+          o  DECnet Network Control Language Reference
+
+    viii
+
+ 
+
+
+
+
+
+
+
+        Conventions
+
+              This guide uses the following conventions:
+
+              Special     This special type indicates system output or
+              type        user input. System output is in black type;
+
+                          user input is in bold type. In examples the
+                          dollar sign ($) is used to indicate the DCL
+                          prompt. This prompt may be different on your
+                          system.
+
+              UPPERCASE   Uppercase letters in command lines indicate
+                          keywords that must be entered. You can enter
+                          keywords in either uppercase or lowercase.
+                          You can abbreviate command keywords to the
+                          first three characters or their minimum unique
+                          abbreviation.
+
+              lowercase   Lowercase italics in command syntax or examples
+              italics     indicate variables for which either the user or
+                          the system supplies a value.
+
+              [ ]         Brackets in command syntax statements indicate
+                          that the enclosed values are optional. You can
+                          enter none or one. Default values apply for
+                          unspecified options. (Do not type the brackets
+                          when you enter a command.) Brackets are not,
+                          however, optional in the syntax of a directory
+                          name in a file specification or in the syntax
+                          of a substring specification in an assignment
+                          statement.
+
+              <Return>    Press the Return key. The Return key, which you
+                          must press to execute commands, is assumed in
+                          command examples and therefore is not always
+                          shown in command displays.
+
+              OpenVMS     Unless otherwise stated, OpenVMS in this manual
+                          refers to both the OpenVMS Alpha operating
+                          system running on an Alpha processor and the
+                          OpenVMS VAX operating system running on a VAX
+                          processor. For supported versions, see the
+                          Software Product Description (SPD).
+
+                                                                       ix
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+             Preparing to Install the DIGITAL SNA Domain Gateway Software
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing the DIGITAL SNA Domain Gateway
+              software.
+
+        Inspecting the Distribution Kit
+
+              The software Bill of Materials (BOM) included with your
+              media distribution kit lists the contents of the kit.
+              Carefully compare the items you received with the items
+              listed in the BOM. If any components are missing or
+              damaged, contact your DIGITAL representative before
+              continuing with the installation.
+
+              The DIGITAL SNA Domain Gateway product provides online
+              release notes. DIGITAL strongly recommends that you read
+              the release notes before proceeding with the installation.
+              For information about accessing the release notes, see
+              Chapter 2.
+
+        Verifying Required Operating System Components
+
+              The OpenVMS operating system comes with a variety of
+              support options, or classes. Classes include such features
+              as networking and RMS journaling. For a complete list of
+              the required classes, see the Software Product Description
+              (SPD).
+
+        Verifying Prerequisite Hardware
+
+              You can install the Domain Gateway software on any VAX or
+              Alpha processor listed in the SPD. In addition to a VAX or
+              Alpha processor, you will need a DEC ChannelServer (DESNA)
+              or DEC ChannelServer II (DESNB) for a Domain Gateway-CT or
+              a DEC MicroServer (DEMSA) or DEC MicroServer-SP (DEMSB) for
+              a Domain Gateway-ST.
+
+         Preparing to Install the DIGITAL SNA Domain Gateway Software 1-1
+
+ 
+
+
+
+
+
+
+
+    Verifying Prerequisite and Optional Software
+
+          The Software Product Description (SPD) contains a complete
+          list of prerequisite and optional software with their
+          required version numbers.
+
+          Before you install the Domain Gateway software, you must
+          have one of the OpenVMS operating system versions specified
+          in the DIGITAL SNA Domain Gateway SPD.
+
+          Use the SHOW SYSTEM command to determine the current
+          version of the OpenVMS operating system on your processor.
+          If you do not have one of the required versions, you must
+          install it before you install the Domain Gateway software.
+
+          In addition to having one of the prerequisite operating
+          system versions, you must have one of the DECnet network
+          software versions specified in the DIGITAL SNA Domain
+          Gateway SPD.
+
+          Use the MCR NCL SHOW NODE node-name ALL CHARACTERISTICS
+          command. If this command succeeds, check the returned
+          version information to see that you have a supported
+          version of the DECnet software. If the version is
+          unsupported, you must install the required DECnet software
+          before installing the Domain Gateway software.
+
+          If the command fails, your node has no DECnet software. You
+          must install the required DECnet software before installing
+          the Domain Gateway software.
+
+    Registering the License Product Authorization Key (PAK)
+
+          Before you install and run the Domain Gateway software,
+          you must first register a License Product Authorization
+          Key (License PAK) using the License Management Facility
+          (LMF). The License PAK may be shipped along with the kit if
+          you ordered the license and media together; otherwise, it
+          is shipped separately to a location based on your license
+          order.
+
+          If you are installing prerequisite or optional software
+          along with the Domain Gateway software, review the PAK
+          status and install PAKs for any prerequisite or optional
+          software before you install the Domain Gateway software.
+
+    1-2 Preparing to Install the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+              You must register and load your license for the Domain
+              Gateway software before you start the installation in order
+              to use the software.
+
+              To register a license under OpenVMS, first log in to the
+              system manager's account, SYSTEM. You then have a choice of
+              two ways to perform the registration:
+
+              o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+                 prompts you for information, respond with data from your
+                 License PAK.
+
+              o  At the DCL prompt, enter the LICENSE REGISTER command
+                 with the appropriate qualifiers that correspond to
+                 License PAK information.
+
+              For complete information about using LMF, see the OpenVMS
+              License Management Utility Manual.
+
+        Special Considerations for Installing the Domain Gateway Software
+
+              This section describes the special installation
+              requirements for the DIGITAL SNA Domain Gateway product.
+
+              Before you install the Domain Gateway software, you
+              must select the DECnet nodes where you wish to load the
+              software. A DECnet SNA network using the DIGITAL SNA Domain
+              Gateway product has the following DECnet nodes:
+
+              o  Gateway node: For the Domain Gateway-CT, this is a DEC
+                 ChannelServer or DEC ChannelServer II running the Domain
+                 Gateway-CT software. For the Domain Gateway-ST, this
+                 is a DEC MicroServer or DEC MicroServer-SP running the
+                 Domain Gateway-ST software.
+
+              o  Gateway load host node: This is a OpenVMS DECnet node
+                 from which you load the Domain Gateway system image onto
+                 the Gateway node. You must install both the management
+                 software and the Domain Gateway system image on the load
+                 host node.
+
+              o  Gateway management node: This is a OpenVMS DECnet node
+                 from which you manage the operation of the DIGITAL SNA
+                 Domain Gateway product. You install only the management
+                 software on a Gateway management node. You can have
+                 multiple Gateway management nodes for a single Gateway.
+
+         Preparing to Install the DIGITAL SNA Domain Gateway Software 1-3
+
+ 
+
+
+
+
+
+
+
+          o  Gateway access node: This is a non-SNA node with one
+             or more access routine products installed. The access
+             node must be running the version of the operating system
+             (OpenVMS, DIGITAL UNIX, or MS-DOS) that the particular
+             access routines require. Many of the access routines
+             suggest that you install the Gateway management software
+             on the access node to aid in access routine problem
+             resolution. See the SPDs for the individual access
+             routines for information about the required operating
+             system and the network software versions.
+
+             ________________________ Notes ________________________
+
+             You must perform a license PAK load on each node on
+             which you plan to install the Domain Gateway load
+             host software kit. You do not need to license those
+             nodes where you will install only the Domain Gateway
+             management software kit.
+
+             Each new version of the Domain Gateway software
+             contains new versions of the SNAP and CTF utilities
+             included in the management software. Therefore, you
+             should install the new version of the management
+             software on all nodes where you have previously
+             installed the management software kit.
+
+             ______________________________________________________
+
+    Special Considerations for Installing the Domain Gateway Software
+    on a VMScluster System
+
+          This section describes the special installation
+          requirements for installing the DIGITAL SNA Domain Gateway
+          product on a VMScluster system.
+
+          Before you install the Domain Gateway on a VMScluster
+          system, you must de-install the Domain Gateway CTF analysis
+          routines from each of the VMScluster members. On each node
+          of the VMScluster system, enter the following command:
+
+          $ mcr install sys$library:ctf$snapu5_analyze/delete <Return>
+
+
+
+
+    1-4 Preparing to Install the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+        Verifying Installation Procedure Requirements
+
+              This section and those that follow discuss various
+              requirements for installing the DIGITAL SNA Domain Gateway
+              product.
+
+              The installation takes approximately 5 to 15 minutes,
+              depending on your distribution media and your system
+              configuration.
+
+        Privileges and Disk Space
+
+              To install the Domain Gateway, you must log in to an
+              account that has the SETPRV privilege or at least the
+              following privileges:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              DIGITAL recommends installing from the SYSTEM account.
+
+              Note that VMSINSTAL turns off BYPASS privileges at the
+              start of the installation.
+
+              Verify that your account has sufficient privileges before
+              you install the Domain Gateway software. Use the DCL SHOW
+              PROCESS/PRIVILEGE command to check your privileges.
+
+              The Domain Gateway's requirements for free disk
+              storage space are different during installation and
+              after installation. Table 1-1 summarizes the storage
+              requirements.
+
+              Table_1-1_Disk_Space_Requirements__________________________
+
+                                   Blocks During          Blocks After
+              Kit___________________Installation__________Installation___
+
+                               Alpha       VAX         Alpha       VAX
+
+                                                 (continued on next page)
+
+         Preparing to Install the DIGITAL SNA Domain Gateway Software 1-5
+
+ 
+
+
+
+
+
+
+
+          Table_1-1_(Cont.)_Disk_Space_Requirements__________________
+
+                                Blocks During         Blocks After
+          Kit___________________Installation__________Installation___
+
+          Domain Gateway   12,000      37,000      9,000       34,000
+          load host and
+          management
+          software
+
+          Domain Gateway   12,000      37,000      8,000       30,000
+          management
+          software_only______________________________________________
+
+          Verify that you have adequate disk space before you install
+          the Domain Gateway software. You can check your available
+          disk space by entering the following command at the DCL
+          prompt:
+
+          $ SHOW DEVICE system-disk
+
+          where system-disk refers to the device name of the system
+          disk.
+
+    VMSINSTAL Requirements
+
+          When you invoke VMSINSTAL, it checks the following:
+
+          o  Whether you are logged in to a privileged account
+
+          o  Whether you have adequate quotas for installation
+
+          o  Whether DECnet is running
+
+          o  Whether any users are logged in to the system
+
+
+
+
+
+
+
+
+
+
+    1-6 Preparing to Install the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+              Note that VMSINSTAL requires the installation account to
+              have at least the following quotas:
+
+                 ASTLM = 24
+                 BIOLM = 18
+                 BYTLM = 18,000
+                 DIOLM = 18
+                 ENQLM = 30
+                 FILLM = 20
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can enter Yes to
+              continue. To stop the installation process and correct
+              the situation, enter No or press <Return>. Then correct the
+              problem and restart the installation.
+
+        Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks
+              whether or not you have backed up your system disk. DIGITAL
+              recommends that you back up the system disk before you
+              install any software.
+
+              Use the backup procedures that are established at your
+              site. For details about performing a system disk backup,
+              see the section on the Backup utility in the OpenVMS System
+              Management Subkit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         Preparing to Install the DIGITAL SNA Domain Gateway Software 1-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                       Installing the DIGITAL SNA Domain Gateway Software
+
+
+              This chapter explains how to install the DIGITAL SNA Domain
+              Gateway software.
+
+        The Installation Dialog
+
+              The Domain Gateway installation procedure consists of
+              a series of questions and informational messages. See
+              Appendix A for a sample installation.
+
+              To abort the installation procedure at any time, press
+              <Ctrl/Y>. When you press <Ctrl/Y>, the installation
+              procedure deletes all the files it created up to that point
+              and exits. You can then start the installation again.
+
+              1. Invoke VMSINSTAL.
+
+        $ @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                 To start the installation, invoke the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account. VMSINSTAL is in the SYS$UPDATE directory. The
+                 following list defines the parameters of the VMSINSTAL
+                 command procedure.
+
+                 saveset-name
+                 The installation name for the software component. For
+                 the Domain Gateway software, use the name SNAPU5021.
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 media. For example, MTA0: is the device name for a tape
+                 drive. It is not necessary to use the console drive for
+                 this installation. However, if you do use the console
+                 drive, you should replace any media you removed once the
+                 installation is complete.
+
+                   Installing the DIGITAL SNA Domain Gateway Software 2-1
+
+ 
+
+
+
+
+
+
+
+             OPTIONS N
+             An optional parameter that indicates you want to see the
+             question about release notes. If you do not include the
+             OPTIONS N parameter, VMSINSTAL does not ask you about
+             the release notes. You should review the release notes
+             before proceeding with the installation in case they
+             contain additional information about the installation.
+             If you are restarting the installation and have already
+             reviewed the release notes, you do not need to specify
+             OPTIONS N.
+
+             Note that there are other options you can select when
+             you invoke VMSINSTAL.
+
+             o  Auto answer option (A): Initially creates a file
+                that contains your answers to VMSINSTAL questions and
+                prompts. You can then use the option (and the answer
+                file) to save time during a reinstallation (typically
+                after upgrading your system).
+
+             o  Get save set option (G): Lets you store product save
+                sets temporarily on a magnetic tape or in a disk
+                directory.
+
+             o  File log option (L): Logs all activity to the
+                terminal during installation.
+
+             o  Alternate root option (R): Lets you install the
+                product on a system root other than that of the
+                running system.
+
+             See the OpenVMS documentation for software installation
+             in the OpenVMS System Management Subkit for detailed
+             information about these options. If you specify more
+             than one option, separate the options with commas
+             (OPTIONS A,N).
+
+             The following example invokes VMSINSTAL to install the
+             Domain Gateway software from MTA0: and shows the system
+             response. This example uses the OPTIONS N release note
+             parameter.
+
+    $ @SYS$UPDATE:VMSINSTAL SNAPU5021 MTA0: OPTIONS N <Return>
+          OpenVMS Software Product Installation Procedure V6.1
+
+    It is 16-MAY-1997 at 13:15.
+
+    Enter a question mark (?) at any time for help.
+
+    2-2 Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure. VMSINSTAL does not
+                 prompt you for any options; be sure to include OPTIONS
+                 N on the VMSINSTAL command line to access the release
+                 notes during the installation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   Installing the DIGITAL SNA Domain Gateway Software 2-3
+
+ 
+
+
+
+
+
+
+
+          2. Confirm system status.
+
+    %VMSINSTAL-W-ACTIVE, The following processes are still active:
+       .
+       .
+       .
+    * Do you want to continue anyway [NO]? YES <Return>
+
+             VMSINSTAL displays a list of all active processes.
+             The dialog then asks whether you want to continue the
+             installation. You can install the Domain Gateway if
+             other processes are active. If you are reinstalling
+             the software, you should verify that no one is using
+             the Domain Gateway management software. If you are
+             satisfied that no one is using the Gateway software,
+             press <Return>. Otherwise, enter No to discontinue the
+             installation.
+
+          3. Confirm system backup.
+
+    * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+             VMSINSTAL asks whether or not you are satisfied with
+             your system backup. You should always back up your
+             system disk before performing an installation. If you
+             are satisfied with the backup of your system disk,
+             press <Return>. Otherwise, enter No to discontinue the
+             installation. After you back up your system disk, you
+             can restart the installation.
+
+          4. Mount the media.
+
+    Please mount the first volume of the set on MTA0:.
+    * Are you ready? YES <Return>
+    %MOUNT-I-MOUNTED, SNAPU5 MOUNTED ON _MTA0:
+    The following products will be processed:
+      SNAPU5 V2.1
+
+            Beginning installation of SNAPU5 V2.1 at 13:16
+
+    %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+             You should now mount the first distribution volume on
+             the device you specified when you invoked VMSINSTAL. The
+             device name appears in the line preceding the question.
+             VMSINSTAL then asks whether or not you are ready to
+             continue with the installation.
+
+    2-4 Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+                 If you respond Yes to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 the Domain Gateway software has been mounted on the
+                 specified device and that the installation has begun.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter No
+                 in response to the "Are you ready?" question. To abort
+                 the installation for other reasons, press <Ctrl/Y>.
+
+              5. Select a release notes option.
+
+            Release notes included with this kit are always copied to SYS$HELP.
+
+            Additional Release Notes Options:
+
+                1.  Display release notes
+                2.  Print release notes
+                3.  Both 1 and 2
+                4.  None of the above
+
+        * Select option [2]: <Return>
+
+                 If you specified OPTIONS N when you invoked VMSINSTAL,
+                 you are now asked to choose one of the four options for
+                 reviewing the release notes.
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on the console terminal. You can
+                 terminate the display at any time by pressing <Ctrl/C>.
+
+                 If you select option 2, VMSINSTAL prompts you for the
+                 name of the print queue that you want to use:
+
+        * Queue name [SYS$PRINT]: <Return>
+
+                 You can press <Return> to send the file to the default
+                 output print device or you can enter another queue name.
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes immediately on the console terminal and then
+                 prompts you for a queue name for the printed version.
+
+                 Select option 4 if you have already reviewed the release
+                 notes and are restarting the installation.
+
+                   Installing the DIGITAL SNA Domain Gateway Software 2-5
+
+ 
+
+
+
+
+
+
+
+             Next, VMSINSTAL displays the following question:
+
+    * Do you want to continue the installation [NO]?: YES <Return>
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+             To continue the installation, enter Yes. Otherwise,
+             press <Return>. In either case, the release notes are
+             copied to a file in the SYS$HELP directory:
+
+    SYS$HELP:SNAPU5021.RELEASE_NOTES
+
+             ________________________ Note ________________________
+
+             The name of the release notes file created by
+             VMSINSTAL consists of the current product name and
+             version number. Do not delete release notes for
+             previous versions of the Domain Gateway software.
+
+             ______________________________________________________
+
+          6. Select the type of installation.
+
+            This kit contains the Load Host software needed to configure and
+            downline load a DIGITAL SNA Domain Gateway from this system.  This
+            kit also contains the Management software needed to control and
+            monitor a DIGITAL SNA Domain Gateway.
+
+            You can install
+
+            [1] Load Host software and Management software
+            [2] Management software only
+
+    * Enter an option [1]:
+
+             You have two installation options. The default selection
+             (1) installs the complete software kit, including the
+             management software. To start this process, press
+             <Return>. This option requires that the product
+             authorization key (PAK) be registered and loaded.
+             Failure to do this causes the installation process
+             to fail with an error message notifying you that the
+             license must be installed. Refer to the PAK installation
+             procedure for details. After registering and loading the
+             PAK, restart the installation from the first step.
+
+             If you want to install just the Gateway management
+             software, enter 2, press <Return>, and proceed with
+             the remainder of the installation procedure.
+
+    2-6 Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+              7. Respond to license registration queries. (LOAD HOST
+                 ONLY)
+
+                Product:      SNA-DOMAIN-GATEWAY
+                Producer:     DEC
+                Version:      2.1
+                Release Date: 01-MAY-1997
+
+        * Does this product have an authorization key registered and loaded? Y <Return>
+
+                 If you are installing the load host software, the
+                 installation procedure displays license information
+                 about your product and then asks if you have registered
+                 and loaded your Product Authorization Key (PAK).
+                 The installation procedure displays either the SNA-
+                 DOMAIN-GATEWAY license information (as shown in the
+                 preceding example) or the SNA-DOMAIN-GATEWAY-CT license
+                 information.
+
+                 If you have not registered and loaded your PAK, the
+                 installation dialog does not display any license
+                 information. Instead, it terminates with a message
+                 indicating that you should register and load your PAK
+                 to complete the installation successfully.
+
+              8. Optionally, create the SNAPU5 directory. (LOAD HOST
+                 ONLY)
+
+               To maintain your Gateway, you will need a place to store answer
+               files, script files, management files, dump files, etc. This
+               installation can create a system directory, SYS$COMMON:[SNAPU5$],
+               for that purpose.
+
+        * Create the system directory [YES]?
+
+                 If you are installing load host software, the
+                 installation procedure asks whether or not you want
+                 to create a directory in SYS$COMMON to store various
+                 configuration-related files. If you do not want to
+                 create a separate directory for these files, enter No.
+
+              9. Purge files.
+
+        * Do you want to purge files replaced by this installation [YES]? <Return>
+
+                 You have the option of purging files from previous
+                 versions of the Domain Gateway software that are
+                 superseded by this installation. Digital recommends
+
+                   Installing the DIGITAL SNA Domain Gateway Software 2-7
+
+ 
+
+
+
+
+
+
+
+             purging; however, if you need to keep files from the
+             previous version, enter No in response to the question.
+
+             If you are reinstalling the software you should verify
+             that no one is using the Domain Gateway management
+             software before you request that existing files be
+             purged.
+
+         10. Choose the Installation Verification Procedure (IVP)
+             option.
+
+    * Do you want to run the IVP after the installation [YES]? <Return>
+
+             The installation procedure now asks whether or not you
+             want to run the IVP. The IVP for the Domain Gateway
+             checks to be sure that the installation is successful.
+             Digital recommends that you run the IVP.
+
+             After the Domain Gateway software is installed, you can
+             run the IVP independently to verify that the software is
+             available on your system (see Chapter 3).
+
+         11. Read informational messages.
+
+    %SNAPU5-I-NOMORE, there are no more questions
+    %SNAPU5-I-TIME, the installation completes in approximately 15 minutes
+
+    %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+    %VMSINSTAL-I-SYSDIR, This product creates system directory [SNAPU5$].
+
+            You should execute the following command to configure the Domain
+            Gateway:
+
+                RUN SYS$SYSTEM:SNAPU5$CONFIGURE
+
+            This step creates the Domain Gateway configuration files, completing
+            the installation. You can create a management file and boot the
+            Gateway at the end of the configuration procedure; the procedure
+            will prompt you.
+
+            For current information about the DIGITAL SNA Domain Gateway V2.1
+            software product, read the file SYS$HELP:SNAPU5021.RELEASE_NOTES
+            which is supplied by this installation.
+
+    %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories
+
+    2-8 Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation. There are no further
+                 questions. If the installation procedure is successful
+                 up to this point, VMSINSTAL moves the new or modified
+                 files to their target directories and updates help files
+                 and the DCL tables.
+
+             12. Observe the Installation Verification Procedure (IVP).
+
+                 If you chose to run the IVP, VMSINSTAL runs it now.
+                 When the IVP runs successfully, you see the following
+                 display:
+
+                Copyright (c) Electronic Data Systems Corporation 1997.
+                Copyright (c) Digital Equipment Corporation 1994.
+
+                DIGITAL SNA Domain Gateway V2.1 Installation Verification Procedure
+                for the Load Host Node.
+
+        IVP for DIGITAL SNA Domain Gateway V2.1 succeeded.
+
+             13. End the installation procedure.
+
+                Installation of SNAPU5 V2.1 completed at 13:23
+
+             VMSINSTAL procedure done at 13:23
+
+                 The previous messages indicate that the entire
+                 installation procedure is complete.
+
+                 You can now log out of the privileged account:
+
+        $ LOGOUT
+        SYSTEM     logged out at 16-MAY-1997 15:24:34.23
+
+                 Note that VMSINSTAL deletes or changes entries in
+                 the process symbol tables during the installation.
+                 Therefore, if you are going to continue using the system
+                 manager's account and you want to restore these symbols,
+                 you should log out and log in again.
+
+
+
+
+                   Installing the DIGITAL SNA Domain Gateway Software 2-9
+
+ 
+
+
+
+
+
+
+
+    Error Recovery
+
+          If errors occur during the installation itself or when
+          the Installation Verification Procedure (IVP) is running,
+          VMSINSTAL displays failure messages. If the installation
+          fails, you see the following message:
+
+    %VMSINSTAL-E-INSFAIL, the installation of SNAPU5 V2.1 has failed.
+
+          If the IVP fails, you see these messages:
+
+    The SNAPU5 V2.1 Installation Verification Procedure failed.
+
+    %VMSINSTAL-E-IVPFAIL, The IVP for SNAPU5 V2.1 has failed.
+
+          Errors can occur during the installation for any of the
+          following reasons:
+
+          o  The operating system version is incorrect.
+
+          o  A prerequisite software version is incorrect.
+
+          o  Quotas necessary for successful installation are
+             insufficient.
+
+          o  System parameter values for successful installation are
+             insufficient.
+
+          o  The OpenVMS help library is in use.
+
+          o  The product license has not been registered and loaded.
+
+          For descriptions of the error messages generated by these
+          conditions, see the OpenVMS documentation on system
+          messages, recovery procedures, and OpenVMS software
+          installation. If you receive a notification of any of these
+          conditions, you should take the action described in the
+          message. For information about installation requirements,
+          see Chapter 1.
+
+             ________________________ Note ________________________
+
+             In addition to the errors described above, a series
+             of re-installations of the Domain Gateway software
+             on VMScluster systems may lead to an installation
+             failure. This series of re-installations may lead
+             to a situation where the installed CTF analysis
+             routines reference a file that was purged during the
+             re-installation. If this error occurs, you will see
+             the following sequence:
+
+    2-10 Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+        SYSTEM-W-NOSUCHFILE, no such file
+         \$1$DUA0:[SYS0.SYSCOMMON.][SYSLIB]CTF$SNAPU%_ANALYZE.EXE\
+
+        .
+            .
+            .
+
+                To correct the error, you must de-install the CTF
+                analysis routines. Use the following command on all
+                VMScluster members:
+
+        $ mcr install sys$library:ctf$snapu5_analyze/delete <Return>
+
+                After you de-install the analysis routines, reinstall
+                the DIGITAL SNA Domain Gateway software.
+
+                ______________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  Installing the DIGITAL SNA Domain Gateway Software 2-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                 After Installing the DIGITAL SNA Domain Gateway Software
+
+
+              This chapter describes the tasks you should do after you
+              install the Domain Gateway software.
+
+        Running the Installation Verification Procedure Separately
+
+              You usually run the Installation Verification Procedure
+              (IVP) during installation. If you want to run the IVP
+              separately to ensure the integrity of installed files
+              should system problems occur, execute the SNAPU5$IVP.COM
+              command procedure:
+
+              $ @SYS$TEST:SNAPU5$IVP.COM
+
+        Preparing the IBM SNA Environment
+
+              You must define specific system and network resources
+              on the IBM system before you can use the Domain Gateway
+              software. The DIGITAL SNA Domain Gateway Guide to IBM
+              Resource Definition explains how to define these resources
+              to establish communication between the Domain Gateway
+              product and the IBM system.
+
+                ________________________ Note ________________________
+
+                Because IBM system programmers configure and perform
+                maintenance on their systems according to set
+                schedules, you should give them as much advance
+                notice as possible to prepare for the Domain Gateway
+                installation. Because the configuration process for
+                the Domain Gateway has the option of accepting a VTAM
+                or NCP PATH file, the IBM configuration should be
+                completed before you configure the Gateway.
+
+                ______________________________________________________
+
+
+             After Installing the DIGITAL SNA Domain Gateway Software 3-1
+
+ 
+
+
+
+
+
+
+
+    Configuring and Loading the Domain Gateway Product
+
+          After you have successfully installed the Domain Gateway
+          software and before you can begin to use the Gateway, you
+          must generate a configuration file and load the Gateway. To
+          configure the Gateway, do the following tasks:
+
+          o  Configure the necessary DECnet information on the
+             Gateway's load host. Use the NET$CONFIGURE.COM command
+             procedure located in the SYS$MANAGER directory.
+
+          o  Using the command RUN SYS$SYSTEM:SNAPU5$CONFIGURE,
+             invoke the Configuration utility and generate the NCL
+             script file that contains a human-readable form of all
+             the commands used to configure the Gateway software
+             image.
+
+          o  Create the loadable management file. This file contains
+             the NCL commands from the script file in a machine-
+             readable form.
+
+          o  Load the Gateway using the NCL BOOT or LOAD command on
+             the Gateway's load host.
+
+             ________________________ Note ________________________
+
+             If you cannot reboot the Gateway's load host before
+             you configure the Domain Gateway, you must define the
+             logical NCL$ENVIRONMENT. using the following command:
+
+             $ DEFINE NCL$ENVIRONMENT "PRIVATE"
+
+             You do not need to define the logical if you can
+             reboot the system before you configure the Domain
+             Gateway.
+
+             ______________________________________________________
+
+             ___________________ When Upgrading ___________________
+
+             If you are upgrading your software from a previous
+             version of the Domain Gateway product and your
+             configuration is not changing, you do not need to
+             reconfigure the Gateway. Your existing loadable
+             management files are fully compatible with this
+             version.
+
+             To use the new Gateway system image file on an
+             upgraded load host, you must update the MOP client
+
+    3-2 After Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+                database. To do this, use the NET$CONFIGURE.COM
+                procedure to change the system image file name from
+                SNAPU5$CT0xx.SYS to SNAPU5$CT.SYS or SNAPU5$ST0xx.SYS
+                to SNAPU5$ST (where xx is 11 or 20).
+
+                Reboot the Gateway to load the new image.
+
+                See Chapter 13 in the DIGITAL SNA Domain Gateway
+                Planning and Configuration manual.
+
+                ______________________________________________________
+
+              Refer to the DIGITAL SNA Domain Gateway Planning and
+              Configuration manual for information about configuring
+              and loading the Gateway.
+
+        Running the Primary Logical Unit Installation Verification
+        Procedure
+
+              The Domain Gateway software includes an Installation
+              Verification Procedure (IVP) to test the functionality
+              of a primary logical unit (PLU) on the Gateway.
+
+                ________________________ Note ________________________
+
+                You must configure the Gateway and configure the
+                adjacent IBM system before running this IVP.
+
+                ______________________________________________________
+
+              To run the IVP, do the following:
+
+              1. Create an SNA ACCESS SERVER OBJECT entity that
+                 references a numbered object on the Gateway's load host.
+                 For example, to create the OBJECT entity IVP90 on the
+                 Gateway ASHFLD referencing object 90 on the load host
+                 LDHOST, use the following command.
+
+                 NCL> CREATE NODE ASHFLD SNA ACCESS SERVER OBJECT IVP90 -
+                 _NCL> TRANSPORT = DECNET, NODE = DEC:.LDHOST, NUMBER = 90
+
+                ________________________ Note ________________________
+
+                If you specified a privileged user name and password
+                for the network management object on the Gateway,
+                you must specify them after the node name in the
+                NCL command. For example, if the user name is SYSTEM
+                and the password is LETMEIN, then you would specify
+
+             After Installing the DIGITAL SNA Domain Gateway Software 3-3
+
+ 
+
+
+
+
+
+
+
+             ASHFLD"SYSTEM LETMEIN" in all the NCL commands in this
+             sequence.
+
+             ______________________________________________________
+
+          2. Create an SNA LU SERVICES LU entity that is a primary
+             LU (PLU) and that references the OBJECT entity you just
+             defined. For example, to create the LU entity IVPLU
+             (assuming the Gateway's PU is DEC30), use the following
+             command.
+
+             NCL> CREATE NODE ASHFLD SNA LU SERVICES LU IVPLU -
+             _NCL> PU = DEC30, -
+             _NCL> CAPABILITY = PRIMARY, -
+             _NCL> OBJECT = IVP90
+
+          3. Enable the LU entity you just created. For example, to
+             enable the LU entity IVPLU, use the following command.
+
+             NCL> ENABLE NODE ASHFLD SNA LU SERVICES LU IVPLU
+
+          4. Create the object you just referenced on the load host.
+             To create the object, use the SYS$TEST:SNAPU5$IVP3270
+             program as shown here:
+
+             $ RUN SYS$TEST:SNAPU5$IVP3270
+
+             DECnet/SNA 3270 Installation Verification Program V2.0.0
+
+             Transport: DECnet = 0 or TCP/IP = 4 [0] : <Return>
+
+             Transport selected is DECnet
+
+             Object Number [10] : 90
+
+             Creating Task Object "90="
+
+             Setting required privileges
+             Invoking GAI_OPEN...
+             Declaring the Object ...
+             Awaiting a connection ...
+
+
+
+
+    3-4 After Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+              5. Connect to the Gateway's PLU using the USS screen of a
+                 3270 SNA networked terminal on the adjacent IBM system.
+                 Enter the command LOG APPLID in response to the SELECT
+                 SYSTEM ====> prompt. For example, to connect to the PLU
+                 IVPLU, use the following command.
+
+                 SELECT SYSTEM ====> LOG APPLID (IVPLU)
+
+              6. Verify the correct response at the 3270 terminal. You
+                 should see the following:
+
+                      DECnet/SNA 3270 Installation Verification Program
+
+                      Terminal ..... T1228005
+                      Network ...... USDEC101
+                      Primary LU ... IVPLU
+                      Logon Mode ... MCAUTO
+                      Gateway ...... ASHFLD
+                      VMS Node ..... LDHOST
+
+                      Press PA1 to logoff.
+
+              7. Verify the correct response on the load host. You should
+                 see the following on the load host:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             After Installing the DIGITAL SNA Domain Gateway Software 3-5
+
+ 
+
+
+
+
+
+
+
+
+                     GAP Version 3.0
+                         Object    = IVP90
+
+             Undeclaring Object ...
+             Getting the Connect...
+
+                     Connect Information:
+                         Primary   = 1
+                         Init      = 1
+                         SBind     = 1
+                         USS       = 0
+                         Queue     = 0
+                         Orig Mod  = IVPLU
+                         Orig Unit = USDEC101.T1228005
+                         Dest Mod  =
+                         Dest Unit =
+                         Acc Name  =
+                         Log Mode  = MCAUTO
+                         User Data =
+                         Auth Term = USDEC101.T1228005
+                         Auth User =
+                         Auth Pass =
+                         Prog Name = DIGITAL SNA Domain Gateway
+                         Proc Id   = 00000000
+
+
+             Sending the Connect Response...
+             Getting the Suggested Bind ...
+             TS Profile is 03
+             Read Size Set to 263 (85)
+             Sending the BIND request ...
+             Receiving the BIND response ...
+             TS Profile is now 03
+             Sending the SDT request ...
+             Receiving the SDT response ...
+             Sending the screen write request ...
+             Receiving a response ...
+             RH was 830100
+             Receiving a response ...
+
+          8. Log off the 3270 terminal by entering PA1.
+
+
+
+    3-6 After Installing the DIGITAL SNA Domain Gateway Software
+
+ 
+
+
+
+
+
+
+
+              9. Verify the correct response on the load host. You should
+                 see the following on the load host:
+
+                 RH was 0390A0
+                 Sending the UNBIND request ...
+                 Receiving the UNBIND response ...
+                 Closing the port ...
+                 Invoking GAI_OPEN...
+                 Declaring the Object ...
+                 Awaiting a connection ...
+
+
+             10. Either run another test using the LOG APPLID command
+                 on the 3270 terminal or terminate the SNAPU5$IVP3270
+                 program on the load host by entering a <Ctrl/C>.
+
+        Determining and Reporting Problems
+
+              If you encounter a problem while using the Domain Gateway
+              product, report it to DIGITAL. Depending on the nature of
+              the problem and the type of support you have, you can take
+              one of the following actions:
+
+              o  Call DIGITAL if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of your warranty. If you
+              encounter a problem during the warranty period, report the
+              problem as just indicated or follow alternate instructions
+              provided by DIGITAL for reporting SPD nonconformance
+              problems.
+
+
+
+
+
+
+
+
+
+
+
+             After Installing the DIGITAL SNA Domain Gateway Software 3-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                               Sample Installation Output
+
+
+              This appendix contains two sample installations of the
+              Domain Gateway software. The samples were run on a system
+              that had no previous installation of Domain Gateway
+              software. Depending on which layered products you have
+              on your system, you might see additional messages and
+              questions when you perform your installation.
+
+              The sample installations assume that DECnet has been shut
+              down, that no users are logged on to your system, and that
+              OPTIONS N is specified to print the release notes. The
+              Installation Verification Procedure (IVP) runs at the end
+              of the installation.
+
+        Sample Management Node Installation
+
+              This sample shows the dialog used to install the Gateway
+              management software on a Gateway management node.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           Sample Installation Output A-1
+
+ 
+
+
+
+
+
+
+
+    $ @sys$update:vmsinstal snapu5021 MTA0: options n <Return>
+
+            OpenVMS Software Product Installation Procedure V6.1
+
+    It is 16-MAY-1997 at 13:27.
+
+    Enter a question mark (?) at any time for help.
+    %VMSINSTAL-W-ACTIVE, The following processes are still active:
+            DNS$TA
+            DNS$BACK
+            SYSTEM
+    * Do you want to continue anyway [NO]? YES <Return>
+    * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+    Please mount the first volume of the set on _MTA0:
+    * Are you ready? YES <Return>
+    MOUNT-I-MOUNTED, SNAPU5 MOUNTED ON _MTA0:
+    The following products will be processed:
+      SNAPU5 V2.1
+
+            Beginning installation of SNAPU5 V2.1 at 13:27
+
+    %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+        Release notes included with this kit are always copied to SYS$HELP.
+
+        Additional Release Notes Options:
+
+            1.  Display release notes
+            2.  Print release notes
+            3.  Both 1 and 2
+            4.  None of the above
+
+    * Select option [2]: 2 <Return>
+    * Queue name [SYS$PRINT]: <Return>
+    Job SNAPU5021 (queue SYS$PRINT, entry 749) started on LP
+    * Do you want to continue the installation [NO]? YES <Return>
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+            This kit contains the Load Host software needed to configure and
+            downline load a DIGITAL SNA Domain Gateway from this system.  This
+            kit also contains the Management software needed to control and
+            monitor a DIGITAL SNA Domain Gateway.
+
+
+    A-2 Sample Installation Output
+
+ 
+
+
+
+
+
+
+
+
+                You can install
+
+                [1] Load Host software and Management software
+                [2] Management software only
+
+        * Enter an option [1]: 2 <Return>
+
+        * Do you want to purge files replaced by this installation [YES]? <Return>
+        * Do you want to run the IVP after the installation [YES]? <Return>
+
+        %SNAPU5-I-NOMORE, there are no more questions
+        %SNAPU5-I-TIME, the installation completes in approximately 15 minutes
+
+                For current information about the DIGITAL SNA Domain Gateway V2.1
+                software product, read the file SYS$HELP:SNAPU5021.RELEASE_NOTES
+                which is supplied by this installation.
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                DIGITAL SNA Domain Gateway V2.1 Installation Verification Procedure
+                for the Management Node.
+
+        IVP for DIGITAL SNA Domain Gateway V2.1 succeeded.
+                Installation of SNAPU5 V2.1 completed at 13:31
+
+                VMSINSTAL procedure done at 13:31
+
+
+        Sample Load Host Installation
+
+              This sample shows the dialog used to install the Gateway
+              management software and load host software on a Gateway
+              load host.
+
+
+
+
+
+
+
+
+
+
+
+                                           Sample Installation Output A-3
+
+ 
+
+
+
+
+
+
+
+    $ @sys$update:vmsinstal snapu5021 MTA0: options n <Return>
+
+            OpenVMS Software Product Installation Procedure V6.1
+
+    It is 16-MAY-1997 at 13:27.
+
+    Enter a question mark (?) at any time for help.
+    %VMSINSTAL-W-ACTIVE, The following processes are still active:
+            DNS$TA
+            DNS$BACK
+            SYSTEM
+    * Do you want to continue anyway [NO]? YES <Return>
+    * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+    Please mount the first volume of the set on _MTA0:
+    * Are you ready? YES <Return>
+    MOUNT-I-MOUNTED, SNAPU5 MOUNTED ON _MTA0:
+    The following products will be processed:
+      SNAPU5 V2.1
+            Beginning installation of SNAPU5 V2.1 at 13:37
+
+    %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+        Release notes included with this kit are always copied to SYS$HELP.
+
+        Additional Release Notes Options:
+
+            1.  Display release notes
+            2.  Print release notes
+            3.  Both 1 and 2
+            4.  None of the above
+
+    * Select option [2]: 2 <Return>
+    * Queue name [SYS$PRINT]: <Return>
+    Job SNAPU5021 (queue SYS$PRINT, entry 751) started on LP
+    * Do you want to continue the installation [NO]? YES <Return>
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+            This kit contains the Load Host software needed to configure and
+            downline load a DIGITAL SNA Domain Gateway from this system.  This
+            kit also contains the Management software needed to control and
+            monitor a DIGITAL SNA Domain Gateway.
+
+
+
+    A-4 Sample Installation Output
+
+ 
+
+
+
+
+
+
+
+                You can install
+
+                [1] Load Host software and Management software
+                [2] Management software only
+
+        * Enter an option [1]: 1 <Return>
+
+                Product:      SNA-DOMAIN-GATEWAY
+                Producer:     DEC
+                Version:      2.1
+                Release Date: 1-MAY-1997
+        * Does this product have an authorization key registered and loaded? YES <Return>
+
+                To maintain your Gateway, you will need a place to store answer
+                files, script files, management files, dump files, etc. This
+                installation can create a system directory, SYS$COMMON:[SNAPU5$],
+                for that purpose.
+
+        * Create the system directory [YES]? <Return>
+
+        * Do you want to purge files replaced by this installation [YES]? <Return>
+        * Do you want to run the IVP after the installation [YES]? <Return>
+
+        %SNAPU5-I-NOMORE, there are no more questions
+        %SNAPU5-I-TIME, the installation completes in approximately 15 minutes
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+        %VMSINSTAL-I-SYSDIR, This product creates the system directory [SNAPU5].
+
+                You should execute the following command to configure the Domain
+                Gateway:
+
+                    RUN SYS$SYSTEM:SNAPU5$CONFIGURE
+
+                This step creates the Domain Gateway configuration files, completing
+                the installation.  You can create a management file and boot the
+                Gateway at the end of the configuration procedure; the procedure
+                will prompt you.
+
+                For current information about the DIGITAL SNA Domain Gateway V2.1
+                software product, read the file SYS$HELP:SNAPU5021.RELEASE_NOTES
+                which is supplied by this installation.
+
+
+
+                                           Sample Installation Output A-5
+
+ 
+
+
+
+
+
+
+
+    %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+            DIGITAL SNA Domain Gateway V2.1 Installation Verification Procedure
+            for the Load Host Node.
+
+    IVP for DIGITAL SNA Domain Gateway V2.1 completed.
+            Installation of SNAPU5 V2.1 completed at 13:42
+
+            VMSINSTAL procedure done at 13:42
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    A-6 Sample Installation Output
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                           Files Installed on Your System
+
+
+              The Domain Gateway installation procedure installs a number
+              of files on your system.
+
+              The following list contains the names of all files created
+              on your system when the Domain Gateway load host software
+              or Gateway management node software is installed.
+
+              o  SYS$HELP:SNAPU5021.RELEASE_NOTES
+
+              o  SYS$MANAGER:SNAPU5$UNINSTALL.COM
+
+              o  SYS$SYSTEM:SNAP.EXE
+
+              o  SYS$LIBRARY:CTF$SNAPU5_TRACEPOINTS.DAT
+
+              o  SYS$LIBRARY:CTF$SNAPU5_ANALYZE.EXE
+
+              o  SYS$LIBRARY:CTF$NAME_TABLE.DAT (modified by the
+                 installation procedure)
+
+              o  SYS$LIBRARY:SNATRAPRE.MAR
+
+              o  SYS$LIBRARY:SNATRATBL.MAR
+
+              o  SYS$LIBRARY:SNAPU5$GLOBALSECTION.DAT
+
+              o  SYS$TEST:SNAPU5$IVP.COM
+
+              o  SYS$TEST:SNAPU5$IVP3270.EXE
+
+              The following list contains the names of additional files
+              created on your system when the Gateway load host software
+              is installed.
+
+              o  MOM$SYSTEM:SNAPU5$CT.SYS
+
+              o  MOM$SYSTEM:SNAPU5$ST.SYS
+
+              o  MOM$SYSTEM:SNAPU5$DESNX.SYS
+
+              o  MOM$SYSTEM:SNACSA$MDM.SYS (if not already installed)
+
+              o  SYS$SYSTEM:SNAPU5$SCRIPT_COMPILER.EXE
+
+                                       Files Installed on Your System B-1
+
+ 
+
+
+
+
+
+
+
+          o  SYS$SYSTEM:SNAPU5$CONFIGURE.EXE
+
+          o  SYS$MANAGER:SNAPU5$COMPILE.COM
+
+          o  SYS$LIBRARY:SNAPU5$DEFAULT_LOGON_MODES.NCL
+
+          o  SYS$COMMON:[SNAPU5$] (optionally created)
+
+             ________________________ Notes ________________________
+
+             The DCL tables found in SYS$LIBRARY:DCLTABLES.EXE are
+             updated during installation.
+
+             The SYS$LIBRARY:NCL$GLOBALSECTION.DAT file is updated
+             during installation.
+
+             The NCL help file (SYS$HELP:NCLHELP.HLB) is modified
+             to contain help for the following entities:
+
+             o  The CHANNEL module entity and its subentities
+
+             o  The SDLC module entity and its subentities
+
+             o  The SNA ACCESS SERVER module entity and its
+                subentities
+
+             o  The SNA PU SERVICES module entity and its
+                subentities
+
+             o  The SNA SSCP SERVICES module entity and its
+                subentities
+
+             o  The SNA LU SERVICES module entity and its
+                subentities
+
+             o  The TCP module entity and its subentities
+
+             o  The IP SERVICES module entity and its subentities
+
+             ______________________________________________________
+
+
+
+
+
+    B-2 Files Installed on Your System

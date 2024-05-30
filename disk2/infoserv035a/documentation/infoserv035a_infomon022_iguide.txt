@@ -1,0 +1,1074 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     InfoServer_Monitor____________________________
+                     Installation and User's Guide
+
+
+                     This manual explains how to install and use the
+                     InfoServer Monitor, a sample system management
+                     application for the InfoServer system.
+
+                     InfoServer Monitor software is written in
+                     VAX BASIC, utilizing system service and library
+                     calls to obtain device information and mount disks.
+                     Users are free to modify the supplied source code
+                     to suit environment-specific needs.
+
+                     InfoServer Monitor software is not supported
+                     by Digitial Equipment Corporation. However, the
+                     software has been tested and performs the functions
+                     described in this manual.
+
+
+
+
+                     Revision/Update Information: This is a new manual.
+
+                     Operating System and Version: VMS Version 5.4 or
+                                                  later
+
+                     Software Version:            InfoServer Monitor
+                                                  Version 1.3
+
+ 
+
+
+
+
+
+
+              __________________________________________________________
+              November 1992
+
+              The information in this document is subject to change
+              without notice and should not be construed as a commitment
+              by Digital Equipment Corporation. Digital Equipment
+              Corporation assumes no responsibility for any errors that
+              may appear in this document.
+
+              The software described in this document is furnished under
+              a license and may be used or copied only in accordance
+              with the terms of such license.
+
+              © Digital Equipment Corporation 1992.
+
+              The following are trademarks of Digital Equipment
+              Corporation: DEC, DIGITAL, OpenVMS, VAX, and the
+              DIGITAL logo.
+
+              This document was prepared using VAX DOCUMENT, Version
+              2.0.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                             Contents
+
+
+     Preface..................................................      v
+
+
+     1  InfoServer Monitor Description
+
+         1.1  Devices Selected and Actions Taken..............    1-2
+         1.2  Event Logging...................................    1-3
+         1.3  InfoServer Monitor Files........................    1-4
+
+     2  Installing InfoServer Monitor Software
+
+         2.1  Disk Space Requirements.........................    2-1
+         2.2  Disk Mounting Requirements......................    2-1
+         2.3  Installation Procedure..........................    2-1
+         2.3.1  Installation Questions .......................    2-2
+         2.3.2  Informational Messages .......................    2-3
+         2.3.3  Completing the Installation Procedure ........    2-4
+         2.3.4  Error Recovery ...............................    2-4
+
+     3  After Installing InfoServer Monitor Software
+
+         3.1  Starting InfoServer Monitor from the System
+              Startup Procedure...............................    3-1
+         3.2  Service Names...................................    3-1
+
+     A  Sample Installation
+
+
+
+
+
+
+
+
+                                                                  iii
+
+ 
+
+
+
+
+
+
+        Index
+
+
+        Examples
+
+           1-1     InfoServer Monitor Log File ..................    1-3
+
+        Tables
+
+           1-1     InfoServer Monitor Files .....................    1-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+        Purpose of This Guide
+
+              This guide explains how to install and use InfoServer
+              Monitor software on processors that are running the
+              OpenVMS operating system.
+
+              Keep this document with your distribution kit. You will
+              need it to install maintenance updates or to reinstall
+              InfoServer Monitor for any other reason.
+
+        Intended Audience
+
+              This guide addresses the system manager who installs and
+              uses InfoServer Monitor software.
+
+        Document Structure
+
+              This guide is organized as follows:
+
+              o  Chapter 1 describes InfoServer Monitor functions.
+
+              o  Chapter 2 describes installation and error recovery
+                 procedures.
+
+              o  Chapter 3 describes post-installation procedures.
+
+              o  Appendix A shows an installation procedure listing.
+
+        Related Documents
+
+              The following documents provide information about the
+              InfoServer system:
+
+              o  InfoServer System Operations Guide
+
+              o  InfoServer 100 Installation and Owner's Guide
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+              o  InfoServer 150 Installation and Owner's Guide
+
+              o  InfoServer Client for OpenVMS Utilities Manual
+
+        Conventions
+
+              The following conventions are used in this guide:
+
+              UPPERCASE TEXT   Uppercase letters indicate that you
+                               must enter a command (for example,
+                               @SYS$UPDATE:VMSINSTAL).
+
+              system output    This typeface is used in interactive and
+                               code examples to indicate system output.
+
+              boldface text    This bold typeface is used in interactive
+                               examples to indicate typed user input.
+
+              <Return>         In procedures, a key name is shown
+                               enclosed to indicate that you press a
+                               key on the keyboard.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        vi
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                          InfoServer Monitor Description
+
+
+
+              InfoServer services can become inaccessible for a number
+              of reasons:
+
+              o  A compact disc is replaced with a new disc that has a
+                 different volume label.
+
+                 When compact discs are routinely updated (for instance,
+                 Online Documentation Library Discs, OpenVMS software
+                 kits) the volume label changes with each new version.
+                 The InfoServer Monitor regularly checks volume labels
+                 and remounts disks using the new volume labels.
+
+              o  Connection is broken between OpenVMS client and
+                 InfoServer system
+
+                 This condition can be caused by network failure, power
+                 outage, or by rebooting the InfoServer system. The
+                 InfoServer Monitor ensures that all InfoServer services
+                 are remounted after such events.
+
+              o  Data has been written to an InfoServer hard disk
+
+                 When an InfoServer hard disk is accessed for write, all
+                 read connections are terminated. These connections
+                 must be manually reestablished using the OpenVMS
+                 command MOUNT. The InfoServer Monitor regularly checks
+                 InfoServer hard disks and remounts any disks that are
+                 found to be inaccessible because of a previous write
+                 access.
+
+              The InfoServer Monitor ensures that all InfoServer devices
+              remain accessible to users when such events occur. As
+              described in Section 1.1, the Monitor takes actions on
+              specific devices and creates a log file like that shown in
+              Example 1-1.
+
+                                                                     1-1
+
+ 
+
+
+
+        InfoServer Monitor Description
+
+
+              The Monitor runs as a detached process on each OpenVMS
+              node on which InfoServer disk access is desired. The
+              process is usually created during system startup by
+              running the InfoServer Monitor startup procedure.
+
+              InfoServer services must be bound (using the OpenVMS LADCP
+              utility) but do not need to be mounted. The InfoServer
+              Monitor can handle all mounting of disks.
+
+        1.1 Devices Selected and Actions Taken
+
+              A device is selected for InfoServer Monitor action if all
+              the following criteria are met:
+
+              o  The device name begins with DAD.
+
+                 On OpenVMS systems, all InfoServer compact disc and
+                 hard disk device names begin with DAD.
+
+              o  The device is read-only.
+
+                 A writable InfoServer device is one that has been
+                 created with the LADCP command BIND /WRITE. Mounting
+                 such a device would disconnect all read access to
+                 the service mounted under another device name, so
+                 the device should never be mounted systemwide. This
+                 condition would exist if someone had bound a service
+                 for write and had not yet mounted it or had logged off
+                 before unbinding the device.
+
+              o  The device is not allocated.
+
+                 The InfoServer Monitor ignores any InfoServer device
+                 that is allocated to another user.
+
+              If these criteria are met, the InfoServer Monitor takes
+              the following actions:
+
+              o  If the device is mounted, InfoServer Monitor attempts
+                 a read of the device to determine whether it is
+                 accessible.
+
+                 -  If the read fails, InfoServer Monitor remounts the
+                    device with the known volume label.
+
+                 -  If the remount fails because the volume label is
+                    different, the device is mounted to find the new
+                    volume label and then mounted systemwide with the
+                    new volume label.
+
+        1-2
+
+ 
+
+
+
+                                          InfoServer Monitor Description
+                                  1.1 Devices Selected and Actions Taken
+
+              o  If the device is not mounted, the disk is mounted to
+                 find the volume label and then mounted systemwide.
+
+              By default, InfoServer Monitor checks devices every ten
+              minutes. If you want to change this interval, define the
+              system logical name INFO_INTERVAL to be the number of
+              minutes between checks. For example, if you want the
+              Monitor to check every two minutes, define the logical
+              name as follows:
+
+              $ DEFINE/SYSTEM INFO_INTERVAL 2
+
+              Note that because the Monitor checks the value of INFO_
+              INTERVAL after each cycle, you can change the interval
+              without having to stop and restart the Monitor.
+
+        1.2 Event Logging
+
+              InfoServer Monitor records device mounting and dismounting
+              activity in a log file like that in Example 1-1.
+
+              Example 1-1 InfoServer Monitor Log File
+
+              InfoServer Monitor V1.3  1
+
+              28-FEB-1992 13:52:37  CDDOC02JAN21 mounted on _DAD2:  2
+              28-FEB-1992 13:52:48  CDDOC02JAN22 mounted on _DAD3:
+              28-FEB-1992 13:52:55  VMS_DOCS_HD mounted on _DAD4:
+              28-FEB-1992 13:53:03  CDBIN02JAN21 mounted on _DAD5:
+              28-FEB-1992 13:53:13  CDBIN02JAN22 mounted on _DAD6:
+              28-FEB-1992 13:53:20  CDBIN02JAN23 mounted on _DAD7:
+              28-FEB-1992 13:53:26  CDBIN02JAN24 mounted on _DAD8:
+              28-FEB-1992 13:53:32  VMS_KITS_HD1 mounted on _DAD9:
+              28-FEB-1992 13:53:38  VMS_KITS_HD2 mounted on _DAD10:
+              28-FEB-1992 13:53:45  NETWORK_DATA mounted on _DAD11:
+
+                                                (continued on next page)
+
+
+
+
+
+
+
+
+                                                                     1-3
+
+ 
+
+
+
+        InfoServer Monitor Description
+        1.2 Event Logging
+
+              Example 1-1 (Cont.) InfoServer Monitor Log File
+
+              29-FEB-1992 06:04:46  VMS_DOCS_HD dismounted from _DAD4:  3
+              29-FEB-1992 06:04:50  VMS_DOCS_HD mounted on _DAD4:
+              11-MAR-1992 19:15:17  CDBIN02JAN21 dismounted from _DAD5: 4
+              11-MAR-1992 19:15:28  CDBIN04MAR21 mounted on _DAD5:
+              11-MAR-1992 19:15:43  CDBIN02JAN22 dismounted from _DAD6:
+              11-MAR-1992 19:16:12  CDBIN04MAR22 mounted on _DAD6:
+              11-MAR-1992 19:16:27  CDBIN02JAN23 dismounted from _DAD7:
+              11-MAR-1992 19:16:48  CDBIN04MAR23 mounted on _DAD7:
+              11-MAR-1992 19:17:03  CDBIN02JAN24 dismounted from _DAD8:
+              11-MAR-1992 19:17:23  CDBIN04MAR26 mounted on _DAD8:
+
+              1  InfoServer Monitor software version running on the
+                 system.
+
+              2  The next ten lines show ten InfoServer devices, bound
+                 with LADCP during system startup, that are being
+                 mounted by the InfoServer Monitor.
+
+              3  These two lines show an InfoServer hard disk service
+                 being dismounted and remounted after a write access.
+
+              4  The remaining lines show four compact discs being
+                 remounted with new volume labels after a new versions
+                 of OpenVMS Consolidated Distribution compact discs are
+                 placed in InfoServer drives.
+
+        1.3 InfoServer Monitor Files
+
+              Table 1-1 lists files included in the InfoServer Monitor
+              kit and created on your system.
+
+
+
+
+
+
+
+
+
+
+
+
+
+        1-4
+
+ 
+
+
+
+                                          InfoServer Monitor Description
+                                            1.3 InfoServer Monitor Files
+
+              Table_1-1_InfoServer_Monitor_Files________________________
+
+              File____________________________Description_______________
+
+              INFOSERVER_MONITOR.BAS+         VAX BASIC source code
+
+              INFOSERVER_MONITOR.COM+ ++      DCL command procedure to
+                                              run Monitor
+
+              INFOSERVER_MONITOR.EXE++        Executable InfoServer
+                                              Monitor
+
+              INFOSERVER_MONITOR.LOG++        Log of Monitor activities
+
+              INFOSERVER_MONITOR.INCLUDE+     VAX BASIC include file
+
+              INFOSERVER_MONITOR.OBJ+         VAX BASIC object code
+
+              INFOSERVER_MONITOR_STARTUP.COM+ DCL command procedure to
+              ++                              start Monitor at system
+                                              startup
+
+              KITINSTAL.COM+                  VMSINSTAL installation
+                                              procedure
+              +Included_in_kit__________________________________________
+
+              ++Created on system
+              __________________________________________________________
+
+              If you want to modify source code files, you can extract
+              the files from the savset supplied in the [INFOMON.KIT]
+              directory.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     1-5
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                 Installing InfoServer Monitor Software
+
+
+
+              This chapter describes installation prerequisites and
+              explains how to install InfoServer Monitor software.
+
+        2.1 Disk Space Requirements
+
+              Installing the Monitor requires 27 blocks of disk storage
+              on the system disk. Additional minimal space is needed for
+              the log file after the Monitor starts to run. Space used
+              by the log file depends on how much activity the Monitor
+              performs but would typically be a few blocks per day.
+
+        2.2 Disk Mounting Requirements
+
+              If you mount InfoServer devices before starting the
+              InfoServer Monitor, specifiy the /NOMOUNT_VERIFY qualifier
+              to the OpenVMS command MOUNT. This qualifier enables
+              quick determination of which devices need to be remounted.
+              The InfoServer Monitor always mounts devices with mount
+              verification disabled.
+
+        2.3 Installation Procedure
+
+              The installation procedure consists of a series of
+              questions and informational messages and should take less
+              than five minutes.
+
+              To start the installation, you invoke the VMSINSTAL
+              command procedure from a privileged account, such as the
+              SYSTEM account.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can then start the installation again.
+
+                                                                     2-1
+
+ 
+
+
+
+        Installing InfoServer Monitor Software
+        2.3 Installation Procedure
+
+              The following example displays the command to invoke
+              VMSINSTAL to install InfoServer Monitor from tape drive
+              MUA0: and the system response.
+
+              $ @SYS$UPDATE:VMSINSTAL
+
+                    VAX/VMS Software Product Installation Procedure Vn.n-n
+
+              It is dd-mmm-yyyy at hh:mm.
+              Enter a question mark (?) at any time for help.
+
+        2.3.1 Installation Questions
+
+              This section discusses the questions that appear during
+              the installation. See Appendix A for a sample installation
+              procedure.
+
+              Each question in the installation is marked with an
+              asterisk (*) at the beginning of the line. Some questions
+              show the default response in brackets, for example [YES].
+              If you want to give the default response, press the RETURN
+              key.
+
+              1  System backup
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. If you are satisfied with the backup of your
+                 system disk, press RETURN. Otherwise, enter NO to
+                 discontinue the installation. Because only three
+                 files are added to the system startup directory,
+                 there is no need to perform a system backup before
+                 the installation.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+              2  Device name
+
+                 The device where the InfoServer Monitor kit is located.
+                 Specify the tape name or disk and directory where the
+                 kit is located. You may also specify a logical name
+                 pointing to that device or directory. For example,
+                 if the InfoServer Monitor kit is on InfoServer device
+                 DAD2, use DAD2 as the device-name.
+
+                 * Where will the distribution volumes be mounted: DAD2
+
+              3  Product name
+
+                 Enter the name of the product you are installing. Enter
+                 INFOMON.
+
+        2-2
+
+ 
+
+
+
+                                 Installing InfoServer Monitor Software
+                                              2.3 Installation Procedure
+
+                 VMSINSTAL displays the list of products that you have
+                 chosen.
+
+                 Enter the products to be processed from the first distribution volume set:
+                 * Products: INFOMON
+
+              4  Options
+
+                 For information on additional VMSINSTAL options, see
+                 the OpenVMS documentation on Software Installation.
+
+                 o  Choosing installation options
+
+                    * Enter installation options you wish to use (none): <Return>
+
+                    VMSINSTAL now begins the installation procedure.
+
+                    The following products will be processed:
+                      INFOMON Vn.n
+
+                        Beginning installation of INFOMON Vn.n at hh:mm
+
+                    %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+              o  Choosing to purge files
+
+                 You have the option to purge files from previous
+                 versions of InfoServer Monitor that are superseded
+                 by this installation. Purging is recommended; however,
+                 if you need to keep files from the previous version,
+                 enter NO in response to the question.
+
+                 * Do you want to purge files replaced by this installation [YES]? <Return>
+
+        2.3.2 Informational Messages
+
+              At this point, the installation procedure displays a
+              number of informational messages that report on the
+              progress of the installation. There are no further
+              questions. If the installation procedure has been
+              successful up to this point, VMSINSTAL moves the new or
+              modified files to their target directories and displays
+              the following messages:
+
+              %VMSINSTAL-I-MOVEFILES, files will now be moved to their target directories...
+
+                                                                     2-3
+
+ 
+
+
+
+        Installing InfoServer Monitor Software
+        2.3 Installation Procedure
+
+        2.3.3 Completing the Installation Procedure
+
+              The following messages indicate that the entire installa-
+              tion procedure is complete:
+
+                 Installation of INFOMON Vn.n completed at hh:mm
+
+                 VMSINSTAL procedure done at hh:mm
+
+              You can now log out of the privileged account:
+
+              $ LOGOUT
+              SYSTEM     logged out at dd-mmm-yyyy hh:mm:ss.ss
+
+        2.3.4 Error Recovery
+
+              If errors occur during the installation, VMSINSTAL
+              displays the following failure message:
+
+              %VMSINSTAL-E-INSFAIL, The installation of INFOMON Vn.n has failed.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  The operating system version is incorrect.
+
+              o  A prerequisite software version is incorrect.
+
+              o  Quotas necessary for successful installation are
+                 insufficient.
+
+              o  System parameter values for successful installation are
+                 insufficient.
+
+              For descriptions of the error messages generated by these
+              conditions, see the OpenVMS documentation on system
+              messages, recovery procedures, and OpenVMS software
+              installation. If you are notified that any of these
+              conditions exist, you should take the appropriate action
+              as described in the message. For example, you might need
+              to change a system parameter or increase an authorized
+              quota value.
+
+
+
+        2-4
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                            After Installing InfoServer Monitor Software
+
+
+
+              This chapter describes operations you perform after
+              installing InfoServer Monitor software.
+
+        3.1 Starting InfoServer Monitor from the System Startup
+            Procedure
+
+              The InfoServer Monitor installation procedure starts the
+              Monitor but does not provide for automatic startup of the
+              Monitor when your system reboots.
+
+              The InfoServer Monitor installation places the InfoServer
+              Monitor system startup file INFOSERVER_MONITOR_STARTUP.COM
+              in the SYS$MANAGER directory. To start the Monitor with
+              each system reboot, proceed as follows:
+
+              o  If you start up your system with the SYSMAN utility,
+                 enter the following commands:
+
+                 $ RUN SYS$SYSTEM:SYSMAN
+                 SYSMAN> STARTUP ADD FILE SYS$MANAGER:INFOSERVER_MONITOR_STARTUP.COM
+                 SYSMAN> EXIT
+
+              o  Otherwise, add the following line to SYS$MANAGER:SYSTARTUP_V5.COM
+                 or the appropriate startup command procedure at your
+                 site:
+
+                 $ @SYS$MANAGER:INFOSERVER_MONITOR_STARTUP
+
+        3.2 Service Names
+
+              By default, the InfoServer system creates service names
+              for most volumes, using the volume label (for example,
+              CDDOC04MAR21) as the service name. Specifying a generic
+              service name for the volume (for example, VMSDOC) allows
+              the same service name to be used when the volume label
+              changes. See the InfoServer System Operations Guide for
+              information about the CREATE SERVICE command.
+
+                                                                     3-1
+
+ 
+
+
+
+        After Installing InfoServer Monitor Software
+        3.2 Service Names
+
+              When used in conjunction with generic service names,
+              InfoServer Monitor frees you from the need to know the
+              volume labels of any InfoServer devices.
+
+              To take advantage of this feature, remove from your system
+              startup procedure any commands that mount InfoServer
+              devices. Because the Monitor mounts all InfoServer
+              devices it finds, you need only enter LADCP BIND /SYSTEM
+              commands. This feature saves time during system startup
+              and eliminates the need to hard-code volume labels in your
+              system startup procedures.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        3-2
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                     Sample Installation
+
+
+
+              $ @SYS$UPDATE:VMSINSTAL
+
+                      VAX/VMS Software Product Installation Procedure V5.5
+
+              It is 6-MAR-1992 at 12:35.
+
+              Enter a question mark (?) at any time for help.
+
+              %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                      NIXON
+                      FORD
+                      CARTER
+                      REAGAN
+                      BUSH
+              * Do you want to continue anyway [NO]? Y
+              * Are you satisfied with the backup of your system disk [YES]? <Return>
+              * Where will the distribution volumes be mounted: kits:[infomon013] <Return>
+
+              Enter the products to be processed from the first distribution volume set.
+              * Products: infomon
+              * Enter installation options you wish to use (none): <Return>
+
+              The following products will be processed:
+
+                INFOMON V1.3
+
+                      Beginning installation of INFOMON V1.3 at 12:36
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+              * Do you want to purge files replaced by this installation [YES]? <Return>
+
+                      All questions necessary for the installation
+                      of INFOMON V1.3 have been answered
+
+              %INFOMON-I-LINK, Linking InfoServer Monitor image...
+
+                                                                     A-1
+
+ 
+
+
+
+        Sample Installation
+
+
+                      The following command should be inserted in the system startup
+                      command procedure SYS$MANAGER:SYSTARTUP_V5.COM or the appropriate
+                      command procedure for your site:
+
+                              @SYS$MANAGER:INFOSERVER_MONITOR_STARTUP
+
+                      Or, you may use SYSMAN to start the InfoServer Monitor:
+
+                              $ RUN SYS$SYSTEM:SYSMAN
+                              SYSMAN> STARTUP ADD FILE INFOSERVER_MONITOR_STARTUP.COM
+                              SYSMAN> EXIT
+
+              %VMSINSTAL-I-MOVEFILES,
+                      Files will now be moved to their target directories...
+
+              Starting InfoServer Monitor...
+              %RUN-S-PROC_ID, identification of created process is 00004EBB
+
+                      Installation of INFOMON V1.3 completed at 12:38
+
+              Enter the products to be processed from the next distribution volume set.
+              * Products: <Return>
+
+                      VMSINSTAL procedure done at 12:38
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-2
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+     C                                    Installation (cont'd)
+     ___________________________           sample listing, A-1
+     Check interval                        starting, 2-1
+       adjusting, 1-3                      time needed, 2-1
+
+     D__________________________          M__________________________
+
+     Device                               Messages, 2-3
+       actions taken, 1-2                 MOUNT command, 2-1
+       mounting, 2-1                       mount verification, 2-1
+       selection criteria, 1-2             /NOMOUNT_VERIFY qualifier
+     Disk                                     , 2-1
+       mounting, 2-1                      Mounting devices, 2-1
+     Disk space requirements,
+        2-1                               S__________________________
+
+     E                                    Service name, 3-1
+     ___________________________          Starting InfoServer Monitor
+     Error recovery, 2-4                    , 3-1
+     Event logging, 1-3
+
+     F                                    V__________________________
+     ___________________________          Volume label, 3-1
+     Files included in kit, 1-4
+
+     I__________________________
+
+     Installation
+       aborting, 2-1
+       completing, 2-4
+       disk mounting
+         requirements, 2-1
+       disk space requirements,
+         2-1
+       questions, 2-2
+
+                                                              Index-1

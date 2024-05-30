@@ -1,0 +1,621 @@
+ 
+
+
+
+
+
+
+          Software
+          Product
+          Description
+
+          ___________________________________________________________________
+
+          PRODUCT NAME:  Compaq SNA APPC/LU6.2 Programming       SPD 26.88.10
+                         Interface for OpenVMS, Version 2.4
+
+          This SPD describes the Compaq SNA APPC/LU6.2 Programming Interface for
+          OpenVMS, which is available for the OpenVMS Operating System for Al-
+          pha and VAX platforms. All information applies to both platforms un-
+          less otherwise indicated.
+
+          DESCRIPTION
+
+          The Compaq SNA Advanced Program-to-Program Communications/Logical Unit
+          6.2 (APPC/LU6.2) Programming Interface for OpenVMS (the APPC product)
+          is a layered software product that allows user-written applications
+          running on suitably configured OpenVMS systems, either within a DEC-
+          net or TCP/IP network or on suitably configured OpenVMS systems within
+          an OpenVMS SNA environment to exchange messages with cooperating ap-
+          plications in an IBM[R] host. The APPC software exists in the Open-
+          VMS system as a shareable image. Access between the cooperating Com-
+          paq and IBM applications is via one of the following products:
+
+          TCP/IP or DECnet Connections
+
+          o  Compaq SNA Peer Server
+
+          o  Compaq SNA Domain Gateway
+
+          o  Compaq SNA Access Server for Windows NT[R]
+
+          o  Compaq SNA Server for OpenVMS Alpha, a layered product that sup-
+             ports local access as well as TCP/IP and DECnet clients
+
+          DECnet Only Connections
+
+          o  Compaq SNA Gateway for Synchronous Transport
+
+          o  Compaq DECnet SNA Gateway for Channel Transport
+
+                                                                   April 2001
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          o  Compaq SNA Server for OpenVMS VAX, a layered product that supports
+             local access as well as remote DECnet clients
+
+          The APPC product is a set of subroutines that are called by OpenVMS
+          programs which act as LU6.2 transaction application programs. These
+          subroutines allow an OpenVMS transaction application to:
+
+          o  Activate and deactivate sessions
+
+          o  Allocate and deallocate LU6.2 basic and mapped conversations
+
+          o  Send and receive data
+
+          o  Request confirmation and confirm transactions
+
+          o  Send and receive error information
+
+          o  Define and delete local LU names and TP names
+
+          o  Supply program initialization parameters
+
+          o  Supply session-level security and inbound conversation level se-
+             curity
+
+          o  Allow outbound conversation allocation
+
+          o  Notify the user application of session failure
+
+          o  Notify the user application of conversation deallocation (not ap-
+             plicable to Compaq SNA Access Server for Windows NT)
+
+          Features
+
+          The APPC product provides features to assist the user in writing and
+          executing the OpenVMS transaction program. The APPC product performs
+          the SNA communications function on the programmer's behalf, allowing
+          the user to concentrate on solving the application problem rather than
+          having to learn about the underlying communications medium. Because
+          the APPC product performs all the SNA functions on the user's behalf,
+          users are not required to have a knowledge of SNA.
+
+                                           2
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          The verbs comprising the APPC product are defined to make the indi-
+          vidual subroutine calls correspond to the verbs defined in the IBM man-
+          ual, SNA Transaction Programmers Reference Manual for Logical Unit 6.2.
+          This makes it easier for IBM application-level programmers to code Open-
+          VMS LU6.2 programs.
+
+          The APPC product implements both the basic and mapped conversation verb
+          set using the same procedure calls. The OpenVMS programmer may choose
+          which type of conversation is desired by specifying the appropriate
+          symbolic code in the TYPE parameter of the SNALU62$ALLOCATE procedure.
+
+          Both sets of verbs can be synchronous or asynchronous. Asynchronous
+          completion of verbs allows for multithreaded applications to use the
+          LU6.2 interface without blockage.
+
+          The following sections describe the supported and unsupported verbs.
+
+          Supported Verbs
+
+          The following basic conversation verbs are supported:
+
+          o  Allocate
+
+          o  Confirm
+
+          o  Confirmed
+
+          o  Deallocate
+
+          o  Flush
+
+          o  Get_attributes
+
+          o  Get_type[B
+
+          o  Post_on_receipt
+
+          o  Prepare_to_receive
+
+          o  Receive_and_wait
+
+          o  Receive_immediate
+
+          o  Request_to_send
+
+          o  Send_data
+
+                                           3
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          o  Send_error
+
+          o  Wait
+
+          The following mapped conversation verbs are supported:
+
+          o  Get_type
+
+          o  MC_Allocate
+
+          o  MC_Confirm
+
+          o  MC_Confirmed
+
+          o  MC_Deallocate
+
+          o  MC_Flush
+
+          o  MC_Get_attributes
+
+          o  MC_Post_on_receipt
+
+          o  MC_Prepare_to_receive
+
+          o  MC_Receive_immediate
+
+          o  MC_Receive_and_wait
+
+          o  MC_Request_to_send
+
+          o  MC_Send_data
+
+          o  MC_Send_error
+
+          o  MC_Wait
+
+          The following control operator verbs are supported:
+
+          o  Activate_session
+
+          o  Deactivate_session
+
+          o  Define_remote
+
+          o  Define_tp
+
+          o  Delete
+
+                                           4
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          Refer to the APPC product documentation for complete descriptions of
+          the use of these verbs.
+
+          Unsupported Verbs
+
+          The following basic conversation verbs are not supported:
+
+          o  Backout
+
+          o  Syncpt
+
+          o  Test
+
+          The following mapped conversation verbs are not supported:
+
+          o  Backout
+
+          o  Syncpt
+
+          o  MC_Test
+
+          The APPC product supports single sessions only; parallel sessions are
+          not supported. The following control operator verbs are not needed:
+
+          o  Change_session_limit
+
+          o  Define_local_lu
+
+          o  Define_mode
+
+          o  Display_local_lu
+
+          o  Display_mode
+
+          o  Display_remote_lu
+
+          o  Display_tp
+
+          o  Initialize_session_limit
+
+          o  Process_session_limit
+
+          o  Reset_session_limit
+
+                                           5
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          User Interface
+
+          Users of the APPC product should be experienced OpenVMS application
+          programmers. They can use any of the OpenVMS programming languages that
+          conform to the OpenVMS Calling Standard to create application programs
+          that interact with application programs on an IBM system. The user doc-
+          umentation provides example programs written in the native form of the
+          following languages:
+
+          o  MACRO-32
+
+          o  BASIC
+
+          o  BLISS-32
+
+          o  C
+
+          o  COBOL
+
+          o  FORTRAN
+
+          o  PASCAL
+
+          o  PL/I
+
+          Users of the APPC product are not required to have a knowledge of SNA.
+
+          INSTALLATION
+
+          Installation services from Compaq are recommended for a customer's first
+          purchase of the software product. These services provide for instal-
+          lation of the software product by an experienced software specialist.
+
+          HARDWARE REQUIREMENTS
+
+          Processors Supported
+
+          Alpha and VAX configurations as specified in the OpenVMS Operating Sys-
+          tem for Alpha and VAX Software Product Description (SPD 25.01.xx).
+
+
+                                           6
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          Disk Space Requirements (Block Cluster Size = 1)
+
+          Disk space required for installation:
+
+          OpenVMS Alpha                18,000 blocks
+                                       (9.0 MB)
+
+          OpenVMS VAX                  17,900 blocks
+                                       (9.0 MB)
+
+          Disk space required for use (permanent):
+
+          OpenVMS Alpha                7,900 blocks
+                                       (4.0 MB)
+
+          OpenVMS VAX                  6,800 blocks
+                                       (3.4 MB)
+
+          These counts refer to the disk space required on the system disk. The
+          sizes are approximate; actual sizes may vary depending on the user's
+          system environment, configuration, and software options.
+
+          SOFTWARE REQUIREMENTS
+
+          OpenVMS Operating System for Alpha and VAX, Version 6.2, 7.1 (VAX),
+          7.1-2 (Alpha), 7.2, 7.2-1 (Alpha), or 7.3 (SPD 25.01.xx).
+
+          Using Compaq SNA Application Programming Interface for OpenVMS soft-
+          ware requires a networking product appropriate for the version of Open-
+          VMS, plus one of the SNA products listed below.
+
+          Networking options include:
+
+          o  TCP/IP Services for OpenVMS (SPD 46.46.xx)
+
+          o  DECnet for OpenVMS (Phase IV, SPD 48.48.xx)
+
+          o  DECnet-Plus (Phase V, SPD 50.45.xx for Alpha, SPD 25.03.xx for VAX).
+
+
+
+                                           7
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          Choose a networking option appropriate for OpenVMS Versions 6.2, 7.1
+          (VAX), 7.1-2 (Alpha), 7.2, 7.2-1 (Alpha), or 7.3 from the following
+          table:
+
+          ___________________________________________________________________
+                                  DECnet
+          OpenVMS_____TCP/IP______IV__________DECnet_V_______________________
+
+          6.2         4.2         6.2         6.3
+
+          7.1         5.1         7.1         7.1
+
+          7.1-2       5.1         7.1-2       7.1
+
+          7.2         5.1         7.2         7.2
+
+          7.2-1       5.1         7.2-1       7.2-1
+
+          7.3_________5.1_________7.3_________7.3____________________________
+
+          Choose one of the following SNA options:
+
+          o  Compaq DECnet SNA Gateway for Channel Support (SPD 29.76.xx)
+
+          o  Compaq DECnet SNA Gateway for Synchronous Transport (SPD 25.C6.xx)
+
+          o  Compaq SNA Domain Gateway (SPD 38.69.xx)
+
+          o  Compaq SNA Peer Server (SPD 51.08.xx)
+
+          o  Compaq SNA Server for OpenVMS Alpha (SPD 70.89.xx)
+
+          o  Compaq SNA Server for OpenVMS VAX (SPD 27.01.xx)
+
+          o  Compaq SNA Access Server for Windows NT (SPD 64.79.xx)
+
+          SOFTWARE LICENSING
+
+          This software is furnished only under a license. For more information
+          about Compaq's licensing terms and policies, contact your local Com-
+          paq office.
+
+                                           8
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          License Management Facility Support
+
+          This layered product supports the OpenVMS License Management Facil-
+          ity. License units for this product are allocated on a CPU-capacity
+          basis.
+
+          For more information on the License Management Facility, refer to the
+          OpenVMS Operating System for Alpha and VAX Software Product Descrip-
+          tion (SPD 25.01.xx) or the License Management Facility manual of the
+          OpenVMS Operating System documentation set.
+
+          For more information about Compaq's licensing terms and policies, con-
+          tact your local Compaq office.
+
+          GROWTH CONSIDERATIONS
+
+          The minimum hardware and software requirements for any future version
+          of this product may be different from the requirements for the cur-
+          rent version.
+
+          DISTRIBUTION MEDIA
+
+          This product is available as part of the OpenVMS Alpha and VAX Soft-
+          ware Product Libraries on CD-ROM.
+
+          The software documentation for this product is available as part of
+          the OpenVMS Alpha and VAX Online Documentation Libraries on CD-ROM.
+          Documentation in hardcopy format can be ordered separately.
+
+          SOFTWARE WARRANTY
+
+          This software is provided by Compaq with a 90-day conformance warranty
+          in accordance with the Compaq warranty terms applicable to the license
+          purchase.
+
+
+
+
+
+
+
+                                           9
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          WARRANTY LIMITATIONS
+
+          IBM Supported Configurations
+          This product is warranted with the IBM software configurations listed
+          in the following table.
+
+          ___________________________________________________________________
+
+          Table_1:__IBM_Software_Configurations______________________________
+
+          Software Prod-
+          uct________________Version__Release________________________________
+
+          ACF/VTAM           4        3.0, 4.0
+
+          CICS/ESA           4        1.0
+
+          CICS/VSE           2        3.0
+
+          Communications     All      All
+          Server
+
+          Transaction        All      All
+          Server
+
+          z/OS_______________1________1.0____________________________________
+
+          Refer to SNA server or gateway Software Product Descriptions for ad-
+          ditional information on supported IBM operating systems, access meth-
+          ods, and communications front-end software.
+
+          Note: Compaq will support IBM software configurations, version and re-
+          lease numbers, as long as support for such configurations is gener-
+          ally available from IBM. Other configurations may have been tested since
+          this SPD was published. Please contact your local Compaq office for
+          up-to-date information regarding listed configurations.
+
+          ORDERING INFORMATION
+
+          For OpenVMS Alpha
+
+          Software Licenses: QL-10SA*-**
+          Software Documentation: QA-022AA-GZ
+
+                                           10
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          Media and documentation for this product are available on the Open-
+          VMS Alpha Software Product Library and Online Documentation Library
+          on CD-ROM. Documentation in hardcopy format can be ordered separately.
+
+          For OpenVMS VAX
+
+          Software Licenses: QL-022A*-**
+          Software Media: QA-022A*-**
+          Software Documentation: QA-022AA-GZ
+
+          Media and documentation for this product are available on the Open-
+          VMS VAX Software Product Library and Online Documentation Library on
+          CD-ROM. Documentation in hardcopy format can be ordered separately.
+
+          *  Denotes variant fields. For additional information on available li-
+             censes, services, and media, refer to the appropriate price book.
+
+          The above information is valid at time of release. Please contact your
+          local Compaq office for the most up-to-date information.
+
+          SOFTWARE PRODUCT SERVICES
+
+          Installation
+
+          Installation provides comprehensive installation and of Compaq and non-
+          Compaq hardware, software, and networks products. These products in-
+          clude systems, servers, upgrades, workstations, terminals, PCs, pe-
+          ripherals, network equipment, operating systems, and layered products.
+          Optional pieces of the Installation offer include site planning and
+          preparation, orientation, and other projects which are based on the
+          installation of computer equipment (e.g. relocation services).
+
+          License Subscription
+
+          License Subscription provides the license rights to use all new ver-
+          sions of those products, which are released during the contract pe-
+          riod. Also included are the rights to use certain server-resident prod-
+          ucts whose license is included in a corresponding client license.
+
+          Telephone Software Support
+
+                                           11
+
+ 
+
+
+
+          Compaq SNA APPC/LU6.2 Programming                     SPD 26.88.10
+          Interface for OpenVMS, Version 2.4
+
+          Software Support provides software problem identification and reso-
+          lution and operational support for system managers, technical support/helpdesk
+          personnel who manage Compaq and popular multivendor server software
+          in either a standalone or networked environment. This service provides
+          access both to technical resources to assist in problem diagnosis and
+          resolution and to Compaq's information database. This combination of
+          support resources will address system management questions and inquiries
+          on a wide variety of topics including information on the latest prod-
+          uct features, known problems and available solutions, and operational
+          advice and assistance to help the system manager, system administra-
+          tor better manage its information technology environment.
+
+          Please contact your local Compaq office for additional information on
+          specific services in your area.
+
+          © 2001 Compaq Computer Corporation
+
+          COMPAQ and the Compaq logo Registered in U.S. Patent and Trademark Of-
+          fice. DECnet and OpenVMS are trademarks of Compaq Information Tech-
+          nologies Group, L.P. in the United States and other countries.
+
+          UNIX and The Open Group are trademarks of The Open Group.
+
+          All other product names mentioned herein may be trademarks or regis-
+          tered trademarks of their respective companies.
+
+          Confidential computer software. Valid license from Compaq required for
+          possession, use, or copying. Consistent with FAR 12.211 and 12.212,
+          Commercial Computer Software, Computer Software Documentation, and Tech-
+          nical Data for Commercial Items are licensed to the U.S. Government
+          under vendor's standard commercial license.
+
+          Compaq shall not be liable for technical or editorial errors or omis-
+          sions contained herein. The information in this document is subject
+          to change without notice.
+
+
+
+
+
+
+                                           12

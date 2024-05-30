@@ -1,0 +1,4152 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    DIGITAL_GKS_________________________________________
+                    Installing DIGITAL GKS for
+                    OpenVMS VAX Systems
+
+                    Order Number: AA-PQPAJ-TE
+
+
+                    April 1997
+
+                    This document contains instructions for installing
+                    DIGITAL GKS[TM] (formerly DEC GKS[TM]) Version 6.5
+                    on an OpenVMS[TM] VAX[TM] system. It also explains
+                    how to read the online release notes before or after
+                    installing this product.
+
+
+
+
+
+
+
+                    Revision/Update Information:  This revised manual
+                                                  supersedes the
+                                                  Installing Digital
+                                                  GKS for OpenVMS VAX
+                                                  Systems (Order Number:
+                                                  AA-PQPAH-TE).
+
+                    Operating System and Version: OpenVMS VAX Version
+                                                  5.5-2 or higher
+
+                    Software Version:             DIGITAL GKS Version 6.5
+                                                  for OpenVMS VAX
+
+                    Digital Equipment Corporation
+                    Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          First Printing, June 1992
+          Revised, August 1993
+          Revised, April 1994
+          Revised, September 1994
+          Revised, May 1995
+          Revised, November 1995
+          Revised, February 1996
+          Revised, July 1996
+          Revised, April 1997
+
+          Digital Equipment Corporation makes no representations
+          that the use of its products in the manner described in
+          this publication will not infringe on existing or future
+          patent rights, nor do the descriptions contained in this
+          publication imply the granting of licenses to make, use,
+          or sell equipment or software in accordance with the
+          description.
+
+          Possession, use, or copying of the software described
+          in this publication is authorized only pursuant to a
+          valid written license from Digital or an authorized
+          sublicensor.
+
+          © Digital Equipment Corporation 1992, 1993, 1994, 1995,
+          1996, 1997. All Rights Reserved.
+
+          The following are trademarks of Digital Equipment
+          Corporation: DDIF, DEC, DEC GKS, DEC PHIGS, DECnet,
+          DECwindows, DIGITAL, DIGITAL GKS, OpenVMS, VAX, VAX C,
+          VAXcluster, VAXstation, VMS, and the DIGITAL logo.
+
+          The following are third-party trademarks:
+
+          Motif is a registered trademark of Open Software
+          Foundation, Inc.
+          PostScript is a registered trademark of Adobe Systems,
+          Incorporated.
+
+                                                               ZK5685
+
+          This document is available on CD-ROM.
+
+          This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Preparing for DIGITAL GKS Installation
+
+        1.1   Prerequisite Software.........................    1-1
+        1.2   Online Release Notes..........................    1-3
+        1.3   Media Distribution Kit........................    1-3
+        1.4   License Registration..........................    1-4
+        1.5   Installation Procedure Requirements...........    1-4
+        1.5.1     Privileges................................    1-5
+        1.5.2     Disk Space................................    1-5
+        1.5.3     Global Pages and Global Sections System
+                  Parameters................................    1-6
+        1.5.3.1     Determining the Global Pages and Global
+                    Sections Available......................    1-7
+        1.5.3.2     Determining the Global Pages and Global
+                    Sections Used...........................    1-8
+        1.5.3.3     Modifying the Global Pages Parameter....    1-8
+        1.5.3.4     Modifying the Global Sections
+                    Parameter...............................    1-9
+        1.5.3.5     Recalculating the Global Pages and
+                    Global Sections Parameters..............    1-9
+        1.5.4     User Account Quotas.......................   1-10
+        1.6   Backing Up Your System Disk...................   1-11
+
+  2  Installing DIGITAL GKS
+
+        2.1   Installation Procedure........................    2-1
+        2.2   Error Recovery................................   2-15
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    3  After Installing DIGITAL GKS
+
+          3.1   Installing DIGITAL GKS on an OpenVMS
+                VAXcluster....................................    3-1
+          3.2   Editing the System Startup File...............    3-2
+          3.3   Running the Installation Verification
+                Procedure.....................................    3-3
+          3.4   Determining and Reporting Problems............    3-3
+
+    A  Files Installed on Your System
+
+          A.1   DIGITAL GKS Development Kit Files.............    A-1
+          A.2   DIGITAL GKS Run-Time-Only Kit Files...........   A-16
+
+    B  Sample Installation
+
+          B.1   Development Kit Installation Without PEXlib...    B-1
+          B.2   Development Kit Installation with PEXlib......    B-4
+          B.3   Run-Time-Only Kit Installation................    B-9
+
+    Figures
+
+          2-1       Sample IVP Display........................   2-13
+
+    Tables
+
+          1-1       Disk Space Requirements...................    1-5
+
+          1-2       Required System Parameter Values..........    1-6
+
+          1-3       Process Account Quotas for the Installing
+                    Account...................................   1-11
+
+          2-1       Default Workstation Types.................   2-12
+
+          A-1       Installed Files for the DIGITAL GKS
+                    Development Kit...........................    A-1
+
+          A-2       Installed Files for the DIGITAL GKS
+                    Run-Time-Only Kit.........................   A-16
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              This document describes how to install DIGITAL GKS Version
+              6.5 on the OpenVMS VAX operating system. For a summary of
+              the significant changes to the installation procedure, you
+              should read the Read Before Installing or Using DIGITAL GKS
+              for OpenVMS VAX Systems letter.
+
+              Keep this document with your distribution kit. You will
+              need it to install maintenance updates or to reinstall
+              DIGITAL GKS for any other reason.
+
+              If you have any comments about this document, please send
+              electronic mail to the "requests@bgsdev.enet.dec.com"
+              account. Your comments will be considered for the next
+              revision of the installation guide.
+
+        Intended Audience
+
+              This manual is for system managers installing DIGITAL GKS
+              for OpenVMS VAX.
+
+        Structure of this Document
+
+              This manual is organized as follows:
+
+              o  Chapter 1 describes the preparations and requirements
+                 for installing DIGITAL GKS.
+
+              o  Chapter 2 provides the step-by-step instructions for the
+                 installation.
+
+              o  Chapter 3 describes the operations you perform after
+                 installation.
+
+              o  Appendix A lists the files installed with DIGITAL GKS.
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+          o  Appendix B contains sample logs from development kit and
+             run-time-only kit installations.
+
+    Manuals in the DIGITAL GKS Documentation Set
+
+          In addition to this guide, the printed DIGITAL GKS
+          documentation set includes the following manuals:
+
+          o  DEC GKS User's Guide
+
+          o  DEC GKS GKS$ Binding Reference Manual
+
+          o  DEC GKS GKS3D$ Binding Reference Manual
+
+          o  DEC GKS C Binding Reference Manual
+
+          o  DEC GKS FORTRAN Binding Reference Manual
+
+          o  Device Specifics Reference Manual for DEC GKS and DEC
+             PHIGS
+
+    Related Manuals
+
+          For information on OpenVMS system management, see the
+          following manuals:
+
+          o  OpenVMS System Manager's Manual
+
+          o  Guide to Maintaining a VMS System
+
+          o  OpenVMS License Management Utility Manual
+
+          o  Guide to OpenVMS Performance Management
+
+    Conventions Used in This Manual
+
+          The following conventions are used in this guide:
+
+          UPPERCASE TEXT         Uppercase letters indicate the
+                                 name of a command, file, parameter,
+                                 procedure, or utility.
+
+          bold                   Boldface text is used in interactive
+                                 examples to indicate typed user
+                                 input.
+
+    vi
+
+ 
+
+
+
+
+
+
+
+
+              $                      The dollar sign is used to indicate
+                                     the DCL prompt. This prompt may be
+                                     different on your system.
+
+              system output          This typeface is used in interactive
+                                     and code examples to indicate system
+                                     output. In text, this typeface is
+                                     used to indicate the exact name of
+                                     a command, option, partition, path
+                                     name, directory, or file.
+
+              [logical-name]         Square brackets indicate that the
+                                     enclosed item is optional. (Square
+                                     brackets are not, however, optional
+                                     in the syntax of a directory name
+                                     in a file specification or in the
+                                     syntax of a substring specification
+                                     in an assignment statement.)
+
+              <Ctrl/X>               In procedures, a sequence such as
+                                     <Ctrl/X> indicates that you must
+                                     hold down the key labeled Ctrl while
+                                     you press another key or a pointing
+                                     device button.
+
+              <Return>               In procedures, a key name is shown
+                                     enclosed to indicate that you press
+                                     a key on the keyboard.
+
+                                     Vertical ellipsis in an example
+                  .                  means that information has been
+                  .                  omitted.
+                  .
+
+              VMS[TM]                The terms VMS and OpenVMS refer to
+              OpenVMS                the same operating system.
+
+              DIGITAL GKS            References to DIGITAL GKS refers to
+                                     the DIGITAL GKS (formerly DEC GKS)
+                                     product.
+
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                   Preparing for DIGITAL GKS Installation
+
+
+              This chapter describes the preparations and requirements
+              for installing DIGITAL GKS Version 6.5. This chapter will
+              help you determine the following:
+
+              o  Whether the system on which you will install DIGITAL GKS
+                 has the prerequisite software installed
+
+              o  How to read the online release notes
+
+              o  If installing DIGITAL GKS from media, whether your
+                 distribution kit includes all the components listed
+                 on the Bill of Materials (BOM)
+
+              o  How to register a software license
+
+              o  The privileges required to perform the installation
+
+              o  How much disk space you will need
+
+              o  Whether the global pages and sections parameters are
+                 defined properly
+
+              o  Whether the user account quotas are defined correctly
+
+              o  How to back up your system disk
+
+        1.1 Prerequisite Software
+
+              The software requirements for DIGITAL GKS Version 6.5 are:
+
+              o  OpenVMS VAX operating system Version 5.5-2 or higher
+
+              o  DEC C/DEC C++ Run-time Library Components Version 6.0
+                 for OpenVMS VAX
+
+              Additional software requirements are:
+
+              For workstations running VWS:
+
+                 OpenVMS VAX Workstation Software Version 4.4
+
+                               Preparing for DIGITAL GKS Installation 1-1
+
+ 
+
+
+
+
+
+
+
+          For workstations running OpenVMS VAX DECwindows:
+
+          DECwindows is packaged with the operating system;
+          therefore, no additional DECwindows software components
+          are necessary.
+
+          For workstations running OpenVMS VAX DECwindows Motif:
+
+             DECwindows Motif Version 1.1 or higher for OpenVMS VAX
+
+          DIGITAL GKS also requires the following OpenVMS VAX classes
+          for full functionality:
+
+          o  OpenVMS VAX required save set
+
+          o  Network support-where full DECwindows network
+             functionality is necessary
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-2 Preparing for DIGITAL GKS Installation
+
+ 
+
+
+
+
+
+
+
+              o  Programming support-required by the DIGITAL GKS
+                 development kit
+
+              o  OpenVMS VAX workstation support-if you are using DIGITAL
+                 GKS on a workstation
+
+              For the development of application programs that use
+              DIGITAL GKS under OpenVMS VAX, one of the DIGITAL GKS
+              supported languages is also required.
+
+        1.2 Online Release Notes
+
+              DIGITAL GKS provides online release notes. DIGITAL strongly
+              recommends that you read the release notes before using
+              DIGITAL GKS, because they may contain information about
+              product changes.
+
+              During installation, you can access release notes in the
+              installation procedure when you invoke VMSINSTAL with the
+              OPTIONS N parameter. This option lets you read or print the
+              release notes before installing DIGITAL GKS.
+
+              After installation, you can obtain the DIGITAL GKS release
+              notes for the development or run-time-only kit by printing
+              the following files:
+
+              o  SYS$HELP:DECGKS065.RELEASE_NOTES (ASCII format)
+
+              o  SYS$HELP:DECGKS065_RELEASE_NOTES.PS (PostScript[R]
+                 format)
+
+        1.3 Media Distribution Kit
+
+              Your bill of materials (BOM) and indented bills report
+              (BIL) specify the number and contents of your media.
+              Be sure to check the contents of your kit against this
+              information. If your kit is damaged or if you find
+              that parts of it are missing, contact your DIGITAL
+              representative. For more information on how to mount
+              distribution media, see your processor-specific
+              installation/operations guide, which also details several
+              options for the installation procedure.
+
+
+
+                               Preparing for DIGITAL GKS Installation 1-3
+
+ 
+
+
+
+
+
+
+
+    1.4 License Registration
+
+          Before you install and run DIGITAL GKS Version 6.5 on a
+          newly licensed node or cluster, you must first register
+          a License Product Authorization Key (License PAK) using
+          the License Management Facility (LMF). The PAK is a paper
+          certificate that contains information about the license
+          that enables you to use the software. The License PAK is
+          shipped with the kit if you ordered the license and media
+          together; otherwise, the PAK is shipped separately to the
+          location specified on your license order.
+
+          If you are installing DIGITAL GKS as an update on a
+          node or cluster already licensed for this software,
+          you have already completed the License PAK registration
+          requirements. If you are installing prerequisite or
+          optional software along with DIGITAL GKS, review the
+          PAK status and install the PAKs for this prerequisite or
+          optional software before you install DIGITAL GKS.
+
+          To register a license under the OpenVMS VAX operating
+          system, first log in to the system manager's account,
+          SYSTEM. You can then register the license in one of two
+          ways:
+
+          o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it
+             prompts you for information, respond with the data from
+             your License PAK.
+
+          o  Enter the LICENSE REGISTER command with the qualifiers
+             corresponding to the License PAK information.
+
+          If you plan to use DIGITAL GKS on more than one node in
+          a VAXcluster[TM] configuration, you will need to perform
+          a license load on the other nodes after you complete this
+          installation. See Section 3.1 for details.
+
+          For complete information on using LMF, see the OpenVMS
+          License Management Utility Manual.
+
+    1.5 Installation Procedure Requirements
+
+          The following sections describe the various requirements
+          for installing DIGITAL GKS. The installation takes
+          approximately 5 to 30 minutes, depending on your system
+          configuration.
+
+    1-4 Preparing for DIGITAL GKS Installation
+
+ 
+
+
+
+
+
+
+
+        1.5.1 Privileges
+
+              To install DIGITAL GKS, you must be logged in to an account
+              that has the SETPRV privilege, or at least the following
+              privileges:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              When you invoke VMSINSTAL to begin the installation
+              procedure, VMSINSTAL turns off the BYPASS privilege.
+
+              After installation, each user account must have at least
+              the TMPMBX and NETMBX privileges to use DIGITAL GKS. Use
+              the OpenVMS Authorize Utility to determine whether users
+              have the privileges they require.
+
+        1.5.2 Disk Space
+
+              The DIGITAL GKS requirements for free disk storage space
+              are different during installation and after installation.
+              Table 1-1 summarizes these requirements.
+
+              Table_1-1_Disk_Space_Requirements__________________________
+
+                                         Blocks During    Blocks After
+              Kit________________________Installation_____Installation___
+
+              DIGITAL GKS Development    49,000           48,000
+              Kit
+
+              DIGITAL GKS Development    54,000           53,000
+              Kit with Japanese save
+              set
+
+              DIGITAL GKS Run-Time-Only  28,000           27,000
+              Kit
+
+              DIGITAL GKS Run-Time-Only  32,000           31,000
+              Kit with Japanese save
+              set________________________________________________________
+
+              To determine the number of free blocks on the current
+              system disk, enter the following command at the DCL prompt:
+
+                               Preparing for DIGITAL GKS Installation 1-5
+
+ 
+
+
+
+
+
+
+
+          $ SHOW DEVICE SYS$SYSDEVICE <Return>
+
+             _______________________ Caution _______________________
+
+             You must ensure that your system has the necessary
+             global page and global section SYSGEN quotas for the
+             installation. Otherwise, the DCL tables may become
+             corrupted in certain situations.
+
+             ______________________________________________________
+
+    1.5.3 Global Pages and Global Sections System Parameters
+
+          The installation of DIGITAL GKS requires minimum values
+          for the system parameters that define the global pages
+          and global sections. These values are shown in Table 1-2.
+          Depending on the kinds of programs and applications running
+          at your site, you may need to define larger values.
+
+          Table_1-2_Required_System_Parameter_Values_________________
+
+          System_Parameter___________Minimum_Value___________________
+
+          GBLPAGES[1]                n + 4000
+
+          GBLSECTIONS[1]             n + 30
+
+          [1]The_n_variable_refers_to_the_system_parameter_values____
+          that are currently in use. To install DIGITAL GKS, you
+          must increase those values by the number indicated. (See
+          Section 1.5.3.3 and Section 1.5.3.4.)
+          These dynamic system parameters must be set permanently to
+          values equal to or greater than the values listed. Do not
+          decrease these values after the installation.
+          ___________________________________________________________
+
+          The following sections describe how to:
+
+          o  Determine the number of global pages and global sections
+             available
+
+          o  Determine the global pages and global sections used
+
+          o  Modify the global pages parameter
+
+          o  Modify the global sections parameter
+
+          o  Recalculate the global pages and global sections
+             parameters to take the new values into account
+
+    1-6 Preparing for DIGITAL GKS Installation
+
+ 
+
+
+
+
+
+
+
+        1.5.3.1 Determining the Global Pages and Global Sections
+                Available
+
+              You can determine the available global pages and global
+              sections using the WRITE command with the F$GETSYI lexical
+              function. The following example shows how to display this
+              information on your terminal (the default for SYS$OUTPUT):
+
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES") <Return>
+              15848
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS") <Return>
+              24
+
+              If the values displayed by the system are greater than the
+              values in Table 1-2, you do not need to increase the values
+              for these parameters. If the values of free global pages
+              or global sections are less than the values in Table 1-2,
+              you must increase the parameter values, as described in the
+              following sections.
+
+              You can also determine the number of global sections
+              available using the following procedure:
+
+              1. Invoke the SYSGEN Utility:
+
+                 $ RUN SYS$SYSTEM:SYSGEN <Return>
+                 SYSGEN> USE CURRENT <Return>
+
+              2. Determine the number of global sections available:
+
+                 SYSGEN> SHOW GBLSECTIONS <Return>
+
+ Parameter Name             Current   Default   Minimum   Maximum Unit  Dynamic
+ --------------             -------   -------   -------   ------- ----  -------
+ GBLSECTIONS                    400       250        20      4095 Sections
+
+                 The first number displayed is the current number of
+                 global sections. Compare this number to the number of
+                 global sections in use displayed by the OpenVMS Install
+                 Utility (see Section 1.5.3.2).
+
+              3. Exit from the SYSGEN Utility:
+
+                 SYSGEN> EXIT <Return>
+
+                               Preparing for DIGITAL GKS Installation 1-7
+
+ 
+
+
+
+
+
+
+
+    1.5.3.2 Determining the Global Pages and Global Sections Used
+
+          To determine the global pages and global sections used:
+
+          1. Invoke the OpenVMS Install Utility:
+
+             $ INSTALL :== $INSTALL/COMMAND_MODE <Return>
+             $ INSTALL <Return>
+
+          2. Determine the number of global pages used:
+
+             INSTALL> LIST/GLOBAL/SUMMARY <Return>
+
+                     Summary of Local Memory Global Sections
+
+             nn Global Sections Used,  nnnn/nnnn Global Pages Used/Unused
+
+             INSTALL> EXIT <Return>
+
+             The system displays a summary of the number of global
+             sections used, the number of global pages used, and the
+             number of global pages available.
+
+          3. Exit from the OpenVMS Install Utility:
+
+             INSTALL> EXIT <Return>
+
+    1.5.3.3 Modifying the Global Pages Parameter
+
+          To modify the number of global pages:
+
+          1. If there are fewer than 4000 global pages available,
+             modify the GBLPAGES system parameter.
+
+             You can modify the GBLPAGES parameter by editing the
+             SYS$SYSTEM:MODPARAMS.DAT file. To change a parameter
+             value in this file, delete the current value and enter
+             the new value. (Another way of allocating space is to
+             delete an existing known image with the OpenVMS Install
+             Utility.)
+
+             To modify GBLPAGES, use ADD_GBLPAGES as shown, where n
+             is the number of global pages to add:
+
+             ADD_GBLPAGES = n
+
+             Note that when you set the page file quota, you should
+             not use a value that exceeds the amount of page file
+             space available on the system.
+
+          2. Exit the editor.
+
+    1-8 Preparing for DIGITAL GKS Installation
+
+ 
+
+
+
+
+
+
+
+              3. Update the GBLPAGES parameter by invoking the AUTOGEN
+                 command procedure described in Section 1.5.3.5.
+
+        1.5.3.4 Modifying the Global Sections Parameter
+
+              To modify the number of global sections:
+
+              1. If the number of global sections in use plus 30 exceeds
+                 the current number of global sections, modify the
+                 GBLSECTIONS parameter.
+
+                 You can modify the GBLSECTIONS parameter by editing the
+                 SYS$SYSTEM:MODPARAMS.DAT file. To change a parameter
+                 value in this file, delete the current value and enter
+                 the new value.
+
+                 To modify GBLSECTIONS, use ADD_GBLSECTIONS as shown,
+                 where n is the number of global sections to add:
+
+                 ADD_GBLSECTIONS = n
+
+                 Note that when you set the page file quota, you should
+                 not use a value that exceeds the amount of page file
+                 space available on the system.
+
+              2. Exit the editor.
+
+              3. Update the GBLSECTIONS parameter by invoking the AUTOGEN
+                 command procedure described in Section 1.5.3.5.
+
+        1.5.3.5 Recalculating the Global Pages and Global Sections
+                Parameters
+
+              To update the GBLPAGES and GBLSECTIONS parameters, invoke
+              the AUTOGEN command procedure, SYS$UPDATE:AUTOGEN.COM:
+
+              $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT <Return>
+
+              AUTOGEN automatically recalculates the parameters with
+              the values you defined manually. When you specify REBOOT,
+              AUTOGEN performs an automatic system shutdown and then
+              reboots the system. Any users logged on to the system are
+              immediately disconnected during the shutdown.
+
+              AUTOGEN also automatically adjusts some of the SYSGEN
+              parameters, based on the consumption of resources since
+              the last reboot. If you do not want to take advantage of
+              this automatic adjustment, include the NOFEEDBACK qualifier
+              on the AUTOGEN command line.
+
+                               Preparing for DIGITAL GKS Installation 1-9
+
+ 
+
+
+
+
+
+
+
+          For more information about using AUTOGEN, see the OpenVMS
+          System Management Subkit.
+
+    1.5.4 User Account Quotas
+
+          The account you use to install DIGITAL GKS requires certain
+          minimum user account values. These values, which are
+          defined in the SYSUAF.DAT file, are listed in Table 1-3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-10 Preparing for DIGITAL GKS Installation
+
+ 
+
+
+
+
+
+
+
+              Table_1-3_Process_Account_Quotas_for_the_Installing_Account
+
+              Account_Quota______________Value___________________________
+
+              ASTLM                         24
+
+              BIOLM                         18
+
+              BYTLM                      18,000
+
+              DIOLM                         18
+
+              ENQLM                         30
+
+              FILLM_________________________20___________________________
+
+              Using the OpenVMS Authorize Utility (AUTHORIZE), you
+              can compare the current values of these quotas with the
+              requirements for DIGITAL GKS. The account used in the
+              following example is the SYSTEM account:
+
+              $ SET DEFAULT SYS$SYSTEM <Return>
+              $ RUN AUTHORIZE <Return>
+              UAF> SHOW SYSTEM <Return>
+
+              To change the values of these quotas, use the MODIFY
+              command. For more information, see the OpenVMS System
+              Management Utilities Reference Manual.
+
+        1.6 Backing Up Your System Disk
+
+              DIGITAL recommends that you back up your system disk before
+              installing any software. Use the backup procedures that
+              are established at your site. For details on performing
+              a backup, see the section on the Backup Utility in the
+              OpenVMS System Management Subkit.
+
+
+
+
+
+
+
+
+
+                              Preparing for DIGITAL GKS Installation 1-11
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                                   Installing DIGITAL GKS
+
+
+              This chapter describes the DIGITAL GKS installation
+              procedure. For a list of the files and directories created
+              during the installation procedure, see Appendix A. For
+              sample development kit and run-time-only installations,
+              refer to Appendix B.
+
+              To abort the installation procedure at any time, press
+              Ctrl/Y. When you press Ctrl/Y, the installation procedure
+              deletes all files it has created up to that point and
+              exits. You can then start the installation again.
+
+        2.1 Installation Procedure
+
+              Before you install DIGITAL GKS, DIGITAL recommends that
+              you back up your system disk. Once you have done so,
+              you can begin the installation. The installation takes
+              approximately 5 to 30 minutes, depending on your system
+              configuration.
+
+              You should not install DIGITAL GKS run-time-only Version
+              6.5 if you have already installed the full development kit
+              of DIGITAL GKS Version 6.5. If you do, the installation
+              procedure will overwrite the development kit with the run-
+              time-only kit. To determine which version of DIGITAL GKS is
+              currently installed, enter the following DCL command:
+
+    $ ANALYZE/IMAGE/INTERACTIVE/HEADER SYS$LIBRARY:[SYSLIB]GKS3D$RTLIB <Return>
+
+              Look for lines similar to the following in the resulting
+              display:
+
+                                              .
+                                              .
+                                              .
+                                              .
+                             Image Identification Information
+
+                                               Installing DIGITAL GKS 2-1
+
+ 
+
+
+
+
+
+
+
+                          image name: "GKS3D$RTLIB"
+                          image file identification: "DECGKS V6.5"
+                          link date/time:  30-APR-1997 04:20:10.40
+                          linker identification: "05-13"
+                                          .
+                                          .
+                                          .
+
+          The procedure for installing DIGITAL GKS is:
+
+          1. Log in to a privileged account and set your default
+             device and directory to SYS$UPDATE.
+
+             DIGITAL recommends that you use the system manager's
+             account.
+
+             Username: SYSTEM <Return>
+             Password:         <Return>
+             $ SET DEFAULT SYS$UPDATE <Return>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    2-2 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+              2. Define the destination for the output of the
+                 Installation Verification Procedure (IVP) with the
+                 following command, replacing node with your node name:
+
+                 The IVP verifies the integrity of the installation. In
+                 the following command, node is your node name.
+
+                 $ DEFINE DECW$DISPLAY node::0.0 <Return>
+
+              3. Invoke VMSINSTAL.
+
+                 When you invoke VMSINSTAL, it checks the following:
+
+                 o  Whether you are logged in to a privileged account.
+                    You should install software from the system manager's
+                    account with your default device and directory set to
+                    SYS$UPDATE.
+
+                 o  The installing account has adequate:
+
+                       Disk space
+                       Global pages
+                       Global sections
+                       Account quotas
+
+                 o  Whether you have adequate quotas for installation.
+                    VMSINSTAL requires the following minimum quota
+                    values:
+
+                       ASTLM = 24
+                       BIOLM = 18
+                       BYTLM = 18000
+                       DIOLM = 18
+                       ENQLM = 30
+                       FILLM = 20
+
+                 o  Whether the following conditions exist:
+
+                    -  DECnet[TM] network is up and running.
+
+                    -  Users are logged in to the system.
+
+                 If VMSINSTAL detects problems, you will be asked whether
+                 you want to continue the installation. You should
+                 correct these problems before resuming the installation
+                 procedure. If you want to continue, enter YES. If you
+                 want to stop the installation, press Return.
+
+                 To invoke the VMSINSTAL command procedure, enter:
+
+          $ @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N <Return>
+
+                                               Installing DIGITAL GKS 2-3
+
+ 
+
+
+
+
+
+
+
+             The VMSINSTAL parameters are:
+
+             saveset-name
+             The installation name for the component. For the DIGITAL
+             GKS development kit, use the name:
+
+             DECGKS065
+
+             For the DIGITAL GKS run-time-only kit, use the name:
+
+             DECGKSRT065
+
+             device-name
+             The name of the device on which you plan to mount the
+             distribution volumes for the DIGITAL GKS installation
+             media. The format of the device name is ddcu, where dd
+             is the device code, c is the controller code, and u is
+             the unit number. For example, DKA400 is the device name
+             for a CD-ROM.
+
+             For CD-ROM media, you must also supply the directory
+             location of the DIGITAL GKS save set on the CD-ROM. To
+             obtain this location, see the Software Product Library
+             CD-ROM User's Guide booklet that accompanies the CD-ROM
+             distribution kit, or complete the following steps before
+             starting the installation:
+
+             a. Determine whether the CD-ROM drive is already mounted
+                by entering the command:
+
+                $ SHOW DEVICE DKA400: <Return>
+
+                If the device is mounted, skip to the next step.
+                If it is not mounted, enter the appropriate MOUNT
+                command to mount the CD-ROM, omitting the /FOREIGN
+                qualifier.
+
+             b. Obtain the directory name by entering the command:
+
+                $ DIRECTORY DKA400:[000000]*decgks*.dir <Return>
+
+                The directory name will be displayed; for example:
+
+                Directory DKA400:[000000]
+
+                DECGKS065.DIR;1          (development kit)
+
+                DECGKSRT065.DIR;1        (run-time-only kit)
+
+    2-4 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+                 c. Obtain the save set name by using a DIRECTORY command
+                    specifying the directory file from the previous
+                    command. For example, for the development kit, enter:
+
+                    $ DIRECTORY DKA400:[DECGKS065.KIT]*.A <Return>
+
+                    For the run-time-only kit, enter:
+
+                    $ DIRECTORY DKA400:[DECGKSRT065.KIT]*.A <Return>
+
+                 OPTIONS N
+                 An optional parameter that enables you to access the
+                 release notes. If you do not include the OPTIONS N
+                 parameter, VMSINSTAL does not ask you about the release
+                 notes. You should review the release notes before
+                 proceeding with the installation, because they contain
+                 additional information about the installation.
+
+                 Note that there are several other options you can select
+                 when you invoke VMSINSTAL:
+
+                 o  Auto_answer option (A)
+
+                    This option initially creates a file that contains
+                    your answers to VMSINSTAL questions and prompts.
+                    You can then use the option (and the answer file) to
+                    save time during a reinstallation (typically after
+                    upgrading your system).
+
+                 o  Get save set option (G)
+
+                    This option lets you temporarily store product save
+                    sets on a magnetic tape or in a disk directory.
+
+
+
+
+
+
+
+
+
+
+
+
+                                               Installing DIGITAL GKS 2-5
+
+ 
+
+
+
+
+
+
+
+             o  File log option (L)
+
+                This option logs all activity to the terminal during
+                installation.
+
+             o  Alternate root option (R)
+
+                This option lets you install the product to a system
+                root other than that of the current system.
+
+             If you do not supply the save set and device
+             names, VMSINSTAL prompts you for them later in the
+             installation. VMSINSTAL does not prompt you for any
+             options, however, so be sure to include the desired
+             options on the VMSINSTAL command line. If you specify
+             more than one option, separate the options with commas
+             (for instance, OPTIONS A,N). See the documentation on
+             software installation in the OpenVMS System Management
+             Subkit for detailed information on these options.
+
+             The following example invokes VMSINSTAL to install
+             DIGITAL GKS development kit from a CD-ROM and shows
+             the system response:
+
+   $ @SYS$UPDATE:VMSINSTAL DECGKS065 DKA400:[DECGKS065.KIT] OPTIONS N <Return>
+
+                   VAX/VMS Software Product Installation Procedure V5.5-2
+
+             It is dd-mmm-yyyy at hh:mm.
+             Enter a question mark (?) at any time for help.
+
+             If VMSINSTAL detects any problems during the
+             installation, it notifies you and asks if you want to
+             continue the installation. In some instances, you can
+             enter YES to continue. To stop the installation process
+             and correct the situation, enter NO or press Return.
+             Then, correct the problem and restart the installation.
+
+          4. Check the status of your processes.
+
+             If DECnet software is running, VMSINSTAL displays a list
+             of all active processes and asks if you want to continue
+             the installation:
+
+             %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                .
+                .
+                .
+             * Do you want to continue anyway [NO]? <Return>
+
+    2-6 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+                 You should install DIGITAL GKS on a standalone system
+                 or cluster with DECnet shut down; therefore, NO is the
+                 default response to the question.
+
+              5. Confirm system backup.
+
+       * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+                 You should always back up your system disk before
+                 performing an installation. If you are satisfied with
+                 the backup of your system disk, press Return. Otherwise,
+                 enter NO and press Return to stop the installation.
+                 After you back up your system disk, you can restart the
+                 installation.
+
+              6. Mount the media.
+
+                 If you omitted the device name on the VMSINSTAL command
+                 line, the following prompt appears:
+
+         * Where will the distribution volume be mounted: DKA400: <Return>
+
+                 Enter the name of the distribution media device and
+                 directory that contains the DIGITAL GKS save sets. For
+                 example, if the media is contained on a CD-ROM located
+                 on unit DKA400:, and the DIGITAL GKS save set is located
+                 in the directory DECGKS065.KIT, enter:
+
+                 DKA400:[DECGKS065.KIT]
+
+                 Depending on the type of device and whether the device
+                 is already mounted, the following may or may not appear:
+
+                 Please mount the first volume of the set on DKA400:.
+                 * Are you ready? Y <Return>
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter
+                 NO in response to the "Are you ready?" question. If you
+                 respond YES to indicate that you are ready, VMSINSTAL
+                 indicates that the media containing DIGITAL GKS has been
+                 mounted, and then prompts for the product name and any
+                 desired installation options:
+
+                 DIGITAL GKS DEVELOPMENT KIT
+
+                                               Installing DIGITAL GKS 2-7
+
+ 
+
+
+
+
+
+
+
+    %MOUNT-I-MOUNTED, DECGKS MOUNTED ON DKA400 (NODE 1)
+
+    Enter the products to be processed from the first distribution volume set.
+    * Products: DECGKS065 <Return>
+    * Enter installation options you wish to use (none): <Return>
+
+             The following products will be processed:
+               DECGKS V6.5
+
+                     Beginning installation of DECGKS V6.5 at hh:mm.
+
+             %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+             DIGITAL GKS RUN-TIME-ONLY KIT
+
+             %MOUNT-I-MOUNTED, DECGKSRT MOUNTED ON DKA400 (NODE 1)
+
+    Enter the products to be processed from the first distribution volume set.
+    * Products: DECGKSRT065 <Return>
+    * Enter installation options you wish to use (none): <Return>
+
+             The following products will be processed:
+               DECGKSRT V6.5
+
+                     Beginning installation of DECGKSRT V6.5 at hh:mm.
+
+             %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+          7. Select a release notes option.
+
+             This step applies only if you specified OPTIONS N when
+             starting the installation.
+
+             Release Notes Options:
+
+                 1.  Display release notes
+                 2.  Print release notes
+                 3.  Both 1 and 2
+                 4.  None of the above
+
+             * Select option [2]: 1 <Return>
+
+             If you select option 1, VMSINSTAL displays the release
+             notes immediately on the console terminal. You can
+             terminate the display at any time by pressing Ctrl/C.
+
+    2-8 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+                 If you select option 2, VMSINSTAL prompts you for a
+                 queue name. Either enter a queue name or press Return to
+                 send the file to the default output print device:
+
+                 * Queue name [SYS$PRINT]: <Return>
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes on the terminal and then prompts you for a queue
+                 name for the printed version. After you enter a queue
+                 name or press Return to send the file to the default
+                 output print device, the release notes are copied to:
+
+                 o  SYS$HELP:DECGKS065.RELEASE_NOTES
+
+                 o  SYS$HELP:DECGKS065_RELEASE_NOTES.PS
+
+                 If you select option 4, VMSINSTAL does not display,
+                 print, or copy the release notes.
+
+                ________________________ Note ________________________
+
+                This version of the release notes file installed by
+                VMSINSTAL is labeled with the current product name and
+                version number. Be sure not to delete release notes
+                for previous versions of DIGITAL GKS.
+
+                ______________________________________________________
+
+                 VMSINSTAL then displays the following prompt:
+
+    * Do you want to continue the installation [N]?: Y <Return>
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                 To continue the installation, enter YES and press
+                 Return. Otherwise, press Return. In either case, the
+                 release notes are copied to files in the SYS$HELP
+                 directory.
+
+                 After the installation, you can enter the following
+                 command to review the release notes through the Help
+                 facility, for example:
+
+                 $ HELP GKS RELEASE_NOTES <Return>
+
+              8. Purge the old DIGITAL GKS files.
+
+    * Do you want to purge files replaced by this installation [YES]? <Return>
+
+                                               Installing DIGITAL GKS 2-9
+
+ 
+
+
+
+
+
+
+
+             The SYS$COMMON: directories may contain previous
+             versions of DIGITAL GKS files. These files are replaced
+             during the installation with new files, but the
+             old files are not automatically purged. Purging is
+             recommended. In response to the purging prompt, press
+             Return to purge the files or enter NO to keep them.
+
+             Appendix A lists the files on the system that are added
+             or modified when you install the DIGITAL GKS development
+             kit and the run-time-only kit.
+
+          9. Respond to license registration queries.
+
+             DIGITAL GKS supports the OpenVMS License Management
+             Facility (LMF). The installation procedure displays
+             license information about your product and then asks if
+             you have registered and loaded your authorization key
+             for DIGITAL GKS. The following is an example of this
+             information:
+
+             DIGITAL GKS DEVELOPMENT KIT
+
+                Product:       GKS
+                Producer:      DEC
+                Version:       6.5
+                Release Date:  30-APR-1997
+
+* Does this product have an authorization key registered and loaded? Y <Return>
+
+             DIGITAL GKS RUN-TIME-ONLY KIT
+
+                Product:       GKS-RT
+                Producer:      DEC
+                Version:       6.5
+                Release Date:  30-APR-1997
+
+* Does this product have an authorization key registered and loaded? Y <Return>
+
+             Your PAK must be registered and loaded for the
+             installation to complete successfully. Therefore, if
+             your PAK is not registered and loaded, you must answer
+             NO to this question, stop the installation, register and
+             load your PAK, and then restart the installation.
+
+          10.Install the PEX device handler.
+
+             * Do you wish to install the PEX device handler and its associated
+               files [NO]? Y <Return>
+
+    2-10 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+                 Installing the PEX device handler is optional. When
+                 deciding whether to install the device handler, you
+                 should consider the following:
+
+                 o  The PEX device handler requires special graphics
+                    accelerators.
+
+                 o  If this device handler is installed, the installation
+                    procedure modifies the DIGITAL GKS startup file,
+                    GKSTARTUP.COM, to include the DIGITAL GKS PEX
+                    workstation types. The installation procedure also
+                    defines the necessary logical names.
+
+                 Press Return to install the PEX device handler, or enter
+                 NO if you do not want to install the device handler. If
+                 you enter NO in response to this prompt, you can install
+                 the device handler at a later date by performing the
+                 installation procedure again.
+
+              11.Install PEXlib (development kit only).
+
+                 * Do you wish to have PEXlib installed [YES]? <Return>
+
+                 If you chose to install the PEX device handler, you can
+                 also install the PEXlib library, by pressing Return. If
+                 you do not want to install PEXlib, enter NO.
+
+              12.Install the GKS example programs (development kit only).
+
+                 * Do you wish to install the example programs [YES]? <Return>
+
+                 The example programs are source code files written in
+                 various programming languages that illustrate how to
+                 call various DIGITAL GKS functions. Press Return if you
+                 want to install these programs. Enter NO if you do not
+                 want to install these programs.
+
+              13.Install the Japanese GKS-related files.
+
+                       This kit contains Japanese related-images and files.
+                       They require Japanese OpenVMS.
+
+      * Do you wish to install Japanese related images and files [NO]? <Return>
+
+                 If the Japanese version of OpenVMS VAX is installed on
+                 your system, you will be asked if you want to install
+                 the Japanese components of DIGITAL GKS. Press Return if
+                 you do not want to install the Japanese files. Enter YES
+                 if you do want to install these files.
+
+                                              Installing DIGITAL GKS 2-11
+
+ 
+
+
+
+
+
+
+
+          14.Run the Installation Verification Procedure.
+
+* Do you wish to perform the Installation Verification Procedure [YES]? <Return>
+
+             The Installation Verification Procedure (IVP) verifies
+             that the installation is successful. The DIGITAL GKS
+             IVP reads a three-dimensional image from a metafile
+             workstation (GKS$TEST:GKS$IVP.DAT). The metafile is
+             large, and executing the IVP tests the DIGITAL GKS
+             installation thoroughly.
+
+             Press Return if you wish to run the IVP during the
+             installation; enter NO if you do not wish to run this
+             procedure. If you do not run the IVP at this time,
+             DIGITAL recommends that you run this procedure after the
+             installation to verify that the software is available
+             on your system. You may also need to run the IVP
+             after a system failure to ensure that users can access
+             DIGITAL GKS. Refer to Section 3.3 for details.
+
+          15.Select the workstation type on which the IVP will be
+             displayed.
+
+ * Select the workstation type; 1 for Motif or 2 for DECwindows [1]: 1 <Return>
+
+             If you are installing DIGITAL GKS on a workstation that
+             has DECwindows or Motif software installed, you must
+             define the workstation type on which the IVP image will
+             be displayed. The default workstation types are listed
+             in Table 2-1.
+
+          Table_2-1_Default_Workstation_Types________________________
+
+          Workstation__________________________Default_Type__________
+
+          VAX                                  Sixel
+
+          Workstation running DECwindows       DECwindows or Motif
+
+          Workstation running VAXstation[TM]   VWS
+          Windowing_Software_(VWS)___________________________________
+
+             The IVP image is output to the default OUTPUT or OUTIN
+             workstation, which is defined by the workstation
+             identifier and connection identifier (the logical
+             names GKS$WSTYPE and GKS$CONID, respectively). You
+             can redirect the IVP output to another workstation by
+             modifying the values associated to the logical names.
+
+    2-12 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+                 If the installation is successful, the IVP generates
+                 a picture like the one in Figure 2-1. If your device
+                 produces color output, the image will appear in color.
+
+              Figure 2-1 Sample IVP Display
+
+        See the PostScript(R) or Bookreader[TM] version to view the
+        figure.
+
+              16.Select the version of the Motif device handler to be
+                 used.
+
+                 * Select the Motif device handler (1 for Motif V1.1 or 2 for
+                   Motif V1.2) [1]: 2 <Return>
+
+                 If the version of Motif installed on your system is
+                 1.2, you must choose the version of the Motif device
+                 handler to be used. Press Return if you wish to use
+                 Motif Version 1.1. Enter 2 if you wish to use Motif
+                 Version 1.2.
+
+              17.Read the informational messages.
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation; there are no further
+                 questions. If the installation procedure has been
+                 successful up to this point, VMSINSTAL moves the new
+                 or modified files to their target directories, updates
+                 help files, and updates DCL tables, if necessary. If you
+                 requested that files be purged, they are purged at this
+                 time.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                              Installing DIGITAL GKS 2-13
+
+ 
+
+
+
+
+
+
+
+             The messages displayed are:
+
+   DIGITAL GKS DEVELOPMENT KIT:
+
+          STARTING to perform all the installation work. No additional user
+          actions are necessary from this point.The remaining part of the
+          installation will take ( 5 - 30 ) minutes depending on your CPU.
+   %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+   %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+   %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+   %VMSINSTAL-I-RESTORE, Restoring product save set E ...
+                   .
+                   .
+                   .
+
+                Installation of DECGKS V6.5 completed at hh:mm
+
+                VMSINSTAL procedure done at hh:mm
+
+     DIGITAL GKS RUN-TIME-ONLY KIT:
+
+           STARTING to perform all the installation work. No additional user
+           actions are necessary from this point.The remaining part of the
+           installation will take ( 5 - 30 ) minutes depending on your CPU.
+    %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+                   .
+                   .
+                   .
+
+                Installation of DECGKSRT V6.5 completed at hh:mm
+
+                VMSINSTAL procedure done at hh:mm
+
+             The installation procedure is complete. You can now
+             install more products or log out.
+
+          18.Log out of the privileged account.
+
+             $ LOGOUT <Return>
+             SYSTEM     logged out at dd-mmm-yyyy hh:mm:ss.ss
+
+             VMSINSTAL deletes or changes entries in the process
+             symbol tables during the installation. Therefore, if you
+             are going to continue using the system manager's account
+             and you want to restore these symbols, you should log
+             out and log in again.
+
+    2-14 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+        2.2 Error Recovery
+
+              If errors occur during installation, VMSINSTAL displays
+              failure messages. If the installation procedure fails, one
+              or more of the following messages may also appear:
+
+       %VMSINSTAL-E-INSFAIL, The installation of DIGITAL GKS V6.5 has failed.
+
+              This kit requires OpenVMS VAX V5.5-2
+
+              System disk does not contain enough free blocks to install DECGKS
+
+              Errors can occur during the installation if any of the
+              following conditions exists:
+
+              o  The operating system version is incorrect.
+
+              o  A prerequisite software version is incorrect.
+
+              o  Quotas necessary for successful installation are
+                 insufficient.
+
+              o  System parameter values for successful installation are
+                 insufficient.
+
+              o  The OpenVMS help library is currently in use.
+
+              o  The product license has not been registered and loaded.
+
+              o  The metafile input handler is not installed.
+
+              o  The default output handler, defined by the logical names
+                 GKS$WSTYPE and GKS$CONID, is not installed.
+
+              If the IVP fails for any reason, the following messages are
+              displayed:
+
+              The DECGKS V6.5 Installation Verification Procedure failed.
+
+              %VMSINSTAL-E-IVPFAIL, The IVP for DECGKS V6.5 has failed.
+
+              Other errors can also occur during IVP execution in the
+              following
+
+              o  The workstation handler is not installed.
+
+                 GKS-E-ERROR_23, specified workstation type does not exist in
+                  routine OPEN WORKSTATION
+
+                                              Installing DIGITAL GKS 2-15
+
+ 
+
+
+
+
+
+
+
+             First, verify that the metafile input handler is
+             installed. Then, ensure that the definition of
+             GKS$WSTYPE is a valid workstation type, including bit
+             masks, and that GKS$CONID corresponds to a physical
+             device that is supported and functioning.
+
+          o  The connection identifier and workstation type are not
+             compatible.
+
+             GKS-E-ERROR_26, specified workstation cannot be opened
+              in routine OPEN WORKSTATION
+
+             Ensure that the definitions of GKS$CONID and GKS$WSTYPE
+             are compatible, and that GKS$CONID corresponds to a
+             physical device that is supported and functioning.
+
+          o  There are not enough unused color entries available for
+             DIGITAL GKS in DECwindows.
+
+             DECGKS-E-ERROR_NEG_2, requested color map could not be created
+              in routine OPEN WORKSTATION
+
+             Set n (the color table size) in the workstation bit
+             mask %x0nmm00xx to a value, such as 16. For example, for
+             workstation type 231, specify %x001000E7.
+
+          If you are notified that any of these conditions exist,
+          you should take the appropriate action, as described in
+          the error message. For descriptions of the error messages,
+          see the OpenVMS System Messages and Recovery Procedures
+          Reference Manual, your processor-specific installation
+          /operations guide, or the OpenVMS License Management
+          Utility Manual.
+
+
+
+
+
+
+
+
+
+
+
+
+    2-16 Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                             After Installing DIGITAL GKS
+
+
+              You can perform the following tasks after you install
+              DIGITAL GKS:
+
+              o  Installing DIGITAL GKS on a cluster
+
+              o  Editing the system startup file
+
+              o  Running the Installation Verification Procedure
+
+              o  Determining and reporting problems
+
+        3.1 Installing DIGITAL GKS on an OpenVMS VAXcluster
+
+              If you want to run DIGITAL GKS on multiple nodes of a
+              VAXcluster configuration, first check to see that you have
+              the appropriate software license. Then, follow these steps
+              after installing DIGITAL GKS:
+
+              1. Issue the LICENSE LOAD command to activate the license
+                 on each node in the cluster on which DIGITAL GKS is to
+                 be executed.
+
+                 For the development kit, enter the command:
+
+                 $ LICENSE LOAD GKS <Return>
+
+                 For the run-time-only kit, enter the command:
+
+                 $ LICENSE LOAD GKS-RT <Return>
+
+              2. Run the following command on each node of the cluster
+                 that has the software license:
+
+                 $ @SYS$STARTUP:GKSTARTUP.COM <Return>
+
+              3. Prepare the system-specific roots on other nodes by
+                 issuing the following commands on each node:
+
+                 $ CREATE/DIRECTORY SYS$SPECIFIC:[SYSHLP.EXAMPLES.GKS] <Return>
+                 $ CREATE/DIRECTORY SYS$SPECIFIC:[SYSTEST.GKS] <Return>
+
+                                         After Installing DIGITAL GKS 3-1
+
+ 
+
+
+
+
+
+
+
+          4. Verify the installation by running the IVP on each node:
+
+             $ RUN GKS$TEST:GKS$IVP <Return>
+
+             Information about running the IVP is provided in
+             Section 3.3.
+
+          5. Determine if the INSTALL utility was used to install
+             GKS3D$RTLIB.EXE:
+
+             a. Log in to a node on the cluster.
+
+             b. Run INSTALL and enter the following command at the
+                INSTALL> prompt:
+
+                INSTALL> LIST SYS$LIBRARY:GKS3D$RTLIB.EXE <Return>
+
+                The INSTALL utility displays how the GKS3D$RTLIB was
+                installed. For example:
+
+                DISK$SYSTEM01:<SYS0.SYSCOMMON.SYSLIB>.EXE
+                    GKS3D$RTLIB;1    Open     Share         Lnkbl
+
+                If an error occurs with this command, DIGITAL GKS was
+                not properly installed.
+
+             c. Repeat steps a and b for each node of the cluster.
+
+          Do not purge files during the installation. You can purge
+          these files after you have run the DIGITAL GKS startup
+          command procedure on each node of the cluster.
+
+    3.2 Editing the System Startup File
+
+          To enable the automatic startup of DIGITAL GKS
+          when your system is rebooted, you must include the
+          startup procedure GKSTARTUP.COM in the startup file-
+          SYS$MANAGER:SYSTARTUP_V5.COM under OpenVMS VAX Version
+          5.5-2 or SYS$MANAGER:SYSTARTUP_VMS.COM under OpenVMS
+          VAX Version 6.5. Because DIGITAL GKS cannot be started
+          before the network has been started, you must position this
+          new command line after the line that invokes the network
+          startup command procedure. The following example shows the
+          network startup command line followed by the DIGITAL GKS
+          startup command line:
+
+    3-2 After Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+              $ @SYS$MANAGER:STARTNET.COM
+                   .
+                   .
+                   .
+              $ @SYS$STARTUP:GKSTARTUP.COM
+
+              When you install DIGITAL GKS on a cluster, GKSTARTUP.COM
+              is automatically executed for the system node from which
+              the installation was performed. You may need to execute
+              this file for other nodes in the cluster, however, to have
+              the newest DIGITAL GKS images installed on those systems.
+              This is particularly true if you purged older versions of
+              DIGITAL GKS during the installation.
+
+        3.3 Running the Installation Verification Procedure
+
+              To run the Installation Verification Procedure (IVP) after
+              installation, enter the command:
+
+              $ RUN GKS$TEST:GKS$IVP <Return>
+
+              For example, if you want to run the DECwindows Motif IVP
+              on a remote node, ensure that you have the access rights
+              on the server for remote use and that the DIGITAL GKS
+              DECwindows Motif handler is installed. Then, enter the
+              following commands, substituting your node name for the
+              node REMOTE:
+
+              $ DEFINE GKS$WSTYPE 231 <Return>
+              $ DEFINE GKS$CONID  REMOTE::0.0 <Return>
+              $ RUN GKS$TEST:GKS$IVP <Return>
+
+              In this example, the image is output to the remote server.
+
+        3.4 Determining and Reporting Problems
+
+              If you encounter a problem while using DIGITAL GKS, report
+              it to DIGITAL. Depending on the nature of the problem
+              and the type of support you have, you can take one of the
+              following actions:
+
+              o  Call DIGITAL if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+                                         After Installing DIGITAL GKS 3-3
+
+ 
+
+
+
+
+
+
+
+          o  Send electronic mail to the
+             "requests@bgsdev.enet.dec.com" account if the problem
+             has to do with the DIGITAL GKS documentation. Be sure to
+             include the section and page number of the error.
+
+          Review the Software Product Description (SPD) and Warranty
+          Addendum for an explanation of warranty. If you encounter a
+          problem during the warranty period, report the problem as
+          described in this section, or follow alternate instructions
+          provided by DIGITAL for reporting SPD nonconformance
+          problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    3-4 After Installing DIGITAL GKS
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                           Files Installed on Your System
+
+
+              The DIGITAL GKS installation procedure installs a number of
+              files on your system. These files are listed in Section A.1
+              and Section A.2.
+
+        A.1 DIGITAL GKS Development Kit Files
+
+              Table A-1 lists the files on the system that are added or
+              modified when you install the DIGITAL GKS development kit.
+
+        Table_A-1_Installed_Files_for_the_DIGITAL_GKS_Development_Kit____
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYS$STARTUP]_________________________________________
+
+                         GKSTARTUP.COM
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSFONT]_____________________________________________
+
+                         GKS$MARKERS.VWS$FONT
+
+                         GKS$MARKERS.VWS$VAFONT
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSHLP]______________________________________________
+
+                         DECGKS065.RELEASE_NOTES         Release notes
+
+                         DECGKS065_RELEASE_NOTES.PS
+
+                         DECGKS_CBIND_OP_SPEC.PS
+
+                         DECGKS_CBIND_OP_SPEC.TXT
+
+                         DECGKS_FBIND_OP_SPEC.PS
+
+                         DECGKS_FBIND_OP_SPEC.TXT
+
+                                                 (continued on next page)
+
+                                       Files Installed on Your System A-1
+
+ 
+
+
+
+
+
+
+
+    Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+    __________________Kit____________________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSHLP]______________________________________________
+
+                     DECGKS_G3DBIND_OP_SPEC.PS
+
+                     DECGKS_G3DBIND_OP_SPEC.TXT
+
+                     DECGKS_GBIND_OP_SPEC.PS
+
+                     DECGKS_GBIND_OP_SPEC.TXT
+
+                     HELPLIB.HLB                     Modified with
+                                                     GKS.HLP file
+
+    _________________________________________________________________
+    SYS$COMMON:[SYSHLP.JA_JP]________________________________________
+
+                     HELPLIB.HLB                     Modified with
+                                                     JGKS.HLP file,
+                                                     supplied with
+                                                     the Japanese
+                                                     save set
+
+                                             (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    A-2 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+        __________________Kit____________________________________________
+
+        _________________________________________________________________
+
+        SYS$COMMON:[SYSHLP.EXAMPLES.GKS]_________________________________
+
+                         ACCUM_XFORM_MATRIX_ADD.C        Optional files
+
+                         ACCUM_XFORM_MATRIX_ADD_3D.C
+
+                         ACCUM_XFORM_MATRIX_ADD_CBND.C
+
+                         ACCUM_XFORM_MATRIX_ADD_
+                         FORBND.FOR
+
+                         ASS_SEG_WS.C
+
+                         ASS_SEG_WS_3D.C
+
+                         ASS_SEG_WS_CBND.C
+
+                         ASS_SEG_WS_FORBND.FOR
+
+                         BACKGAMMON.C
+
+                         BUILD_PROG.COM
+
+                         BUILD_PROG.MAKE
+
+                         CELL_ARRAY.C
+
+                                                 (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+
+                                       Files Installed on Your System A-3
+
+ 
+
+
+
+
+
+
+
+    Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+    __________________Kit____________________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSHLP.EXAMPLES.GKS]_________________________________
+
+                     CELL_ARRAY_3D.C
+
+                     CELL_ARRAY_CBND.C
+
+                     CELL_ARRAY_FORBND.FOR
+
+                     CLEAR_WS.C
+
+                     CLEAR_WS_3D.C
+
+                     CLEAR_WS_CBND.C
+
+                     CLEAR_WS_FORBND.FOR
+
+                     DEVICE_BUILD.COM
+
+                     DEVICE_DFT.C
+
+                     DEVICE_DFT.MAR
+
+                     DEVICE_SAMPLE.C
+
+                     DEVICE_SAMPLE.MMS
+
+                     DEVICE_SAMPLE_DFT.C
+
+                     ERR_HAND.C
+
+                     ERR_HAND_3D.C
+
+                     ERR_HAND_CBND.C
+
+                     ERR_HAND_FORBND.FOR
+
+                     ESCAPE.C
+
+                     ESCAPE_3D.C
+
+                     ESCAPE_CBND.C
+
+                     ESCAPE_FORBND.FOR
+
+                     ESC_CONID_STRING_FORBND.FOR
+
+                     EVAL_XFORM_MATRIX.C
+
+                     EVAL_XFORM_MATRIX_3D.C
+
+                     EVAL_XFORM_MATRIX_CBND.C
+
+                     EVAL_XFORM_MATRIX_FORBND.FOR
+
+                     EVENT_MODE.C
+
+                                             (continued on next page)
+
+    A-4 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+        __________________Kit____________________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSHLP.EXAMPLES.GKS]_________________________________
+
+                         EVENT_MODE_3D.C
+
+                         EVENT_MODE_CBND.C
+
+                         EVENT_MODE_FORBND.FOR
+
+                         EX_CHOICE_INPUT_CB.C
+
+                         EX_CHOICE_INPUT_FB.FOR
+
+                         EX_CHOICE_INPUT_G3B.C
+
+                         EX_CHOICE_INPUT_GB.C
+
+                         EX_STRING_INPUT_CB.C
+
+                         EX_STRING_INPUT_FB.FOR
+
+                         EX_STRING_INPUT_G3B.C
+
+                         EX_STRING_INPUT_GB.C
+
+                         EX_TEXT_OUTPUT_CB.C
+
+                         EX_TEXT_OUTPUT_FB.FOR
+
+                         EX_TEXT_OUTPUT_G3B.C
+
+                         EX_TEXT_OUTPUT_GB.C
+
+                         FONTS_HEX.C
+
+                         GDP.C
+
+                         GDP_3D.C
+
+                         GDP_CBND.C
+
+                         GDP_FORBND.FOR
+
+                         GERHND_FORBND.FOR
+
+                         GFX_DFT.C
+
+                         GKS_PICK213.C
+
+                         GKS_PICK233.C
+
+                         GKS_PICK313.C
+
+                         GKS_PICK333.C
+
+                         GKS_PREDEF.C
+
+                                                 (continued on next page)
+
+                                       Files Installed on Your System A-5
+
+ 
+
+
+
+
+
+
+
+    Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+    __________________Kit____________________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSHLP.EXAMPLES.GKS]_________________________________
+
+                     GKS_SAMPLE.C
+
+                     INIT_INQ_ST_2D.C
+
+                     INIT_INQ_ST_2D.FOR
+
+                     INIT_INQ_ST_2D.PAS
+
+                     INIT_INQ_ST_3D.ADA
+
+                     INIT_INQ_ST_3D.C
+
+                     INIT_INQ_ST_3D.FOR
+
+                     INIT_INQ_ST_3D.PAS
+
+                     INIT_INQ_ST_3D_SIZEOF.ADA
+
+                     INIT_STRING.C
+
+                     INIT_STRING_3D.C
+
+                     INIT_STRING_CBND.C
+
+                     INIT_STRING_FORBND.FOR
+
+                     INQUIRY_CBND.C
+
+                     INQ_DEF_DATA_2D.ADA
+
+                     INQ_DEF_DATA_2D.C
+
+                     INQ_DEF_DATA_2D.FOR
+
+                     INQ_DEF_DATA_2D.PAS
+
+                     INQ_DEF_DATA_3D.ADA
+
+                     INQ_DEF_DATA_3D.C
+
+                     INQ_DEF_DATA_3D.FOR
+
+                     INQ_DEF_DATA_3D.PAS
+
+                     INSERT_SEG.C
+
+                     INSERT_SEG_3D.C
+
+                     INSERT_SEG_CBND.C
+
+                     INSERT_SEG_FORBND.FOR
+
+                     MANDELBROT_CBND.C
+
+                                             (continued on next page)
+
+    A-6 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+        __________________Kit____________________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSHLP.EXAMPLES.GKS]_________________________________
+
+                         OUTPUT_INPUT_3D.ADA
+
+                         OUTPUT_INPUT_3D.C
+
+                         OUTPUT_INPUT_3DF.FOR
+
+                         OUTPUT_INPUT_3DP.PAS
+
+                         OUTPUT_INPUT_CBND.C
+
+                         OUTPUT_INPUT_FORBND.FOR
+
+                         README.FIRST
+
+                         REQUEST_MODE.C
+
+                         REQUEST_MODE_3D.C
+
+                         REQUEST_MODE_CBND.C
+
+                         REQUEST_MODE_FORBND.FOR
+
+                         SAMPLE.OPT
+
+                         SAMPLE_ALPHA.OPT
+
+                         SAMPLE_DEVICE_DFT.C
+
+                         SAMPLE_MODE.C
+
+                         SAMPLE_MODE_3D.C
+
+                         SAMPLE_MODE_CBND.C
+
+                         SAMPLE_MODE_FORBND.FOR
+
+                         SAMPLE_PICK.C
+
+                         SAMPLE_PICK_3D.C
+
+                         SAMPLE_PICK_CBND.C
+
+                         SAMPLE_PICK_FORBND.FOR
+
+                         SAMPLE_VALUATOR.C
+
+                         SAMPLE_VALUATOR_3D.C
+
+                         SAMPLE_VALUATOR_CBND.C
+
+                         SAMPLE_VALUATOR_FORBND.FOR
+
+                         SAMPLE_VAX.OPT
+
+                                                 (continued on next page)
+
+                                       Files Installed on Your System A-7
+
+ 
+
+
+
+
+
+
+
+    Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+    __________________Kit____________________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSHLP.EXAMPLES.GKS]_________________________________
+
+                     SET_CLIP.C
+
+                     SET_CLIP_3D.C
+
+                     SET_CLIP_CBND.C
+
+                     SET_CLIP_FORBND.FOR
+
+                     SET_COLOUR_REP.C
+
+                     SET_COLOUR_REP_3D.C
+
+                     SET_COLOUR_REP_CBND.C
+
+                     SET_COLOUR_REP_FORBND.FOR
+
+                     SET_FILL_AREA_REP.C
+
+                     SET_FILL_AREA_REP_3D.C
+
+                     SET_FILL_AREA_REP_CBND.C
+
+                     SET_FILL_AREA_REP_FORBND.FOR
+
+                     SET_HILIGHT.C
+
+                     SET_HILIGHT_3D.C
+
+                     SET_HILIGHT_CBND.C
+
+                     SET_HILIGHT_FORBND.FOR
+
+                     SET_LINETYPE.C
+
+                     SET_LINETYPE_3D.C
+
+                     SET_LINETYPE_CBND.C
+
+                     SET_LINETYPE_FORBND.FOR
+
+                     SET_TEXT_ALIGN.C
+
+                     SET_TEXT_ALIGN_3D.C
+
+                     SET_TEXT_ALIGN_CBND.C
+
+                     SET_TEXT_ALIGN_FORBND.FOR
+
+                     SET_WS_VP.C
+
+                     SET_WS_VP_3D.C
+
+                     SET_WS_VP_CBND.C
+
+                                             (continued on next page)
+
+    A-8 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+        __________________Kit____________________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSHLP.EXAMPLES.GKS]_________________________________
+
+                         SET_WS_VP_FORBND.FOR
+
+                         USER_MANUAL_1_3.C
+
+                         USER_MANUAL_3_1.C
+
+                         USER_MANUAL_4_1.C
+
+                         USER_MANUAL_5_1.C
+
+                         USER_MANUAL_6_1.C
+
+                         USER_MANUAL_7_1.C
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSLIB]______________________________________________
+
+                         DECW$SVEXT_MULTI_BUFFERING.EXE  PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX.EXE          PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX_GB.EXE       PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX_GB_          PEX device
+                         UCODE.EXE                       handler only
+
+                         DECW$SVEXT_X3D_PEX_GE.EXE       PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX_STP.EXE      PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX_STP_         PEX device
+                         UCODE.EXE                       handler only
+
+                         DECW$SVEXT_X3D_PEX_VCFB.EXE     PEX device
+                                                         handler only
+
+                         FLOATDEF.H                      PEXlib only
+
+                         GKS$DEV_HAND_DFT_MAC.MLB
+
+                         GKS$I3D.EXE
+
+                         GKS$INQ_LIB.EXE
+
+                                                 (continued on next page)
+
+                                       Files Installed on Your System A-9
+
+ 
+
+
+
+
+
+
+
+    Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+    __________________Kit____________________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSLIB]______________________________________________
+
+                     GKS$MI_WS_HANDLER.EXE
+
+                     GKS$MO_WS_HANDLER.EXE
+
+                     GKS$WISS_WS_HANDLER.EXE
+
+                     GKS$WS_MANAGER.EXE
+
+                     GKS.F
+
+                     GKS.H
+
+                     GKS3D$CBND.H
+
+                     GKS3D$DEFS.ADA
+
+                     GKS3D$DEFS.BAS
+
+                     GKS3D$DEFS.FOR
+
+                     GKS3D$DEFS.H
+
+                     GKS3D$DEFS.PAS
+
+                     GKS3D$DEFS.PEN
+
+                     GKS3D$DEFS.PLI
+
+                     GKS3D$DEFS.R32
+
+                     GKS3D$ERRORS.ADA
+
+                     GKS3D$ERRORS.BAS
+
+                     GKS3D$ERRORS.FOR
+
+                     GKS3D$ERRORS.H
+
+                     GKS3D$ERRORS.PAS
+
+                     GKS3D$ERRORS.PEN
+
+                     GKS3D$ERRORS.PLI
+
+                     GKS3D$ERRORS.R32
+
+                     GKS3D$FORBND.FOR
+
+                     GKS3D$GKSRTLIB.EXE
+
+                     GKS3D$RTLIB.EXE
+
+                     GKS3D_DEFS.ADA
+
+                                             (continued on next page)
+
+    A-10 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+        __________________Kit____________________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSLIB]______________________________________________
+
+                         GKS3D_DEFS.BAS
+
+                         GKS3D_DEFS.FOR
+
+                         GKS3D_DEFS.H
+
+                         GKS3D_DEFS.PAS
+
+                         GKS3D_DEFS.PEN
+
+                         GKS3D_DEFS.PLI
+
+                         GKS3D_DEFS.R32
+
+                         GKS3D_ERRORS.ADA
+
+                         GKS3D_ERRORS.BAS
+
+                         GKS3D_ERRORS.FOR
+
+                         GKS3D_ERRORS.H
+
+                         GKS3D_ERRORS.PAS
+
+                         GKS3D_ERRORS.PEN
+
+                         GKS3D_ERRORS.PLI
+
+                         GKS3D_ERRORS.R32
+
+                         GKSCBND.OLB
+
+                         GKSCRTLIB.EXE
+
+                         GKSDEFS.ADA
+
+                         GKSDEFS.BAS
+
+                         GKSDEFS.BND
+
+                         GKSDEFS.FOR
+
+                         GKSDEFS.H
+
+                         GKSDEFS.LIB
+
+                         GKSDEFS.PAS
+
+                         GKSDEFS.PEN
+
+                         GKSDEFS.PL2
+
+                         GKSDEFS.PLI
+
+                                                 (continued on next page)
+
+                                      Files Installed on Your System A-11
+
+ 
+
+
+
+
+
+
+
+    Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+    __________________Kit____________________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSLIB]______________________________________________
+
+                     GKSDEFS.R32
+
+                     GKSDESCRIP.H
+
+                     GKSFORBND.OLB
+
+                     GKSGFX$CGMO_DEV_HANDLER.EXE
+
+                     GKSGFX$COLSIX_DEV_HANDLER.EXE
+
+                     GKSGFX$DDIF_DEV_HANDLER.EXE
+
+                     GKSGFX$DECW_DEV_HANDLER.EXE
+
+                     GKSGFX$DWV2_DEV_HANDLER.EXE
+
+                     GKSGFX$HPGL_DEV_HANDLER.EXE
+
+                     GKSGFX$HPPCL_DEV_HANDLER.EXE
+
+                     GKSGFX$IM_JP.EXE                Japanese
+
+                     GKSGFX$JUIS_DEV_HANDLER.EXE     Japanese
+
+                     GKSGFX$KEY_MAP_TABLE.EXE        Japanese
+
+                     GKSGFX$MOTIF11_DEV_HANDLER.EXE
+
+                     GKSGFX$MOTIF_DEV_HANDLER.EXE
+
+                     GKSGFX$PS_DEV_HANDLER.EXE
+
+                     GKSGFX$REGIS_DEV_HANDLER.EXE
+
+                     GKSGFX$RTL.EXE
+
+                     GKSGFX$SIXEL_DEV_HANDLER.EXE
+
+                     GKSGFX$TEK41_DEV_HANDLER.EXE
+
+                     GKSGFX$TEK_DEV_HANDLER.EXE
+
+                     GKSGFX$UIS_DEV_HANDLER.EXE
+
+                     GKSMSGS.ADA
+
+                     GKSMSGS.BAS
+
+                     GKSMSGS.FOR
+
+                     GKSMSGS.H
+
+                     GKSMSGS.LIB
+
+                                             (continued on next page)
+
+    A-12 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+        __________________Kit____________________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSLIB]______________________________________________
+
+                         GKSMSGS.PAS
+
+                         GKSMSGS.PEN
+
+                         GKSMSGS.PLI
+
+                         GKSMSGS.R32
+
+                         GKSRTLIB.EXE
+
+                         MPEX.H                          PEXlib only
+
+                         MPEXLIB.H                       PEXlib only
+
+                         MPEXOC.H                        PEXlib only
+
+                         MPEXPROTO.H                     PEXlib only
+
+                         MPEXPROTOSTR.H                  PEXlib only
+
+                         MULTIBUF.H                      PEXlib only
+
+                         PEX.H                           PEXlib only
+
+                         PEXLIB.H                        PEXlib only
+
+                         PEXLIBINT.H                     PEXlib only
+
+                         PEXLIBPROTOS.H                  PEXlib only
+
+                         PEXOC.H                         PEXlib only
+
+                         PEXOCBUF.H                      PEXlib only
+
+                         PEXPROTO.H                      PEXlib only
+
+                         PEXPROTOST.H                    PEXlib only
+
+                         PEX_COLOR_SIZE.H                PEXlib only
+
+                         PEX_FEATURES.H                  PEXlib only
+
+                         PEX_MACROS.H                    PEXlib only
+
+                         PL_DEF_DATA.H                   PEXlib only
+
+                         PL_OC_BUFF.H                    PEXlib only
+
+                         PL_REF_DATA.H                   PEXlib only
+
+                         SMTPEXLIBINT.H                  PEXlib only
+
+                         USE_BUILTINS.H                  PEXlib only
+
+                                                 (continued on next page)
+
+                                      Files Installed on Your System A-13
+
+ 
+
+
+
+
+
+
+
+    Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+    __________________Kit____________________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSLIB]______________________________________________
+
+                     VAXGFX$DDIF_COLOR_TABLE.DAT
+
+                     VAXGFX$FONT_J0102.FNT           Japanese
+
+                     VAXGFX$FONT_JISX0201.FNT        Japanese
+
+                     VAXGFX$FONT_JISX0208.FNT        Japanese
+
+                     VAXGFX$FONT_NEG01.FNT
+
+                     VAXGFX$FONT_NEG02.FNT
+
+                     VAXGFX$FONT_NEG03.FNT
+
+                     VAXGFX$FONT_NEG04.FNT
+
+                     VAXGFX$FONT_NEG05.FNT
+
+                     VAXGFX$FONT_NEG06.FNT
+
+                     VAXGFX$FONT_NEG07.FNT
+
+                     VAXGFX$FONT_NEG08.FNT
+
+                     VAXGFX$FONT_NEG09.FNT
+
+                     VAXGFX$FONT_NEG10.FNT
+
+                     VAXGFX$FONT_NEG11.FNT
+
+                     VAXGFX$FONT_NEG12.FNT
+
+                     VAXGFX$FONT_NEG13.FNT
+
+                     VAXGFX$FONT_NEG14.FNT
+
+                     VAXGFX$FONT_NEG15.FNT
+
+                     VAXGFX$FONT_NEG16.FNT
+
+                     VAXGFX$FONT_NEG17.FNT
+
+                     VAXGFX$FONT_NEG18.FNT
+
+                     VAXGFX$FONT_NEG19.FNT
+
+                     VAXGFX$FONT_NEG20.FNT
+
+                                             (continued on next page)
+
+    A-14 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-1 (Cont.) Installed Files for the DIGITAL GKS Development
+        __________________Kit____________________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSLIB]______________________________________________
+
+                         VAXGFX$FONT_NEG21.FNT
+
+                         VAXGFX$FONT_NEG22.FNT
+
+                         VAXGFX$FONT_NEG23.FNT
+
+                         VAXGFX$FONT_NEG24.FNT
+
+                         VAXGFX$RTL.EXE
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSMSG]______________________________________________
+
+                         GKS$MSGS.EXE
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSTEST]_____________________________________________
+
+                         GKS.DIR
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSTEST.GKS]_________________________________________
+
+                         GKS$IVP.DAT
+
+                         GKS$IVP.EXE
+
+        _________________________________________________________________
+        SYS$SYSROOT:[DECW$DEFAULTS.SYSTEM]_______________________________
+
+                         GKS_DECW.UID
+
+                         GKS_DECW_EN.UID
+
+                         GKS_DECW_JP.UID                 Japanese
+
+                         GKS_MOTIF.UID
+
+                         GKS_MOTIF.UID11
+
+                         GKS_MOTIF_EN.UID
+
+                         GKS_MOTIF_EN.UID11
+
+                         GKS_MOTIF_JP.UID                Japanese
+
+        _________________GKS_MOTIF_JP.UID12______________Japanese________
+
+                                      Files Installed on Your System A-15
+
+ 
+
+
+
+
+
+
+
+    A.2 DIGITAL GKS Run-Time-Only Kit Files
+
+          Table A-2 lists the files on the system that are added or
+          modified when you install the DIGITAL GKS run-time-only
+          kit.
+
+    Table_A-2_Installed_Files_for_the_DIGITAL_GKS_Run-Time-Only_Kit__
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYS$STARTUP]_________________________________________
+
+                     GKSTARTUP.COM
+
+    _________________________________________________________________
+    SYS$COMMON:[SYSFONT]_____________________________________________
+
+                     GKS$MARKERS.VWS$FONT
+
+                     GKS$MARKERS.VWS$VAFONT
+
+    _________________________________________________________________
+    SYS$COMMON:[SYSHLP]______________________________________________
+
+                     DECGKS065.RELEASE_NOTES         Release notes
+
+                     DECGKS065_RELEASE_NOTES.PS
+
+                     HELPLIB.HLB                     Modified with
+                                                     GKS.HLP file
+
+    _________________________________________________________________
+    SYS$COMMON:[SYSHLP.JA_JP]________________________________________
+
+                     HELPLIB.HLB                     Modified with
+                                                     JGKS.HLP file,
+                                                     supplied with
+                                                     the Japanese
+                                                     save set
+
+    _________________________________________________________________
+    SYS$COMMON:[SYSLIB]______________________________________________
+
+                     DECW$SVEXT_MULTI_BUFFERING.EXE  PEX device
+                                                     handler only
+
+                     DECW$SVEXT_X3D_PEX.EXE          PEX device
+                                                     handler only
+
+                                             (continued on next page)
+
+    A-16 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-2 (Cont.) Installed Files for the DIGITAL GKS Run-Time-
+        __________________Only_Kit_______________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSLIB]______________________________________________
+
+                         DECW$SVEXT_X3D_PEX_GB.EXE       PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX_GB_          PEX device
+                         UCODE.EXE                       handler only
+
+                         DECW$SVEXT_X3D_PEX_GE.EXE       PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX_STP.EXE      PEX device
+                                                         handler only
+
+                         DECW$SVEXT_X3D_PEX_STP_         PEX device
+                         UCODE.EXE                       handler only
+
+                         DECW$SVEXT_X3D_PEX_VCFB.EXE     PEX device
+                                                         handler only
+
+                         GKS$I3D.EXE
+
+                         GKS$INQ_LIB.EXE
+
+                         GKS$MI_WS_HANDLER.EXE
+
+                         GKS$MO_WS_HANDLER.EXE
+
+                         GKS$WISS_WS_HANDLER.EXE
+
+                         GKS$WS_MANAGER.EXE
+
+                         GKS3D$GKSRTLIB.EXE
+
+                         GKS3D$RTLIB.EXE
+
+                         GKSCRTLIB.EXE
+
+                         GKSGFX$CGMO_DEV_HANDLER.EXE
+
+                         GKSGFX$COLSIX_DEV_HANDLER.EXE
+
+                         GKSGFX$DDIF_DEV_HANDLER.EXE
+
+                         GKSGFX$DECW_DEV_HANDLER.EXE
+
+                         GKSGFX$DWV2_DEV_HANDLER.EXE
+
+                         GKSGFX$HPGL_DEV_HANDLER.EXE
+
+                         GKSGFX$HPPCL_DEV_HANDLER.EXE
+
+                                                 (continued on next page)
+
+                                      Files Installed on Your System A-17
+
+ 
+
+
+
+
+
+
+
+    Table A-2 (Cont.) Installed Files for the DIGITAL GKS Run-Time-
+    __________________Only_Kit_______________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$COMMON:[SYSLIB]______________________________________________
+
+                     GKSGFX$IM_JP.EXE                Japanese
+
+                     GKSGFX$JUIS_DEV_HANDLER.EXE     Japanese
+
+                     GKSGFX$KEY_MAP_TABLE.EXE        Japanese
+
+                     GKSGFX$MOTIF11_DEV_HANDLER.EXE
+
+                     GKSGFX$MOTIF_DEV_HANDLER.EXE
+
+                     GKSGFX$PS_DEV_HANDLER.EXE
+
+                     GKSGFX$REGIS_DEV_HANDLER.EXE
+
+                     GKSGFX$RTL.EXE
+
+                     GKSGFX$SIXEL_DEV_HANDLER.EXE
+
+                     GKSGFX$TEK41_DEV_HANDLER.EXE
+
+                     GKSGFX$TEK_DEV_HANDLER.EXE
+
+                     GKSGFX$UIS_DEV_HANDLER.EXE
+
+                     GKSRTLIB.EXE
+
+                     VAXGFX$DDIF_COLOR_TABLE.DAT
+
+                     VAXGFX$FONT_J0102.FNT           Japanese
+
+                     VAXGFX$FONT_JISX0201.FNT        Japanese
+
+                     VAXGFX$FONT_JISX0208.FNT        Japanese
+
+                     VAXGFX$DDIF_COLOR_TABLE.DAT
+
+                     VAXGFX$FONT_NEG01.FNT
+
+                     VAXGFX$FONT_NEG02.FNT
+
+                     VAXGFX$FONT_NEG03.FNT
+
+                     VAXGFX$FONT_NEG04.FNT
+
+                     VAXGFX$FONT_NEG05.FNT
+
+                     VAXGFX$FONT_NEG06.FNT
+
+                     VAXGFX$FONT_NEG07.FNT
+
+                     VAXGFX$FONT_NEG08.FNT
+
+                     VAXGFX$FONT_NEG09.FNT
+
+                                             (continued on next page)
+
+    A-18 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+        Table A-2 (Cont.) Installed Files for the DIGITAL GKS Run-Time-
+        __________________Only_Kit_______________________________________
+
+        Directory________File_Name_______________________Description_____
+
+        SYS$COMMON:[SYSLIB]______________________________________________
+
+                         VAXGFX$FONT_NEG10.FNT
+
+                         VAXGFX$FONT_NEG11.FNT
+
+                         VAXGFX$FONT_NEG12.FNT
+
+                         VAXGFX$FONT_NEG13.FNT
+
+                         VAXGFX$FONT_NEG14.FNT
+
+                         VAXGFX$FONT_NEG15.FNT
+
+                         VAXGFX$FONT_NEG16.FNT
+
+                         VAXGFX$FONT_NEG17.FNT
+
+                         VAXGFX$FONT_NEG18.FNT
+
+                         VAXGFX$FONT_NEG19.FNT
+
+                         VAXGFX$FONT_NEG20.FNT
+
+                         VAXGFX$FONT_NEG21.FNT
+
+                         VAXGFX$FONT_NEG22.FNT
+
+                         VAXGFX$FONT_NEG23.FNT
+
+                         VAXGFX$FONT_NEG24.FNT
+
+                         VAXGFX$RTL.EXE
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSMSG]______________________________________________
+
+                         GKS$MSGS.EXE
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSTEST]_____________________________________________
+
+                         GKS.DIR
+
+        _________________________________________________________________
+        SYS$COMMON:[SYSTEST.GKS]_________________________________________
+
+                         GKS$IVP.DAT
+
+                         GKS$IVP.EXE
+
+                                                 (continued on next page)
+
+                                      Files Installed on Your System A-19
+
+ 
+
+
+
+
+
+
+
+    Table A-2 (Cont.) Installed Files for the DIGITAL GKS Run-Time-
+    __________________Only_Kit_______________________________________
+
+    Directory________File_Name_______________________Description_____
+
+    SYS$SYSROOT:[DECW$DEFAULTS.SYSTEM]_______________________________
+
+                     GKS_DECW.UID
+
+                     GKS_DECW_EN.UID
+
+                     GKS_DECW_JP.UID                 Japanese
+
+                     GKS_MOTIF.UID
+
+                     GKS_MOTIF.UID11
+
+                     GKS_MOTIF_EN.UID
+
+                     GKS_MOTIF_EN.UID11
+
+                     GKS_MOTIF_JP.UID                Japanese
+
+    _________________GKS_MOTIF_JP.UID12______________Japanese________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    A-20 Files Installed on Your System
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                                      Sample Installation
+
+
+              This appendix contains three sample installations of
+              DIGITAL GKS. These samples were run on a system where:
+
+              o  No previous version of DIGITAL GKS is installed.
+
+              o  No users are logged on.
+
+              o  DECnet has been shut down.
+
+        B.1 Development Kit Installation Without PEXlib
+
+              This section contains a sample installation of the DIGITAL
+              GKS development kit without the PEXlib option. Before the
+              installation, the destination for the output of the IVP is
+              defined as follows, where node is your node name:
+
+              $ DEFINE DECW$DISPLAY node::0.0<Return>
+
+              The sample installation follows.
+
+    $ @SYS$UPDATE:VMSINSTAL DECGKS065 DKA400:[DECGKS065.KIT] OPTIONS N <Return>
+
+           VAX/VMS Software Product Installation Procedure V5.5-2
+
+    It is 30-APR-1997 at 16:18.
+
+    Enter a question mark (?) at any time for help.
+
+    Enter the products to be processed from the first distribution volume set.
+
+    * Products: DECGKS065 <Return>
+    * Enter installation options you wish to use (none): <Return>
+
+    The following products will be processed:
+      DECGKS V6.5
+
+            Beginning installation of DECGKS V6.5 at 16:18
+
+    %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+      Release notes included with this kit are always copied to SYS$HELP.
+
+                                                  Sample Installation B-1
+
+ 
+
+
+
+
+
+
+
+       Additional Release Notes Options:
+
+        1. Display release notes
+        2. Print release notes
+        3. Both 1 and 2
+        4. None of the above
+
+     * Select option [2]: 4 <Return>
+     * Do you want to continue the installation [NO]?  Y <Return>
+     %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+    DIGITAL GKS
+    Copyright (C) Digital Equipment Corporation 1988-1997.  All rights reserved.
+
+    Restricted Rights: Use, duplication, or disclosure by the U.S. Government
+    is subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+    DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+    as applicable.
+
+    This software is proprietary to and embodies the confidential
+    technology of Digital Equipment Corporation.  Possession, use, or
+    copying of this software and media is authorized only pursuant to
+    a valid written license from DIGITAL or an authorized
+    sublicensor.
+
+    * Do you want to purge files replaced by this installation [YES]? <Return>
+
+           Product:      GKS
+           Producer:     DEC
+           Version:      6.5
+           Release Date: 30-APR-1997
+
+    * Does this product have an authorization key registered and loaded? Y <Return>
+
+    This kit contains a PEX device handler.  Installation of this device handler
+    is optional.  The following points should be considered before electing to
+    install the PEX device handler and its associated files.
+
+     1. The PEX device handler requires specialized graphics hardware,
+        for example, the VAXstation 3520, VAXStation 3540, or VAXstation 4000.
+        If GKS application programs are to be run in a client/server
+        environment you should elect to install the PEX device handler if any
+        of the nodes have the accelerated (specialized) graphics hardware.
+
+     2. If you choose to install the PEX device handler, the DECwindows server
+        must be restarted before you can run any DIGITAL GKS program which uses
+        the pex device handler.  To restart the DECwindows server, issue the
+        command:
+
+    B-2 Sample Installation
+
+ 
+
+
+
+
+
+
+
+         @SYS$STARTUP:DECW$STARTUP.COM RESTART
+
+      3. If you choose to install the PEX device handler, the DIGITAL GKS startup
+         file, GKSTARTUP.COM, will be modified to include the DIGITAL GKS PEX
+         workstation types and the necessary logical names will be defined.
+         If these logical names are not defined a DIGITAL GKS application program
+         will generate an error if an attempt is made to utilize the PEX
+         workstation types.
+
+      4. The PEX device handler and its associated files can be installed at a
+         later date by performing this installation procedure again.
+
+    * Do you wish to install the PEX device handler and its associated files [NO]? <Return>
+
+      This kit contains Japanese-related images and files.
+      They require Japanese OpenVMS.
+
+    * Do you wish to install Japanese-related images and files [NO]? <Return>
+
+      This kit contains an Installation Verification Procedure (IVP) to
+      verify the correct installation of the DIGITAL GKS product.  It can be run
+      prior to the conclusion of this procedure by answering "YES" to the IVP
+      prompt or invoked after the installation as follows :
+
+           RUN SYS$SYSROOT:[SYSTEST.GKS]GKS$IVP
+      or
+           RUN GKS$TEST:GKS$IVP
+
+    * Do you wish to perform the Installation Verification Procedure [YES]? <Return>
+
+    * Select the IVP workstation type; 1 for Motif and 2 for DECwindows [1]?  <Return>
+
+        Motif Version 1.2 is installed on your system.  This kit supplies two
+        Motif device handlers; one (the default) supports Motif V1.1, while
+        the other supports Motif V1.2.
+
+    * Select the Motif device handler (1 for Motif V1.1 or 2 for Motif V1.2) [1]: 2 <Return>
+
+        STARTING to perform all the installation work. No additional user
+        actions are necessary from this point. The remaining part of the
+        installation will take ( 5 - 30 minutes ) depending on your CPU.
+    %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+    %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+
+        The DIGITAL GKS base kit files have been processed successfully. The
+        installation procedure is continuing...
+
+                                                  Sample Installation B-3
+
+ 
+
+
+
+
+
+
+
+        The DIGITAL GKS Development Environment has been processed
+        successfully. The installation procedure is continuing...
+
+        DIGITAL GKS has built successfully. Continuing installation...
+
+        System Manager:
+
+        Upon completion of this installation, please be sure to edit the
+        system startup files as described in the DIGITAL GKS Installation Guide.
+
+    %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+        Beginning the DIGITAL GKS Installation Verification Procedure (IVP).
+        The IVP will take 1 to 5 minutes depending on your CPU.
+
+        Since you are running on a VAXstation the Installation Verification
+        Procedure will be run with DIGITAL GKS device type 231 (MOTIF).  Output
+        will be done to the node indicated by the logical name DECW$DISPLAY.
+
+        If the results of the Installation Verification Procedure (IVP) look
+        like the illustration provided with the DIGITAL GKS Installation Guide,
+        then installation has been successful.
+
+        The DIGITAL GKS V6.5 Installation Verification Procedure (IVP)
+        completed successfully.
+
+            Installation of DECGKS V6.5 completed at 16:27
+
+             VMSINSTAL procedure done at 16:27
+
+    B.2 Development Kit Installation with PEXlib
+
+          This section contains a sample installation of the DIGITAL
+          GKS development kit with the PEXlib option. Before the
+          installation, the destination for the output of the IVP is
+          defined as follows, where node is your node name:
+
+          $ DEFINE DECW$DISPLAY node::0.0 <Return>
+
+          The sample installation follows.
+
+    $ @SYS$UPDATE:VMSINSTAL DECGKS065 DKA400:[DECGKS065.KIT] OPTIONS N <Return>
+
+           VAX/VMS Software Product Installation Procedure V5.5-2
+
+    It is 30-APR-1997 at 16:18.
+
+    Enter a question mark (?) at any time for help.
+
+    Enter the products to be processed from the first distribution volume set.
+
+    B-4 Sample Installation
+
+ 
+
+
+
+
+
+
+
+        * Products: DECGKS065 <Return>
+        * Enter installation options you wish to use (none): <Return>
+
+        The following products will be processed:
+          DECGKS V6.5
+
+                Beginning installation of DECGKS V6.5 at 16:18
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+          Release notes included with this kit are always copied to SYS$HELP.
+
+          Additional Release Notes Options:
+
+           1. Display release notes
+           2. Print release notes
+           3. Both 1 and 2
+           4. None of the above
+
+        * Select option [2]: 4 <Return>
+        * Do you want to continue the installation [NO]?  Y <Return>
+     %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                  Sample Installation B-5
+
+ 
+
+
+
+
+
+
+
+      DIGITAL GKS
+      Copyright (C) Digital Equipment Corporation 1988-1997.  All rights reserved.
+
+      Restricted Rights: Use, duplication, or disclosure by the U.S. Government
+      is subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+      DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+      as applicable.
+
+      This software is proprietary to and embodies the confidential
+      technology of Digital Equipment Corporation.  Possession, use, or
+      copying of this software and media is authorized only pursuant to
+      a valid written license from DIGITAL or an authorized
+      sublicensor.
+
+  * Do you want to purge files replaced by this installation [YES]? <Return>
+
+          Product:      GKS
+          Producer:     DEC
+          Version:      6.5
+          Release Date: 30-APR-1997
+  * Does this product have an authorization key registered and loaded? Y <Return>
+
+    This kit contains a PEX device handler.  Installation of this device handler
+    is optional.  The following points should be considered before electing to
+    install the PEX device handler and its associated files.
+
+    1. The PEX device handler requires specialized graphics hardware,
+       for example, the VAXstation 3520, VAXStation 3540, or VAXstation 4000.
+       If GKS application programs are to be run in a client/server
+       environment, you should elect to install the PEX device handler if any
+       of the nodes have the accelerated (specialized) graphics hardware.
+
+    2. If you choose to install the PEX device handler, the DECwindows server
+       must be restarted before you can run any DIGITAL GKS program which uses
+       the pex device handler.  To restart the DECwindows server, issue the
+       command:
+
+       @SYS$STARTUP:DECW$STARTUP.COM RESTART
+
+    3. If you choose to install the PEX device handler, the DIGITAL GKS startup
+       file, GKSTARTUP.COM, will be modified to include the DIGITAL GKS PEX
+       workstation types and the necessary logical names will be defined.
+       If these logical names are not defined a DIGITAL GKS application program
+       will generate an error if an attempt is made to utilize the PEX
+       workstation types.
+
+    4. The PEX device handler and its associated files can be installed at a
+       later date by performing this installation procedure again.
+
+    B-6 Sample Installation
+
+ 
+
+
+
+
+
+
+
+  * Do you wish to install the PEX device handler and its associated files [NO]? Y <Return>
+
+      This kit contains a C language PEXlib library and its associated include
+      files.  Installation of these files is optional.  These files are only of
+      use to GKS application developers who desire to directly call the PEXlib
+      library functions.
+
+  * Do you wish to have PEXlib installed [YES]? <Return>
+
+      This kit contains a set of example programs (4000 blocks).  They can be
+      installed by answering "YES" to the EXAMPLE prompt.
+
+  * Do you wish to install the example programs [YES]? <Return>
+
+      This kit contains Japanese-related images and files.
+      They require Japanese OpenVMS.
+
+      Since SYS$LIBRARY:JSYSHR.EXE is not present, Japanese-related
+      components will not be installed at this time.
+
+      This kit contains an Installation Verification Procedure (IVP) to
+      verify the correct installation of the DIGITAL GKS product.  It can be run
+      prior to the conclusion of this procedure by answering "YES" to the IVP
+      prompt or invoked after the installation as follows:
+
+           RUN SYS$SYSROOT:[SYSTEST.GKS]GKS$IVP
+      or
+           RUN GKS$TEST:GKS$IVP
+
+    * Do you wish to perform the Installation Verification Procedure [YES]? <Return>
+
+    * Select the IVP workstation type; 1 for Motif and 2 for DECwindows [1]? 1 <Return>
+
+       Motif Version 1.2 is installed on your system.  This kit supplies two
+       Motif device handlers; one (the default) supports Motif V1.1, while
+       the other supports Motif V1.2.
+
+    * Select the Motif device handler (1 for Motif V1.1 or 2 for Motif V1.2) [1]: 2 <Return>
+
+       STARTING to perform all the installation work. No additional user
+       actions are necessary from this point. The remaining part of the
+       installation will take ( 5 - 30 minutes ) depending on your CPU.
+
+       %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+       %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+       %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+
+                                                  Sample Installation B-7
+
+ 
+
+
+
+
+
+
+     The DIGITAL GKS base kit files have been processed successfully. The
+     installation procedure is continuing...
+
+     The DIGITAL GKS Development Environment has been processed successfully.
+     The installation procedure is continuing...
+
+     The DIGITAL GKS Example Programs have been processed successfully.  The
+     installation procedure is continuing...
+
+     The DIGITAL GKS PEX files have been processed successfully.  The
+     installation procedure is continuing...
+
+     DIGITAL GKS has built successfully. Continuing installation...
+
+       System Manager:
+
+     Upon completion of this installation, please be sure to edit the
+     system startup files as described in the DIGITAL GKS Installation Guide.
+
+   %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+     Beginning the DIGITAL GKS Installation Verification Procedure (IVP).  The
+     IVP will take 1 to 5 minutes depending on your CPU.
+
+     Since you are running on a VAXstation the Installation Verification
+     Procedure will be run with DIGITAL GKS device type 231 (MOTIF).  Output
+     will be done to the node indicated by the logical name DECW$DISPLAY.
+
+     If the results of the Installation Verification Procedure (IVP) look
+     like the illustration provided with the DIGITAL GKS Installation Guide,
+     then installation has been successful.
+
+     The DIGITAL GKS V6.5 Installation Verification Procedure (IVP)
+     completed successfully.
+
+           Installation of DECGKS V6.5 completed at 16:27
+
+          VMSINSTAL procedure done at 16:27
+
+
+
+
+
+
+
+    B-8 Sample Installation
+
+ 
+
+
+
+
+
+
+
+        B.3 Run-Time-Only Kit Installation
+
+              This section contains a sample installation of the
+              DIGITAL GKS run-time-only kit. Before the installation,
+              the destination for the output of the IVP is defined as
+              follows, where node is your node name:
+
+              $ DEFINE DECW$DISPLAY node::0.0 <Return>
+
+              The sample installation follows.
+
+    $ @SYS$UPDATE:VMSINSTAL DECGKSRT065 DKA400:[DECGKSRT065.KIT] <Return>
+
+            VAX/VMS Software Product Installation Procedure V5.5-2
+
+     It is 30-APR-1997 at 16:12.
+
+    Enter a question mark (?) at any time for help.
+
+    %VMSINSTAL-W-ACTIVE, The following processes are still active:
+            GKS3D
+    * Do you want to continue anyway [NO]? Y <Return>
+    * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+     The following products will be processed:
+      DECGKSRT V6.5
+
+     Beginning installation of DECGKSRT V6.5 at 16:12
+
+    %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+    %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+     DIGITAL GKS
+     Copyright (C) Digital Equipment Corporation 1988-1997.  All rights reserved.
+
+     Restricted Rights: Use, duplication, or disclosure by the U.S. Government
+     is subject to restrictions as set forth in subparagraph (c) (1) (ii) of
+     DFARS 252.227-7013, or in FAR 52.227-19, or in FAR 52.227-14 Alt. III,
+     as applicable.
+
+     This software is proprietary to and embodies the confidential
+     technology of Digital Equipment Corporation.  Possession, use, or
+     copying of this software and media is authorized only pursuant to
+     a valid written license from DIGITAL or an authorized
+     sublicensor.
+
+     * Do you want to purge files replaced by this installation [YES]? <Return>
+
+                                                  Sample Installation B-9
+
+ 
+
+
+
+
+
+
+
+             Product:      GKS-RT
+             Producer:     DEC
+             Version:      6.5
+             Release Date: 30-APR-1997
+   * Does this product have an authorization key registered and loaded? Y <Return>
+
+     This kit contains a PEX device handler.  Installation of this device handler
+     is optional.  The following points should be considered before electing to
+     install the PEX device handler and its associated files.
+
+     1. The PEX device handler requires specialized graphics hardware,
+        for example, the VAXstation 3520, VAXStation 3540, or VAXstation 4000.
+        If GKS application programs are to be run in a client/server
+        environment, you should elect to install the PEX device handler if any
+        of the nodes have the accelerated (specialized) graphics hardware.
+
+     2. If you choose to install the PEX device handler, the DECwindows server
+        must be restarted before you can run any DIGITAL GKS program which uses
+        the pex device handler.  To restart the DECwindows server, issue the
+        command:
+
+        @SYS$STARTUP:DECW$STARTUP.COM RESTART
+
+     3. If you choose to install the PEX device handler, the DIGITAL GKS startup
+        file, GKSTARTUP.COM, will be modified to include the DIGITAL GKS PEX
+        workstation types and the necessary logical names will be defined.
+        If these logical names are not defined a DIGITAL GKS application program
+        will generate an error if an attempt is made to utilize the PEX
+        workstation types.
+
+     4. The PEX device handler and its associated files can be installed at a
+        later date by performing this installation procedure again.
+
+  * Do you wish to install the PEX device handler and its associated files [NO]? <Return>
+
+     This kit contains Japanese-related images and files.
+     They require Japanese OpenVMS.
+
+  * Do you wish to install Japanese related images and files [NO]? <Return>
+
+     This kit contains an Installation Verification Procedure (IVP) to
+     verify the correct installation of the DIGITAL GKS product.  It can be run
+     prior to the conclusion of this procedure by answering "YES" to the IVP
+     prompt or invoked after the installation as follows:
+
+          RUN SYS$SYSROOT:[SYSTEST.GKS]GKS$IVP
+     or
+          RUN GKS$TEST:GKS$IVP)
+
+    B-10 Sample Installation
+
+ 
+
+
+
+
+
+
+
+   * Do you wish to perform the Installation Verification Procedure [YES]? <Return>
+
+   * Select the IVP workstation type; 1 for Motif and 2 for DECwindows [1]?  <Return>
+
+     Motif Version 1.2 is installed on your system.  This kit supplies two
+     Motif device handlers; one (the default) supports Motif V1.1, while
+     the other supports Motif V1.2.
+
+   * Select the Motif device handler (1 for Motif V1.1 or 2 for Motif V1.2) [1]: 2 <Return>
+
+         STARTING to perform all the installation work. No additional user
+         actions are necessary from this point. The remaining part of the
+         installation will take ( 5 - 30 minutes ) depending on your CPU.
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+         The DIGITAL GKS base kit files have been processed successfully. The
+         installation procedure is continuing...
+
+         DIGITAL GKS has built successfully. Continuing installation...
+
+         System Manager:
+
+         Upon completion of this installation, please be sure to edit the
+         system startup files as described in the DIGITAL GKS Installation Guide.
+
+      %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+         Beginning the DIGITAL GKS Installation Verification Procedure (IVP).  The
+         IVP will take 1 to 5 minutes depending on your CPU.
+
+         Since you are running on a VAXstation the Installation Verification
+         Procedure will be run with DIGITAL GKS device type 231 (MOTIF).  Output
+         will be done to the node indicated by the logical name DECW$DISPLAY.
+
+         If the results of the Installation Verification Procedure (IVP) look
+         like the illustration provided with the DIGITAL GKS Installation Guide,
+         then installation has been successful.
+
+         The DIGITAL GKS RT V6.5 Installation Verification Procedure (IVP)
+         completed successfully.
+
+         Installation of DECGKSRT V6.5 completed at 16:17
+
+               VMSINSTAL procedure done at 16:17
+
+                                                 Sample Installation B-11

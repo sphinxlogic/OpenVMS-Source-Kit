@@ -1,0 +1,2765 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Disk File Optimizer
+                    for_OpenVMS_________________________________________
+                    Installation Guide
+
+                    Order Number: AA-QYZ2F-TE
+
+
+
+
+
+
+
+
+
+
+
+                    This installation guide provides installation
+                    information for the Disk File Optimizer for OpenVMS
+                    layered software product.
+
+
+
+
+
+
+
+                    Software Version:             Version V2.7
+
+                    Compaq Computer Corporation
+                    Houston, Texas
+
+ 
+
+
+
+
+
+
+              ________________________________________________________________
+              October 2002
+
+              © Compaq Information Technologies Group, LP 2002.
+
+              Compaq, the Compaq logo, OpenVMS, VAX and Tru64 are
+              trademarks of Compaq Information Technologies Group, L.P.
+              in the U.S. and/or other countries. UNIX is a trademark
+              of The Open Group in the U.S. and/or other countries. All
+              other product names mentioned herein may be trademarks of
+              their respective companies.
+
+              Confidential computer software. Valid license from Compaq
+              required for possession, use or copying. Consistent with
+              FAR 12.211 and 12.212, Commercial Computer Software,
+              Computer Software Documentation, and Technical Data for
+              Commercial Items are licensed to the U.S. government under
+              vendor's standard commercial license.
+
+              Compaq shall not be liable for technical or editorial
+              errors or omissions contained herein. The information
+              in this document is provided "as is" without warranty
+              of any kind and is subject to change without notice. The
+              warranties for Compaq products are set forth in the express
+              limited warranty statements accompanying such products.
+              Nothing herein should be construed as constituting an
+              additional warranty.
+
+              Compaq service tool software, including associated
+              documentation, is the property of and contains confidential
+              technology of Compaq Computer Corporation. Service customer
+              is hereby licensed to use the software only for activities
+              directly relating to the delivery of, and only during
+              the term of, the applicable services delivered by Compaq
+              or its authorized service provider. Customer may not
+              modify or reverse engineer, remove, or transfer the
+              software or make the software or any resultant diagnosis or
+              system management data available to other parties without
+              Compaq's or its authorized service provider's consent. Upon
+              termination of the services, customer will, at Compaq's
+              or its service provider's option, destroy or return the
+              software and associated documentation in its possession.
+
+              Printed in the U.S.A.
+
+              This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                              Contents
+
+
+
+     Preface...................................................      v
+
+     1  Installing Disk File Optimizer Software
+
+           1.1   Introduction..................................    1-1
+           1.2   Preparing to Install the Disk File Optimizer
+                 Software......................................    1-1
+           1.2.1     Upgrading From Disk File Optimizer V1.0...    1-3
+           1.2.2     Installation Variants.....................    1-3
+           1.2.3     Hardware and Software Requirements........    1-5
+           1.2.4     Minimum System Parameter Values...........    1-6
+           1.2.5     Process Account Quotas....................    1-7
+           1.2.6     VMScluster System Considerations..........    1-8
+           1.2.7     Definition of SCSNODE or SYS$NODE
+                     Considerations............................    1-9
+           1.2.8     Stop the Scheduler on Defrag Plus
+                     Installations ............................   1-10
+           1.2.9     Execute SYS$SYSTEM:SETFILENOMOVE.COM......   1-10
+           1.2.10    Registering the Disk File Optimizer
+                     Software License..........................   1-11
+           1.2.10.1    License and Kit Names...................   1-11
+           1.2.10.2    Registering Your Disk File Optimizer
+                       License.................................   1-11
+           1.3   Installing the Disk File Optimizer Software...   1-14
+           1.3.1     Before You Begin-Questions and Answers....   1-14
+           1.3.2     Installation Procedure....................   1-15
+           1.3.3     Error Recovery............................   1-24
+           1.4   After Installing the Disk File Optimizer......   1-25
+           1.4.1     Running the IVP Separately................   1-25
+           1.4.2     Editing the Systemwide Command Files......   1-26
+           1.4.3     Making the Disk File Optimizer Work on a
+                     VMScluster System.........................   1-26
+
+
+                                                                   iii
+
+ 
+
+
+
+
+
+
+
+              1.4.4     Deleting Old Copies of the RMS Database
+                        Files.....................................   1-26
+              1.4.5     Loading The New Database After Upgrading
+                        from Disk File Optimizer V1.0.............   1-27
+              1.4.6     Verifying Account Requirements............   1-27
+              1.4.7     Reporting Problems........................   1-27
+
+        A  Disk File Optimizer Logicals and Files
+
+              A.1   Files Added to System by the Disk File
+                    Optimizer ....................................    A-1
+              A.2   Logical Names.................................    A-3
+
+        B  Example Disk File Optimizer Installation
+
+              B.1   Example Installation..........................    B-1
+
+        Index
+
+
+        Examples
+
+              B-1       Example Installation for Defrag PLUS......    B-2
+
+        Tables
+
+              1-1       Differences Between Installation
+                        Variants..................................    1-4
+
+              1-2       Disk Space Requirements...................    1-5
+
+              1-3       Minimum System Parameter Values...........    1-6
+
+              1-4       Process Account Quotas for the Installing
+                        Account...................................    1-7
+
+              1-5       How to Register Your Disk File Optimizer
+                        License...................................   1-12
+
+              1-6       How to Install the Disk File Optimizer
+                        Software..................................   1-15
+
+              A-1       Logical Names.............................    A-3
+
+
+        iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+
+
+        Purpose of This Guide
+
+              The installation guide contains the installation procedure
+              for installing the Disk File Optimizer for OpenVMS.
+
+        Intended Audience
+
+              The intended audience is the system administrators who
+              install the Disk File Optimizer software.
+
+        Related Documents
+
+              o  OpenVMS License Management Utility Manual
+
+              o  OpenVMS Performance Management
+
+              o  OpenVMS DCL Dictionary
+
+              o  OpenVMS System Manager's Manual
+
+              o  OpenVMS System Management Utilities Reference Manual
+
+              o  Guide to OpenVMS File Applications
+
+              o  OpenVMS Record Management Utilities Reference Manual
+
+              o  VAX Performance Advisor (VPA) Documentation Kit
+
+              Order numbers for these documents can be obtained from your
+              Compaq Sales Representative.
+
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+        Conventions
+
+              The following conventions are used in this manual:
+
+              ___________________________________________________________
+              Convention_______Meaning___________________________________
+
+              {parameter}      In command formats, braces indicate
+                               required parameters. Do not enter the
+                               braces when you enter the parameter in a
+                               command.
+
+              [parameter]      In command formats, square brackets
+                               indicate optional parameters. Do not enter
+                               the brackets when you enter the optional
+                               parameters.
+
+              [ ]              In interactive procedures, square brackets
+                               denote default responses.
+
+              italic text      In examples and messages, italic text
+                               represents input that is unique for each
+                               system.
+
+              boldface text    Boldface text is used for emphasis.
+
+              Ctrl/x           Control key sequence indicates that
+                               you hold down the Ctrl key while
+                               you press another character key
+                               (for example, Ctrl/W or Ctrl/C).
+
+              .                In examples, a vertical ellipsis
+              .                represents the omission of data that the
+              .                system displays in response to a command
+                               or data that a user enters.
+
+              file-            In command formats, a horizontal ellipsis
+              spec[, . . . ]   indicates that the preceding items can be
+              _________________repeated_one_or_more_times._______________
+
+        References to Compaq Products
+
+              The following Compaq products are mentioned in this manual:
+
+              ___________________________________________________________
+              Product__________Formal_Product_Name_______________________
+
+              Disk File        Disk File Optimizer refers to the Disk
+              Optimizer        File Optimizer for OpenVMS software.
+
+        vi
+
+ 
+
+
+
+
+
+
+              ___________________________________________________________
+              Product__________Formal_Product_Name_______________________
+
+              Defrag           Defrag refers to a variation of the Disk
+                               File Optimizer software that provides
+                               basic file and volume defragmentation
+                               capabilities.
+
+              Defrag PLUS      Defrag PLUS refers to the variation of
+                               the Disk File Optimizer software that
+                               supports all of the features of Defrag,
+                               plus scheduling and command storing
+                               capabilities.
+
+              VPA              VPA refers to the VAX Performance Advisor
+                               software.
+
+              DECps            DECps refers to the DEC Performance
+                               Solution software.
+
+              OpenVMS          OpenVMS refers to the OpenVMS VAX and
+              _________________OpenVMS_Alpha_operating_systems.__________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                  Installing Disk File Optimizer Software
+
+
+        1.1 Introduction
+
+              This chapter describes how to install the Disk File
+              Optimizer software. It includes the following sections:
+
+              o  Preinstallation activities
+
+              o  Installation procedure
+
+              o  Postinstallation activities
+
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+                ___________________ Recommendation ___________________
+
+                Performing a backup of your system disk prior
+                to installing Disk File Optimizer software is
+                recommended. Refer to the BACKUP Utility in OpenVMS
+                System Management Utilities Reference Manual for more
+                details.
+
+                ______________________________________________________
+
+              The following process describes preparations needed to
+              install the Disk File Optimizer software.
+
+              ___________________________________________________________
+              Stage_Action_______________________________Section_________
+
+              1     Save scheduling database contents    Section 1.2.1
+                    if up grading from V1.0
+
+              ___________________________________________________________
+              2     Meet hardware and software           Section 1.2.3
+                    requirements
+
+              ___________________________________________________________
+
+                              Installing Disk File Optimizer Software 1-1
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+              ___________________________________________________________
+              Stage_Action_______________________________Section_________
+
+              3     Verify system parameters and         Section 1.2.4,
+                    required quotas                      Section 1.2.5
+
+              ___________________________________________________________
+              4     Evaluate VMScluster system           Section 1.2.6
+                    considerations
+
+              ___________________________________________________________
+              5     SCSNODE or SYS$NODE considerations   Section 1.2.7
+
+              ___________________________________________________________
+              6     Stop DFO Scheduler on all nodes      Section 1.2.8
+
+              ___________________________________________________________
+              7     Execute the                          Section 1.2.9
+                    SYS$SYSTEM:SETFILENOMOVE.COM
+                    procedure against all OpenVMS
+                    operating system disks on your
+                    cluster
+
+              ___________________________________________________________
+              8     Register the Disk File Optimizer     Section 1.2.10
+              ______license______________________________________________
+
+              Your bill of materials and indented bills report specify
+              the contents of your media. Be sure to verify the
+              contents of your kit with this information. If your kit
+              is damaged or if parts are missing, contact your Compaq
+              representative.
+
+              The installation procedure for the Disk File Optimizer
+              provides online release notes. Compaq strongly recommends
+              that you read the release notes before proceeding with
+              the installation. For information on accessing the online
+              release notes, see Table 1-6.
+
+              The Disk File Optimizer software installation procedure
+              converts existing scheduling database files to the new
+              version. If you have Disk File Optimizer V1.1 to V2.0,
+              the installation will convert your Rdb database to an RMS
+              database. If you are installing Disk File Optimizer Version
+              1.0, see Section 1.2.1 before installing.
+
+        1-2 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                1.2 Preparing to Install the Disk File Optimizer Software
+
+
+        1.2.1 Upgrading From Disk File Optimizer V1.0
+
+              If you are upgrading from Disk File Optimizer V1.0 and want
+              to save the data in your database, you must save the data
+              in a command procedure. Perform the following command to
+              save in a command procedure:
+
+              $ DEFRAGMENT SHOW */COMMAND/OUT=LOAD_DB.COM
+
+              This command saves the data from your Rdb database and
+              allows you restore it after installation of Disk File
+              Optimizer.
+
+        1.2.2 Installation Variants
+
+              The Disk File Optimizer kit allows for two installation
+              variants:
+
+              o  Defrag, which provides capabilities to defragment files
+                 and volumes
+
+              o  Defrag PLUS, which provides all the capabilities of
+                 Defrag plus scheduling and command storage options
+
+              Table 1-1 identifies the major differences between Defrag
+              and Defrag PLUS.
+
+              Defrag is recommended on any system where the additional
+              features are not desired or where disk space is very
+              limited.
+
+              Defrag PLUS is recommended on VMScluster systems and on any
+              single-node system where the additional features of Defrag
+              PLUS are desired.
+
+
+
+
+
+
+
+
+
+
+
+                              Installing Disk File Optimizer Software 1-3
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+
+        Table_1-1_Differences_Between_Installation_Variants______________
+
+        Difference_______Defrag_PLUS___________Defrag____________________
+
+        Additional       Optional:             Optional:
+        Software         o  VAX Performance    o  VAX Performance Advisor
+
+                            Advisor (VPA)         (VPA) Version 2.1 or
+                            Version 2.1 or        later
+                            later                 or
+                            or                    DEC Performance
+                            DEC Performance       Solution (DECps)
+                            Solution (DECps)      Version 1.0 or later
+                            Version 1.0 or
+                            later
+
+        Available
+        Subcommands      o  ABORT              o  ABORT
+
+                         o  ATTACH             o  ATTACH
+
+                         o  CANCEL             o  EXIT
+
+                         o  DISABLE            o  DEFRAGMENT FILE
+
+                         o  ENABLE             o  HELP
+
+                         o  EXIT               o  MONITOR
+
+                         o  DEFRAGMENT FILE    o  DEFRAGMENT OFFLINE
+
+                         o  HELP               o  SHOW
+
+                         o  MODIFY             o  SPAWN
+
+                         o  MONITOR            o  DEFRAGMENT VOLUME
+
+                         o  DEFRAGMENT
+                            OFFLINE
+
+                         o  REMOVE
+
+                         o  SET
+
+                         o  SHOW
+
+                         o  SPAWN
+
+                         o  START
+
+                         o  DEFRAGMENT VOLUME
+
+        1-4iInstalling DiskqFiledOptimizer Software
+
+                         o  DFG$DATABASE
+
+                         o  DFG$MAIL_ADDRESS
+
+                         Optional (for
+                         callable interface):
+
+                         o  DFG$MESSAGE
+
+        _________________________________________________________________
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                1.2 Preparing to Install the Disk File Optimizer Software
+
+
+        1.2.3 Hardware and Software Requirements
+
+              The Disk File Optimizer free disk storage space
+              requirements are different during installation and
+              after installation. Table 1-2 summarizes the storage
+              requirements.
+
+              Table_1-2_Disk_Space_Requirements__________________________
+
+                              Blocks Required
+                              During              Blocks Required
+              Variant_________Installation________After_Installation_____
+
+              Defrag PLUS     26700               23700
+              /VAX
+
+              Defrag PLUS     31700               27800
+              /Alpha
+
+              Defrag/VAX      23900               22800
+
+              Defrag/Alpha____25500_______________23900__________________
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL prompt:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+              The minimum version of software necessary to run Disk
+              File Optimizer is OpenVMS VAX V6.2 or OpenVMS Alpha V6.2.
+              Besides Disk File Optimizer is supported on OpenVMS VAX
+              7.1, 7.2, and 7.3 and OpenVMS Alpha 7.1-2, 7.2-1, 7.3 and
+              7.3-1.
+
+              To install the software, you must be logged in to an
+              account that has SETPRV privileges.
+
+                ________________________ Note ________________________
+
+                VMSINSTAL turns off BYPASS privilege at the start of
+                the installation.
+
+                ______________________________________________________
+
+
+                              Installing Disk File Optimizer Software 1-5
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+
+        1.2.4 Minimum System Parameter Values
+
+              This section lists those system parameters whose default
+              values may be insufficient for proper operation of the
+              defragmentation software. Table 1-3 lists these parameters,
+              recommended minimum settings, and whether the parameters
+              apply to Defrag or Defrag PLUS.
+
+        Table_1-3_Minimum_System_Parameter_Values________________________
+
+        System        Minimum     Installation
+        Parameter_____Value_______Variant_Explanation____________________
+
+        GBLPAGES      2078        PLUS    Use the f$getsyi("free_
+                      (avail-             gblpages") lexical function to
+                      able)               obtain the number of available
+                                          global pages.
+
+        _________________________________________________________________
+
+        GBLSECTIONS   80 (avail-  PLUS    Use the f$getsyi("gblsections")
+                      able)               lexical function to obtain
+                                          the number of available global
+                                          sections.
+
+        _________________________________________________________________
+
+        RESHASHTBL    512         PLUS    Use SYSGEN to find this value.
+        ______________entries____________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        1-6 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                1.2 Preparing to Install the Disk File Optimizer Software
+
+
+        1.2.5 Process Account Quotas
+
+              The account you use to install the Disk File Optimizer
+              software must have sufficient quotas to enable you to
+              perform the installation. Table 1-4 summarizes the process
+              quotas required for the installing account, regardless of
+              which installation variant you install.
+
+              Table_1-4_Process_Account_Quotas_for_the_Installing_Account
+
+              Account_Quota____Value_____________________________________
+
+              ASTLM            24
+
+              BIOLM            18
+
+              BYTLM            20,480
+
+              DIOLM            18
+
+              ENQLM            2048
+
+              FILLM            50
+
+              PRCLM            10
+
+              PGFLQUO__________20,000____________________________________
+
+              User account quotas are stored in the SYSUAF.DAT file.
+              Use the VMS Authorize utility (AUTHORIZE) to verify and
+              change user account quotas. First set your directory to
+              SYS$SYSTEM, and then run AUTHORIZE:
+
+              $  SET DEFAULT SYS$SYSTEM
+              $  RUN AUTHORIZE
+              UAF>
+
+              At the UAF> prompt, enter the SHOW command with an account
+              name to check a particular account, for example:
+
+              UAF>  SHOW SMITH
+
+              To change a quota, enter the MODIFY command. The following
+              example changes the FILLM quota for the SMITH account, and
+              then exits from the utility:
+
+              UAF>   MODIFY SMITH /FILLM=50
+              UAF>   EXIT
+
+                              Installing Disk File Optimizer Software 1-7
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+
+              After you exit from the utility, the system displays
+              messages indicating whether or not changes were made. Once
+              the changes have been made, you must log out and log in for
+              the new quotas to take effect.
+
+              For more information on modifying account quotas, see the
+              description of the Authorize utility in the OpenVMS System
+              Management Utilities Reference Manual.
+
+        1.2.6 VMScluster System Considerations
+
+              Use the following list of guidelines when installing the
+              Disk File Optimizer on a VMScluster system:
+
+              o  For Defrag PLUS, the scheduling database should be
+                 accessible from all nodes in the cluster.
+
+                 Make sure to place the scheduling database on a cluster-
+                 accessible disk. Defragmentation can occur only from
+                 nodes that can access the database.
+
+              o  For Defrag PLUS, defragmentation can occur only on those
+                 nodes running a scheduler process.
+
+                 The scheduler creates defragmentation processes and
+                 runs them as detached processes. Because of this,
+                 defragmentation can occur only from nodes that have a
+                 running scheduler.
+
+              o  After installation, install the latest version of
+                 DCLTABLES.EXE on all nodes of your system.
+
+                 To make the Disk File Optimizer available on all nodes
+                 of the cluster, you should ensure that all nodes have
+                 the latest version of DCLTABLES.EXE installed. Use
+                 SYSMAN or log in to each node in the cluster and enter
+                 the following command:
+
+                 $ INSTALL REPLACE SYS$COMMON:[SYSLIB]DCLTABLES.EXE
+
+              o  Be sure to install Disk File Optimizer on both the VAX
+                 and Alpha system in your VMScluster if it is a mix of
+                 VAX and Alpha systems.
+
+              o  During installation of DFO on a cluster with multiple
+                 system disks, you must shut down the scheduler before
+                 starting the installation on the next node. Use the
+                 following command:
+
+                 $ @SYS$MANAGER:DFG$STOP_SCHEDULER
+
+        1-8 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                1.2 Preparing to Install the Disk File Optimizer Software
+
+
+                 During the Installation Verification Procedure (IVP) the
+                 scheduler is started on the node that the installation
+                 was just completed on. After completion of installation
+                 on all nodes, restart the scheduler on all licensed
+                 nodes in the cluster. Use the following command:
+
+                 $ @SYS$STARTUP:DFG$STARTUP
+
+        1.2.7 Definition of SCSNODE or SYS$NODE Considerations
+
+              Defrag PLUS requires either SCSNODE (SYSGEN parameter)
+              or SYS$NODE (DECnet logical) be defined on the node that
+              Disk File Optimizer is installed on. If both SCSNODE and
+              SYS$NODE are NOT defined, the Disk File Optimizer scheduler
+              will not start.
+
+              If the node is part of a cluster then SCSNODE has to be
+              defined in SYSGEN. You can check if SCSNODE is defined by
+              using the following command:
+
+              $ WRITE SYS$OUTPUT F$GETSYI("NODENAME")
+              SPIELN
+              $
+
+              In this example, SPIELN is the SCSNODE name. If the SYSGEN
+              parameter SCSNODE is not defined then no node name is
+              returned.
+
+              Another way of checking SCSNODE is to go into SYSGEN and
+              execute the following command:
+
+              $ MCR SYSGEN
+              SYSGEN>  SHOW SCSNODE
+              Parameter Name   Current    Default    Min.     Max.    Unit  Dynamic
+              --------------   -------    -------   -------  -------  ----  -------
+              SCSNODE          "SPIELN  " "    "    "    "   "ZZZZ"   Ascii
+              SYSGEN> EXIT
+              $
+
+              In this example, SPIELN is the SCSNODE name.
+
+
+
+
+
+                              Installing Disk File Optimizer Software 1-9
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+
+              If the node is a standalone node, it does not require that
+              SCSNODE be defined. However, if you wish to, you can define
+              it in SYS$SYSTEM:MODPARAMS.DAT as follows and then do an
+              AUTOGEN:
+
+              SCSNODE="SPIELN"
+              SCSSYSTEMID=9112
+
+              If the node is running DECnet, it will have a logical
+              SYS$NODE defined. You can check to see if the logical
+              SYS$NODE is defined using the following command:
+
+              $ SHOW LOG SYS$NODE
+                 "SYS$NODE" = "SPIELN::" (LNM$SYSTEM_TABLE)
+              $
+
+              In this example, SPIELN is the SYS$NODE name.
+
+        1.2.8 Stop the Scheduler on Defrag Plus Installations
+
+              If you are running a previous version of the Disk File
+              Optimizer, then shut down the Scheduler software on all
+              nodes before installing the new version of Defrag or Defrag
+              PLUS software.
+
+              Use SYSMAN to shut down the Scheduler software or execute
+              the following command on all nodes:
+
+              $ @SYS$MANAGER:DFG$STOP_SCHEDULER.COM
+
+        1.2.9 Execute SYS$SYSTEM:SETFILENOMOVE.COM
+
+              Before you run the Disk File Optimizer, execute
+              SYS$SYSTEM:SETFILENOMOVE.COM against all OpenVMS operating
+              system disks on your cluster. SETFILENOMOVE.COM identifies
+              all system files that must not be moved because they are
+              accessed without the file system. When you run this command
+              file, it sets the NOMOVE bit in the file header for the
+              identified files. If you do not run this command procedure,
+              system files could be moved that would be "lost" to the
+              accessing processes.
+
+              This procedure marks certain critical system files with the
+              NOMOVE attribute. This anchors these files to the disk; any
+              attempt to relocate them using the XQP MOVEFILE function
+              fails.
+
+        1-10 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                1.2 Preparing to Install the Disk File Optimizer Software
+
+
+              While attempting to execute SETFILENOMOVE.COM, you may
+              receive several errors similar to the following:
+
+              %SET-E-READERR, error reading <file name>
+              -SYSTEM-W-ACCONFLICT, file access conflict
+
+              To set the NOMOVE attribute on these files you must boot
+              from another system, such as the distribution CD, and then
+              execute SETFILEMOVE.COM against the disk. However, these
+              files may already have the NOMOVE attribute set. Use the
+              DIRECTORY/FULL command to determine if the NOMOVE attribute
+              was already set.
+
+              If the NOMOVE attribute is not set and you cannot boot from
+              another system disk, you should be all right because the
+              file is open when the system is booted. Disk File Optimizer
+              does not defragment or move open files.
+
+              To use this SETFILENOMOVE.COM procedure, you must specify
+              the file name as P1 on the command line. For example:
+
+              $ @SYS$SYSTEM:SETFILENOMOVE $1$DKB100:
+
+        1.2.10 Registering the Disk File Optimizer Software License
+
+              When you are installing Disk File Optimizer software for
+              the first time, you must register the Disk File Optimizer
+              software license.
+
+              The following sections describe:
+
+              o  License and kit names
+
+              o  How to register the software license
+
+        1.2.10.1 License and Kit Names
+
+              The license and kit name for the Disk File Optimizer
+              software is the same for Defrag and Defrag PLUS. The
+              license name is DFG or PFO and the kit names is: DFG027.
+
+        1.2.10.2 Registering Your Disk File Optimizer License
+
+              Follow the steps in Table 1-5 to register your new Disk
+              File Optimizer license.
+
+              Where_to_find_registration_information:
+
+                             Installing Disk File Optimizer Software 1-11
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+
+              The license registration information is contained in the
+              Product Authorization Key (PAK). The PAK is a certificate
+              shipped with the Disk File Optimizer package.
+
+              Table_1-5_How_to_Register_Your_Disk_File_Optimizer_License_
+
+              Step_Action_____________________Enter_the_command:_________
+
+              1    Enter the LICENSE
+                   REGISTER command with      $ LICENSE REGISTER DFG -
+                   the product name and a
+                   dash.
+
+                   Important:
+
+                   Enter a dash at the end
+                   of each command in Steps
+                   1 through 9.
+
+              ___________________________________________________________
+              2    Enter the /ISSUER
+                   qualifier information,     _$ /ISSUER=DEC -
+                   assigning the value from
+                   the ISSUER entry of the
+                   PAK.
+
+              ___________________________________________________________
+              3    Enter the /AUTHORIZATION
+                   qualifier information,     _$ /AUTHORIZATION=xxxxxxx -
+                   assigning it the value
+                   from the AUTHORIZATION
+                   NUMBER entry of the PAK.
+
+              ___________________________________________________________
+              4    Enter the /PRODUCER
+                   qualifier information,     _$ /PRODUCER=DEC -
+                   assigning the value from
+                   the PRODUCER entry of the
+                   PAK.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+
+        1-12 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                1.2 Preparing to Install the Disk File Optimizer Software
+
+
+              Table 1-5 (Cont.) How to Register Your Disk File Optimizer
+              __________________License__________________________________
+
+              Step_Action_____________________Enter_the_command:_________
+
+              5    Enter the /UNITS
+                   qualifier information,     _$ /UNITS=nn -
+                   assigning the value from
+                   the NUMBER OF UNITS entry
+                   of the PAK.
+
+              ___________________________________________________________
+              6    Enter the /RELEASE_DATE
+                   qualifiers information,    _$ /RELEASE_DATE=dd-mmm-
+                   assigning the product's    yyyy -
+                   release date value from
+                   the PRODUCT RELEASE DATE
+                   entry of the PAK.
+
+              ___________________________________________________________
+              7    Enter the /TERMINATION_
+                   DATE qualifiers            _$ /TERMINATION_DATE=dd-
+                   information, assigning     mmm-yyyy -
+                   the product's termination
+                   date value from the KEY
+                   TERMINATION DATE entry of
+                   the PAK.
+
+              ___________________________________________________________
+              8    Enter the /AVAILABILITY
+                   qualifier information,     _$ /AVAILABILITY=x -
+                   assigning the value from
+                   the AVAILABILITY TABLE
+                   CODE entry of the PAK.
+
+              ___________________________________________________________
+              9    Enter the /OPTIONS
+                   qualifier information,     _$ /OPTIONS=xxxxxx -
+                   assigning the value from
+                   the KEY OPTIONS entry of
+                   the PAK.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+                             Installing Disk File Optimizer Software 1-13
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.2 Preparing to Install the Disk File Optimizer Software
+
+
+              Table 1-5 (Cont.) How to Register Your Disk File Optimizer
+              __________________License__________________________________
+
+              Step_Action_____________________Enter_the_command:_________
+
+              10   Enter the /CHECKSUM
+                   qualifier information,     _$ /CHECKSUM=x-xxxx-xxxx-
+                   assigning the value from   xxxx-xxxx
+                   the CHECKSUM entry of the
+                   PAK.
+
+                   Important:
+
+                   Do NOT end this entry
+                   with a dash.
+
+              ___________________________________________________________
+              10   Invoke the LICENSE LOAD
+                   command with the product   $ LICENSE LOAD DFG
+              _____name._________________________________________________
+
+        1.3 Installing the Disk File Optimizer Software
+
+        1.3.1 Before You Begin-Questions and Answers
+
+              Before beginning the installation procedure, you may want
+              to read the following questions and answers:
+
+              Q: Is there anything special I should do before I install
+                 Disk File Optimizer for the first time?
+              A: Yes. Make sure you have run SETFILENOMOVE.COM on
+                 your OpenVMS operating system disks as described in
+                 Section 1.2.9.
+
+              Q: How long does the installation procedure take?
+              A: The installation procedure takes from 15 to 45 minutes,
+                 depending on your media type, system configuration,
+                 software variant, and whether or not you execute the
+                 IVP.
+
+              Q: How can I get help?
+              A: VMSINSTAL provides additional information about the
+                 decisions required to respond to the installation
+                 prompts. To get help at any installation press < ? >
+                 <Return>
+        .
+
+        1-14 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                          1.3 Installing the Disk File Optimizer Software
+
+
+
+
+              Q: Where can I find an example of the installation
+                 procedure?
+              A: Appendix B contains an example of an installation
+                 procedure for the Disk File Optimizer software.
+
+              Q: How can I abort the installation procedure?
+              A: Enter <Ctrl/Y>
+        .
+
+              Q: Do I need to do anything special to upgrade from the
+                 existing Disk File Optimizer software?
+              A: No, unless you are upgrading from Disk File Optimizer
+                 Version 1.0. Refer to Section 1.2.1.
+
+        1.3.2 Installation Procedure
+
+              The Disk File Optimizer installation procedure consists
+              of a series of questions and informational messages. See
+              Appendix B for a sample installation. Follow the steps in
+              Table 1-6 to install Disk File Optimizer software.
+
+              Table_1-6_How_to_Install_the_Disk_File_Optimizer_Software__
+
+              Step_Action________________________________________________
+
+              1    Load and mount the media that contains the software
+                   kit.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+
+                             Installing Disk File Optimizer Software 1-15
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              2    Invoke the VMSINSTAL procedure. By entering the
+                   following command:
+
+                   @SYS$UPDATE:VMSINSTAL saveset-name device-
+                   name OPTIONS N
+
+                   Where:
+
+                   saveset-name is the installation name for the
+                   component. For the Disk File Optimizer, use the
+                   following: DFG027
+
+                   device-name is the name of the device on which you
+                   plan to mount the media, for example, MUA0:. It
+                   is not necessary to use the console drive for this
+                   installation. However, if you use the console drive,
+                   replace any media you remove when the installation is
+                   complete.
+
+                   OPTIONS N indicates you want to see the release
+                   notes. If you do not include this parameter, VMSINSTAL
+                   does not ask you about the release notes. Review the
+                   release notes before proceeding with the installation
+                   as they could contain additional installation
+                   information.
+
+              ___________________________________________________________
+              3    If you see the following message:
+
+                   %VMSINSTAL-W-
+                   ACTIVE, The following processes are still active
+                   * Do you want to continue anyway [NO]?
+
+                   Enter Y and press Return, else go to Step 4.
+
+              ___________________________________________________________
+              4    Confirm the state of the system backup.
+
+                   * Are you satisfied with the backup of your system disk [Yes]?
+
+                   Press Return.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+        1-16 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                          1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              5    Respond to the Release Notes option.
+
+                   Release notes included with this kit are always copied to SYS$HELP.
+
+                   Additional Release Notes Options:
+
+                       1.  Display release notes
+                       2.  Print release notes
+                       3.  Both 1 and 2
+                       4.  None of the above
+
+                   * Select option [2]:
+
+                   Enter the number of the desired option and press
+                   Return.
+
+              ___________________________________________________________
+              6    Continue the installation.
+
+                   * Do you want to continue the installation [NO]?
+
+                   Enter Y and press Return.
+
+              ___________________________________________________________
+              7    Purge old Disk File Optimizer software files if you
+                   want to recover storage space on your disk.
+
+                   * Do you want to purge files replaced by this installation [YES]?
+
+                   Press Return to purge old files, else enter N and
+                   press Return.
+
+              ___________________________________________________________
+              8    Confirm the PAK registration.
+
+                   * Does this product have an authorization key registered and loaded?
+
+                   Enter Y and press Return.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+                             Installing Disk File Optimizer Software 1-17
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              9    Select to run the Installation Verification Procedure
+                   (IVP).
+
+                   * Do you want to run the IVP after the installation [YES]?
+
+                   Recommendation:
+
+                   Running the IVP procedure is recommended.
+
+                   Press Return to run the IVP, else enter N and press
+                   Return.
+
+              ___________________________________________________________
+              10   Confirm OpenVMS operating system disk files are set to
+                   not be moved.
+
+                   * Has SETFILENOMOVE.COM been executed against all system disks [NO]?
+
+                   If you have run SETFILENOMOVE.COM against all your
+                   OpenVMS operating system disks, enter Y and press
+                   Return. Otherwise, the installation procedure exits at
+                   this point.
+
+                   If you do not run SETFILENOMOVE.COM against all
+                   OpenVMS operating system disks before you install
+                   the Disk File Optimizer software, files on your system
+                   disks could be moved. This would cause access problems
+                   for utilities that access files directly rather than
+                   through the file system. Refer to Section 1.2.9 for
+                   more information.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+
+
+
+
+
+        1-18 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                          1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              11   Select an installation variant.
+
+                   * Do you want to install Defrag or Defrag PLUS [PLUS]?
+
+                   To install the Defrag PLUS software, enter PLUS (or
+                   press Return).
+                   To install the Defrag software, enter Defrag.
+                   See Table 1-1 for more information.
+
+                           ___________________ Note ___________________
+
+                           If you select Defrag, Steps 13 through 17
+                           do not occur.
+
+                           ___________________________________________
+
+              ___________________________________________________________
+              12   Choose to install the DECwindows interface.
+
+                   * Do you want to install the Defrag DECwindows interface [YES]?
+
+                   If you want to install the DECwindows interface, press
+                   Return.
+                   If you do not want to install the DECwindows
+                   interface, enter No and press Return.
+
+              ___________________________________________________________
+              13   Choose whether or not to install the callable
+                   interface.
+
+                   * Do you wish to install the DFO callable interface [NO]?
+
+                   If you need to install the callable interface, enter
+                   Y and press Return. The installation procedure will
+                   install the appropriate files.
+                   Otherwise, press Return and the installation procedure
+                   continues to the next step.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+                             Installing Disk File Optimizer Software 1-19
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              14   Choose the location of the scheduling database.
+
+                   * Device and directory to contain the scheduling database files
+
+                   [SYS$COMMON:[DFG$DATABASE]]:
+
+                       You have chosen the following as a location for the
+
+                       defragmentation scheduling and parameter database:
+
+                   SYS$COMMON:[DFG$DATABASE]
+
+                   * Is this device and directory correct [YES]?
+
+                   If you want to use the default directory, press
+                   Return. Otherwise, enter the directory name and press
+                   Return.
+
+              ___________________________________________________________
+              15   Decide about using existing database if present.
+
+                       The following scheduling/parameter database already exists:
+
+                   DISK$USER1:[DFG$DATABASE]DFG$DB.DAT;
+                   DISK$USER1:[DFG$DATABASE]DFG$FILE.DAT;
+                   DISK$USER1:[DFG$DATABASE]DFG$GENERAL.DAT;
+                   DISK$USER1:[DFG$DATABASE]DFG$NODE.DAT;
+                   DISK$USER1:[DFG$DATABASE]DFG$QUEUE.DAT;
+                   DISK$USER1:[DFG$DATABASE]DFG$SCRIPT.DAT;
+                   DISK$USER1:[DFG$DATABASE]DFG$VOLUME.DAT;
+
+                   * Do you wish to use it [YES]?
+
+                   This message appears only if a database already exists
+                   in the chosen database directory. Press return to use
+                   the existing database.
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+        1-20 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                          1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              16   Choose the name of the mail distribution file.
+
+                   * Mail distribution file name [SYS$COMMON:[DFG$DATABASE]DFG$MAIL.DIS]:
+
+                   The mail distribution file for notification messages is
+
+                           SYS$COMMON:[DFG$DATABASE]DFG$MAIL.DIS;
+
+                   * Is this the correct file specification [YES]?
+
+                   The mail distribution file is created during
+                   installation. You may specify a list of user names
+                   for this distribution list or take the default, which
+                   is the user name of the installing account.
+
+              ___________________________________________________________
+              17   Specify whether or not to change the contents of the
+                   mail distribution file.
+
+                   By default, the mail distribution file contains only the user name
+
+                   of the installing account.
+
+                   * Do you want to override the default contents of {mail.DIS} [NO]?
+
+                   Press Return if you wish the notification list to
+                   contain only the user name of the installing account.
+                   Enter Y if you want to specify a different mailing
+                   list. If you enter Y, the installation procedure
+                   prompts you for a list of user names. Separate the
+                   user names with commas, for example: USER1, USER2,
+                   USER3[,...].
+
+              ___________________________________________________________
+
+                                                 (continued on next page)
+
+
+
+
+                             Installing Disk File Optimizer Software 1-21
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+                                                 (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        1-22 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                          1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              18   Read informational messages.
+
+                   At this point, the installation procedure displays a
+                   number of informational messages that report on the
+                   progress of the installation. There are no further
+                   questions. If the installation procedure has been
+                   successful up to this point, VMSINSTAL moves the new
+                   or modified files to their target directories, updates
+                   Help files, and updates DCL tables, if necessary. If
+                   you chose to have files purged, that work is done now.
+                   The following message is displayed:
+
+                   No more input is required to complete this installation.  From this
+
+                   point it proceeds automatically.
+
+                   The following messages are displayed when the
+                   installation procedure converts the RMS database to
+                   do away with index key compression:
+
+                           Attempting to convert your RMS database so there is no index key
+
+                           compression.  This requires converting the database.  The old
+
+                           database files will be renamed to:
+
+                               DFG$DATABASE:DFG$DB_OLD.DAT
+                               DFG$DATABASE:DFG$FILE_OLD.DAT
+                               DFG$DATABASE:DFG$GENERAL_OLD.DAT
+                               DFG$DATABASE:DFG$NODE_OLD.DAT
+                               DFG$DATABASE:DFG$QUEUE_OLD.DAT
+                               DFG$DATABASE:DFG$SCRIPT_OLD.DAT
+                               DFG$DATABASE:DFG$VOLUME_OLD.DAT
+
+                           After you are satisfied with the installation, you may wish to delete
+
+                           these files.
+
+                   After the files have been moved, the installation
+                   procedure starts a scheduling process on the
+                   installing node. The name, ID, and log file for this
+                   process are displayed:
+
+                   %RUN-S-   Installing Disk File Optimizer Software 1-23
+                   PROC_ID, identification of created process is 0000012B
+                   Defragmentation scheduler, DFG$XXXX started on XXXX
+                   Scheduler log file: DFG$DATABASE:DFG$XXXX.LOG
+
+                   The name of the scheduler process is DFG$_XXXX,
+                   where XXXX is the node name where the scheduler is
+                   executing.
+
+                           ___________________ Note ___________________
+
+                           The name of the node comes from either the
+                           SYSGEN parameter, SCSNODE, or if SCSNODE
+                           is undefined, from the system logical
+                           name, SYS$NODE. At least one of these
+                           must indicate a valid node name or the
+                           defragmentation software will not work
+                           correctly.
+
+                           ___________________________________________
+
+                                                 (continued on next page)
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.3 Installing the Disk File Optimizer Software
+
+
+              Table 1-6 (Cont.) How to Install the Disk File Optimizer
+              __________________Software_________________________________
+
+              Step_Action________________________________________________
+
+              ___________________________________________________________
+              19   Observe the IVP.
+
+                   If you chose to run the IVP, VMSINSTAL runs it
+                   now. When the IVP begins, the following message is
+                   displayed:
+
+                   Beginning the V2.7 installation verification proced
+
+                   When the IVP completes successfully, the following
+                   message is displayed:
+
+              _____Installation_verification_for_V2.7_has_successfully___
+
+        1.3.3 Error Recovery
+
+              If errors occur during the installation or when the IVP
+              is running, VMSINSTAL displays failure messages. If the
+              installation fails, the following message is displayed:
+
+              %VMSINSTAL-E-INSFAIL, The installation of DFG Version
+              V2.7
+              has failed.
+
+              If the IVP fails, the following messages are displayed:
+
+              The DFG Version V2.7 Installation Verification Procedure failed.
+
+              %VMSINSTAL-E-IVPFAIL, The IVP for DFG Version
+              V2.7 has failed.
+
+              Errors can occur during the installation if any of the
+              following conditions exist:
+
+              o  Incorrect operating system version
+
+              o  Incorrect prerequisite software version
+
+              o  Insufficient quotas
+
+              o  Insufficient system parameter values
+
+              o  VMS Help library is currently in use
+
+              o  Product license has not been registered and loaded
+
+        1-24 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                          1.3 Installing the Disk File Optimizer Software
+
+
+              For descriptions of the error messages generated by
+              these conditions, see the VMS documentation about
+              system messages, recovery procedures, and VMS software
+              installation. If you are notified that any of these
+              conditions exist, take the appropriate action as described
+              in the message.
+
+        1.4 After Installing the Disk File Optimizer
+
+              Perform the following tasks after installing the Disk File
+              Optimizer:
+
+              o  Run the IVP separately to verify the installation
+
+              o  Edit the system startup and shutdown files
+
+              o  Make the Disk File Optimizer software usable on a
+                 VMScluster system
+
+              o  Resolve database errors
+
+              o  Delete old copies of the database files
+
+              o  Verify account requirements
+
+              o  Report any problems
+
+        1.4.1 Running the IVP Separately
+
+              You usually run the Installation Verification Procedure
+              (IVP) during the installation by responding YES to the
+              question:
+
+                 * Do you want to run the IVP after the installation [YES]?
+
+              If you did not run the IVP during the installation, or
+              if you want to run the IVP separately to confirm the
+              integrity of installed files, execute the IVP by entering
+              this command:
+
+              $ @SYS$TEST:DFG$IVP.COM
+
+              Requirements:
+
+              The Disk File Optimizer software must be running on the
+              system where the IVP is executed.
+
+                             Installing Disk File Optimizer Software 1-25
+
+ 
+
+
+
+        Installing Disk File Optimizer Software
+        1.4 After Installing the Disk File Optimizer
+
+
+        1.4.2 Editing the Systemwide Command Files
+
+              System_startup:
+
+              You must edit the system startup procedure to ensure
+              automatic startup of the Disk File Optimizer software each
+              time the system boots. Add the following line to
+
+              SYS$MANAGER:SYSTARTUP.COM:
+              $ @SYS$MANAGER:DFG$STARTUP.COM
+
+              System_shutdown:
+
+              You can modify the system shutdown file to provide for an
+              orderly shutdown of the Disk File Optimizer. To do this,
+              add the following line to SYS$MANAGER:SYSHUTDWN.COM:
+
+              $ @SYS$MANAGER:DFG$SHUTDOWN.COM
+
+        1.4.3 Making the Disk File Optimizer Work on a VMScluster System
+
+              To make the Disk File Optimizer available on all nodes
+              of the cluster, you should ensure that all nodes have
+              the latest version of DCLTABLES.EXE installed. You can
+              do this by using SYSMAN or by logging in to each node in
+              the cluster and entering the following command:
+
+              $ INSTALL REPLACE SYS$COMMON:[SYSLIB]DCLTABLES.EXE
+
+        1.4.4 Deleting Old Copies of the RMS Database Files
+
+              If you upgraded the Defrag PLUS variant of Disk File
+              Optimizer, there are seven old files on your disk:
+
+              o  DFG$DATABASE:DFG$DB_OLD.DAT
+
+              o  DFG$DATABASE:DFG$FILE_OLD.DAT
+
+              o  DFG$DATABASE:DFG$GENERAL_OLD.DAT
+
+              o  DFG$DATABASE:DFG$NODE_OLD.DAT
+
+              o  DFG$DATABASE:DFG$QUEUE_OLD.DAT
+
+              o  DFG$DATABASE:DFG$SCRIPT_OLD.DAT
+
+              o  DFG$DATABASE:DFG$VOLUME_OLD.DAT
+
+              You can delete these files.
+
+        1-26 Installing Disk File Optimizer Software
+
+ 
+
+
+
+                                  Installing Disk File Optimizer Software
+                             1.4 After Installing the Disk File Optimizer
+
+
+        1.4.5 Loading The New Database After Upgrading from Disk File
+              Optimizer V1.0
+
+              If you are upgrading from Disk File Optimizer V1.0 and have
+              saved the data in your database, you must restore it. If
+              you saved your database data as described in Section 1.2.1,
+              you can load it into your new RMS database using the
+              following command:
+
+              $ @LOAD_DB
+
+        1.4.6 Verifying Account Requirements
+
+              The following privileges are required to run the Disk File
+              Optimizer software:
+
+              o  BYPASS
+
+              o  CMKRNL
+
+              o  DETACH
+
+              o  NETMBX
+
+              o  SHARE
+
+              o  SYSGBL
+
+              o  SYSLCK
+
+              o  SYSPRV
+
+              o  TMPMBX
+
+              o  WORLD
+
+        1.4.7 Reporting Problems
+
+              If you encounter a problem while using the Disk File
+              Optimizer, report it to Compaq Customer Services. Depending
+              upon the nature of the problem and the type of support you
+              have purchased, you can take one of the following actions:
+
+              o  Call Compaq Customer Services if your software contract
+                 or warranty agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter a
+              problem during the warranty period, report the problem as
+              indicated above or follow alternate instructions provided
+              by Compaq for reporting SPD nonconformance problems.
+
+                             Installing Disk File Optimizer Software 1-27
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                   Disk File Optimizer Logicals and Files
+
+
+        A.1 Files Added to System by the Disk File Optimizer
+
+              The following files are permanently added to the system
+              when you install the Defrag PLUS variant. Files marked with
+              an asterisk (*) are not added if you install the Defrag
+              variant:
+
+              o  DFG$DATABASE (directory, typically
+                 SYS$COMMON:[000000]DFG$DATABASE.DIR) *
+
+              o  DFG$DATABASE:DFG$DB.DAT *
+
+              o  DFG$DATABASE:DFG$FILE.DAT *
+
+              o  DFG$DATABASE:DFG$GENERAL.DAT *
+
+              o  DFG$DATABASE:DFG$MAIL.DIS *
+
+              o  DFG$DATABASE:DFG$NODE.DAT *
+
+              o  DFG$DATABASE:DFG$QUEUE.DAT *
+
+              o  DFG$DATABASE:DFG$SCRIPT.DAT *
+
+              o  DFG$DATABASE:DFG$VOLUME.DAT *
+
+              o  SYS$COMMON:[SYS$STARTUP]DFG$STARTUP.COM
+
+              o  SYS$COMMON:[SYS$STARTUP]DFG$START_SCHEDULER.COM *
+
+              o  SYS$COMMON:[SYSEXE]DFG$CREATE_DATABASE.EXE *
+
+              o  SYS$COMMON:[SYSEXE]DFG$DCL.EXE
+
+              o  SYS$COMMON:[SYSEXE]DFG$ENGINE_MAIN.EXE
+
+              o  SYS$COMMON:[SYSEXE]DFG$INIT_DATABASE.EXE *
+
+              o  SYS$COMMON:[SYSEXE]DFG$SCHEDULER.EXE *
+
+              o  SYS$COMMON:[SYSEXE]DFG$STOP_SCHEDULER.EXE *
+
+              o  SYS$COMMON:[SYSEXE]DFG$REFORMAT_DB_RMS.EXE *
+
+                               Disk File Optimizer Logicals and Files A-1
+
+ 
+
+
+
+        Disk File Optimizer Logicals and Files
+        A.1 Files Added to System by the Disk File Optimizer
+
+
+              o  SYS$COMMON:[SYSEXE]DFG$REFORMAT_DB.EXE *
+
+              o  SYS$COMMON:[SYSHLP]DEFRAGMENT.HLB
+
+              o  SYS$COMMON:[SYSHLP]DFGxxx.RELEASE_NOTES
+
+              o  SYS$COMMON:[SYSHLP]DFGxxx_OPR_GUIDE
+
+              o  SYS$COMMON:[SYSHLP]DFGxxx_INSTALL_GUIDE
+
+              o  SYS$COMMON:[SYSHLP]DFGxxx_SPD
+
+              o  SYS$COMMON:[SYSHLP]DFGxxx_COVER_LETTER
+
+              o  SYS$COMMON:[SYSLIB]DFG$DEFRAGMENTSHR.EXE *
+
+              o  SYS$COMMON:[SYSLIB]DFG$RMSSHR.EXE *
+
+              o  SYS$COMMON:[SYSLIB]DFG$UTILITYSHR.EXE
+
+              o  SYS$COMMON:[SYSMGR]DFG$DEINSTAL.COM
+
+              o  SYS$COMMON:[SYSMGR]DFG$SHUTDOWN.COM
+
+              o  SYS$COMMON:[SYSMGR]DFG$STOP_SCHEDULER.COM *
+
+              o  SYS$COMMON:[SYSMSG]DFG$MESSAGE.EXE
+
+              o  SYS$COMMON:[SYSTEST]DFG$IVP.COM
+
+              If you install the GUI interface, the following additional
+              files are created:
+
+              o  SYS$COMMON:[DECW$DEFAULTS.USER]DFG$DW.DAT
+
+              o  SYS$COMMON:[DECW$DEFAULTS.USER]DFG$DW.UID
+
+              o  SYS$COMMON:[SYSEXE]DFG$DW.EXE
+
+              o  SYS$COMMON:[SYSHLP]DFG$DW.HLB
+
+              If you install the callable interface, the following
+              additional files are created:
+
+              o  SYS$COMMON:[SYSLIB]DFG$DEF.FOR
+
+              o  SYS$COMMON:[SYSLIB]DFG$DEF.H
+
+              o  SYS$COMMON:[SYSLIB]DFG$DEF.MAR
+
+              o  SYS$COMMON:[SYSLIB]DFG$DEF.PAS
+
+        A-2 Disk File Optimizer Logicals and Files
+
+ 
+
+
+
+                                   Disk File Optimizer Logicals and Files
+                                                        A.2 Logical Names
+
+
+        A.2 Logical Names
+
+              Logical names for the Disk File Optimizer begin with the
+              prefix DFG$. Table A-1 describes each logical name.
+
+        Table_A-1_Logical_Names__________________________________________
+
+                            Installation
+        Logical
+        Name________________Variant_____Purpose__________________________
+
+        DFG$DATABASE        Defrag      Equates to the device:[dir]
+                            PLUS        specification where the database
+                                        resides. Also located in this
+                                        directory are the scheduler
+                                        log files, which have a name
+                                        of DFG$_xxxx.LOG, where xxxx is
+                                        the name of the node on which the
+                                        scheduler is running.
+
+        DFG$DISK            All         Provided to the EPILOGUE and
+                                        PROLOGUE command files. It
+                                        translates to the name of the
+                                        disk on which DFO currently
+                                        operates.
+
+        DFG$MAIL_ADDRESS    Defrag      Equates to a file name containing
+                            PLUS        a mail distribution list of those
+                                        who should receive notification
+                                        when defragmentation processes
+                                        complete.
+
+        DFG$MESSAGE         All         Equates to
+                                        SYS$MESSAGE:DFG$MESSAGE.EXE,
+                                        which is the shareable
+                                        image containing all the
+                                        defragmentation-specific
+                                        messages. This logical is used
+                                        only if you install the callable
+                                        interface.
+
+                                                 (continued on next page)
+
+
+
+                               Disk File Optimizer Logicals and Files A-3
+
+ 
+
+
+
+        Disk File Optimizer Logicals and Files
+        A.2 Logical Names
+
+
+        Table_A-1_(Cont.)_Logical_Names__________________________________
+
+                            Installation
+        Logical
+        Name________________Variant_____Purpose__________________________
+
+        DFG$SCRIPT          All         Provided to the EPILOGUE and
+                                        PROLOGUE command files. It
+                                        translates to the name of the
+                                        script associated with the DFO
+                                        process.
+
+        DFG$STATE           All         Provided to the EPILOGUE and
+                                        PROLOGUE command files. As
+                                        appropriate to indicate the state
+                                        of DFO to the command procedure,
+                                        it translates to either of these
+                                        strings
+
+                                           PROLOGUE
+                                           EPILOGUE
+
+        DFG$STATUS          All         Provided to the EPILOGUE and
+                                        PROLOGUE command files. It
+                                        translates to the current status
+                                        of the DFO process. For the
+                                        EPILOGUE command file, this
+                                        status is the final status of
+                                        the DFO process.
+
+        DFG$ASTLM           All         These logicals affect the
+        DFG$BIOLM                       associated process quota of
+        DFG$BYTLM                       any DFO process running on the
+        DFG$DIOLM                       associated node.
+        DFG$ENQLM                       Refer to the guide to operations
+        DFG$FILLM                       for more information.
+        DFG$JTQUOTA
+        DFG$PGFLQUOTA
+        DFG$PRCLM
+        DFG$TQELM
+        DFG$WSDEFAULT
+        DFG$WSEXTENT
+        DFG$WSQUOTA
+
+                                                 (continued on next page)
+
+        A-4 Disk File Optimizer Logicals and Files
+
+ 
+
+
+
+                                   Disk File Optimizer Logicals and Files
+                                                        A.2 Logical Names
+
+
+        Table_A-1_(Cont.)_Logical_Names__________________________________
+
+                            Installation
+        Logical
+        Name________________Variant_____Purpose__________________________
+
+        DFG$TRANSFERSIZE    All         The logical, DFG$TRANSFERSIZE,
+                                        helps you tune the Disk File
+                                        Optimizer. The definition of
+                                        this logical allows you to
+                                        change the amount of data that
+                                        is transferred at one time.
+                                        On a volume that has files
+                                        with large extents, you could
+                                        wait up to 20 minutes while
+                                        the system transfers these
+                                        large extents before you could
+                                        access the file. By defining
+                                        this logical, you could access
+                                        this file in less than a minute.
+                                        This logical changes the impact
+                                        that the Disk File Optimizer
+                                        has on applications that are
+                                        simultaneously accessing the same
+                                        files.
+
+                                        This logical is set to
+                                        10,000 blocks by default.
+                                        You can change it by editing
+                                        SYS$STARTUP:DFG$STARTUP.COM
+                                        and then executing the command
+        ________________________________procedure._______________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               Disk File Optimizer Logicals and Files A-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                 Example Disk File Optimizer Installation
+
+
+        B.1 Example Installation
+
+              This appendix contains an example installations for the
+              Disk File Optimizer software. Example B-1 shows an example
+              installation log for installing Defrag PLUS. As you look
+              through this example, note the following things:
+
+              o  The first line in the example shows the command used to
+                 generate the installation.
+
+              o  If you do not have existing Defrag PLUS database files
+                 on the volume, the following lines do not appear:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Example Disk File Optimizer Installation B-1
+
+ 
+
+
+
+        Example Disk File Optimizer Installation
+        B.1 Example Installation
+
+
+                     The following scheduling/parameter database already exists:
+
+                 DISK$USER1:[DFG$DATABASE]DFG$DB.DAT;
+                 DISK$USER1:[DFG$DATABASE]DFG$FILE.DAT;
+                 DISK$USER1:[DFG$DATABASE]DFG$GENERAL.DAT;
+                 DISK$USER1:[DFG$DATABASE]DFG$NODE.DAT;
+                 DISK$USER1:[DFG$DATABASE]DFG$QUEUE.DAT;
+                 DISK$USER1:[DFG$DATABASE]DFG$SCRIPT.DAT;
+                 DISK$USER1:[DFG$DATABASE]DFG$VOLUME.DAT;
+
+                 * Do you wish to use it [YES]?
+
+                         Attempting to convert your RMS database so there is no index key
+                         compression.  This requires converting the database.  The old
+                         database files will be renamed to:
+
+                             DFG$DATABASE:DFG$DB_OLD.DAT
+                             DFG$DATABASE:DFG$FILE_OLD.DAT
+                             DFG$DATABASE:DFG$GENERAL_OLD.DAT
+                             DFG$DATABASE:DFG$NODE_OLD.DAT
+                             DFG$DATABASE:DFG$QUEUE_OLD.DAT
+                             DFG$DATABASE:DFG$SCRIPT_OLD.DAT
+                             DFG$DATABASE:DFG$VOLUME_OLD.DAT
+
+                         After you are satisfied with the installation, you may wish to delete
+                         these files.
+
+              o  During the IVP, this installation runs the DEFRAGMENT
+                 SHOW {volume_name} command for the volume on which it
+                 is installing. The information shown indicates how badly
+                 the volume is fragmented.
+
+
+
+
+        Example B-1 Example Installation for Defrag PLUS
+
+
+                                                 (continued on next page)
+
+
+
+
+
+
+        B-2 Example Disk File Optimizer Installation
+
+ 
+
+
+
+                                 Example Disk File Optimizer Installation
+                                                 B.1 Example Installation
+
+
+        Example B-1 (Cont.) Example Installation for Defrag PLUS
+
+        xxx -> @sys$update:vmsinstal DFG V2.7 DISK$KIT:[DFO]
+
+        OpenVMS AXP Software Product Installation Procedure V7.0
+        It is 11-OCTOBER-2002 at 14:55.
+        Enter a question mark (?) at any time for help.
+        %VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+               DECW$SERVER_0
+               DECW$MWM
+               DECW$TE_0068
+               _FTA5:
+        * Do you want to continue anyway [NO]? y
+        * Are you satisfied with the backup of your system disk [YES]? y
+
+        The following products will be processed:
+          DFG V2.7
+                Beginning installation of DFG V2.7 at 14:55
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+        * Do you want to purge files replaced by this installation [YES]?
+
+                Product:      DFG
+                Producer:     DEC
+                Version:      V2.7
+                Release Date: 11-OCTOBER-2002
+        * Does this product have an authorization key registered and loaded? y
+
+            This kit contains an Installation Verification Procedure (IVP) to verify
+            the correct installation of the Defragmentation software.  It can be
+            run prior to the conclusion of this procedure by answering "YES" to the
+            IVP prompt or it can be invoked after the installation as follows:
+
+        @SYS$TEST:DFG$IVP.COM
+
+        * Do you want to run the IVP after the installation [YES]?
+
+            You must run the @SYS$SYSTEM:SETFILENOMOVE.COM command procedure against
+            ALL system disks in your cluster.  You must do this before running the
+            defragmentation software on a system disk.  Failure to run this command
+            procedure and to later run the defragmentation software on the system
+            disk could result in corruption of the system disk.
+
+                                                 (continued on next page)
+
+                             Example Disk File Optimizer Installation B-3
+
+ 
+
+
+
+        Example Disk File Optimizer Installation
+        B.1 Example Installation
+
+
+        Example B-1 (Cont.) Example Installation for Defrag PLUS
+
+        * Has SETFILENOMOVE.COM been executed against all system disks? y
+        * Do you want to install Defrag or Defrag PLUS [PLUS]:
+        * Do you want to install the Graphical User Interface [YES]?
+        * Do you wish to install the callable interface [NO]?
+        %DFGT1-I-LOGDEFINED, The logical name DFG$DATABASE was defined
+
+            You have selected the following as a location for the
+            defragmentation scheduling and parameter database:
+
+                DISK$USER1:[DFG$DATABASE]
+
+        * Is this device and directory correct [YES]?
+
+            The following scheduling/parameter database already exists:
+
+        DISK$USER1:[DFG$DATABASE]DFG$DB.DAT;
+        DISK$USER1:[DFG$DATABASE]DFG$FILE.DAT;
+        DISK$USER1:[DFG$DATABASE]DFG$GENERAL.DAT;
+        DISK$USER1:[DFG$DATABASE]DFG$NODE.DAT;
+        DISK$USER1:[DFG$DATABASE]DFG$QUEUE.DAT;
+        DISK$USER1:[DFG$DATABASE]DFG$SCRIPT.DAT;
+        DISK$USER1:[DFG$DATABASE]DFG$VOLUME.DAT;
+
+        * Do you wish to use it [YES]?
+        %DFGT1-I-LOGDEFINED, The logical name DFG$MAIL_ADDRESS was defined
+
+            The DFG$MAIL_ADDRESS logical is defined as follows:
+                DISK$USER1:[DFG$DATABASE]DFG$MAIL.DIS;
+        * Do you wish to use this file [YES]?
+
+        The mail distribution file for notification messages is
+
+        DISK$USER1:[DFG$DATABASE]DFG$MAIL.DIS;
+
+        * Is this the correct file specification [YES]?
+
+        By default, the mail distribution file contains only the username
+        of the installing account.
+
+        * Do you want to override the default contents [NO]?
+
+                                                 (continued on next page)
+
+        B-4 Example Disk File Optimizer Installation
+
+ 
+
+
+
+                                 Example Disk File Optimizer Installation
+                                                 B.1 Example Installation
+
+
+        Example B-1 (Cont.) Example Installation for Defrag PLUS
+
+            +-----------------------------------------------------------------------+
+            |  No more input required.                                              |
+            |                                                                       |
+            |  Please perform the following after the installation completes:       |
+            |                                                                       |
+            |  1. Place @SYS$STARTUP:DFG$STARTUP in SYS$MANAGER:SYSTARTUP_VMS.COM   |
+            |                                                                       |
+            |  2. Place @SYS$MANAGER:DFG$SHUTDOWN in SYS$MANAGER:SYSHUTDWN.COM      |
+            |                                                                       |
+            +-----------------------------------------------------------------------+
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set F ...
+        %VMSINSTAL-I-RESTORE, Restoring product save set G ...
+
+                Attempting to convert your RMS database so there is no index key
+                compression.  This requires converting the database.  The old
+                database files will be renamed to:
+
+                    DFG$DATABASE:DFG$DB_OLD.DAT
+                    DFG$DATABASE:DFG$FILE_OLD.DAT
+                    DFG$DATABASE:DFG$GENERAL_OLD.DAT
+                    DFG$DATABASE:DFG$NODE_OLD.DAT
+                    DFG$DATABASE:DFG$QUEUE_OLD.DAT
+                    DFG$DATABASE:DFG$SCRIPT_OLD.DAT
+                    DFG$DATABASE:DFG$VOLUME_OLD.DAT
+
+                After you are satisfied with the installation, you may wish to delete
+                these files.
+        %DFGT1-I-COPYING, Copying database to working directory...
+        %DFGT1-I-COPYING, Renaming database files...
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+        %RUN-S-PROC_ID, identification of created process is 27E00386
+        Defragmentation scheduler, DFG$SPIELN started on SPIELN
+        Scheduler log file: DFG$DATABASE:DFG$SPIELN.LOG
+        Beginning the V2.7 installation verification procedure
+
+                 Testing SHOW of database parameters.
+        Disk File Optimizer for OpenVMS DFG V2.7
+        Copyright © Compaq Information Technologies Group, LP 2002. All rights reserved
+        CPU limit: 0    I/O limit: 0    process limit: 0  ILDUCE
+        CPU limit: 0    I/O limit: 0    process limit: 0
+
+                                                 (continued on next page)
+
+                             Example Disk File Optimizer Installation B-5
+
+ 
+
+
+
+        Example Disk File Optimizer Installation
+        B.1 Example Installation
+
+
+        Example B-1 (Cont.) Example Installation for Defrag PLUS
+
+                 Testing SHOW of volume fragmentation.
+
+        Disk File Optimizer for OpenVMS DFG V2.7
+        Copyright © Compaq Information Technologies Group, LP 2002. All rights reserved
+
+        F r a g m e n t a t i o n    R e p o r t
+
+        DISK$ALPHA070                                      11-OCTOBER-2002 14:57:24.05
+
+        The fragmentation index is 12.9
+              1 - 20.9 is excellent
+             21 - 40.9 is good
+             41 - 60.9 is fair
+             61 - 80.9 is poor
+             81 - 100 indicates a badly fragmented disk
+        Approximately 3.3 (out of 80.0 possible) is due to file fragmentation
+        Approximately 9.6 (out of 20.0 possible) is due to freespace fragmentation
+
+        Freespace Summary:
+                Total free space:        226348 blocks
+                Percentage free:             11 (rounded)
+                Total free extents:          48
+                Maximum free extent:     114276 blocks, LBN: 610892
+                Minimum free extent:          4 blocks, LBN: 173508
+                Average free extent:       4715 blocks
+                Median free extent:          80 blocks
+
+        File Fragmentation Summary:
+                Number of files (with some allocation):  5894
+                Total file extents on the disk:          6039
+                Average number of file extents per file: 1.024601
+                Median number of file extents per file:  1
+
+        Most Fragmented File:
+                [VMS$COMMON.SYSEXE]SYS$QUEUE_MANAGER.QMAN$JOURNAL;1 (55 extents)
+        Installation verification for V2.7 has successfully comp
+                Installation of DFG V2.7 completed at 14:57
+
+            Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+            Creating installation data file:VMI$ROOT:[SYSUPD]DFG027.
+
+                VMSINSTAL procedure done at 14:57
+
+                                                 (continued on next page)
+
+        B-6 Example Disk File Optimizer Installation
+
+ 
+
+
+
+                                 Example Disk File Optimizer Installation
+                                                 B.1 Example Installation
+
+
+        Example B-1 (Cont.) Example Installation for Defrag PLUS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Example Disk File Optimizer Installation B-7
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                                 Index
+
+
+
+     D                                 How to
+     _______________________________     register (cont'd)
+     Defrag                                 PAK,  1-11
+       available subcommands, 1-4        shut down Disk File Optimizer
+       description of, 1-3                  software, 1-10
+       logicals, 1-4
+     Defrag PLUS                       I
+       available subcommands, 1-4      _______________________________
+       description of, 1-3             Installation
+       installation example, B-1         disk space requirements,  1-5
+       logicals, 1-4                     error recovery,  1-24
+     Disk File Optimizer                 files created,  A-1
+       installing on a VMScluster        logical names,  A-3
+         system,  1-8                    operating privileges,  1-27
+                                         postinstallation procedures,
+     E______________________________        1-25
+     Editing the systemwide command      privileges,  1-5
+        files, 1-26                      procedure,  1-15
+     Error notification,  A-3            required VMS version,  1-5
+                                         requirements,  1-1
+                                         upgrading from V1.0,  1-3
+     F______________________________     variants,  1-3
+
+     Free disk blocks                    verification,  1-25
+       how to determine, 1-5             VMScluster system
+                                            considerations, 1-8
+     H______________________________   Installation,
+     How to                              process account quotas,  1-7
+       edit systemwide command files     system parameter values,  1-6
+
+         ,  1-26
+       install software, 1-15
+       register
+          Disk File Optimizer
+            license,  1-11
+
+                                                               Index-1
+
+ 
+
+
+
+
+
+
+
+                                          Product Authorization Key,
+        L______________________________      1-11
+        Licensing                           registration, 1-11
+
+         how to register,  1-11           R
+         software,  1-11                  _______________________________
+         where to find information,       Release notes,  1-2
+            1-11                          Reporting problems,  1-27
+        Log file                          Requirements
+         See also Scheduler                 installation, 1-1
+
+        Logicals
+         DFG$DATABASE,  A-3               S______________________________
+
+         DFG$DISK,  A-3                   Scheduler
+         DFG$MAIL_ADDRESS,  A-3             log files, A-3
+         DFG$MESSAGE,  A-3                Scheduling database
+         DFG$SCRIPT,  A-4                   VMScluster system
+         DFG$STATE,  A-4                      requirements,  1-8
+         DFG$STATUS,  A-4                 SCSNODE,  1-23
+         list of,  A-3                    Software
+
+                                            how to install, 1-15
+        M______________________________     kit name, 1-11
+
+        Mail distribution file              license name, 1-11
+         See also Logicals, DFG$MAIL_       shutting down Disk File
+            ADDRESS                           Optimizer software,  1-10
+                                          SYS$NODE,  1-23
+        P                                 System shutdown procedure,
+        _______________________________      1-26
+        PAK                               System startup procedure,  1-26
+
+         See Product Authorization Key
+        Postinstallation                  U______________________________
+         editing systemwide command       Upgrading
+            files,  1-26                    from V1.0, 1-3
+        Privileges
+         required for operating,  1-27    V
+         required to perform              _______________________________
+            installation,  1-5            V1.0
+                                            upgrading, 1-3
+
+
+
+        Index-2

@@ -1,0 +1,548 @@
+ 
+
+
+                              Compaq
+
+Software
+Product
+Description
+
+___________________________________________________________________
+
+PRODUCT NAME:  Compaq TDMS for OpenVMS VAX, Version 1.9B        SPD
+25.71.17                (Terminal Data Management System)
+
+DESCRIPTION
+
+Compaq TDMS for OpenVMS VAX (TDMS) is a product designed for the im-
+plementation of interactive, forms-intensive applications running on
+OpenVMS VAX systems. As a terminal subsystem, TDMS can reduce the ap-
+plication development and maintenance effort by replacing application
+program logic specific to terminal interactions with definitions that
+are external to the program.
+
+TDMS has been superseded by Compaq DECforms for OpenVMS. DECforms is
+the preferred forms product for character-cell terminal applications
+and should be used for all new application development requiring a forms-
+based user interface.
+
+Features
+
+TDMS provides the following features:
+
+o  A Screen Editor to define forms that format data on the terminal.
+
+o  A nonprocedural language to define the exchange of data between an
+   application program and its associated terminal. These predefined
+   exchanges are called requests and are external to the program.
+
+o  Utilities that enable the creation, modification, and storage of
+   form definitions and request definitions.
+
+o  A record-level programming interface that the application program
+   uses to invoke the predefined requests. The application program calls
+   the program interface, passing it the request name and the program
+   record buffers used in the exchange of data with the terminal.
+
+                                                       January 2000
+
+ 
+
+o  A sliding window algorithm through which the behavior of TDMS can
+   be modified to control how 2-digit year dates are interpreted upon
+   input.
+
+TDMS applications range from database inquiry/response/update to real-
+time uses such as the periodic display of an industrial process. TDMS
+is typically used as a terminal subsystem in terminal data management
+applications such as order entry, inventory control, distribution, and
+other form-intensive applications. TDMS not only increases applica-
+tion development and maintenance productivity by providing a separa-
+tion of terminal management code from application code, but it also
+promotes end user productivity by providing the following features:
+
+o  Vertical Field Traversal. Keys can be defined for rapidly travers-
+   ing forms vertically rather than traversing the form on a field by
+   field basis in the predefined field visitation order.
+
+o  Immediate access to the first field and last field. Keys can be de-
+   fined for immediately moving the cursor to the first field and the
+   last field on the form.
+
+o  The key function associated with a key can be changed and additional
+   keys can be defined to have other functions. This allows keyboards
+   to be redefined to match the environment of the end user.
+
+o  All TDMS definitions are stored in the Oracle Common Data Dictio-
+   nary/Repository (CDD/Repository). Additionally, TDMS can use record
+   definitions stored in the Oracle CDD/Repository by Compaq DATATRIEVE,
+   Oracle CODASYL DBMS, or Oracle Rdb. TDMS provides full support for
+   Oracle CDD/Repository Dictionary Management Utility (DMU) format
+   definitions and read-only support for Common Dictionary Operator
+   (CDO) definitions.
+
+o  Compaq DATATRIEVE for OpenVMS can use TDMS forms to DISPLAY/READ
+   data.
+
+o  TDMS supports editing with the Language-Sensitive Editor from within
+   the Request Definition Utility (RDU). This editor provides templates
+   that help application developers remember RDU syntax as they de-
+   velop request definitions.
+
+                                 2
+
+ 
+
+o  TDMS forms can be printed. Video attributes are not printed and lines
+   are drawn using the characters "-", "+", "|" rather than a line-
+   drawing character set.
+
+Implementing TDMS Applications
+
+1. Define the Request
+
+A request defines what information is displayed at the terminal and
+what information is collected from the terminal. The TDMS request re-
+places code that would otherwise have to be designed, written, and de-
+bugged in the application program.
+
+The request identifies the form and the record definitions to be used
+in the exchange of data with the terminal. INPUT and OUTPUT statements
+define the mapping between the form fields and the record fields dur-
+ing execution of the request.
+
+2. Define the Form
+
+A form definition describes the format of the data that is displayed
+on the terminal at run time. The form definition also specifies, for
+each field, what validation procedures are invoked. TDMS field val-
+idation includes range checks, list checks, and picture validations.
+
+3. Define the Record
+
+Data records that are used in a request and TDMS application program
+must be defined in the Oracle CDD/Repository. The record definition
+specifies the type, structure, and length of the record that is cre-
+ated by Oracle CDD/Repository, Compaq DATATRIEVE, Oracle CODASYL DBMS,
+or Oracle Rdb. During the execution of a request, TDMS performs the
+necessary data type conversion required to transfer data between the
+form and the record.
+
+4. Implement the Application Program
+
+The application program performs application-specific processing and
+controls the flow of information between the terminal and the database.
+The application communicates at a record level with the terminal by
+calling TDMS to execute requests and it communicates with the database
+
+                                 3
+
+ 
+
+using the subsystem of choice, including RMS, Compaq DATATRIEVE, Or-
+acle CODASYL DBMS, Oracle Rdb, or any other database supported on Open-
+VMS VAX.
+
+Applications can be written in any VAX native mode language that ad-
+heres to the VAX Procedure Calling and Condition Handling standard.
+Many languages are able to copy record definitions from the Oracle CDD/Repository
+at compile time. If the application program is written in one of these
+languages, then it and the TDMS request can share record definitions
+in the Oracle CDD/Repository. TDMS applications written in languages
+that do not support such copying must include the record definitions
+in the application program itself as well as in the Oracle CDD/Repository.
+
+Components
+
+The Form Definition Utility
+
+The TDMS Form Definition Utility (FDU) provides all of the capabil-
+ities needed to create or modify form definitions and store them in
+the Oracle CDD/Repository. The TDMS FDU includes a Screen Editor that
+is used to create a screen image of the form and assign specific at-
+tributes. These include form field video attributes, form field val-
+idation procedures, and the order in which the input fields should be
+processed.
+
+The Request Definition Utility
+
+The TDMS Request Definition Utility (RDU) provides all of the capa-
+bilities needed to create and modify requests and store them in the
+Oracle CDD/Repository. RDU validates each request to make sure that
+form and record definitions exist and that all transfers of data be-
+tween form and record fields are valid. The RDU also builds Request
+Library Files that the TDMS run-time system accesses during the ex-
+ecution of requests.
+
+The request library capability is provided to avoid run-time access
+to the Oracle CDD/Repository and thus improve TDMS application per-
+formance.
+
+Programming Call Interface
+
+                                 4
+
+ 
+
+An application program uses the TDMS programming interface to execute
+a TDMS request. A request defines an exchange of data between the pro-
+gram and its associated terminal. The application program calls the
+program interface and passes to the program interface the request name
+and the program record buffers to be used in the exchange of data with
+the terminal. This record level interface thus eliminates the need for
+character level or field level communication with the terminal.
+
+The Programming Call Interface allows application programs to perform
+additional operations including writing text to or reading text from
+the reserved message line on a terminal, enabling or disabling a fa-
+cility that traces the action of a request, and canceling a request
+in progress.
+
+The Programming Call Interface supports both synchronous and asynchronous
+calls from the application program. Optional Run-Time System
+
+An optional run-time version of TDMS is available. The run-time sys-
+tem allows for the execution of TDMS-based applications on a system
+other than the one used to develop the application.
+
+Documentation
+
+The TDMS documentation set is bundled with the TDMS development kit
+and is also available separately. It is not bundled with the TDMS run-
+time only kit.
+
+The documentation set consists of:
+
+o  Forms Manual
+
+o  Request and Programming Manual
+
+o  Reference Manual
+
+o  Installation Guide
+
+o  Pocket Guide
+
+HARDWARE REQUIREMENTS
+
+Processors Supported
+
+                                 5
+
+ 
+
+TDMS is supported on all VAX hardware configurations referenced in the
+OpenVMS Operating System for Alpha and VAX, Version 7.2, Software Prod-
+uct Description (SPD 25.01.xx).
+
+Processors Not Supported
+
+The following processors are not supported:
+
+o  MicroVAX I
+
+o  VAXstation I
+
+o  VAXstation 8000
+
+o  VAX-11/725
+
+o  VAX-11/782
+
+Terminals Supported
+
+___________________________________________________________________
+Terminal__________________________Notes____________________________
+
+VT52                              1
+VT100,VT100 W/AVO,VT101,VT102,VT125
+VT131                             2
+VT220,VT240,VT241
+VT320                             3
+VT330,VT340                       3,4
+VT420                             5
+VT510                             5
+VT520,VT525_______________________5________________________________
+
+1. Supported for application execution only. Run-time support for the
+   VT52 is generally the same as for the VT100. When a VT100 feature
+   is requested in a form definition, the feature will either be sim-
+   ulated or ignored when the form is displayed on a VT52. Wide forms
+   (132 columns) and forms using scrolled areas cannot be displayed
+   on a VT52.
+
+2. Supported in VT102 mode only.
+
+3. Usage of the status line, line 25, is not supported.
+
+                                 6
+
+ 
+
+4. Usage of the locator device (mouse) is not supported.
+
+5. TDMS form definitions are either 80 or 132 columns by 24 lines or
+   less. These terminals contain features allowing the display of more
+   than 24 lines including a status line. TDMS does not support these
+   features.
+
+Terminal Emulators
+
+Terminal emulators on workstations and personal computers are supported
+only to the extent that the emulator conforms to the supported ter-
+minal environment being emulated.
+
+Disk Space Requirements (Block Cluster Size = 1)
+
+These counts refer to the disk space required on the system disk. The
+sizes are approximate; actual sizes may vary depending on the user's
+system environment, configuration, and software options.
+
+___________________________________________________________________
+Kit_______________________Disk_Space_______________________________
+
+Development Installa-     12,000 blocks
+tion
+                          6.1 Mb
+
+Development Permanent     5,000 blocks
+   with Samples           2.6 Mb
+Development Permanent     2,500 blocks
+   without Samples        1.3 Mb
+
+Run-Time Installation     3,000 blocks
+                          1.5 Mb
+
+Run-Time Permanent        500 blocks
+__________________________0.3_Mb___________________________________
+
+SOFTWARE REQUIREMENTS
+
+
+                                 7
+
+ 
+
+
+___________________________________________________________________
+
+OpenVMS VAX Operating     V5.5-2, V6.2, V7.1, or higher
+System
+Oracle_CDD/Repository_____V5.3_or_higher___________________________
+
+OpenVMS Tailoring Classes
+
+For VMS V5.x systems, the following VMS classes are required for full
+functionality of this layered product:
+
+o  VMS Required Save Set
+
+o  Network Support
+
+o  Programming Support
+
+o  Utilities
+
+OPTIONAL SOFTWARE
+
+Certain versions of these products depend on a specific version of the
+Operating System. Please refer to the SPD of the product in question
+to determine which version you need.
+
+o  Compaq ACMS for OpenVMS, V4.1 or higher
+
+o  Compaq DATATRIEVE for OpenVMS, V6.1 - V7.2
+
+o  Language-Sensitive Editor/Source Code Analyzer (LSE/SCA), V4.4 or
+   higher (part of Compaq DECset for OpenVMS VAX Systems)
+
+SOFTWARE LICENSING
+
+This software is furnished only under a license. For more information
+about Compaq's licensing terms and policies, contact your local Com-
+paq office.
+
+LICENSE MANAGEMENT FACILITY (LMF)
+
+This layered product supports the OpenVMS License Management Facil-
+ity.
+
+                                 8
+
+ 
+
+License units for both the Development System and the Run-Time Sys-
+tem are allocated on a capacity basis by hardware tier.
+
+For more information on the License Management Facility, refer to the
+OpenVMS Operating System Software Product Description (SPD 25.01.xx)
+or the License Management Facility manual of the OpenVMS Operating Sys-
+tem documentation set.
+
+CLUSTER ENVIRONMENT
+
+This layered product is fully supported when installed on any valid
+and licensed VMScluster configuration without restrictions. The Hard-
+ware Requirements section of this Software Product Description details
+any special hardware required by this product.
+
+VMScluster configurations are fully described in the VMScluster Soft-
+ware Product Description (SPD 29.78.xx) and include CI, Ethernet, and
+Mixed Interconnect configurations.
+
+DISTRIBUTION MEDIA
+
+This product is distributed on:
+
+o  CD-ROM (as part of the OpenVMS VAX Software Product Library)
+
+The software documentation is also available as part of the OpenVMS
+VAX Online Documentation Library on CD-ROM.
+
+ORDERING INFORMATION
+
+___________________________________________________________________
+Development_and_Run-Time______Part_Number__________________________
+
+Unlimited Use License         QL-706A*-AA
+Update License                QL-706A*-RA
+Media and Documentation       QA-5G88A-H8
+(OpenVMS VAX Software
+Product Library)
+Hardcopy Documentation        QA-706AA-GZ
+
+                                 9
+
+ 
+
+
+___________________________________________________________________
+
+Software_Product_Services_____QT-706A*-**__________________________
+
+___________________________________________________________________
+Run-Time_Only_________________Part_Number__________________________
+
+Unlimited Use License         QL-711A*-AA
+Update License                QL-711A*-RA
+Media and Documentation       QA-5G88A-H8
+(OpenVMS VAX Software
+Product Library)
+Software_Product_Services_____QT-711A*-**__________________________
+
+*  Denotes variant fields. For additional information on available li-
+   censes, services, and media, refer to the appropriate price book.
+
+YEAR 2000 READY
+
+This product is Year 2000 Ready and is capable of accurately process-
+ing, providing, and/or receiving date data from, into, and between the
+twentieth and the twenty-first centuries, and the years 1999 and 2000,
+including leap year calculations, when used in accordance with the as-
+sociated product documentation and provided that all hardware, firmware,
+and software used in combination with the product properly exchange
+accurate date data with the product.
+
+Additionally, a definable sliding window capability for the interpre-
+tation of 2-digit years upon input is provided.
+
+SOFTWARE PRODUCT SERVICES
+
+The Mature Product Support with Sustaining Engineering Service is of-
+fered for this product and includes telephone support, tested soft-
+ware patches for any new problems, and problem escalation to engineering-
+level resources if appropriate. This support offering is equivalent
+to current version support. Compaq will not be adding new features or
+functionality to this product and no new releases are planned. Accord-
+ingly, License Subscription and Software Update Distribution Services
+
+                                10
+
+ 
+
+are no longer available. Please contact your local Compaq Services Sales
+Specialist for more information about the Mature Product Support with
+Sustaining Engineering Service.
+
+A variety of service options are available from Compaq. For more in-
+formation, contact your local Compaq office.
+
+GROWTH CONSIDERATIONS
+
+The minimum hardware and software requirements for any future version
+of this product may be different from the requirements for the cur-
+rent version.
+
+SOFTWARE WARRANTY
+
+This software is provided by Compaq with a 90-day conformance warranty
+in accordance with the Compaq warranty terms applicable to the license
+purchase.
+
+The above information is valid at time of release. Please contact your
+local Compaq office for the most up-to-date information.
+
+© 2000 Compaq Computer Corporation
+
+Compaq, the Compaq logo, and the DIGITAL logo are registered in the
+U.S. Patent and Trademark Office.
+
+All other product names mentioned herein may be trademarks or regis-
+tered trademarks of their respective companies.
+
+Confidential computer software. Valid license from Compaq Computer Cor-
+poration or authorized sublicensor required for possession, use or copy-
+ing. Consistent with FAR 12.211 and 12.212, Commercial Computer Soft-
+ware, Computer Software Documentation, and Technical Data for Commer-
+cial Items are licensed to the U.S. Government under vendor's stan-
+dard commercial license.
+
+Compaq Computer Corporation shall not be liable for technical or ed-
+itorial errors or omissions contained herein. The information in this
+document is subject to change without notice.
+
+                                11
+
+ 
+
+ACMS, CI, DATATRIEVE, DECforms, DECset, MicroVAX, OpenVMS, TDMS, VAX,
+VAXstation, VMS, VMScluster, VT, VT52, VT100, VT220, VT320, VT330, VT340,
+and VT420 are trademarks of Compaq Computer Corporation.
+
+Oracle is a registered trademark and Oracle CDD/Repository, Oracle CO-
+DASYL DBMS, and Oracle Rdb are trademarks of Oracle Corporation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                12

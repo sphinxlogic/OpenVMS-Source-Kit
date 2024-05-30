@@ -1,0 +1,1645 @@
+
+
+
+Digital SNA 3270 Application Services
+
+Installation
+
+Part Number: AA-PPV4C-TE
+
+
+August 1996
+
+This document describes how to install the Digital SNA 3270 Application
+Services software on the OpenVMS operating system.
+
+
+
+Revision/Update Information:      This is a revised manual.
+
+Operating System and Version:     OpenVMS VAX V6.1 or later
+                                  OpenVMS Alpha V6.1
+
+Software Version: Digital SNA 3270 Application Services V1.2
+
+
+
+Electronic Data Systems Corporation and Digital Equipment Corporation make no
+representation that the use of their products in the manner described in this
+publication will not infringe on existing or future patent rights, nor do
+the descriptions contained in this publication imply the granting of licenses
+to make, use, or sell equipment or software in accordance with the description.
+
+Possession, use, or copying of the software described in this publication
+is authorized onlu pursuant to a valid written license from Digital or an 
+authorized sublicensor.
+
+The information in this document is subject to change without notice and should
+not be construed as a commitment from Electronic Data Systems Corporation or
+Digital Equipment Corporation. Electronic Data Systems Corporation and
+Digital Equipment Corporation assume no responsibility for any errors that
+may appear in this document.
+
+Digital conducts its business in a manner that conserves the environment and
+protects the safety and health of its employees, customers, and the community.
+
+
+Copyright 1996 Electronic Data Systems Corporation. All Rights Reserved.
+
+Copyright 1992, 1994 Digital Equipment Corporation. All Rights Reserved.
+
+The following are trademarks of Digital Equipment Corporation:
+
+Alpha, DEC, DECforms, DECnet, DECUS, EDE, EDT, LSE, OpenVMS, PDP, UNIBUS, VAX, 
+VAXcluster, VMS, VMScluster, the Alpha logo, and the Digital logo.
+
+IBM is a registered trademark of International Business Machines
+Corporation.
+
+
+
+Contents
+
+Preface  . . . . . . . . . . . . . . . . . . . . . . . . . . .      v
+
+1 Preparing for Digital SNA 3270 Application Services Installation
+
+1.1   Required Operating System Components........................1-1
+
+1.2   Prerequisite Hardware.......................................1-2
+
+1.3   Prerequisite and Optional Software..........................1-2
+
+1.3.1     Required DEC VTX Version................................1-3
+
+1.4   License Registration........................................1-3
+
+1.5   Installation Procedure Requirements.........................1-4
+
+1.5.1     Privileges and Disk Space...............................1-4
+
+1.5.2     Process Account Quotas..................................1-4
+
+1.5.3     VMSINSTAL Requirements..................................1-5
+
+1.5.4     Backing Up Your System Disk.............................1-6
+
+2 Installing the Software
+
+2.1   The Installation Procedure..................................2-1
+
+2.2   Error Recovery..............................................2-8
+
+3 After Installing the 3270 Application Services Software
+
+3.1   Running the Installation Verification Procedure Separately..3-1
+
+3.2   Editing the System Files....................................3-2
+
+3.3   VAXcluster Considerations...................................3-3
+
+3.4   User Account Requirements...................................3-3
+
+3.4.1     Privileges..............................................3-3
+
+3.4.2     User Account Quotas.....................................3-3
+
+3.5   Determining and Reporting Problems..........................3-4
+
+A Sample Installation Output
+
+B Files Installed on Your System
+
+Index
+
+Tables
+
+1-1   Prerequisite Software.......................................1-2
+
+1-2   Disk Space Requirements.....................................1-4
+
+1-3   Minimum Process Account Quotas for the Installation Account.1-5
+
+1-4   Process Quotas Required for the Installation Account........1-6
+
+3-1   User Account Quotas for Using 3270 Application Services.....3-4
+
+
+
+Preface
+
+Purpose of This Guide
+
+The Digital SNA 3270 Application Services software is a Digital Equipment
+Corporation  product that provides a library of routines that you call from
+your application.  This product allows an IBM) 3270 user in an IBM SNA
+network to access DigitalTM  applications that support processing of 3270
+data streams.  The Digital SNA 3270 Application Services software provides
+communications functions allowing the  Digital application to send and
+receive 3270 data streams and SNA character  strings (SCS). 
+
+This guide explains how to install the Digital SNA 3270 Application Services
+software  on VAX and Alpha processors that are running the OpenVMS
+operating system.
+
+Keep this document with your distribution kit as you will need it to
+install  maintenance updates or to reinstall Digital SNA 3270 Application
+Services software  for any other reason.
+
+At the back of this document are two postpaid Reader's Comments forms.  If 
+you have any comments about this document, fill out one form and mail it;
+your  comments will be considered for the next revision of the installation
+guide.
+
+Intended Audience
+
+The audience for this guide is the system manager who installs the Digital SNA 
+3270 Application Services software.
+
+Associated Documents
+
+The following manuals constitute the Digital SNA 3270 Application Services
+documentation set:
+
+o Digital SNA 3270 Application Services Installation
+
+o Digital SNA 3270 Application Services Programming and Management
+
+o DECforms Use with 3270 Terminals
+
+The following document describes a product available separately which is
+layered  on this product:
+
+o MEP VT for DEC SNA 3270 Application Services documentation
+
+Associated Digital Documents
+
+You should have the following Digital documents available for reference:
+
+o DEC SNA Domain Gateway Installation
+
+o DEC SNA Domain Gateway Management
+
+o DEC SNA Domain Gateway Guide to IBM Resource Definition
+
+o DECnet SNA 3270 Terminal Emulator for OpenVMS Use
+
+o Common Trace Facility (CTF) Use
+
+o Introduction to OpenVMS System Routines
+
+o VAX VTX Operator's Guide
+
+o VAX VTX Guide to Modifying the Terminal Control Program (TCP)
+
+o OpenVMS License Management Utility Manual
+
+o OpenVMS Linker Utility Manual
+
+o OpenVMS RTL Library Manual
+
+o OpenVMS SYSMAN Utility Manual
+
+o OpenVMS System Manager's Manual
+
+o OpenVMS System Services Reference Manual
+
+o OpenVMS System Messages and Recovery Procedures Reference
+
+Associated IBM Documents
+
+You should have the following IBM documents available for reference:
+
+o IBM 3174 Establishment Controller Functional Description (GA23-0218)
+
+o IBM 3270 Data Stream Programmer's Reference (GA23-0059)
+
+o IBM 3274 Control Unit Description and Programmer's Guide (GA23-0061)
+
+o Systems Network Architecture - Sessions Between Logical Units (GC20-1868)
+
+Acronyms
+
+The following acronyms are used throughout this manual:
+
+ASCII     American Standard Code for Information Interchange
+
+CDI       Change direction indicator
+
+CICS      IBM's Customer Information Control System
+
+DCL       Digital Command Language
+
+ECI       End chain indicator
+
+EBI       End bracket indicator
+
+IBM SNA   IBM's Systems Network Architecture
+
+PLU       Primary logical unit
+
+SLU       Secondary logical unit
+
+SCS       SNA character string
+
+Conventions
+
+Convention      Meaning
+
+Special type    Indicates an example of system output.  
+
+Boldface type   Indicates an example of user input.  
+
+UPPERCASE       Uppercase letters in command lines indicate keywords that
+                must be entered. You can enter them in either uppercase or
+		lowercase.  You can abbreviate command keywords to the
+		first three characters or the minimum unique abbreviation.
+
+lowercase italics Lowercase italics in command syntax or examples indicate 
+                variables for which either the user or the system supplies
+		a value.
+
+[   ]           Square brackets include optional values. Do not type the
+                brackets in the line of code.
+
+(   )           Parentheses enclose group values that must be specified for
+                a parameter. These values must be typed in the line of code
+		in the indicated order. Parentheses must be typed where
+		they appear in a line of code.
+
+key             Indicates that you press the specified key.
+
+Ctrl/x          Indicates that you should hold the CONTROL key down and 
+                press the key specified by the x. The terminal displays the 
+                key combination as ^x.
+
+/               Indicates related alternative commands or options. For
+                example, SET/DEFINE PORT refers to the SET PORT command,
+		the DEFINE PORT command, or both.
+
+
+
+Chapter 1
+
+Preparing for Digital SNA 3270 Application Services Installation
+
+This chapter describes the preparations and requirements necessary for
+installing  Digital SNA 3270 Application Services software.
+
+Your bill of materials (BOM) and indented bills report (BIL) specify the
+number  and contents of your media.  Be sure to verify the contents of your
+kit with  this information.  If your kit is damaged or if you find that
+parts of it are  missing, contact your Digital representative.
+
+The Digital SNA 3270 Application Services software provides on-line release
+notes  that describe any undocumented features.  Digital strongly
+recommends that  you read the release notes before proceeding with the
+installation.  For information  about accessing the on-line release notes,
+see Section 2.1.
+
+1.1   Required Operating System Components
+
+The OpenVMS operating system comes with a variety of support options, or
+classes.  Classes include such features as networking and RMS journaling. 
+To use the  Digital SNA 3270 Application Services product, your system should
+be running a  version of OpenVMS that includes the following classes:
+
+o OpenVMS required saveset
+
+o Network support
+
+o Utilities
+
+o Programming support
+
+For a complete list of the required classes, see the Software Support
+Addendum  (SSA 38.70.xxA), which comes with the Software Product
+Description (SPD).
+
+1.2   Prerequisite Hardware
+
+The Digital SNA 3270 Application Services software can be installed on any Alpha
+system, VAX, MicroVAX, or VAXstation configuration as specified in the
+System  Support Addendum (SSA 38.70.xxA).  In addition to the Alpha or VAX
+processor,  you will need specific hardware for the DEC SNA Domain Gateway
+product.  Refer  to the Domain Gateway SSA for more information.
+
+1.3   Prerequisite and Optional Software
+
+Table 1-1 provides information about the software you must have installed
+on  your system before installing the Digital SNA 3270 Application Services
+software.  The System Software Addendum (SSA) contains a complete list of
+prerequisite  and optional software and their required version numbers.
+
+Table 1-1 Prerequisite Software
+
+Required Software               Minimum Version
+
+
+
+OpenVMS VAX                     V6.1
+
+OpenVMS Alpha                   V6.1
+
+DECnet-VAX                      V6.1
+
+DECnet for OpenVMS Alpha        V6.1
+
+DECnet/OSI for OpenVMS VAX      V6.1
+
+DECnet/OSI for OpenVMS Alpha    V6.1
+
+DEC SNA Domain Gateway          V2.0
+
+
+Use the SHOW SYSTEM command to determine the current version of the OpenVMS 
+operating system on your processor.  If you do not have the required
+version,  you must install it before you install the Digital SNA 3270
+Application Services  software.
+
+Use the MCR NCP SHOW EXEC CHAR command to determine the current version of 
+the DECnet software on your processor.  If the command is successful, check 
+the returned version of the DECnet software.  If a previous version of the 
+software is present, you must install the required version before you
+install  the Digital SNA 3270 Application Services software.
+
+If the MCR NCP SHOW EXEC CHAR command fails, use the NCL SHOW VERSION
+command  to determine if your node has the minimum required version of
+DECnet/OSI software.  If so, you may proceed to install the 3270
+Application Services software.
+
+If both commands fail, your node has no DECnet software.  You must install 
+the required DECnet software before installing the Digital SNA 3270 Application 
+Services software.
+
+If you are installing prerequisite or optional software along with the Digital
+SNA 3270 Application Services software, review the Product Authorization
+Key  (PAK) status and install PAKs for any prerequisite or optional
+software before  you install the 3270 Application Services software.
+
+1.3.1     Required DEC VTX Version
+
+As part of the installation, the DEC SNA 3270 Application Services software 
+provides a new version of the DEC VTX Terminal Control Program.  The new
+version  of VTX uses the 3270 Application Services interface (the API). 
+While VTX is  not needed for all installations, you must have a valid VTX
+license and be  running VTX V4.0 or later, or VTX TR V1.0 or later to use
+this version of VTX.
+
+To verify the version of VTX that you are using, enter the following
+command
+
+$ RUN SYS$SYSTEM:VTXCTL  
+
+The VTX version is displayed on your screen. 
+
+1.4   Print Symbiont Planning
+
+Each OpenVMS print queue can point to a different IBM printer, and can have 
+its own unique parameters.  Refer to section 7.2 of the Digital SNA 3270
+Application  Services Programming and Management book for more information
+on print queue  parameters.  Using the following table, fill in the queue
+names you plan to  use and their associated parameters, and refer to this
+information during installation. 
+
+
+Parameter     Required     Queue 1     Queue 2     Queue 3     Queue 4
+
+queuename     Yes
+
+default form  Optional
+
+gateway       Yes
+
+pluname       Yes
+
+logmode       Optional
+
+sluname       Yes
+
+trantbl       Optional
+
+
+1.5   License Registration
+
+You must register and load your license for the Digital SNA 3270 Application
+Services  product before you start the installation in order to run the
+Installation  Verification Procedure (IVP) and use the software.
+
+To register a license under OpenVMS, first log in to the system manager's
+account,  SYSTEM. You then have a choice of two ways to perform the
+registration:
+
+o Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When it prompts you for
+information, respond with data from your License PAK.
+
+o At the DCL prompt, enter the LICENSE REGISTER command with the appropriate 
+qualifiers that correspond to License PAK information.
+
+If you plan to use the Digital SNA 3270 Application Services software on more
+than  one node in a VMScluster, you will need to perform a license load on
+the other  nodes after you complete this installation. See Section 3.3.
+
+For complete information on using the License Management Facility (LMF), see 
+the OpenVMS License Management Utility Manual.
+
+1.6   Installation Procedure Requirements
+
+This section and those that follow discuss various requirements for
+installing the Digital SNA 3270 Application Services software.
+
+The installation takes approximately 5 to 25 minutes, depending on your type 
+of media and your system configuration.
+
+1.6.1     Privileges and Disk Space
+
+To install the Digital SNA 3270 Application Services software, you must be
+logged  in to an account that has SYSPRV privileges.  Use the SHOW
+PROCESS/PRIVILEGES  command to check the account privileges.
+
+Note that VMSINSTAL turns off BYPASS privileges at the start of the
+installation.
+
+The Digital SNA 3270 Application Services requirements for free disk storage
+space  are different during installation and after installation.  Table 1-2
+summarizes  the storage requirements.
+
+Table 1-2 Disk Space Requirements
+
+3270 Application        Blocks During           Blocks After 
+Services                Installation            Installation
+
+Alone                   7100                    4600
+
+With DECforms           22000                   7500
+
+
+To determine the number of free disk blocks on the current system disk,
+enter the following command at the DCL prompt:
+
+$ SHOW DEVICE SYS$SYSDEVICE
+
+1.6.2     Process Account Quotas
+
+The account you use to install the Digital SNA 3270 Application Services
+software  must have certain minimum quotas to allow you to perform the
+installation.  Table 1-3 summarizes the minimum process quotas required for
+the installation  account.
+
+Table 1-3 Minimum Process Account Quotas for the Installation Account
+
+Account Quota           Value
+
+ASTLM                   24
+
+BIOLM                   18
+
+BYTLM                   18000
+
+DIOLM                   18
+
+ENQLM                   30
+
+FILLM                   20
+
+
+User account quotas are stored in the file SYSUAF.DAT.  Use the OpenVMS
+Authorize  utility (AUTHORIZE) to verify and change user account quotas. 
+First set your  directory to SYS$SYSTEM and then run AUTHORIZE:
+
+$ SET DEFAULT SYS$SYSTEM 
+$ RUN AUTHORIZE 
+UAF>
+
+At the UAF> prompt, enter the SHOW command with an account name to check a 
+particular account.  For example:
+
+UAF> SHOW SMITH
+
+To change a quota, enter the MODIFY command.  The following example changes 
+the FILLM quota for the SMITH account and then exits from the utility:
+
+UAF> MODIFY SMITH /FILLM=50 
+UAF> EXIT
+
+After you exit from the utility, the system displays messages indicating
+whether  or not changes were made.  In order for the changes to take
+effect, the account  changed  must be logged out and then logged in again. 
+
+For more information about modifying account quotas, see the description of 
+the Authorize utility in the OpenVMS System Management Subkit.
+
+1.6.3      VMSINSTAL Requirements
+
+When you invoke VMSINSTAL, it checks the following:
+
+o Whether you are logged in to a privileged account
+
+o Whether you have adequate quotas for installation
+
+o Whether DECnet is running
+
+o Whether any users are logged in to the system
+
+If VMSINSTAL detects any problems during the installation, it notifies you 
+and asks if you want to continue the installation.  In some instances, you 
+can enter YES to continue.  To stop the installation process and correct
+the  situation, enter NO or press Return.  Then correct the problem and
+restart the installation.
+
+1.6.4     Backing Up Your System Disk
+
+At the beginning of the installation, VMSINSTAL asks if you have backed up 
+your system disk.  Digital recommends that you do a system disk backup
+before  installing any software.  The OpenVMS System Manager's Manual
+explains how  to back up your system disk.
+
+
+
+Chapter 2
+
+Installing the Software
+
+This chapter explains how to install the 3270 Application Services
+software.  Section 2.1 contains a step-by-step description of the
+installation procedure. 
+ 
+
+2.1   The Installation Procedure
+
+The procedure for installing the software on an OpenVMS system is
+automated.  You answer the questions displayed while the procedure runs. 
+Most questions  require a yes or no answer.  Depending on the type of media
+you use, the 3270  Application Services software installation should take
+no longer than 25 minutes,  excluding preparation time.
+
+Default answers appear in brackets throughout the installation procedure.  
+Press Return to accept a default answer.  Press Ctrl/Y to abort the
+installation procedure at any time. 
+
+Follow these steps to install the 3270 Application Services software on the 
+load host.
+
+1.  Invoke VMSINSTAL.
+
+@SYS$UPDATE:VMSINSTAL saveset-name device-name [OPTIONS N]
+
+To start the installation, invoke the VMSINSTAL command procedure from a
+privileged  account, such as the SYSTEM account.  VMSINSTAL is in the
+SYS$UPDATE directory.  The following list defines the elements of the
+VMSINSTAL command procedure:
+
+saveset-name
+The installation name for the component. For 3270 Application Services use 
+the following installation name:
+
+R3270012 
+
+device-name
+A device name where the distribution kit will be mounted for the 3270
+Application  Services installation media, where dd is the device, c is the
+controller, and  u is the unit number.  For example, MTA0: is the device
+name for a tape drive.  It is not necessary to use the console drive to
+install the 3270 Application  Services software.
+
+OPTIONS N
+An optional parameter you should provide if you want to be prompted to
+display  or print the release notes.  If you do not include the OPTIONS N
+parameter,  VMSINSTAL does not prompt you to display or print the release
+notes, but does  copy them to SYS$HELP.  VMSINSTAL also provides several
+other options.  For  more information about the options, see your
+processor-specific installation  or operations guide.
+
+Username: SYSTEM  
+Password: password 
+
+$ SET DEFAULT SYS$UPDATE 
+$ @SYS$UPDATE:VMSINSTAL 
+
+
+   VAX/VMS Software Product Installation Procedure V6.1
+
+
+It is dd-mmm-yyyy at hh:mm.
+
+Enter a question mark (?) at any time for help.
+
+Enter the VMSINSTAL command.  VMSINSTAL prompts you if you do not supply
+the  product and device names.  If you do not want to be prompted for the
+product  name, device name, and installation options, type the following:
+
+$ @VMSINSTAL R3270012 ddcu: OPTIONS N
+
+
+Note that there are several other options you can select when you invoke
+VMSINSTAL.
+
+o Auto-answer option (A): Initially creates a file that contains your
+answers  to VMSINSTAL questions and prompts. You can then use the option
+(and the answer  file) to save time during a reinstallation (typically
+after upgrading your  system).
+
+o Get save set option (G): Lets you store product save sets temporarily on 
+a magnetic tape or in a disk directory.
+
+o File log option (L): Logs all activity to the terminal during
+installation.
+
+o Alternate root option (R): Lets you install the product on a system root 
+other than that of the running system.
+
+See the OpenVMS documentation for software installation in the OpenVMS
+System  Management Subkit for detailed information about these options. If
+you specify  more than one option, separate the options with commas
+(OPTIONS A,N).
+
+2.  Confirm system status.
+
+%VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+%VMSINSTAL-W-ACTIVE, The following processes are still active:
+
+  DNS$TA
+  DNS$BACK
+* Do you want to continue anyway [NO]? YES 
+
+If there are any active processes, VMSINSTAL lists them and asks if you want 
+to continue.  To continue, type Yes and press Return.  To stop the
+installation, just press Return.
+
+3.  Confirm system backup.
+
+* Are you satisfied with the backup of your system disk [YES]? 
+
+Before you proceed with the installation, make sure you have a good backup 
+copy.  If you are satisfied with the backup of your system disk, press
+Return. If  you do not have a good backup copy, type No and press  Return
+to end the installation.
+
+4.  Mount the media.
+
+The following products will be processed:
+  R3270 V1.2
+
+Beginning installation of R3270 V1.2 at 09:35
+
+%VMSINSTAL-I-RESTORE, Restoring product save set A ...
+%VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+Mount the distribution kit volume set on the appropriate drive.  
+
+5.  Select a release notes option.
+
+If you specified OPTIONS N when you started the installation, VMSINSTAL
+asks  a question about release notes.  You have four options for handling
+the release  notes.  The following message is displayed:
+
+Release notes included with this kit are always copied to SYS$HELP.
+
+Additional Release Notes Options:
+
+ 1.  Display release notes  2.  Print release notes  3.  Both 1 and 2  4.  
+None of the above
+
+* Select option [2]:
+
+If you select option 1, VMSINSTAL displays the release notes immediately on
+the console terminal.  You can terminate the display at any time by pressing 
+Ctrl/C.
+
+If you select option 2, VMSINSTAL prompts you for the name of the print
+queue:
+
+* Queue name [SYS$PRINT]:
+
+You can press Return to send the file to the default output print device or
+you can enter another queue name.
+
+If you select option 3, VMSINSTAL displays the release notes immediately on 
+the console terminal and then prompts you for a queue name for the printed 
+version.
+
+Release notes are always copied to the system help directory.
+
+Select option 4 if you reviewed the release notes and are restarting the
+installation.
+
+Next, VMSINSTAL displays the following question:
+
+* Do you want to continue the installation [N]?: YES 
+%VMSINSTAL-I-RELMOVED, The product's release notes have been successfully
+moved to SYS$HELP.
+
+To continue the installation, enter Yes.  Otherwise, press Return.  In
+either case, the release notes are copied to a file (whose name consists of
+the product name and the version number) in the SYS$HELP directory:
+
+SYS$HELP:R3270012.RELEASE_NOTES
+
+After the installation, you can access a pointer to the release notes
+through the Help facility, as follows:
+
+$ HELP SNA_3270S RELEASE_NOTES
+
+6.  Respond to license registration queries. 
+
+        Product:      SNA-3270-SVCS-DEV, SNA-3270-SVCS-RT
+        Producer:     DEC
+        Version:      V1.2
+        Release Date: 1-DEC-1993
+
+* Does this product have an authorization key registered and loaded? y
+
+
+Use the OpenVMS License Management Facility (LMF) to register the product. 
+Check to see whether this is the same information contained in your Product 
+Authorization Key (PAK).  Type Y or N in response to the question.  If you 
+do not register and load your authorization key, the product will not run. 
+For more information about LMF, refer to the OpenVMS License Management
+Utility  Manual.
+
+7.  Purge files.
+
+* Do you want to purge files replaced by this installation [YES]? 
+
+VMSINSTAL deletes previous versions of the distribution files.  Press
+Return to purge the files replaced during installation.  If this is your
+first 3270 Application Services software installation, type No and press
+Return.
+
+8.  Choose the Installation Verification Procedure (IVP) option.
+
+* Do you want to run the IVP after the installation [YES]? 
+
+The installation verification procedure (IVP) runs tests to check whether
+the installation procedure was successful.  Press Return to run the IVP
+after the installation.  If you do not want to run the IVP, type No and
+press Return.
+
+If you have not registered the 3270 Application Services software with LMF, 
+the following text appears:
+
+** Digital SNA 3270 Application Services V1.2 Installation Test **
+
+%LICENSE-F-NOAUTH, DEC SNA-3270-SVCS-DEV use is not authorized on this node
+-LICENSE-F-NOLICENSE, no license is active for this software product
+-LICENSE-I-SYSMGR, please see your system manager
+%Failed to test program with shareable image
+
+** Digital SNA 3270 Application Services V1.2 Test FAILED **
+
+Stop the installation and register the Digital SNA 3270 Application Services
+product with LMF as described in step 6.
+
+9.  Unpack the DECforms product for 3270 terminals.
+
+   * Do you want to unpack the DECforms for 3270 Terminals product [YES]?
+
+The installation procedure asks whether you want to unpack the DECforms
+product for 3270 terminals.  If you plan to use the DECforms software
+press Return at this time.  If you do not plan to use DECforms, enter No
+and  press Return to continue with the installation without unpacking the
+software.  Entering No will also save disk space and installation time.    
+
+10.   Create the 3270 OpenVMS print symbiont.
+
+  Note  
+
+If you are reinstalling the Digital SNA 3270 Application Services software, you
+will be asked the following question:  
+
+Do you want to create a new symbiont startup procedure 
+(SYS$STARTUP:R3270$SYMBIONT_STARTUP.COM) [NO]?
+
+If you answer No, the current file will not be changed.  If you answer Yes, 
+another version of the file will be created.  This question does not appear 
+the first time you install the product.
+
+* Enter queue name (or ^Z when done) [R3270$PRINTER1]: 
+* Enter name of default form to use with queue: 
+* Enter name of Gateway to use with queue [GATEWAY_NAME]: btam
+* Enter PLU name [PLUNAME]: JJR018
+* Enter LOGMODE name to use: 
+* Enter SLU name (name of printer)[SLUNAME]: T112F011
+* Enter name of translation table file to use for queue: 
+* Enter queue name (or ^Z when done) [R3270$PRINTER2]:
+
+VMSINSTAL prompts you for the name of the queue, the name of the default
+form  to use with the queue, the name of the SNA Gateway to use with the
+queue, the  PLU name, the LOGMODE name, the SLU name, and the default
+translation table  for the queue (see the Digital SNA 3270 Application Services
+Programming and Management  manual for more information about naming these
+resources).  The list of questions  repeats allowing you to assign more
+than one queue to the print symbiont.   Enter another queue name to assign
+another print queue, or enter  Ctrl/Z to end the process.  If you do not
+want to create the print symbiont startup file now, enter Ctrl/Z.  A
+template startup file containing instructions for starting the print 
+symbiont will be created.
+
+When you have completed the information, VMSINSTAL installs the executable 
+files and creates the startup file SYS$STARTUP:R3270$SYMBIONT_STARTUP.COM.
+
+11.   Link the VTX demonstration application.
+
+        VTX is installed on your system.
+
+* Do you want to link the VTX demonstration application [YES]? 
+* Directory where the VTX TCP source files are:  [SYS$SYSROOT:[TCPLIB]]: 
+%R3270-I-NOQUEST, No further questions will be asked
+
+If you want to link the VTX demonstration application, enter Return.
+VMSINSTAL prompts you for the location of the terminal control program
+(TCP) library that will link to the application.  Enter the name of the
+directory that contains the source files for the VTX TCP and press Return.
+This question does not appear if VTX is not installed on your system.
+
+12.   Read informational messages.
+
+        The installation will proceed from this point unattended. It
+        should complete in five to twenty minutes, depending on the
+        system and options selected.
+
+        The rest of the 3270 distribution kit will be restored.
+
+      %VMSINSTAL-I-RESTORE, Restoring product save set x ...
+
+        The distribution  kit for DECforms for 3270 Terminals is
+        being  restored  into  SYS$UPDATE.   In  order  to install
+        this product, you will need to enter the following command:
+
+        @SYS$UPDATE:VMSINSTAL FORMS-3270014 SYS$UPDATE OPTIONS N
+
+        If you just want the run-time kit, type:
+
+        @SYS$UPDATE:VMSINSTAL FORMSRT-3270014 SYS$UPDATE OPTIONS N
+
+%VMSINSTAL-I-RESTORE, Restoring product save set x ...
+
+Beginning link of VTX demo
+R3270$VTXCON.EXE created
+
+        To install the R3270$LIBSHR.EXE and R3270_LIBSHR.EXE images
+        as shareable each time the system reboots, you must add the
+        following line to your system startup procedure:
+
+                $ @SYS$STARTUP:R3270$STARTUP
+
+        Online release notes for this product can be found in
+        the file SYS$COMMON:[SYSHLP]R3270012.RELEASE_NOTES
+
+%VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+directories...
+
+
+%R3270-I-IVPSTART, 
+
+**** Digital SNA 3270 Application Services Interface V1.2 Installation Test
+Starting ****
+
+  Copyright (c) 1996 Electronic Data Systems Corporation. 
+
+  Copyright (c) 1992, 1994 Digital Equipment Corporation. 
+                               
+  This software is furnished under a license and may be used and copied
+  only in accordance with the terms of such license and with the
+  inclusion of the above copyright notice.  This software or any other
+  copies thereof may not be provided or otherwise made available to any
+  other person.  No title to and ownership of the software is hereby
+  transferred.                        
+                               
+  The information in this software is subject to change without notice
+  and should not be construed as a commitment by DIGITAL Equipment
+  Corporation.                        
+                               
+  DIGITAL assumes no responsibility for the use or reliability of its
+  software on equipment which is not supplied by DIGITAL.         
+                              
+
+
+%R3270-I-LINKIVP_$, linking R3270_$IVP
+
+%R3270-I-LINKIVP, linking R3270$IVP
+
+%R3270-I-IVPRUN, RUNNING R3270$IVP
+%R3270-S-OK, normal successful completion
+%R3270-I-IVP_RUN, RUNNING R3270_$IVP
+%R3270-S-OK, normal successful completion
+
+%R3270-I-OKIVP, **** Digital SNA 3270 Application Services Interface V1.2 Test 
+Successful ****
+
+        Installation of R3270 V1.2 completed at 10:00
+
+        VMSINSTAL procedure done at 10:00
+
+No more input is required.  If you pressed   in response to the prompt in
+step 8, previous versions of the files are now purged.
+
+If the installation procedure is successful, the executable files are moved 
+to their target directory.
+
+13.   End the installation procedure.
+
+When the installation procedure is complete, you can continue to install
+more  products or end the installation procedure.  To end the procedure,
+press  Ctrl/Z or Return.
+
+  Note  
+
+VMSINSTAL deletes or changes entries in the process symbol tables during
+the  installation.  Therefore, if you are going to continue using the
+system manager's  account and want to restore those symbols, you should log
+out and log in again.
+
+2.2   Error Recovery
+
+If errors occur during the installation itself or when the Installation
+Verification  Procedure (IVP) is running, VMSINSTAL displays failure
+messages.  If the installation  fails, you see the following message:
+
+%VMSINSTAL-E-INSFAIL, The installation of Digital SNA 3270 Application Services 
+V1.2 has failed.
+
+If the IVP fails, you see these messages:
+
+The Digital SNA 3270 Application Services V1.2 Installation Verification
+Procedure failed.
+
+%VMSINSTAL-E-IVPFAIL, The IVP for Digital SNA 3270 Application Services V1.2
+has failed.
+
+Errors can occur during the installation under any of these conditions:
+
+o The operating system version is incorrect.
+
+o A prerequisite software version is incorrect.
+
+o Not enough free space on the system disk.
+
+o Quotas necessary for successful installation are insufficient.
+
+o System parameter values for successful installation are insufficient.
+
+o The OpenVMS help library is currently in use.
+
+o The product license has not been registered and loaded.
+
+For descriptions of the error messages generated by these conditions, see
+the  OpenVMS documentation on system messages, recovery procedures, and
+OpenVMS  software installation.  If you are notified that any of these
+conditions exist,  you should take the appropriate action as described in
+the message.  For information  about installation requirements, see Chapter
+1.
+ 
+
+Chapter 3
+
+After Installing the 3270 Application Services Software
+
+You should complete the following tasks after installing the Digital SNA 3270
+Application Services software:
+
+o Run the Installation Verification Procedure separately.
+
+o Edit the system startup and shutdown files.
+
+o Make the product usable on a VMScluster.
+
+o Set user account quotas.
+
+o Report problems.
+
+3.1   Running the Installation Verification Procedure Separately
+
+You usually run the Installation Verification Procedure (IVP) during
+installation.  If you want to run the IVP separately to ensure the
+integrity of installed  files should system problems occur, execute the
+following command procedure:
+
+$ @SYS$UPDATE:R3270$IVP.COM
+
+The following message indicates that the software has been successfully
+installed:
+
+** Digital SNA 3270 Application Services V1.2 Installation Test **
+
+....  Testing Digital SNA 3270 Application Services V1.2 
+
+** Digital SNA 3270 Application Services V1.2 Test Successful **
+
+
+  Note  
+
+The IVP does not verify that the 3270 Application Services software can
+connect to an IBM system.
+
+
+If the software was not installed properly, VMSINSTAL displays error
+messages.  Correct the problems indicated by the messages and rerun the
+installation  procedure.  If you receive IVP errors, you have a damaged
+kit; contact your  Digital representative.
+
+For information about configuring your IBM SNA software components for the 
+Digital SNA 3270 Application Services product , see the DEC SNA Domain Gateway 
+Guide to IBM Resource Definition.
+
+If you have not registered 3270 services with LMF, the following text
+appears:
+
+** Digital SNA 3270 Application Services V1.2 Installation Test **
+
+%LICENSE-F-NOAUTH, DEC SNA-3270-SVCS-DEV Application Services use is not
+authorized on this node
+-LICENSE-F-NOLICENSE, no license is active for this software product
+-LICENSE-I-SYSMGR, please see your system manager
+%Failed to test program with shareable image
+
+** Digital SNA 3270 Application Services V1.2 Test FAILED ** 
+
+Stop the installation and register the 3270 Application Services software
+with LMF.
+
+3.2   Editing the System Files
+
+You must edit the system startup and shutdown files to provide for
+automatic  startup and shutdown of 3270 Application Services when your
+system is rebooted.
+
+Add the command line that starts 3270 Application Services to the system
+startup  file, SYS$MANAGER:SYSTARTUP_*.COM. The 3270 Application Services
+software cannot  start until after the network has started.  You must
+position this new command  line after the line that invokes the network
+startup command procedure.  The  following example shows the network
+startup command line followed by the 3270  Application Services startup
+command line:
+
+$ @SYS$MANAGER:STARTNET.COM
+$ .
+$ .
+$ .
+$ @SYS$STARTUP:R3270$STARTUP.COM
+
+3.3   VMScluster Considerations
+
+After you have installed 3270 Application Services software on one node of 
+a VMSclusterTM, you can activate it on other nodes of the VMScluster by
+executing  the R3270$STARTUP.COM procedure on each node as follows:
+
+$ @SYS$STARTUP:R3270$STARTUP.COM
+
+
+You must activate a 3270 Application Services license for each node in the 
+
+VMScluster that will execute and run 3270 Application Services software.
+You can activate the license in one of the following ways: 
+
+o Log in to each VMScluster node and enter the LICENSE LOAD command.
+
+o Invoke the OpenVMS SYSMAN utility to execute the LICENSE LOAD command on 
+the desired VMScluster nodes.  See the OpenVMS SYSMAN Utility Manual for
+details  on defining your management environment and executing commands on
+other nodes.
+
+For more information about the LICENSE LOAD command, refer to the OpenVMS
+License Management Utility Manual.
+
+3.4   User Account Requirements
+
+To work with 3270 Application Services, user accounts on your system must
+have  certain privileges and quotas.  The next two sections contain
+information about  these requirements.
+
+3.4.1     Privileges
+
+To use 3270 Application Services, each account must have at least the
+TMPMBX  and NETMBX privileges.  If the account is going to be creating a
+DECnet object,  it will also need the SYSNAM privilege.  Use the OpenVMS
+Authorize utility  to determine whether users have the privileges they
+require.
+
+3.4.2     User Account Quotas
+
+You must make sure that the appropriate user accounts have sufficient
+quotas  to be able to use 3270 Application Services.  Table 3-1 summarizes
+the required  user account quotas.
+
+Table 3-1 User Account Quotas for Using 3270 Application Services
+
+Account Quota     Value
+
+ASTLM             24
+
+BIOLM             18
+
+BYTLM             18000
+
+DIOLM             18
+
+ENQLM             30
+
+FILLM             20
+
+See Section 1.5.2 for a description of how to verify and change account
+quotas.
+
+3.5   Determining and Reporting Problems
+
+If you encounter a problem while using 3270 Application Services, report it 
+to Digital.  Depending on the nature of the problem and the type of support 
+you have, you can take one of the following actions:
+
+o Call Digital if your software contract or warranty agreement entitles you 
+to telephone support.
+
+o Submit a Software Performance Report (SPR).
+
+o Fill out and submit a Reader's Comments form if the problem has to do
+with  the 3270 Application Services documentation.  There are Reader's
+Comments forms  at the back of each manual.  Use the form from the manual
+in which you found  the error.  Include the section and page number.
+
+Review the Software Product Description (SPD) and Warranty Addendum for an 
+explanation of warranty.  If you encounter a problem during the warranty
+period,  report the problem as just indicated or follow alternate
+instructions provided  by Digital for reporting SPD nonconformance
+problems.
+
+
+
+Appendix A
+
+Sample Installation Output
+
+The following pages provide a sample installation of the Digital SNA 3270
+Application  Services product.
+
+        VAX/VMS Software Product Installation Procedure V6.1
+
+It is 7-FEB-1994 at 11:24.
+
+Enter a question mark (?) at any time for help.
+%VMSINSTAL-W-NOTSYSTEM, You are not logged in to the SYSTEM account.
+%VMSINSTAL-W-ACTIVE, The following processes are still active:
+        DECW$TE_0062
+        Dr. Memory
+        !Ritz!1
+* Do you want to continue anyway [NO]? y
+* Are you satisfied with the backup of your system disk [YES]? 
+The following products will be processed:
+  R3270 V1.2
+
+        Beginning installation of R3270 V1.2 at 11:24
+
+%VMSINSTAL-I-RESTORE, Restoring product save set A ...
+%VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+
+        Product:      SNA-3270-SVCS-DEV, SNA-3270-SVCS-RT
+        Producer:     DEC
+        Version:      V1.2
+        Release Date: dd-mmm-yyyy
+
+* Does this product have an authorization key registered and loaded? y
+* Do you want to purge files replaced by this installation [YES]? 
+* Do you want to run the IVP after the installation [YES]?
+* Do you want to unpack the DECforms for 3270 Terminals product [YES]? n
+* Enter queue name (or ^Z when done) [R3270$PRINTER1]: rd1
+* Enter name of default form to use with queue: alnsyb_test 
+* Enter name of Gateway to use with queue [GATEWAY_NAME]: btam
+* Enter PLU name [PLUNAME]: jjr018
+* Enter LOGMODE name to use: 
+* Enter SLU name (name of printer) [SLUNAME]: t112f011
+* Enter name of translation table file to use for queue:
+* Enter queue name (or ^Z when done) [R3270$PRINTER2]:^Z
+
+                VTX is installed on your system.
+
+* Do you want to link the VTX demonstration application [YES]? n
+%R3270-I-NOQUEST, No further questions will be asked
+
+        The installation will proceed from this point unattended. It 
+        should complete in five to twenty minutes, depending on the
+        system and options selected.
+
+        The rest of the R3270 distribution kit will be restored.
+%VMSINSTAL-I-RESTORE, Restoring product save set x...
+
+        To install the R3270$LIBSHR.EXE and R3270_LIBSHR.EXE images as
+        shareable each time the system reboots, you must add the following
+        line to your system startup procedure:
+
+                $ @SYS$STARTUP:R3270$STARTUP
+
+        Online  release  notes  for this product can be found in
+        the file SYS$COMMON:[SYSHLP]R3270012.RELEASE_NOTES
+
+%VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+directories...
+
+%R3270-I-IVPSTART, 
+**** Digital SNA 3270 Application Services V1.2 Installation Test Starting ****
+
+  Copyright (c) 1996 Electronic Data Systems Corporation. 
+
+  Copyright (c) 1992, 1994 Digital Equipment Corporation. 
+                               
+  This software is furnished under a license and may be used and  copied 
+  only  in  accordance  with  the  terms  of  such  license and with the 
+  inclusion of the above copyright notice.  This software or  any  other 
+  copies  thereof may not be provided or otherwise made available to any 
+  other person.  No title to and ownership of  the  software  is  hereby 
+  transferred.                        
+                               
+  The information in this software is subject to change  without  notice 
+  and  should  not  be  construed  as  a commitment by DIGITAL Equipment 
+  Corporation.                        
+                               
+  DIGITAL assumes no responsibility for the use or  reliability  of  its 
+  software on equipment which is not supplied by DIGITAL.         
+                              
+
+
+%R3270-I-LINKIVP_$, linking R3270_$IVP
+
+%R3270-I-LINKIVP, linking R3270$IVP
+
+%R3270-I-IVPRUN, RUNNING R3270$IVP
+%R3270-S-OK, normal successful completion
+%R3270-I-IVP_RUN, RUNNING R3270_$IVP
+%R3270-S-OK, normal successful completion
+
+%R3270-I-OKIVP, 
+**** Digital SNA 3270 Application Services V1.2 Test Successful ****
+
+        Installation of R3270 V1.2 completed at 11:32
+
+        VMSINSTAL procedure done at 11:32
+
+
+
+  Note  
+
+To install the R3270$LIBSHR.EXE and R3270_LIBSHR.EXE images as shareable
+each time the system reboots, you must add the following line to your
+system startup procedure: 
+
+                $ @SYS$STARTUP:R3270$STARTUP
+
+
+
+
+
+Appendix B
+
+Files and Queue Logicals
+
+The Digital SNA 3270 Application Services software installation procedure
+installs  a number of files on your system.  Also, if you define symbiont
+queues the  software automatically creates a set of logical names for these
+queues.
+
+Files
+
+The following list contains the names of all files created on your system
+when the Digital SNA 3270 Application Services software is installed.
+
+        [SYSLIB]R3270$LIBSHR.EXE
+        [SYSLIB]R3270_LIBSHR.EXE
+        [SYSLIB]R3270DEF.ADA      
+        [SYSLIB]R3270DEF.BAS      
+        [SYSLIB]R3270DEF.FOR     
+        [SYSLIB]R3270DEF.H       
+        [SYSLIB]R3270DEF.MAR      
+        [SYSLIB]R3270DEF.MLB      
+        [SYSLIB]R3270DEF.PAS     
+        [SYSLIB]R3270DEF.PEN
+        [SYSLIB]R3270DEF.PLI      
+        [SYSLIB]R3270DEF.R32      
+        [SYSLIB]R3270DEF_$.ADA    
+        [SYSLIB]R3270DEF_$.BAS   
+        [SYSLIB]R3270DEF_$.FOR    
+        [SYSLIB]R3270DEF_$.H     
+        [SYSLIB]R3270DEF_$.MAR    
+        [SYSLIB]R3270DEF_$.MLB   
+        [SYSLIB]R3270DEF_$.PAS    
+        [SYSLIB]R3270DEF_$.PEN
+        [SYSLIB]R3270DEF_$.PLI    
+        [SYSLIB]R3270DEF_$.R32
+        [SYSEXE]R3270$SYMBIONT.EXE
+        [SYS$STARTUP]R3270$STARTUP.COM
+        [SYSHLP]R3270_HELP.HLP
+        [SYSTEST]R3270$IVP.COM
+        [SYSTEST]R3270$IVP.OBJ
+        [SYSTEST]R3270_$IVP.OBJ
+        [SYS$STARTUP]R3270$SYMBIONT_STARTUP.COM
+        [SYSHLP]R3270012.RELEASE_NOTES
+        [SYSHLP.EXAMPLES]R3270$EXAMPLE.C
+        [SYS$LDR]RDDRIVER.EXE
+        [SYSLIB]R3270TRATBL.MAR
+        [SYSLIB]R3270TRATBL.TBL
+        [SYSLIB]TRAPREFIX.MAR
+        [SYSMGR]R3270$DEINSTALL.COM
+        [SYSMSG]R3270MSG.EXE
+        [SYSMSG]R3270MSG_$.EXE
+
+If the DECforms save sets have been unpacked, the following files are
+added:
+
+        [SYSUPD]FORMS-3270014.A
+        [SYSUPD]FORMS-3270014.B
+        [SYSUPD]FORMS-3270014.C
+        [SYSUPD]FORMS-3270014.C
+        [SYSUPD]FORMSRT-3270014.A
+
+Logical Names
+
+If you define symbiont queues, the software creates a set of new logicals
+(/SYSTEM) for each queue.  They take this form:   
+
+R3270$queue-name_PSYMB_parameter-name
+
+For example,
+
+R3270$RD1_PSYMB_GATEWAY
+
+ 
+
+Index
+
+Symbol
+
+3270 OpenVMS print symbiont
+
+See Print symbiont
+
+A
+
+Authorize utility, 3-3
+
+  MODIFY command, 1-6
+
+  SHOW command, 1-6
+
+  using to change and verify quotas, 1-6
+
+B
+
+Bill of Materials, 1-1
+
+  damaged or missing components, 1-1
+
+D
+
+DEC VTX Terminal Control Program, 1-3
+
+  license, 1-3
+
+  minimum version, 1-3
+
+DECnet
+
+  determining version, 1-2
+
+  OSI, 1-2
+
+  required version, 1-2
+
+E
+
+Editing system startup files, 3-2
+
+I
+
+IBM
+
+  configuring SNA components, 3-2
+
+Indented bills report, 1-1
+
+Installation
+
+  disk space required with DECforms, 1-5
+
+  errors, 3-2
+
+  free disk space required, 1-5
+
+  privileges required, 1-5
+
+  process quotas required, 1-5
+
+    ASTLIM, 1-6
+
+    BIOLM, 1-6
+
+    BYTLM, 1-6
+
+    DIOLM, 1-6
+
+    ENQLM, 1-6
+
+    FILLM, 1-6
+
+  time required, 1-4
+
+Installation Verification Procedure, 2-5
+
+  errors, 3-2
+
+Installing the software, 2-1
+
+  checking informational messages, 2-7
+
+  confirming system backup, 2-3
+
+  confirming system status, 2-3
+
+  ending, 2-8
+
+installing the 3270 OpenVMS print symbiont, 2-5
+
+  linking Videotex Terminal Control Program, 2-6
+
+  mounting media, 2-3
+
+  OPTIONS N, 2-2
+
+  Product Authorization Key, 2-5
+
+  purging files, 2-5
+
+  registering the license, 2-4
+
+  running installation verification, 2-5
+
+  running VMSINSTAL, 2-1
+
+  unpacking DECforms software for 3270 terminals, 2-5
+
+  IVP
+
+  See Installation Verification Procedure
+
+L
+
+LICENSE LOAD command, 3-3
+
+  OpenVMS SYSMAN utility, 3-3
+
+License Management Facility, 2-5
+
+  if not registered, 3-2
+
+LMF
+
+  See License Management Facility
+
+N
+
+NETMBX, 3-3
+
+P
+
+PAK
+
+  See Product Authorization Key
+
+Print symbiont
+
+  default form, 2-6
+
+  Gateway to use, 2-6
+
+  LOGMODE name, 2-6
+
+  PLU name, 2-6
+
+  queue, 2-6
+
+  SLU name, 2-6
+
+  startup file, 2-6
+
+  SYS$STARTUP:R3270$SYMBIONT_STARTUP, 2-6
+
+Print symbiont, default translation table, 2-6
+
+Privileges needed to use software, 3-3
+
+Problem reporting, 3-4
+
+Process account quotas
+
+  ASTLM, 1-6
+ 
+  BIOLM, 1-6
+
+  BYTLM, 1-6
+
+  DIOLM, 1-6
+
+  ENQLM, 1-6
+
+  FILLM, 1-6
+
+Product Authorization Key, 1-3, 2-5
+
+  license, 1-4
+
+  LICENSE REGISTER command, 1-4
+
+  loading license on other nodes, 1-4
+
+Purging files
+
+  during installation, 2-5
+
+Q
+
+Quotas needed to use software, 3-3
+
+R
+
+Release notes
+
+  copying to SYS$HELP, 2-2
+
+  displaying, 2-2
+
+  printing, 2-2
+
+S
+
+Software
+
+  optional, 1-2
+
+  prerequisite, 1-2
+
+Software Product Description, 3-4
+
+SPD
+
+  See Software Product Description
+
+SYSNAM, 3-3
+
+System status
+
+  other active processes, 2-3
+
+T
+
+TMPMBX, 3-3
+
+U
+
+UAF
+
+  See Authorize utility
+
+V
+
+VMScluster
+
+  activating node licenses, 3-3
+
+  installing software on
+
+  R3270$STARTUP.COM, 3-2
+
+  licensing each node, 3-3
+
+Videotex
+
+  demonstration application, 2-6
+
+  terminal control program (TCP), 2-6
+
+  OpenVMS
+
+  classes, 1-1
+
+  operating system version
+
+  determining, 1-2
+
+  support options, 1-1
+
+  OpenVMS classes required, 1-1
+
+VMSINSTAL, 1-6
+
+  and backing up system disk, 1-7
+
+  minimum quotas required, 1-6
+
+VTX
+
+  See DEC VTX Terminal Control Program; Videotex
+
+W
+
+Warranty Addendum, 3-4
+
+
+

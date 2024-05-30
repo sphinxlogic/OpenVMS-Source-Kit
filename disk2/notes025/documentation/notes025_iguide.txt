@@ -1,0 +1,2679 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     DEC_Notes_____________________________________
+                     Installation Guide
+
+                     Order Number: AA-GH96F-TE
+
+
+                     November 1993
+
+                     This document contains instructions for installing
+                     DEC Notes on the OpenVMS[TM] operating system. It
+                     also explains how to read the online release notes
+                     before or after installing the product.
+
+
+
+
+
+
+                     Revision/Update Information: This revised manual
+                                                  supersedes the
+                                                  DEC Notes Installation
+                                                  Guide
+                                                  (Order Number AA-
+                                                  GH96E-TE).
+
+                     Operating System and Version: VMS Version 5.4 or
+                                                  higher.
+
+                     Software Version:            DEC Notes Version 2.5
+
+                     Digital Equipment Corporation
+                     Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           November 1993
+
+           Digital Equipment Corporation makes no representations
+           that the use of its products in the manner described in
+           this publication will not infringe on existing or future
+           patent rights, nor do the descriptions contained in this
+           publication imply the granting of licenses to make, use,
+           or sell equipment or software in accordance with the
+           description.
+
+           Possession, use, or copying of the software described
+           in this publication is authorized only pursuant to a
+           valid written license from Digital or an authorized
+           sublicensor.
+
+           © Digital Equipment Corporation 1993. All Rights Reserved.
+
+           The postpaid Reader's Comments forms at the end of this
+           document request your critical evaluation to assist in
+           preparing future documentation.
+
+           The following are trademarks of Digital Equipment
+           Corporation: ALL-IN-1, Alpha AXP, AXP, Bookreader, DECnet,
+           DEC Notes, DECwindows, Digital, OpenVMS, PATHWORKS,
+           PrintServer, TeamLinks, VAX, VAX Notes, VAXcluster,
+           VAXserver, VAXstation, VMS, WPS-PLUS, XUI, and the
+           DIGITAL logo.
+
+           The following are third-party trademarks:
+           Motif and OSF/Motif are trademarks of Open Software
+           Foundation, Inc.
+           PostScript is a registered trademark of Adobe Systems,
+           Inc.
+           UNIX is a registered trademark of UNIX Systems Laboratories,
+           Inc.
+
+           All other trademarks and registered trademarks are the
+           property of their respective holders.
+
+                                                               ZK5198
+
+           This document is available on CD-ROM.
+
+           This document was prepared using VAX DOCUMENT Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing for Installation
+
+         1.1   Checking the Distribution Kit................    1-1
+         1.2   Accessing the Online Release Notes...........    1-1
+         1.3   VAX Installation Procedure Requirements......    1-2
+         1.4   AXP Installation Procedure Requirements......    1-4
+         1.5   User Account Quotas and Privileges...........    1-6
+         1.6   VMS License Management Facility..............    1-7
+         1.7   Using VMSINSTAL..............................    1-9
+
+   2  Installing DEC Notes
+
+         2.1   Running the Installation Procedure...........    2-1
+
+   3  Post-Installation Procedures
+
+         3.1   Editing the System Startup File..............    3-1
+         3.2   Network Transport Information................    3-1
+         3.2.1     DECnet Information.......................    3-2
+         3.2.2     TCP/IP Information.......................    3-2
+         3.3   Installing DEC Notes on a VAXcluster.........    3-3
+         3.4   Invoking DEC Notes After the Installation....    3-4
+         3.5   Controlling DEC Notes Servers................    3-5
+         3.6   Running the Installation Verification
+               Procedure Separately.........................    3-6
+         3.7   Error Conditions.............................    3-7
+         3.8   Maintenance Updates..........................    3-7
+         3.9   Determining and Reporting Problems...........    3-8
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     A  Sample Installation
+
+
+     B  DEC Notes License Information
+
+           B.1   The NOTES-CLIENT-USER License................    B-1
+           B.2   The NOTES-SERVER-LANLINK License.............    B-1
+           B.2.1     Adding a User to the Reserve List........    B-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              This guide describes how to install and maintain DEC Notes
+              on the OpenVMS[TM] operating system. You should review the
+              entire guide before you start the installation.
+
+        Who Should Use This Guide
+
+              This guide is for system managers or others responsible
+              for installing system software. To install the DEC Notes
+              software, you must have access to a privileged account
+              such as the SYSTEM account, and you must be familiar with
+              the OpenVMS installation procedure, VMSINSTAL.COM.
+
+              Keep this document with your distribution kit. You will
+              need it to install maintenance updates or to reinstall DEC
+              Notes for any other reason.
+
+              At the back of this document are two Reader's Comments
+              forms. If you have any comments about this document,
+              please fill out one form and mail it. Your comments will
+              be considered for the next revision of the installation
+              guide.
+
+        For More Information
+
+              For more information about installing DEC Notes on OpenVMS
+              systems, refer to your processor-specific installation
+              /operations guide.
+
+              For more information about the VMSINSTAL command
+              procedure, see one of the following manuals:
+
+              o  VMS System Manager's Manual, in the OpenVMS base
+                 documentation set
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+           o  VMS License Management Utility Manual, in the OpenVMS
+              base documentation set
+
+           o  VMS Authorize Utility Manual, in the OpenVMS base
+              documentation set
+
+           o  VMS System Messages and Recovery Procedures Reference
+              Volume, in the OpenVMS base documentation set
+
+           o  Guide to Setting Up a VMS System, in the OpenVMS system
+              management kit
+
+     Conventions
+
+           The following conventions are used in this guide:
+
+           <Return>        In procedures, key names are shown
+                           enclosed to indicate that you press a
+                           key on the keyboard.
+
+           <Ctrl/x>        A sequence such as <Ctrl/x> indicates that
+                           you must hold down the key labeled Ctrl
+                           while you press another key or a pointing
+                           device button.
+
+           ()              In format descriptions, parentheses
+                           indicate that, if you choose more than
+                           one option, you must enclose the choices
+                           in parentheses.
+
+           []              In format descriptions, brackets indicate
+                           that whatever is enclosed is optional;
+                           you can select none, one, or all of the
+                           choices.
+
+           bold            In the online version, boldface text is
+                           used in interactive examples to indicate
+                           typed user input.
+
+           italic text     Italic text represents information that
+                           can vary in system messages (for example,
+                           Internal error number).
+
+
+
+     vi
+
+ 
+
+
+
+
+
+
+
+              UPPERCASE TEXT  Uppercase letters indicate that you must
+                              enter a command. Uppercase letters also
+                              indicate the name of a routine, the name
+                              of a file, the name of a file protection
+                              code, or the abbreviation of a system
+                              privilege.
+
+              Bookreader      The term Bookreader refers to the
+                              Bookreader[TM] software.
+
+              VMS             The term VMS refers to the OpenVMS
+                              operating system.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                              Preparing for Installation
+
+
+
+              This chapter describes tasks that you must complete before
+              installing DEC Notes.
+
+        1.1 Checking the Distribution Kit
+
+              Your bill of materials (BOM) and indented bills report
+              (BIL) specify the number and contents of your media.
+              Be sure to check the contents of your kit against this
+              information. If your kit is damaged or if you find that
+              parts of it are missing, call your Digital representative.
+
+              Distribution media must be mounted in numerical order. The
+              installation procedure prompts you to mount the volumes.
+              For more information on how to mount distribution media,
+              refer to your processor-specific installation/operations
+              guide, which also details several options to the
+              installation procedure.
+
+        1.2 Accessing the Online Release Notes
+
+              DEC Notes provides online release notes. The prompt to
+              display or print the release notes during the installation
+              appears in step 5 of the installation procedure when you
+              invoke VMSINSTAL with the OPTIONS N parameter.
+
+              To obtain the release notes after the installation, type
+              or print the file SYS$HELP:NOTES$025.RELEASE_NOTES. Online
+              help also directs you to the release notes file. After the
+              installation, type the following command:
+
+              $ HELP NOTES RELEASE_NOTES
+
+
+
+
+                                          Preparing for Installation 1-1
+
+ 
+
+
+
+     Preparing for Installation
+     1.3 VAX Installation Procedure Requirements
+
+     1.3 VAX Installation Procedure Requirements
+
+           The VAX installation should take approximately 15
+           minutes, depending on the type of media and your system
+           configuration. Before installing DEC Notes, you must have
+           the following privileges and resources:
+
+           o  SETPRV privilege; or CMKRNL, WORLD, OPER, and SYSPRV
+              privileges
+
+           o  A minimum of 6000 blocks of free disk space during
+              installation; 4500 blocks are used after installation
+
+           o  A minimum of 400 free global pages plus the size (in
+              number of disk blocks) of the file SYS$LIBRARY:DCLTABLES.EXE
+              at installation; for most efficient operation, you will
+              need a total of 2500 free global pages plus the size of
+              SYS$LIBRARY:DCLTABLES.EXE after installation
+
+           o  A minimum of 2 free global sections at installation;
+              for most efficient operation, you will need a total of
+              6 free global sections at installation
+
+           o  OpenVMS Version 5.4 or higher
+
+              ________________________Note ________________________
+
+              You must ensure that your system has the necessary
+              global page and global section SYSGEN quotas for the
+              installation. Failure to do so could cause the DCL
+              tables to be corrupted in some situations.
+
+              _____________________________________________________
+
+           To determine the number of available global pages on your
+           system, use the VMS Install Utility. Type the following
+           commands:
+
+           $ INSTALL :== $INSTALL/COMMAND_MODE
+           $ INSTALL
+           INSTALL> LIST/GLOBAL/SUMMARY
+
+                   Summary of Local Memory Global Sections
+
+           ?? Global Sections Used,  ???/??? Global Pages Used/Unused
+
+           INSTALL> EXIT
+
+     1-2 Preparing for Installation
+
+ 
+
+
+
+                                              Preparing for Installation
+                             1.3 VAX Installation Procedure Requirements
+
+              When you issue these commands, the system displays a
+              summary of the number of global sections used, the number
+              of global pages used, and the number of global pages
+              unused. To exit from the VMS Install Utility, type the
+              EXIT command.
+
+              DEC Notes requires approximately 2500 global pages. If
+              there are fewer than 2500 pages available, you can delete
+              an existing known image with the VMS Install Utility;
+              or you can increase the GBLPAGES system parameter with
+              the VMS System Generation Utility (SYSGEN) by editing
+              the file SYS$SYSTEM:MODPARAMS.DAT and then invoking the
+              AUTOGEN command procedure, SYS$UPDATE:AUTOGEN.COM. For
+              example, you can include a line like the following in
+              MODPARAMS.DAT:
+
+              ADD_GBLPAGES=4000
+
+              For more information on the AUTOGEN command procedure, re-
+              fer to the
+              VMS System Management subkit.
+
+              You can determine the number of available global sections
+              by invoking SYSGEN as follows:
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN> USE CURRENT
+              SYSGEN> SHOW GBLSECTIONS
+                 .
+                 .
+                 .
+              SYSGEN> EXIT
+
+              The last number displayed is the maximum number of global
+              sections. Compare this number to the number of global
+              sections in use displayed by the VMS Install Utility. DEC
+              Notes requires, at most, 6 global sections. Therefore,
+              if the number of global sections used plus 6 exceeds the
+              maximum number of global sections, you should increase the
+              number of available global sections before you install
+              DEC Notes. To increase the number, you must increase
+              the GBLSECTIONS system parameter with SYSGEN by editing
+              the file SYS$SYSTEM:MODPARAMS.DAT and then invoking the
+              SYS$UPDATE:AUTOGEN.COM procedure. For more information
+              on the AUTOGEN command procedure, refer to the VMS System
+              Management subkit.
+
+                                          Preparing for Installation 1-3
+
+ 
+
+
+
+     Preparing for Installation
+     1.3 VAX Installation Procedure Requirements
+
+           If the number of global sections used plus 6 is less than
+           the maximum number of global sections, you can exit from
+           SYSGEN and continue.
+
+     1.4 AXP Installation Procedure Requirements
+
+           The AXP installation should take approximately 15
+           minutes, depending on the type of media and your system
+           configuration. Before installing DEC Notes, you must have
+           the following privileges and resources:
+
+           o  SETPRV privilege; or CMKRNL, WORLD, OPER, and SYSPRV
+              privileges
+
+           o  A minimum of 7000 blocks of free disk space during
+              installation; 6000 blocks are used after installation
+
+           o  A minimum of 830 free global pages plus the size (in
+              number of disk blocks) of the file SYS$LIBRARY:DCLTABLES.EXE
+              at installation; for most efficient operation, you will
+              need a total of 3500 free global pages plus the size of
+              SYS$LIBRARY:DCLTABLES.EXE after installation
+
+           o  A minimum of 3 free global sections at installation;
+              for most efficient operation, you will need a total of
+              7 free global sections after installation
+
+           o  OpenVMS Version 1.0 for AXP or higher
+
+              ________________________Note ________________________
+
+              You must ensure that your system has the necessary
+              global page and global section SYSGEN quotas for the
+              installation. Failure to do so could cause the DCL
+              tables to be corrupted in some situations.
+
+              _____________________________________________________
+
+           To determine the number of available global pages on your
+           system, use the VMS Install Utility. Type the following
+           commands:
+
+           $ INSTALL :== $INSTALL/COMMAND_MODE
+           $ INSTALL
+           INSTALL> LIST/GLOBAL/SUMMARY
+
+                   Summary of Local Memory Global Sections
+
+     1-4 Preparing for Installation
+
+ 
+
+
+
+                                              Preparing for Installation
+                             1.4 AXP Installation Procedure Requirements
+
+              ?? Global Sections Used,  ???/??? Global Pages Used/Unused
+
+              INSTALL> EXIT
+
+              When you issue these commands, the system displays a
+              summary of the number of global sections used, the number
+              of global pages used, and the number of global pages
+              unused. To exit from the VMS Install Utility, type the
+              EXIT command.
+
+              DEC Notes requires approximately 3500 global pages. If
+              there are fewer than 3500 pages available, you can delete
+              an existing known image with the VMS Install Utility;
+              or you can increase the GBLPAGES system parameter with
+              the VMS System Generation Utility (SYSGEN) by editing
+              the file SYS$SYSTEM:MODPARAMS.DAT and then invoking the
+              AUTOGEN command procedure, SYS$UPDATE:AUTOGEN.COM. For
+              example, you can include a line like the following in
+              MODPARAMS.DAT:
+
+              ADD_GBLPAGES=4000
+
+              For more information on the AUTOGEN command procedure, re-
+              fer to the
+              VMS System Management subkit.
+
+              You can determine the number of available global sections
+              by invoking SYSGEN as follows:
+
+              $ RUN SYS$SYSTEM:SYSGEN
+              SYSGEN> USE CURRENT
+              SYSGEN> SHOW GBLSECTIONS
+                 .
+                 .
+                 .
+              SYSGEN> EXIT
+
+              The last number displayed is the maximum number of global
+              sections. Compare this number to the number of global
+              sections in use displayed by the VMS Install Utility. DEC
+              Notes requires, at most, 7 global sections. Therefore,
+              if the number of global sections used plus 7 exceeds the
+              maximum number of global sections, you should increase the
+              number of available global sections before you install
+              DEC Notes. To increase the number, you must increase
+              the GBLSECTIONS system parameter with SYSGEN by editing
+
+                                          Preparing for Installation 1-5
+
+ 
+
+
+
+     Preparing for Installation
+     1.4 AXP Installation Procedure Requirements
+
+           the file SYS$SYSTEM:MODPARAMS.DAT and then invoking the
+           SYS$UPDATE:AUTOGEN.COM procedure. For more information
+           on the AUTOGEN command procedure, refer to the VMS System
+           Management subkit.
+
+           If the number of global sections used plus 7 is less than
+           the maximum number of global sections, you can exit from
+           SYSGEN and continue.
+
+     1.5 User Account Quotas and Privileges
+
+           To use DEC Notes, each account must have TMPMBX and NETMBX
+           privileges and the following minimum requirements:
+
+           o  AST limit (ASTLM): 24 (minimum)
+
+           o  Buffered I/O quota (BIOLM): 18 (minimum)
+
+           o  Buffered I/O byte count quota (BYTLM): 8192 (minimum)
+
+           o  Direct I/O quota (DIOLM): 18 (minimum)
+
+           o  Enqueue quota (ENQLM): 30 (minimum)
+
+           o  Open file limit (FILLM): 20 (minimum)
+
+           o  Paging file quota (PGFLQUOTA): 20,000 pages (minimum)
+
+           o  Subprocess creation quota (PRCLM): 2 (minimum)
+
+           o  Working set size (WSDEF): 512 pages (minimum), 1024
+              pages (optimum)
+
+           Use the VMS Authorize Utility (AUTHORIZE) to compare the
+           current values of these quotas with the requirements for
+           DEC Notes. For example, the account used in the following
+           example is the SYSTEM account:
+
+           $ SET DEFAULT SYS$SYSTEM
+           $ RUN AUTHORIZE
+           UAF> SHOW SYSTEM
+
+           To change the values of any user account quotas and
+           privileges, use the VMS Authorize Utility's MODIFY
+           command. For more information, see the VMS Authorize
+           Utility Manual.
+
+     1-6 Preparing for Installation
+
+ 
+
+
+
+                                              Preparing for Installation
+                                     1.6 VMS License Management Facility
+
+        1.6 VMS License Management Facility
+
+              This product supports the License Management Facililty
+              (LMF) features provided by OpenVMS (Version 5.0 and
+              higher), and requires that a Product Authorization Key
+              (PAK) be registered.
+
+              The license registration information you need is contained
+              in the PAK that is shipped with DEC Notes. The PAK is
+              a paper certificate that contains information about the
+              license you have to run a particular piece of software.
+
+              During the installation, you are asked if you have reg-
+              istered the DEC Notes license and loaded the appropriate
+              authorization key. You must register and load your license
+              for DEC Notes before you start the installation in order
+              to run the Installation Verification Procedure (IVP) and
+              use the software.
+
+              To register a license under OpenVMS Version 5.0 or
+              higher, first log in to the system manager's account,
+              SYSTEM. You then have a choice of two ways to perform the
+              registration:
+
+              o  Invoke the SYS$UPDATE:VMSLICENSE.COM procedure. When
+                 it prompts you for information, respond with data from
+                 your PAK.
+
+              o  Issue the DCL command LICENSE REGISTER with the
+                 appropriate qualifiers that correspond to information
+                 on the PAK.
+
+              For complete information on the VMSLICENSE.COM procedure
+              and on the management features of LMF, see the VMS License
+              Management Utility Manual.
+
+              There is only one kit for DEC Notes, but there are six
+              licenses:
+
+              o  NOTES
+
+              o  NOTES-USER
+
+              o  NOTES-CLIENT
+
+              o  NOTES-CLIENT-USER
+
+              o  NOTES-LOCAL
+
+                                          Preparing for Installation 1-7
+
+ 
+
+
+
+     Preparing for Installation
+     1.6 VMS License Management Facility
+
+           o  NOTES-SERVER-LANLINK
+
+           The NOTES and NOTES-USER licenses have full functionality.
+           The difference is that the NOTES-USER license permits only
+           a specified maximum number of users to use DEC Notes at
+           any one time; the NOTES license does not set a limit.
+
+           The NOTES-CLIENT and NOTES-CLIENT-USER licenses do not
+           have full functionality. The difference is that the NOTES-
+           CLIENT-USER license permits only a specified maximum
+           number of users to use DEC Notes at any one time. It
+           allows users to access only remote conferences; they
+           cannot create or access local conferences. The NOTES-
+           CLIENT license does not restrict the number of users.
+
+           The NOTES-LOCAL license allows access to local conferences
+           only. It provides full functionality but does not allow a
+           user to access conferences on remote nodes, and does not
+           allow the DEC Notes server to run.
+
+           The NOTES-SERVER-LANLINK license allows the DEC Notes
+           server to run on a node, but not the DEC Notes clients.
+           Users may access conferences on the licensed node by using
+           DEC Notes clients on remote nodes or using Conferencing
+           clients on other platforms.
+
+           If a user on a system with a NOTES-CLIENT license attempts
+           to perform an operation that is not allowed under the
+           NOTES-CLIENT license, the following error message is
+           returned:
+
+           Your software license does not allow this operation
+
+           If a user on a system with a NOTES-USER license attempts
+           to invoke DEC Notes at a time when the maximum number of
+           users are using DEC Notes, the following error message is
+           returned:
+
+           $ NOTES
+           %LICENSE-F-NOAUTH, DEC NOTES-USER use is not authorized on this node
+           -LICENSE-F-EXCEEDED, attempted usage exceeds active license limits
+           -LICENSE-I-SYSMGR, please see your system manager
+
+
+
+     1-8 Preparing for Installation
+
+ 
+
+
+
+                                              Preparing for Installation
+                                                     1.7 Using VMSINSTAL
+
+        1.7 Using VMSINSTAL
+
+              After you log in to a privileged account to install DEC
+              Notes, set the default directory to SYS$UPDATE: and then
+              invoke VMSINSTAL, the command procedure that installs this
+              product. An example of this procedure is shown in steps 1
+              and 2 of the Installing DEC Notes section.
+
+              $ SET DEFAULT SYS$UPDATE
+              $ @VMSINSTAL NOTES025 ddn: [OPTIONS N]
+
+              You can also type an asterisk (*) in place of NOTES025.
+              If you are installing from magnetic tape, you can use the
+              asterisk to save installation time; the asterisk causes
+              DEC Notes to be installed with a minimum of tape passes.
+              For example:
+
+              $ SET DEFAULT SYS$UPDATE
+              $ @VMSINSTAL * ddn: [OPTIONS N]
+
+              The command parameters are described in the next
+              paragraphs. If you do not supply the first two parameters
+              (NOTES025 and ddn:), VMSINSTAL prompts you for the product
+              and device names. If you wish to be prompted for the
+              product and device names and to display or print the
+              release notes, type the following:
+
+              $ @SYS$UPDATE:VMSINSTAL "" "" OPTIONS N
+
+              ddn:
+              Represents the name of a device where the distribution
+              volumes will be mounted, where dd is the device code and n
+              is the unit number. It is not necessary to use the console
+              drive to install DEC Notes. If you do use the console
+              drive, you should replace any media you removed from the
+              drive. CSA1: is the device name used in examples in this
+              document.
+
+              OPTIONS N
+              Is an optional parameter you should provide if you want
+              to be prompted to display or print the release notes.
+              If you do not include the OPTIONS N parameter, VMSINSTAL
+              does not prompt you to display or print the release notes.
+              VMSINSTAL permits the use of several other options. For
+              more information on the other options, see your processor-
+              specific installation/operations guide.
+
+                                          Preparing for Installation 1-9
+
+ 
+
+
+
+     Preparing for Installation
+     1.7 Using VMSINSTAL
+
+           When you invoke VMSINSTAL, it checks the following:
+
+           o  Whether you logged in to a privileged account.
+              Digital recommends that you install software from the
+              system manager's account with your default device and
+              directory set to SYS$UPDATE.
+
+           o  Whether you have adequate quotas for installation.
+              VMSINSTAL checks for the following quota values:
+
+              -  ASTLM = 24
+
+              -  BIOLM = 18
+
+              -  BYTLM = 18000
+
+              -  DIOLM = 18
+
+              -  ENQLM = 30
+
+              -  FILLM = 20
+
+           VMSINSTAL then checks whether the following conditions
+           exist:
+
+           o  Whether DECnet is not up and running
+
+           o  Whether any users are logged in to the system
+
+           If VMSINSTAL detects either of these conditions, you will
+           be asked whether you want to continue the installation. If
+           you want to continue, type YES. If you want to stop the
+           installation, press RETURN.
+
+
+
+
+
+
+
+
+
+
+
+
+     1-10 Preparing for Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                    Installing DEC Notes
+
+
+
+              This chapter contains excerpts from the installation
+              procedure and explains each step. Defaults appear in
+              brackets throughout the installation procedure.
+
+        2.1 Running the Installation Procedure
+
+              To abort the installation procedure at any time, press
+              CTRL/Y. When you press CTRL/Y, the installation procedure
+              deletes all files it has created up to that point and
+              then returns you to DCL level. If you want to retry the
+              installation procedure after pressing CTRL/Y, you must
+              proceed from step 2.
+
+              1. Log in to a privileged account and set your default
+                 device and directory to SYS$UPDATE.
+
+                 Username: SYSTEM
+                 Password:
+                 $ SET DEFAULT SYS$UPDATE
+
+              2. Invoke VMSINSTAL.
+
+                 $ @VMSINSTAL NOTES025 CSA1: OPTIONS N
+
+                       VAX/VMS Software Product Installation Procedure Vx.x
+
+                 It is dd-mmm-yyyy at hh:mm.
+                 Enter a question mark (?) at any time for help.
+
+                 * Are you satisfied with the backup of your system disk [YES]? YES
+
+                 If you are satisfied with the backup of your system
+                 disk, press RETURN. Otherwise, type NO and press RETURN
+                 to discontinue the installation.
+
+                                                Installing DEC Notes 2-1
+
+ 
+
+
+
+     Installing DEC Notes
+     2.1 Running the Installation Procedure
+
+           3. Insert the first installation kit volume.
+
+              Please mount the first volume of the set on CSA1:.
+              * Are you ready? YES
+              The following products will be processed:
+
+                NOTES 2.5
+
+                  Beginning installation of NOTES V2.5 at hh:mm
+
+              %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+              To indicate that you want to continue the installation,
+              mount volume 1, type YES, and then press RETURN.
+
+           4. Insert the subsequent installation kit volumes, if any.
+
+              %BACKUP-I-READYREAD, mount volume 2 on _CSA1: for reading
+
+              Enter "YES" when ready: YES
+
+              VMSINSTAL prompts you to insert the next volume and
+              waits for you to type YES after inserting it. If you
+              type NO, VMSINSTAL displays the prompt again. This
+              prompt is displayed only if your installation kit
+              contains more than one volume.
+
+           5. Select a release notes option.
+
+              This step applies only if you specified OPTIONS N in
+              step 2.
+
+              Release notes included with this kit are always copied to SYS$HELP.
+
+              Additional Release Notes Options:
+
+                  1. Display release notes
+                  2. Print release notes
+                  3. Both 1 and 2
+                  4. None of the above
+
+              * Select option [2]: 2
+
+              If you select option 1, VMSINSTAL displays the release
+              notes on line immediately. You can terminate the
+              display at any time by pressing CTRL/C.
+
+     2-2 Installing DEC Notes
+
+ 
+
+
+
+                                                    Installing DEC Notes
+                                  2.1 Running the Installation Procedure
+
+                 If you select option 2, VMSINSTAL prompts you for a
+                 queue name. Either type a queue name or press RETURN to
+                 send the file to the default output print device.
+
+                 * Queue name [SYS$PRINT]: SYS$PRINT
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes on line immediately and then prompts you for a
+                 queue name.
+
+                 If you select option 4, VMSINSTAL does not display,
+                 print, or copy the release notes; typically this
+                 option is selected when the user wants to terminate
+                 the installation.
+
+                ________________________Note  ________________________
+
+                This version of the release notes file installed by
+                VMSINSTAL is labeled with the current product name
+                and version number. Take care not to delete release
+                notes for previous versions of DEC Notes.
+
+                _____________________________________________________
+
+                 Next, VMSINSTAL displays the following prompt:
+
+                 * Do you want to continue the installation [N]?: YES
+                 %VMSINSTAL-I-RELMOVED, The product's release notes have been successfully
+                     moved to SYS$HELP.
+
+                 If you want to continue the installation, type YES
+                 and press RETURN. If you type NO or press RETURN,
+                 VMSINSTAL discontinues the installation. In either
+                 case, VMSINSTAL moves the release notes to SYS$HELP.
+
+              6. Select installation options, and identify your license.
+
+                 ***********************************************************
+                                 DEC Notes Installation Procedure
+                         Copyright © Digital Equipment Corporation. 1993.
+                                       All Rights Reserved.
+
+                                         DEC Notes V2.5
+
+
+                                                Installing DEC Notes 2-3
+
+ 
+
+
+
+     Installing DEC Notes
+     2.1 Running the Installation Procedure
+
+                  DEC Notes can be installed on any system running
+                  OpenVMS VAX V5.4 (or later).
+                  This installation will fail if this system is running an
+                  older version of OpenVMS.
+
+                  DEC Notes provides both a character-cell and a DECwindows/Motif
+                  user interface.  Use of the DECwindows/Motif interface requires
+                  that DECwindows/Motif V1.0 (or later) be installed.
+                  This installation can continue and the character-cell interface can
+                  be used if the required version of DECwindows/Motif is not installed.
+
+                  DEC Notes supports both DECnet and TCP/IP transports.
+                  Use of the TCP/IP transport requires prior installation
+                  of V2.0 (or later) of DEC TCP/IP Services for VMS.
+                  Installation can continue and only the DECnet transport will be
+                  used if the required version of DEC TCP/IP Services for VMS is
+                  not installed on this system.
+
+                  An appropriate software license is required to run DEC Notes.
+                  The license should be installed before attempting to install
+                  DEC Notes.  If you have not yet installed a DEC Notes license,
+                  you can continue with this installation, but you will be unable
+                  to run either DEC Notes or the DEC Notes Installation Verification
+                  Procedure until an appropriate license has been installed.
+
+                 ***********************************************************
+
+              * Do you want to continue with this installation [Y]? YES
+
+              If you want to continue the installation at this point,
+              type YES and press RETURN. If you type NO or press
+              RETURN, VMSINSTAL discontinues the installation.
+
+              * Do you want to purge files replaced by this installation [YES]? YES
+
+              The directories SYS$HELP, SYS$LIBRARY, SYS$MANAGER, and
+              SYS$SYSTEM may contain previous versions of DEC Notes
+              files. These files are replaced during the installation
+              with new files, but the old files are not automatically
+              purged. Purging is recommended. In response to the
+              purging prompt, press RETURN to purge the files or type
+              NO to keep them.
+
+              * Do you want to run the IVP after the installation [YES]? YES
+
+     2-4 Installing DEC Notes
+
+ 
+
+
+
+                                                    Installing DEC Notes
+                                  2.1 Running the Installation Procedure
+
+                 The Installation Verification Procedure (IVP) runs
+                 tests to check whether the installation procedure
+                 was successful. Press RETURN to run the IVP after the
+                 installation. If you do not want to run the IVP, type
+                 NO in response to the prompt.
+
+                 %NOTES-I-CHKPRDVER, Checking installation requirements
+
+                     All installation and product dependencies will now be checked.
+                     If problems are discovered, it may still be possible to complete
+                     this installation, depending upon the nature of the problems.
+
+                 %NOTES-I-VMSVER, Checking OpenVMS version...
+                 %NOTES-I-MOTIFVER, Checking DECwindows/Motif version...
+                 %NOTES-I-UCXVER, Checking DEC TCP/IP Services for VMS version...
+                 %NOTES-I-SYSRES, Checking system resources...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                Installing DEC Notes 2-5
+
+ 
+
+
+
+     Installing DEC Notes
+     2.1 Running the Installation Procedure
+
+     The system prompts you to identify which license you have
+     purchased.
+
+                Please indicate the level of capability that you want to install:
+
+                 1. Full capability (NOTES or NOTES-USER)
+                 2. TeamLinks DEC Notes server (NOTES-SERVER-LANLINK)
+                 3. Full capability except no remote user access (NOTES-LOCAL)
+                 4. Reduced capability, client-only (NOTES-CLIENT or NOTES-CLIENT-USER)
+
+
+              * Enter the number of the level of capability to install [1]: 1
+
+              The system then prompts you to confirm that the DEC
+              Notes PAK has been registered and loaded.
+
+                      Product:      NOTES or NOTES-USER
+                      Producer:     DEC
+                      Version:      02.5
+                      Release Date: dd-mmm-yyyy
+
+              * Does this product have an authorization key registered and loaded? YES
+
+              If you have registered and loaded your PAK, type YES.
+              Otherwise, type NO, in which case the IVP will not be
+              run.
+
+           7. Set up the server account, if applicable.
+
+              ________________________Note ________________________
+
+              Step 7 occurs only if you have purchased a full
+              capability license (NOTES or NOTES-USER). If you
+              have purchased a NOTES-CLIENT license, skip this
+              step and continue with step 8.
+
+              _____________________________________________________
+
+              If you are installing an upgrade of DEC Notes, proceed
+              with step 7a. If you are installing DEC Notes for the
+              first time, skip step 7a and proceed with step 7b.
+
+
+
+
+     2-6 Installing DEC Notes
+
+ 
+
+
+
+                                                    Installing DEC Notes
+                                  2.1 Running the Installation Procedure
+
+                 a. Installing an Upgrade of DEC Notes (NOTES or NOTES-
+                    USER License)
+
+                    The following messages are displayed only if you are
+                    installing an upgrade of DEC Notes:
+
+                    %NOTES-I-EXISTS, NOTES$SERVER account already exists
+                    %NOTES-I-MODACC, Modifying account NOTES$SERVER...
+                    %VMSINSTAL-I-ACCOUNT, This installation updates an account named NOTES$SERVER.
+                    %UAF-I-MDFYMSG, user record(s) updated
+                    %NOTES-I-EXISTS, The logical NOTES$LIBRARY exists
+                    %NOTES-I-ASSUMEOK, This installation will assume it is properly defined
+
+                      The network object NOTES has been defined.  If you wish
+                      to view this, run SYS$SYSTEM:NCP and issue the command
+                            NCP> LIST OBJECT NOTES CHAR
+
+                    The following message will be omitted if TCP/IP is
+                    not installed.
+
+                      The TCP/IP service NOTES has been defined.  If you wish
+                      to view this, run SYS$SYSTEM:UCX and issue the command
+                            UCX> SHOW SERVICE/FULL NOTES
+
+                    At this point, you should skip step 7b, and continue
+                    with step 8.
+
+                 b. Installing DEC Notes for the First Time (NOTES or
+                    NOTES-USER License)
+
+                    If you are installing DEC Notes for the first time,
+                    the system displays the following messages and
+                    prompts you for a UIC number to assign to the new
+                    NOTES$SERVER account. Digital recommends that you
+                    use the default UIC [376,377]; if you do not use the
+                    default, you must ensure that you use a unique UIC.
+
+
+
+
+
+
+
+
+
+                                                Installing DEC Notes 2-7
+
+ 
+
+
+
+     Installing DEC Notes
+     2.1 Running the Installation Procedure
+
+                   In order to ensure that the DEC Notes server runs with the proper quotas,
+                   this installation procedure will create an account for the server.  This
+                   account, NOTES$SERVER, has no special privileges and is set up for only
+                   network operation.
+
+                       You must specify a unique UIC for this account in order
+                       to ensure proper security of your conferences.
+
+                   You may want to change the password on this account after the
+                   installation has completed.  If you do, you must also change the
+                   password with NCP SET/DEF OBJECT NOTES commands.
+
+                 * Enter UIC for NOTES server account (include brackets) [[376,377]]:[376,377]
+                 %NOTES-I-CREACC, Creating account NOTES$SERVER for the DEC Notes server
+                 %VMSINSTAL-I-ACCOUNT, This installation creates an ACCOUNT named NOTES$SERVER.
+                 %UAF-I-ADDMSG, user record successfully added
+                 %NOTES-I-MODACC, Modifying account NOTES$SERVER quotas...
+                 %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                 %UAF-I-MDFYMSG, user record(s) updated
+                 %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                 %UAF-I-MDFYMSG, user record(s) updated
+                 %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                 %UAF-I-MDFYMSG, user record(s) updated
+                 %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+                 %UAF-I-MDFYMSG, user record(s) updated
+                 %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                     SYS$SYSDEVICE:[NOTES$SERVER].
+
+                 The system then prompts you for the name of the
+                 device to be used for storing conferences. The
+                 device name DUA1: is used here for the purpose of
+                 demonstration.
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-8 Installing DEC Notes
+
+ 
+
+
+
+                                                    Installing DEC Notes
+                                  2.1 Running the Installation Procedure
+
+                      DEC Notes conference files are stored in a directory named [NOTES$LIBRARY].
+                      You must designate the device on which this directory is to be created.
+
+                      Be sure that the device you specify has plenty of free
+                      blocks to permit normal conference file expansion.
+
+                    * Device to be used for storing conferences: DUA1:
+
+                    %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                        DUA1:[NOTES$LIBRARY].
+
+                      The network object NOTES has been defined.  If you wish
+                      to view this, run SYS$SYSTEM:NCP and issue the command
+                            NCP> LIST OBJECT NOTES CHAR
+
+
+                      The TCP/IP service NOTES has been defined.  If you wish
+                      to view this, run SYS$SYSTEM:UCX and issue the command
+                            UCX> SHOW SERVICE/FULL NOTES
+
+                    %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                        VMI$ROOT:[SYSTEST.NOTES].
+
+              8. Read messages.
+
+                 The DEC Notes installation procedure produces a number
+                 of informational messages that report on the progress
+                 of the installation. If the installation procedure
+                 is successful, the new or modified files are moved to
+                 their target directories.
+
+                   No further questions will be asked during this installation.
+                   Completion of the installation should take another 5-10 minutes.
+
+
+                   This installation will add the following files:
+                    .
+                    .
+                    .
+
+                 The SYS$HELP:HELPLIB.HLB and SYS$LIBRARY:DCLTABLES.EXE
+                 files are updated to include the new versions of
+                 the DEC Notes HELP text and the NOTES command line
+                 definition.
+
+                                                Installing DEC Notes 2-9
+
+ 
+
+
+
+     Installing DEC Notes
+     2.1 Running the Installation Procedure
+
+              If you typed YES in response to the prompt that
+              requests a file purge at step 6, previous versions
+              of the DEC Notes files are now purged.
+
+           9. Read informational messages and the Installation
+              Verification Procedure (NOTES or NOTES-USER license).
+
+                This installation will add the following files:
+
+                      [SYSLIB]NOTES$SHARE.EXE
+                      [SYSLIB]NOTES$SECTION.TPU$SECTION
+                      [SYSEXE]NOTES$MAIN.EXE
+                      [SYSEXE]NOTES$SERVER.EXE
+                      [SYSEXE]NOTES$SERVER_LOGIN.COM
+                      SYS$SYSROOT:[SYSTEST]NOTES$IVP.COM
+                      [SYSMGR]NOTES$REMOVE.COM
+                      [SYSMGR]NOTES$MOVE_CONFERENCE.COM
+                      NOTES$LIBRARY:NOTES$SAMPLE.NOTE
+                      SYS$SYSROOT:[SYSTEST]NOTES$IVP_CLIENT.COM
+                      SYS$SYSROOT:[SYSTEST]NOTES$IVP_LOCAL.COM
+                      [SYSHLP]NOTES$025.RELEASE_NOTES
+                      [SYSHLP]NOTES_SHORTGUIDE.MEM
+                      [SYSHLP]NOTES$HELP.HLB
+                      [SYSHLP]NOTES$DWHELP.HLB
+                      [SYSLIB]NOTES$DWSHARE.EXE
+                      [SYSLIB]NOTES$DWNOTES.UID
+                      [SYSLIB]NOTES$DEFAULTS.DAT
+                      [SYS$STARTUP]NOTES$STARTUP.COM
+                      [DECW$DEFAULTS.SYSTEM]LWK_REG_NOTESNOTE.UID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-10 Installing DEC Notes
+
+ 
+
+
+
+                                                    Installing DEC Notes
+                                  2.1 Running the Installation Procedure
+
+
+                   ***********************************************************
+                     REMINDERS:
+
+                     1. SYSTEM STARTUP
+                        --------------
+
+                     After the installation has completed, you should execute
+
+                               SYS$STARTUP:NOTES$STARTUP.COM
+
+                     on each system on which this copy of DEC Notes will be run.
+
+                     You should also edit your system startup procedure to run
+                     SYS$STARTUP:NOTES$STARTUP.COM on each system on which this
+                     copy of DEC Notes will be run.
+
+                     ** IMPORTANT NOTE: Installation instructions for previous
+                     versions of VAX Notes suggested that NOTES$STARTUP.COM be
+                     run prior to network startup during the system startup process.
+                     It is now recommended that NOTES$STARTUP run AFTER network
+                     startup has COMPLETED, particularly if TCP/IP will be used
+                     as the network transport for DEC Notes connections.
+
+                   2. DEC NOTES SHUTDOWN OR DEINSTALLATION
+                      ------------------------------------
+
+                   A new utility, SYS$MANAGER:NOTES$REMOVE.COM, can be used to
+                   deinstall DEC Notes or to prevent new servers from executing.
+                   Type:
+                             $ @SYS$MANAGER:NOTES$REMOVE
+
+                   for further details.
+
+                   3. VMSCLUSTER ENVIRONMENTS
+                      -----------------------
+
+                   If DEC Notes is run in a VMScluster environment with multiple
+                   copies of SYS$SYSTEM:NETOBJECT.DAT in use, NCP must be used to
+                   define the NOTES DECnet object in each copy of NETOBJECT.DAT.
+                   The password used when defining the NOTES object must always
+                   match the password for account NOTES$SERVER in the system
+                   authorization file.
+
+
+                                               Installing DEC Notes 2-11
+
+ 
+
+
+
+     Installing DEC Notes
+     2.1 Running the Installation Procedure
+
+                If DEC Notes is run in a VMScluster environment with multiple
+                copies of SYS$SYSTEM:UCX$SERVICE.DAT in use, it is similarly
+                required that UCX be used to define the NOTES service in each
+                copy of UCX$SERVICE.DAT.  This can normally be accomplished by
+                running NOTES$STARTUP.COM on each system.  NOTES$STARTUP.COM
+                will attempt to properly define and enable the NOTES service
+                each time it is executed.
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target
+              directories...
+              %NOTES-I-SHUT, Disabling Notes server...
+              %NOTES-I-STARTDNSRV, Notes server enabled for DECnet
+              %NOTES-I-STARTTCPSRV, Notes server enabled for TCP/IP
+
+              If you chose to run the IVP in step 6, VMSINSTAL now
+              calls the IVP to verify that DEC Notes was installed
+              successfully.
+
+            Beginning the DEC Notes V2.5 Installation Verification Procedure.
+
+                  Testing OPEN, READ, DIRECTORY, SHOW, HELP, and CLOSE.
+
+                              DEC Notes Computer Conferencing
+                              Enter the command HELP for help
+     DEC Notes: (c) Digital Equipment Corporation. 1986, 1993. All Rights Reserved.
+                                DEC Notes Sample Conference
+     Created: 27-JAN-1986 10:39          9 topics          Updated: 18-FEB-1986 14:23
+
+     Note 1.0                       Welcome to DEC Notes                   7  replies
+     MAR::JOHN_Q_NOTER "I'll make a note!"                24 lines  27-JAN-1986 10:42
+
+         DEC Notes is a computer-mediated conferencing system that lets you
+         conduct online conferences or meetings.  Using DEC Notes, you can
+         communicate conveniently and economically with people in different
+         geographic locations.  Anyone connected to the system can participate,
+         making it possible for you to receive input from many people without
+         costly, time-consuming meetings.
+
+         This sample conference has been provided to help you quickly get
+         started using DEC Notes.  It contains definitions of terms, ways to
+         read notes, a place for you to add your first reply, and helpful hints
+         for running and participating in an online conference.  This conference
+                    .
+                    .
+                    .
+     Command_Summary
+
+     2-12 Installing DEC Notes
+
+ 
+
+
+
+                                                    Installing DEC Notes
+                                  2.1 Running the Installation Procedure
+
+          If you are new to DEC Notes, type New_User for examples of how to use
+          Getting Started commands, type Terms_and_Concepts for an explanation of
+          your Notebook and other DEC Notes terms and concepts, or type a question
+          mark (?) for a list of all DEC Notes commands.
+
+          Getting Started Commands:
+
+            ADD ENTRY               CLOSE                   DIRECTORY
+            EXIT                    EXTRACT                 HELP
+            NOTES (DCL command)     OPEN                    PRINT
+            READ                    REPLY (or ANSWER)       WRITE
+
+          The following topics have information on more advanced DEC Notes commands:
+
+            Choosing_an_Editor      Information_Commands    Keypad
+            Keyword_Commands        Logical_Names           Moderator_Commands
+            Notebook_Commands       Other_Utilities         Reading_Notes
+            Software_Licenses       Specifying_Notes        Subprocess_Commands
+
+                                 DEC Notes Computer Conferencing
+                                 Enter the command HELP for help
+
+                        If the informational output above is similar to the example
+                        displayed in the DEC Notes Installation Guide, then this
+                        installation is successful.
+
+                        The DEC Notes V2.5 Installation Verification Procedure completed.
+
+              10.Read informational messages and the Installation
+                 Verification Procedure (NOTES-CLIENT license).
+
+                 The messages and the IVP for the installation of DEC
+                 Notes with a NOTES-CLIENT license are shown in the
+                 Sample Installation section.
+
+              11.End the installation procedure.
+
+                    Installation of NOTES V2.5 completed at hh:mm
+
+                    VMSINSTAL procedure done at hh:mm
+
+                 $ LOGOUT
+                 SYSTEM     logged out at dd-mmm-yyyy hh:mm:ss.ss
+
+
+                                               Installing DEC Notes 2-13
+
+ 
+
+
+
+     Installing DEC Notes
+     2.1 Running the Installation Procedure
+
+              When the product installation procedure is complete,
+              you can choose to install more products, or to log
+              out (as shown here.) If you removed any media from the
+              console drive before beginning the installation, you
+              should replace it now.
+
+              Note that VMSINSTAL deletes or changes entries in
+              the process symbol tables during the installation.
+              Therefore, if you are going to continue using the
+              system manager's account and you want to restore these
+              symbols, you should log out and log in again.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-14 Installing DEC Notes
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                            Post-Installation Procedures
+
+
+
+              This chapter describes tasks that you must complete after
+              DEC Notes is installed.
+
+        3.1 Editing the System Startup File
+
+              You must edit the system startup file (SYS$MANAGER:SYSTARTUP_
+              V5.COM for OpenVMS Version 5.x systems; SYSTARTUP_
+              VMS.COM for OpenVMS Version 6.x systems) to invoke
+              SYS$STARTUP:NOTES$STARTUP.COM after you start your
+              network.
+
+                ________________________Note  ________________________
+
+                In previous versions of DEC Notes, you were required
+                to edit the system startup file (SYS$MANAGER:SYSTARTUP_
+                V5.COM for OpenVMS Version 5.x systems; SYSTARTUP_
+                VMS.COM for OpenVMS Version 6.x systems) to invoke
+                SYS$STARTUP:NOTES$STARTUP.COM before you started
+                your network. This has changed for Version 2.5 of
+                DEC Notes. Now you must edit the system startup file
+                to invoke SYS$STARTUP:NOTES$STARTUP.COM after you
+                start your network.
+
+                _____________________________________________________
+
+        3.2 Network Transport Information
+
+              This section describes how Notes selects network
+              tranports.
+
+              It is not necessary to have both the DECnet and TCP
+              /IP network transports running. If one of the network
+              transports is not running, the Notes server will use the
+              other transport.
+
+                                        Post-Installation Procedures 3-1
+
+ 
+
+
+
+     Post-Installation Procedures
+     3.2 Network Transport Information
+
+           If you install a new version of one of the supported
+           network transports after the Notes server is up and
+           running, NOTES$STARTUP.COM must be run again to enable
+           the new transport in the Notes server.
+
+     3.2.1 DECnet Information
+
+           A password is defined for the Notes object in the DECnet
+           object database. This password must match the password
+           assigned to the NOTES$SERVER account in the system
+           authorization file (SYS$SYSTEM:SYSUAF.DAT).
+
+           SYS$STARTUP:NOTES$STARTUP.COM attempts to enable
+           the Notes object (object 33) in the DECnet database
+           (SYS$SYSTEM:NETOBJECT.DAT). If you plan on using DECnet as
+           one of your network transports, DECnet configuration and
+           startup must complete before NOTES$STARTUP is run.
+
+           If DECnet is not running when NOTES$SERVER.COM is invoked,
+           the Notes server will not be able to accept DECnet
+           connections.
+
+           If the Notes object is successfully enabled, the Notes
+           server will be able to accept DECnet connections.
+
+     3.2.2 TCP/IP Information
+
+           NOTES$STARTUP.COM attempts to determine if DEC TCP
+           /IP Services for VMS is available. If it is avail-
+           able, NOTES$STARTUP.COM attempts to enable the Notes
+           service (port 3333) in the TCP/IP Service database
+           (SYS$SYSTEM:UCX$SERVICE.DAT).
+
+           If you plan on using TCP/IP as one of your network
+           transports, TCP/IP configuration and startup must complete
+           before NOTES$STARTUP.COM is run. If TCP/IP is not running
+           when NOTES$STARTUP.COM is invoked, the Notes server will
+           not be able to accept TCP/IP connections.
+
+           If the Notes service is successfully enabled, the file
+           SYS$SYSTEM:NOTES$SERVER.COM is created by DEC TCP/IP
+           Services for VMS (if it doesn't already exist), and the
+           Notes server will be able to accept TCP/IP connections.
+
+
+     3-2 Post-Installation Procedures
+
+ 
+
+
+
+                                            Post-Installation Procedures
+                                3.3 Installing DEC Notes on a VAXcluster
+
+        3.3 Installing DEC Notes on a VAXcluster
+
+              If you want to run DEC Notes on multiple nodes of
+              a VAXcluster, first check to see that you have the
+              appropriate software license. Then you must log in to
+              a privileged account on each of the other nodes in the
+              cluster and do the following:
+
+              1. Issue the LICENSE LOAD command to activate the license,
+                 as described in the VMS License Management Utility
+                 Manual.
+
+              2. Type the following commands:
+
+                 $ INSTALL :== $INSTALL/COMMAND_MODE
+                 $ INSTALL
+                 INSTALL> REPLACE SYS$LIBRARY:DCLTABLES.EXE
+                 INSTALL> EXIT
+
+              3. If the cluster has a server (that is, one or more nodes
+                 have a NOTES or NOTES-USER license), then you must do
+                 one of the following:
+
+                 a. If this is the first time that DEC Notes has
+                    been installed on this system, type the following
+                    commands:
+
+                    $ RUN SYS$SYSTEM:NCP
+                    NCP> DEF OBJ NOTES NUM 33 FILE NOTES$SERVER.EXE
+                    NCP> DEF OBJ NOTES USER NOTES$SERVER PASSWORD <password> PROXY OUT
+                    NCP> SET OBJ NOTES ALL
+                    NCP> EXIT
+
+                ________________________Note  ________________________
+
+                The password used in the <password> field must match
+                the password of the NOTES$SERVER account.
+
+                _____________________________________________________
+
+                 b. If this is an upgrade of DEC Notes, stop any
+                    previous Notes servers (network processes named
+                    NOTES$nnnn_n) so that they will be restarted
+                    using the new server code. Use the DCL commands
+                    SHOW SYSTEM/NETWORK and STOP/IDENTIFICATION,
+                    respectively.
+
+                                        Post-Installation Procedures 3-3
+
+ 
+
+
+
+     Post-Installation Procedures
+     3.3 Installing DEC Notes on a VAXcluster
+
+           4. Type the following command:
+
+              $ @SYS$STARTUP:NOTES$STARTUP.COM
+
+     3.4 Invoking DEC Notes After the Installation
+
+           After performing all the necessary steps in Chapter 2 and
+           editing the system startup file, DEC Notes can be invoked
+           by all users with the NOTES command.
+
+           The installation procedure modifies the DCL command table
+           so that the NOTES command is recognized and processed.
+           However, the previous command table is still in effect
+           for those users who are currently logged in. All logged-
+           in users who want to use the NOTES command must log out
+           of the system and log in again, or issue the following
+           command:
+
+           $ SET COMMAND/TABLE=SYS$LIBRARY:DCLTABLES
+
+           If this is a system with a NOTES-CLIENT license, you
+           can simplify the specification of conferences for the
+           users on the system by defining NOTES$LIBRARY to point
+           to the system on which Notes conference files will be
+           stored. (This must be a system with a NOTES or NOTES-USER
+           license).
+
+           If many of your users are computer "novices," they may
+           need help setting up their Notebooks. As the system
+           manager, you can set up Notebooks for them and include
+           one or more entries in their Notebooks. The example that
+           follows shows how to do this.
+
+           $ DEFINE /USER NOTES$NOTEBOOK NOTES$LIBRARY:NOTES$NOTEBOOK.NOTE
+           $ NOTES
+           Notes> ADD ENTRY ABC::DECNOTES !abc::decnotes is used as an example
+           Notes> ADD ENTRY your-notefile
+           Notes> SET PROFILE /EDITOR=EDT !make EDT keypad the default
+           Notes> EXIT
+
+           Then, copy the NOTES$LIBRARY:NOTES$NOTEBOOK.NOTE Notebook
+           file to the SYS$LOGIN directory of the novice users.
+
+
+
+     3-4 Post-Installation Procedures
+
+ 
+
+
+
+                                            Post-Installation Procedures
+                                       3.5 Controlling DEC Notes Servers
+
+        3.5 Controlling DEC Notes Servers
+
+              During heavy use, DEC Notes Version 2.5 could use the
+              maximum number of server links allowed on your system. To
+              prevent this from occurring, you can define system logi-
+              cals to limit DEC Notes to a specific number of servers.
+              Additionally, you can limit the number of links for each
+              server by editing the SYS$STARTUP:NOTES$STARTUP.COM file
+              and including one or both of the following logicals with
+              the desired number. The numbers 4 and 16 are included as
+              examples.
+
+              $ DEFINE /SYSTEM /EXEC NOTES$SERVER_MAX_SERVERS 4 !per system
+              $ DEFINE /SYSTEM /EXEC NOTES$SERVER_MAX_LINKS 16  !per server
+
+              On most systems, the default number of servers is
+              unlimited. DEC Notes has a default of 16 links for each
+              server. You can change these numbers for your system, if
+              appropriate. Note that if you include these commands, you
+              should reedit the NOTES$STARTUP file each time you upgrade
+              DEC Notes.
+
+                ________________________Note  ________________________
+
+                If you have both DECnet and TCP/IP transports
+                enabled, the maximum number of links is the
+                combined total of DECnet and TCP/IP connections
+                simultaneously open in a single server.
+
+                _____________________________________________________
+
+              If you are installing DEC Notes on a system that did not
+              previously run DEC Notes, be aware that defaults for the
+              working set extent (WSEXTENT) and the working set quota
+              (WSQUOTA) have been set up in the NOTES$SERVER account.
+              The default for WSEXTENT is not less than 512 and not more
+              than 2048; the default for WSQUOTA is exactly half of the
+              WSEXTENT. You can change these defaults by issuing the
+              following commands (supply the appropriate number values
+              for X and Y for your system):
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF> MODIFY NOTES$SERVER /WSEXTENT=X /WSQUOTA=Y
+              UAF> EXIT
+
+                                        Post-Installation Procedures 3-5
+
+ 
+
+
+
+     Post-Installation Procedures
+     3.6 Running the Installation Verification Procedure Separately
+
+     3.6 Running the Installation Verification Procedure Separately
+
+           The Installation Verification Procedure (IVP) is usually
+           run at installation. If you want to run the IVP separately
+           to ensure the integrity of installed files if system
+           problems occur, execute the following command procedure if
+           you have a NOTES or a NOTES-USER license:
+
+           $ @SYS$TEST:NOTES$IVP
+
+           If the IVP runs successfully, the informational output
+           displayed on the screen is similar to the example in step
+           11 of the Installation Procedure. If the IVP fails for any
+           reason, the following message is displayed:
+
+           The DEC Notes V2.5 Installation Verification Procedure failed.
+
+           Execute the following command procedure if you have a
+           NOTES-CLIENT license:
+
+           $ @SYS$TEST:NOTES$IVP_CLIENT
+
+           If the IVP runs successfully, the informational output
+           displayed on the screen is similar to the example in the
+           Sample Installation section. If the IVP fails for any
+           reason, the following message is displayed:
+
+           The DEC Notes V2.5 Client-only Installation Verification Procedure failed.
+
+           Execute the following command procedure if you have a
+           NOTES-LOCAL license:
+
+           $ @SYS$TEST:NOTES$IVP_LOCAL
+
+           If the IVP runs successfully, the informational output
+           displayed on the screen is similar to the example in step
+           11 of the Installation Procedure. If the IVP fails for any
+           reason, the following message is displayed:
+
+           The DEC Notes V2.5 Installation Verification Procedure failed.
+
+
+
+
+
+     3-6 Post-Installation Procedures
+
+ 
+
+
+
+                                            Post-Installation Procedures
+                                                    3.7 Error Conditions
+
+        3.7 Error Conditions
+
+              If the installation procedure fails for any reason, a
+              message like the following is displayed:
+
+              %VMSINSTAL-E-INSFAIL, The installation of Notes V2.5 has failed.
+
+              An error during the installation can occur if one or more
+              of the following conditions exist:
+
+              o  Operating system version is incorrect
+
+              o  Quotas necessary for successful installation are insuf-
+                 ficient (see the Installation Procedure Requirements
+                 section)
+
+              o  Process quotas required by VMSINSTAL are incorrect (see
+                 the Using VMSINSTAL section)
+
+              o  The VMS HELP library is currently in use
+
+              o  The product was registered incorrectly or not
+                 registered
+
+              For descriptions of the error messages generated by these
+              conditions, see the VMS System Messages and Recovery
+              Procedures Reference Volume, your processor-specific
+              installation/operations guide, or the VMS License
+              Management Utility Manual.
+
+              If you are notified that any of these conditions exist,
+              you should take the appropriate action as described in
+              the message. You may need to change a system parameter or
+              increase an authorized quota value.
+
+              If the installation fails, you must restart the installa-
+              tion procedure from
+              step 2. If the installation fails because of an IVP
+              failure, contact a Digital field service representative.
+
+        3.8 Maintenance Updates
+
+              Digital may periodically issue maintenance updates of DEC
+              Notes. Each update consists of an installation kit. You
+              should install this kit as described in this document or
+              in any documentation that may accompany the maintenance
+              update.
+
+                                        Post-Installation Procedures 3-7
+
+ 
+
+
+
+     Post-Installation Procedures
+     3.8 Maintenance Updates
+
+           Each time a maintenance update is released, the version
+           number changes. For example, if the current version is
+           1.0, the version number of the first maintenance update
+           will be 1.1. In addition, the maintenance update includes
+           new release notes. The release notes describe the changes
+           that have been made to DEC Notes since the previous
+           release.
+
+           The update release notes are provided on line. You should
+           read the release notes when you first install DEC Notes;
+           they are also accessible at any time after the product
+           is installed. For information on reading the release
+           notes at the time that you install DEC Notes, follow
+           the installation procedure through step 5. To locate the
+           release notes after DEC Notes is installed, display or
+           print the file SYS$HELP:NOTES$025.RELEASE_NOTES, or type
+           the following:
+
+           $ HELP NOTES RELEASE_NOTES
+
+           If you used a private section file with a previous version
+           of DEC Notes, after installing Version 2.5 you will need
+           to rebuild your section file to be compatible with Version
+           2.5.
+
+     3.9 Determining and Reporting Problems
+
+           If an error occurs while you are using DEC Notes and you
+           believe that the error is caused by a problem with DEC
+           Notes, take one of the following actions:
+
+           o  If you purchased DEC Notes within the past 90 days and
+              you think the problem is caused by a software error,
+              you can submit a Software Performance Report (SPR).
+
+           o  If you have a Basic or DECsupport Software Agreement,
+              you should call your Customer Support Center. With
+              these services, you receive telephone support that
+              provides high-level advisory and remedial assistance.
+              For more information, contact your local Digital
+              representative.
+
+           o  If you have a Self-Maintenance Software Agreement, you
+              can submit a Software Performance Report (SPR).
+
+     3-8 Post-Installation Procedures
+
+ 
+
+
+
+                                            Post-Installation Procedures
+                                  3.9 Determining and Reporting Problems
+
+              If you find an error in the DEC Notes documentation, you
+              should fill out and submit a Reader's Comments form from
+              the back of the document in which the error was found.
+              Include the section and page number where the error was
+              found.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        Post-Installation Procedures 3-9
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                     Sample Installation
+
+
+
+              This appendix contains a sample installation of DEC
+              Notes with the NOTES-CLIENT license. (The installation
+              excerpts in the Installing DEC Notes section are from an
+              installation with the NOTES license, which is similar to
+              an installation with the NOTES-USER license.)
+
+              Note that this is only a sample. Sometimes the installa-
+              tion procedure is modified in maintenance updates of this
+              product. Because this installation guide is not usually
+              revised for maintenance updates, be sure to read the Read
+              Before Installing or Using DEC Notes letter before you
+              install this product. This letter notes any significant
+              changes in the installation that vary from this sample.
+
+        Username: SYSTEM
+        Password:
+           .
+           .
+           .
+
+        $ set default sys$update
+        $ @vmsinstal notes025 $disk:
+         OpenVMS VAX Software Product Installation Procedure Vx.x
+
+        It is dd-mmm-yyyy at hh:mm.
+
+        Enter a question mark (?) at any time for help.
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+         _RTA6:
+         BOOKREADER
+         DECW$MWM
+
+        * Do you want to continue anyway [NO]? y
+        * Are you satisfied with the backup of your system disk [YES]?
+
+                                                 Sample Installation A-1
+
+ 
+
+
+
+     Sample Installation
+
+
+     The following products will be processed:
+       NOTES V2.5
+
+      Beginning installation of NOTES V2.5 at hh:mm
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+     %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+       ***********************************************************
+                   DEC Notes Installation Procedure
+             Copyright © Digital Equipment Corporation. 1993.
+                        All Rights Reserved.
+
+         DEC Notes can be installed on any system running
+         OpenVMS VAX V5.4 (or later).
+         This installation will fail if this system is running an
+         older version of OpenVMS.
+
+         DEC Notes provides both a character-cell and a DECwindows/Motif
+         user interface.  Use of the DECwindows/Motif interface requires
+         that DECwindows/Motif V1.0 (or later) be installed.
+         This installation can continue and the character-cell interface can
+         be used if the required version of DECwindows/Motif is not installed.
+
+         DEC Notes supports both DECnet and TCP/IP transports.
+         Use of the TCP/IP transport requires prior installation
+         of V2.0 (or later) of DEC TCP/IP Services for VMS.
+         Installation can continue and only the DECnet transport will be
+         used if the required version of DEC TCP/IP Services for VMS is
+         not installed on this system.
+
+         An appropriate software license is required to run DEC Notes.
+         The license should be installed before attempting to install
+         DEC Notes.  If you have not yet installed a DEC Notes license,
+         you can continue with this installation, but you will be unable
+         to run either DEC Notes or the DEC Notes Installation Verification
+         Procedure until an appropriate license has been installed.
+
+       ***********************************************************
+
+     * Do you want to continue with this installation [Y]?
+     * Do you want to purge files replaced by this installation [YES]?
+     * Do you want to run the IVP after the installation [YES]?
+
+     %NOTES-I-CHKPRDVER, Checking installation requirements
+
+     A-2 Sample Installation
+
+ 
+
+
+
+                                                     Sample Installation
+
+
+            All installation and product dependencies will now be checked.
+            If problems are discovered, it may still be possible to complete
+            this installation, depending upon the nature of the problems.
+
+        %NOTES-I-VMSVER, Checking OpenVMS version...
+        %NOTES-I-MOTIFVER, Checking DECwindows/Motif version...
+        %NOTES-I-UCXVER, Checking DEC TCP/IP Services for VMS version...
+        %NOTES-I-SYSRES, Checking system resources...
+
+          Please indicate the level of capability that you want to install:
+
+                 1. Full capability (NOTES or NOTES-USER)
+                 2. TeamLinks DEC Notes server (NOTES-SERVER-LANLINK)
+                 3. Full capability except no remote user access (NOTES-LOCAL)
+                 4. Reduced capability, client-only (NOTES-CLIENT or NOTES-CLIENT-USER)
+
+        * Enter the number of the level of capability to install [1]:
+
+                Product:      NOTES or NOTES-USER
+                Producer:     DEC
+                Version:      2.5
+                Release Date: dd-mmm-yyyy
+        * Does this product have an authorization key registered and loaded? y
+        %NOTES-I-EXISTS, NOTES$SERVER account already exists
+        %NOTES-I-MODACC, Modifying account NOTES$SERVER...
+        %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named NOTES$SERVER.
+        %UAF-I-MDFYMSG, user record(s) updated
+        %NOTES-I-EXISTS, The logical NOTES$LIBRARY exists
+        %NOTES-I-ASSUMEOK, This installation will assume it is properly defined
+
+          No further questions will be asked during this installation.
+          Completion of the installation should take another 5-10 minutes.
+
+          The DECnet object NOTES has been defined.  If you wish
+          to view this, run SYS$SYSTEM:NCP and issue the command
+                NCP> LIST OBJECT NOTES CHAR
+
+          The TCP/IP service NOTES has been defined.  If you wish
+          to view this, run SYS$SYSTEM:UCX and issue the command
+                UCX> SHOW SERVICE/FULL NOTES
+
+          This installation will add the following files:
+
+
+
+                                                 Sample Installation A-3
+
+ 
+
+
+
+     Sample Installation
+
+
+             [SYSLIB]NOTES$SHARE.EXE
+             [SYSLIB]NOTES$SECTION.TPU$SECTION
+             [SYSEXE]NOTES$MAIN.EXE
+             [SYSEXE]NOTES$SERVER.EXE
+             [SYSEXE]NOTES$SERVER_LOGIN.COM
+             SYS$SYSROOT:[SYSTEST]NOTES$IVP.COM
+             [SYSMGR]NOTES$REMOVE.COM
+             [SYSMGR]NOTES$MOVE_CONFERENCE.COM
+             NOTES$LIBRARY:NOTES$SAMPLE.NOTE
+             SYS$SYSROOT:[SYSTEST]NOTES$IVP_CLIENT.COM
+             SYS$SYSROOT:[SYSTEST]NOTES$IVP_LOCAL.COM
+             [SYSHLP]NOTES$025.RELEASE_NOTES
+             [SYSHLP]NOTES_SHORTGUIDE.MEM
+             [SYSHLP]NOTES$HELP.HLB
+             [SYSHLP]NOTES$DWHELP.HLB
+             [SYSLIB]NOTES$DWSHARE.EXE
+             [SYSLIB]NOTES$DWNOTES.UID
+             [SYSLIB]NOTES$DEFAULTS.DAT
+             [SYS$STARTUP]NOTES$STARTUP.COM
+             [DECW$DEFAULTS.SYSTEM]LWK_REG_NOTESNOTE.UID
+
+       ***********************************************************
+       REMINDERS:
+
+       1. SYSTEM STARTUP
+          --------------
+
+       After the installation has completed, you should execute
+
+                 SYS$STARTUP:NOTES$STARTUP.COM
+
+       on each system on which this copy of DEC Notes will be run.
+
+       You should also edit your system startup procedure to run
+       SYS$STARTUP:NOTES$STARTUP.COM on each system on which this
+       copy of DEC Notes will be run.
+
+       ** IMPORTANT NOTE: Installation instructions for previous
+       versions of VAX Notes suggested that NOTES$STARTUP.COM be
+       run prior to network startup during the system startup process.
+       It is now recommended that NOTES$STARTUP run AFTER network
+       startup has COMPLETED, particularly if TCP/IP will be used
+       as the network transport for DEC Notes connections.
+
+     2. DEC NOTES SHUTDOWN OR DEINSTALLATION
+        ____________________________________
+
+     A-4 Sample Installation
+
+ 
+
+
+
+                                                     Sample Installation
+
+
+        A new utility, SYS$MANAGER:NOTES$REMOVE.COM, can be used to
+        deinstall DEC Notes or to prevent new servers from executing.
+        Type:
+                  $ @SYS$MANAGER:NOTES$REMOVE
+
+        for further details.
+
+        3. VMSCLUSTER ENVIRONMENTS
+           -----------------------
+
+          If DEC Notes is run in a VMScluster environment with multiple
+          copies of SYS$SYSTEM:NETOBJECT.DAT in use, NCP must be used to
+          define the NOTES DECnet object in each copy of NETOBJECT.DAT.
+          The password used when defining the NOTES object must always
+          match the password for account NOTES$SERVER in the system
+          authorization file.
+
+          If DEC Notes is run in a VMScluster environment with multiple
+          copies of SYS$SYSTEM:UCX$SERVICE.DAT in use, it is similarly
+          required that UCX be used to define the NOTES service in each
+          copy of UCX$SERVICE.DAT.  This can normally be accomplished by
+          running NOTES$STARTUP.COM on each system.  NOTES$STARTUP.COM
+          will attempt to properly define and enable the NOTES service
+          each time it is executed.
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+        %NOTES-I-SHUT, Disabling Notes server...
+        %NOTES-I-STARTDNSRV, Notes server enabled for DECnet
+        %NOTES-I-STARTDNSRV, Notes server enabled for TCP/IP
+
+            Beginning the DEC Notes V2.5 Installation Verification Procedure.
+        Copyright © Digital Equipment Corporation. 1988, 1993. All Rights Reserved.
+
+            Testing OPEN, READ, DIRECTORY, SHOW, HELP, and CLOSE.
+
+            Successful completion of this procedure does not imply the presence
+            of a full function DEC Notes license.
+
+                                 DEC Notes Computer Conferencing
+                                 Enter the command HELP for help
+        Creating your Notebook (NOTES$NOTEBOOK)
+        $USER2:[username]NOTES$NOTEBOOK.NOTE;2 created
+        Entry SAMPLE_CONFERENCE added to class MAIN
+        Copyright © Digital Equipment Corporation. 1986, 1993. All Rights Reserved.
+                                   DEC Notes Sample Conference
+        Created: 27-JAN-1986 10:39          9 topics          Updated: 26-JAN-1993 17:34
+
+                                                 Sample Installation A-5
+
+ 
+
+
+
+     Sample Installation
+
+
+     Note 1.0                      Welcome to DEC Notes                     7 replies
+     MAR::JOHN_Q_NOTER "I'll make a note!"                24 lines  27-JAN-1986 10:42
+
+         DEC Notes is a computer-mediated conferencing system that lets you
+         conduct online conferences or meetings.  Using DEC Notes, you can
+         communicate conveniently and economically with people in different
+         geographic locations.  Anyone connected to the system can participate,
+         making it possible for you to receive input from many people without
+         costly, time-consuming meetings.
+
+         This sample conference has been provided to help you quickly get
+         started using DEC Notes.  It contains definitions of terms, ways to
+         read notes, a place for you to add your first reply, and helpful hints
+         for running and participating in an online conference.  This conference
+         also has information about choosing an editor for writing notes,
+         running DEC Notes in batch mode, and protecting a confidential meeting
+         with an Access Control List (ACL).
+
+         To continue reading this note, press the RETURN key.
+     [ 8 more lines... ]
+
+     [ 6 more lines... ]
+
+                                DEC Notes Sample Conference
+     Created: 27-JAN-1986 10:39          9 topics          Updated: 26-JAN-1993 17:34
+
+      Topic  Author               Date         Repl  Title
+
+          1     MAR::JOHN_Q_NOTER 27-JAN-1986     7  Welcome to DEC Notes
+          2     MAR::JOHN_Q_NOTER 27-JAN-1986     1  Choosing an editor to use in DEC Notes
+          3     MAR::NEW_USER     27-JAN-1986     2  Help! I don't understand NEXT UNSEEN
+          4     MAR::JOHN_Q_NOTER 27-JAN-1986     0  Who Are You? - Tell us about yourself
+          5     MAR::JOHN_Q_NOTER 27-JAN-1986     3  Using the DIRECTORY, PRINT and SAVE commands
+          6     MAR::JOHN_Q_NOTER 27-JAN-1986     0  Suggestions for the Welcome note
+          7     MAR::JOHN_Q_NOTER 27-JAN-1986     5  Online Etiquette
+          8     MAR::JOHN_Q_NOTER 27-JAN-1986     1  Using NOTES$COMMAND to Define Additional Keys
+          9     MAR::JOHN_Q_NOTER  3-FEB-1986     0  DEC Notes Security Considerations
+     [ End of requested listing ]
+
+     Note 1.0                      Welcome to DEC Notes                     7 replies
+     MAR::JOHN_Q_NOTER "I'll make a note!"                24 lines  27-JAN-1986 10:42
+
+          Note is not hidden
+          Replies are enabled
+
+     A-6 Sample Installation
+
+ 
+
+
+
+                                                     Sample Installation
+
+
+                                   DEC Notes Sample Conference
+        Created: 27-JAN-1986 10:39          9 topics          Updated: 26-JAN-1993 17:34
+
+             File:        NODE1::$DISK2:[NOTES$LIBRARY]NOTES$SAMPLE.NOTE;5
+             Moderator:   MAR::JOHN_Q_NOTER
+
+             Access is not restricted
+             Keyword creation is restricted
+             Notes may be written
+
+                           Directory of conferences on NOTES$LIBRARY:
+
+         Conference file
+
+         NOTES$SAMPLE
+           Title:  DEC Notes Sample Conference
+           Moderator:  MAR::JOHN_Q_NOTER
+           Created:  27-JAN-1986 10:39  9 topics, 28 notes  Updated:  26-JAN-1993 17:34
+
+        [ End of requested listing ]
+
+                                   DEC Notes Sample Conference
+        Created: 27-JAN-1986 10:39          9 topics          Updated: 26-JAN-1993 17:34
+         Member           Access              Mail Address                   Privileges
+
+         JOHN_Q_NOTER     MAR::JOHN_Q_NOTER                                  [M]
+         SYSTEM           0::SYSTEM           SYSTEM                         [MK]
+        [ End of requested listing ]
+
+        DEC Notes V2.5 - Copyright © Digital Equipment Corporation. 1986, 1993.
+
+        Command_Summary
+
+          If you are new to DEC Notes, type New_User for examples of how to use
+          Getting Started commands, type Terms_and_Concepts for an explanation of
+          your Notebook and other DEC Notes terms and concepts, or type a question
+          mark (?) for a list of all DEC Notes commands.
+
+          Getting Started Commands:
+
+            ADD ENTRY               CLOSE                   DIRECTORY
+            EXIT                    EXTRACT                 HELP
+            NOTES (DCL command)     OPEN                    PRINT
+            READ                    REPLY (or ANSWER)       WRITE
+
+          The following topics have information on more advanced DEC Notes commands:
+
+                                                 Sample Installation A-7
+
+ 
+
+
+
+     Sample Installation
+
+
+         Choosing_an_Editor      Information_Commands    Keypad
+         Keyword_Commands        Logical_Names           Moderator_Commands
+         Notebook_Commands       Other_Utilities         Reading_Notes
+         Specifying_Notes        Subprocess_Commands
+
+                              DEC Notes Computer Conferencing
+                              Enter the command HELP for help
+
+
+         If the informational output above is similar to the example
+         displayed in the DEC Notes Installation Guide, then this
+         installation is successful.
+
+         The DEC Notes V2.5 Installation Verification Procedure completed.
+
+      Installation of NOTES V2.5 completed at hh:mm
+
+      VMSINSTAL procedure done at hh:mm
+
+     $ LOGOUT
+
+       SYSTEM       logged out at  dd-mmm-yyyy hh:mm:ss.ss
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     A-8 Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                           DEC Notes License Information
+
+
+
+              This appendix provides information on DEC Notes licenses.
+
+        B.1 The NOTES-CLIENT-USER License
+
+              The NOTES-CLIENT-USER license is a concurrent client-only
+              license that provides client-only capabilities to a fixed
+              number of invocations of Notes. See the DEC Notes Software
+              Product Description (SPD) for more information.
+
+        B.2 The NOTES-SERVER-LANLINK License
+
+              The NOTES-SERVER-LANLINK license provides server-only
+              capabilites. It does not allow Notes to be invoked from
+              the command line (that is, no client capability). Because
+              it is a personal use license, users must be added to the
+              license reserve list before they are permitted to use the
+              server. The format of the reserve list is different from
+              most other applications however since it includes the
+              nodename as well as the username. The default username
+              from PATHWORKS Conferencing (SPD 38.65.xx) clients is
+              Conferencing-User but can be changed by the user.
+
+        B.2.1 Adding a User to the Reserve List
+
+              To add a user to the reserve list for the NOTES-SERVER-
+              LANLINK license, be sure to include their nodename. For
+              example, if the user on node MYPC has set a username of
+              Johnson, then the command to add that user to the reserve
+              list for a PAK with an authorization of XXXX would be:
+
+              $ license modify NOTES-SERVER-LANLINK  -
+              _$ /authorization=XXXX/reserve=(MYPC::Johnson)/add
+
+              All personal use licenses require that LMF Version 1.1 be
+              installed. LMF Version 1.1 comes with VMS Version 5.5 and
+              is separately installable on VMS Version 5.4.
+
+                                       DEC Notes License Information B-1

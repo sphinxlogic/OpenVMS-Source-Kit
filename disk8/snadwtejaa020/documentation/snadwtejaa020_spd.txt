@@ -1,0 +1,835 @@
+ 
+
+
+
+
+
+
+              Software
+              Product
+              Description
+
+           _____________________________________________________________________
+
+             日本語DECwindows DECnet SNA 3270                        SPD 26.K3.02
+
+            ターミナル・エミュレータfor OpenVMS Version 2.0Aソフ
+
+            トウェア仕様書
+
+              仕様書の包含する範囲           1.1  IBMシステムとDECシステム間
+          この文書は，日本語DECwindows       の通信
+
+          DECnet SNA 3270ターミナル・エミ    通常の操作では，IBMシステムは
+          ュレータfor OpenVMSのソフトウェ    "フォーム"や"パネル"のような
+          ア機能仕様を述べたものです。       定様式画面を3270ブロック・モ
+
+          本文中では日本語DECwindows         ード・ターミナルに転送し，ユー
+          DECnet SNA 3270ターミナル・エミ    ザは任意のフォームに必要なデー
+          ュレータfor OpenVMSを単にTEと記    タを入力します。入力が終了する
+          述します。                         と，フォームは1つの単位として
+                                             IBMホストに送信されます。
+
+          1  概要                            この方式は，"フォーム"をDECnet
+                                             ホスト上のメモリに格納して，そ
+          TEは，DECnetネットワーク内でDEC    れをターミナルに表示することに
+          がサポートするOpenVMSベースのワ    より，DECキャラクタ・モード・
+          ークステーション，サーバが，IBM    ターミナルでエミュレートされま
+          メインフレーム上で動作するアプ     す。画面上の"フォーム"はDECnet
+          リケーションをアクセスし，利用     SNA Gatewayを通して，IBMホス
+          することを可能にするソフトウェ     ト・システムに送信されます。
+          ア製品です。                       各システムの変換テーブルは，
+
+          TEはDECwindows Motif環境で動       DECnet SNAゲートウェイ・ソフ
+          作し，DECnet SNA Gatewayを通し     トウェアを通じてのデータ転送の
+          て，IBMホスト・システムにアクセ    ために，ターミナル入力をIBMの
+          スします。                         EBCDICコードおよび漢字コードに
+
+              注意: この文章中のDECnet       変換します。
+
+             SNA Gatewayは特に断らない
+             限り，DECnet SNA Gateway        1.2  TEの起動
+             for Synchronous Transport       利用者はOpenVMSコマンド行から
+             （SPD 25.C6.xx）およびDECnet    TEを起動することができます。
+             SNA Gateway for Channel         利用者の設定により，ファイル・
+             Transport（SPD 29.76.xx）を     ビューまたはセッション・マネ
+             意味します。                    ージャのアプリケーション・メ
+
+                                             ニューから起動することもでき
+                                             ます。OpenVMSコマンド行から起
+                                             動する場合は，利用者が接続を望
+                                             むIBMシステムとそのシステム資
+                                             源を指定するためにコマンド行修
+                                             飾子を使用します。ファイル・ビ
+                                             ューのアプリケーション・メニュ
+                                             ーから起動する場合は，TEオプシ
+                                             ョンをDECwindowsダイアログ・ボ
+
+                                          DIGITAL                     1994年4月
+
+                                                                    AE-Q4XYA-TE
+
+ 
+
+
+           日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+           ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+          ックスの中に指定することができ           -  １文字削除
+          ます。TEが動作している間は，そ           -  コピー
+          のディスプレイ・ウィンドウは，           -  フィールド・マーク設定
+          PS55日本語3270パーソナル・コン
+          ピュータによく似た形式で表示さ           -  挿入モード
+          れます。TEを終了すると，制御は        o  データ・ストリームによる
+          OpenVMSに戻ります。                      ベース・カラー
+
+                                                o  構造化フィールド
+          2  機能                               o  サポートされる3270拡張属
+
+          TEは，以下に示すIBM表示システム          性
+          のエミュレーション機能を提供し           -  前景色(青，赤，ピン
+          ます。                                      ク，緑，空色，黄，白，
+
+             o  日本語3270 パーソナル・コ             黒)
+
+                ンピュータ                         -  背景色(青，赤，ピン
+
+                                                      ク，緑，空色，黄，白，
+          2.1  サポートされる機能                     黒)
+
+             o  保護フィールドと無保護フ           -  拡張強調表示
+
+                ィールド                                 反転表示
+             o  英数字データと数字データ                 下線
+
+             o  1920文字画面（24×80）             -  SO，SI（漢字サブフィー
+             o  音響警報機構                          ルド）
+
+             o  高輝度表示，通常表示，非           -  文字セット（漢字フィー
+                表示フィールド                        ルド）
+
+             o  英数字カーソル（ブロッ             -  罫線
+
+                ク・カーソルのみ）                 -  漢字入力可能
+
+             o  数字ロック・オーバーライ        o  ローカルおよびホストで
+                ド                                 開始されるコピーおよびプ
+             o  オート・リピート・キー             リンタ指示FF（用紙送り）
+                （ワークステーション・キ           （フォームフィード，モノ
+                ー・ボードのSET-UP機能に           クロのみ）
+
+                より提供）                      o  サポートされる画面サイ
+             o  SYS REQ（ユーザがSSCP-LU           ズ:
+
+                セッションとLU-LUセッショ             1920文字
+
+                ンを切り換えることができ        o  ベクタ・ツー・ラスタ・グ
+                るようにする機能）                 ラフィック
+
+             o  サポートされるローカル機        o  16ドット・システム，24ド
+                能キー                             ット・システム
+
+                -  フィールドの最後まで削           注意: TEの解像度は，表示
+                   除                              するフォント・サイズによ
+
+                -  入力の削除                      って異なります。解像度の
+
+                -  印刷                            違いにより，TEの表示する
+                -  Backtab                         図形がPS55日本語3270パー
+                                                   ソナル・コンピュータと多
+                -  カーソルの上下移動              少異なる場合があります。
+
+                -  カーソルのホーム移動         o  マウス・サポート
+
+                -  カーソルの左右移動
+
+                                             2
+
+ 
+
+
+          日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+          ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+             o  日本語DECwindows環境で提        o  プロッターの使用
+                供されるトリミング機能          o  ベクトル記号セットのDEC側
+
+             o  グラフィック・カーソル             （WS）でのサポート
+                （白のクロス・カーソルの        o  2色と4色モードの切り替え
+                み）
+             o  グラフィック・ローカル・     簡単にアクセスできるオンライン
+                コピー                       HELP機能は，キー機能に関する情
+                                             報を提供します。実際の3270表示
+             o  ファイル転送(ホスト・シス    システムで実現されている操作員
+                テムのプロダクトはMVS/TSO    情報域はサポートされませんが，
+                およびMVS/CICS）             状態行が表示される状態インディ
+
+             o  全角カーソル（省略時解釈     ケータによって，ほとんど同じ情
+                モードのみ）                 報が提供されます。
+
+             o  カーソルの位置表示           さらに，ユーザは特定のIBMキー機
+                                             能をワークステーション・キーボ
+          2.2  サポートされない機能          ードの別のキーに再定義すること
+                                             ができます。
+             o  APL文字セット
+
+             o  オート・リピート・キーと     2.3  拡張3270データ・ストリーム
+                しての＜−!（NEW LINE）      拡張3270データ・ストリームの
+
+             o  MAGnetic Slot Reader         中で，TEは，次の指令，副指令，
+             o  印刷時のサイズ指定           属性等をサポートもしくは認識し
+             o  応答時間計測（RTM）          ます。ここでサポートするとは，
+                                             その指令，副指令，属性等が指示
+             o  カーソルタイプの切り替え     している動作を行うという意味で
+                （下線カーソル）             す。
+
+             o  ペル単位のカーソル移動          o  3270 DS指令
+
+             o  テキスト・カーソル位置で           -  Write，Erase/Write
+                の漢字変換入力                     -  Erase/Write Alternate
+
+             o  キー機能（DELETE WORD，            -  Erase All Unprotected
+                NEXT WORD，およびPREVIOUS
+                WORD）                             -  Read Modified
+
+             o  磁気ストライプ読み取り機           -  Read Modified All
+
+                構                                 -  Read Buffer
+
+             o  選択用ライト・ペン，機密           -  Write Structured
+                保護ロック，磁気ストライ              Field
+                プ・カードと操作員識別カ
+                ード読取機構                        注意: 3270 DS指令では
+             o  属性選択キー                       Write Structured Field指
+                                                   令はサポートしますが，そ
+             o  入力補助機能                       れに続くすべての構造化フ
+
+             o  ハンドスキャナ                     ィールドをサポートしてい
+             o  非透過属性フィールド（非           るわけではありません。
+
+                透過）                          o  3270 DS副指令
+
+             o  フィールド継承キー                 -  Start Field
+
+             o  ブリンク                           -  Start Field Extended
+
+             o  プログラム式シンボル選択           -  Modify Field
+
+                キー                               -  Set Buffer Address
+
+                                             3
+
+ 
+
+
+           日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+           ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+                -  Insert Cursor             2.4  DECwindows Motifスタイルの
+                -  Program Tab               グラフィカル・ユーザ・インタフ
+                -  Repeat to Address         ェース
+
+                                             DECwindows Motifスタイルのグラ
+                -  Erase Unprotected to      フィカル・ユーザ・インタフェー
+                   Address                   ス（GUI）を提供します。このグラ
+
+                -  Set Attribute             フィカル・ユーザ・インタフェー
+             o  SFE副指令で指定される属性    スは，オープンなグラフィカル・
+                                             ユーザ・インタフェースとアプリ
+                -  基本属性                  ケーション・プログラミング・イ
+
+                -  拡張強調属性              ンタフェース（API）の両方に関
+                -  文字セット属性            するOpen Software Foundation's
+                                             Motif（OSF/Motif）仕様に準拠し
+                -  漢字入力属性              ています。
+
+                -  罫線属性
+
+                -  拡張カラー属性            2.5  フォントサイズの変更
+
+                -  透過属性                  フォントサイズを４種類のフォン
+             o  WSF指令で指定される構造化    トサイズ（拡大フォント／標準フ
+                フィールド                   ォント／縮小フォント／DWTEフォ
+                                             ント）から選択することができま
+                -  Read Partition            す。
+
+                -  Set Reply Mode            解像度（横×縦）−560×336 (縮
+
+                -  Erase/Reset               小フォント)
+                -  Load programmed              　　　　　　　　　640×432
+                   symbols                      (標準フォント)
+                -  Create Partition             　　　　　　　　　960×576
+                                                (拡大フォント)
+                -  Outbound 3270 DS             　　　　　　　　　720×504
+                -  Destination/Origin           (DWTEフォント)
+
+                -  Graphic Data
+                -  Graphic Picture              2.6  カラーの変更
+
+                -  Graphic Control              ホスト・システムで指定された
+                                                表示カラー及び罫線カラーを任
+                -  File Transfer                意の８色に変更することができ
+             o  WSF指令で指定される構造化       ます。
+
+                フィールドのうち，サポー
+                トされないもの                  2.7  キー操作の記録と再生
+
+                -  OEM data                     最大127個のキー操作を記録
+                                                し，再生することができます。
+                                                これにより，定型作業を自動
+                                                的・効率的に行うことができま
+                                                す。
+
+                                                2.8  自動コマンド機能
+
+                                                自動コマンドファイルに記述し
+                                                たキー操作を再生する事が出来
+                                                ます。これにより，定型作業を
+                                                自動的・効率的に行なう事が出
+                                                来ます。
+
+                                             4
+
+ 
+
+
+          日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+          ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+             2.9  キー先読み機能                3  インストレーション
+
+             キー先読み機能を使用すること       このソフトウェアのインストレ
+             により，IBMシステムとの送受        ーションを実行できるのは，経
+             信中にキーボードがロックされ       験の豊富なお客様に限られてい
+             た状態でもキー入力が行うこと       ます。他のお客様には日本DEC
+             ができます。                       のインストレーション・サービ
+
+                                                スをお勧めします。このサービ
+             2.10  日本語入力                   スでは，日本DECのソフトウェ
+             TEでは，かな漢字変換による日       ア技術者がインストレーション
+             本語入力やIBM漢字コード入力        を行います。
+
+             を容易に行うことができます。    日本DECがソフトウェアをインスト
+
+                                             レーションする前に，お客様は次
+             2.11  テキストの複写と張付け    のことを行ってください。
+
+             動作中のDECwindowsセッション       o  ターミナルおよびDECnet
+             内で他のDECwindows Motifアプ          SNA Gatewayも含めて，必要
+             リケーションとの間でテキスト          なハードウェアのすべてを
+             の複写と張付けを行うことがで          事前にインストールしてお
+             きます。                              いてください。
+
+                                                o  DECの通信機器へのインター
+             2.12  画面の印刷                      フェイスに必要なモデムや
+             表示画面をテキストファイル，          その他の機器を設置して，
+             PostScriptファイル，シクセル          正しく動作しているかどう
+             ファイル，DDIFファイルにモノ          かを確認してください。
+
+             クロ出力することができます。       o  DECnet SNA Gateway及びTE
+             また，プリント・キューを通し          と，必要なIBMホスト・ソフ
+             て印刷することもできます。            トウェアが通信できるよう
+                                                   にパラメータを適切に設定
+             2.13  IBM選定文字及びIBMユー          してください。
+
+             ザ定義文字の使用                   o  お客様と日本DECの合意が得
+             IBM選定文字及びIBMユーザ定義          られるまでの適切な期間，
+             文字の入力，表示，印刷が可能          インストレーションで使
+             です。TEでIBM選定文字及びIBM          用するすべてのハードウェ
+             ユーザ定義文字を扱う場合は，          ア，通信機器，及びターミ
+             TEの提供するjsnaknjdefユーテ          ナルを使用可能な状態にし
+             ィリティを使用します。                ておいてください。
+
+                                             このプロダクトを正しく使用する
+             2.14  ヘルプ機能                ためには以下の作業が必要です。
+
+             容易にアクセスできるオンライ       o  お客様は，日本DECとIBMシ
+             ン・ヘルプ機能は，キー機能に          ステムの技術者がインスト
+             関する情報を提供します。実際          ール前の作業を協力して実
+             のPS55日本語3270パーソナル・          行できるよう準備しておい
+             コンピュータ上に表示される状          てください。
+
+             態表示行はサポートされませ         o  お客様は，DECnet SNA
+             ん。しかし，そこに表示される          GatewayとTEソフトウェアを
+             情報のほとんどが，TEの操作員          サポートするために，IBM構
+             状態表示域に表示される状態識          成要素の生成パラメータを
+             別子によって報告されます。            変更してください。
+
+                                             5
+
+ 
+
+
+           日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+           ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+          4  必要なサポート
+          IBMホスト・ベースのアプリケーシ             DEC 4000モデル610 AXP
+          ョン環境にアクセスしたいすべて              System,
+          のOpenVMSノードを含む，ネットワ             DEC 4000モデル620 AXP
+          ーク構成とDECnetカスタマ・サポ              System,
+          ート・プラン(適切な場合)を，お              DEC 7000モデル610 AXP
+          客様と日本DECが協力して準備する             System,
+          必要があります。                            DEC 7000モデル620 AXP
+                                                      System,
+          TEを日本DECが適切にサポートする             DEC 7000モデル630 AXP
+          ために，お客様は日本DECがサポ               System,
+          ートするDECnet SNA Gateway構成              DEC 7000モデル640 AXP
+          を準備しておかなければなりませ              System,
+          ん。                                        DEC 7000モデル650 AXP
+          日本DECがDECnet SNA Gateway 構              System,
+          成をサポートするには，DECnet                DEC 7000モデル660 AXP
+          SNA Gatewayを最初に購入される際             System,
+          に，ゲートウェイ・オリエンテー              DEC 10000モデル610 AXP
+          ション/インストレーション・サー             System,
+          ビス(QSF0x-SZ)も同時に購入する              DEC 10000モデル620 AXP
+          必要があります。                            System,
+                                                      DEC 10000モデル630 AXP
+                                                      System,
+          5  必要なハードウェアの最小構成             DEC 10000モデル640 AXP
+                                                      System,
+              適用プロセッサ                          DEC 10000モデル650 AXP
+             AXP:  DEC 2000モデル200 AXP              System,
+                   Server,                            DEC 10000モデル660 AXP
+                   DEC 3000モデル300 AXP              System,
+
+                   Workstation,                 VAX:  VAX 4000モデル100，
+                   DEC 3000モデル300L AXP             VAX 4000モデル200，
+                   Workstation,                       VAX 4000モデル300，
+                   DEC 3000モデル400 AXP              VAX 4000モデル400，
+                   Workstation,                       VAX 4000モデル500，
+                   DEC 3000モデル400 AXP              VAX 4000モデル600，
+                   Server,                            VAX 6000モデル200シリ
+                   DEC 3000モデル500 AXP              ーズ，
+                   Wrokstation,                       VAX 6000モデル300シリ
+                   DEC 3000モデル500X AXP             ーズ，
+                   Workstation,                       VAX 6000モデル400シリ
+                   DEC 3000モデル500 AXP              ーズ，
+                   Server,                            VAX 6000モデル500シリ
+                   DEC 3000モデル600 AXP              ーズ，
+                   Workstation,                       VAX 6000モデル600シリ
+                   DEC 3000モデル600 AXP              ーズ，
+                   Server,                            VAX 7000モデル600シリ
+                   DEC 3000モデル800 AXP              ーズ，
+                   Workstation,                       VAX 8200，VAX 8250，VAX 8300，
+                   DEC 3000モデル800 AXP              VAX 8350，VAX
+                   Server,                            85XX，VAX 8600，
+
+
+
+
+
+
+                                             6
+
+ 
+
+
+          日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+          ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+
+                   VAX 8650，VAX 8700，                   VAXstation 3100モ
+                   VAX 8800，                             デル48，
+                   VAX 8810，VAX 8820，                   VAXstation 3100モ
+                   VAX 8830，                             デル76，
+                   VAX 8840，                             VAXstation 3200，
+                   VAX 9000モデル110，                    VAXstation 3500，
+                   VAX 9000モデル210，                    VAXstation 3520，
+                   VAX 9000モデル300シリ                  VAXstation 3540，
+                   ーズ，                                 VAXstation 4000
+                   VAX 9000モデル400シリ                  VLC，
+                   ーズ，                                 VAXstation 4000モ
+                   VAX 10000モデル600シリ                 デル60
+                   ーズ，                                 VAXstation 4000モ
+                   VAXftモデル110，VAXft                  デル90
+                   モデル310，                  VAXserver:VAXserver 3100モデ
+                   VAXftモデル410，VAXft                  ル10/10E,
+                   モデル610，                            VAXserver 3100モデ
+                   VAXftモデル612，                       ル20/20E,
+                   VAX-11/750，VAX-11                     VAXserver 3300，
+                   /780，                                 VAXserver 3400，
+                   VAX-11/785，                           VAXserver 3500，
+
+             MicroVAX: MicroVAX II，                      VAXserver 3600，
+                       MicroVAX 2000，                    VAXserver 3602，
+                       MicroVAX 3100モデ                  VAXserver 3800，
+                       ル10/10E，                         VAXserver 3900，
+                       MicroVAX 3100モデ                  VAXserver 4000モデ
+                       ル20/20E，                         ル200，
+                       MicroVAX 3100モデ                  VAXserver 4000モデ
+                       ル30，                             ル300，
+                       MicroVAX 3100モデ                  VAXserver 4000モデ
+                       ル40，                             ル500，
+                       MicroVAX 3100モデ                  VAXserver 6000モデ
+                       ル80，                             ル210/220，
+                       MicroVAX 3100モデ                  VAXserver 6000モデ
+                       ル90，                             ル310/320，
+                       MicroVAX 3300，                    VAXserver 6000モデ
+                       MicroVAX 3400，                    ル410/420，
+                       MicroVAX 3500，                    VAXserver 6000モデ
+                       MicroVAX 3600，                    ル510/520，
+                       MicroVAX 3800，                    VAXserver 6000モデ
+                       MicroVAX 3900                      ル610，
+             VAXstationVAXstation II，                    VAXserver 6000モデ
+                       VAXstation 2000，                  ル620，
+                       VAXstation 3100モ                  VAXserver 6000モデ
+                       デル30，                           ル630
+
+                       VAXstation 3100モ         適用されないプロセッサ
+                       デル38，                 o  VAX-11/725
+                       VAXstation 3100モ
+                       デル40，                 o  VAX-11/730
+
+                                                o  VAX-11/782
+
+
+
+                                             7
+
+ 
+
+
+           日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+           ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+             o  MicroVAX I                   6  オプション・ハードウェア
+
+             o  VAXstation I                 なし。
+
+             o  VAXstation 8000
+
+              プロセッサ制限事項             7  クラスタ環境
+
+          スタンドアロンのMicroVAX 2000お    本レイヤード・プロダクトは，正
+          よびVAXstation 2000では，TK50テ    規のライセンスを持つVMScluster
+          ープ駆動装置が必要です。           構成*の上にインストールされてい
+              必要なディスク容量             る場合，機能上の制限は受けませ
+                                             ん。本ソフトウェアで必要とされ
+          AXP Systems:                       るハードウェアについては「必要
+             (Block Cluster Size=1の場合)    なハードウェアの最小構成」の項
+                                             に記述されているとおりです。
+
+             インストール時:       約9600       *  VMScluster構成について
+                                   ブロッ          は『VMScluster Software
+                                   ク              Product Description (SPD
+                                   (4800K          42.18.xx)』に詳しく説明さ
+                                   バイ            れています。また，この構
+                                   ト)             成にはCI，Ethernetおよび
+             システム運用時:       約6500          Mixed Interconnect構成が
+                                   ブロッ          含まれます。
+                                   ク
+                                   (3250K
+                                   バイ      8  必要なソフトウェア
+
+                                   ト)       OpenVMS VAXシステム:
+
+          VAX Systems:                          o  日本語OpenVMS VAXオペレー
+             (Block Cluster Size=1の場合)          ティング・システムV6.0
+
+             インストール時:       約8100       o  日本語OpenVMS DECwindows
+                                   ブロッ          Motif
+
+                                   ク           o  DECnet for OpenVMS VAX
+                                   (4050K          V6.0
+                                   バイ      以下に示すソフトウェアのいずれ
+                                   ト)       か1つが必要です。
+             システム運用時:       約5000       o  DECnet SNA Gateway CT
+                                   ブロッ          V2.1 (SPD 29.76.xx)
+                                   ク
+                                   (2500K       o  DECnet SNA Gateway ST
+                                   バイ            V1.2 (SPD 25.C6.xx)
+                                   ト)
+
+          これらのディスク容量は，システ        OpenVMS AXPシステム:
+          ム・ディスク上で必要となるディ        o  日本語OpenVMS AXPオペレー
+          スク領域を表したものであり，概           ティング・システムV1.5
+          数です。実際の値は，システムの
+          環境，構成，ソフトウェア・オプ        o  日本語OpenVMS DECwindows
+          ションに応じて異なります。               Motif
+
+                                                o  DECnet for OpenVMS VAX
+                                                   V1.5
+
+                                             以下に示すソフトウェアのいずれ
+                                             か1つが必要です。
+
+                                             8
+
+ 
+
+
+          日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+          ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+             o  DECnet SNA Gateway CT        9  サポートされるIBMソフトウェア
+                V2.1 (SPD 29.76.xx)          本ソフトウェアは，以下に示すIBM
+
+             o  DECnet SNA Gateway ST        ソフトウェアを使用して構成され
+                V1.2 (SPD 25.C6.xx)          ているIBMプロセッサ・システム
+
+          あらかじめ必要なハードウェア       に対してテストされており，これ
+          とソフトウェアについては，それ     らのシステムに対して保証されま
+          ぞれの『ソフトウェア仕様書(SPD     す。また，本ソフトウェアは，他
+          )』を参照してください。            のOpenVMSソフトウェア及び機器と
+                                             組み合わせて使用したり，OpenVMS
+                                             がサポートするソフトウェア以外
+              OpenVMSテーラリング            のソフトウェアと組み合わせて使
+
+          本レイヤード・プロダクトの全機     用しても正しく機能する場合があ
+          能を得るには次のOpenVMS構成要素    りますが，このような機器及びソ
+          が必要です。                       フトウェア構成では適切なテスト
+                                             を行っておりませんので，DECは本
+             o  OpenVMS Required Saveset     ソフトウェアに対して標準保証を
+
+             o  Network Support              提供しません。
+
+             o  Utilities
+
+          OpenVMS VAXのクラスおよびテ                      表 1
+          ーラリングについては『OpenVMS                 IBM MVS環境
+          VAX Operating System Software         _____________________________
+          Product Description (SPD              Software
+          25.01.xx)』および『日本語             Product___________Version_Release
+          OpenVMSオペレーティング・シ           MVS/SP            2       2.0
+          ステムソフトウェア仕様書(SPD
+          25.C4.xx)』を参照してください。                         3       1.0
+
+          OpenVMS AXPのクラスおよびテ
+          ーラリングについては『OpenVMS         TSO/E/XA                  3.0
+          VAX Operating System Software
+          Product Description (SPD                                        4.0
+          41.87.xx)』および『日本語
+          OpenVMSオペレーティング・シ           ISPF/MVS          2       2.0
+          ステムソフトウェア仕様書(SPD
+          28.A9.xx)』を参照してください。                                 3.0
+
+                                                ISPF/PDF          2       2.0
+
+                                                                          3.0
+
+                                                IMS               2       1.0
+
+                                                                          3.0
+
+                                                CICS/OS/MVS       1       6.1
+
+                                                                          7.0
+
+                                                NCCF              2       2.0
+
+
+                                             9
+
+ 
+
+
+           日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+           ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+
+                     表 1 (続き)                VSE/SP            2       1.6
+
+                     IBM MVS環境
+                                                VSE/ICCF          2       1.0
+            _____________________________
+
+             Software                           ISPF/VSE          1       1.0
+             Product___________Version_Release
+
+                                                ISPF/PDF          1       1.0
+
+             NETVIEW           1       1.0      CICS/DOS/VS       1       6.0
+
+                                       2.0      NCCF              2       2.0
+
+                                             ________________________________
+             GDDM              2       1.0
+
+             SAS                       5.18
+
+             MVS/TSOファイル   1       1.0      10  バージョンアップの考慮
+             転送支援プログ
+             ラム                               本製品の将来のバージョンで
+
+                                                は，必要なハードウェアおよび
+             CICS(MVS)ファイ   1       1.0      ソフトウェアの最小構成が変更
+             ル転送支援プロ                     されることがあります。
+          ___グラム_______________________
+
+                                                11  注文情報
+
+                                                最寄りの日本DECの各支店/営業
+                        表 2                    所にお問い合わせください。
+
+                     IBM VM環境
+             _____________________________      12  ソフトウェア・ライセンス
+             Software                           本ソフトウェアは日本DEC標準
+             Product___________Version_Release  販売約款中のライセンス規定に
+
+             VM/SP             1       5.0      基づいて提供されます。
+
+             VM/XA SP          1       2.0   日本DECのライセンス条件とその方
+                                             針についての詳細は，最寄りの日
+             CMS                       4.1   本DEC各支店/営業所にお問い合わ
+                                             せください。
+
+                                       5.0
+
+             ISPF/VM           2       2.0
+
+             ISPF/PDF          2       2.0
+
+             NCCF              2       1.0
+
+             NETVIEW           1       1.0
+
+                                       2.0
+
+                                            10
+
+ 
+
+
+          日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+          ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+          13  ライセンス管理機能
+
+          本ソフトウェアはOpenVMSライセン
+          ス管理機能（LMF）をサポートして
+          います。本プロダクトのライセン
+          ス単位はCPUの性能に応じて割り当
+          てられます。
+
+          ライセンス管理機能の詳細は
+          『OpenVMS Operating System
+          Software Product Description
+          (SPD 25.01.xx)』またはOpenVMS
+          Operating Systemのドキュメ
+          ント・セット中の『License
+          Management Facility Manual』
+          を参照してください。
+
+          14  ソフトウェア製品サービス
+
+          日本DECでは，様々なサービス・オ
+          プションを提供しています。詳細
+          については，最寄りの日本DEC各支
+          店/営業所にお問い合わせくださ
+          い。
+
+          15  保証
+
+          本ソフトウェアについては，日本
+          DEC所定のソフトウェア保証基準に
+          定められた保証が提供されます。
+
+          __________
+
+             [*] IBMはIBM社の商標です。
+             [*] IBMは米国International
+             Business Machines社の商標で
+
+             す。
+             [*] Apple，Macintoshは米国
+
+             Apple Computer社の商標です。
+             [*] OSF，Motif，OSF/Motifは
+             Open Software Foundation社の
+
+             商標です。
+             [*] Microsoft，MS及
+             びMS-DOSは米国Microsoft社の
+
+             商標です。
+             [*] PostScriptは米国Adobe
+
+             Systems社の商標です。
+             [*] UNIXはUNIXシステムラボラ
+
+             トリーズ社の商標です。
+             [*] Digitalロゴ，
+             DECwindows，DECnet，
+             DECstation，DECsystem，
+             MicroVAX，PATHWORKS，
+             ULTRIX，VAX，VAXstation及び
+             VAXserverは米国Digital
+
+                                            11
+
+ 
+
+
+           日本語DECwindows DECnet SNA 3270                         SPD 26.K3.02
+           ターミナル・エミュレータfor OpenVMS Version 2.0Aソフトウェア仕様書
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          __________
+
+             Equipment Corporationの商標
+
+             です。
+
+
+                                            12

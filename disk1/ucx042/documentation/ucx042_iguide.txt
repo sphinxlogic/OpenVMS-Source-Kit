@@ -1,0 +1,3965 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+                     DIGITAL_TCP/IP_Services_for_OpenVMS___________
+                     Installation and Configuration
+
+                     Order Number: AA-LU49K-TE
+
+
+                     October 1997
+
+                     This manual explains how to install and configure
+                     the DIGITAL TCP/IP for OpenVMS (UCX) layered
+                     application product.
+
+
+
+
+
+                     Revision Information:        This is a revised
+                                                  manual.
+
+                     Operating Systems:           OpenVMS Alpha
+                                                  Versions 6.2, 7.0,
+                                                  7.1
+                                                  OpenVMS VAX Versions
+                                                  6.2, 7.0, 7.1
+
+                     Software Version:            DIGITAL TCP/IP
+                                                  Services for OpenVMS
+                                                  Version 4.2
+
+
+
+
+
+
+
+                     Digital Equipment Corporation
+                     Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           October 1997
+
+           Digital Equipment Corporation makes no representations
+           that the use of its products in the manner described in
+           this publication will not infringe on existing or future
+           patent rights, nor do the descriptions contained in this
+           publication imply the granting of licenses to make, use,
+           or sell equipment or software in accordance with the
+           description.
+
+           Possession, use, or copying of the software described in
+           this publication is authorized only pursuant to a valid
+           written license from DIGITAL or an authorized sublicensor.
+
+           DIGITAL conducts its business in a manner that conserves
+           the environment and protects the safety and health of its
+           employees, customers, and the community.
+
+           © Digital Equipment Corporation 1997. All rights reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: ACMS, DECdtm, DDCMP, DEC, DECnet, DECNIS,
+           DECserver, DECsystem, DECwindows, DIGITAL, DNA, InfoServer,
+           LAT, OpenVMS, PATHWORKS, POLYCENTER, ULTRIX, VAX,
+           VAXstation, VMS, VMScluster, and the DIGITAL logo.
+
+           The following are third-party trademarks:
+
+           OSF/1 is a registered trademark of Open Software
+           Foundation, Inc.
+
+           OSI is a registered trademark of CA Management, Inc.
+
+           Sun, NFS, and PC-NFS are registered trademarks of Sun
+           Microsystems, Inc.
+
+           UNIX is a registered trademark in the United States and
+           other countries, licensed exclusively through X/Open
+           Company Ltd.
+
+           All other trademarks and registered trademarks are the
+           property of their respective holders.
+
+                                                               ZK6524
+
+           This document is available on CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing to Install and Configure UCX
+
+         1.1   Understanding the Major Tasks Involved.......    1-1
+         1.2   Preinstallation Tasks........................    1-2
+         1.2.1     Inspecting the Distribution Kit..........    1-2
+         1.2.2     Registering the UCX License Product
+                   Authorization Key........................    1-2
+         1.2.3     Upgrading OpenVMS and Backing Up the
+                   System Disk..............................    1-3
+         1.2.4     Checking the Disk Space..................    1-3
+         1.2.5     Checking the Memory......................    1-4
+         1.2.6     Changing the System Parameters...........    1-4
+         1.2.6.1     Global Pagelets and Global Sections ...    1-4
+         1.2.6.2     Nonpaged Dynamic Pool..................    1-5
+         1.2.6.3     Interrupt Stack Pages (OpenVMS VAX
+                     Only)..................................    1-6
+         1.2.7     Assigning User Identification Codes......    1-6
+         1.3   Configuration Planning Worksheet.............    1-7
+
+   2  Installing UCX
+
+         2.1   Installing UCX on an OpenVMS Alpha System....    2-1
+         2.1.1     UCX Installation Procedure (OpenVMS
+                   Alpha)...................................    2-1
+         2.2   Installing UCX on an OpenVMS VAX System......    2-5
+         2.2.1     UCX Installation Procedure (OpenVMS
+                   VAX).....................................    2-5
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     3  Configuring UCX
+
+           3.1   Recommended Order for Configuring UCX........    3-1
+           3.2   Using UCX$CONFIG Menus.......................    3-2
+           3.2.1     Configuring the Core Environment and the
+                     Client and Server Components.............    3-4
+           3.2.2     Configuring the Optional Components......   3-16
+           3.3   Using UCX$CONFIG Option Commands.............   3-18
+           3.4   Starting UCX.................................   3-20
+           3.5   Verifying the Configuration..................   3-20
+           3.6   Additional Configuration Tasks...............   3-21
+           3.7   Automatically Starting and Stopping UCX......   3-22
+           3.8   Automatically Starting UCX Services..........   3-22
+           3.9   Specifying UCX as the Transport for
+                 DECwindows Applications......................   3-23
+
+     A  Installed Files
+
+           A.1   Installed UCX Files..........................    A-1
+           A.2   Installed UCX Files for PATHWORKS Systems....   A-12
+
+     Index
+
+
+     Examples
+
+           2-1       UCX Installation: POLYCENTER Software
+                     Installation Utility Procedure...........    2-2
+
+           2-2       UCX Installation: Beginning Portion of
+                     VMSINSTAL Procedure......................    2-7
+
+           2-3       UCX Installation: Final Portion of
+                     VMSINSTAL Procedure......................    2-8
+
+     Tables
+
+           1-1       Major Tasks: Installing and Configuring
+                     UCX......................................    1-1
+
+           1-2       Configuration Planning Worksheet.........    1-8
+
+           3-1       Tasks: Configuring UCX...................    3-2
+
+           3-2       Troubleshooting IVP Errors ..............   3-21
+
+           A-1       UCX Files................................    A-1
+
+           A-2       PATHWORKS Files .........................   A-12
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              This manual explains how to install and configure the
+              DIGITAL TCP/IP Services for OpenVMS (UCX) networking
+              software on an OpenVMS system.
+
+        Intended Audience
+
+              This manual is intended for OpenVMS system managers or
+              network managers who install and configure networking
+              software. The system managers using this book should have
+              an understanding of TCP/IP networks and terminology.
+
+        Document Structure
+
+              This manual contains three chapters and one appendix:
+
+              o  Chapter 1 outlines the tasks involved in getting the
+                 UCX software running successfully on your system and
+                 explains how to prepare for installing and configuring
+                 Version 4.2 of UCX.
+
+              o  Chapter 2 describes how to install Version 4.2 of the
+                 UCX software using the POLYCENTER Software Installation
+                 utility (OpenVMS Alpha) and the VMSINSTAL procedure
+                 (OpenVMS VAX).
+
+              o  Chapter 3 provides guidelines on how to configure the
+                 UCX components and services after you have installed
+                 the software successfully.
+
+              o  Appendix A lists the locations of files installed
+                 on your OpenVMS system during the UCX installation
+                 procedure.
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+     Terminology
+
+           This manual uses the following terminology:
+
+           o  The abbreviation for the product's name is UCX.
+
+           o  DIGITAL TCP/IP Services for OpenVMS is used to mean
+              both:
+
+              -  DIGITAL TCP/IP Services for OpenVMS Alpha
+
+              -  DIGITAL TCP/IP Services for OpenVMS VAX
+
+           o  Software components
+
+              -  The auxiliary server is the DIGITAL TCP/IP Services
+                 for OpenVMS implementation of the UNIX internet
+                 daemon (inetd).
+
+              -  NFS is the DIGITAL TCP/IP Services for OpenVMS
+                 implementation of the Network File System (NFS)
+                 protocols, including the NFS server, the NFS client,
+                 and PC-NFS.
+
+              -  TN3270 is the TELNET software that emulates IBM 3270
+                 model terminals.
+
+           o  UNIX operating system
+
+              UNIX refers to UNIX Version 4.3 of the Berkeley
+              Software Distribution (BSD). The DIGITAL UNIX operating
+              systems are fully compatible with UNIX BSD Version 4.3.
+
+           o  Networking terms
+
+              -  Host and node both mean a system connected to an
+                 internet.
+
+              -  The term Internet means the network, as defined
+                 by RFC 1208, consisting of large networks that use
+                 the TCP/IP protocol suite and provide universal
+                 connectivity, reaching the Defense Advanced Projects
+                 Research Agency (DARPA) Internet, MILNET, NSFnet,
+                 CERN, and many worldwide universities, government
+                 research labs, military installations, and business
+                 enterprises.
+
+                 The term internet means interconnected networks
+                 using the TCP/IP protocols, functioning as one,
+                 virtual network.
+
+     vi
+
+ 
+
+
+
+
+
+
+        Acronyms
+
+              For a complete list of acronyms used throughout this and
+              other manuals in the DIGITAL TCP/IP Services for OpenVMS
+              documentation set, see the Digital TCP/IP Services for
+              OpenVMS Concepts and Planning guide.
+
+        Conventions
+
+              The following conventions apply to this book.
+
+              __________________________________________________________
+              Convention_______Meaning__________________________________
+
+              UPPERCASE TEXT   Indicates names of OpenVMS and UCX
+                               commands, options, utilities, files,
+                               directories, hosts, and users.
+
+              lowercase        Indicates UNIX system output or user
+              special type     input, commands, options, files,
+                               directories, utilities, hosts, and users.
+
+              italic type      Indicates a variable.
+
+              <Return>         Indicates that you press the Return key.
+
+              <Ctrl/x>         Indicates that you press the Control key
+                               while you press the key noted by x.
+
+              [ ]              In command format descriptions, indicates
+                               optional elements. You can enter as many
+                               as you want.
+
+              { }              In command format descriptions, indicates
+                               you must enter at least one listed
+              _________________element._________________________________
+
+              All node names and addresses in this book are fictitious
+              and are included as examples only.
+
+        Related Documents
+
+              The following manuals provide additional information about
+              planning your network and configuring and managing UCX:
+
+              o  Digital TCP/IP Services for OpenVMS Concepts and
+                 Planning
+
+              o  Digital TCP/IP Services for OpenVMS Management
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+           For a complete list of all manuals in the DIGITAL TCP/IP
+           Services for OpenVMS documentation set, see the Digital
+           TCP/IP Services for OpenVMS Concepts and Planning guide.
+
+           For additional information about DIGITAL TCP/IP Services
+           for OpenVMS products and services, access the DIGITAL
+           OpenVMS World Wide Web site. Use the following URL:
+
+           http://www.openvms.digital.com
+
+     Reader's Comments
+
+           DIGITAL welcomes your comments on this manual or any of
+           the DIGITAL TCP/IP Services for OpenVMS documents. Send us
+           your comments through any of the following channels:
+
+           Internet    openvmsdoc@zko.mts.dec.com
+
+           Fax         603 884-0120, Attention: OSSG Documentation,
+                       ZKO3-4/U08
+
+           Mail        OSSG Documentation Group, ZKO3-4/U08
+                       110 Spit Brook Rd.
+                       Nashua, NH 03062-2698
+
+     How To Order Additional Documentation
+
+           Use the following table to order additional documenta-
+           tion or information. If you need help deciding which
+           documentation best meets your needs, call 800-DIGITAL
+           (800-344-4825).
+
+     ________________________________________________________________
+     Location____Call__________Fax____________Write__________________
+
+     U.S.A.      DECdirect     Fax: 800-234-  Digital Equipment
+                 800-DIGITAL   2298           Corporation
+                 800-344-4825                 Mailstop: TAY2-2/11D
+                                              153 Taylor Street
+                                              Littleton, MA 01460
+
+     Puerto      787-781-0505  Fax: 787-749-  Local DIGITAL
+     Rico                      8300           subsidiary
+
+
+     viii
+
+ 
+
+
+
+
+
+        ________________________________________________________________
+        Location____Call__________Fax____________Write__________________
+
+
+        Canada      DTN: 621-     Fax: 613-592-  Digital Equipment of
+                    6005          1946           Canada, Ltd.
+                    800-DIGITAL                  Box 13000
+                                                 Kanata, Ontario, Canada
+                                                 K2K2A6
+                                                 Attn: CICC
+
+
+        Internationa-             -              Local DIGITAL
+                                                 subsidiary or
+                                                 approved distributor
+
+        Internal    DTN: 261-     Fax: 800-741-  U.S. Software Supply
+        Orders      2010          6970           Business
+                    603-791-2010                 Digital Equipment
+                                                 Corporation
+                                                 8 Cotton Road
+        _________________________________________Nashua,_NH_03063-1260__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                  Preparing to Install and Configure UCX
+
+
+
+              This chapter explains how to prepare for installing and
+              configuring DIGITAL TCP/IP Services for OpenVMS Version
+              4.2 software (hereafter called UCX).
+
+        1.1 Understanding the Major Tasks Involved
+
+              Once you familiarize yourself with the UCX product and
+              decide the components and functionality you want to
+              enable, installing and configuring the software is a
+              simple process that generally takes less than one hour
+              to complete.
+
+              Table 1-1 lists the major tasks involved in installing and
+              configuring the UCX software.
+
+              Table_1-1_Major_Tasks:_Installing_and_Configuring_UCX_____
+
+              Task_Action____________________________Go_to...___________
+
+              1    Prepare for installation and      Sections 1.2.1 -
+                   configuration.                    1.3
+
+              2    Install UCX, then reboot the      Chapter 2
+                   system.
+
+              3    Configure UCX according to your   Chapter 3
+                   network needs.
+
+              4    Verify the configuration.         Chapter 3
+
+              5    Complete additional config-       Chapter 3
+                   uration and setup tasks, as
+              _____appropriate._________________________________________
+
+              The UCX installation and configuration take about 40
+              minutes to complete: 20 minutes for the installation and
+              20 minutes for the basic configuration procedure where you
+              enable the UCX components you plan to use.
+
+                              Preparing to Install and Configure UCX 1-1
+
+ 
+
+
+
+     Preparing to Install and Configure UCX
+     1.1 Understanding the Major Tasks Involved
+
+           You should allow additional time for running tests to
+           verify the configuration and for follow-on configuration
+           and setup tasks. The time required to complete these tasks
+           will vary.
+
+           If you are upgrading from a previous version, you need
+           to run the SYS$UPDATE:UCX$CLEANUP_HELPLIB.COM procedure
+           to delete obsolete commands from the top-level online
+           help. Running this procedure generally takes an additional
+           few minutes; the instructions are displayed in the
+           installation script.
+
+     1.2 Preinstallation Tasks
+
+           The following sections summarize important tasks you need
+           to complete before you install the UCX software on your
+           system.
+
+     1.2.1 Inspecting the Distribution Kit
+
+           Make sure you have a complete software distribution kit.
+           If you have the OpenVMS consolidated distribution CD-
+           ROM distribution kit, check the CD master index for the
+           kit location. If you have a magnetic tape or TK50 kit,
+           supply the device name when requested by the software
+           installation procedure.
+
+           Check that the kit contains everything listed on the bill
+           of materials (BOM). If anything is missing or damaged,
+           contact your DIGITAL representative.
+
+     1.2.2 Registering the UCX License Product Authorization Key
+
+           Before you install the UCX software on a newly licensed
+           node or cluster, you must register a License Product
+           Authorization Key (PAK) using the OpenVMS License
+           Management Facility (LMF). Without a PAK, you can use
+           only DECwindows TCP/IP Transport software.
+
+           If you are installing the UCX software as an update on
+           a node or cluster already licensed for this software,
+           you have already completed the License PAK registration
+           requirements.
+
+
+     1-2 Preparing to Install and Configure UCX
+
+ 
+
+
+
+                                  Preparing to Install and Configure UCX
+                                               1.2 Preinstallation Tasks
+
+              If you ordered the license and the media together, the
+              PAK is included with your distribution kit. Otherwise, the
+              PAK is shipped separately to the location specified on the
+              license order.
+
+              If you are installing prerequisite or optional software
+              along with the UCX software, review the PAK status and
+              install the PAKs for any prerequisite or optional software
+              before you install UCX.
+
+              To register a license, log into the system manager's
+              account, SYSTEM, and do one of the following:
+
+              o  Run the SYS$UPDATE:VMSLICENSE.COM file and enter the
+                 data from your License PAK.
+
+              o  At the DCL prompt, issue the LICENSE REGISTER command
+                 and the appropriate qualifiers.
+
+              You must register a license for each node in an OpenVMS
+              Cluster.
+
+              For complete information about LMF, see the <REFERENCE>(VMS_
+              LICENSE).
+
+        1.2.3 Upgrading OpenVMS and Backing Up the System Disk
+
+              Before you install the UCX software, DIGITAL recommends
+              that you upgrade the OpenVMS operating system, if
+              applicable, then back up the system disk using the backup
+              procedures established at your site.
+
+              For information about how to install OpenVMS, refer to the
+              appropriate OpenVMS upgrade and installation manual.
+
+              For information about backing up a system disk, see the
+              <REFERENCE>(VMS_SYSMAN1).
+
+        1.2.4 Checking the Disk Space
+
+              Make sure the system meets the following disk space
+              requirements (block cluster size = 1):
+
+
+
+                              Preparing to Install and Configure UCX 1-3
+
+ 
+
+
+
+     Preparing to Install and Configure UCX
+     1.2 Preinstallation Tasks
+
+           __________________________________________________________
+           Requirement___________Minimum_Block_Size__________________
+
+           Disk space for        40,000 blocks (Alpha)
+           installation          19,000 (VAX)
+
+           Disk space for        32,000 blocks (Alpha)
+           product_use___________18,000_(VAX)________________________
+
+           The actual disk space needed will vary depending on the
+           system environment, configuration, and software options.
+
+           To find out how many free blocks exist on the system disk,
+           enter the following command:
+
+           $ SHOW DEVICE SYS$SYSDEVICE
+
+     1.2.5 Checking the Memory
+
+           Make sure the system meets the following memory require-
+           ments:
+
+           __________________________________________________________
+           System________________Minimum_Memory______________________
+
+           OpenVMS VAX           24 MB
+
+           OpenVMS_Alpha_________32_MB_______________________________
+
+           To check the memory, enter the following command:
+
+           $ SHOW MEMORY/FULL
+
+     1.2.6 Changing the System Parameters
+
+           Most systems have adequate system resources readily
+           available to include the UCX software. However, you
+           should check the system parameters outlined in the
+           following sections and make any necessary changes to
+           the MODPARAMS.DAT file, then use AUTOGEN to reboot your
+           system.
+
+     1.2.6.1 Global Pagelets and Global Sections
+
+           The UCX software requires 65 global sections and 8100
+           global pagelets.
+
+           To check the number of available global pagelets and
+           global sections, issue WRITE commands with the F$GETSYI
+           lexical functions. For example:
+
+     1-4 Preparing to Install and Configure UCX
+
+ 
+
+
+
+                                  Preparing to Install and Configure UCX
+                                               1.2 Preinstallation Tasks
+
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+              1234
+
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+              189
+
+              To increase the global pagelets and global sections, add
+              statements to the MODPARAMS.DAT file that increase the
+              values of the system parameters GBLPAGES and GBLSECTIONS.
+
+        1.2.6.2 Nonpaged Dynamic Pool
+
+              Add at least 350,000 bytes of nonpaged dynamic pool (the
+              default maximum size for the UCX software), as follows:
+
+              1. Log into the SYSTEM account.
+
+              2. Identify the amount of additional nonpaged pool your
+                 system requires. Use the default initial value of
+                 342,000 or use the following formula and table to
+                 calculate the amount of NPAGEDYN required:
+
+                 nonpaged pool = socket*1280+dbuf*1792+cbuf*256+mtusers*700+mrusers*700
+
+                 _______________________________________________________
+                 Variable___Definition__________________________________
+
+                 socket     Maximum number of sockets. (A socket
+                            system call creates an end point for
+                            communication.)
+
+                 dbuf       Maximum number of data buffers.
+
+                 cbuf       Maximum number of control buffers.
+
+                 mtusers    Maximum number of TELNET users.
+
+                 mrusers____Maximum_number_of_remote_login_users._______
+
+              3. Refer to the following example, then edit the
+                 MODPARAMS.DAT file to reflect the newly calculated
+                 value for the NPAGEDYN and NPAGEVIR parameters:
+
+                 ! Add nonpaged pool for UCX.
+                 !
+                 ADD_NPAGEDYN=342000
+                 ADD_NPAGEVIR=342000
+
+              For more information about nonpaged dynamic pool, see the
+              <REFERENCE>(VMS_SYSMAN1).
+
+                              Preparing to Install and Configure UCX 1-5
+
+ 
+
+
+
+     Preparing to Install and Configure UCX
+     1.2 Preinstallation Tasks
+
+     1.2.6.3 Interrupt Stack Pages (OpenVMS VAX Only)
+
+           If you are using PATHWORKS Internet Protocol (PWIP) on
+           an OpenVMS VAX system, you should increase the number of
+           interrupt stack pages (INTSTKPAGES) to 10 or more to help
+           eliminate system startup and system crash warnings.
+
+              ________________________Note ________________________
+
+              For information about PATHWORKS, see the PATHWORKS
+              documentation. For a list of PATHWORKS files
+              that the UCX installation procedure copies, see
+              Table A-2.
+
+              _____________________________________________________
+
+           To increase the number of INTSTKPAGES, add statements
+           to the MODPARAMS.DAT file that increase the value of the
+           SYSGEN and INTSTKPAGES parameters.
+
+     1.2.7 Assigning User Identification Codes
+
+           An OpenVMS user or group of users are identified by a
+           unique, assigned user identification code (UIC) in the
+           format [group,member], where group and member are numeric
+           or alphanumeric characters. For example, a UIC can be
+           either [306,210], [GROUP1, JONES], or simply JONES. The
+           UIC is linked to a system-defined rights database that
+           determines user and group privileges.
+
+           The UCX configuration procedure uses the existing group
+           UIC, if the UIC exists. If not, the octal number 375 (the
+           default UIC group number for service accounts) is used. If
+           this is an initial UCX configuration, but the procedure
+           detects that 375 is in use, you will be prompted for a new
+           UIC group number.
+
+           Before you assign a new group number, check that the
+           number you chose is not already in use by issuing the
+           following commands (making sure to type the brackets):
+
+           $ RUN SYS$SYSTEM:AUTHORIZE
+
+           UAF> SHOW /BRIEF [your_group_number,*]
+
+           UAF> SHOW /IDENTIFIER /VALUE=UIC:[your_group_number,*]
+
+     1-6 Preparing to Install and Configure UCX
+
+ 
+
+
+
+                                  Preparing to Install and Configure UCX
+                                               1.2 Preinstallation Tasks
+
+              To specify a new UIC group number instead of using the
+              default, assign the value TRUE to the logical name
+              UCX$ASK_GROUP_UIC. The configuration procedure then
+              prompts you for a group UIC.
+
+
+        1.3 Configuration Planning Worksheet
+
+              Complete the worksheet in Table 1-2 so that you are
+              prepared to enter specific information during the
+              configuration procedure.
+
+              For additional planning information, see the Digital TCP
+              /IP Services for OpenVMS Concepts and Planning guide.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              Preparing to Install and Configure UCX 1-7
+
+ 
+
+
+
+     Preparing to Install and Configure UCX
+     1.3 Configuration Planning Worksheet
+
+           Table_1-2_Configuration_Planning_Worksheet________________
+
+           Question__________________________________Answer__________
+
+           What is the system's host name (for       ________________
+           example, MYNODE)?
+
+           What is the system's Internet domain      ________________
+           name (for example, widgets.com)?
+
+           What are the system's addresses?
+
+           o  IP address (for example, 19.112.139.14)________________
+
+           o  Subnet (network mask) address (for     ________________
+              example, 255.255.255.0)
+           o  Broadcast address (for example,        ________________
+
+              19.112.139.255)                        ________________
+
+           o  Default gateway address (for example,
+              19.112.139.18)
+
+           What is the system's Ethernet device      ________________
+           (for example, ESA0)?
+
+           What is the system's group user           ________________
+           identification code (UIC); for example,
+           [GROUP1,JONES]?
+
+           What is your geographical area and time   ________________
+           zone (for example, U.S.A./Eastern)?
+
+                                             (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+     1-8 Preparing to Install and Configure UCX
+
+ 
+
+
+
+                                  Preparing to Install and Configure UCX
+                                    1.3 Configuration Planning Worksheet
+
+              Table_1-2_(Cont.)_Configuration_Planning_Worksheet________
+
+              Question__________________________________Answer__________
+
+
+              Which type of routing is appropriate for
+              the network?                              ________________
+
+              o  Static - for simple networks where
+                 routes do not change                   ________________
+
+              o  Dynamic - for complex networks where
+                 flexibility is required
+
+              What is the name of the system's remote   ________________
+              BIND_server_(for_example,_MAINSV)?________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              Preparing to Install and Configure UCX 1-9
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                         Installing UCX
+
+
+
+              This chapter explains how to install the UCX software
+              using the POLYCENTER Software Installation utility
+              (OpenVMS Alpha) or the VMSINSTAL procedure (OpenVMS VAX).
+
+        2.1 Installing UCX on an OpenVMS Alpha System
+
+              This section takes you through a UCX installation on
+              an OpenVMS Alpha system using the POLYCENTER Software
+              Installation utility. The instructions are appropriate for
+              an initial product installation or a version upgrade.
+
+              For complete information about the POLYCENTER Software
+              Installation utility, refer to the <REFERENCE>(VMS_
+              SYSMAN1).
+
+        2.1.1 UCX Installation Procedure (OpenVMS Alpha)
+
+              Install the UCX software on an OpenVMS Alpha system as
+              follows. Note that the last step requires you to reboot
+              the system to complete the installation.
+
+              1. Complete the recommended preinstallation tasks outlined
+                 in Chapter 1.
+
+              2. Log into the SYSTEM account.
+
+              3. If another version of the UCX software exists on your
+                 system, shut down that version by issuing the following
+                 command:
+
+                 $ @SYS$MANAGER:UCX$SHUTDOWN
+
+              4. Check to ensure that no one is logged onto the system.
+
+              5. Copy the UCX distribution kit into the SYS$SPECIFIC:[UCX42]
+                 directory.
+
+              6. Create a log file to record the installation or upgrade
+                 procedure, if you want a copy for your records.
+
+                                                     Installing UCX  2-1
+
+ 
+
+
+
+     Installing UCX
+     2.1 Installing UCX on an OpenVMS Alpha System
+
+           7. To start the POLYCENTER Software Installation utility,
+              enter the PRODUCT INSTALL command with the directory
+              path appropriate for your system. For example:
+
+              $ PRODUCT INSTALL UCX /SOURCE=SYS$SPECIFIC:[UCX42]
+
+              where SYS$SPECIFIC:[UCX42] is the directory path for
+              the UCX kit.
+
+              If you do not specify the source qualifier, the
+              POLYCENTER utility searches the location defined by the
+              logical name PCSI$SOURCE. If you do not specify either
+              the source qualifier or PCSI$SOURCE, the POLYCENTER
+              utility searches the current default directory for the
+              UCX kit.
+
+           8. The interactive installation procedure begins, and you
+              are prompted for information.
+
+              A sample installation script is shown in Example 2-1.
+              Numbered callouts identify those areas that require
+              your response. The callouts are explained at the end of
+              the script.
+
+              ________________________Note ________________________
+
+              To stop the installation at any time, press Ctrl/Y.
+              The installation procedure will delete any files
+              that were created, then exit.
+
+              _____________________________________________________
+
+              For the complete list of the UCX files that are
+              installed on your system, see Appendix A.
+
+           Example 2-1 UCX Installation: POLYCENTER Software
+                       Installation Utility Procedure
+
+           The following product has been selected:
+               DEC AXPVMS UCX V4.2                    Layered Product [Installed]
+
+         1 Do you want to continue? [YES] <Return>
+
+           Configuration phase starting ...
+
+                                             (continued on next page)
+
+     2-2 Installing UCX
+
+ 
+
+
+
+                                                         Installing UCX
+                           2.1 Installing UCX on an OpenVMS Alpha System
+
+              Example 2-1 (Cont.) UCX Installation: POLYCENTER Software
+                                  Installation Utility Procedure
+
+              You will be asked to choose options, if any, for each selected product and for
+              any products that may be installed to satisfy software dependency requirements.
+
+              DEC AXPVMS UCX V4.2: DIGITAL TCP/IP Services for OpenVMS. [Installed]
+
+                  (c) Digital Equipment Corporation 1997. All Rights Reserved.
+
+                  Digital Equipment Corporation
+
+                  DIGITAL TCP/IP Services for OpenVMS offers several license options.
+
+            2 Do you want the defaults for all options? [YES] <Return>
+
+            3 Do you want to review the options? [NO] YES <Return>
+
+              DEC AXPVMS UCX V4.2: DIGITAL TCP/IP Services for OpenVMS. [Installed]
+                  DEC AXPVMS VMS V7.1 [Installed]
+                  Applications: YES
+
+            4 Are you satisfied with these options? [YES] <Return>
+
+              Execution phase starting ...
+
+              The following product will be installed:
+                  DEC AXPVMS UCX V4.2                     Layered Product
+
+              Portion done: 0%
+              ...10%
+              ...20%
+              ...30%
+              ...40%
+              ...50%
+              ...60%
+              ...70%
+              ...80%
+              ...90%
+              %PCSI-I-PRCOUTPUT, output from subprocess follows ...
+              % UCX-W-PCSI_INSTALL
+              % - BG device exists.
+              %   To use the version of DIGITAL TCP/IP Services that was just installed,
+              %   system must be rebooted.
+              %
+
+                                                (continued on next page)
+
+                                                     Installing UCX  2-3
+
+ 
+
+
+
+     Installing UCX
+     2.1 Installing UCX on an OpenVMS Alpha System
+
+           Example 2-1 (Cont.) UCX Installation: POLYCENTER Software
+                               Installation Utility Procedure
+
+           Portion done: 100%
+
+           The following product has been installed:
+               DEC AXPVMS UCX V4.2                      Layered Product
+
+
+               1 Press Return to continue with the installation
+                 procedure.
+
+               2 Answer YES to choose the POLYCENTER Software
+                 Installation utility defaults for the options or
+                 NO to choose other options.
+
+               3 Answer YES to review the POLYCENTER Software
+                 Installation utility options.
+
+
+               4 Press Return to accept the options as listed or
+                 answer NO to change the options.
+
+
+           9. Read the release notes online or print them after the
+              installation completes from SYS$HELP:UCX042.RELEASE_
+              NOTES.
+
+           10.If you had a previous version of UCX on your system:
+
+              o  Manually purge the files from the previous version,
+                 which are located in the following directories:
+
+                    SYS$HELP
+                    SYS$LIBRARY
+                    SYS$MANAGER
+                    SYS$COMMON:[SYSTEST.UCX]
+                    SYS$COMMON:[SYSHLP.EXAMPLES.UCX]
+                    SYS$SPECIFIC:[SYSEXE]
+                    SYS$COMMON:[SYSEXE]
+                    SYS$TEST
+
+
+
+
+     2-4 Installing UCX
+
+ 
+
+
+
+                                                         Installing UCX
+                           2.1 Installing UCX on an OpenVMS Alpha System
+
+                 o  Issue the following command to delete obsolete
+                    information in the system Help file:
+
+                    $ @SYS$UPDATE:UCX$CLEANUP_HELPLIB
+
+                    The SYS$UPDATE:UCX$CLEANUP_HELPLIB procedure takes a
+                    few minutes to complete.
+
+              11.Reboot your system, then proceed to Chapter 3 for
+                 configuration information.
+
+        2.2 Installing UCX on an OpenVMS VAX System
+
+              This section takes you through a UCX installation on
+              an OpenVMS VAX system using the VMSINSTAL procedure.
+              The instructions are appropriate for an initial product
+              installation or a version upgrade.
+
+              For complete information about the VMSINSTAL procedure,
+              refer to the <REFERENCE>(VMS_SYSMAN1).
+
+        2.2.1 UCX Installation Procedure (OpenVMS VAX)
+
+              Install the UCX software on an OpenVMS VAX system as
+              follows. Note that the last step requires you to reboot
+              the system to complete the installation.
+
+              1. Complete the recommended preinstallation tasks outlined
+                 in Chapter 1.
+
+              2. Log into the SYSTEM account.
+
+              3. If another version of the UCX software exists on your
+                 system, shut down that version by issuing the following
+                 command:
+
+                 $ @SYS$MANAGER:UCX$SHUTDOWN
+
+              4. Check to ensure that no one is logged onto the system.
+
+              5. Create a log file to record the installation procedure,
+                 if you want a copy for your records.
+
+              6. Set the default directory to SYS$UPDATE.
+
+              7. If you are installing the UCX software from the OpenVMS
+                 Consolidated Software Distribution CD-ROM to the
+                 OpenVMS VAX system, enter the following command:
+
+                                                     Installing UCX  2-5
+
+ 
+
+
+
+     Installing UCX
+     2.2 Installing UCX on an OpenVMS VAX System
+
+              $ @VMSINSTAL UCX042 disc-drive:[UCX042.KITS] OPTIONS N
+
+              where:
+
+              o  disc-drive is the drive where the CD-ROM that
+                 contains the save sets is mounted.
+
+              o  OPTIONS N instructs the procedure to display
+                 information about how to obtain online or printed
+                 release notes.
+
+              If you are installing the UCX software from either a
+              TK50 cartridge or a magnetic tape onto an OpenVMS VAX
+              system, enter the following command:
+
+              $ @VMSINSTAL UCX042 ddcu: OPTIONS N
+
+              where:
+
+              o  ddcu: is the device where you mounted the distribu-
+                 tion media. The fields are:
+
+                 dd - device name
+                 c - controller name
+                 u - unit number
+
+              o  OPTIONS N instructs the procedure to display
+                 information about how to obtain online or printed
+                 release notes.
+
+           8. The interactive installation procedure begins, and you
+              are prompted for information.
+
+              A sample installation script is shown in Example 2-2
+              and Example 2-3. Numbered callouts identify those areas
+              that require your response. The callouts are explained
+              at the end of the examples.
+
+              ________________________Note ________________________
+
+              To stop the installation at any time, press Ctrl/Y.
+              The installation procedure will delete any files
+              that were created, then exit.
+
+              _____________________________________________________
+
+     2-6 Installing UCX
+
+ 
+
+
+
+                                                         Installing UCX
+                             2.2 Installing UCX on an OpenVMS VAX System
+
+              Example 2-2 UCX Installation: Beginning Portion of
+                          VMSINSTAL Procedure
+
+                  OpenVMS VAX Software Product Installation Procedure V7.1
+
+              It is 6-JUN-1997 at 11:24.
+
+              Enter a question mark (?) at any time for help.
+
+            1 * Are you satisfied with the backup of your system disk [YES]? <Return>
+
+            2 * Where will the distribution volumes be mounted: SYS$MANAGER: <Return>
+
+              Enter the products to be processed from the first distribution volume set.
+
+            3 * Products: UCX042 <Return>
+
+            4 * Enter installation options you wish to use (none): <Return>
+
+              The following products will be processed:
+
+                  UCX V4.2
+
+                  Beginning installation of UCX V4.2 at 11:30
+
+              %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+              %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+            5 * Do you want to purge files replaced by this installation [YES]? <Return>
+
+                      Product:      UCX
+                      Producer:     DIGITAL
+                      Version:      4.2
+                      Release Date: 1997
+
+            6 * Does this product have an authorization key registered and loaded? YES <Return>
+
+                  1 Press Return to confirm that you have backed up your
+                    system disk.
+
+                  2 Press Return to choose SYS$MANAGER as the directory
+                    location where the distribution volumes are to be
+                    mounted.
+
+                  3 Enter UCX042, designating Version 4.2 of UCX.
+
+                  4 Enter any additional VMSINSTAL installation options
+                    you want to use, or press Return to continue.
+
+                                                     Installing UCX  2-7
+
+ 
+
+
+
+     Installing UCX
+     2.2 Installing UCX on an OpenVMS VAX System
+
+               5 If this is an initial installation of the UCX
+                 software, press Return. If UCX is active on your
+                 system, either stand-alone or in a cluster, answer
+                 NO to purging at this point. (You will purge the
+                 files in step 11.)
+
+
+               6  Answer YES to confirm that the Product Authorization
+                 Key (PAK) is installed. If the PAK is not installed,
+                 you can install it after the installation procedure.
+
+                 Note that if you plan to use the UCX software for
+                 displaying DECwindows applications that use UCX on
+                 remote hosts, you do not need to install a PAK.
+
+              Example 2-3 includes a subset list of UCX files that
+              are added to your directory during installation. For
+              the complete list of installed files, see Appendix A.
+
+           Example 2-3 UCX Installation: Final Portion of VMSINSTAL
+                       Procedure
+
+           %UCX-I-DONEASK, No further questions will be asked during this installation.
+           %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+           Renaming file UCX$LPD_STARTUP.COM to UCX$LPD_STARTUP.OLD;0
+           Please add any user printer queue information to the new file
+
+           Renaming file UCX$LPD_SHUTDOWN.COM to UCX$LPD_SHUTDOWN.OLD;0
+           Please add any user printer queue information to the new file
+
+           %VMSINSTAL-I-RESTORE, Restoring product save set C ...
+           %VMSINSTAL-I-RESTORE, Restoring product save set D ...
+
+           ****************************************************************************
+               This installation will add the following files . . .
+           ****************************************************************************
+
+                                             (continued on next page)
+
+
+
+
+
+
+     2-8 Installing UCX
+
+ 
+
+
+
+                                                         Installing UCX
+                             2.2 Installing UCX on an OpenVMS VAX System
+
+              Example 2-3 (Cont.) UCX Installation: Final Portion of
+                                  VMSINSTAL Procedure
+
+                  SYS$COMMON:[SYSHLP.EXAMPLES.UCX]TRACEROUTE.EXE
+                  SYS$COMMON:[SYSLIB]UCX$ACCESS_SHR.EXE
+                  SYS$COMMON:[SYS$LDR]UCX$BGDRIVER.EXE
+                  SYS$COMMON:[SYSEXE]UCX$BIND_VALIDATE_SETUP.EXE
+                  SYS$COMMON:[SYSHLP.EXAMPLES.UCX]UCX$CHESS_SUBAGENT.EXE
+                  SYS$COMMON:[SYSEXE]UCX$ESNMP_SERVER.EXE
+                  SYS$COMMON:[SYSLIB]UCX$ESNMP_SHR.EXE
+                  .
+                  .
+                  .
+                  SYS$COMMON:[SYSEXE]UCX$ENCODE.COM
+                  SYS$COMMON:[SYSEXE]UCX$DECODE.COM
+                  SYS$COMMON:[SYSEXE]UCX$TNDRIVER.STB
+
+              %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+              ******************************************************************************
+               Instructions for Completing DIGITAL TCP/IP Services for OpenVMS Installation
+              ******************************************************************************
+
+                      The TCP/IP Services product is already active on your system.
+
+                      You must reboot your system before continuing
+                      with the postinstallation.
+
+                      For information on the postinstallation steps, see the
+                      DIGITAL TCP/IP Services for OpenVMS Installation Guide.
+
+                      If an earlier version of TCP/IP was previously installed
+                      on this system, then there may be some obsolete online
+                      help information which is present in the system help
+                      file, SYS$HELP:HELPLIB.HLB.
+
+                      The commands necessary to remove the obsolete help text
+                      items from the help library can be found in the command
+                      procedure:
+
+                      SYS$UPDATE:UCX$CLEANUP_HELPLIB.COM
+
+                                                (continued on next page)
+
+
+                                                     Installing UCX  2-9
+
+ 
+
+
+
+     Installing UCX
+     2.2 Installing UCX on an OpenVMS VAX System
+
+           Example 2-3 (Cont.) UCX Installation: Final Portion of
+                               VMSINSTAL Procedure
+
+                   Due to the amount of time it takes to clean the help
+                   library, the procedure will not automatically be invoked.
+                   You should invoke it after you have successfully
+                   completed this installation.
+
+           Registering DIGITAL TCP/IP Services for OpenVMS privileged images ...
+
+           %REGISTER-I-DUP UCX$INETACP, (UCX$INETACP, UCX V4.2-13) already in registry
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 1
+           %REGISTER-I-DUP UCX$METRIC, (UCX$METRIC, UCX V4.2-13) already in registry
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 1
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 0
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 0
+           %REGISTER-I-DUP UCX$TRACE, (UCX$TRACE, UCX V4.2-13) already in registry
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 1
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 0
+           %REGISTER-I-DUP UCX$INETDRIVER, (UCX$INETDRIVER, UCX V4.2-13) already in registry
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 1
+           %REGISTER-I-DUP UCX$PWIPDRIVER, (UCX$PWIPDRIVER, UCX V4.2-13) already in registry
+           %REGISTER-I-SUMMARY  images examined: 1, dependent images: 1
+               Installation of UCX V4.2 completed at 11:50
+
+           Enter the products to be processed from the next distribution volume set.
+
+         1 * Products: <Return>
+
+               VMSINSTAL procedure done at 15:48
+
+            1 Press Return to complete the installation.
+
+           9. To continue using the system manager's account and
+              restore the process symbol tables, log out, and then
+              log in again. VMSINSTAL deletes or changes entries in
+              the process symbol tables during the installation.
+
+           10.Read the release notes online or print them after the
+              installation completes from SYS$HELP:UCX042.RELEASE_
+              NOTES.
+
+
+
+
+     2-10 Installing UCX
+
+ 
+
+
+
+                                                         Installing UCX
+                             2.2 Installing UCX on an OpenVMS VAX System
+
+              11.If you had a previous version of the UCX software on
+                 your system:
+
+                 o  Manually purge the files from the previous version,
+                    which are located in the following directories:
+
+                       SYS$HELP
+                       SYS$LIBRARY
+                       SYS$MANAGER
+                       SYS$COMMON:[SYSTEST.UCX]
+                       SYS$COMMON:[SYSHLP.EXAMPLES.UCX]
+                       SYS$SPECIFIC:[SYSEXE]
+                       SYS$COMMON:[SYSEXE]
+                       SYS$TEST
+
+                 o  Issue the following command to delete obsolete
+                    information in the system Help file:
+
+                    $ @SYS$UPDATE:UCX$CLEANUP_HELPLIB
+
+                    The SYS$UPDATE:UCX$CLEANUP_HELPLIB command procedure
+                    takes a few minutes to complete.
+
+                 o  VMSINSTAL checks for pre-existing startup and
+                    shutdown files. If these files are found, the
+                    procedure renames UCX$LPD_STARTUP.COM to UCX$LPD_
+                    STARTUP.OLD and UCX$LPD_SHUTDOWN.COM to UCX$LPD_
+                    SHUTDOWN.OLD. After installation, add the user print
+                    queue information from the old startup and shutdown
+                    files to their corresponding new files.
+
+              12.Reboot your system, then proceed to Chapter 3 for
+                 configuration information.
+
+
+
+
+
+
+
+
+
+
+
+
+                                                    Installing UCX  2-11
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                                         Configuring UCX
+
+
+
+              After you install the UCX software successfully, you need
+              to specify (configure) the components and characteristics
+              you require for your particular system. This will maximize
+              interoperability and resource sharing between your system
+              and another OpenVMS system, UNIX system, or a system that
+              supports the TCP/IP protocol suite and Sun Microsystems'
+              Network File System (NFS).
+
+              The UCX product provides an easy-to-use, menu-driven
+              configuration procedure for you to configure components
+              and functionality.
+
+              This chapter explains the command procedure, provides
+              sample scripts, and summarizes additional configuration
+              and setup tasks.
+
+        3.1 Recommended Order for Configuring UCX
+
+              Table 3-1 lists the tasks involved in configuring the UCX
+              components and functionality.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     Configuring UCX 3-1
+
+ 
+
+
+
+     Configuring UCX
+     3.1 Recommended Order for Configuring UCX
+
+           Table_3-1_Tasks:_Configuring_UCX__________________________
+
+           TaskAction________________________________Go_to...________
+
+           1   Complete the configuration planning   Section 1.3
+               worksheet.
+
+           2   Configure the major components and    Section 3.2.1
+               functionality using UCX$CONFIG.
+
+           3   Configure the optional components,    Section 3.2.2
+               as applicable.
+
+           4   Start UCX.                            Section 3.4
+
+           5   Verify the configuration.             Section 3.5
+
+           6   Reboot the system, then complete      Section 3.6
+               additional configuration tasks, as
+           ____appropriate.__________________________________________
+
+     3.2 Using UCX$CONFIG Menus
+
+           The configuration procedure displays menus from which you
+           do the following:
+
+           o  Make selections that enable components for your system.
+
+           o  Start or stop UCX.
+
+           o  Verify the configuration.
+
+           Invoke the configuration procedure as follows:
+
+           $ @UCX$CONFIG
+
+           The main Configuration menu displays:
+
+           DIGITAL TCP/IP Services for OpenVMS Configuration Menu
+
+           Configuration options:
+
+                   1  -  Core environment
+                   2  -  Client components
+                   3  -  Server components
+                   4  -  Optional components
+
+                   5  -  Shutdown DIGITAL TCP/IP Services for OpenVMS
+                   6  -  Startup DIGITAL TCP/IP Services for OpenVMS
+                   7  -  Run tests
+
+     3-2 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+                      A  -  Configure options 1 - 3
+                     [E] -  Exit configuration procedure
+
+              Enter configuration option:
+
+              The menus and associated options are as follows:
+
+              o  Core Environment
+
+                 Software associated with the Network, Internet, and
+                 Transport layers of the TCP/IP architecture:
+
+                    BIND resolver
+                    Domain (mandatory)
+                    Routing (mandatory)
+                    Interfaces (mandatory)
+                    Time zone
+
+              o  Client Components
+
+                 Application software and related components:
+
+                    FTP
+                    LPR/LPD
+                    NFS Client
+                    REXEC and RSH
+                    RLOGIN
+                    SMTP
+                    TELNET
+
+              o  Server Components
+
+                 Server software and related components:
+
+                    BIND
+                    BOOTP
+                    TFTP
+                    FTP
+                    LPR/LPD
+                    NFS
+                    PC-NFS
+                    PORTMAPPER
+                    TELNET/RLOGIN
+                    SNMP
+                    NTP
+                    METRIC
+                    POP
+                    FINGER
+                    RMT
+
+                                                     Configuring UCX 3-3
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+           o  Optional Components
+
+              Additional functionality:
+
+                 PWIP Driver
+                 SRI QIO Interface
+                 Anonymous FTP account and directories
+
+           o  Shutdown
+
+              Stop UCX
+
+           o  Startup
+
+              Start UCX
+
+           o  Run Tests
+
+              Verify the configuration by running installation
+              verification procedures (IVPs):
+
+                 Internet IVP
+                 SNMP IVP
+
+           If you do not have experience with the UCX product, you
+           should use the configuration menus. However, if you have
+           experience configuring UCX and want to bypass the menus,
+           you can add one or more command parameters when you invoke
+           UCX$CONFIG. For information about the command parameters,
+           see Section 3.3.
+
+     3.2.1 Configuring the Core Environment and the Client and
+           Server Components
+
+           From the main Configuration menu, enter option A to
+           configure options 1 through 3: core environment, client
+           components, and server components.
+
+              ________________________Note ________________________
+
+              The script example in this section shows the
+              progression of the procedure when you choose to
+              configure groups of components. Alternatively, you
+              can configure one option at a time.
+
+              _____________________________________________________
+
+     3-4 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+              The Core Environment menu displays first. Enter option A
+              to configure options 1 through 5: BIND resolver, Internet
+              domain, routing, interfaces, and time zone. You are
+              required to configure the domain name, routing, and
+              interfaces options; the BIND server and time zone are
+              optional.
+
+              DIGITAL TCP/IP Services for OpenVMS Core Environment Configuration Menu
+
+              Configuration options:
+
+                      1  - BIND Resolver
+                      2  - Domain
+                      3  - Routing
+                      4  - Interfaces
+                      5  - Time Zone
+
+                      A  - Configure options 1 - 5
+                     [E] - Exit menu
+
+              Enter configuration option: A <Return>
+
+              The following example configuration script reflects a
+              system that has a previous UCX configuration in place. The
+              script will vary somewhat for initial UCX configurations.
+              Adjust your responses using the information on your
+              configuration planning worksheet (Section 1.3).
+
+              DOMAIN Configuration
+
+              Enter Internet domain [widgets.com]: <Return>
+
+              INTERFACE Configuration
+
+                      The Ethernet device(s) on your system are: ESA0:
+
+                      Start of configuration questions for Internet interface SE0.
+                      SE0 is the Ethernet device ESA0:
+
+               Interface: SE0
+                 IP_Addr: 19.112.139.14    NETWRK: 255.255.0.0     BRDCST: 19.112.139.255
+                  C_Addr:                C_NETWRK:                 C_BRDCST:
+
+                 Flags:
+                 Receive buffer:            0
+
+              * Do you want to reconfigure SE0 [YES] ? NO <Return>
+
+              DYNAMIC ROUTING Configuration
+
+                                                     Configuring UCX 3-5
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+           Dynamic Routing Configuration
+
+           Supply:     Disabled
+           Log:        Disabled
+
+                   If you enable dynamic routing, this host will listen
+                   for all dynamic routing information coming from other
+                   hosts to update its internal routing tables.
+                   It will also supply its own Internet addresses to
+                   routing requests made from remote hosts.
+
+           * Do you want to reconfigure dynamic routing [YES] ? NO <Return>
+
+           The current configuration for the default route is:
+
+                                        PERMANENT database
+
+           Type           Destination                           Gateway
+
+           PN    0.0.0.0                                19.112.139.18
+
+           * Do you want to reconfigure a default route [YES] ? NO <Return>
+
+           BIND RESOLVER Configuration
+
+           A BIND resolver has already been configured.
+
+           BIND Resolver Configuration
+
+             Transport:  UDP
+             Domain:     widgets.com
+             Retry:         4
+             Timeout:       4
+             Servers:    mainsv
+
+           * Do you want to reconfigure BIND [NO] ? <Return>
+
+           TIME ZONE Configuration
+
+                   Please answer the following questions to configure your time zone.
+
+                   Select your geographic area using the options in the table below.
+
+
+
+     3-6 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+                              Selection       Geographic Area
+                              --------------------------------
+                              u               USA
+                              ea              Eastern Australia
+                              ca              Central Australia
+                              wa              Western Australia
+                              ee              Eastern Europe
+                              ce              Central Europe
+                              we              Western Europe
+                              g               Greenwich
+                              n               None of the above (enter hours)
+
+                             [E]              Exit menu
+                              -------------------------------
+
+              Enter your choice: u <Return>
+
+              Does your area alternate between Daylight Savings and Standard time [Y]: <Return>
+
+                      Select the time zone for your area, using the options
+                      listed in the table below.
+
+                              Selection       Time Zone
+                              --------------------------
+                              e               Eastern
+                              c               Central
+                              m               Mountain
+                              p               Pacific
+                              g               Greenwich
+                              -------------------------
+
+              Enter your choice: e <Return>
+
+              After you configure options 1 through 5, the procedure
+              returns to the Core Environment menu. Enter option E to
+              exit. The Client Components menu displays next.
+
+              Note that the menu in the following example script shows
+              each component disabled (default). In fact, the procedure
+              may show some of the components to be enabled based on
+              your past configuration or the selections you made from
+              the Core Environment menu.
+
+
+
+                                                     Configuring UCX 3-7
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+           DIGITAL TCP/IP Services for OpenVMS Client Components Configuration Menu
+
+           Configuration options:
+
+                   1  - FTP              Disabled
+                   2  - LPR/LPD          Disabled
+                   3  - NFS Client       Disabled
+                   4  - REXEC and RSH    Disabled
+                   5  - RLOGIN           Disabled
+                   6  - SMTP             Disabled
+                   7  - TELNET           Disabled
+
+                   A  - Configure options 1 - 7
+                  [E] - Exit menu
+
+           Enter configuration option: A <Return>
+
+           Enable the client applications you plan to use, or enter
+           option A to configure options 1 through 7: FTP client,
+           LPD client, NFS client, RSH server, REXEC server, RLOGIN
+           server, SMTP server, and TELNET server (shown in the
+           following sample script).
+
+           **************************************************************************
+
+           FTP CLIENT Configuration
+
+           Service is not enabled on specific node.
+
+            FTP CLIENT configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit FTP_CLIENT configuration
+
+           Enter configuration option: 1 <Return>
+
+           The FTP SERVER is enabled.
+
+           * Do you want to configure FTP SERVER [NO] ? <Return>
+
+           **************************************************************************
+
+           LPD CLIENT Configuration
+
+           Service is not defined in the SYSUAF.
+           Nonprivileged user access is not enabled.
+
+           By default, DIGITAL TCP/IP Services for OpenVMS configures
+           LPD such that nonprivileged users cannot modify queue entries.
+
+     3-8 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+              Service is disabled on specific node.
+
+               LPD CLIENT configuration options:
+
+                1 - Enable service on this node
+                2 - Nonprivileged users can delete LPD queue entries
+
+                E - Exit LPD_CLIENT configuration
+
+              Enter configuration option: 1 <Return>
+
+              The LPD SERVER is enabled.
+
+              * Do you want to configure LPD SERVER [NO] ? <Return>
+
+              **************************************************************************
+
+              NFS CLIENT Configuration
+
+              Service is not enabled on specific node.
+
+               NFS CLIENT configuration options:
+
+                1 - Enable service on this node
+
+                E - Exit NFS_CLIENT configuration
+
+              Enter configuration option: 1 <Return>
+
+              **************************************************************************
+
+              RSH SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not defined in the UCX$SERVICE database.
+              Service is not enabled on specific node.
+
+               RSH SERVER configuration options:
+
+                1 - Enable service on this node
+
+                E - Exit RSH configuration
+
+              Enter configuration option: 1 <Return>
+
+              **************************************************************************
+
+              REXEC SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not defined in the UCX$SERVICE database.
+              Service is not enabled on specific node.
+
+               REXEC SERVER configuration options:
+
+                                                     Configuring UCX 3-9
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+             1 - Enable service on this node
+
+             E - Exit REXEC configuration
+
+           Enter configuration option: 1 <Return>
+
+           **************************************************************************
+
+           RLOGIN SERVER Configuration
+
+           Service is not defined in the UCX$SERVICE database.
+           Service is not enabled.
+
+            RLOGIN SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit RLOGIN configuration
+
+           Enter configuration option: 1 <Return>
+
+           **************************************************************************
+
+           SMTP SERVER Configuration
+
+           Service is not defined in the SYSUAF.
+           Service is not defined in the UCX$SERVICE database.
+           Configuration is not defined in the UCX$CONFIGURATION database.
+           Service is not enabled on specific node.
+
+            SMTP SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit SMTP configuration
+
+           Enter configuration option: 1 <Return>
+
+           **************************************************************************
+
+           TELNET SERVER Configuration
+
+           Service is not defined in the UCX$SERVICE database.
+           Service is not enabled on specific node.
+
+            TELNET SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit TELNET configuration
+
+           Enter configuration option: 1 <Return>
+
+     3-10 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+              After you configure the client components (and their
+              server components, if applicable), as in the preceding
+              example script, the Server Components menu displays.
+
+              Note that the menu in the following script shows each
+              component disabled (default). In fact, the procedure may
+              show some of the components to be enabled based on your
+              past configuration or the selections you made from the
+              Core Environment menu.
+
+              DIGITAL TCP/IP Services for OpenVMS Server Components Configuration Menu
+
+              Configuration options:
+
+                       1  -  BIND              Disabled
+                       2  -  BOOTP             Disabled
+                       3  -  TFTP              Disabled
+                       4  -  FTP               Disabled
+                       5  -  LPR/LPD           Disabled
+                       6  -  NFS               Disabled
+                       7  -  PC-NFS            Disabled
+                       8  -  PORTMAPPER        Disabled
+                       9  -  TELNET/RLOGIN     Disabled
+                      10  -  SNMP              Disabled
+                      11  -  NTP               Disabled
+                      12  -  METRIC            Disabled
+                      13  -  POP               Disabled
+                      14  -  FINGER            Disabled
+                      15  -  RMT               Disabled
+
+                       A  -  Configure options 1 - 15
+                      [E] -  Exit menu
+
+                      Enter configuration option: A <Return>
+
+              Enable the server components you plan to use, or enter
+              option A to configure all servers - options 1 through 15
+              (shown in the following example script).
+
+              **************************************************************************
+
+              BIND SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not defined in the UCX$SERVICE database.
+              Service is not enabled.
+
+                                                    Configuring UCX 3-11
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+            BIND SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit BIND configuration
+
+           Enter configuration option: 1 <Return>
+
+           The UCX$AUX identifier already exists with value 375
+
+           Creating BIND Service Entry
+           Creating SYS$SPECIFIC:[UCX$BIND]NAMED.LOCAL
+           Creating SYS$SPECIFIC:[UCX$BIND]NAMED.CA
+
+           **************************************************************************
+
+           BOOTP SERVER Configuration
+
+           Service is not defined in the SYSUAF.
+           Service is not defined in the UCX$SERVICE database.
+           Service is not enabled.
+
+            BOOTP SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit BOOTP configuration
+
+           Enter configuration option: 1 <Return>
+
+            The TFTP service is not configured to be enabled
+
+            WARNING: BOOTP will not function if the TFTP
+                     service is disabled
+
+            You will be asked to configure TFTP later
+
+           **************************************************************************
+
+           TFTP SERVER Configuration
+
+           Service is not defined in the SYSUAF.
+           Service is not defined in the UCX$SERVICE database.
+           Service is not enabled.
+
+            TFTP SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit TFTP configuration
+
+           Enter configuration option: 1 <Return>
+
+           **************************************************************************
+
+     3-12 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+              FTP SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not defined in the UCX$SERVICE database.
+              Service is not enabled on specific node.
+
+               FTP SERVER configuration options:
+
+                1 - Enable service on this node
+
+                E - Exit FTP configuration
+
+              Enter configuration option: 1 <Return>
+
+              The FTP CLIENT is enabled.
+
+              * Do you want to configure FTP CLIENT [NO] ? <Return>
+
+              **************************************************************************
+
+              LPD SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not defined in the UCX$SERVICE database.
+              Service is not enabled.
+
+               LPD SERVER configuration options:
+
+                1 - Enable service on this node
+
+                E - Exit LPD configuration
+
+              Enter configuration option: 1 <Return>
+
+              Creating LPD Service Entry
+
+              DIGITAL TCP/IP Services for OpenVMS supports Line Printer Daemon
+              Protocol (see RFC 1179).
+
+              LPD requires the following:
+                - Name of the local queue
+                - Name of the remote queue
+                - Name of the remote host
+                - Spooling directory for the local queue
+
+                  To add or delete printers in the UCX PRINTCAP database use the
+                  $RUN SYS$SYSTEM:UCX$LPRSETUP command
+
+              The LPD CLIENT is enabled.
+
+              * Do you want to configure LPD CLIENT [NO] ? <Return>
+
+              **************************************************************************
+
+                                                    Configuring UCX 3-13
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+           NFS SERVER Configuration
+
+           Service is not defined in the SYSUAF.
+           Service is not defined in the UCX$SERVICE database.
+           Service is not enabled on specific node.
+
+            NFS SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit NFS configuration
+
+           Enter configuration option: 1 <Return>
+
+           **************************************************************************
+
+           PC-NFS SERVER Configuration
+
+           Service is not defined in the SYSUAF.
+           Service is not defined in the UCX$SERVICE database.
+           Service is not enabled.
+
+            PC-NFS SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit PC-NFS configuration
+
+           Enter configuration option: 1 <Return>
+
+           **************************************************************************
+
+           PORTMAPPER SERVER Configuration
+
+           Service is not defined in the SYSUAF.
+           Service is not defined in the UCX$SERVICE database.
+           Service is not enabled on specific node.
+
+            PORTMAPPER SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit PORTMAPPER configuration
+
+           Enter configuration option: 1 <Return>
+
+           Telnet and Rlogin are enabled from the client menu. If you wish to
+           disable the Telnet or Rlogin server then you must disable the service.
+
+           Press Return to continue ... <Return>
+
+           **************************************************************************
+
+           SNMP SERVER Configuration
+
+     3-14 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+              Service is not defined in the SYSUAF.
+              Service is not defined in the UCX$SERVICE database.
+              Configuration is not defined in the UCX$CONFIGURATION database.
+              Service is not enabled.
+
+               SNMP SERVER configuration options:
+
+                1 - Enable service on this node
+
+                E - Exit SNMP configuration
+
+              Enter configuration option: 1 <Return>
+
+              **************************************************************************
+
+              NTPD SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not enabled on specific node.
+
+               NTPD SERVER configuration options:
+
+                1 - Enable service on this node
+
+                E - Exit NTPD configuration
+
+              Enter configuration option: 1 <Return>
+
+              **************************************************************************
+
+              METRIC SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not enabled.
+
+               METRIC SERVER configuration options:
+
+                1 - Enable service on this node
+
+                E - Exit METRIC configuration
+
+              Enter configuration option: 1 <Return>
+
+              **************************************************************************
+
+              POP SERVER Configuration
+
+              Service is not defined in the SYSUAF.
+              Service is not defined in the UCX$SERVICE database.
+              Service is not enabled.
+
+               POP SERVER configuration options:
+
+                1 - Enable service on this node
+
+                                                    Configuring UCX 3-15
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+             E - Exit POP configuration
+
+           Enter configuration option: 1 <Return>
+
+           Creating POP Service Entry
+
+           **************************************************************************
+
+           FINGER SERVER Configuration
+
+           Service is not enabled.
+
+            FINGER SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit FINGER configuration
+
+           Enter configuration option: 1 <Return>
+
+           **************************************************************************
+
+           RMT SERVER Configuration
+
+           Service is not enabled.
+
+            RMT SERVER configuration options:
+
+             1 - Enable service on this node
+
+             E - Exit RMT configuration
+
+           Enter configuration option: 1 <Return>
+
+           After you configure the server components, as in the
+           preceding example script, press Return to go to the main
+           Configuration menu. Enter option 4, Optional Components.
+
+     3.2.2 Configuring the Optional Components
+
+           You may need to configure optional UCX components if you
+           plan to do one or more of the following:
+
+           o  Run PATHWORKS or DECnet over TCP/IP.
+
+           o  Run or develop applications that use the Stanford
+              Research Institute's (SRI) QIO application programming
+              interface (API).
+
+           o  Allow guest users to log into the system at various
+              locations.
+
+     3-16 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                              3.2 Using UCX$CONFIG Menus
+
+              Configure the optional components as follows:
+
+              1. Invoke the command procedure:
+
+                 $ @SYS$MANAGER:UCX$CONFIG
+
+                 The main Configuration menu displays:
+
+                 DIGITAL TCP/IP Services for OpenVMS Configuration Menu
+
+                 Configuration options:
+
+                         1 - Core environment
+                         2 - Client components
+                         3 - Server components
+                         4 - Optional components
+
+                         5 - Shutdown TCP/IP Services for OpenVMS
+                         6 - Startup TCP/IP Services for OpenVMS
+                         7 - Run tests
+
+                         A - Configure options 1 - 3
+                       [E] - Exit configuration procedure
+
+                 Enter configuration option:
+
+              2. Enter option 4. The Optional Components menu displays:
+
+                 DIGITAL TCP/IP Services for OpenVMS Optional Components Menu
+
+                 Configuration options:
+
+                         1 - Configure PWIP Driver
+                         2 - Configure SRI QIO Interface
+                         3 - Set up Anonymous FTP Account and Directories
+                       [E] - Exit menu
+
+              3. Enter the options that are appropriate for your system:
+                 the PWIP driver, the SRI QIO interface, or Anonymous
+                 FTP accounts or directories:
+
+                 o  If you want to run PATHWORKS or DECnet over TCP/IP,
+                    configure the PWIP driver by entering option 1.
+
+                 o  If you run or develop applications that use the SRI
+                    QIO API, enter option 2. Alternatively, you can load
+                    the interface by issuing the following command:
+
+                    $ @SYS$MANAGER:UCX$LOAD_INETDRIVER.COM
+
+                                                    Configuring UCX 3-17
+
+ 
+
+
+
+     Configuring UCX
+     3.2 Using UCX$CONFIG Menus
+
+              o  If you want to allow guest users to log into
+                 the system, set up an Anonymous FTP Account and
+                 Directories by entering option 3. Make sure you
+                 obtain the necessary user information code (UIC; see
+                 Section 1.2.7) and determine guest user privileges.
+
+
+     3.3 Using UCX$CONFIG Option Commands
+
+           If you are an experienced user of the UCX product, you
+           may want to bypass the configuration menus to enable or
+           disable functionality, as follows:
+
+           1. Log into the SYSTEM account.
+
+           2. Invoke the command procedure and include the appropri-
+              ate options in the command line:
+
+                                   [ ALL         ]
+                                   [ CLIENT      ] [ ENABLE  ]
+           @SYS$MANAGER:UCX$CONFIG [ SERVER      ] [         ]
+                                   [ MINIMUM     ] [ DISABLE ]
+                                   [             ]
+                                   [ WORKSTATION ]
+
+           or
+
+                                   [ ALL         ]
+                                   [ CLIENT      ] { ENABLE  }
+           @SYS$MANAGER:UCX$CONFIG [ SERVER      ] {         }   CLUSTER
+                                   [ WORKSTATION ] { DISABLE }
+                                   [             ]
+                                   [ MINIMUM     ]
+
+           For example, the following command enables the client
+           components for the entire cluster:
+
+           $ @SYS$MANAGER:UCX$CONFIG CLIENT ENABLE CLUSTER
+
+           The available options are as follows:
+
+
+
+
+
+     3-18 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                    3.3 Using UCX$CONFIG Option Commands
+
+              __________________________________________________________
+              Parameter_____Description_________________________________
+
+              ALL           Configures the core environment and all
+                            client and server components.
+
+              CLIENT        Configures all client components and related
+                            software.
+
+              SERVER        Configures all server components and related
+                            software.
+
+              WORKSTATION   Configures the BIND resolver, the domain,
+                            dynamic routing, Internet interfaces, time
+                            zone, remote login, remote shell, remote
+                            executive, FTP client, FTP server, TELNET
+                            client, TELNET server, and SMTP.
+
+              MINIMUM       Configures the domain, Internet interfaces,
+                            remote login, FTP client, FTP server, TELNET
+                            client, and TELNET server.
+
+              ENABLE        Enables all the configured components.
+
+              DISABLE       Disables all the configured components.
+
+              CLUSTER       Configures all selected components
+                            clusterwide (except for the BIND server
+                            and SMTP, which you cannot configure
+                            clusterwide).
+                            If you configure at least one cluster
+                            interface, the procedure automatically
+              ______________enables_IP_forwarding.______________________
+
+                ________________________Note  ________________________
+
+                The procedure implements two levels of enabling and
+                disabling: clusterwide and single node (except for
+                the BIND server and SMTP, which are configured and
+                enabled as node-specific only).
+
+                _____________________________________________________
+
+
+
+                                                    Configuring UCX 3-19
+
+ 
+
+
+
+     Configuring UCX
+     3.4 Starting UCX
+
+     3.4 Starting UCX
+
+           You must start UCX after you configure the standard
+           software and optional components, but before you run tests
+           or customize the UCX environment.
+
+           Start UCX on your system as follows:
+
+           1. Access the main Configuration menu by entering the
+              following command:
+
+              $ @SYS$MANAGER:UCX$CONFIG
+
+           2. Enter option 6 to start UCX.
+
+     3.5 Verifying the Configuration
+
+           You can verify the UCX configuration by running the
+           installation verification procedure (IVP).
+
+           You should run the IVP if the following apply:
+
+           o  If you loaded the Product Authorization Key (PAK), and
+              you want to verify that the lower-layer software and
+              the Portmapper service are installed correctly.
+
+           o  If you did not load the PAK, but you want to verify
+              that UCX is installed correctly for DECwindows to
+              display UCX applications.
+
+           o  To transfer device socket packets that continuously
+              vary in size, between a sender and a receiver.
+
+           o  To test the Portmapper service with a pair of client
+              /server programs. The IVP reports the time it took to
+              run the test to SYS$OUTPUT.
+
+           Before you run the IVP, make sure the UCX software is
+           started and you have SYSPRV, OPER, NETMBX, and TMPMBX
+           privileges. (You use the SETPRV command to set the
+           privileges.)
+
+           Run the IVP as follows:
+
+           1. Invoke the command procedure:
+
+              $ @SYS$MANAGER:UCX$CONFIG
+
+     3-20 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+                                         3.5 Verifying the Configuration
+
+              2. Enter option 7. If the IVP does not complete success-
+                 fully, the procedure displays error messages. All IVP
+                 errors are fatal and use the same format as system
+                 messages. For example:
+
+                 %UCX-E-IDENT, explanation of error.
+
+                 Table 3-2 lists some common problems that cause IVP
+                 error messages. If the recommended action does not
+                 correct the problem, contact your DIGITAL support
+                 representative.
+
+              Table_3-2_Troubleshooting_IVP_Errors______________________
+
+              Problem_________________Corrective_Action_________________
+
+              Network configuration   Shut down the UCX software and
+              is incorrect.           rerun the configuration procedure.
+
+              Startup fails.          Check the SYSGEN parameters in the
+                                      MODPARAMS.DAT file and increase
+                                      them if necessary.
+
+                                      Shut down and restart UCX.
+
+              The installation kit    Request a replacement kit.
+              is defective.
+
+              The IVP fails because   Register a DIGITAL TCP/IP Services
+              the_PAK_is_missing._____for_OpenVMS_PAK.__________________
+
+              3. To run the IVP any time after exiting the configuration
+                 procedure, invoke the IVP command procedure as follows:
+
+                 $ @SYS$TEST:UCX$IVP
+
+              4. To activate the new configuration, reboot your system.
+
+        3.6 Additional Configuration Tasks
+
+              After you run the configuration procedure and enable
+              the functionality and components appropriate for your
+              network, you need to complete additional configuration
+              tasks to enable access to UCX applications. UCX provides a
+              management command interface and logical names you can use
+              to modify or customize the software for your environment.
+
+                                                    Configuring UCX 3-21
+
+ 
+
+
+
+     Configuring UCX
+     3.6 Additional Configuration Tasks
+
+           The additional configuration tasks include:
+
+           o  Populating databases
+
+           o  Setting up user accounts
+
+           o  Setting up communication and NFS proxies
+
+           o  Defining print queues
+
+           o  Setting up, exporting, and maintaining file systems
+
+           o  Tuning the system for optimum performance
+
+           For information about these and other configuration tasks,
+           see the Digital TCP/IP Services for OpenVMS Management
+           guide.
+
+     3.7 Automatically Starting and Stopping UCX
+
+           To start the UCX software automatically when the system
+           starts up, edit the SYS$MANAGER:SYSTARTUP_VMS.COM file and
+           include the following command line after the command line
+           that starts the procedure:
+
+           @SYS$MANAGER:UCX$STARTUP
+
+           To stop UCX automatically when the system shuts down, add
+           the following command line to the SYS$MANAGER:SYSHUTDOWN.COM
+           file:
+
+           @SYS$MANAGER:UCX$SHUTDOWN
+
+     3.8 Automatically Starting UCX Services
+
+           For the UCX services to start after you log into your
+           OpenVMS account, the OpenVMS systemwide login procedure
+           (typically SYS$MANAGER:SYLOGIN.COM) must be world-readable
+           and world-executable.
+
+           To display the current privileges, issue:
+
+           $ DIRECTORY SYS$MANAGER:SYLOGIN.COM /PROTECTION
+
+           If the protections are not world read and edit (W:RE),
+           issue:
+
+           $ SET PROTECTION=(W:RE) SYS$MANAGER:SYLOGIN.COM
+
+     3-22 Configuring UCX
+
+ 
+
+
+
+                                                         Configuring UCX
+         3.9 Specifying UCX as the Transport for DECwindows Applications
+
+        3.9 Specifying UCX as the Transport for DECwindows Applications
+
+              To enable the UCX software as the transport interface
+              for DECwindows applications, add the following line to
+              the SYS$MANAGER:DECW$PRIVATE_SERVER_SETUP.COM command
+              procedure:
+
+              $ DECW$SERVER_TRANSPORTS == "DECNET,LOCAL,TCPIP"
+
+              Then restart DECwindows by entering the following command:
+
+              $ @SYS$STARTUP:DECW$STARTUP RESTART
+
+              If DECnet or DECnet-Plus runs on the same system, start
+              it.
+
+              To display DECwindows applications from a DECwindows
+              client (remote host) to a DECwindows server (your
+              workstation), proceed as follows:
+
+              1. Set up security on the remote host.
+
+              2. Add the remote client to the local UCX hosts database.
+
+              3. Edit the SYS$MANAGER:DECW$PRIVATE_SERVER_SETUP.COM
+                 command procedure by adding the following line:
+
+                 $ DECW$SERVER_TRANSPORTS == "DECNET,LOCAL,TCPIP"
+
+              4. Set the display for the applications to the remote
+                 host:
+
+                 $ SET DISPLAY/CREATE/NODE=remote_host/TRANSPORT=TCPIP
+
+
+
+
+
+
+
+
+
+
+
+
+                                                    Configuring UCX 3-23
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                        Installed Files
+
+
+
+              The installation procedure installs all the UCX distribu-
+              tion files appropriate for your operating system.
+
+              If you are upgrading from a previous version of UCX,
+              the procedure renames the configuration database in
+              SYS$COMMON:[SYSEXE] from UCX$CONFIGURATION.DAT to
+              UCX$CONFIGURATION.OLD.
+
+        A.1 Installed UCX Files
+
+              Table A-1 outlines the UCX files installed on your
+              system.
+
+        Table_A-1_UCX_Files_____________________________________________
+
+        File_Name_/_Logical_Name______Description_______________________
+
+        SYS$COMMON:[SYS$LDR] /
+        SYS$LOADABLE_IMAGES:____________________________________________
+
+        UCX$BGDRIVER.EXE              Internet device driver
+
+        UCX$DNFSDRIVER_V5.EXE+        OpenVMS Version 5 NFS client
+                                      driver
+
+        UCX$DNFSDRIVER_V6.EXE+        OpenVMS Version 6 NFS client
+                                      driver
+
+        UCX$DNFSDRIVER.EXE            AXP image
+
+        UCX$INETDRIVER.EXE            SRI QIO driver
+
+        UCX$INTERNET_SERVICES.EXE+    Internet software
+
+        UCX$INTERNET_SERVICES_        Internet software
+        V6.EXE+
+
+        +Specific_to_OpenVMS_VAX________________________________________
+
+                                                (continued on next page)
+
+                                                    Installed Files  A-1
+
+ 
+
+
+
+     Installed Files
+     A.1 Installed UCX Files
+
+     Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+     File_Name_/_Logical_Name______Description_______________________
+
+     SYS$COMMON:[SYS$LDR] /
+     SYS$LOADABLE_IMAGES:____________________________________________
+
+     UCX$TNDRIVER.EXE              TELNET and remote login drivers
+
+     ________________________________________________________________
+     SYS$COMMON:[SYSEXE] /
+     SYS$SYSTEM:_____________________________________________________
+
+     UCX$CONVERT.FDL               File definition used by UCX$CONVERT.COM
+
+     UCX$CONVERT.COM               Procedure for converting files to
+                                   STREAM_LF
+
+     UCX$BIND_SERVER.EXE           BIND server
+
+     UCX$BIND_SERVER_XFER.EXE      BIND server's zone transfer
+
+     UCX$BOOTP.EXE                 Remote boot server
+
+     UCX$ENCODE.COM                Procedure to execute UUencode
+                                   program
+
+     UCX$EXE.ADF                   Attributes file for NFS client
+
+     UCX$DECODE.COM                Procedure to execute UUdecode
+                                   program
+
+     UCX$DNFSMOUNT_V5.EXE          VAX image
+
+     UCX$DNFSMOUNT_V6.EXE          VAX image
+
+     UCX$DNFSDISMOUNT_V5.EXE       VAX image
+
+     UCX$DNFSDISMOUNT_V6.EXE       VAX image
+
+     UCX$DNFSACP_V5.EXE            VAX image
+
+     UCX$DNFSACP_V6.EXE            VAX image
+
+     UCX$ESNMP_SERVER.EXE          eSNMP server
+
+     UCX$FINGER.EXE                Finger client
+
+     UCX$FINGER_SERVER.EXE         Finger server
+
+     UCX$FTP.EXE                   FTP client
+
+     UCX$FTPC.EXE                  FTP server
+
+                                             (continued on next page)
+
+     A-2 Installed Files
+
+ 
+
+
+
+                                                        Installed Files
+                                                 A.1 Installed UCX Files
+
+        Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+        File_Name_/_Logical_Name______Description_______________________
+
+        SYS$COMMON:[SYSEXE] /
+        SYS$SYSTEM:_____________________________________________________
+
+        UCX$FTPD.EXE                  FTP control command server
+                                      (daemon)
+
+        UCX$FTPSERVER.COM             Procedure that starts an FTP child
+                                      process
+
+        UCX$HLB.ADF                   Attributes file for NFS client
+
+        UCX$HR_MIB.EXE                SNMP Host Resources MIB
+
+        UCX$INETACP.EXE               Network ancillary control process
+                                      (NETACP) for the Internet device
+                                      driver
+
+        UCX$INETACP.STB               Global symbol definitions for
+                                      UCX$INETACP.EXE
+
+        UCX$INETDRIVER.STB            Global symbol definitions for the
+                                      Internet device driver
+
+        UCX$INTERNET_SERVICES_        Global symbol definitions for
+        V6.STB+                       UCX$INTERNET_SERVICES_V6.EXE
+
+        UCX$INTERNET_SERVICES_V6_     Global symbol definitions for
+        SEC.STB+                      UCX$INTERNET_SERVICES_V6_SEC.EXE
+
+        UCX$INTERNET_SERVICES.STB     Global symbol definitions for
+                                      UCX$INTERNET_SERVICES.EXE
+
+        UCX$INTERNET_SERVICES_        Global symbol definitions for
+        SEC.STB                       UCX$INTERNET_SERVICES_SEC.EXE
+
+        UCX$INET_ROUTING.EXE          Dynamic routing
+
+        UCX$INET_ROUTING.STB          Global symbol definitions for
+                                      UCX$INET_ROUTING.EXE
+
+        UCX$LPD_RCV.EXE               Print receiver
+
+        UCX$LPD_SMB.EXE               Print symbiont
+
+        UCX$LPRM.EXE                  LPRM command
+
+        UCX$LPRSETUP.EXE              Setup utility for network printing
+
+        +Specific_to_OpenVMS_VAX________________________________________
+
+                                                (continued on next page)
+
+                                                    Installed Files  A-3
+
+ 
+
+
+
+     Installed Files
+     A.1 Installed UCX Files
+
+     Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+     File_Name_/_Logical_Name______Description_______________________
+
+     SYS$COMMON:[SYSEXE] /
+     SYS$SYSTEM:_____________________________________________________
+
+     UCX$LPQ.EXE                   LPQ command
+
+     UCX$METRIC.EXE                Metric server
+
+     UCX$METRIC_VIEW.EXE           Metricview utility
+
+     UCX$MIBCOMP.EXE               SNMP MIB compiler
+
+     UCX$MLB.ADF                   Attributes file for NFS client
+
+     UCX$MOSY.EXE                  MIB compiler images
+
+     UCX$NET_GLOBALS.STB           Global symbol definitions for UCX
+                                   data structures
+
+     UCX$NSLOOKUP.EXE              NSLOOKUP utility
+
+     UCX$NTPD.EXE                  NTP service
+
+     UCX$OBJ.ADF                   Attributes file for NFS client
+
+     UCX$OLB.ADF                   Attributes file for NFS client
+
+     UCX$OS_MIBS.EXE               MIB-II subagent image
+
+     UCX$PCNFSD.EXE                PC-NFS server (daemon)
+
+     UCX$POP_SERVER.EXE            POP server image
+
+     UCX$PING.EXE                  PING command image
+
+     UCX$PORTMAPPER.EXE            Program that maps processes to
+                                   ports
+
+     UCX$RLOGIN.EXE                Remote login client
+
+     UCX$RPCGEN.EXE                Portmapper image
+
+     UCX$RPCINFO.EXE               SHOW PORTMAPPER command
+
+     UCX$RSH.EXE                   Remote shell
+
+     UCX$SERVER_NFS.EXE            NFS server (daemon)
+
+     UCX$SMTP_RECEIVER.EXE         SMTP receiver
+
+     UCX$SMTP_SYMBIONT.EXE         SMTP symbiont
+
+     UCX$SNMP_AGENT.EXE            SNMP agent
+
+     UCX$SNMPI.EXE                 MIB compiler images
+
+                                             (continued on next page)
+
+     A-4 Installed Files
+
+ 
+
+
+
+                                                        Installed Files
+                                                 A.1 Installed UCX Files
+
+        Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+        File_Name_/_Logical_Name______Description_______________________
+
+        SYS$COMMON:[SYSEXE] /
+        SYS$SYSTEM:_____________________________________________________
+
+        UCX$SNMP_REQUEST.EXE          MIB browser
+
+        UCX$STB.ADF                   Attributes file for NFS client
+
+        UCX$TELNET.EXE                TELNET client
+
+        UCX$TELNETSYM.EXE             TELNET print symbiont
+
+        UCX$TFTP.EXE                  TFTP server (daemon)
+
+        UCX$TLB.ADF                   Attributes file for NFS client
+
+        UCX$TNDRIVER.STB              Global symbol definitions for
+                                      UCX$TNDRIVER.EXE
+
+        UCX$RCP.EXE                   RCP image
+
+        UCX$RMT.EXE                   RMT/RCD server
+
+        UCX$UCP.EXE                   UCX Management Control Program
+                                      (UCP)
+
+        UCX$UUENCODE.EXE              UUencode program image
+
+        UCX$UUDECODE.EXE              UUdecode program image
+
+        UCX$VERSIONS.EXE              Image for the SHOW VERSION command
+
+        ________________________________________________________________
+        SYS$COMMON:[SYSLIB] /
+        SYS$LIBRARY:____________________________________________________
+
+        UCX$ACCESS_SHR.EXE            Database access routines
+
+        UCX$CFS_SHR.EXE               Container file system runtime
+                                      library
+
+        UCX$ESNMP_SHR.EXE             Sharable image version of routines
+                                      in UCX$SNMP:*.OLB
+
+        UCX$INETDEF.ADA               Internet Ada definitions file
+
+        UCX$INETDEF.BAS               Internet BASIC definitions file
+
+        UCX$INETDEF.FOR               Internet FORTRAN definitions file
+
+        UCX$INETDEF.H                 Internet C definitions file
+
+                                                (continued on next page)
+
+                                                    Installed Files  A-5
+
+ 
+
+
+
+     Installed Files
+     A.1 Installed UCX Files
+
+     Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+     File_Name_/_Logical_Name______Description_______________________
+
+     SYS$COMMON:[SYSLIB] /
+     SYS$LIBRARY:____________________________________________________
+
+     UCX$INETDEF.MAR               Internet MACRO definitions file
+
+     UCX$INETDEF.PAS               Internet Pascal definitions file
+
+     UCX$INETDEF.PLI               Internet PL/1 definitions file
+
+     UCX$INETDEF.R32               Internet BLISS definitions file
+
+     UCX$IPC_SHR.EXE               IPC runtime library
+
+     UCX$IPC.OLB                   IPC object library
+
+     UCX$LPD_SHR.EXE               Shared library for printing
+                                   processes
+
+     UCX$RPCXDR.H                  Sun RPC header file
+
+     UCX$RPCXDR_SHR.EXE            Sun RPC routines library
+
+     UCX$SDA.EXE                   SDA extensions
+
+     UCX$SMTP_MAILSHR.EXE          SMTP shared library
+
+     UCX$SMTP_PARSESHR.EXE         SMTP parsing routines
+
+     ________________________________________________________________
+     SYS$COMMON:[UCX$LIB.RPC] /
+     SYS$LIBRARY:____________________________________________________
+
+     UCX$RPCXDR.OLB                Library file for Portmapper
+                                   service
+
+     ________________________________________________________________
+     SYS$COMMON:[UCX$LIB.SNMP] /
+     SYS$LIBRARY:____________________________________________________
+
+     UCX$ESNMP.OLB                 Library file for creating SNMP
+                                   subagents
+
+     ________________________________________________________________
+     SYS$COMMON:[SYSHLP] /
+     SYS$HELP:_______________________________________________________
+
+     UCX042.RELEASE_NOTES          Release notes
+
+                                             (continued on next page)
+
+     A-6 Installed Files
+
+ 
+
+
+
+                                                        Installed Files
+                                                 A.1 Installed UCX Files
+
+        Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+        File_Name_/_Logical_Name______Description_______________________
+
+        SYS$COMMON:[SYSHLP] /
+        SYS$HELP:_______________________________________________________
+
+        UCX$FTP_HELP.HLB              FTP online help
+
+        UCX$TELNET_HELP.HLB           TELNET online help
+
+        UCX$NSLOOKUP_HELP.HLB         NSLOOKUP online help
+
+        UCX$UCP_HELP.HLB              Online help for the management
+                                      commands
+
+        UCX$VMS_FILES.DOC             Online information about file
+                                      restrictions for UNIX users of NFS
+                                      server
+
+        ________________________________________________________________
+        SYS$COMMON:[SYSHLP.EXAMPLES.UCX]
+        /_UCX$EXAMPLES:_________________________________________________
+
+        BUILD_UCX_SECURITY_           Sample file to build the security
+        DRIVER.COM                    driver
+
+        TN3270DEF.MAR                 For IBM 3270TE; translation table
+                                      template that you edit to modify
+                                      the translation tables
+
+        TRACEROUTE.EXE                Traceroute facility
+
+        UCX$CHESS_SUBAGENT.EXE        Linker image
+
+        UCX$INTERNET_SERVICES_V6_     Internet software with security
+        SEC.EXE+                      for OpenVMS Version 6
+
+        UCX$INTERNET_SERVICES_V5_     Internet software with security
+        SEC.EXE                       for OpenVMS Version 5
+
+        UCX$IOCTL_ROUTINE.C           C Programming example
+
+        UCX$NFSSETUP.COM              NFS setup procedure
+
+        UCX_SECURITY_DRIVER.MAR       MACRO security driver source
+                                      sample
+
+        UCX$TCP_CLIENT_IPC.C          C Programming example
+
+        UCX$TCP_CLIENT_QIO.C          C Programming example
+
+        +Specific_to_OpenVMS_VAX________________________________________
+
+                                                (continued on next page)
+
+                                                    Installed Files  A-7
+
+ 
+
+
+
+     Installed Files
+     A.1 Installed UCX Files
+
+     Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+     File_Name_/_Logical_Name______Description_______________________
+
+     SYS$COMMON:[SYSHLP.EXAMPLES.UCX]
+     /_UCX$EXAMPLES:_________________________________________________
+
+     UCX$TCP_CLIENT_QIO.MAR        C Programming example
+
+     UCX$TCP_SERVER_IPC.C          C Programming example
+
+     UCX$TCP_SERVER_IPC_AUXS.C     C programming example
+
+     UCX$TCP_SERVER_QIO.C          C Programming example
+
+     UCX$TCP_SERVER_QIO.MAR        MACRO Programming example
+
+     UCX$TCP_SERVER_QIO_AUXS.C     C programming example
+
+     UCX$TCP_SERVER_QIO_           C programming example
+     AUXS.2ND.C
+
+     UCX$TCP_SOCKET_QIO.3RD.C      C programming example
+
+     UCX$TCP_SOCKET_QIO_3RD.H      Data and structure definitions
+                                   that make up the exterior
+                                   interface to UCX$TCP_SOCKET_QIO_
+                                   3RD.C
+
+     UCX$TRACE.EXE                 Protocol trace facility
+
+     UCX$TRACE_HAS_MOVED.EXE       Trace facility
+
+     UCX$UDP_CLIENT_IPC.C          C programming example
+
+     UCX$UDP_CLIENT_QIO.C          C programming example
+
+     UCX$UDP_CLIENT_QIO.MAR        MACRO programming example
+
+     UCX$UDP_SERVER_IPC.C          C programming example
+
+     UCX$UDP_SERVER_QIO.C          C programming example
+
+     UCX$UDP_SERVER_QIO.2ND.C      C programming example
+
+     UCX$UDP_SERVER_QIO.3RD.C      C programming example
+
+     UCX$UDP_SERVER_QIO.MAR        MACRO Programming example
+
+     ________________________________________________________________
+     SYS$COMMON:[SYSHLP.EXAMPLES.UCX.SNMP]
+     /_UCX$EXAMPLES:_________________________________________________
+
+     CHESS_METHOD.C                C programming example
+
+     CHESS_MIB.C                   C programming example
+
+                                             (continued on next page)
+
+     A-8 Installed Files
+
+ 
+
+
+
+                                                        Installed Files
+                                                 A.1 Installed UCX Files
+
+        Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+        File_Name_/_Logical_Name______Description_______________________
+
+        SYS$COMMON:[SYSHLP.EXAMPLES.UCX.SNMP]
+        /_UCX$EXAMPLES:_________________________________________________
+
+        CHESS_MIB.MY                  Sample MIB chess game
+
+        CHESS_SUBAGENT.OPT            Linker options file
+
+        CHESS_TBL.C                   C programming example
+
+        CHESS_TBL.H                   C header file
+
+        ________________________________________________________________
+        SYS$COMMON:[SYSHLP.EXAMPLES.UCX.RPC]
+        /_UCX$EXAMPLES:_________________________________________________
+
+        DIR_EXAMPLE.COM               DIR program procedure
+
+        DIR.X                         Remote OpenVMS directory listing
+                                      protocol
+
+        DIR_SERVER.C                  C programming example
+
+        MSG.X                         Remote message printing protocol
+
+        MSG_EXAMPLE.COM               Local version of PRINTMSG program
+                                      procedure
+
+        MSG_SERVER.C                  C programming example
+
+        PRINTMSG.C                    C programming example
+
+        RLS.C                         C programming example
+
+        RPRINTMSG.C                   C programming example
+
+        ________________________________________________________________
+        SYS$COMMON:[SYSMGR] /
+        SYS$MANAGER:____________________________________________________
+
+        SYS$NET_SERVICES_UCX.COM      DCL interface support procedure
+
+        UCX$BINDSETUP.COM             BIND setup procedure
+
+        UCX$BINDSETUP_HELP.TXT        Information about setting up the
+                                      BIND server
+
+        UCX$BIND_SHUTDOWN.COM         BIND server shutdown procedure
+
+        UCX$BIND_STARTUP.COM          BIND server startup procedure
+
+                                                (continued on next page)
+
+                                                    Installed Files  A-9
+
+ 
+
+
+
+     Installed Files
+     A.1 Installed UCX Files
+
+     Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+     File_Name_/_Logical_Name______Description_______________________
+
+     SYS$COMMON:[SYSMGR] /
+     SYS$MANAGER:____________________________________________________
+
+     UCX$BOOTP_SHUTDOWN.COM        Remote boot server shutdown
+                                   procedure
+
+     UCX$BOOTP_STARTUP.COM         Remote boot server startup
+                                   procedure
+
+     UCX$CALLBACKS.COM             Configuration procedure
+
+     UCX$CONFIG.COM                Configuration procedure
+
+     UCX$DNFS_SHUTDOWN.COM         NFS client shutdown procedure
+
+     UCX$FINGER_SHUTDOWN.COM       Finger server shutdown procedure
+
+     UCX$FINGER_SRVR_STARTUP.COM   Finger server startup procedure
+
+     UCX$FTPD_SHUTDOWN.COM         FTP server shutdown procedure
+
+     UCX$FTPD_STARTUP.COM          FTP server startup procedure
+
+     UCX$INET_STARTUP.COM          Internet startup procedure
+
+     UCX$INET_SHUTDOWN.COM         Internet shutdown procedure
+
+     UCX$LOAD_INETDRIVER.COM       Command file that loads the SRI
+                                   QIO programming interface
+
+     UCX$LPD_RCV_STARTUP.COM       Print receiver startup procedure
+
+     UCX$LPD_STARTUP.COM           Print server startup procedure
+
+     UCX$LPD_SHUTDOWN.COM          Print server shutdown procedure
+
+     UCX$METRIC_STARTUP.COM        Metric startup procedure
+
+     UCX$METRIC_SHUTDOWN.COM       Metric shutdown procedure
+
+     UCX$NFS_SERVER_STARTUP.COM    NFS server startup procedure
+
+     UCX$NFS_SHUTDOWN.COM          NFS server shutdown procedure
+
+     UCX$NFS_STARTUP.COM           NFS client startup procedure
+
+     UCX$PCNFSD_SHUTDOWN.COM       PC-NFS server shutdown procedure
+
+     UCX$PCNFSD_STARTUP.COM        PC-NFS server startup procedure
+
+     UCX$PORTM_SHUTDOWN.COM        Portmapper shutdown procedure
+
+     UCX$PORTM_STARTUP.COM         Portmapper startup procedure
+
+                                             (continued on next page)
+
+     A-10 Installed Files
+
+ 
+
+
+
+                                                        Installed Files
+                                                 A.1 Installed UCX Files
+
+        Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+        File_Name_/_Logical_Name______Description_______________________
+
+        SYS$COMMON:[SYSMGR] /
+        SYS$MANAGER:____________________________________________________
+
+        UCX$PRINTCAP.DAT              Printcap database
+
+        UCX$REGISTER.COM              Command file that registers
+                                      privileged UCX images for OpenVMS
+                                      Version 6.2
+
+        UCX$REMOTE_TTY_STARTUP.COM    TELNET and remote login server
+                                      startup procedure
+
+        UCX$REXECD_STARTUP.COM        Remote executive startup procedure
+
+        UCX$RSHD_STARTUP.COM          Remote shell startup procedure
+
+        UCX$SERVICE_SETUP.COM         UCX services set up procedure
+
+        UCX$SHUTDOWN.COM              UCX shutdown procedure
+
+        UCX$SMTP_STARTUP.COM          SMTP queue startup procedure
+
+        UCX$SMTP_SHUTDOWN.COM         SMTP queue shutdown procedure
+
+        UCX$SMTP_RECV_STARTUP.COM     SMTP receiver startup procedure
+
+        UCX$SNMP_STARTUP.COM          SNMP startup procedure
+
+        UCX$SNMP_SHUTDOWN.COM         SNMP shutdown procedure
+
+        UCX$SNMPD_MIR.DAT             SNMP dictionary of MIB variables
+
+        UCX$STARTUP.COM               UCX startup procedure
+
+        UCX$SYMBOLS.COM               Configuration logical names
+
+        UCX$TELNET_SHUTDOWN.COM       TELNET shutdown procedure
+
+        UCX$TFTP_SHUTDOWN.COM         TFTP shutdown procedure
+
+        UCX$TFTP_STARTUP.COM          TFTP startup procedure
+
+        UCX$TIMEZONE.COM              Time zone procedure
+
+        UCX$UCP_STARTUP.COM           Management control program startup
+
+        ________________________________________________________________
+        SYS$COMMON:[SYSMSG] /
+        SYS$MESSAGES:___________________________________________________
+
+        UCX$MSG.EXE                   UCX message file
+
+                                                (continued on next page)
+
+                                                   Installed Files  A-11
+
+ 
+
+
+
+     Installed Files
+     A.1 Installed UCX Files
+
+     Table_A-1_(Cont.)_UCX_Files_____________________________________
+
+     File_Name_/_Logical_Name______Description_______________________
+
+     SYS$COMMON:[SYSTEST.UCX] /
+     SYS$TEST:_______________________________________________________
+
+     UCX$INET_IVP.EXE              Auxiliary server IVP
+
+     UCX$RPCIVP_CLIENT.EXE         RPC client routines IVP
+
+     UCX$RPCIVP_SERVER.EXE         RPC server routines IVP
+
+     UCX$SNMPIVP.EXE               SNMP IVP
+
+     ________________________________________________________________
+     SYS$COMMON:[SYSTEST]____________________________________________
+
+     UCX$IVP.COM                   UCX IVP procedure
+
+     ________________________________________________________________
+     SYS$COMMON:[SYSUPD]_____________________________________________
+
+     UCX$CLEANUP.COM               Procedure to remove UCX software
+                                   from the OpenVMS system
+
+     UCX$CLEANUP_HELPLIB.COM       Procedure to update the UCX help
+     ______________________________library___________________________
+
+     A.2 Installed UCX Files for PATHWORKS Systems
+
+           Table A-2 lists and describes the files for PATHWORKS
+           systems that are installed on your system.
+
+     Table_A-2_PATHWORKS_Files_______________________________________
+
+     File______________________________________Description___________
+
+     SYS$COMMON:[SYSLIB]PWIP$SDA.EXE           PATHWORKS extensions
+                                               to SDA
+
+     SYS$COMMON:[SYSEXE]UCX$PWIPACP.EXE        PATHWORKS IP ACP
+
+     SYS$COMMON:[SYS$LDR]UCX$PWIPDRIVER.EXE    PATHWORKS IP driver
+
+     SYS$COMMON:[SYSEXE]UCX$PWIPDRIVER.STB     Global symbol
+                                               definitions for
+                                               UCX$PWIPDRIVER.EXE
+
+                                             (continued on next page)
+
+     A-12 Installed Files
+
+ 
+
+
+
+                                                        Installed Files
+                           A.2 Installed UCX Files for PATHWORKS Systems
+
+        Table_A-2_(Cont.)_PATHWORKS_Files_______________________________
+
+        File______________________________________Description___________
+
+        SYS$COMMON:[SYSMGR]UCX$PWIP_SHUTDOWN.COM  PATHWORKS IP driver
+                                                  shutdown
+
+        SYS$COMMON:[SYSMGR]UCX$PWIP_STARTUP.COM   PATHWORKS IP driver
+                                                  startup
+
+        SYS$COMMON:[SYSEXE]UCX$PWIPSHUT.EXE       PATHWORKS IP driver
+                                                  shutdown
+
+        SYS$COMMON:[SYSEXE]UCX$PWIPSYM.STB        Global symbol
+                                                  definitions for
+        __________________________________________UCX$PWIPSYM.EXE_______
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                   Installed Files  A-13
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+     A                                    Configuring UCX (cont'd)
+     ___________________________           using UCX$CONFIG option
+     Anonymous FTP                            commands,  3-18
+       configuring UCX to use,
+         3-16                             D__________________________
+
+     C                                    DECnet over TCP/IP
+     ___________________________           configuring UCX to use,
+     CD-ROM distribution kit                  3-16
+       inspecting, 1-2                    DECwindows
+     Configuration worksheet,              defining TCP transport
+        1-7                                   for UCX,  3-23
+     Configuring UCX                       PAK information for UCX,
+       client components, 3-7 to              2-8
+         3-10                              requirements for UCX
+       core environment, 3-4 to               installation,  1-2
+         3-7                              Disk
+       description of major                space requirements,  1-3
+         tasks,  1-1                       system, backing up,  1-3
+       optional components:               Distribution kit
+         PWIP driver, SRI QIO              inspecting,  1-2
+         interface, Anonymous
+         FTP,  3-16                       G__________________________
+       server components, 3-11            Global pagelets and
+         to 3-16                            sections
+       tasks, recommended order,           increasing,  1-5
+         3-1                               requirements,  1-4
+       time required, 1-1
+       UCX$CONFIG menus,
+         description of,  3-2
+         to 3-4
+       using UCX$CONFIG menus,
+         3-4
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+
+     H__________________________          P__________________________
+
+     Help files                           PAK, 1-2
+       deleting obsolete, 1-2             PATHWORKS
+                                           configuring UCX to use,
+     I__________________________              3-16
+     Installation Verification             PWIP driver
+        Procedure (IVP)                       files installed for,
+       description of, 3-20                      A-12
+     Installing UCX                        PWIP Driver
+       description of major                   requirements for
+         tasks,  1-1                             installation,  1-2
+       files installed on the              requirement, interrupt
+         system,  A-1 to A-13                 stack pages,  1-6
+       on an OpenVMS Alpha                POLYCENTER Software
+         system,  2-1 to 2-5                Installation utility
+       on an OpenVMS VAX system,           for installing or
+         2-5 to 2-11                          upgrading UCX (OpenVMS
+       time required, 1-1                     Alpha),  2-1 to 2-5
+                                          Postconfiguration tasks,
+     L__________________________            3-21
+     License                              Preparing to configure UCX
+       registering the UCX PAK,            configuration worksheet,
+         1-2                                  1-7
+                                          Preparing to install UCX
+                                           tasks,  1-2 to 1-7
+     M__________________________
+
+     Magnetic tape distribution           R__________________________
+
+        kit                               Release notes
+       inspecting, 1-2                     printing,  2-4, 2-10
+     Memory requirements,  1-4
+
+                                          S__________________________
+     N__________________________          SRI QIO
+
+     Nonpaged dynamic pool                 configuring UCX to use,
+       increasing, 1-5                        3-16
+
+                                          Starting UCX, 3-20 to 3-22
+     O__________________________          Stopping UCX, automatically
+
+     OpenVMS operating system               ,  3-22
+
+       upgrading, 1-3
+
+     Index-2
+
+ 
+
+
+
+
+
+
+        SYS$UPDATE:UCX$CLEANUP_             UCX$CONFIG menus
+          HELPLIB.COM, description            description of,  3-2 to
+          of,  1-2                               3-4
+        System parameters                   UIC codes
+         checking and changing                assigning,  1-6
+            before installing UCX,          Upgrading UCX
+            1-4 to 1-6                        on an OpenVMS Alpha
+                                                 system, 2-1 to 2-5
+        T__________________________           on an OpenVMS VAX system,
+        Tasks                                    2-5 to 2-11
+         major, installing and              User access
+            configuring UCX,  1-1             configuring UCX to allow
+        TK50 distribution kit                    guest users to log into
+         inspecting,  1-2                        the system, 3-16
+
+        Troubleshooting                     V
+         configuration procedure            ___________________________
+            problems,  3-21                 Verifying the UCX
+                                               configuration, 3-20
+        U__________________________         VMSINSTAL procedure
+        UCX license                           for installing or
+         for DECwindows                          upgrading UCX (OpenVMS
+            applications,  2-8                   VAX), 2-5 to 2-11
+
+         registering the PAK,  1-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                 Index-3

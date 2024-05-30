@@ -1,0 +1,2968 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital SNA
+                     Data Transfer Facility
+                     for_OpenVMS___________________________________
+                     Installation
+
+                     Part Number: AA-JM76F-TE
+
+                     May 1996
+
+                     This document describes how to install either the
+                     Digital SNA Data Transfer Facility (OpenVMS/DTF)
+                     Server software or the Digital SNA Data Transfer
+                     Facility (OpenVMS/DTF) Utilities software from a
+                     VMSINSTAL kit.
+
+
+
+
+
+
+                     Revision/Update Information: This is a revised
+                                                  manual.
+
+                     Operating System and Version: OpenVMS VAX Versions
+                                                  6.1, 6.2, or 7.0
+                                                  OpenVMS Alpha
+                                                  Versions 6.1, 6.2,
+                                                  or 7.0
+
+                     Software Version:            Digital SNA Data
+                                                  Transfer Facility for
+                                                  OpenVMS, Version 3.2
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           May 1996
+
+           The information in this document is subject to change
+           without notice and should not be construed as a commitment
+           by Digital Equipment Corporation or EDS. Digital Equipment
+           Corporation or EDS assumes no responsibility for any
+           errors that may appear in this document.
+
+           The software described in this document is furnished under
+           a license and may be used or copied only in accordance
+           with the terms of such license.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           Digital conducts its business in a manner that conserves
+           the environment.
+
+           Restricted Rights: Use, duplication, or disclosure by the
+           U.S. Government is subject to restrictions as set forth in
+           subparagraph (c)(1)(ii) of the Rights in Technical Data
+           and Computer Software clause at DFARS 252.227-7013.
+
+                    Copyright © 1988, 1996 Digital Equipment
+                        Corporation, EDS Defense Limited
+                              All Rights Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: Alpha, DEC, DEC/CMS, DEC/MSS, DECnet,
+           DECsystem-10, DECSYSTEM-20, DECUS, DECwriter, DIBOL,
+           EduSystem, IAS, MASSBUS, OpenVMS, PDP, PDT, RSTS, RSX,
+           UNIBUS, VAX, VAXcluster, VMS, VT, and the Digital logo.
+
+           IBM is a registered trademark of International Business
+           Machines Corporation.
+
+           This document was prepared using VAX DOCUMENT, Version
+           2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing to Install the Software
+
+         1.1   A Server Node or a Client Node?..............    1-1
+         1.2   Installation Requirements....................    1-2
+         1.3   Inspect the Distribution Kit.................    1-4
+         1.4   Verify Required Disk Space...................    1-5
+         1.5   Verify Required Amount of Global Pages and
+               Global Sections..............................    1-6
+         1.6   Register and Load the Product Authorization
+               Key..........................................    1-7
+         1.7   Choose Locations for the DTF Directories-New
+               Installation Only............................    1-7
+         1.8   Select UICs for the DTF Directories-New
+               Installation Only............................    1-7
+         1.9   Select a Password for the SNADTF$MGR
+               Account-New Installation Only (Server
+               Only)........................................    1-8
+         1.10  Verify That the Queue Manager Is Running.....    1-8
+         1.11  Back Up Your System Disk.....................    1-8
+
+   2  Installing the Software
+
+         2.1   The Installation Dialog......................    2-1
+         2.2   Files Installed..............................   2-32
+         2.3   Changes to the DECnet Databases..............   2-33
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     3  After Installing the Software
+
+           3.1   Configure the OpenVMS/DTF Software...........    3-1
+           3.2   Verify the Installation of the OpenVMS/DTF
+                 Server Software..............................    3-2
+           3.3   Verify DTF for IBM with OpenVMS/DTF..........    3-2
+           3.4   Verify DTF for IBM Security Exits............    3-3
+
+
+     Examples
+
+           2-1       Installation Dialog - Part 1.............    2-4
+
+           2-2       Installation Dialog - Part 2.............    2-7
+
+           2-3       Installation Dialog - Part 3.............   2-10
+
+           2-4       Installation Dialog - Part 4.............   2-12
+
+           2-5       Installation Dialog - Part 5.............   2-14
+
+           2-6       Installation Dialog - Part 6.............   2-16
+
+           2-7       Installation Dialog - Part 7.............   2-19
+
+           2-8       Installation Dialog - Part 8.............   2-22
+
+           2-9       Installation Dialog - Part 9.............   2-25
+
+           2-10      Installation Dialog - Part 10............   2-27
+
+           2-11      Installation Dialog - Part 11............   2-29
+
+     Tables
+
+           1-1       OpenVMS/DTF Server Software Installation
+                     Specifications...........................    1-2
+
+           1-2       OpenVMS/DTF Utilities Software
+                     Installation Specifications..............    1-3
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              The Digital SNA Data Transfer Facility (DTF) software is
+              a Digital Equipment Corporation product that allows you
+              to transfer files between IBM MVS or VM systems in an SNA
+              network and systems in a Digital network. To use the DTF
+              access routine, you must first install the appropriate
+              versions of the software and hardware that you plan to
+              use. See the Software Product Description (SPD) for this
+              information.
+
+              The DTF access routine consists of two major parts: the
+              IBM-resident software (DTF for IBM) and the Digital-
+              resident software (OpenVMS/DTF). The IBM-resident software
+              can be installed on an MVS system or a VM system.
+
+              This guide tells you how to install:
+
+              o  OpenVMS/DTF server software on an OpenVMS server node,
+                 or
+
+              o  OpenVMS/DTF utilities software on an OpenVMS client
+                 node
+
+              To install the OpenVMS/DTF utilities software success-
+              fully, you must also install the OpenVMS/DTF server
+              software on at least one server node.
+
+              The postage-prepaid Reader's Comments form on the last
+              page of this manual is for your critical evaluation to
+              assist us in preparing future documentation.
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+     Associated Documents
+
+           The Digital SNA Data Transfer Facility software documenta-
+           tion consists of the following manuals:
+
+           o  Digital SNA Data Transfer Facility for OpenVMS
+              Installation
+
+           o  Digital SNA Data Transfer Facility for OpenVMS
+              Management
+
+           o  Digital SNA Data Transfer Facility for OpenVMS Problem
+              Solving and Messages
+
+           o  Digital SNA Data Transfer Facility for OpenVMS Use
+
+           You should have the following Digital documents available
+           for reference when you use the Digital SNA Data Transfer
+           Facility software:
+
+           o  Common Data Dictionary Summary Description
+
+           o  Common Data Dictionary User's Guide
+
+           o  Common Data Dictionary Utilities Reference
+
+           o  Common Data Dictionary Data Definition Language
+              Reference
+
+           o  Digital SNA Domain Gateway Installation
+
+           o  Digital SNA Domain Gateway Management
+
+           o  Digital SNA Domain Gateway Guide to IBM Resource
+              Definition
+
+           o  DECnet SNA Gateway Problem Determination Guide
+
+           o  DECnet SNA Gateway-CT Installation
+
+           o  DECnet SNA Gateway-CT Problem Solving (OpenVMS &
+              ULTRIX)
+
+           o  DECnet SNA Gateway-CT Management (OpenVMS)
+
+           o  DECnet SNA Gateway-CT Guide to IBM Parameters
+
+           o  DECnet SNA Gateway-ST Installation
+
+           o  DECnet SNA Gateway-ST Problem Solving (OpenVMS)
+
+           o  DECnet SNA Gateway-ST Guide to IBM Parameters
+
+           o  DECnet SNA Gateway Management for OpenVMS
+
+     vi
+
+ 
+
+
+
+
+
+
+              o  Digital Peer Server Installation and Configuration
+
+              o  Digital Peer Server Management
+
+              o  Digital Peer Server Network Control Language Reference
+
+              o  Digital Peer Server Guide to IBM Resource Definition
+
+              o  OpenVMS SNA Installation
+
+              o  OpenVMS SNA Problem Solving
+
+              o  OpenVMS SNA Guide to IBM Parameters
+
+              o  OpenVMS SNA Management
+
+              o  OpenVMS SNA Problem Determination Guide
+
+              OpenVMS client users may also find the following Digital
+              OpenVMS manuals to be helpful:
+
+              o  OpenVMS User's Manual
+
+              o  OpenVMS Record Management Utilities Reference Manual
+
+              o  DEC DATATRIEVE User's Guide
+
+              o  OpenVMS DCL Dictionary
+
+              o  OpenVMS DCL Concepts Manual
+
+              o  Guide to OpenVMS File Applications
+
+              ULTRIX client users may also find the following Digital
+              DECnet-ULTRIX manual to be helpful:
+
+              o  DECnet-ULTRIX Use
+
+              DOS client users may also find the following PATHWORKS for
+              DOS manual to be helpful:
+
+              o  PATHWORKS for DOS DECnet User's Guide
+
+              OS/2 client users may also find the following PATHWORKS
+              for OS/2 manual to be helpful:
+
+              o  PATHWORKS for OS/2 Utilities Guide
+
+              IBM client users may also find the following IBM manuals
+              to be helpful:
+
+              o  JCL Reference
+
+              o  CMS Primer
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+           o  IBM Access Method Services
+
+           The following IBM manuals provide additional reference in-
+           formation that could be helpful in problem determination:
+
+           o  DFP: Access Method Services Reference
+
+           o  IBM VTAM Customization
+
+           o  MVS JCL Reference Manual
+
+           o  MVS Service Aids Manual
+
+           o  MVS System Commands
+
+           o  MVS System Messages
+
+           o  VTAM Operator Commands
+
+           o  VM Planning and Reference
+
+           o  VM/SP6 Connectivity, Planning, and Administration
+
+           o  VM/SP5 TSAF
+
+     Acronyms
+
+           The following acronyms are used throughout this guide:
+
+           DCL         Digital Command Language
+
+           DTF         Digital SNA Data Transfer Facility access
+                       routine
+
+           IBM SNA     IBM's Systems Network Architecture
+
+           SNADTFCFG   SNA DTF Configuration utility
+
+           TRANSFER    SNA DTF Transfer utility
+           /DTF
+
+           OpenVMS     Digital-resident Data Transfer Facility
+           /DTF        software
+
+
+     viii
+
+ 
+
+
+
+
+
+
+        Graphic Conventions
+
+              The following conventions are used throughout this guide:
+
+
+              Special     This special type indicates system output
+              type        or user input.
+
+              UPPERCASE   Uppercase letters in command lines indicate
+                          keywords that must be entered. You can enter
+                          keywords in either uppercase or lowercase.
+                          You can abbreviate command keywords to the
+                          first three characters or their minimum unique
+                          abbreviation.
+
+              lowercase   Lowercase italics in command syntax or
+              italics     examples indicate variables for which either
+                          the user or the system supplies a value.
+
+              [ ]         Square brackets in command syntax statements
+                          indicate that the enclosed values are
+                          optional. You can enter none or one. Default
+                          values apply for unspecified options. (Do not
+                          type the brackets when you enter a command.)
+
+              <Return>    Press the RETURN key. The RETURN key, which
+                          you must press to execute commands, is assumed
+                          in command examples and therefore is not
+                          always shown in command displays.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                       Preparing to Install the Software
+
+
+
+              The Digital SNA Data Transfer Facility software (OpenVMS
+              /DTF) is divided into the following software installation
+              kits:
+
+              o  OpenVMS/DTF Server software
+
+              o  OpenVMS/DTF Utilities software
+
+              This chapter describes the preparations you must make
+              before you install either the OpenVMS/DTF server software
+              or OpenVMS/DTF utilities software.
+
+        1.1 A Server Node or a Client Node?
+
+              To use DTF to transfer data, you must install the OpenVMS
+              /DTF server software on at least one OpenVMS node in your
+              network. The OpenVMS/DTF server software kit includes the
+              OpenVMS/DTF utilities software, so it is not necessary
+              to install both the server and utilities software on the
+              same node. You can also optionally install the OpenVMS
+              /DTF utilities software on additional client nodes in your
+              network. The OpenVMS/DTF utilities software lets you use
+              features such as recoverable file transfer from a client
+              node.
+
+              A typical DTF site consists of multiple client nodes and a
+              single server node. You can also set up your system with
+              multiple client nodes attached to multiple server nodes.
+              You should consider the price/performance ratio of server
+              nodes to client nodes when deciding how many server and
+              client nodes your site needs.
+
+              Server nodes contain the SNA file access software
+              necessary for communicating with the DTF for IBM software.
+              A server node communicates with the IBM system through
+              the DECnet SNA Gateway-ST, the DECnet SNA Gateway-CT,
+              the Digital SNA Domain Gateway-CT, the Digital SNA Domain
+
+                                   Preparing to Install the Software 1-1
+
+ 
+
+
+
+
+
+
+           Gateway-ST, the Digital SNA Peer Server, or OpenVMS SNA
+           (OpenVMS VAX Version 6.1 and Version 6.2 only).
+
+           Client nodes initiate file transfer requests. A client
+           node can be the source or the destination of the transfer
+           request. DECnet client nodes communicate with server nodes
+           through DECnet. IBM client nodes communicate with the
+           OpenVMS/DTF server through a DECnet SNA Gateway-ST, DECnet
+           SNA Gateway-CT, Digital SNA Domain Gateway-CT, Digital
+           SNA Domain Gateway-ST, Digital SNA Peer Server, or OpenVMS
+           SNA.
+
+           After you decide how many server nodes and client nodes
+           you need, you can begin to install the OpenVMS/DTF
+           software.
+
+     1.2 Installation Requirements
+
+           Before you begin to install the OpenVMS/DTF software, you
+           need to know what software, system privileges, and disk
+           space are required for your installation. Table 1-1 and
+           Table 1-2 list the preliminary installation requirements
+           that you must satisfy before you can begin to install the
+           OpenVMS/DTF software.
+
+     Table_1-1_OpenVMS/DTF_Server_Software_Installation_Specifications
+
+                                                 OpenVMS Alpha
+     Requirements_____OpenVMS_VAX_Specifications_Specifications______
+
+     Required         Versions 6.1, 6.2, or 7.0  Versions 6.1, 6.2,
+     software                                    or 7.0
+
+                                             (continued on next page)
+
+
+
+
+
+
+
+
+
+
+
+     1-2 Preparing to Install the Software
+
+ 
+
+
+
+
+
+
+        Table 1-1 (Cont.) OpenVMS/DTF Server Software Installation
+        __________________Specifications________________________________
+
+                                                    OpenVMS Alpha
+        Requirements_____OpenVMS_VAX_Specifications_Specifications______
+
+        Optional         VAX Common Data            CDD/Repository for
+        software         Dictionary Version 4.2 or  OpenVMS Version 5.2
+                         later                      or later
+                         DEC DATATRIEVE Version
+                         4.1 or later
+                         Digital SNA Gateway
+                         Management Version 2.0 or
+                         later[1]
+
+        Privileges                    System manager level
+
+        Disk space       7070 blocks minimum        7606 blocks
+                         during installation        4012 blocks
+                         2704 blocks minimum after
+                         installation
+
+        Global pages     1777                       2643
+
+        Global sections  12                         10
+
+        Estimated time                   5 to 15 minutes
+        to install
+
+        Associated                   Your processor-specific
+        documents                 installation/operations guide
+        [1]Gateway_Management_software_is_bundled_with_DECnet_SNA_______
+
+        Gateway-CT Version 2.1 or later and DECnet SNA Gateway-ST
+        Version 1.2 or later. It is no longer a separate product.
+        ________________________________________________________________
+
+        Table_1-2_OpenVMS/DTF_Utilities_Software_Installation_Specifications
+
+                                                    OpenVMS Alpha
+        Requirements_____OpenVMS_VAX_Specifications_Specifications______
+
+        Required         Versions 6.1, 6.2, or 7.0  Versions 6.1, 6.2,
+        software                                    or 7.0
+
+                                                (continued on next page)
+
+                                   Preparing to Install the Software 1-3
+
+ 
+
+
+
+
+
+
+     Table 1-2 (Cont.) OpenVMS/DTF Utilities Software Installation
+     __________________Specifications________________________________
+
+                                                 OpenVMS Alpha
+     Requirements_____OpenVMS_VAX_Specifications_Specifications______
+
+     Optional         DEC DATATRIEVE Version
+     software         4.1 or later
+                      Digital SNA Gateway
+                      Management Version 2.0 or
+                      later[1]
+
+     Privileges                     System manager level
+
+     Disk space       2441 blocks minimum        2537 blocks
+                      during installation        1582 Blocks
+                      1139 blocks minimum after
+                      installation
+
+     Global pages     283                        572
+
+     Global sections  7                          6
+
+     Estimated time                   5 to 15 minutes
+     to install
+
+     Associated                   Your processor-specific
+     documents                 installation/operations guide
+     [1]Gateway_Management_software_is_bundled_with_DECnet_SNA_______
+
+     Gateway-CT Version 2.1 or later and DECnet SNA Gateway-ST
+     Version 1.2 or later. It is no longer a separate product.
+     ________________________________________________________________
+
+     1.3 Inspect the Distribution Kit
+
+           The software Bill of Materials (BOM) included with
+           your distribution kit specifies the contents of the
+           distribution kit. Carefully compare the items you received
+           with the items listed in the BOM. If any components are
+           missing or damaged, contact your Digital representative
+           before continuing with the installation.
+
+
+
+     1-4 Preparing to Install the Software
+
+ 
+
+
+
+
+
+
+        1.4 Verify Required Disk Space
+
+              Make sure that you have adequate disk space before you
+              install the OpenVMS/DTF software. You can check your
+              available disk space by entering the following command:
+
+              $ SHOW DEVICE system-disk
+
+              where system-disk refers to the device name of the system
+              disk. For more information about the SHOW DEVICE command,
+              refer to the OpenVMS DCL Dictionary.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                   Preparing to Install the Software 1-5
+
+ 
+
+
+
+
+
+
+     1.5 Verify Required Amount of Global Pages and Global Sections
+
+           Make sure that you have enough global pages and global
+           sections free. If there are not enough global pages
+           and global sections, the OpenVMS/DTF software cannot be
+           installed as a shareable image. You can check the number
+           of global pages and global sections available by entering
+           the following commands:
+
+           $ RUN SYS$SYSTEM:SYSGEN
+           SYSGEN> SHOW GBLPAGES
+           SYSGEN> SHOW GBLSECTIONS
+
+           You can then check the number of global pages and global
+           sections in use by entering the following commands:
+
+           $ INSTALL
+           INSTALL> LIST/GLOBAL
+
+           By subtracting the second set of values from the first,
+           you can determine if there are enough global pages
+           and global sections free for your use. If you need
+           to increase the total available, you must edit the
+           SYS$SYSTEM:MODPARAMS.DAT file and include the following
+           lines:
+
+           For server installation:
+
+           ADD_GBLPAGES=n
+           ADD_GBLSECTIONS=n
+
+           For client installation:
+
+           ADD_GBLPAGES=n
+           ADD_GBLSECTIONS=n
+
+           Where n is the appropriate value from Table 1-2.
+
+           After modifying these values, you must run AUTOGEN by
+           using the following commands:
+
+           $ @SYS$UPDATE:AUTOGEN SAVPARAMS GENPARAMS
+           $ @SYS$UPDATE:AUTOGEN SETPARAMS REBOOT
+
+           These commands will recompute your system parameters.
+           AUTOGEN will also perform an automatic shutdown and reboot
+           when it is finished.
+
+     1-6 Preparing to Install the Software
+
+ 
+
+
+
+
+
+
+        1.6 Register and Load the Product Authorization Key
+
+              Make sure that you have registered and loaded the Product
+              Authorization Key (PAK) before you begin the installation.
+              Refer to the OpenVMS License Management Utility Reference
+              Manual for this information.
+
+        1.7 Choose Locations for the DTF Directories-New Installation
+            Only
+
+              Select locations for the DTF directories. You need to
+              determine which disk you want to contain the DTF work
+              directories ([SNADTF] and [DTF$SERVER]). The default
+              directory location, SYS$COMMON, is available to an entire
+              cluster.
+
+              The [SNADTF] directory contains the following information:
+
+              o  All OpenVMS/DTF databases (OpenVMS/DTF server only)
+
+              o  Execution queue work files
+
+              o  Execution queue job files
+
+              o  DTF log files
+
+              The [DTF$SERVER] directory contains the log files for
+              all IBM-initiated DTF transfer operations directed to
+              nodes that do not have the OpenVMS/DTF utilities software
+              installed. In the case of IBM-initiated transfer requests
+              without access control information, both the files and the
+              log files for the transfer are placed in the DTF$SERVER
+              directory.
+
+              Current directories will be used for an upgrade to an
+              existing installation.
+
+        1.8 Select UICs for the DTF Directories-New Installation Only
+
+              Select user identification codes (UICs) for the DTF
+              directories. You must assign unused UICs to the [SNADTF]
+              and [DTF$SERVER] directories. The DTF directory UICs keep
+              unauthorized users from accessing OpenVMS/DTF databases
+              and work files. The [SNADTF] directory default UIC of
+              [55,56] is in the same group as the SNACSV account default
+              UIC (the DECnet SNA Gateway-ST, DECnet SNA Gateway-
+              CT, Digital SNA Domain Gateway-CT, Digital SNA Domain
+              Gateway-ST, Digital SNA Peer Server, or OpenVMS SNA work
+
+                                   Preparing to Install the Software 1-7
+
+ 
+
+
+
+
+
+
+           directory). The [DTF$SERVER] directory default UIC is
+           [54,56].
+
+           The current UICs will be retained for an upgrade to an
+           existing installation.
+
+     1.9 Select a Password for the SNADTF$MGR Account-New
+         Installation Only (Server Only)
+
+           Select a password of at least 6 characters for the
+           SNADTF$MGR account. The SNADTF$MGR account is created
+           by the server installation procedure and allows users
+           on other nodes to access the OpenVMS/DTF databases. This
+           password ensures that only authorized users can access the
+           OpenVMS/DTF databases.
+
+           The existing account will be updated for an upgrade to an
+           existing installation.
+
+     1.10 Verify That the Queue Manager Is Running
+
+           The installation procedure starts an OpenVMS/DTF execution
+           queue. Make sure that the queue manager is running; if
+           it is not, the installation will fail. You can use the
+           following command to start the queue manager:
+
+           $ START/QUEUE/MANAGER
+
+           For more information about the START/QUEUE/MANAGER
+           command, refer to the OpenVMS DCL Dictionary.
+
+           When installing OpenVMS/DTF on a node where any version of
+           the product has previously been installed, you must stop
+           all queues created by the previous installation of the DTF
+           software. This ensures that the newly installed software
+           rather than the previously installed software will handle
+           the DTF queues.
+
+     1.11 Back Up Your System Disk
+
+           Before you start an installation that involves writing to
+           your system disk, Digital Equipment Corporation recommends
+           that you make a backup copy of your system disk. The
+           System Manager's Manual explains how to back up your
+           system disk.
+
+     1-8 Preparing to Install the Software
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                 Installing the Software
+
+
+
+              This chapter describes the steps when you install OpenVMS
+              /DTF software products. If you install the OpenVMS/DTF
+              utilities software on a node that contains the OpenVMS/DTF
+              server software, the information that was added during the
+              server software installation will be deleted.
+
+        2.1 The Installation Dialog
+
+              The procedure for installing files on an OpenVMS system
+              is automated. You simply answer questions displayed
+              while the procedure (VMSINSTAL) runs. Most questions
+              require a simple yes (Y) or no (N) answer. The OpenVMS
+              /DTF installation (whether server or utilities) should
+              take no longer than 15 minutes, depending on the type of
+              medium you use. The estimated installation time does not
+              include preparation time or problem resolution time.
+
+                ________________________Note  ________________________
+
+                You can install the OpenVMS/DTF software from two
+                locations: the Consolidated Software Distribution
+                CD-ROM or a remote node in your local area network
+                using the Remote Installation Service (RIS). The
+                VMSINSTAL procedure presented in this chapter
+                assumes the OpenVMS/DTF software is being installed
+                from your local area network.
+
+                To install the OpenVMS/DTF product from the
+                Consolidated Software Distribution CD-ROM, see the
+                master index table in the document Consolidated
+                Software Distribution Disk User's Guide for the
+                directory containing the OpenVMS/DTF files.
+
+                _____________________________________________________
+
+                                             Installing the Software 2-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                       This page intentionally left blank.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-2 Installing the Software
+
+ 
+
+
+
+
+
+
+              The following illustration shows how the installation
+              information is presented.
+
+              Most of the questions supply default answers which appear
+              in brackets throughout the installation procedure. Press
+              <Return> to accept a default answer. Press <Ctrl/Y> to
+              abort the installation procedure at any time; later, you
+              can restart the installation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                             Installing the Software 2-3
+
+ 
+
+
+
+
+
+
+     Example 2-1 Installation Dialog - Part 1
+
+     Username: SYSTEM   <Return> 1
+     Password: password <Return>
+
+     $ SET DEFAULT SYS$UPDATE <Return>
+
+     $ @VMSINSTAL product-name ddcu:  [OPTIONS N] <Return> 2
+
+             OpenVMS VAX Software Product Installation Procedure V6.1
+
+     It is dd-mmm-yyyy at hh:mm.
+     Enter a question mark (?) at any time for help.
+
+     %VMSINSTAL-W-ACTIVE, The following processes are still active:
+        JONES
+     * Do you want to continue anyway [NO]? Y <Return> 3
+     * Are you satisfied with the backup of your system disk [YES]? <Return> 4
+
+     Please mount the first volume of the set on  MUA0:.
+     * Are you ready? yes <Return> 5
+     %MOUNT-I-MOUNTED, SNADTF mounted on _MUA0:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-4 Installing the Software
+
+ 
+
+
+
+
+
+
+              The following callout descriptions refer to Example 2-1:
+
+              1  Digital Equipment Corporation recommends that you
+                 install software from the system manager's account
+                 [SYSTEM] with your default device and directory set to
+                 SYS$UPDATE.
+
+              2  VMSINSTAL prompts you if you do not supply the product
+                 and device names. If you want to be prompted for the
+                 product name, device name, and installation options,
+                 type the following:
+
+                 $ @SYS$UPDATE:VMSINSTAL <Return>
+
+                 product-name
+                 SNADTFU for the OpenVMS/DTF utilities software
+                 distribution kit. SNADTFS for the OpenVMS/DTF server
+                 software distribution kit.
+
+                 ddcu:
+                 A device name where the distribution kit for the
+                 OpenVMS/DTF installation media will be mounted, where
+                 dd is the device, c is the controller, and u is the
+                 unit number. It is not necessary to use the console
+                 drive to install OpenVMS/DTF. MUA0: is the device name
+                 used in this example.
+
+                 OPTIONS N
+                 An optional parameter you should provide if you want to
+                 be prompted to display or print the release notes. If
+                 you do not include the OPTIONS N parameter, VMSINSTAL
+                 does not prompt you to display or print the release
+                 notes, but does copy them to SYS$HELP. VMSINSTAL also
+                 permits the use of several other options. For more
+                 information on options, see your processor-specific
+                 installation/operations guide.
+
+              3  If users are logged in, you are asked whether you want
+                 to continue the installation. To continue, type Y
+                 and press <Return>. To stop the installation, press
+                 <Return>.
+
+
+
+
+                                             Installing the Software 2-5
+
+ 
+
+
+
+
+
+
+           4  Before you proceed with the installation, make sure you
+              have a good backup copy. If you are satisfied with the
+              backup of your system disk, press <Return>. If you do
+              not have a good backup copy, type N and press <Return>
+              to end the installation.
+
+           5  This group of three lines appears only when your
+              distribution medium is a tape. Mount the distribution
+              kit volume on the appropriate drive. Type YES and press
+              <Return> when you are ready.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-6 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-2 Installation Dialog - Part 2
+
+        The following products will be processed:
+
+          product-name V3.2
+
+                Beginning installation of product-name V3.2 at hh:mm
+
+        %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+            Release notes included with this kit are always copied to SYS$HELP.
+
+            Additional Release Notes Options:
+
+            1. Display release notes
+            2. Print release notes
+            3. Both 1 and 2
+            4. None of the above
+
+        * Select option [2]: <Return> 6
+        * Queue name [SYS$PRINT]: <Return>
+        Job product-name032 (queue SYS$PRINT, entry 681) started on LPA0
+        * Do you want to continue the installation [NO]? Y<Return> 7
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+        * Do you want to purge files replaced by this installation [YES]? <Return> 8
+
+                Product:      SNA-DTF-xxx 9
+                Producer:     DEC
+                Version:      V3.2
+                Release Date: dd-mmm-yyyy
+
+        * Does this product have an authorization key registered and loaded?Y <Return> 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                             Installing the Software 2-7
+
+ 
+
+
+
+
+
+
+           The following callout descriptions refer to Example 2-2:
+
+           6  This step applies only if you specified OPTIONS N.
+
+              If you select option 1, VMSINSTAL displays the release
+              notes. Press <Ctrl/C> to terminate the display.
+
+              If you select option 2, VMSINSTAL prompts you for a
+              queue name. Either type a queue name or press <Return>
+              to send the file to the default output print device.
+
+              If you select option 3, VMSINSTAL displays the release
+              notes and then prompts you for a queue name.
+
+              If you select option 4, VMSINSTAL does not display or
+              print the release notes.
+
+              ________________________Note ________________________
+
+              Printing the release notes is recommended because of
+              their length.
+
+              _____________________________________________________
+
+              Read the release notes carefully before continuing with
+              the VMSINSTAL procedure.
+
+           7  To continue the installation, type Y and press
+              <Return>. If you type N or press <Return>, VMSINSTAL
+              moves the release notes to SYS$HELP and ends the
+              installation.
+
+           8  If you answer YES to this prompt, VMSINSTAL deletes
+              previous versions of the distribution files.
+
+              Press <Return> after the prompt if you want to purge
+              the files replaced during installation.
+
+           9  SNA-DTF-SVR for OpenVMS/DTF server software; SNA-DTF-
+              UTL for OpenVMS/DTF utilities software.
+
+           10 Use the OpenVMS License Management Facility (LMF) to
+              register the product.
+
+              Check to see if this is the same information contained
+              in your Product Authorization Key (PAK). Type YES or NO
+              in response to the question.
+
+     2-8 Installing the Software
+
+ 
+
+
+
+
+
+
+                 If you do not register and load your authorization key,
+                 the product will not install and run correctly. For
+                 more information on LMF, refer to the OpenVMS License
+                 Management Utility Reference Manual.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                             Installing the Software 2-9
+
+ 
+
+
+
+
+
+
+     Example 2-3 Installation Dialog - Part 3
+
+     * Do you want to run the IVP after the installation [YES]? <Return> 11
+     * Device to be used for the DTF directories [SYS$COMMON:]: <Return> 12
+     %VMSINSTAL-I-SYSDISK, This product creates system disk directory SYS$COMMON:[SNADTF].
+     * Do you want the installation to delete old DTF databases [YES]?<Return> 13
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-10 Installing the Software
+
+ 
+
+
+
+
+
+
+              The following callout descriptions refer to Example 2-3:
+
+              11 After you install the OpenVMS/DTF software, you should
+                 verify that the software was properly installed. To
+                 include verification checking, press <Return>.
+
+                 The verification procedure begins later in the
+                 installation procedure and verifies the installation of
+                 the following:
+
+                 o  SNADTFCFG utility
+
+                 o  SNADTFCFG utility help files
+
+                 o  TRANSFER/DTF utility
+
+                 o  TRANSFER/DTF utility help files
+
+                 o  Default DTF queue file
+
+                 o  SNARCOPY object
+
+                 On server systems only: The verification procedure also
+                 verifies the modification of the File Access Listener
+                 (FAL) object.
+
+              12 This prompt is displayed if you are installing
+                 OpenVMS/DTF for the first time. Specify the disk
+                 on which you want the OpenVMS/DTF [SNADTF] and
+                 [DTF$SERVER] directories to reside. The default device
+                 is SYS$COMMON. If a previous version of DTF is found
+                 you will receive a DIRALREXI error message in place of
+                 this prompt.
+
+              13 DTF V3.0 server account, proxy, and file definition
+                 databases are not compatible with DTF V3.2. If the
+                 installation procedure finds these databases, the
+                 procedure automatically upgrades the databases to be
+                 DTF V3.2 compatible. The procedure then changes the
+                 extension of the old databases to be .OLD. These old
+                 databases are no longer needed. If you wish to delete
+                 the old databases, answer YES to this question.
+
+
+
+                                            Installing the Software 2-11
+
+ 
+
+
+
+
+
+
+     Example 2-4 Installation Dialog - Part 4
+
+     * UIC for directory SNADTF (include brackets) [[55,56]]: <Return> 14
+     %VMSINSTAL-I-ACCOUNT, This installation creates an ACCOUNT named SNADTF. 15
+     %UAF-I-ADDMSG, user record successfully added
+     %UAF-I-RDBADDMSGU, identifier SNADTF value: [000055,000056] added to rights data
+     base.
+     %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named SNADTF.
+     %UAF-I-MDFYMSG, user record(s) updated
+     * Password for SNADTF$MGR account (6 characters minimum):      <Return> 16
+     * Password verification:       <Return> 17
+     %VMSINSTAL-I-ACCOUNT, This installation creates an ACCOUNT named SNADTF$MGR. 18
+     %UAF-I-ADDMSG, user record successfully added
+     %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named SNADTF$MGR.
+     %UAF-I-MDFYMSG, user record(s) updated
+     VMSINSTAL-I-SYSDIR, This product creates system disk directory SYS$COMMON:[DTF 19
+     $SERVER]
+     * UIC for account DTF$SERVER (include brackets) [[54,56]]: <Return>
+     %VMSINSTAL-I-ACCOUNT, This installation creates an ACCOUNT named DTF$SERVER. 20
+     %UAF-I-ADDMSG, user record successfully added
+     %VMSINSTAL-I-ACCOUNT, This installation updates an ACCOUNT named DTF$SERVER.
+     %UAF-I-MDFYMSG, user record(s) updated
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-12 Installing the Software
+
+ 
+
+
+
+
+
+
+              The following callout descriptions refer to Example 2-4:
+
+              14 This prompt is displayed if you are installing
+                 OpenVMS/DTF for the first time. Specify the user
+                 identification code (UIC) for the SNADTF account using
+                 the following standard UIC format:
+
+                 [g,u]
+
+                 where
+
+                 g   is the group number in octal. For security reasons,
+                     the group number should never be the same as an
+                     existing group number or the same as a system
+                     management group number (less than 10).
+
+                 u   is the user number in octal.
+
+              15 These five lines are displayed if you are installing
+                 the OpenVMS/DTF server software. If DTF is already
+                 installed, only the two update messages are displayed.
+
+              16 This prompt is displayed if you are installing the
+                 OpenVMS/DTF server software for the first time.
+                 Type a password for the SNADTF$MGR account and press
+                 <Return>; the password is not displayed on the screen
+                 for security reasons.
+
+              17 This question is displayed to catch any typing errors
+                 that might have occurred when you entered the password
+                 for the SNADTF$MGR account. Type the password again and
+                 press <Return>.
+
+              18 These 4 messages are displayed for server software
+                 installations only. If DTF is already installed, only
+                 the update message is displayed.
+
+              19 These 2 messages are displayed for server and utilities
+                 software installations.
+
+              20 These 4 messages are displayed for server and utilities
+                 software installations. If DTF is already installed,
+                 only the update message is displayed.
+
+
+                                            Installing the Software 2-13
+
+ 
+
+
+
+
+
+
+     Example 2-5 Installation Dialog - Part 5
+
+     %product-name-I-NOMORQUES, no further questions 21
+
+     %REGISTER-I-ADDED added SNADTF$DISPATCHER to registry 22
+     %REGISTER-I-SUMMARY  images examined: 1, dependent images: 1
+     %REGISTER-I-ADDED added SNADTF$COPY to registry
+     %REGISTER-I-SUMMARY  images examined: 1, dependent images: 1
+          Checksum file updated last by ZZZZZZ on DD-MMM-YYY HH:MM:SS.ss
+     %NET$CONFIGURE-I-VERCHEKSUM, verifying checksums  23
+     %NET$CONFIGURE-I-USECOMMON, using cluster common APPLICATION script
+     %NET$CONFIGURE-I-USECOMMON, using cluster common EVENT script
+     %NET$CONFIGURE-I-OVERRIDECOMMON, node specific MOP_CLIENT script overrides the cluster common settings
+
+         The following NCL script files have been modified since being
+         created by this procedure:
+
+             SYS$SPECIFIC: [SYSMGR]NET$MOP_CIRCUIT_STARTUP.NCL;
+
+         This procedure may create a new version of these scripts or modify
+         information contained within them.  In all cases, any previously
+         created NCL scripts are rename to "file.NCL-OLD", so that you
+         may review any of your previous changes.
+
+     %NETCONFIGURE-I-MAKEACCOUNT, this procedure creates user account DTF$SERVER
+     $NCL @SYS$COMMON:[SYSMGR]NET$APPLICATION_STARTUP.NCL-TEMP;
+
+     Node 0 Session Control Application SNARCOPY
+     at YYYY-MM-DDD=HH:MM:SS.sss-TDF
+
+     Node 0 Session Control Application SNARCOPY
+     at YYYY-MM-DDD=HH:MM:SS.sss-TDF
+
+     Characteristics
+
+                                             (continued on next page)
+
+
+
+
+
+
+
+
+
+     2-14 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-5 (Cont.) Installation Dialog - Part 5
+
+            Addresses                       =
+               {
+                    name = SNARCOPY
+               }
+            Client                          = <Default value>
+            Incoming Alias                  = True
+            Incoming Proxy                  = True
+            Outgoing Alias                  = True
+            Outgoing Proxy                  = True
+            Node Synonym                    = True
+            Image Name                      = SYS$SYSTEM:SNARCOPY.EXE
+            User Name                       = "DTF$SERVER"
+            Incoming OSI TSEL               = <Default value>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Installing the Software 2-15
+
+ 
+
+
+
+
+
+
+           The following callout descriptions refer to Example 2-5:
+
+           21 No more input is required. If you typed Y in response
+              to the purged files prompt, previous versions of the
+              files are now purged.
+
+              If the installation procedure is successful, the
+              executable files are moved to their target directory.
+
+           22 These informational messages are displayed on Alpha
+              systems running OpenVMS Version 7.0.
+
+           23 The following network informational messages are
+              displayed on systems running DECnet/OSI network
+              software.
+
+     Example 2-6 Installation Dialog - Part 6
+
+     $vef = F$verify(vef)
+     %NET$CONFIGURE-I-MODCHECKSUM, checksumming NCL management scripts modified by NET$CONFIGURE
+     %NET$CONFIGURE-I-CONFIGCOMPLETED, DECnet/OSI for OpenVMS configuration completed
+         Checksum file updated last by XXXXXX on DD-MMM-YYY HH:MM:SS.ss
+     %NET$CONFIGURE-I-VERCHECKSUM, verifying checksums  24
+     %NET$CONFIGURE-I-USECOMMON, using cluster common APPLICATION script
+     %NET$CONFIGURE-I-USECOMMON, using cluster common EVENT script
+     %NET$CONFIGURE-I-OVERRIDECOMMON, node specific MOP_CLIENT script overrides the cluster common settings
+
+         The following NCL script files have been modified since being
+         created by this procedure:
+
+               SYS$SPECIFIC: [SYSMGR]NET$MOP_CIRCUIT_STARTUP.NCL;
+
+         This procedure may create a new version of these scripts or modify
+         information contained within them.  In all cases, any previously
+         created NCL scripts are rename to "file.NCL-OLD", so that you
+         may review any of your previous changes.
+
+     %NET$CONFIGURE-I-MODCHECKSUM, checksumming NCL management scripts modified by NET$CONFIGURE
+     %NET$CONFIGURE-I-CONFIGCOMPLETED, DECnet/OSI for OpenVMS configuration completed
+         Checksum file updated last by XXXXXX on DD-MMM-YYY HH:MM:SS.ss
+     %NET$CONFIGURE-I-VERCHECKSUM, verifying checksums  25
+     %NET$CONFIGURE-I-USECOMMON, using cluster common APPLICATION script
+     %NET$CONFIGURE-I-USECOMMON, using cluster common EVENT script
+     %NET$CONFIGURE-I-OVERRIDECOMMON, node specific MOP_CLIENT script overrides the cluster common settings
+
+                                             (continued on next page)
+
+     2-16 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-6 (Cont.) Installation Dialog - Part 6
+
+            The following NCL script files have been modified since being
+            created by this procedure:
+
+                 SYS$SPECIFIC: [SYSMGR]NET$MOP_CIRCUIT_STARTUP.NCL;
+
+            This procedure may create a new version of these scripts or modify
+            information contained within them.  In all cases, any previously
+            created NCL scripts are rename to "file.NCL-OLD", so that you
+            may review any of your previous changes.
+
+        $NCL @SYS$COMMON:[SYSMGR]NET$APPLICATION_STARTUP.NCL-TEMP;
+
+        Node 0 Session Control Application FAL
+        at YYYY-MM-DDD=HH:MM:SS.sss-TDF
+
+        Node 0 Session Control Application FAL
+        at YYYY-MM-DDD=HH:MM:SS.sss-TDF
+
+        Characteristics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Installing the Software 2-17
+
+ 
+
+
+
+
+
+
+           The following callout descriptions refer to Example 2-6:
+
+           24 The following network informational messages are
+              displayed on systems running DECnet/OSI network
+              software.
+
+           25 The following network informational messages are
+              displayed on systems running DECnet/OSI network
+              software.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-18 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-7 Installation Dialog - Part 7
+
+            Addresses                       =
+               {
+                   number = 17
+               }
+            Client                          = <Default value>
+            Incoming Alias                  = True
+            Incoming Proxy                  = True
+            Outgoing Alias                  = True
+            Outgoing Proxy                  = True
+            Node Synonym                    = True
+            Image Name                      = SYS$SYSTEM:SNADTF$FAL.EXE
+            Incoming OSI TSEL               = <Default value>
+
+        $vef = F$verify(vef)
+        %NET$CONFIGURE-I-MODCHECKSUM, checksumming NCL management scripts modified by NET$CONFIGURE
+        %NET$CONFIGURE-I-CONFIGCOMPLETED, DECnet/OSI for OpenVMS configuration completed
+            This installation has added the following files:
+
+                [SYSHLP]SNADTF$CFG_HELP.HLB
+                [SYSLIB]SNADTF$COPY.EXE
+                [SYSMSG]SNADTF$MESSAGE.EXE
+                [SYSHLP]SNADTF$RCOPY_HELP.HLB
+                [SYSEXE]SNADTF$SYMBIONT.EXE
+                [SYSEXE]SNADTFCFG.EXE
+                [SYSEXE]SNARCOPY.EXE
+
+            In addition, the following server specific files are added: 26
+
+                [SNADTF]SNADTF$DISPATCHER.COM
+                [SYSEXE]SNADTF$DISPATCHER.EXE
+                [SYSEXE]SNADTF$FAL.COM
+                [SYSEXE]SNADTF$FAL.EXE
+                [SNADTF]SNADTF$FILE_DEFINITION.DAT
+                [SNADTF]SNADTF$FILE_DEFINITION.FDL
+                [SYSEXE]SNADTF$LOGIN.COM
+                [SNADTF]SNADTF$PROXY.FDL
+                [SNADTF]SNADTF$SERVER_ACCOUNT.DAT
+                [SNADTF]SNADTF$SERVER_ACCOUNT.FDL
+                [SYSTEST]SNADTF$SERVER_IVP.COM
+                [SYS$STARTUP]SNADTF$STARTUP_SERVER.COM
+
+                                                (continued on next page)
+
+                                            Installing the Software 2-19
+
+ 
+
+
+
+
+
+
+     Example 2-7 (Cont.) Installation Dialog - Part 7
+
+             [SYSHLP]SNADTFS032.RELEASE_NOTES
+
+         In addition, the following utilities specific files are added: 27
+
+             [SYSTEST]SNADTF$CLIENT_IVP.COM
+             [SYS$STARTUP]SNADTF$STARTUP_CLIENT.COM
+             [SYSHLP]SNADTFU032.RELEASE_NOTES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-20 Installing the Software
+
+ 
+
+
+
+
+
+
+              The following callout descriptions refer to Example 2-7:
+
+              26 These 13 files are added if you are installing the
+                 OpenVMS/DTF server software.
+
+              27 These 3 files are added if you are installing the
+                 OpenVMA/DTF utilities software.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Installing the Software 2-21
+
+ 
+
+
+
+
+
+
+     Example 2-8 Installation Dialog - Part 8
+
+         This installation has defined a network task object called SNARCOPY.
+
+         The FAL network object has been redefined to use the DTF server software. 28
+
+         Run SYS$SYSTEM:NCP and issue the following to examine the object database:
+
+             NCP> LIST OBJECT SNARCOPY CHARACTERISTICS
+             NCP> LIST OBJECT FAL CHARACTERISTICS
+         Or, if you have a DECnet Phase V system, run NCL and issue the following
+         to examine the objects:
+
+             NCP> SHOW SESSION CONTROL APPLICATION SNARCOPY ALL
+             NCP> SHOW SESSION CONTROL APPLICATION FAL ALL  29
+
+         You must add the following line to the SYS$STARTUP:SYSTARTUP_VMS.COM system
+         startup procedure:
+
+             $ @SYS$STARTUP:SNADTF$STARTUP_SERVER SYS$COMMON: [P2] [P3] [P4] -
+             [P5] [P6] [P7] [P8] 30
+
+                     where P2 is the list of SNADTF queues to be started at
+                     system startup time, and P3 is a YES/NO value indicating
+                     whether a generic SNADTF queue is to be started at system
+                     startup time.  P4 is the list of server account names to be
+                     used for server sessions by SNADTF$DISPATCHER and P5 is the
+                     time interval the dispatcher is to wait before trying to
+                     reconnect to the IBM host after a session disconnect. P6 is
+                     the list of transfer account names to be used for transfer
+                     sessions between SNADTF$FAL and DTF for IBM. P7 is YES or NO,
+                     indicating whether SNADTF$DISPATCHER should send a cluster
+                     alias or system-specific node name to DTF for IBM. P8 is the
+                     translation table file name that will be used by
+                     SNADTF$DISPATCHER for translating ASCII to EBCDIC and
+                     vice versa. Please see the OpenVMS/DTF Management manual for more
+                     information and defaults used.
+
+             $ @SYS$STARTUP:SNADTF$STARTUP_CLIENT SYS$COMMON: [P2] [P3] 31
+
+                                             (continued on next page)
+
+
+
+
+     2-22 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-8 (Cont.) Installation Dialog - Part 8
+
+                        where P2 is the list of SNADTF queues to be started at
+                        system startup time, and P3 is a YES/NO value indicating
+                        whether a generic SNADTF queue is to be started at system
+                        startup time.  Please see the OpenVMS/DTF Management manual for
+                        more information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Installing the Software 2-23
+
+ 
+
+
+
+
+
+
+           The following callout descriptions refer to Example 2-8:
+
+           28 This message is displayed if you are installing the
+              OpenVMS/DTF server software.
+
+           29 These lines are displayed if you are installing the
+              OpenVMS/DTF server software.
+
+           30 This line and the following paragraph are displayed if
+              you are installing the OpenVMS/DTF server software.
+
+           31 This line and the following paragraph are displayed if
+              you are installing the OpenVMS/DTF utilities software.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-24 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-9 Installation Dialog - Part 9
+
+            The installation process will now add the server accounts SNADTF and
+            SNASERVER to the server account database. 32
+
+        %SNADTF-I-ADDSER, server account SNADTF added 33
+        %SNADTF-I-ADDSER, server account SNASERVER added
+        %SNADTF-I-CREATEACC, if SNASERVER is used for file transfer, add an OpenVMS account 34
+
+            The installation process will now update the DTF databases to V3.2 35
+            format, if necessary.
+
+        %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+        Starting SNADTF Dispatcher; process name SNADTF$DISPATCH 36
+        %RUN-S-PROC_ID, identification of created process is xxxxxxxx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Installing the Software 2-25
+
+ 
+
+
+
+
+
+
+           The following callout descriptions refer to Example 2-9:
+
+           32 This sentence is displayed if you are installing the
+              OpenVMS/DTF server software for the first time.
+
+           33 These two messages are displayed if you are installing
+              the OpenVMS/DTF server software for the first time.
+
+           34 This message is displayed if you are installing the
+              OpenVMS/DTF server software for the first time. You can
+              ignore this message because the SNASERVER account is
+              used to handle IBM requests and not to transfer files.
+
+           35 This sentence is displayed if you are installing the
+              OpenVMS/DTF server and you requested that the server
+              databases be updated.
+
+           36 These two messages are displayed if you are installing
+              the OpenVMS/DTF server software.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-26 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-10 Installation Dialog - Part 10
+
+            Running the product-name Installation Verification Procedure at hh:mm 37
+
+           Checking NCP data base if Object FAL file is SNADTF$FAL.COM 38
+
+        Object Volatile Summary as of dd-mmm-yyyy hh:mm:ss
+
+           Object   Number  File/PID                   User Id          Password
+
+          FAL           17  SYS$SYSTEM:SNADTF$FAL.COM
+
+           Checking NCP data base if Object SNARCOPY file is SNARCOPY.EXE
+
+        Object Volatile Summary as of dd-mmm-yyyy hh:mm:ss
+
+           Object   Number  File/PID                   User Id          Password
+
+          SNARCOPY       0  SYS$SYSTEM:SNARCOPY.EXE
+
+            Testing configuration utility HELP command
+
+          Information available:
+
+          ADD        DISABLE    ENABLE     EXIT       HELP       MODIFY     REMOVE
+          SHOW       USE_NODE
+
+            Testing configuration utility SERVER_ACCOUNT commands
+
+        %SNADTF-I-CREATEACC, if SNADTFIVP is used for file transfers, add an OpenVMS account
+
+        Server account:  SNADTFIVP
+        Access Name:                PU:                        Node:
+        Application:                Logon Mode:                Session:
+        Translation:     LOCAL      Null:        NONE          Service m/c:
+        File Definition:                                       IBM_Prefix:
+        Gateway:
+
+
+
+
+
+
+
+
+                                            Installing the Software 2-27
+
+ 
+
+
+
+
+
+
+           The following callout descriptions refer to Example 2-10:
+
+           37 If you responded Y to the IVP prompt, the installation
+              procedure now calls the IVP to verify that the DTF
+              software was successfully installed.
+
+              If the installation procedure or IVP fails for any
+              reason, the following message is displayed:
+
+              %VMSINSTAL-E-INSFAIL, the installation of product-name V3.2
+
+              Errors can result if any of the following conditions
+              are true:
+
+              o  Incorrect version of the OpenVMS operating system
+
+              o  Insufficient disk quotas
+
+              The OpenVMS System Manager's Manual explains error
+              messages generated by these conditions.
+
+              If you are notified that any of these conditions exist,
+              you should take the action described in the message.
+              You might need to change a system parameter or increase
+              an authorized quota value.
+
+              If an IVP failure causes the installation to fail,
+              contact a Digital field service representative.
+
+           38 The SNADTF$FAL section is displayed if you are running
+              the OpenVMS/DTF server IVP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-28 Installing the Software
+
+ 
+
+
+
+
+
+
+        Example 2-11 Installation Dialog - Part 11
+
+            Testing configuration utility FILE_DEFINITION commands
+
+        !
+        !   File definition: SNADTFIVP
+        !
+        BASE
+            RELEASE                     NO
+            SINGLE                      NO
+            SPANNED                     NO
+            SUPERSEDE                   NO
+            TRANSLATE                   YES
+            VSAM_SEQUENTIAL             NO
+
+            Testing TRANSFER/DTF utility HELP command
+
+        HELP
+
+            The HELP command displays on-line documentation for the OpenVMS/DTF
+            utility.
+
+            Format:
+
+              HELP [keyword...]
+
+          Additional information available:
+
+          CANCEL     COPY       EXIT       HELP       SET        SHOW
+
+            Testing TRANSFER/DTF  utility SHOW QUEUE command
+
+        SNADTF queue SNADTF$QUEUE, on OSAKA::
+            /BASE_PRIORITY=4 /OWNER=[SYSTEM] /PROTECTION=(S:E,O:D,G:R,W:W)
+
+          Default INTERVAL:     0 00:30:00.00  Minimum INTERVAL:  Unspecified
+          Default RETRIES:     48              Maximum RETRIES:   Unspecified
+          Default TIME:         1 00:00:00.00  Maximum TIME:      Unspecified
+
+            product-name Installation Verification Procedure completed successfully.
+                Installation of product-name V3.2 completed at hh:mm
+
+                VMSINSTAL procedure done at hh:mm
+
+                                                (continued on next page)
+
+                                            Installing the Software 2-29
+
+ 
+
+
+
+
+
+
+     Example 2-11 (Cont.) Installation Dialog - Part 11
+
+     $ LOGOUT  39
+
+     SYSTEM     logged out at dd-mmm-yyyy hh:mm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-30 Installing the Software
+
+ 
+
+
+
+
+
+
+              The following callout descriptions refer to Example 2-11:
+
+              39 VMSINSTAL deletes or changes entries in the process
+                 symbol tables during the installation. Therefore, if
+                 you are going to continue using the system manager's
+                 account and want to restore those symbols, you should
+                 log out and log in again.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            Installing the Software 2-31
+
+ 
+
+
+
+
+
+
+     2.2 Files Installed
+
+           All files are installed in SYS$COMMON.
+
+           VMSINSTAL installs the following files on both OpenVMS/DTF
+           server nodes and OpenVMS/DTF client nodes:
+
+           __________________________________________________________
+           File_________________________Description__________________
+
+           [SYSHLP]:SNADTF$CFG_         SNADTFCFG help library
+           HELP.HLB
+
+           [SYSLIB]:SNADTF$COPY.EXE     OpenVMS/DTF shareable library
+
+           [SYSMSG]:SNADTF$MESSAGE.EXE  OpenVMS/DTF error message
+                                        file
+
+           [SYSHLP]:SNADTF$RCOPY_       TRANSFER/DTF help library
+           HELP.HLB
+
+           [SYSEXE]:SNADTF$SYMBIONT.EXE Symbiont for OpenVMS/DTF
+                                        queues
+
+           [SYSEXE]:SNADTFCFG.EXE       SNADTFCFG utility
+
+           [SYSEXE]:SNARCOPY.EXE________TRANSFER/DTF_utility_________
+
+              ________________________Note ________________________
+
+              The DCL tables found in SYS$LIBRARY:DCLTABLES.EXE
+              are updated during installation.
+
+              _____________________________________________________
+
+           VMSINSTAL installs the following additional files on your
+           OpenVMS/DTF server node:
+
+           __________________________________________________________
+           File____________________________Description_______________
+
+           [SYS$STARTUP]:SNADTF$STARTUP_   Command procedure executed
+           SERVER.COM                      at system startup
+
+           [SNADTF]:SNADTF$DISPATCHER.COM  Dispatcher startup file
+
+           [SYSEXE]:SNADTF$DISPATCHER.EXE  IBM command dispatcher
+
+           [SYSEXE]:SNADTF$FAL.COM         Command file for FAL
+                                           object
+
+           [SYSEXE]:SNADTF$FAL.EXE         File Access Listener (FAL)
+
+     2-32 Installing the Software
+
+ 
+
+
+
+
+
+              __________________________________________________________
+              File____________________________Description_______________
+
+              [SNADTF]:SNADTF$FILE_           File definition database
+              DEFINITION.DAT
+
+              [SNADTF]:SNADTF$FILE_           RMS file definition
+              DEFINITION.FDL                  for the file definition
+                                              database
+
+              [SYSEXE]:SNADTF$LOGIN.COM       Login command file used by
+                                              VMS/DTF server accounts
+
+              [SNADTF]:SNADTF$PROXY.FDL       RMS file definition for
+                                              proxy database
+
+              [SNADTF]:SNADTF$SERVER_         Server account database
+              ACCOUNT.DAT
+
+              [SNADTF]:SNADTF$SERVER_         RMS file definition
+              ACCOUNT.FDL                     for the server account
+                                              database
+
+              [SYSTEST]:SNADTF$SERVER_        Server verification
+              IVP.COM                         procedure
+
+              [SYSHLP]:SNADTFS032.RELEASE_    Release notes
+              NOTES_____________________________________________________
+
+              VMSINSTAL installs the following additional files on your
+              OpenVMS/DTF client node:
+
+              __________________________________________________________
+              File_________________________Description__________________
+
+              [SYSTEST]:SNADTF$CLIENT_     Utilities verification
+              IVP.COM                      procedure
+
+              [SYS$STARTUP]:SNADTF$STARTUP_Command procedure executed at
+              CLIENT.COM                   system startup
+
+              [SYSHLP]:SNADTFU032.RELEASE_ Release notes
+              NOTES_____________________________________________________
+
+        2.3 Changes to the DECnet Databases
+
+              The following changes are made to the DECnet databases as
+              a result of installing the OpenVMS/DTF software:
+
+              1. For OpenVMS/DTF server software only, the File Access
+                 Listener (FAL) object is modified in both the DECnet
+                 permanent database and the DECnet volatile database.
+
+                                            Installing the Software 2-33
+
+ 
+
+
+
+
+
+
+           2. The SNARCOPY object is defined in both the DECnet
+              permanent database and the DECnet volatile database.
+
+              ________________________Note ________________________
+
+              If you have altered the FAL on your OpenVMS/DTF
+              server node, you must add the alterations to the FAL
+              installed with the OpenVMS/DTF server software.
+
+              _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-34 Installing the Software
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                           After Installing the Software
+
+
+
+              This chapter describes the tasks you should do after you
+              install the OpenVMS/DTF software on the system.
+
+        3.1 Configure the OpenVMS/DTF Software
+
+              After you have successfully installed the OpenVMS/DTF
+              software and before you can begin transferring files, you
+              must configure OpenVMS/DTF. To configure OpenVMS/DTF, do
+              the following tasks:
+
+              1. Server Only: Set up the server account database.
+
+              2. Server Only: Authorize access to server accounts.
+
+              3. Server Only: Optionally, set up the proxy database.
+
+              4. Server Only: Optionally, set up the file definition
+                 database.
+
+              5. Edit the SYS$MANAGER:SYSTARTUP_VMS.COM system startup
+                 procedure to include either:
+
+                 @SYS$STARTUP:SNADTF$STARTUP_SERVER
+
+                 or
+
+                 @SYS$STARTUP:SNADTF$STARTUP_CLIENT
+
+                 Optionally, add startup parameters to control the DTF
+                 operating environment.
+
+              Refer to Digital SNA Data Transfer Facility for OpenVMS
+              Management for information on configuring and managing
+              OpenVMS/DTF.
+
+                                       After Installing the Software 3-1
+
+ 
+
+
+
+
+
+
+     3.2 Verify the Installation of the OpenVMS/DTF Server Software
+
+           The installation verification procedure (IVP) runs
+           automatically at the end of the installation if you have
+           chosen that option. You can run the IVP at any time by
+           executing the following command:
+
+           For Server Nodes:
+
+           $ @SYSTEST:SNADTF$SERVER_IVP.COM
+
+           For Client Nodes:
+
+           $ @SYSTEST:SNADTF$CLIENT_IVP.COM
+
+           If the software was not properly installed, error messages
+           are displayed. Correct the problems indicated by the
+           messages and rerun the OpenVMS/DTF installation procedure.
+           If you receive IVP errors, you have a bad kit; contact
+           your Digital representative.
+
+              ________________________Note ________________________
+
+              The IVP does not verify whether the OpenVMS/DTF
+              server software can communicate with an IBM system.
+
+              _____________________________________________________
+
+     3.3 Verify DTF for IBM with OpenVMS/DTF
+
+           After the OpenVMS/DTF and DTF for IBM software has been
+           installed and configured, use the OpenVMS/DTF software to
+           see if DTF for IBM can perform the following functions:
+
+           o  Create and delete a non-VSAM file.
+
+           o  Copy to and from a non-VSAM file.
+
+           o  Create and delete a VSAM file.
+
+           o  Copy to and from a VSAM file.
+
+           If you cannot perform these functions, see the Digital SNA
+           Data Transfer Facility for OpenVMS Use.
+
+     3-2 After Installing the Software
+
+ 
+
+
+
+
+
+
+        3.4 Verify DTF for IBM Security Exits
+
+              Verify DTF for IBM security exits by using the DCL
+              commands supported by DTF in the manner described in the
+              following paragraphs.
+
+              You should test the following cases using the DIRECTORY
+              command:
+
+              o  An invalid user ID
+
+              o  A valid user ID with an invalid password
+
+              o  A valid user ID with an expired password
+
+              You should test the following case using the DELETE
+              command:
+
+              o  A valid user ID and password but no authorization to
+                 delete
+
+              You should test the following case using the CREATE
+              command:
+
+              o  A valid user ID and password but no authorization to
+                 create
+
+              You should test the following case using the TYPE command:
+
+              o  A valid user ID and password but no authorization to
+                 read
+
+              You should test the following case using the OPEN and
+              WRITE commands:
+
+              o  A valid user ID and password but no authorization to
+                 write
+
+              You should test the following case using the COPY command:
+
+              o  A valid user ID and password but no authorization to
+                 update
+
+              On VM systems, you may wish to test the following
+              additional cases:
+
+              o  An invalid owner ID
+
+              o  A valid owner ID with an invalid minidisk password
+
+              o  A valid owner ID and password but not authorized for
+                 delete, create, read, write, and update
+
+                                       After Installing the Software 3-3

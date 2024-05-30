@@ -1,0 +1,1660 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     VAX_Message_Router_X.400_Gateway______________
+                     Installation Guide
+
+                     Order Number: AA-HX95G-TE
+
+                     Revision/Update Information: Version 3.5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Digital Equipment Corporation
+                     Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+           __________________________________________________________
+           Seventh Printing, July 1998
+
+           Digital Equipment Corporation makes no representations
+           that the use of its products in the manner described in
+           this publication will not infringe on existing or future
+           patent rights, nor do the descriptions contained in this
+           publication imply the granting of licenses to make, use,
+           or sell equipment or software in accordance with the
+           description.
+
+           Possession, use, or copying of the software described in
+           this publication is authorized only pursuant to a valid
+           written license from Digital or an authorized sublicensor.
+
+           No responsibility is assumed for the use or reliability
+           of software on equipment that is not supplied by Digital
+           Equipment Corporation or its affiliated companies.
+
+           © Digital Equipment Corporation 1986,1993. All Rights
+           Reserved.
+
+           The following are trademarks of Digital Equipment
+           Corporation: ALL-IN-1, DEC, DECnet, MAILbus, Message
+           Router, MicroVAX, OpenVMS, VAX, VAXcluster, VAX DOCUMENT,
+           and the DIGITAL logo.
+
+           This document was prepared using VAX DOCUMENT, Version
+           2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ________________________________________________________________
+
+                                                           Contents
+
+
+   Preface..................................................      v
+
+
+   1  Preparing to Install MRX
+
+      1.1  The Tasks Involved  .............................    1-1
+      1.2  Checking the Distribution Kit  ..................    1-2
+      1.3  Checking Hardware and Software Resources........     1-3
+      1.4  Preparing the System  ...........................    1-4
+      1.5  Installing MRX on a VAXcluster..................     1-6
+
+   2  Installing MRX
+
+      2.1  How to Use VMSINSTAL  ...........................    2-1
+      2.2  Error Handling  .................................    2-3
+      2.3  Installation Procedure..........................     2-3
+
+   3  After Installing MRX
+
+   A  MRX Files and Privileges
+
+      A.1  MRX Files.......................................     A-1
+      A.2  MRX Images Installed with Privileges............     A-5
+
+   B  Example VMSINSTAL Dialogue
+
+
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+     Index
+
+
+     Tables
+
+         A-1    MRX Files Supplied on Distribution Media .....    A-1
+
+         A-2    MRX Files Present After Installation .........    A-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              Purpose of this Guide
+
+              This guide explains how to install the VAX[TM] Message
+              Router[TM] X.400 Gateway (MRX) Version 3.5 on network
+              nodes or clusters that run under the OpenVMS[TM] operating
+              system. You should read the whole of this guide before
+              installing the product.
+
+              After installing MRX, but before configuring it, you need
+              to know the structure of the X.400 networks that you are
+              joining. VAX Message Router X.400 Gateway Management Guide
+              gives some examples of X.400 network configurations.
+              You should not attempt the MRX configuration tasks
+              described in Chapter 3 of this guide without reading the
+              configuration and planning sections of the VAX Message
+              Router X.400 Gateway Management Guide first.
+
+              Related Documents
+
+              The MRX documentation consists of the following guides:
+
+              o  VAX Message Router X.400 Gateway Installation Guide -
+                 this guide
+
+              o  VAX Message Router X.400 Gateway Management Guide - a
+                 complete, detailed guide to configuring and managing
+                 MRX
+
+              o  VAX Message Router X.400 Gateway Problem Solving Guide-
+                 a guide to solving problems that may occur with MRX
+
+              o  VAX Message Router X.400 Gateway User's Guide - a guide
+                 to addressing mail when using various user agents
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+           You may also need to refer to the following guides for
+           information on the software products with which MRX
+           interacts: in particular how to install them. (Note
+           that this is not an exhaustive bibliography for these
+           products.)
+
+           o  Introduction to Message Router
+
+           o  VAX Message Router Installation Guide
+
+           o  VAX Message Router Configuration Guide
+
+           o  VAX Message Router Management Guide
+
+           o  DECnet/OSI for VMS Introduction, Planning and Glossary
+
+           o  DECnet/OSI for VMS Network Management
+
+           o  DECnet/OSI for VMS Network Control Language Reference
+
+           o  DECnet/OSI for VMS X.25 Management
+
+           o  OpenVMS Version 5.5 Upgrade and Installation Manual
+
+           o  Introduction to VMS System Management
+
+           o  Guide to VMS Files and Devices
+
+           o  VMS License Management Utility Manual
+
+           o  VMS Backup Utility Manual
+
+           How to Use this Guide
+
+           Read the following chapters and appendixes in sequence:
+
+           o  Chapter 1 gives a checklist of things you must do
+              before installing MRX
+
+           o  Chapter 2 gives a step-by-step guide to installing MRX,
+              using the VMSINSTAL procedure
+
+           o  Chapter 3 explains the things you must do after
+              installing MRX
+
+           o  Section A.1 lists the files supplied in the MRX
+              distribution kit
+
+           o  Appendix B gives an example log of a successful
+              installation
+
+     vi
+
+ 
+
+
+
+
+
+
+              Conventions
+
+              The following conventions are used in this book:
+
+              $             A dollar sign ($) is the default user
+                            prompt.
+
+
+              []            Brackets are used after questions to
+                            enclose the default answer. Press Return
+                            to accept the default. Brackets also denote
+                            a directory specification.
+
+              ...           Horizontal ellipses indicate that additional
+                            text can be entered.
+                            In the MB$CONTROL command, horizontal
+                            ellipses indicate that you can add
+                            identifiers for other MAILbus[TM] gateways,
+                            for example, MRG for the Message Router
+                            VMSmail Gateway.
+
+
+              Press         Indicates that you make one keystroke with
+                            an editing or command key, for example,
+                            press Return.
+
+              Type          Indicates characters that you type at the
+                            keyboard.
+
+
+              Ctrl/Z        Indicates that you hold down the Ctrl key
+                            while pressing the other key (Z).
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                                               Preparing to Install MRX
+
+
+
+              This chapter explains how to prepare the system before
+              installing the Message Router X.400 Gateway (MRX). It
+              starts with an outline of the main tasks involved in the
+              installation process.
+
+        1.1 The Tasks Involved
+
+              Before installing the MRX software, you need to carry out
+              the following preparatory tasks:
+
+              o  Read this manual throughout
+
+              o  Check that the distribution kit is complete and
+                 correct, as described in Section 1.2
+
+              o  Check that your system has the required hardware and
+                 software resources, as described in Section 1.3
+
+              o  Prepare the system to receive the new software, as
+                 described in Section 1.4
+
+              When these tasks are complete, install MRX as described in
+              Chapter 2. You do this using VMSINSTAL, an OpenVMS utility
+              for installing optional software products in an OpenVMS
+              environment. When the installation is complete, carry out
+              the post-installation tasks described in Chapter 3.
+
+              You need to install MRX on at least one Message Router
+              node in every Message Router network that requires MRX
+              services. You can install MRX on more than one Message
+              Router node in a network but not on more than one node
+              in a VAXcluster[TM], if this is required for improving
+              throughput. In this case, the installation procedure is
+              the same for each node in turn.
+
+                                           Preparing to Install MRX  1-1
+
+ 
+
+
+
+
+
+
+           If you are upgrading from an earlier version of MRX, then
+           the procedure is much the same as when installing MRX
+           for the first time. You can directly upgrade from V2.3 to
+           V3.5. If you are running versions earlier than V2.3 you
+           need to first upgrade to V2.3 and then to V3.5.
+
+     1.2 Checking the Distribution Kit
+
+           Make sure you have a complete kit, by checking the
+           contents of the kit against the bill of materials. All
+           kits should contain:
+
+           o  A magnetic tape or a TK50 cartridge, containing the two
+              save sets that contain the files listed in Section A.1
+
+           o  A Software Product Description (SPD)
+
+           o  The following MRX guides:
+
+              -  VAX Message Router X.400 Gateway Installation Guide
+                 - Version 3.5
+
+              -  VAX Message Router X.400 Gateway Management Guide -
+                 Version 2.3
+
+              -  VAX Message Router X.400 Gateway Problem Solving
+                 Guide- Version 2.3
+
+              -  VAX Message Router X.400 Gateway User's Guide -
+                 Version 2.3
+
+           Each kit should also contain the manuals for any other
+           software products that are shipped with MRX.
+
+           One of the supplied files contains the MRX Release Notes.
+           This is a short introductory document describing the
+           features that are new to the current version of MRX. It
+           also contains last-minute information about MRX, some
+           of which may be relevant to the installation procedure.
+           Therefore when you come to run VMSINSTAL, print the
+           Release Notes as described in Chapter 2, and read them
+           before installing MRX; alternatively you can view them
+           on-screen.
+
+
+     1-2 Preparing to Install MRX
+
+ 
+
+
+
+
+
+
+        1.3 Checking Hardware and Software Resources
+
+              To install MRX you need a valid VAX or MicroVAX[TM]
+              hardware configuration. This must have sufficient disk
+              space to install MRX and the prerequisite software
+              products. For MRX itself you need to ensure the following
+              space is available:
+
+              o  At least 25000 blocks temporarily free on the disk that
+                 holds the SYS$UPDATE directory. VMSINSTAL uses this
+                 space to store the product saveset for the duration of
+                 the installation.
+
+                 If you used the OpenVMS Tailoring Utility to remove any
+                 software libraries after you installed OpenVMS on your
+                 system, you must make sure that the following OpenVMS
+                 classes are present for MRX to perform correctly:
+
+                 o  OpenVMS required saveset
+
+                 o  Programming support
+
+                 o  Secure user's environment
+
+                 o  Network support
+
+                 o  Utilities
+
+                 o  OpenVMS DECwindows
+
+                 For more information on OpenVMS classes and tailoring,
+                 see the OpenVMS Version 5.5 Upgrade and Installation
+                 Manual.
+
+                 After replacing these libraries, make sure that you
+                 still have 25000 blocks temporarily free on the disk.
+
+              o  4800 blocks on the system disk. This is for MRX's
+                 permanent use to hold the MRX images and data files.
+
+              o  At least 200 free blocks on the disk that holds the
+                 MAILbus files. This is to hold the MRX$ directory.
+
+                 This space is sufficient for the initial MRX$
+                 directory, but you may need extra space for growth.
+                 As a guide, allow three blocks for each subscriber you
+                 intend to add.
+
+                                           Preparing to Install MRX  1-3
+
+ 
+
+
+
+
+
+
+              The installation procedure creates the MRX$ directory
+              as a sub-directory of the MB$ directory. This means
+              that you might need to increase the quota of the
+              MBMANAGER account.
+
+           You also need the following prerequisite software
+           installed on your system (with at least the given version
+           numbers) before you install MRX:
+
+           MRX V3.5 requires:
+
+           o  OpenVMS[TM] for VAX[TM] Version 6.2.
+
+           o  For OpenVMS[TM]/VAX Version 6.2 the DECnet/OSI
+              [R]required is Version 6.3
+
+           o  Message Router Version 3.5
+
+              Not only must Message Router be installed, but it must
+              also be configured before you can install MRX. Refer to
+              the VAX Message Router Configuration Guide.
+
+           o  The ODA CDA Gateway Version 1.0, if you want MRX to
+              handle ODIF documents.
+
+           You must also check that the Product Authorization Key
+           (PAK) for MRX (MESSAGE-ROUTER-X.400) is registered and
+           active by typing the following command:
+
+           $ LICENSE LIST /FULL MESSAGE-ROUTER-X.400
+
+           Details of the MESSAGE-ROUTER-X.400 license are displayed.
+           Check that the license is active and if it is not, you
+           must load and register the PAK for MRX as described in the
+           VMS License Management Utility Manual.
+
+     1.4 Preparing the System
+
+           Before starting the installation, you must prepare the
+           system to receive the new software as follows:
+
+           1. Log in to the SYSTEM account. If you want a record of
+              the installation procedure, then use the command SET
+              HOST with the /LOG qualifier: for example:
+
+              $ SET HOST 0 /LOG=SYS$LOGIN:MRX_INSTALL.LOG
+
+           2. Use the OpenVMS Backup Utility to make a copy of the
+              system disk and the disk on which you are installing
+              MRX (if other than the system disk).
+
+     1-4 Preparing to Install MRX
+
+ 
+
+
+
+
+
+
+                 If a system failure occurs at a critical point during
+                 installation, the disks could be corrupted. Preparing a
+                 backup copy enables you to recover the disks. Also,
+                 you are given the opportunity to purge old files
+                 during installation; the backup copy enables you to
+                 recover any files purged in error. Backup and recovery
+                 procedures are described in VMS Backup Utility Manual.
+
+              3. Make sure that you have the necessary prerequisite
+                 software installed and configured on your system.
+                 If any of the components of your MAILbus system are
+                 running, stop them by using the MAILbus command:
+
+                 $ @SYS$MANAGER:MB$CONTROL STOP=(ER,...,DDS,TS,MS)
+
+                 where ... is replaced by other gateways such as MRG,
+                 MRP and MRS. If this is not a new installation, include
+                 MRX in this command.
+
+              4. Use the DCL command SHOW DEVICE to make sure that
+                 you have the necessary disk space, as listed in
+                 Section 1.3; for example:
+
+                 $ SHOW DEVICE SYS$SYSDEVICE
+
+                 Device        Device  Error   Volume        Free    Trans   Mnt
+                 Name          Status  Count   Label         Blocks  Count   Cnt
+
+                 $1$DOA0       Mounted   0     VAXVMSRL055   36895    210     4
+
+              5. If you used the OpenVMS Tailoring Utility to remove any
+                 software libraries after you installed OpenVMS on your
+                 system, you must make sure that the following OpenVMS
+                 classes are present for MRX to perform correctly:
+
+                 -  OpenVMS required saveset
+
+                 -  Programming support
+
+                 -  Secure user's environment
+
+                 -  Network support
+
+                 -  Utilities
+
+                 -  OpenVMS DECwindows
+
+                 For more information on OpenVMS classes and tailoring,
+                 see the OpenVMS Version 5.5 Upgrade and Installation
+                 Manual.
+
+                                           Preparing to Install MRX  1-5
+
+ 
+
+
+
+
+
+
+           6. You must ensure that the SYSTEM account is set up with
+              sufficient quota. The quotas that you set to install
+              and run Message Router are sufficient to install and
+              run MRX.
+
+
+     1.5 Installing MRX on a VAXcluster
+
+           If you install MRX on a VAXcluster, you must ensure
+           that the VAXcluster complies with all the requirements
+           for installing Message Router on a VAXcluster. These
+           requirements are described in the VAX Message Router
+           Installation Guide.
+
+           In a VAXcluster, all the nodes may share a single
+           SYSUAF.DAT file and DECnet database or one group of nodes
+           may share one set of resources, and another group may
+           share a different set of resources. Also, in a cluster,
+           there may be a single system disk or multiple system
+           disks.
+
+           Irrespective of how your cluster is defined, there must be
+           only one MRX environment within the cluster. However, MRX
+           does not need to be installed and configured on all nodes
+           in a cluster.
+
+           Choose the set of nodes that you want MRX to run on,
+           and make sure you install it such that the installation
+           satisfies the following two constraints:
+
+           o  It modifies all the SYSUAF.DAT files and DECnet
+              databases that are shared by those nodes
+
+           o  It modifies all the system disks that are used by those
+              nodes
+
+           To satisfy both of these constraints, you may need to
+           perform more than one installation. However, all the
+           installations of MRX on a cluster must use the same MRX
+           environment, that is, the same MRX$ directory structure
+           and associated data files.
+
+           If you have configured Message Router to use a cluster
+           alias, you must set the /CLUSTER_ALIAS MRX control
+           parameter. See the VAX Message Router X.400 Gateway
+           Management Guide for information about the MRX parameters.
+
+     1-6 Preparing to Install MRX
+
+ 
+
+
+
+
+
+
+              Digital recommends that only one MRX in a cluster should
+              be connected to the OSI tower. If you install more than
+              one MRX in a cluster, the rest should operate as slave
+              translators, that is, they should not be connected to the
+              OSI tower on their node.
+
+              For more information about managing MRX in a VAXcluster,
+              refer to the VAX Message Router X.400 Gateway Management
+              Guide.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           Preparing to Install MRX  1-7
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                                          Installing MRX
+
+
+
+              This chapter explains the procedure for installing the
+              MRX software. Before you start, make sure that you have
+              prepared the system as described in Section 1.4. Then work
+              through the sections in this chapter:
+
+              o  Section 2.1 explains the overall method of using the
+                 VMSINSTAL procedure to install MRX.
+
+              o  Section 2.2 explains the type of errors that can arise
+                 in the course of running VMSINSTAL.
+
+              o  Section 2.3 gives a step-by-step account of the
+                 VMSINSTAL procedure, explaining how to call the
+                 procedure, what happens at each step, and the responses
+                 you are required to make.
+
+              With the exception of the VMSINSTAL command (shown below)
+              to install MRX V3.5, the installation procedure is the
+              same as for MRX V2.3.
+
+              The command to install MRX V3.5 is:
+
+              @SYS$UPDATE:VMSINSTAL MRX035 device OPTIONS N
+
+              where device is the name of the device where the
+              distribution medium is to be mounted.
+
+        2.1 How to Use VMSINSTAL
+
+              The MRX software consists of two save sets. You install
+              the software from the save sets on to the system by using
+              VMSINSTAL; this is an OpenVMS procedure for installing
+              optional software products in an OpenVMS environment. The
+              main steps are as follows:
+
+              o  Log in to the SYSTEM account, and execute VMSINSTAL.
+
+                                                      Installing MRX 2-1
+
+ 
+
+
+
+
+
+
+           o  The VMSINSTAL procedure takes the form of a dialogue
+              in which you are asked a sequence of questions about
+              the way MRX is to be installed. In response to each
+              question you type the appropriate details and press
+              RETURN.
+
+              The VMSINSTAL procedure is self-explanatory, but
+              Appendix B contains a sample log of the VMSINSTAL
+              procedure for the purposes of reference.
+
+           o  Some questions offer a default answer, enclosed in
+              square brackets []. You can accept this default by
+              pressing RETURN without typing anything.
+
+           o  At any step you can get on-line help by typing a
+              question mark (?) and pressing RETURN.
+
+           o  You can abort the VMSINSTAL procedure at any time
+              by pressing CTRL/Y. If, subsequently, you want to
+              run VMSINSTAL again, you must start again from the
+              beginning.
+
+           o  The whole procedure should take about 20 minutes on a
+              MICROVAX II. The installation verification procedure
+              (IVP) runs automatically if you request it. The IVP
+              checks that the MRX components are correctly installed.
+              If you do not want to run the IVP automatically when
+              MRX is installed, you can run it separately at a later
+              date by entering the following command:
+
+              $ @MB$CVPDIR:MB$MRXIVP
+
+           VMSINSTAL distinguishes among the following kinds of
+           installation, and installs the MRX files accordingly:
+
+           o  First-time installation - that is, MRX has never been
+              installed before
+
+           o  Upgrade installation - an earlier version of MRX is
+              already installed, and you are now installing Version
+              3.5
+
+           o  Reinstallation - MRX Version 3.5 has been installed
+              before, and is now being reinstalled, perhaps because
+              of an earlier error
+
+     2-2 Installing MRX
+
+ 
+
+
+
+
+
+
+              The list of MRX files in Table A-2 of the VAX Message
+              Router X.400 Gateway Installation Guide should not include
+              the MRX$MTA_CONVERT.EXE file. This file is no longer
+              included in MRX.
+
+              The MRX CVP and IVP both check that all the MRX files are
+              present. The total number of files now included in MRX is
+              30.
+
+        2.2 Error Handling
+
+              During the installation procedure, VMSINSTAL displays a
+              number of cautionary messages and general information
+              messages. Read all messages carefully and follow the
+              advice they offer. If you are not sure how to answer a
+              question, ask for explanatory text by typing a question
+              mark (?) and pressing RETURN.
+
+              If you get an error message during installation, check
+              that you have responded to the prompts correctly; you may
+              have made a typing error or given an incorrect response.
+              Also check that you have prepared the system properly
+              beforehand, and that the required resources are all
+              available.
+
+              If your responses are correct, but the error recurs, then
+              restart the installation. If the installation fails again
+              at the same point, you should contact:
+
+              o  Your Customer Support Center, if you have a service
+                 contract with Digital
+
+              o  Your local Digital office, if you do not have a service
+                 contract and want to arrange one
+
+        2.3 Installation Procedure
+
+              From the SYSTEM account on the node where you want to
+              install MRX, enter:
+
+              $ @SYS$UPDATE:VMSINSTAL MRX035 device OPTIONS N
+
+              where device denotes the name of the device where you will
+              mount the supplied software: for example, MTA0. If you
+              omit the device name, VMSINSTAL will prompt you for it
+              during the dialogue.
+
+                                                      Installing MRX 2-3
+
+ 
+
+
+
+
+
+
+           The OPTIONS N parameter enables you to print the Release
+           Notes or view them on-screen, when the file is unbundled
+           in the course of the procedure. If you have already read
+           the Release Notes then omit this parameter.
+
+           The installation procedure starts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     2-4 Installing MRX
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                                   After Installing MRX
+
+
+
+              After the installation is complete you should perform the
+              following tasks:
+
+              o  Configure MRX as described in the VAX Message Router
+                 X.400 Gateway Management Guide. If you do not want to
+                 configure MRX immediately, start the rest of MAILbus by
+                 entering the following command:
+
+                 $ @SYS$MANAGER:MB$CONTROL START=(MS,TS,DDS,...,ER)
+
+                 Include the identifiers of any gateways installed other
+                 than MRX.
+
+              o  If you operate on a cluster, identify the nodes on
+                 which you want MRXMAN to run, in addition to the node
+                 where the main MRX software is installed. (MRXMAN is
+                 the MRX management utility.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                               After Installing MRX  3-1
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                MRX Files and Privileges
+
+
+
+              This appendix lists the files that are supplied on the
+              MRX distribution media and the files that remain on your
+              system after installation. It also describes the MRX
+              images that are installed with privileges.
+
+        A.1 MRX Files
+
+              This section has two tables of MRX files:
+
+              o  Table A-1 lists the files that make up MRX, as supplied
+                 on the MRX distribution media. The files are in two
+                 save sets: A and B.
+
+              o  Table A-2 lists the files that are present on your
+                 system after installing MRX.
+
+                 The file protection codes apply respectively to System,
+                 Owner, Group, and World levels, and are the recommended
+                 settings applied in the distributed software.
+
+              Table_A-1_MRX_Files_Supplied_on_Distribution_Media________
+
+              Files_in_Save_Set_A_______________________________________
+
+              KITINSTAL.COM              MRX$COUNTRY_CODES.DAT
+
+              MRX$INIT.DAT               MRX$MTA_CONVERT.OBJ
+
+              MRX$PROV_FILES.DAT         MRX$PROV_IMAGES.DAT
+
+              MRX$SECURE_FILES.COM       MRX035.RELEASE_NOTES
+
+              MRXACTIVE.OBJ              MRXVERSION.OBJ
+
+              MRXVERSION.OPT             MRX$MTA_OPTIONS.OBJ
+
+                                                (continued on next page)
+
+                                            MRX Files and Privileges A-1
+
+ 
+
+
+
+
+
+
+           Table_A-1_(Cont.)_MRX_Files_Supplied_on_Distribution______
+           Files in Save Set Bedia
+           __________________________________________________________
+           DCF_BASE.OLB               DCF_BASE_X400.OLB
+
+           DCF_DSAF.OLB               DCF_MAIL_CONVERSIONS.OLB
+
+           DCF_MAIL_OPTIONS.OPT       DCF_MRX_CONVERSIONS.OLB
+
+           DCF_TRANSLATE.OLB          DCF_TRANSLATE_X400.OLB
+
+           KOAVMS.OLB                 MB$$MRX_CONFIG.COM
+
+           MB$$MRX_START.COM          MB$$MRX_STOP.COM
+
+           MB$MRX$CONFIG$CUSTOMIZED.DAMB$MRX$CONFIG$DEFAULT.DAT
+
+           MB$MRXCVP.COM              MB$MRX_CONFIG.HLB
+
+           MB$MRX_ER.COM              MB$MRX_ERRORS.DAT
+
+           MRX$CONFIG_MSG.OBJ         MRX$CONTROL.OLB
+
+           MRX$CVP.DAT                MRX$DELETE_SPECIFIC.COM
+
+           MRX$MAN.OLB                MRX$NDN.OLB
+
+           MRX$PDU.OLB                MRX$PREPARE.COM
+
+           MRX$REQFREEOBJ.OLB         MRX$RTS.OLB
+
+           MRX$RUN.COM                MRX$SUBPROC.OLB
+
+           MRX$TBED.OLB               MRX$THREAD.OLB
+
+           MRX$TRN.OLB                MRX$WARNING.TXT
+
+           MRX.OPT                    MRXCONFIG.COM
+
+           MRXMAN.HLB                 MRXMAN.OPT
+
+           MRXM_ADDMRMBX.COM          MRXSUBPROC.OPT
+
+           MRXTBED.OPT                MRX_DUMPER.COM
+
+           OALIBR.OLB                 OALLV.OLB
+
+           WPABASE.OLB                WPADOC.OLB
+
+           X400.CMU                   X400A1INSTALL.COM
+
+           X400COUNTRY_CODES.DAT      X400COUNTRY_CODES.FRM
+
+           X400FM.FRM                 X400FM1.FRM
+
+           X400HELP.MEM_______________XPORT.OLB______________________
+
+     A-2 MRX Files and Privileges
+
+ 
+
+
+
+
+
+
+              Table_A-2_MRX_Files_Present_After_Installation____________
+
+              Directory_&_File______Protection_______Description________
+
+              SYS$SYSTEM________________________________________________
+
+              MRX.EXE               RWED,RWED,RE,RE  MRX system image
+
+              MRXMAN.EXE            RWED,RWED,RE,RE  MRXMAN image
+
+              MRXTBED.EXE           RWED,RWED,RE,RE  MRX testbed image
+
+              MRXSUBPROC.EXE        RWED,RWED,RE,RE  MRX internal
+                                                     program
+
+              __________________________________________________________
+              SYS$MANAGER_______________________________________________
+
+              MB$$MRX_START.COM     RWED,RWED,RE,RE  MRX start-up file
+
+              MB$$MRX_STOP.COM      RWED,RWED,RE,RE  MRX shutdown file
+
+              MB$$MRX_CONFIG.COM    RWED,RWED,RE,RE  MRX configuration
+                                                     procedure
+
+              MRX$DELETE_           RWED,RWED,RE,RE  procedure to remove
+              SPECIFIC.COM                           unwanted files
+
+              __________________________________________________________
+              SYS$HELP__________________________________________________
+
+              MRXMAN.HLB            RWED,RWED,RE,RE  MRXMAN help file
+
+              MRX035.RELEASE_NOTES  RWED,RWED,RE,RE  release notes
+
+              MB$MRX_CONFIG.HLB     RWED,RWED,RE,RE  configuration help
+                                                     file
+
+              __________________________________________________________
+              SYS$MESSAGE_______________________________________________
+
+              MRX$CONFIG_MSG.EXE    RWED,RWED,RE,RE  configuration
+                                                     messages
+
+                                                (continued on next page)
+
+                                            MRX Files and Privileges A-3
+
+ 
+
+
+
+
+
+
+           Table_A-2_(Cont.)_MRX_Files_Present_After_Installation____
+
+           __________________________________________________________
+
+           MRX$______________________________________________________
+
+           MRX$INIT.DAT          RWED,RWED,RE,RE  Initialization data
+                                                  file
+
+           MRX$COUNTRY_          RWED,RWED,RE,RE  MRX country codes
+           CODES.DAT
+
+           MRX_DUMPER.COM        RWED,RWED,RE,RE  file dump utility
+
+           MRX$MTA_OPTIONS.EXE   RWED,RWED,RWED,REcreates ODA CDA
+                                                  options files
+
+           MRX$CVP.DAT           RWED,RWED,RE,RE  MRX CVP data file
+
+           MRXM_ADDMRMBX.COM     RWED,RWED,RE,RE  MRXMAN support file
+
+           MRX$WARNING.TXT       RWED,RWED,RE,RE  default warning
+                                                  text
+
+           MRX$RUN.COM           RWED,RWED,RE,RE  MRX start-up file
+
+           MRX$ODIF_OPTIONS_     RWED,RWED,RWED,REODIF options file
+           mta-name.DAT
+
+           __________________________________________________________
+           MRX$_(ALL-IN-1_files)_____________________________________
+
+           X400FM.FRM            RWED,RWED,RE,RE  main form
+
+           X400FM1.FRM           RWED,RWED,RE,RE  DDA form
+
+           X400.CMU              RWED,RWED,RE,RE  form processor
+
+           X400HELP.MEM          RWED,RWED,RE,RE  help file
+
+           X400COUNTRY_          RWED,RWED,RE,RE  country code
+           CODES.FRM                              validation form
+
+           X400COUNTRY_          RWED,RWED,RE,RE  country code data
+           CODES.DAT                              file
+
+           X400A1INSTALL.COM     RWED,RWED,RE,RE  installation
+                                                  procedure
+
+                                             (continued on next page)
+
+     A-4 MRX Files and Privileges
+
+ 
+
+
+
+
+
+
+              Table_A-2_(Cont.)_MRX_Files_Present_After_Installation____
+
+              __________________________________________________________
+
+              SYS$COMMON:[SYSTEST.MB]___________________________________
+
+              MB$MRXCVP.COM         RWED,RWED,RE,RE  MRX CVP file
+
+              MB$MRXIVP.COM         RWED,RWED,RE,RE  MRX IVP file
+
+              __________________________________________________________
+              [MB$.MB.MB$COM]___________________________________________
+
+              MB$MRX_ERRORS.DAT     RWED,RWED,RE,RE  exception reporting
+                                                     messages
+
+              MB$MRX_ER.COM         RWED,RWED,RE,RE  exception reporting
+                                                     procedure
+
+              __________________________________________________________
+              [MB$.MB.MB$WORK]__________________________________________
+
+              MB$MRX$CONFIG$        RWED,RWED,RE,-   configuration data
+              CUSTOMIZED.DAT                         file
+
+              MB$MRX$CONFIG$        RWED,RWED,RE,-   configuration data
+              DEFAULT.DAT____________________________file_______________
+
+        A.2 MRX Images Installed with Privileges
+
+              Only one MRX image is installed with privileges, MRXMAN.
+              MRXMAN is installed with the following privileges:
+
+              o  SYSMAN
+
+              o  TMPMBX
+
+              o  SYSGBL
+
+              o  SYSLCK
+
+
+
+
+
+                                            MRX Files and Privileges A-5
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                             Example VMSINSTAL Dialogue
+
+
+
+              This appendix gives an example of the VMSINSTAL dialogue
+              for a successful first-time installation of MRX Version
+              3.5. The example installation includes an IVP dialogue.
+
+        $ @SYS$UPDATE:VMSINSTAL MRX035 SYS$UPDATE OPTIONS N
+
+            OpenVMS VAX Software Product Installation Procedure V7.1
+
+        It is 1-JUL-1998 at 13:22.
+
+        Enter a question mark (?) at any time for help.
+
+        %VMSINSTAL-W-ACTIVE, The following processes are still active:
+                Server_00BC
+                Server_00B8
+                Server_00B7
+                Server_00B6
+        * Do you want to continue anyway [NO]? y
+
+        * Are you satisfied with the backup of your system disk [YES]?
+
+        The following products will be processed:
+
+          MRX V3.5
+
+                Beginning installation of MRX V3.5 at 13:23
+
+        %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+        %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+                © Digital Equipment Corporation 1986, 1998. All  rights  reserved.
+
+                Restricted Rights: Use, duplication,  or  disclosure  by the  U.S.
+                Government is subject to restrictions as set forth in subparagraph
+                (c) (1) (ii) of DFARS 252.227-7013, or in FAR 52.227-19, or in FAR
+                52.227-14 Alt. III, as applicable.
+
+                                         Example VMSINSTAL Dialogue  B-1
+
+ 
+
+
+
+
+
+
+             This  software  is  proprietary to  and embodies  the confidential
+             technology  of Digital  Equipment Corporation. Possession, use, or
+             copying of this software and media is  authorized only pursuant to
+             a valid written license from Digital or an authorized sublicensor.
+
+     * Do you want to purge files replaced by this installation [YES]?
+
+     * Do you want to run the IVP after the installation [YES]?
+
+             Product:      MESSAGE-ROUTER-X.400
+             Producer:     DEC
+             Version:      3.5
+             Release Date: 26-JUN-1998
+
+     * Does this product have an authorization key registered and loaded? y
+
+     %MRX-I-CHKMB, Checking for Message Router Version 3.5
+     %MRX-I-CHKOSAK, Checking for OSAK Version 3.0
+
+     VMSINSTAL is about to check for running MRX or MRXMAN processes.
+
+     If any MRX processes are running, the installation will abort. If any
+     MRXMAN processes are running, they will not abort the installation,
+     although you are advised to stop these processes before continuing.
+
+     %MRX-I-MRXCHKDONE, Check for running MRX processes complete
+     Creating directory DKA200:[MB$.MRX]
+     %VMSINSTAL-I-SYSDIR, This product creates system disk directory  DKA200:[MB$.MRX].
+
+     The installation procedure will now run unattended for
+     approximately 20 minutes, depending on system load.
+
+     %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+     Linking MRXMAN V3.5 utility....
+
+     %LINK-I-DATMISMCH, creation date of 16-OCT-1997 12:17 in shareable image SYS$COMMON:[SYSLIB]LBRSHR.EXE;2
+
+             differs from date of 24-NOV-1996 19:18 in shareable image library SYS$COMMON:[SYSLIB]IMAGELIB.OLB;1
+
+     Linking MRX V3.5 ...
+
+             The generation phase of the MRX installation is now complete.
+
+             In order to configure MRX to your requirements, you must use
+             the configuration procedure, SYS$MANAGER:MB$CONFIG.COM. Refer
+             to the Management Guide for details.
+
+             To start MRX in future, run:
+
+             $ @SYS$MANAGER:MB$CONTROL START=MRX
+
+     B-2 Example VMSINSTAL Dialogue
+
+ 
+
+
+
+
+
+
+                after starting DECnet/OSI, OSAK, Message Router and
+                optionally P.S.I.
+
+                If you want MRX to start when the system reboots, put the
+                following line in your system startup file:
+
+                $ @SYS$MANAGER:MB$CONTROL SYSTART=MRX
+
+                This line must occur after the commands that start up DECnet/OSI,
+                OSAK, Message Router and optionally P.S.I.
+
+                %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+
+                                IVP for MRX V3.5
+
+                This is the installation verification procedure (IVP) for
+                the Message Router X.400 Gateway.
+
+                It checks that the Gateway is successfully installed on your system.
+
+                © Digital Equipment Corporation 1986, 1995. All  rights  reserved.
+
+                ==================================================================
+
+                Beginning the IVP for MRX V3.5-000
+
+            The verification procedure does the following:
+
+            1.  Checks that all the MRX files are present.
+
+        ------------------------------------------------------------------
+                MRX V3.5-000 file check
+                The total number of files is 30.
+                All files exist and are the correct size.
+                End of MRX V3.5-000 file check.
+        ------------------------------------------------------------------
+
+                The MRX V3.5 IVP has completed successfully
+
+                Installation of MRX V3.5 completed at 13:26
+
+                VMSINSTAL procedure done at 13:26
+
+
+
+                                         Example VMSINSTAL Dialogue  B-3
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+     A                                    disk requirements, 1-3,
+     ___________________________            1-5
+     aborting VMSINSTAL,  2-2             distribution kit, 1-2, A-1
+     account quotas,  1-6                 documentation, v, 1-2
+
+     B__________________________          E__________________________
+
+     backup of system,  1-4               error messages, 2-3
+     Backup Utility,  1-4
+     bill of materials,  1-2              F__________________________
+     blocks required,  1-3, 1-5           files
+     books,  v, 1-2                        in save sets,  A-1
+
+     C                                     present after
+     ___________________________              installation,  A-1
+     configuration database,              first-time installation,
+        1-4                                 2-2
+     configuring MAILbus,  1-4
+     configuring Message Router,          G__________________________
+        1-4                               growth, 1-3
+     contacting Digital,  2-3             guides, v, 1-2
+
+     D__________________________          H
+     DECnet                               ___________________________
+       restarting, 3-1                    hardware resources, 1-3
+     default answers,  2-2                help on-line, 2-2
+
+     device for installing,  2-3          I
+     dialogue,  2-3                       ___________________________
+     Digital                              installation verification
+       contacting, 2-3                      procedure
+     Digital support,  2-3                 see IVP
+     directories,  1-4
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+     installing
+       license, 1-4                       P__________________________
+     issued kit,  1-2, A-1                post-installation tasks,
+     IVP,  2-2                              3-1
+
+     K                                    pre-installation tasks,
+     ___________________________            1-1
+     kit issued,  1-2, A-1                preparing the system, 1-4
+                                          preparing to install, 1-1
+     L__________________________          prerequisite hardware, 1-3
+     license                              prerequisite software, 1-4
+       checking, 1-4                      problem solving, 2-3
+                                          publications, v, 1-2
+
+     M__________________________          Q
+     MAILbus configuration,  1-4          ___________________________
+     MAILbus procedures,  1-5             quota
+     manuals,  v, 1-2                      account,  1-6
+
+     MB$CONFIG procedure,  1-4            R
+     MB$CONTROL procedure,  1-5           ___________________________
+     MB$ directory,  1-4                  re-installation, 2-2
+     MBMANAGER account,  1-4              Release Notes, 1-2
+     media issued,  1-2, A-1              requirements, 1-3
+     Message Router,  1-4                 resources required, 1-3
+     Message Router
+        configuration, 1-4                S__________________________
+     messages                             save sets, 2-1, A-1
+       errors and warnings, 2-3           Software Product
+     MRX$ directory,  1-4                   Description,  1-2
+     MRX versions,  1-2, 2-2              software resources, 1-4
+
+     N                                    software versions, 1-4
+     ___________________________          space requirements, 1-3,
+     networks,  1-1                         1-5
+     nodes,  1-1                          SPD, 1-2
+                                          stopping MAILbus, 1-5
+     O__________________________          subscribers - space
+     on-line help,  2-2                     required,  1-3
+     OpenVMS Tailoring Utility,           support from Digital, 2-3
+        1-5                               SYS$UPDATE directory, 1-3
+     options under VMSINSTAL,             SYSTEM account, 1-4, 2-1
+
+        2-3
+
+     Index-2
+
+ 
+
+
+
+
+
+
+
+        T__________________________         V__________________________
+
+        Tailoring Utility, 1-5              VAXcluster,  1-6
+        tape holding MRX, 1-2               versions of MRX,  1-2, 2-2
+        tasks involved, 1-1                 versions of other software,
+                                               1-4
+        U__________________________         VMSINSTAL,  2-1, 2-3
+        upgrade installation, 1-2,            abort,  2-2
+          2-2                                 on-line help,  2-2
+
+                                            W__________________________
+
+                                            warning messages,  2-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                 Index-3

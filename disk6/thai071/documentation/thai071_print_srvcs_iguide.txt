@@ -1,0 +1,2613 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     ______________________________________________
+                     Thai Printing Support for OpenVMS
+                     Version 1.0 Installation Guide
+
+                     Order Number: AA-Q5UKA-TE
+
+
+                     April 1994
+
+                     This document contains instructions for installing
+                     the Thai Printing Support kit on the OpenVMS
+                     /Thai operating system. It also provides hints
+                     for connecting and setting up various supported
+                     printers. This document applies to Thai Printing
+                     Support for OpenVMS Version 1.0 only.
+
+
+
+
+
+
+                     Revision/Update Information: This is a new manual.
+
+                     Operating System & Version:  OpenVMS/Thai VAX
+                                                  Version 5.5 or higher
+
+                                                  OpenVMS/Thai AXP
+                                                  Version 1.5 or higher
+
+                     Software & Version :         Thai Printing Support
+                                                  for OpenVMS Version
+                                                  1.0
+
+                     Prerequisite Software:       DECprint Supervisor
+                                                  for OpenVMS Version
+                                                  1.0C or higher
+                     Digital Equipment Corporation
+                     Asian Region
+
+ 
+
+
+
+
+
+
+              __________________________________________________________
+              First Printing, April 1994
+
+              The information in this document is subject to change
+              without notice and should not be construed as a commitment
+              by Digital Equipment Corporation. Digital Equipment
+              Corporation assumes no responsibility for any errors that
+              may appear in this document.
+
+              The software described in this document is furnished under
+              a license and may be used or copied only in accordance
+              with the terms of such license.
+
+              No responsibility is assumed for the use or reliability
+              of software on equipment that is not supplied by Digital
+              Equipment Corporation or its affiliated companies.
+
+              Restricted Rights: Use, duplication, or disclosure by the
+              U.S. Government is subject to restrictions as set forth in
+              subparagraph (c)(1)(ii) of the Rights in Technical Data
+              and Computer Software clause at DFARS 252.227-7013.
+
+              © Digital Equipment (Thailand) Limited 1994.
+
+              All Rights Reserved.
+              Printed in Singapore.
+
+              The following are trademarks of Digital Equipment
+              Corporation: DECpresent, DECserver, DECwrite, DIKE,
+              DEClaser, DECnet, DECprint, PrintServer, PrintServer 20,
+              PrintServer 17, Turbo PrintServer 20, PrintServer 32,
+              PrintServer 40, PrintServer 40 Plus, ScriptPrinter, VAX
+              DOCUMENT, VMS and the DIGITAL logo.
+
+              PostScript is a registered trademark of Adobe Systems,
+              Incorporated.
+
+              Apple, Macintosh and LaserWriter are registered trademarks
+              of Apple Computer, Inc.
+
+              This document was prepared using VAX DOCUMENT, Version
+              2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                             Contents
+
+
+     Preface..................................................      v
+
+
+     1  Preparing for Installing Thai Printing Support for
+        OpenVMS
+
+         1.1  Prerequisite Hardware...........................    1-1
+         1.1.1  Serial Printer Hardware Requirements .........    1-2
+         1.1.2  PrintServer Hardware Requirements ............    1-2
+         1.2  Prerequisite Software...........................    1-3
+         1.2.1  General Software Requirements ................    1-3
+         1.2.2  Software Required for Networked Serial
+                Printers......................................    1-3
+         1.2.3  Software Required for PrintServer Printers ...    1-3
+         1.3  License Registration............................    1-4
+         1.4  Installation Procedure Requirements.............    1-4
+         1.4.1  Privileges and Disk Space ....................    1-4
+         1.4.2  Disk Space ...................................    1-5
+         1.4.3  Process Account Quotas .......................    1-5
+         1.4.4  VMSINSTAL Requirements .......................    1-6
+         1.4.5  Backing Up Your System Disk ..................    1-7
+
+     2  Installing Thai Printing Support for OpenVMS
+
+         2.1  The Installation Procedure......................    2-1
+         2.2  Error Recovery..................................    2-6
+
+
+
+
+
+
+
+
+                                                                  iii
+
+ 
+
+
+
+
+
+
+        3  After Installing Thai Printing Support for OpenVMS
+
+           3.1  Installing the DECprint Supervisor Software.....     3-1
+           3.2  Editing the System Startup Command File.........     3-2
+           3.3  Creating the Printer Startup File...............     3-3
+           3.3.1   Copying the Printer Startup Command File .....    3-3
+           3.3.2   Editing the Printer Startup File .............    3-3
+           3.4  Executing DCPS$STARTUP to Create/Start the
+                Queues..........................................     3-5
+           3.5  Downloading Thai fonts to Printers..............     3-5
+           3.5.1   Downloading Thai fonts to Serial Printers ....    3-6
+           3.5.2   Downloading Thai fonts to PrintServer
+                   Printers......................................    3-7
+           3.6  Determining and Reporting Problems..............     3-8
+
+        4  Setting Up Printers
+
+           4.1  Installing Serial Printers......................     4-1
+           4.1.1   Setting Local Serial Printer Communications
+                   Speed.........................................    4-2
+           4.1.2   Making DECserver Connections for Serial
+                   Printers......................................    4-3
+           4.1.2.1   DECserver Port Characteristics.............     4-4
+           4.1.2.2   How to Edit LAT Configuration File.........     4-5
+           4.1.2.3   LAT Groups.................................     4-6
+           4.2  Installing PrintServer Printers.................     4-6
+           4.2.1   Including the PrintServer Node Name in
+                   DCPS$STARTUP.COM..............................    4-7
+           4.2.2   Defining the PrintServer Network Node ........    4-7
+           4.3  Printer Specific Setup..........................     4-8
+           4.3.1   Downloading Fonts to DEClaser 5100 Printer
+                   Hard Disk.....................................    4-8
+           4.3.2   Enabling PrintServer 17 Printer to Access Thai
+                   Fonts.........................................   4-12
+
+        A  Sample Installation
+
+
+
+
+
+
+
+
+
+        iv
+
+ 
+
+
+
+
+
+
+        B  Files Installed on Your System
+
+
+        Tables
+
+           1-1     Disk Space Requirements ......................    1-5
+
+           1-2     Process Account Quotas for the Installing
+                   Account.......................................    1-5
+
+           4-1     Printer-Required DECserver Port
+                   Characteristics...............................    4-4
+
+           4-2     DECserver Port Characteristics ...............    4-4
+
+           4-3     Thai PostScript Fonts ........................   4-10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+        About this Guide
+
+              This guide describes how to install Thai Printing Support
+              for OpenVMS Version 1.0 on the OpenVMS/Thai operating
+              system.
+
+              Keep this document with your distribution kit. You may
+              need it to install maintenance updates or to reinstall
+              Thai Printing Support for OpenVMS.
+
+
+        Intended Audience
+
+              This guide is intended for system managers who install and
+              configure the Thai Printing Support for OpenVMS software.
+
+        Document Structure
+
+              This guide is organized as follows:
+
+              o  Chapter 1 describes the operating system and hardware
+                 requirements for installing the Thai Printing Support
+                 for OpenVMS software and the related procedures before
+                 installing the software.
+
+              o  Chapter 2 provides step-by-step instructions for the
+                 installation.
+
+              o  Chapter 3 describes the actions and considerations
+                 after the installation.
+
+              o  Chapter 4 describes the procedures on installing and
+                 setting up the supported printers.
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+              o  Appendix A, which contains sample listings for the
+                 installation of the Thai Printing Support for OpenVMS
+                 software.
+
+              o  Appendix B, which contains a list of files created
+                 when the Thai Printing Support for OpenVMS software is
+                 installed.
+
+        Manuals in the Thai Printing Support for OpenVMS Documentation
+        Set
+
+              In addition to this guide, the Thai Printing Support
+              for OpenVMS documentation set includes the following
+              documents:
+
+              o  DECprint Supervisor for OpenVMS System Manager's Guide
+
+              o  DECprint Supervisor for OpenVMS User's Guide
+
+              o  DECprint Supervisor for OpenVMS Version 1.0C Release
+                 Notes
+
+              o  DECprint Supervisor for OpenVMS Installation Guide
+
+              o  Thai Printing Support for OpenVMS Version 1.0 Release
+                 Notes
+
+        Associated Documents
+
+              o  OpenVMS DCL Dictionary
+
+              o  Introduction to OpenVMS System Management
+
+              o  VMS LAT Control Program (LATCP) Manual
+
+              o  DEClaser 1152 Printer Operator's Guide
+
+              o  DEClaser 5100 Printer User's Guide
+
+              o  DEC PrintServer Supporting Host Software for VMS 
+                 Installation Guide
+
+              o  DEC PrintServer Supporting Host Software for VMS 
+                 Management Guide
+
+              o  DECserver 100 Terminal Server Operator's Guide
+
+        vi
+
+ 
+
+
+
+
+
+
+        Conventions
+
+              The following conventions are used in this guide:
+
+
+              UPPERCASE              Uppercase characters indicate
+                                     DCL commands, qualifiers and
+                                     parameters.
+
+              italics                Italic characters are used in
+                                     command examples to indicate that
+                                     you are to substitute a word or
+                                     value of your choice.
+
+              $                      The dollar sign is used to indicate
+                                     the DCL prompt. This prompt may be
+                                     different on your system.
+
+              <Ctrl/x>               In procedures, a sequence such as
+                                     <Ctrl/X> indicates that you must
+                                     hold down the key labeled Ctrl
+                                     while you press another key or a
+                                     pointing device button.
+
+              <Return>               In procedures, a key name is shown
+                                     enclosed to indicate that you press
+                                     a key on the keyboard.
+
+              .                      Vertical ellipsis in an example
+              .                      means that information not directly
+              .                      related to the example has been
+                                     omitted.
+
+              file-spec, . . .       Horizontal ellipsis indicates that
+                                     additional parameters, values, or
+                                     information can be entered.
+
+              OpenVMS                This name is used to refer to the
+                                     VMS and OpenVMS operating systems.
+
+
+
+
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+              Preparing for Installing Thai Printing Support for OpenVMS
+
+
+
+              This chapter discusses the preparations and requirements
+              necessary for installing Thai Printing Support for
+              OpenVMS, ThaiPS in short. ThaiPS provides on-line release
+              notes. Digital strongly recommends that you read the
+              release notes before proceeding with the installation.
+              For information on accessing the on-line release notes,
+              see Section 2.1.
+
+        1.1 Prerequisite Hardware
+
+              To install ThaiPS, you need the following items:
+
+              o  The appropriate input device to hold the distribution
+                 media
+
+                 ThaiPS is distributed with the OpenVMS/Thai distribu-
+                 tion media.
+
+              o  Appropriate communications hardware for printer
+                 configuration
+
+              o  Adequate disk space for the installation and operation
+                 of ThaiPS, as listed in Table 1-1
+
+              In addition, each type of printing device supported by
+              ThaiPS requires special hardware, as described in the
+              following sections.
+
+
+
+
+
+
+
+
+          Preparing for Installing Thai Printing Support for OpenVMS 1-1
+
+ 
+
+
+
+        Preparing for Installing Thai Printing Support for OpenVMS
+        1.1 Prerequisite Hardware
+
+        1.1.1 Serial Printer Hardware Requirements
+
+              ThaiPS supports the following serial printers.
+
+              o  DEClaser 5100 Printer
+
+                 For best performance, the 4 MB memory option is
+                 recommended in addition to the factory installed 2
+                 MB memory for the DEClaser 5100 printer. Also, there
+                 is an option to acquire an internal hard disk (128M)
+                 for this printer. You may want this option to store the
+                 Thai fonts on the hard disk.
+
+              o  DEClaser 1152 Printer
+
+                 For best performance, the 2 MB memory option is
+                 recommended in addition to the factory installed 2
+                 MB memory for the DEClaser 1152 printer.
+
+              Serial printers, such as DEClaser printers, are connected
+              to the host system either by a DECserver port, or by
+              a direct serial line interface. The DECserver devices
+              that can be used with Thai Printing Support for OpenVMS
+              are listed in the Software Product Description of the
+              DECprint Supervisor for OpenVMS software. To set up
+              DECserver connections for serial printers, refer to
+              Chapter 4 or Section 6.1 of DECprint Supervisor for
+              OpenVMS Installation Guide for more details.
+
+        1.1.2 PrintServer Hardware Requirements
+
+              ThaiPS supports the following PrintServer printers.
+
+              o  PrintServer 17 Printer
+
+              o  Turbo PrintServer 20 Printer
+
+              o  PrintServer 32 Printer
+
+              o  PrintServer 40 Plus Printer
+
+              A PrintServer client system is an OpenVMS system where
+              print queues to the PrintServer printer are created.
+              Before you can run the DECprint Supervisor software on
+              the client system to print files on a PrintServer printer,
+              the PrintServer printer and its associated PrintServer
+              software must be installed on the network. Refer to the
+              printer installation guide for more information.
+
+        1-2 Preparing for Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+              Preparing for Installing Thai Printing Support for OpenVMS
+                                               1.1 Prerequisite Hardware
+
+
+
+
+        1.2 Prerequisite Software
+
+        1.2.1 General Software Requirements
+
+              To install ThaiPS, the host system must be running one of
+              the following operating systems:
+
+              o  OpenVMS/Thai VAX Version 5.5 or later
+
+              o  OpenVMS/Thai AXP Version 1.5 or later
+
+              In additions, ThaiPS requires one of the following
+              software to operate.
+
+              o  DECprint Supervisor for OpenVMS AXP Version 1.0C or
+                 higher
+
+              o  DECprint Supervisor for OpenVMS VAX Version 1.0C or
+                 higher
+
+              You may install the above DECprint Supervisor software
+              (DCPS in short) before or after the installation of ThaiPS
+              .
+
+        1.2.2 Software Required for Networked Serial Printers
+
+              For serial printers on DECserver devices, ensure that
+              the LAT software is started before you start the print
+              queues. Either LAT or LAT/Master software can be used.
+              Refer to VMS LAT Control Program (LATCP) Manual for more
+              information.
+
+        1.2.3 Software Required for PrintServer Printers
+
+              For PrintServer printers, ensure that the PrintServer
+              printer is installed and booted with its software before
+              you start the print queue. DECnet-VAX software must be
+              running on the client system. DEC PrintServer Supporting
+              Host software must be running on the PrintServer host
+              system. Refer to DEC PrintServer Supporting Host Software
+              for VMS Installation Guide.
+
+          Preparing for Installing Thai Printing Support for OpenVMS 1-3
+
+ 
+
+
+
+        Preparing for Installing Thai Printing Support for OpenVMS
+        1.3 License Registration
+
+        1.3 License Registration
+
+              You do not need a PAK to install ThaiPS, and you do not
+              need a PAK to use the basic features of the ThaiPS.
+              However, you need a DCPS PAK for each of the optional
+              licenses:
+
+              o  DCPS-OPEN
+
+                 If your printing system is intended to provide printing
+                 to third party printers, you will need the DCPS PAK for
+                 the Open license. That is, if you have a third party
+                 printer to print Thai characters, you need to install
+                 this PAK. The PAK name for this license is DCPS-OPEN.
+
+              o  DCPS-PLUS
+
+                 If your printing system requires advanced features,
+                 like automatic data type detection, you will need the
+                 DCPS PAK for the Plus license. The PAK name for this
+                 license is DCPS-PLUS.
+
+        1.4 Installation Procedure Requirements
+
+              The following sections discuss various requirements for
+              installing ThaiPS.
+
+              The installation takes approximately 5 to 20 minutes,
+              depending on your type of media and your system configura-
+              tion.
+
+        1.4.1 Privileges and Disk Space
+
+              To install ThaiPS, you must log in to an account that has
+              SETPRV or at least the following privileges:
+
+              o  CMKRNL
+
+              o  WORLD
+
+              o  SYSPRV
+
+              On most systems, the SYSTEM account has SETPRV and is used
+              to install software. To check the default privileges of
+              the SYSTEM account, log in as SYSTEM, and enter this DCL
+              command:
+
+              $ SHOW PROCESS/PRIVILEGES
+
+        1-4 Preparing for Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+              Preparing for Installing Thai Printing Support for OpenVMS
+                                 1.4 Installation Procedure Requirements
+
+        1.4.2 Disk Space
+
+              ThaiPS requires different free disk storage space during
+              installation and after installation. Table 1-1 summarizes
+              the storage requirements for both VAX and AXP platforms.
+
+              Table_1-1_Disk_Space_Requirements_________________________
+
+              Max Disk Space Utilization during    6650
+              installation
+
+              Net Disk Space Utilization after     6350
+              installation______________________________________________
+
+              To determine the number of free disk blocks on the current
+              system disk, enter the following command at the DCL
+              prompt:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+        1.4.3 Process Account Quotas
+
+              The account you use to install ThaiPS must have sufficient
+              quotas to enable you to perform the installation.
+              Table 1-2 summarizes the process quotas required for the
+              installation account.
+
+              Table 1-2 Process Account Quotas for the Installing
+              __________Account_________________________________________
+
+              Account_Quota____Value____________________________________
+
+              ASTLM            24
+
+              BIOLM            18
+
+              BYTLM            18,000
+
+              DIOLM            18
+
+              ENQLM            30
+
+              FILLM____________20_______________________________________
+
+              User account quotas are stored in the file SYSUAF.DAT.
+              Use the VMS Authorize Utility (AUTHORIZE) to verify and
+              change user account quotas. First set your directory to
+              SYS$SYSTEM and then run AUTHORIZE:
+
+          Preparing for Installing Thai Printing Support for OpenVMS 1-5
+
+ 
+
+
+
+        Preparing for Installing Thai Printing Support for OpenVMS
+        1.4 Installation Procedure Requirements
+
+              $ SET DEFAULT SYS$SYSTEM
+              $ RUN AUTHORIZE
+              UAF>
+
+              At the UAF> prompt, enter the SHOW command with an account
+              name to check a particular account. For example:
+
+              UAF> SHOW SMITH
+
+              To change a quota, enter the MODIFY command. The following
+              example changes the FILLM quota for the SMITH account and
+              then exits from the utility:
+
+              UAF> MODIFY SMITH /FILLM=50
+              UAF> EXIT
+
+              After you exit from the utility, the system displays
+              messages indicating whether or not changes have been made.
+              Once the changes have been made, you must log out and log
+              in again for the new quotas to take effect.
+
+              For more information on modifying account quotas, see the
+              description of the Authorize Utility in the VMS System
+              Management Subkit.
+
+        1.4.4 VMSINSTAL Requirements
+
+              When you invoke VMSINSTAL, it checks the following:
+
+              o  Whether you have set your default device and directory
+                 to SYS$UPDATE
+
+              o  Whether you are logged in to a privileged account
+
+              o  Whether you have adequate quotas for installation
+
+              o  Whether DECnet is running
+
+              o  Whether any users are logged in to the system
+
+              Note that the VMSINSTAL requires that the installation
+              account has a minimum of the following quotas:
+
+                 ASTLM = 24
+                 BIOLM = 18
+                 BYTLM = 18,000
+                 DIOLM = 18
+                 ENQLM = 30
+                 FILLM = 20
+
+        1-6 Preparing for Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+              Preparing for Installing Thai Printing Support for OpenVMS
+                                 1.4 Installation Procedure Requirements
+
+              If VMSINSTAL detects any problems during the installation,
+              it notifies you and asks if you want to continue the
+              installation. In some instances, you can enter YES to
+              continue. To stop the installation process and correct the
+              situation, enter NO or press <Return>. Then correct the
+              problem and restart the installation.
+
+        1.4.5 Backing Up Your System Disk
+
+              At the beginning of the installation, VMSINSTAL asks if
+              you have backed up your system disk. Digital recommends
+              that you do a system disk backup before installing any
+              software.
+
+              Use the backup procedures that are established at your
+              site. For details on performing a system disk backup,
+              see the section on the Backup Utility in the VMS System
+              Management Subkit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          Preparing for Installing Thai Printing Support for OpenVMS 1-7
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                            Installing Thai Printing Support for OpenVMS
+
+
+
+              This chapter explains how to install Thai Printing
+              Support for OpenVMS. Section 2.1 contains a step-by-step
+              description of the installation procedure.
+
+        2.1 The Installation Procedure
+
+              The Thai Printing Support for OpenVMS installation proce-
+              dure consists of a series of questions and informational
+              messages. See Appendix A for a sample installation.
+
+              To abort the installation procedure at any time, press
+              <Ctrl/Y>. When you press <Ctrl/Y>, the installation
+              procedure deletes all files it has created up to that
+              point and exits. You can then start the installation
+              again.
+
+              1. Invoke VMSINSTAL.
+
+                 @SYS$UPDATE:VMSINSTAL saveset-name device-name OPTIONS N
+
+                 To start the installation, invoke the VMSINSTAL command
+                 procedure from a privileged account, such as the SYSTEM
+                 account. VMSINSTAL is in the SYS$UPDATE directory. The
+                 following list defines the elements of the VMSINSTAL
+                 command procedure:
+
+                 saveset-name
+                 The installation name for the component. For ThaiPS,
+                 use the following installation name:
+
+                 THAIPS010
+
+                 device-name
+                 The name of the device on which you plan to mount the
+                 media. For example, MTA0: is the device name for a tape
+                 drive. It is not necessary to use the console drive for
+                 this installation. However, if you do use the console
+
+                        Installing Thai Printing Support for OpenVMS 2-1
+
+ 
+
+
+
+        Installing Thai Printing Support for OpenVMS
+        2.1 The Installation Procedure
+
+                 drive, you should replace any media you have removed
+                 once the installation is complete.
+
+                 OPTIONS N
+                 An optional parameter that indicates you want to see
+                 the question on release notes. If you do not include
+                 the OPTIONS N parameter, VMSINSTAL does not ask you
+                 about the release notes. You should review the release
+                 notes before proceeding with the installation in
+                 case they contain additional information about the
+                 installation. If you are restarting the installation
+                 and have already reviewed the release notes, you do not
+                 need to specify OPTIONS N.
+
+                 Note that there are several other options you can
+                 select when you invoke VMSINSTAL.
+
+                 o  Auto_answer option (A): Initially creates a file
+                    that contains your answers to VMSINSTAL questions
+                    and prompts. You can then use the option (and the
+                    answer file) to save time during a reinstallation
+                    (typically after upgrading your system).
+
+                 o  Get save set option (G): Lets you store product save
+                    sets temporarily on a magnetic tape or in a disk
+                    directory.
+
+                 o  File log option (L): Logs all activity to the
+                    terminal during installation.
+
+                 o  Alternate root option (R): Lets you install the
+                    product to a system root other than that of the
+                    running system.
+
+                 See the VMS documentation on software installation
+                 in the VMS System Management Subkit for detailed
+                 information on these options. If you specify more than
+                 one option, separate the options with commas (OPTIONS
+                 A,N).
+
+                 The following example invokes VMSINSTAL to install
+                 ThaiPS from tape drive MTA0: and shows the system
+                 response. This example uses the OPTIONS N release note
+                 parameter.
+
+        2-2 Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+                            Installing Thai Printing Support for OpenVMS
+                                          2.1 The Installation Procedure
+
+                 $ @SYS$UPDATE:VMSINSTAL THAIPS010 MTA0: OPTIONS N
+
+                       VAX/VMS Software Product Installation Procedure V5.5-2
+
+
+                 It is 05-MAY-1992 at 10:10.
+                 Enter a question mark (?) at any time for help.
+
+                 If you do not supply either the product name or the
+                 device name, VMSINSTAL prompts you for this information
+                 later in the installation procedure. VMSINSTAL does
+                 not prompt you for any options, so be sure to include
+                 OPTIONS N on the VMSINSTAL command line to access the
+                 release notes during the installation.
+
+              2. Confirm DECnet status.
+
+                    .
+                    .
+                    .
+                 * Do you want to continue anyway [NO]?
+
+                 VMSINSTAL notifies you if DECnet is running and
+                 displays a list of all active processes. It then asks
+                 if you want to continue the installation. You should
+                 install ThaiPS on a standalone system or cluster with
+                 DECnet shut down. NO is the default response to the
+                 question.
+
+              3. Confirm system backup.
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. You should always back up your system disk
+                 before performing an installation. If you are satisfied
+                 with the backup of your system disk, press <Return>.
+                 Otherwise, enter NO to discontinue the installation.
+                 After you back up your system disk, you can restart the
+                 installation.
+
+              4. Mount the media.
+
+
+
+                        Installing Thai Printing Support for OpenVMS 2-3
+
+ 
+
+
+
+        Installing Thai Printing Support for OpenVMS
+        2.1 The Installation Procedure
+
+                 Please mount the first volume of the set on MTA0:.
+                 * Are you ready? YES
+                 %MOUNT-I-MOUNTED, Thai Printing Support for OpenVMS 
+                                   MOUNTED ON _$$MTA0:  (NODE 1)
+                 The following products will be processed:
+
+                   THAIPS V1.0
+
+                         Beginning installation of THAIPS V1.0  at 14:32
+
+                 %VMSINSTAL-I-RESTORE, Restoring product saveset A...
+
+                 You should now mount the first distribution volume on
+                 the device you specified when you invoked VMSINSTAL.
+                 The device name appears in the line preceding the
+                 question. VMSINSTAL then asks you if you are ready
+                 to continue with the installation.
+
+                 If you respond YES to indicate that you are ready,
+                 VMSINSTAL displays a message that the media containing
+                 ThaiPS has been mounted on the specified device and
+                 that the installation has begun.
+
+                 If you entered the wrong device name when you invoked
+                 VMSINSTAL and need to restart the installation, enter
+                 NO in response to the "Are you ready?" question.
+                 To abort the installation for other reasons, press
+                 <Ctrl/Y>.
+
+              5. Select a release notes option.
+
+                 ThaiPS release notes, THAIPS010.RELEASE_NOTES, is
+                 provided along with the kit. If you specified OPTIONS N
+                 when you invoked VMSINSTAL, you are now asked to choose
+                 one of the following four options for reviewing the
+                 release notes.
+
+                 Release notes included with this kit are always copied to 
+                 SYS$HELP.
+
+                 Additional Release Notes Options:
+
+                  1.  Display release notes
+                  2.  Print release notes
+                  3.  Both 1 and 2
+                  4.  None of the above
+
+                 * Select option [2]:
+
+        2-4 Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+                            Installing Thai Printing Support for OpenVMS
+                                          2.1 The Installation Procedure
+
+                 If you select option 1, VMSINSTAL displays the release
+                 notes immediately on the console terminal. You can
+                 terminate the display at any time by pressing <Ctrl/C>.
+
+                 If you select option 2, VMSINSTAL prompts you for the
+                 name of the print queue that you want to use:
+
+                 * Queue name [SYS$PRINT]:
+
+                 You can press <Return> to send the files to the default
+                 output print device or you can enter another queue
+                 name.
+
+                 If you select option 3, VMSINSTAL displays the release
+                 notes immediately on the console terminal and then
+                 prompts you for a queue name for the printed versions.
+
+                 Select option 4 if you have already reviewed the
+                 release notes and are restarting the installation.
+
+                 Next, VMSINSTAL displays the following question:
+
+                 * Do you want to continue the installation [N]?: YES
+                 %VMSINSTAL-I-RELMOVED, The product's release notes have been
+                                        successfully moved to SYS$HELP.
+
+                 To continue the installation, enter YES. Otherwise,
+                 press <Return>. In either case, the release notes are
+                 copied to files in the SYS$HELP directory:
+
+                 SYS$HELP:THAIPS010.RELEASE_NOTES
+
+              6. Purge files.
+
+                 * Do you want to purge files replaced by this 
+                   installation [YES]?
+
+                 You have the option to purge files from previous
+                 versions of Thai Printing Support for OpenVMS that
+                 are superseded by this installation. Purging is
+                 recommended; however, if you need to keep files from
+                 the previous version, enter NO in response to the
+                 question.
+
+                 VMSINSTAL checks to see if the amount of disk space
+                 required for the installation is available. If the
+                 space is not available, a message indicates the amount
+                 of disk space that is required, and the installation
+                 is aborted. Otherwise, the installation procedure
+                 continues.
+
+              7. Read informational messages.
+
+                        Installing Thai Printing Support for OpenVMS 2-5
+
+ 
+
+
+
+        Installing Thai Printing Support for OpenVMS
+        2.1 The Installation Procedure
+
+                 At this point, the installation procedure displays a
+                 number of informational messages that report on the
+                 progress of the installation. There are no further
+                 questions. If the installation procedure has been
+                 successful up to this point, VMSINSTAL moves the new
+                 or modified files to their target directories, updates
+                 help files, and updates DCL tables, if necessary. If
+                 you have chosen to have files purged, that work is done
+                 now. The following messages are displayed:
+
+                 %VMSINSTAL-I-MOVEFILES, files will now be moved to their 
+                                         target directories...
+
+              8. End the installation procedure.
+
+                    Installation of THAIPS V1.0 completed at 12:15
+
+                    VMSINSTAL procedure done at 12:15
+
+                 This message indicates that the entire installation
+                 procedure is complete.
+
+                 You can now log out of the privileged account:
+
+                 $ LOGOUT
+                 SYSTEM     logged out at 04-MAY-1993 12:15:10.23
+
+                 Note that VMSINSTAL deletes or changes entries in
+                 the process symbol tables during the installation.
+                 Therefore, if you are going to continue using the
+                 system manager's account and you want to restore these
+                 symbols, you should log out and log in again.
+
+        2.2 Error Recovery
+
+              If errors occur during the installation, VMSINSTAL
+              displays failure messages.
+
+              For descriptions of the error messages generated by those
+              conditions, see the OpenVMS documentation on system
+              messages, recovery procedures, and OpenVMS software
+              installation. If you are notified that any of those
+              conditions exists, you should take the appropriate action
+              as described in the message. For information on the
+              installation requirements, see Chapter 1.
+
+        2-6 Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                      After Installing Thai Printing Support for OpenVMS
+
+
+
+              The following tasks take place after installing ThaiPS.
+              You must perform the following tasks for ThaiPS to be
+              active. All tasks should be performed by system managers
+              under the SYSTEM account as follows:
+
+              1. Install the DECprint Supervisor for OpenVMS software.
+
+              2. Edit the system startup command file.
+
+              3. Edit the printer startup file DCPS$STARTUP.COM.
+
+              4. Invoke SYS$STARTUP:DCPS$STARTUP.COM
+
+              5. Persistently load Thai fonts to printers.
+
+        3.1 Installing the DECprint Supervisor Software
+
+              Install the DECprint Supervisor for OpenVMS software
+              by VMSINSTAL if it is not already installed. Please
+              follow the installation procedure documented in DECprint
+              Supervisor for OpenVMS Installation Guide to install the
+              above software. After the installation of the DECprint
+              Supervisor software, you need to enable ThaiPS by the
+              following command.
+
+              $ @SYS$MANAGER:DCPS$ENABLE_THAIPS
+
+              Enabling ThaiPS should only be done once after the
+              installation.
+
+
+
+
+
+
+                  After Installing Thai Printing Support for OpenVMS 3-1
+
+ 
+
+
+
+        After Installing Thai Printing Support for OpenVMS
+        3.2 Editing the System Startup Command File
+
+        3.2 Editing the System Startup Command File
+
+              Edit the system startup file, SYS$STARTUP:SYSTARTUP_
+              VMS.COM[1], look for the following command procedure call:
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+
+              If this line is not in the system startup file, add
+              it. Otherwise, the print queue will not be started
+              automatically during system startup.
+
+              For PrintServer printers, make sure the new line
+              comes after the command to start STARTNET.COM. If the
+              SYSTARTUP_VMS.COM file contains the command to start
+              LPS$STARTUP.COM, replace it with the command to start
+              DCPS$STARTUP.COM.
+
+              For serial printers on DECserver devices, you should
+              make the necessary changes to the command procedure
+              in SYS$STARTUP:LAT$STARTUP.COM to start the Local Area
+              Transport (LAT) protocol, and to configure applica-
+              tion devices for serial printers before you execute
+              DCPS$STARTUP.COM. DCPS$STARTUP.COM also allows users to
+              setup LAT.
+
+              To update the system startup file, edit SYS$STARTUP:SYSTARTUP_
+              VMS.COM, and add the following command procedure in the
+              file:
+
+              $ @SYS$STARTUP:LAT$STARTUP
+
+              Make sure that the command line to start DCPS$STARTUP.COM
+              comes after the command to start LAT$STARTUP.COM. If the
+              system startup file does not include the above command
+              line, the Local Area Transport (LAT) protocol will not be
+              started automatically when the system starts up.
+
+
+
+
+              ___________________
+              [1]Prior to OpenVMS/Thai VAX Version 6.0, the name of the
+
+                 system startup file is SYS$STARTUP:SYSTARTUP_V5.COM
+
+        3-2 After Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+                      After Installing Thai Printing Support for OpenVMS
+                                   3.3 Creating the Printer Startup File
+
+        3.3 Creating the Printer Startup File
+
+              Before you can print, you must create the startup file
+              DCPS$STARTUP.COM for the DECprint Supervisor software.
+              These operations are required for sites that are
+              installing the DECprint Supervisor software for the first
+              time.
+
+                ________________________Note  ________________________
+
+                If you have customized the print queue in your
+                CPS$STARTUP.COM procedure, you must re-define
+                the same print queues and printer environment in
+                DCPS$STARTUP.COM for them to be active.
+
+                _____________________________________________________
+
+        3.3.1 Copying the Printer Startup Command File
+
+              The DECprint Supervisor for OpenVMS software provides you
+              with a template printer startup file, DCPS$STARTUP.TEMPLATE.
+              You must copy the template file and edit the file to
+              reflect your own queue structure. You may also add a
+              command to execute this file in the system startup file.
+
+              Copy the template printer startup file using the copy
+              command as follows:
+
+              $ SET DEFAULT SYS$COMMON:[SYS$STARTUP]
+              $ COPY SYS$COMMON:[SYS$STARTUP]DCPS$STARTUP.TEMPLATE 
+                        DCPS$STARTUP.COM
+
+        3.3.2 Editing the Printer Startup File
+
+              Edit DCPS$STARTUP.COM to reflect your own queue structure,
+              to include
+
+              1. The Definition of a Device Control Library Logical
+                 DCPS_LIB
+
+                 For ThaiPS to work properly, you are required to define
+                 the DCPS_LIB logical as follows:
+
+                 $ DEFINE/SYS/EXEC DCPS_LIB DCPS$DEVCTL, DCPS$FONTSCTL
+
+
+                  After Installing Thai Printing Support for OpenVMS 3-3
+
+ 
+
+
+
+        After Installing Thai Printing Support for OpenVMS
+        3.3 Creating the Printer Startup File
+
+                 If you have customized the PostScript setup modules in
+                 your own libraries, you must define a library search
+                 list for DCPS_LIB including the name of your library.
+                 Note that the DCPS$DEVCTL library should always be the
+                 first entry in the list.
+
+              2. The Definition of Execution Queues
+
+                 You may create an execution queue for each PostScript
+                 printer. To create an execution queue for your printer,
+                 add the following to your DCPS$STARTUP.COM:
+
+                 $ @SYS$STARTUP:DCPS$EXECUTION_QUEUE -
+                       my_dcps_queue -   ! P1 - Execution queue name
+                       lta1: -           ! P2 - Serial Device Name or Printer
+                       -                 !      Server node name
+                       DCPS_LIB -        ! P3 - Logical name for library(ies)
+                       "" -              ! P4 - Default queue parameters
+                       "" -              ! P5 - Default queue qualifiers
+                       "" -              ! P6 - Communication speed (serial
+                          -              !      devices only)
+                       "" -              ! P7 - Device characteristics
+                       ""                ! P8 - Verify on/off
+
+                 For details about creating your own execution queue
+                 structure, please refer to DECprint Supervisor for
+                 OpenVMS System Manager's Guide.
+
+              3. The Definition of Generic Queues
+
+                 You can set up a generic queue for each print job. For
+                 example, a generic queue to print Thai can be defined
+                 as follows:
+
+                 $ @SYS$STARTUP:DCPS$GENERIC_QUEUE -
+                         Thai_queue -     ! P1 - Generic queue name
+                         my_dcps_queue -  ! P2 - Execution queue name
+                         "DATA=TIS_SCM" - ! P3 - Default parameter
+                         "" -             ! P4 - Default queue qualifiers
+                         ""               ! P5 - Verify on/off
+
+                 For details, please refer to DECprint Supervisor for
+                 OpenVMS System Manager's Guide.
+
+
+        3-4 After Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+                      After Installing Thai Printing Support for OpenVMS
+                   3.4 Executing DCPS$STARTUP to Create/Start the Queues
+
+        3.4 Executing DCPS$STARTUP to Create/Start the Queues
+
+              If the DECprint Supervisor software and ThaiPS are in-
+              stalled and the printer queues are defined in DCPS$STARTUP.COM
+              properly, you can execute DCPS$STARTUP.COM to create the
+              queues.
+
+              Invoke DCPS$STARTUP by issuing the following DCL command
+              in the command line:
+
+              $ @SYS$STARTUP:DCPS$STARTUP
+
+              For PrintServers, make sure that DECnet is running on the
+              system before you execute DCPS$STARTUP.COM.
+
+              If your printer is configured on a DECserver in a local
+              area Ethernet, execute the configured LAT$STARTUP.COM
+              before you execute DCPS$STARTUP.COM.
+
+        3.5 Downloading Thai fonts to Printers
+
+              You are recommended to download frequently used Thai fonts
+              to printers as persistent resources by the font loading
+              utility provided in ThaiPS. Since Thai characters in text
+              files are printed with the default font CordiaUPC-Light,
+              you should persistently load this font to the printers.
+
+                ________________________Note  ________________________
+
+                For DEClaser 5100 serial printer with the internal
+                hard disk option, you are recommended to download
+                all Thai fonts provided in ThaiPS to the printer
+                hard disk. See Section 4.3.1 for more details.
+
+                _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+                  After Installing Thai Printing Support for OpenVMS 3-5
+
+ 
+
+
+
+        After Installing Thai Printing Support for OpenVMS
+        3.5 Downloading Thai fonts to Printers
+
+        3.5.1 Downloading Thai fonts to Serial Printers
+
+              If your printers are serial printers such as DEClaser 1152
+              and DEClaser 5100 printers, please follow the following
+              steps to persistently load Thai fonts to the serial
+              printers
+
+              1. Invoke the font loading utility.
+
+                 $ @SYS$MANAGER:DCPS$FONT_LOADER.COM
+
+              2. From the main menu, choose item 1 to create the file,
+                 FONT_SOURCE_FILES.DAT, containing the list of available
+                 Thai fonts. The file will be created in your current
+                 directory.
+
+              3. Edit FONT_SOURCE_FILES.DAT and delete all font files
+                 from the list except the font files you want to
+                 download (eg. CORDIAUPC-LIGHT).
+
+              4. Rerun the font loading utility.
+
+              5. Choose menu item 4 to persistently load fonts to all
+                 (local and network) serial printers.
+
+              6. Follow the instructions and enter the file name
+                 FONT_SOURCE_FILES.DAT (the one being edited) when you
+                 are prompted for the font list file name.
+
+              7. A message will be displayed to indicate if the font is
+                 successfully downloaded and the font loading utility
+                 will terminate.
+
+              8. Power off and power on the printers.
+
+              9. Stop and restart the print queues for the printers
+                 affected by the change, using the STOP/QUEUE/NEXT and
+                 START/QUEUE command for each queue respectively.
+
+              For serial printers, you are recommended to persistently
+              load only the font CordiaUPC-Light. If you download more
+              fonts persistently to the serial printers, the printing
+              performance will be affected. For details on how the
+              persistently loaded fonts are operated and the font
+              loading utility, please refer to Thai Printing Support
+              for OpenVMS Version 1.0 Release Notes.
+
+        3-6 After Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+                      After Installing Thai Printing Support for OpenVMS
+                                  3.5 Downloading Thai fonts to Printers
+
+        3.5.2 Downloading Thai fonts to PrintServer Printers
+
+              If your printers are PrintServer printers and the current
+              (running) system is their supporting host, please follow
+              the following steps to persistently load Thai fonts.
+
+                ________________________Note  ________________________
+
+                For PrintServer 17 printers running PrintServer
+                Software for OpenVMS Version 5.0 or above, you have
+                an option to enable the printers to directly access
+                Thai fonts on the supporting host. Please refer to
+                Section 4.3.2 for more details. With this option,
+                you do not need to perform the following steps to
+                download Thai fonts anymore.
+
+                _____________________________________________________
+
+              1. Invoke the font loading utility.
+
+                 $ @SYS$MANAGER:DCPS$FONT_LOADER.COM
+
+              2. From the main menu, choose item 1 to create the file,
+                 FONT_SOURCE_FILES.DAT, containing the list of available
+                 Thai fonts. The file will be created in your current
+                 directory.
+
+              3. Edit FONT_SOURCE_FILES.DAT and delete all font files
+                 from the list except the font files you want to
+                 download (eg. CORDIAUPC-LIGHT).
+
+              4. Rerun the font loading utility.
+
+              5. Choose menu item 5 to persistently load fonts to a
+                 PrintServer printer.
+
+              6. Follow the instructions and enter the file name
+                 FONT_SOURCE_FILES.DAT (the one being edited) when you
+                 are prompted for the font list file name.
+
+              7. You will also be prompted for the name of the
+                 PrintServer printer to which the fonts are downloaded.
+                 Please enter the node name of your PrintServer printer.
+
+
+                  After Installing Thai Printing Support for OpenVMS 3-7
+
+ 
+
+
+
+        After Installing Thai Printing Support for OpenVMS
+        3.5 Downloading Thai fonts to Printers
+
+              8. A message will be displayed to indicate if the font
+                 is successfully downloaded and the font loading
+                 utility will terminate. Repeat steps 4 to 8 for another
+                 PrintServer printer.
+
+              9. Reboot all the PrintServer printers affected by the
+                 change. The persistently loaded fonts will be available
+                 on the PrintServer printers after they are restarted.
+
+              For details on how the persistently loaded fonts are
+              operated and the font loading utility, please refer to
+              Thai Printing Support for OpenVMS Version 1.0 Release
+              Notes.
+
+
+        3.6 Determining and Reporting Problems
+
+              If you encounter a problem while using Thai Printing
+              Support for OpenVMS, report it to Digital. Depending on
+              the nature of the problem and the type of support you
+              have, you can take one of the following actions:
+
+              o  Call Digital if your software contract or warranty
+                 agreement entitles you to telephone support.
+
+              o  Submit a Software Performance Report (SPR).
+
+              Review the Software Product Description (SPD) and Warranty
+              Addendum for an explanation of warranty. If you encounter
+              a problem during the warranty period, report the problem
+              as indicated above or follow alternative instructions
+              provided by Digital for reporting SPD nonconformance
+              problems.
+
+
+
+
+
+
+
+
+
+
+
+
+        3-8 After Installing Thai Printing Support for OpenVMS
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       4
+        ________________________________________________________________
+
+                                                     Setting Up Printers
+
+
+
+              This chapter describes printer-related operations to
+              be performed after the installation of ThaiPS and the
+              DECprint Supervisor software. These operations are
+              required for sites that are installing the DECprint
+              Supervisor software and ThaiPS for the first time or
+              installing new printers supported by the ThaiPS.
+
+              This chapter discusses the following procedures:
+
+              o  Installing serial printers, Section 4.1
+
+                 o  DEClaser 1152 Printer
+
+                 o  DEClaser 5100 Printer
+
+              o  Installing PrintServer printers, Section 4.2
+
+                 o  PrintServer 17 Printer
+
+                 o  Turbo PrintServer 20 Printer
+
+                 o  PrintServer 32 Printer
+
+                 o  PrintServer 40 Plus Printer
+
+              In addition, Section 4.3 describes some hints and special
+              procedures required for some selected printers.
+
+        4.1 Installing Serial Printers
+
+              Serial printers require you to set up the communications
+              speed and timeout values for the printer device. (Hardware
+              requirements for installing serial printers are described
+              in Section 1.1.1)
+
+                                                 Setting Up Printers 4-1
+
+ 
+
+
+
+        Setting Up Printers
+        4.1 Installing Serial Printers
+
+        4.1.1 Setting Local Serial Printer Communications Speed
+
+              Make sure the serial printer communications speed is set
+              to the default (9600 baud). If you want the printer
+              to run at a different baud rate, then you must enter
+              the appropriate baud rate in the DCPS$STARTUP.COM
+              file, as described in DECprint Supervisor for OpenVMS
+              System Manager's Guide. Make sure the baud rate in
+              DCPS$STARTUP.COM matches the baud rate set on the printer.
+
+              When choosing a baud rate other than the default of 9600
+              baud, consider the following limitations:
+
+              o  VMS drivers do not support baud rates of 3600 and 7200
+                 baud.
+
+              o  DMZ32 serial interfaces, Revision E or lower, require a
+                 speed of 4800 baud or less.
+
+              o  The DECserver devices that can be used with the
+                 DECprint Supervisor for OpenVMS software and the
+                 recommended communications speed for each are listed in
+                 the Software Product Description (SPD) of the DECprint
+                 Supervisor software.
+
+              If you selected an improper speed, the printer may not
+              operate or may stop unexpectedly.
+
+              To run a locally-connected serial printer at a different
+              communications speed than the default rate of 9600 baud,
+              follow the following steps.
+
+              o  Stop the execution queue that drives the printer with
+                 the DCL command STOP/QUEUE/NEXT.
+
+              o  Set the printer to the appropriate baud rate. Please
+                 refer to your printer hardware installation guide.
+
+              o  Edit DCPS$STARTUP.COM. Look for the execution queue
+                 definition for the printer. Parameter P6 is reserved
+                 for communications speed for locally-connected serial
+                 printers. When multiple hosts access the printer, be
+                 sure to make this change on every host system.
+
+              o  Power on the printer. Wait for the printer to eject
+                 the power-up test page, and then check the test page to
+                 ensure that the desired settings are indicated on the
+                 test page.
+
+        4-2 Setting Up Printers
+
+ 
+
+
+
+                                                     Setting Up Printers
+                                          4.1 Installing Serial Printers
+
+              o  Invoke DCPS$STARTUP by issuing the following DCL
+                 command:
+
+                 $ @SYS$STARTUP:DCPS$STARTUP
+
+              If the printer is on a DECserver device, follow the steps
+              below
+
+              o  Stop the execution queue that drives the printer with
+                 the DCL command STOP/QUEUE/NEXT.
+
+              o  Set the printer to the appropriate baud rate. Please
+                 refer to your printer hardware installation guide.
+
+              o  Set the DECserver communications speed. Please refer to
+                 the Terminal server installation guide.
+
+              o  Power on the printer. Wait for the printer to eject
+                 the power-up test page, and then check the test page to
+                 ensure that the desired settings are indicated on the
+                 test page.
+
+              o  Start the print queue.
+
+        4.1.2 Making DECserver Connections for Serial Printers
+
+              PostScript printers with a serial interface can be
+              configured as network printers through a DECserver
+              connection to the Ethernet. For this configuration, you
+              must make the following changes to the system startup
+              procedure:
+
+              o  Set the necessary DECserver port and server character-
+                 istics for the printer. See Section 4.1.2.1.
+
+              o  Make the necessary changes to SYS$STARTUP:LAT$SYSTARTUP.COM.
+                 See Section 4.1.2.2.
+
+
+
+
+
+
+
+
+                                                 Setting Up Printers 4-3
+
+ 
+
+
+
+        Setting Up Printers
+        4.1 Installing Serial Printers
+
+        4.1.2.1 DECserver Port Characteristics
+
+              Table 4-1 lists the DECserver port characteristics
+              required for shared printing.
+
+              Table_4-1_Printer-Required_DECserver_Port_Characteristics_
+
+              Characteristics____________Default_Settings_______________
+
+              ACCESS                     REMOTE
+
+              AUTOBAUD                   DISABLED
+
+              AUTOCONNECT                DISABLED
+
+              AUTOPROMPT                 DISABLED
+
+              BREAK                      DISABLED
+
+              BROADCAST                  DISABLED
+
+              FLOW CONTROL               XON
+
+              INPUT FLOW CONTROL         ENABLED
+
+              OUTPUT FLOW CONTROL        ENABLED
+
+              INACTIVITY LOGOUT          DISABLED
+
+              LOSS NOTIFICATION          DISABLED
+
+              MESSAGE CODES              DISABLED
+
+              QUEUING                    ENABLED
+
+              VERIFICATION_______________DISABLED_______________________
+
+                ________________________Note  ________________________
+
+                On many versions of DECserver devices, QUEUING
+                is not a port characteristic, but is a server
+                characteristic whose default is ENABLED.
+
+                _____________________________________________________
+
+              Table 4-2 lists the DECserver port characteristics that
+              must match the settings on your printer.
+
+              Table_4-2_DECserver_Port_Characteristics__________________
+
+              Character size             8
+
+                                                (continued on next page)
+
+        4-4 Setting Up Printers
+
+ 
+
+
+
+                                                     Setting Up Printers
+                                          4.1 Installing Serial Printers
+
+              Table_4-2_(Cont.)_DECserver_Port_Characteristics__________
+
+              Parity                     None
+
+              Input Speed                9600
+
+              Output_Speed_______________9600___________________________
+
+              Make sure the queue limit is not set to 0, which disables
+              queuing. Check that the service groups are set as
+              described in Section 4.1.2.3. For detailed description
+              of DECserver 100 commands and how to change the port
+              characteristics, refer to DECserver 100 Terminal Server
+              Operator's Guide. For information about the commands and
+              procedures for another DECserver device, refer to your
+              DECserver management guide.
+
+        4.1.2.2 How to Edit LAT Configuration File
+
+              The LAT configuration file (SYS$STARTUP:LAT$STARTUP.COM)
+              defines host node service characteristics. Before you
+              start the print queues, make sure the LAT driver is
+              running and the ports are available.
+
+                ________________________Note  ________________________
+
+                Commands referenced in this section are LATCP
+                commands. For more information on LATCP commands,
+                refer to the VMS LAT Control Program (LATCP) Manual.
+
+                _____________________________________________________
+
+              Follow the steps below to configure a LAT port for a print
+              queue.
+
+              o  Edit LAT$SYSTARTUP.COM and add the following command to
+                 create an applications port on the host node (service
+                 node) that will support your printer:
+
+                 CREATE PORT LTAd:/NOLOG/APPLICATION
+
+                 In this command format, you supply the number of the
+                 applications port for d, which must be a unique number
+                 from 1-9999.
+
+                                                 Setting Up Printers 4-5
+
+ 
+
+
+
+        Setting Up Printers
+        4.1 Installing Serial Printers
+
+              o  In LAT$SYSTARTUP.COM, add the following command to
+                 associate the applications port with a remote port on a
+                 server.
+
+                 SET PORT LTAd:/NODE=server_name/PORT=port_n_name/QUEUE/APPL
+
+                 LTAd         Name of the applications port
+                 server_name  Name assigned to the DECserver device
+                 port_n_name  DECserver port name
+
+                 The following example associates application ports
+                 LTA9000: with port PORT_7 on a remote DECserver 200
+                 named DECLASER:
+
+                 SET PORT LTA9000: /NODE=DECLASER/PORT=PORT_7/QUEUE/APPL
+
+        4.1.2.3 LAT Groups
+
+              To make a successful LAT connection, the following lists
+              of groups must have at least one LAT group in common:
+
+              o  On the DECserver port, authorized groups and current
+                 groups
+
+              o  On the service node, enabled groups
+
+              If you have not set up these groups correctly, you receive
+              the following error message when a print job is submitted:
+
+              %DCPS-E-LRJACCESSDENIED, Access denied
+
+              You can use LATCP commands to include the necessary LAT
+              group designations. For additional information, refer to
+              VMS LAT Control Program (LATCP) Manual.
+
+        4.2 Installing PrintServer Printers
+
+              PrintServer printers are network printers. They require
+              the VMS DECnet software to be running on the OpenVMS
+              systems where the DECprint Supervisor software is running.
+              (The hardware required for installing PrintServer printers
+              is described in Section 1.1.2)
+
+
+
+        4-6 Setting Up Printers
+
+ 
+
+
+
+                                                     Setting Up Printers
+                                     4.2 Installing PrintServer Printers
+
+              The following procedures allow the DECprint Supervisor
+              software to access PrintServer printers.
+
+                ________________________Note  ________________________
+
+                For a PrintServer 17 printer running PrintServer
+                Software for OpenVMS Version 5.0, please see
+                Section 4.3.2 for additional procedures for setting
+                up the printer.
+
+                _____________________________________________________
+
+
+        4.2.1 Including the PrintServer Node Name in DCPS$STARTUP.COM
+
+              In the procedure for editing DCPS$STARTUP.COM, include
+              the printer node name in the execution queue definition,
+              as described in DECprint Supervisor for OpenVMS System
+              Manager's Guide. For printers in a VMScluster configu-
+              ration, include the scsnode-name of the system where you
+              want the symbiont to run. The DECnet database must have
+              an entry for each PrintServer printer accessible from the
+              system.
+
+
+        4.2.2 Defining the PrintServer Network Node
+
+              The system manager can provide you with the registered
+              DECnet node name and node address for the PrintServer
+              printer. Run the NCP program and add the printer node to
+              the network database. Use the following commands to define
+              a PrintServer network node.
+
+              $ MCR NCP
+              NCP> SET NODE node-name ADDRESS node-address
+              NCP> DEFINE NODE node-name ADDRESS node-address
+              NCP> EXIT
+              $
+
+              node-name         Printer node name
+              node-address      Printer node address
+
+
+
+
+                                                 Setting Up Printers 4-7
+
+ 
+
+
+
+        Setting Up Printers
+        4.2 Installing PrintServer Printers
+
+              For example, issue the following commands to add the
+              printer ABLE (DECnet node address 5.85) to the network
+              database:
+
+              $ MCR NCP
+              NCP> SET NODE ABLE ADDRESS 5.85
+              NCP> DEFINE NODE ABLE ADDRESS 5.85
+              NCP> EXIT
+              $
+
+
+
+        4.3 Printer Specific Setup
+
+              This section describes the special procedures or hints,
+              other than those specified in Section 4.1 and Section 4.2,
+              on setting up the following printers.
+
+              o  DEClaser 5100 with internal hard disk, see Section 4.3.1
+
+              o  PrintServer 17 printer running PrintServer Software for
+                 OpenVMS Version 5.0 or later, see Section 4.3.2.
+
+        4.3.1 Downloading Fonts to DEClaser 5100 Printer Hard Disk
+
+              DEClaser 5100 is a high performance 8 page-per-miniute
+              PostScript printer which can print with 600 dpi reso-
+              lution. ThaiPS supports printing of Thai script to this
+              printer.
+
+              If you buy a DEClaser 5100 printer with the 128M hard disk
+              option, Digital strongly recommend you to download all
+              Thai PostScript fonts provided in ThaiPS to the hard disk.
+              This operation should be done once after the installation
+              of the printer. All fonts downloaded to the hard disk will
+              be immediately available on the printer.
+
+              To download Thai fonts to the hard disk of the DEClaser
+              5100 printer, you have to execute the following procedure.
+
+              $ @SYS$MANAGER:DCPS$DL5100_LOAD_FONT.COM
+
+
+
+
+        4-8 Setting Up Printers
+
+ 
+
+
+
+                                                     Setting Up Printers
+                                              4.3 Printer Specific Setup
+
+              The procedure will ask you to specify a TT or LAT port
+              to which your DEClaser 5100 is connected. Make sure the
+              speed of the port matches with the speed setting of the
+              printer's main serial channel. If there is currently a
+              print queue running on that port (or that printer), stop
+              the queue by issuing the following command:
+
+              $ STOP/QUE/RESET your_print_queue
+
+              For example, if you connect the DEClaser 5100 to the LTA1
+              port:
+
+ $ @SYS$MANAGER:DCPS$DL5100_LOAD_FONT.COM
+
+ This procedure downloads Asian PostScript fonts to the hard disk
+ of the DEClaser 5100 printer. Please specify the name of the TT
+ or LAT port that connects to the printer.
+ If there is a print queue running on that port, please stop it by typing :
+
+           $ STOP/QUE/RESET your_print_queue
+
+ The port to which DEClaser 5100 is connected : LTA1:
+
+              Then the procedure will list all PostScript fonts
+              available on your system and ask you to specify which
+              fonts you want to be downloaded to the hard disk of the
+              printer.
+
+ Please select the fonts you want to downloaded to the hard disk of
+ the printer :
+
+ ANGSANAUPC-BOLD           ANGSANAUPC-BOLDITALIC     ANGSANAUPC-ITALIC
+ ANGSANAUPC-LIGHT          CORDIAUPC-BOLD            CORDIAUPC-BOLDITALIC
+                   .                            .                      .
+                   .                            .                      .
+                   .                            .                      .
+
+ You can specify a list of fonts using comma (,) and wildcard
+ characters (%)(*), e.g. Font*,MyFont
+
+ Enter the fonts you want to download : *
+
+              Normally you would download all PostScript fonts to the
+              hard disk, so you can just answer * to the prompt. If you
+              wish to download only some of the fonts on your system,
+              you can specify a list of files separated by comma(s). You
+              can also specify the files by using wild card characters *
+              and %.
+
+                                                 Setting Up Printers 4-9
+
+ 
+
+
+
+        Setting Up Printers
+        4.3 Printer Specific Setup
+
+              Table 4-3 shows the PostScript fonts available for
+              Thai script. The samples of these fonts are depicted in
+              Appendix A of Thai Printing Support for OpenVMS Version
+              1.0 Release Notes.
+
+
+              Table_4-3_Thai_PostScript_Fonts___________________________
+
+              Font_Name_________Font_File_Name_in_the_system____________
+
+              AngsanaUPC-Light  ANGSANAUPC-LIGHT.
+
+              AngsanaUPC-Bold   ANGSANAUPC-BOLD.
+
+              AngsanaUPC-       ANGSANAUPC-ITALIC.
+              Italic
+
+              AngsanaUPC-       ANGSANAUPC-BOLDITALIC.
+              BoldItalic
+
+              CordiaUPC-Light   CORDIAUPC-LIGHT.
+
+              CordiaUPC-Bold    CORDIAUPC-BOLD.
+
+              CordiaUPC-Italic  CORDIAUPC-ITALIC.
+
+              CordiaUPC-        CORDIAUPC-BOLDITALIC.
+              BoldItalic
+
+              EucrosiaUPC-      EUCROSIAUPC-LIGHT.
+              Light
+
+              EucrosiaUPC-Bold  EUCROSIAUPC-BOLD.
+
+              EucrosiaUPC-      EUCROSIAUPC-ITALIC.
+              Italic
+
+              EucrosiaUPC-      EUCROSIAUPC-BOLDITALIC.
+              BoldItalic
+
+              FreesiaUPC-Light  FREESIAUPC-LIGHT.
+
+              FreesiaUPC-Bold   FREESIAUPC-BOLD.
+
+              FreesiaUPC-       FREESIAUPC-ITALIC.
+              Italic
+
+              FreesiaUPC-       FREESIAUPC-BOLDITALIC.
+              BoldItalic
+
+              IrisUPC-Light     IRISUPC-LIGHT.
+
+              IrisUPC-Bold      IRISUPC-BOLD.
+
+                                                (continued on next page)
+
+        4-10 Setting Up Printers
+
+ 
+
+
+
+                                                     Setting Up Printers
+                                              4.3 Printer Specific Setup
+
+              Table_4-3_(Cont.)_Thai_PostScript_Fonts___________________
+
+              Font_Name_________Font_File_Name_in_the_system____________
+
+              IrisUPC-Italic    IRISUPC-ITALIC.
+
+              IrisUPC-          IRISUPC-BOLDITALIC.
+              BoldItalic
+
+              JasmineUPC-Light  JASMINEUPC-LIGHT.
+
+              JasmineUPC-Bold   JASMINEUPC-BOLD.
+
+              JasmineUPC-       JASMINEUPC-ITALIC.
+              Italic
+
+              JasmineUPC-       JASMINEUPC-BOLDITALIC.
+              BoldItalic
+
+              KodchiangUPC-     KODCHIANGUPC-LIGHT.
+              Light
+
+              KodchiangUPC-     KODCHIANGUPC-BOLD.
+              Bold
+
+              KodchiangUPC-     KODCHIANGUPC-ITALIC.
+              Italic
+
+              KodchiangUPC-     KODCHIANGUPC-BOLDITALIC.
+              BoldItalic
+
+              LilyUPC-Light     LilyUPC-LIGHT.
+
+              LilyUPC-Bold      LILYUPC-BOLD.
+
+              LilyUPC-Italic    LILYUPC-ITALIC.
+
+              LilyUPC-          LILYUPC-BOLDITALIC.
+              BoldItalic
+
+              WaterlilyUPC-     WATERLILYUPC-LIGHT.
+              Light
+
+              WaterlilyUPC-     WATERLILYUPC-BOLD.
+              Bold
+
+              WaterlilyUPC-     WATERLILYUPC-ITALIC.
+              Italic
+
+              WaterlilyUPC-     WATERLILYUPC-BOLDITALIC.
+              BoldItalic
+
+              YuccaUPC-Light    YUCCAUPC-LIGHT.
+
+                                                (continued on next page)
+
+                                                Setting Up Printers 4-11
+
+ 
+
+
+
+        Setting Up Printers
+        4.3 Printer Specific Setup
+
+              Table_4-3_(Cont.)_Thai_PostScript_Fonts___________________
+
+              Font_Name_________Font_File_Name_in_the_system____________
+
+              YuccaUPC-Bold     YUCCAUPC-BOLD.
+
+              YuccaUPC-Italic   YUCCAUPC-ITALIC.
+
+              YuccaUPC-         YUCCAUPC-BOLDITALIC.
+              BoldItalic________________________________________________
+
+              After you have confirmed that the list of fonts is
+              correct, the procedure will start sending fonts to the
+              printer. There will be informational messages telling
+              you about the status of the job. When all fonts have been
+              downloaded to the hard disk of the printer, you should
+              power off the printer and turn it on again.
+
+                ________________________Note  ________________________
+
+                The procedure DCPS$DL5100_LOAD_FONT.COM should be
+                executed only once after the installation of the
+                ThaiPS software, the DECprint Supervisor software
+                and the DEClaser 5100 printer.
+
+                _____________________________________________________
+
+        4.3.2 Enabling PrintServer 17 Printer to Access Thai Fonts
+
+              PrintServer 17 printer is a high performance, 17 pages-
+              per-minute PostScript printer which can print with 600 dpi
+              resolution. If the printer is running PrintServer Software
+              for OpenVMS Version 5.0 or later, you have an option to
+              let the PrintServer software to use Thai PostScript fonts
+              directly from the supporting host (OpenVMS/Thai system).
+              After enabling this option for the PrintServer 17 printer,
+              all fonts located at SYS$COMMON:[SYSFONT.PSFONT.FONTS] are
+              automatically available to the printer via the network,
+              and there is no need to download Thai fonts to that
+              printer before Thai documents are printed.
+
+              You are strongly recommended to execute the following
+              procedure for each PrintServer 17 printer running
+              PrintServer Software for OpenVMS Verison 5.0 or later
+              to enable this option. Make sure that the running system
+
+        4-12 Setting Up Printers
+
+ 
+
+
+
+                                                     Setting Up Printers
+                                              4.3 Printer Specific Setup
+
+              is the supporting host of the PrintServer, and that the
+              startup procedure SYS$STARTUP:LPS$STARTUP_SERVICES.COM
+              of the PrintServer software has already been executed.
+              Otherwise, this procedure will fail in looking for the
+              LPS$ROOT directories.
+
+              @SYS$MANAGER:DCPS$LPS17_SETUP.COM
+
+              The procedure will create two directories under LPS$ROOT:,
+              LPS$ROOT:[FONTS] and LPS$ROOT:[FONTDATA]. If the
+              PrintServer software was installed on the system disk,
+              it will use DCL command SET FILE/ENTER to link all
+              files under SYS$COMMON:[SYSFONT.PSFONT.FONTS] and
+              SYS$COMMON:[SYSFONT.PSFONT.FONTDATA] to these two
+              directories. Otherwise, the procedure will just copy files
+              from ThaiPS directories to LPS$ directories.
+
+              The procedure will then ask you to specify the node name
+              of the PrintServer. The node name is used to locate and
+              update the setup and resource files of the PrintServer.
+              The procedure will also prompt you to specify the fonts
+              you want to be loaded to the printer memory as persistent
+              resources. Loading fonts to printer at startup time will
+              greatly improve performance but will consume printer
+              memory.
+
+ Loading fonts to the memory of a PrintServer at startup time will improve
+ printing performance. Please select the fonts which you want to persistently
+ load to the memory of the  printer :
+
+ ANGSANAUPC-BOLD           ANGSANAUPC-BOLDITALIC     ANGSANAUPC-ITALIC
+ ANGSANAUPC-LIGHT          CORDIAUPC-BOLD            CORDIAUPC-BOLDITALIC
+                   .                            .                      .
+                   .                            .                      .
+                   .                            .                      .
+
+ You can specify a list of fonts using comma (,) and wildcard
+ characters (%)(*),  e.g. Font*,MyFont
+
+              Enter the fonts you want to persistently load : CORDIAUPC-LIGHT
+
+              Normally you would load the PostScript font CordiaUPC-
+              Light to the printer's memory since it is the font used to
+              print Thai text file. If you wish to download more fonts
+              on your system, you can specify a list of files separated
+              by comma(s). You can also specify the files by using wild
+
+                                                Setting Up Printers 4-13
+
+ 
+
+
+
+        Setting Up Printers
+        4.3 Printer Specific Setup
+
+              card characters * and %. Table 4-3 lists all the Thai
+              fonts provided by ThaiPS. The samples of these fonts are
+              depicted in Appendix A of the Thai Printing Support for
+              OpenVMS Version 1.0 Release Notes.
+
+              After you have confirmed that the list of fonts is cor-
+              rect, the procedure will update the file LPSRESOURCE.printer.
+              Then you have to reboot the printer so that the new
+              configuration information will be used. After the printer
+              is rebooted, the printer will be able to use the Thai
+              PostScript fonts directly from the supporting host.
+
+                ________________________Note  ________________________
+
+                The procedure DCPS$LPS17_SETUP.COM should be
+                executed only once after the installation of the
+                ThaiPS software, the DECprint Supervisor software
+                and the PrintServer 17 printer. It does not required
+                to be executed in subsequent system and PrintServer
+                reboots.
+
+                _____________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        4-14 Setting Up Printers
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+                                                     Sample Installation
+
+
+
+              This appendix contains a sample installation of Thai
+              Printing Support for OpenVMS. This sample was run on
+              a system that had no previous version of Thai Printing
+              Support for OpenVMS installed.
+
+              The sample installation is done on OpenVMS/Thai AXP
+              Verision 1.5 and it assumes that DECnet has been shut
+              down, that no users are logged on to your system.
+
+ $ @SYS$UPDATE:VMSINSTAL THAIPS010 DKA0:
+
+ OpenVMS ALPHA Software Product Installation Procedure 1.5
+
+ It is 21-FEB-1994 at 11:47.
+
+ Enter a question mark (?) at any time for help.
+
+ * Are you satisfied with the backup of your system disk [YES]? NO
+
+ The following products will be processed:
+
+                THAIPS V1.0
+
+   Beginning installation of THAIPS V1.0 at 11:47
+
+ %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+ %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+  **********************************************************************
+
+  Thai Printing Support for OpenVMS, Verison 1.0 installation procedure
+
+  **********************************************************************
+
+   Installation taking place on an OpenVMS AXP system.
+
+
+ 
+
+
+
+        Sample Installation
+
+
+ * Do you want to purge files replaced by this installation [YES]? NO
+ %THAIPS-I-ESTTIME, This installation will take between 5 and 20 minutes
+ %THAIPS-I-NOQUES, No further questions will be asked
+ %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+ %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                       VMI$ROOT:[SYSFONT.PSFONT.FONTS].
+ %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                       VMI$ROOT:[SYSFONT.PSFONT.FONTDATA].
+ %VMSINSTAL-I-SYSDIR, This product creates system disk directory
+                       VMI$ROOT:[SYSFONT.PSFONT.BITMAP].
+
+         For Thai printing on PostScript printers, the fonts required by the
+         PostScript files must be available on the printers before they are
+         printed. Make sure if the printers have those fonts available and
+         download the fonts to them if necessary before you print.
+
+              $@SYS$MANAGER:DCPS$FONT_LOADER.COM
+
+         Printing of Thai text files assumes the font "CordiaUPC-Light" for any
+         Thai characters. If text files are to be printed, make sure
+         "CordiaUPC-Light" is available on the printer. See the Thai Printing
+         Support release notes for more details on the Thai printing features
+         provide.
+
+ %VMSINSTAL-I-MOVEFILES, Files will now be moved to their target directories...
+  Installation of THAIPS V1.0 completed at 11:49
+
+          Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+          Creating installation data file: VMI$ROOT:[SYSUPD]THAIPS010.VMI_DATA
+
+       VMSINSTAL procedure done at 11:49
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A-2 Sample Installation
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       B
+        ________________________________________________________________
+
+                                          Files Installed on Your System
+
+
+
+              The ThaiPS installation procedure installs a number of
+              files on your system. The following list contains the
+              names of all files created on your system:
+
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]ANGSANAUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]ANGSANAUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]ANGSANAUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]ANGSANAUPC-LIGHT.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]CORDIAUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]CORDIAUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]CORDIAUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]CORDIAUPC-LIGHT.
+              SYS$COMMON:[SYSEXE]DCPS$DL_FONT.EXE
+              SYS$COMMON:[SYSMGR]DCPS$DL5100_LOAD_FONT.COM
+              SYS$COMMON:[SYSMGR]DCPS$ENABLE_THAIPS.COM
+              SYS$COMMON:[SYSMGR]DCPS$FONT_LOADER.COM
+              SYS$COMMON:[SYSMGR]DCPS$HELP_THAIPS.HLP
+              SYS$COMMON:[SYSMGR]DCPS$LPS17_SETUP.COM
+              SYS$COMMON:[SYSMGR]DCPS$TAILOR_FONTNAME.COM
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]EUCROSIAUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]EUCROSIAUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]EUCROSIAUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]EUCROSIAUPC-LIGHT.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]FREESIAUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]FREESIAUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]FREESIAUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]FREESIAUPC-LIGHT.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]IRISUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]IRISUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]IRISUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]IRISUPC-LIGHT.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]JASMINEUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]JASMINEUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]JASMINEUPC-ITALIC.
+
+                                      Files Installed on Your System B-1
+
+ 
+
+
+
+        Files Installed on Your System
+
+
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]JASMINEUPC-LIGHT.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]KODCHIANGUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]KODCHIANGUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]KODCHIANGUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]KODCHIANGUPC-LIGHT.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]LILYUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]LILYUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]LILYUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]LILYUPC-LIGHT.
+              SYS$COMMON:[SYSMGR]LPS$TAILOR_TISCODE_FONT.TEMPLATE
+              SYS$COMMON:[SYSMGR]LPS$TEXTMORPHING.PS
+              SYS$COMMON:[SYSHLP]THAIPS010.RELEASE_NOTES
+              SYS$COMMON:[SYSLIB]TRN$TIS_NOSCM_PS.EXE
+              SYS$COMMON:[SYSLIB]TRN$TIS_SCM_PS.EXE
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]WATERLILYUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]WATERLILYUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]WATERLILYUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]WATERLILYUPC-LIGHT.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]YUCCAUPC-BOLD.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]YUCCAUPC-BOLDITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]YUCCAUPC-ITALIC.
+              SYS$COMMON:[SYSFONT.PSFONT.FONTS]YUCCAUPC-LIGHT.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        B-2 Files Installed on Your System

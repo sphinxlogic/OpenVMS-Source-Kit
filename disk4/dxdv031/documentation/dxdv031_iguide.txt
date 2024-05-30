@@ -1,0 +1,279 @@
+ 
+
+
+
+
+
+
+
+                     Digital X.500 Directory Service
+                     --------------------------------------------
+                     Installing on an OpenVMS VAX System
+
+                     Order Number: AV-PUCHG-TE
+
+
+                     Revision/Update Information: Version 3.1
+
+                     Checklist:
+
+                     1. Read the Read Before Installing document.
+
+                     2. Check prerequisite software, diskspace, and
+                        licenses.
+
+                     3. Install V3.1 of the Directory Service.
+
+                        Print the release notes and run the IVP during
+                        the installation.
+
+                     4. Edit SYSTARTUP_VMS.COM to submit the directory
+                        startup procedure during system startup.
+
+                     5. If upgrading or reinstalling, recustomize any
+                        customized files, specifically:
+
+                        The schema files (recompile the schema if you
+                        customize it)
+                        DXD$DSA_STARTUP.NCL
+                        DXD$TEMPLATE_STARTUP.NCL
+
+                        Other files that might have been customized in a
+                        previous version are saved during installation.
+                        See Saving Files on Reinstallation.
+
+                     6. Start the Directory Service.
+
+                     © Digital Equipment Corporation 1997. All
+                     Rights Reserved.
+
+                     The following are trademarks of Digital
+                     Equipment Corporation: DECnet, Digital,
+                     MAILbus 400, OpenVMS, VAX, and the DIGITAL logo.
+
+                     OSI is a registered trademark of CA
+                     Management, Inc.
+
+ 
+
+
+
+
+
+
+     Prerequisite Software
+
+           o  OpenVMS[TM] for VAX[TM] V6.1, or later
+
+           o  DECnet[TM]/OSI[R] V6.2 for OpenVMS VAX or later,
+              including the applications option
+
+     Information Required
+
+           Before installing, make sure you have the following
+           information:
+
+           o  The name of the device where the installation media
+              will be loaded.
+
+           o  The UIC to be assigned to the DXD$SERVER account.
+
+           o  The name of the disk where the DXD$SERVER directory is
+              to be created.
+
+           o  For clusters, the server node name. See Installing on
+              Clusters.
+
+     Disk Space, Resource, and Time Requirements
+
+           You need 40000 free blocks on the system device or
+           Alternate Working Device that you use for the instal-
+           lation. After installation, the components require disk
+           space permanently on the system disk. Some components
+           need global pages and sections. These requirements are
+           cumulative.
+
+           __________________________________________________________
+                                 Free       Global     Global
+           Component_____________Blocks_____Pages______Sections______
+
+           Base (mandatory       6000       1400       8
+           component)
+
+           Server                18000      -          -
+
+           Admin                 7000       1800       4
+
+           API                   1000       -          -
+
+           LUC___________________5000_______-__________-_____________
+
+           Before installing, ensure that the system resources allow
+           for all of the components you install, remembering that
+           the Base component is mandatory.
+
+     2
+
+ 
+
+
+
+
+
+
+              You are recommended to back up your system disk before
+              you begin the installation. Installation of all components
+              takes approximately 15 minutes.
+
+        Product Licenses
+
+              Before installation, register one or more of the following
+              licenses: X500-DIRECTORY-SERVER, X500-SERVER-USAGE, and
+              X500-ADMIN-FACILITY.
+
+        Release Notes and Read Before Installing Document
+
+              Read the release notes before installing the software. Use
+              VMSINSTAL OPTIONS N to print the release notes.
+
+              The product documentation includes a Read Before
+              Installing document, which you must also read.
+
+        Installing the Digital X.500 Directory Service
+
+              Log in to an account with SETPRV and type:
+
+              $ @SYS$UPDATE:VMSINSTAL DXDV031 device OPTIONS N
+
+              The installation procedure displays a menu. Select the
+              components that you want to install, and follow the
+              instructions. The Base component is mandatory on all
+              systems on which you want to run directory applications,
+              such as Digital's MAILbus 400 MTA. It is installed
+              automatically when you select any other component.
+
+              Note that, with the exception of the Base, components
+              you do not specify are deinstalled. You must specify all
+              components that you want on the system, including any that
+              are already present.
+
+        Handling Errors
+
+              If an error occurs during installation, check the
+              prerequisites and refer to Digital X.500 Directory Service
+              Problem Solving for details of installation problems.
+
+        Verifying the Installation
+
+              To verify the installation, run SYS$TEST:DXD$IVP.COM.
+
+                                                                       3
+
+ 
+
+
+
+
+
+
+     Tasks After Installation
+
+           Edit SYS$STARTUP:SYSTARTUP_VMS.COM to include the
+           following command line:
+
+           $ SUBMIT SYS$STARTUP:DXD$COMMON_STARTUP.COM
+
+           You also need to run that Directory Service startup file
+           before configuring the product as described in Digital
+           X.500 Directory Service Management.
+
+           If you are reinstalling or upgrading from a previous
+           version, then you might have old copies of customized
+           schema files. You need to incorporate your customizations
+           into the newly installed schema files, and recompile the
+           schema before starting the DSA. The Read Before Installing
+           document provides further information about upgrading.
+
+     Saving Files on Reinstallation
+
+           The installation procedure saves copies of the following
+           files if you reinstall the Directory Service.
+
+              SYS$COMMON:[SYS$STARTUP]DXD$DSA_STARTUP.NCL
+              SYS$COMMON:[SYS$STARTUP]DXD$DSA_STARTUP.COM
+              SYS$COMMON:[SYS$STARTUP]DXD$DSA_SHUTDOWN.NCL
+              SYS$COMMON:[SYS$STARTUP]DXD$TEMPLATE_STARTUP.NCL
+              DXD$DIRECTORY:DXD$ACI_TEMPLATE.DXIM
+
+           Each file is renamed by inserting _SAVn into the file
+           name, where n is a number.
+
+           If the installation procedure finds schema files, these
+           are moved to a subdirectory called SAVn, for example,
+           DXD$DIRECTORY:[DXD$SERVER.SAV1]. The procedure only moves
+           schema files that were installed by the Directory Service
+           product. Any schema files created by the customer are
+           unaffected.
+
+     Installing on Clusters
+
+           Only one node in a cluster can run the server. The
+           installation prompts you for the server node name, and
+           edits DXD$LOGICALS_STARTUP.COM to define a logical based
+           on your answer.
+
+     4
+
+ 
+
+
+
+
+
+
+              On a cluster that has multiple system disks (including
+              mixed architecture clusters), you must repeat the
+              installation for each system disk. All system disks must
+              run V3.1 of the Directory Service. You must install the
+              same components and specify the same server node during
+              each installation.
+
+              The installation registers the DXIM command. To make the
+              command available to all cluster nodes, use the following
+              command on each node:
+
+              $ INSTALL SYS$SHARE:DCLTABLES /REPLACE
+
+              If you prefer, you can use the SYSMAN utility for this
+              task.
+
+        Further Information
+
+              Digital X.500 Directory Service Problem Solving contains
+              a list of the files installed on your system, their
+              locations and approximate sizes. The guide also lists
+              errors that you might see during installation and
+              verification and explains what to do if they occur.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       5

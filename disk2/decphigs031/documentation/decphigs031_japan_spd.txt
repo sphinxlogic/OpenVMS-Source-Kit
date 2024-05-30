@@ -1,0 +1,909 @@
+ 
+
+
+
+
+
+
+Software
+Product
+Description
+
+_____________________________________________________________________________
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+   ソフトウェア仕様書
+
+仕様書の包含する範囲
+
+この文書は，DEC PHIGS for OpenVMS VAX（PHIGS: Programmer's Hierarchical
+Interactive Graphics System，プログラマ用階層対話型グラフィックス・システ
+ム）のソフトウェア仕様について述べたものです。
+
+1  DEC PHIGS for OpenVMS VAXの概要
+
+DEC PHIGS for OpenVMS VAXは，階層的グラフィックス・データの定義，変更，表示を
+制御する，高性能の3次元グラフィックス・サポート・システムです。DEC PHIGS for
+OpenVMS VAXは，集中化されたデータベースにあるグラフィックス・データの構成と表
+示の処理を行います。
+
+DEC PHIGS for OpenVMS VAXは，1988年のANSI/ISO PHIGS標準をもとにDEC社で開発さ
+れた装置に依存しない3次元グラフィックス用サブルーチン・パッケージです。ANSI
+/ISO PHIGS標準では，FORTRANバインディング，Cバインディングと呼ばれるFORTRANお
+よびC言語からのPHIGS関数の呼出し形式を定めています。DEC PHIGS for OpenVMS VAX
+は，この2つのバインディングと，OpenVMS VAXの関数呼出し形式に基づくPHIGS$バイ
+ンディングを提供しています。DEC PHIGS for OpenVMS VAXは，OpenVMS VAXオペレー
+ティング・システムの搭載されているDEC社のほとんどのプロセッサをサポートしてい
+ます。
+
+DEC PHIGS for OpenVMS VAXは，装置に依存しないため，同じプログラムをソース・コ
+ードの変更をせずに，異なった出力装置に表示することが可能です。DEC PHIGS for
+OpenVMS VAXのサポートするソフトウェアは，DECwindows，DECwindows Motif[R]と
+OpenVMS VAXワークステーション・ソフトウェアです。また，DEC PHIGS for OpenVMS
+VAXは，日本語DEC GKSのサポートするすべてのターミナルをサポートします。そし
+て，DEC PHIGS for OpenVMS VAXは，HP-GL[R]のプロッタシリーズとDEC社のシクセ
+ル・プリンタなどの，日本語DEC GKSのサポートするハードコピー装置のほとんどもサ
+ポートしています。
+
+DEC PHIGS for OpenVMS VAXは，リンクされるアプリケーション・プログラムに対する
+一連の共有可能なイメージとしてパックされているグラフィックス用サブルーチン・
+ライブラリです。共有可能なイメージは，実行時の必要なときに実行されます。
+
+DEC PHIGS for OpenVMS VAXは，PHIGS標準に加えてさらに，PHIGS/PLUSの機能とGM
+/EDS拡張機能を提供します。
+
+o  隠線・隠面消去
+   （Hidden line/hidden surface removal (HLHSR)）
+
+o  ライティング（Lighting），陰影付け（shading），透視深度（depth cuing）
+
+                                    DIGITAL                        1994年11月
+
+ 
+
+
+ DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ ソフトウェア仕様書
+
+
+o  付加基本要素
+
+   − 円（circles）
+
+   − 円弧（circular arcs）
+
+   − 三角形で構成した区画（triangle strips）
+
+   − 四辺形メッシュ（quadrilateral meshes）
+
+   − 指標多角形（indexed polygons）
+
+   − トリミングされたNURBと，トリミングされないNURB（non-uniformrational
+      B-splines）
+
+■実現されていない機能
+
+ANSI/ISO PHIGS標準の機能のうち，次の機能はDEC PHIGS for OpenVMS VAXでは実現さ
+れていません。
+
+o  モデリング・クリップ
+
+o  メタファイル
+
+o  セル配列
+
+o  パターン
+
+o  増分空間検索
+
+1.1  機能
+
+■ストラクチャ
+
+図形データを集中的，階層的に保持し，管理するために，ストラクチャと呼ばれるデ
+ータベースが用意されています。このストラクチャは，出力基本要素（折れ線，マー
+カ列など）,出力属性，ラベル，アプリケーション・データ，ネーム・セットの指定，
+座標変換の選択，ストラクチャ参照などのストラクチャ要素で構成されます。アプリ
+ケーション・プログラムは，これらの要素を随時編集できます。ストラクチャに保存
+された図形データは，ストラクチャ・トラバーサル機能により，グラフィックス装置
+に表示されます。ストラクチャ・トラバーサルとは，ストラクチャ要素を順番に解釈
+していくことです。
+
+即時実行モードと呼ばれる別のトラバーサル機能も提供されています。即時実行モー
+ドの場合，出力基本要素はストラクチャに置かれることなく，表示画面に直接送ら
+れ，表示されます。
+
+■ビュー操作
+
+DEC PHIGS for OpenVMS VAXは，"モデリング"座標系のなかでオブジェクトの定義を考
+慮に入れます。変換関数は，"世界"座標系のなかのもうひとつのオブジェクトに対し
+て，これらのオブジェクトを位置づけるために提供されます。世界座標は自由に拡大
+縮小することができます。たとえば，1つのアプリケーションが最大で0から1000.0ま
+での範囲をもつ一方で，もう1つのアプリケーションは0.01から0.1までの範囲に制限
+
+                                       2
+
+ 
+
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ソフトウェア仕様書
+
+
+することが可能です。DEC PHIGS for OpenVMS VAXは，世界座標から使用されている出
+力装置に適切な座標へ，自動的に変換します。
+
+ユーザは，同じオブジェクトの複数のビューを，同一画面上の異なった位置に同時に
+表示できるのと同様に，別の装置画面上に表示することができます。
+
+DEC PHIGS for OpenVMS VAXは，PHIGS標準のビューイング・モデルに加えて，
+"POSITING TO VIEWS"と呼ばれる代替機能を提供します。
+
+■制御機能
+
+PHIGSの初期化および終了，グラフィックス装置のオープン，クローズなどの制御機能
+があります。
+
+■出力機能
+
+2次元と3次元両方のグラフィックス要素をストラクチャ中に作成する機能を備えてい
+ます。出力機能の中には，ライティング，陰影付けに関する属性を付加できるものも
+あります。次に，これらの機能を示します。
+
+折れ線         −   指定した各座標点を線分で結ぶことにより，折れ線を表示す
+                    る。
+
+マーカ列       −   指定した各座標点にマーカを表示する。
+
+文字列         −   文字列を描く。文字を様々なフォントと向きで表示できる。文
+                    字の大きさは変換の影響を受ける（漢字フォント選択時には，
+                    漢字コードを指定できる）。
+
+領域           −   ホロー，または単一色かハッチで塗りつぶされた閉多角形領域
+                    を表示する。
+
+領域セット     −   閉多角形領域の集合を表示する。この出力基本要素では，辺の
+                    属性が変更できる。
+
+相対注釈文     −   常に読み取りが可能なように，X-Y平面に文字列を表示する。文
+字列                字を様々なフォントと向きで表示できる。文字の大きさは，変
+                    換の影響を受けないが，文字の出力位置は影響を受ける（漢字
+                    フォント選択時には，漢字コードを指定できる）。
+
+円と円弧       −   Z=0の平面において，円または円弧を表示する。
+
+三角形で構     −   一連の三角形を表示する。区画内の各三角形は，次の三角形と
+成した区画          一辺を共有する。
+
+
+
+
+                                       3
+
+ 
+
+
+ DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ ソフトウェア仕様書
+
+
+
+四辺形メッ     −   一連の四辺形を生成する。
+シュ
+
+指標多角形     −   頂点を共有する一連の多角形を生成する。
+
+NURB           −   Non-Uniform Rational B-spline。ユーザが指定した制御点と近
+                    似則により，3次元曲線または曲面を生成する。
+
+■属性
+
+各出力機能には，出力の見え方を制御する属性の集合があります。属性は，束表
+(bundle)と呼ばれるグループで定義したり，個別に定義したりすることができます。
+次に，属性の一例を示します。
+
+線種          −   点線や破線といった，線の種類を指定する。
+
+線幅          −   線幅を指定する。
+
+色            −   色の選択は，すでに定義されている色の中から選択するか，赤，
+                   緑，青の輝度を指定することによって行う。
+
+文字属性      −   文字の字間，字高，方向，配置，フォントの指定ができる。
+
+■入力機能
+
+次に示す６種類の入力装置に関して，同期および非同期の入力がサポートされていま
+す。
+
+位置入力      −   世界座標上の一点を得る。
+
+点列入力      −   世界座標上の連続した点を得る。
+
+実数値入力    −   特定の範囲内の実数値を得る。
+
+選択値入力    −   選択された整数値を得る（選択値の文字列に漢字コードを指定で
+                   きる）。
+
+文字列入力    −   文字列を得る（かな漢字変換による日本語入力ができる）。
+
+ピック入力    −   ピック・パス，ピック識別子と要素番号を返す。
+
+
+
+
+
+
+
+                                       4
+
+ 
+
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ソフトウェア仕様書
+
+
+■ネーム・セット
+
+ネーム・セットという概念があります。個々の出力基本要素には，ネーム・セットの
+メンバを割り当てることができます。これにより，強調性，可視性，ピックできるか
+どうかを判定します。たとえば，設計図において，ボイラのパイプすべてにネーム・
+セットの１メンバを割り当て，水道管に別のメンバを割り当てることができます。こ
+れにより，これらのパイプの集合をグループ単位で見えなくしたり，ピック可能にし
+たり，強調したりすることができます。
+
+■問い合わせ機能
+
+モジュール化された，装置独立性の高いアプリケーション・プログラムの作成を支援
+するために，ワークステーションの特性，PHIGSの状態などの各種の情報を問い合わせ
+る機能が提供されています。
+
+■PHIGSアーカイブ・ファイル
+
+作成したストラクチャのすべて，または一部を保存し，再利用するためのアーカイ
+ブ・ファイルというインターフェイスが提供されています。アーカイブ・ファイル
+は，次の目的のために使用されます。
+
+o  セッション間の図形情報の保存と読出し
+
+o  図形情報の複数の日本語DEC PHIGSアプリケーション間での共有
+
+o  関連しているグラフィックス以外の情報の格納
+
+■キャラクタ・フォント
+
+DEC PHIGS for OpenVMS VAXは，ストローク表示精度を持つ一連のキャラクタ・フォン
+トを提供します。
+
+■言語バインディング
+
+DEC PHIGS for OpenVMS VAX 関数は，5種類のサブルーチン呼び出し，またはPHIGS標
+準がそれらを参照するときのバインディングで利用できます。DEC PHIGS for OpenVMS
+VAXは以前のバージョンとの互換のために，ANSI/ISO標準の最終版に準拠したCバイン
+ディングと同時に，PHIGS Cバインディング標準のドラフト版に準拠したインターフェ
+イスを提供します。その他の3つのバインディングは，PHIGS標準のドラフト版に準拠
+したAdaバインディング，ISO PHIGS FORTRAN標準の最終版に準拠したFORTRANバインデ
+ィング，そしてOpenVMS VAX標準の関数呼び出しに準拠し，様々なプログラミング言語
+から呼び出し可能なDEC社特有のPHIGS$インターフェイスです。
+
+ユーザは，FORTRAN，CおよびAdaバインディングを使うことによって，FORTRAN，Cまた
+はAda言語で書かれたPHIGSのアプリケーションを，PHIGS，FORTRAN，CまたはAdaバイ
+ンディングに準拠したイメージの実現する他のオペレーティング・システムに移植す
+ることが可能です。いくつかのアプリケーションでは，C言語バインディングの呼び出
+しを，他の言語の呼び出しと混在させて使うことはできません。
+
+                                       5
+
+ 
+
+
+ DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ ソフトウェア仕様書
+
+
+■グラフィック・ハンドラ
+
+DEC PHIGS for OpenVMS VAXは，種々のグラフィック装置をサポートしています。さら
+に，ユーザはDEC GKS 2次元デバイス・ハンドラ・インターフェイスを経由して，DEC
+社のサポートしていない装置独自のグラフィック・ハンドラを開発することが可能で
+す。詳細については，『Building a DEC GKS Device Handler System』をお読みくだ
+さい。デバイス・ハンドラは，VAX FORTRAN，VAX CまたはVAX Pascalを使って開発す
+ることができます。
+
+■CGM（Computer Graphics Metafile）出力
+
+DEC PHIGS for OpenVMS VAXは，CGMを使って情報を保存する方法を提供します。情報
+は，ANSIで定められたCGM（ANSI X3.122-1986）の形式で格納できます。DEC PHIGS
+for OpenVMS VAXは，次の3通りのCGM出力形式を提供します。日本語出力機能はサポー
+トしていません。
+
+o  Clear Text Encoding
+
+この出力形式は，一般的なテキスト・エディタで簡単に作成，参照，修正できるよう
+な形式でグラフィックス出力データを保存します。これはまた，テキスト・ファイル
+形式のファイルしかサポートしないネットワークを介してのデータ転送に適していま
+す。
+
+o  Character Encoding
+
+この出力形式は，グラフィックス出力データを最小のファイル・サイズで保存するた
+めの形式です。これは，バイナリ・データ形式のファイル転送をサポートしないネッ
+トワークを介してのデータ転送に適しています。
+
+o  Binary Encoding
+
+この出力形式は，グラフィックス出力データをコンパクトに保存し，データを効率よ
+く読み書きするのに適した形式です。しかしながら，この形式は，各々のバイトの８
+ビットがすべて意味を持つため，コミュニケーション・ラインを介した転送には適し
+ていません。
+
+■ランタイム専用ライセンス
+
+DEC PHIGS for OpenVMS VAXは，DEC PHIGS for OpenVMS VAXを利用して開発されたグ
+ラフィックス・アプリケーションを実行するための，ランタイム専用オプションを提
+供します。ランタイム専用ライセンスでは，新しいアプリケーションは作成すること
+はできませんが，既存のアプリケーションを実行することは可能です。
+
+2  必要なハードウェア
+
+適用プロセッサ
+
+VAX:        VAXftモデル110,
+            VAXftモデル310,
+            VAXftモデル410,
+
+                                       6
+
+ 
+
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ソフトウェア仕様書
+
+
+
+            VAXftモデル610,
+            VAXftモデル612
+
+            VAX 4000モデル100,
+            VAX 4000モデル200,
+            VAX 4000モデル300,
+            VAX 4000モデル400,
+            VAX 4000モデル500,
+            VAX 4000モデル600
+
+            VAX 6000モデル200シリーズ,
+            VAX 6000モデル300シリーズ,
+            VAX 6000モデル400シリーズ,
+            VAX 6000モデル500シリーズ,
+            VAX 6000モデル600シリーズ
+
+            VAX 7000モデル600シリーズ
+
+            VAX 8200, VAX 8250, VAX 8300,
+            VAX 8350, VAX 8500, VAX 8530,
+            VAX 8550, VAX 8600, VAX 8650,
+            VAX 8700, VAX 8800, VAX 8810,
+            VAX 8820, VAX 8830, VAX 8840
+
+            VAX 9000モデル110,
+            VAX 9000モデル210,
+            VAX 9000モデル300シリーズ,
+            VAX 9000モデル400シリーズ
+
+
+            VAX 10000モデル600シリーズ
+
+            VAX-11/750, VAX-11/780,VAX-11/785
+
+MicroVAX：  MicroVAX II, MicroVAX 2000,
+            MicroVAX 3100モデル10/10E,
+            MicroVAX 3100モデル20/20E,
+            MicroVAX 3100モデル30/40,
+            MicroVAX 3100モデル80,
+            MicroVAX 3100モデル90,
+            MicroVAX 3300, MicroVAX 3400,
+            MicroVAX 3500, MicroVAX 3600,
+            MicroVAX 3800, MicroVAX 3900
+
+
+
+
+                                       7
+
+ 
+
+
+ DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ ソフトウェア仕様書
+
+
+
+VAXstation：VAXstation II, VAXstation 2000,
+            VAXstation 3100モデル30/40,
+            VAXstation 3100モデル38/48,
+            VAXstation 3100モデル76,
+            VAXstation 3200, VAXstation 3500,
+            VAXstation 3520, VAXstation 3540,
+            VAXstation 4000 VLC,
+            VAXstation 4000モデル60,
+            VAXstation 4000モデル90
+
+VAXserver： VAXserver 3100,VAXserver 3300,
+            VAXserver 3400,VAXserver 3500,
+            VAXserver 3600,VAXserver 3602,
+            VAXserver 3800,VAXserver 3900
+
+            VAXserver 4000モデル200,
+            VAXserver 4000モデル300,
+            VAXserver 4000モデル500
+
+            VAXserver 6000モデル210,
+            VAXserver 6000モデル220,
+            VAXserver 6000モデル310,
+            VAXserver 6000モデル320,
+            VAXserver 6000モデル410,
+            VAXserver 6000モデル420,
+            VAXserver 6000モデル510,
+            VAXserver 6000モデル520,
+            VAXserver 6000モデル610,
+            VAXserver 6000モデル620,
+            VAXserver 6000モデル630
+
+適用されないプロセッサ
+
+VAXstation I, MicroVAX I, VAX-11/725, VAX-11/730, VAX-11/782, VAXstation 8000
+
+プロセッサ制限事項プロセッサ
+
+スタンドアロンのMicroVAX 2000システムとVAXstation 2000システムには，TK50テー
+プ・ドライブが必要です。
+
+必要なディスク容量
+
+（Block Cluster Size=1の場合）
+
+
+
+
+                                       8
+
+ 
+
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ソフトウェア仕様書
+
+
+o  開発用キットの場合
+
+   《インストール時》    約70,000ブロック
+   Adaオプション付き     約90,000ブロック
+
+   《システム運用時》    約65,000ブロック
+   Adaオプション付き     約85,000ブロック
+
+o  ランタイム用キット（RTO）の場合
+
+   《インストール時》    約34,000ブロック
+
+   《システム運用時》    約29,000ブロック
+
+これらのディスク容量は，システム・ディスク上で必要となるディスク領域を表した
+ものであり，概数です。実際の値は，システムの環境，構成，ソフトウェア・オプシ
+ョンに応じて異なります。
+
+日本語DECwindowsおよび日本語DECwindows Motif[R]のサポートに必要なメモリ
+
+クライアントとサーバが同一のシステム上で実行されている，スタンドアロンの日本
+語DECwindowsまたは日本語DECwindows Motif環境でDEC PHIGS for OpenVMS VAXを実行
+する場合，最小のサポート・メモリは24Mバイトです。
+
+日本語DECwindowsおよび日本語DECwindows Motifアプリケーションの性能とメモリ使
+用量は，システムの構成によってかなり異なります。サーバ（アプリケーションを表
+示する構成要素）が別のシステムに常駐している場合，クライアント・システム（ソ
+フトウェアがインストールされ，実行されるシステム）が必要とするメモリは少なく
+てすみます。複数のアプリケーションが実行されているシステムでは，より多くのメ
+モリを必要とします。また，アプリケーションの性能を向上させたい場合にも，より
+多くのメモリが必要になります。
+
+3  オプション・ハードウェア
+
+DEC PHIGS for OpenVMS VAXは，次に示す各種の会話型装置をサポートしています。グ
+ラフィックス出力をするには，次の装置の少なくとも1つが必要です。
+
+o  ワークステーション
+
+   − すべてのDEC製ワークステーションをサポートします（このSPDの"適用プロセッ
+      サ"の項を参照してください）。
+
+o  ターミナル
+
+   − VT240白黒モニタ
+
+   − VT241カラー・モニタ
+
+   − VT330白黒モニタ
+
+   − VT340カラー・モニタ
+
+   − TEKTRONIX[R] 4014 (オプション34または同等品付き)
+
+                                       9
+
+ 
+
+
+ DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ ソフトウェア仕様書
+
+
+   − TEKTRONIX 4107ターミナル
+
+   − TEKTRONIX 4207ターミナル
+
+   − TEKTRONIX 4129ターミナル
+
+DEC PHIGS for OpenVMS VAXは，DECwindowsまたはDECwindows Motifのデバイス・ハン
+ドラとともに使用する場合に限り，次の入力装置をサポートします。
+
+o  Graphics Peripheral Set
+   （32ファンクション・キー・ボックスおよび6ダイアル・ボックス）
+
+DEC PHIGS for OpenVMS VAXは，次に示す各種のハードコピー出力装置と互換性のある
+装置をサポートしています。
+
+o  シクセル・プリンタ
+
+   − Digital LN03（LN03S-UA付き）
+
+   − Digital LN03 PLUSレーザ・プリンタ
+
+   − DEClaser 2100レーザ・プリンタ
+
+   − DEClaser 2150レーザ・プリンタ
+
+   − DEClaser 2200レーザ・プリンタ
+
+   − DEClaser 2250レーザ・プリンタ
+
+   − Digital LA100
+
+   − Digital LA75
+
+   − Digital LA50（グラフィックス・アスペクト比率2:1）
+
+   − Digital LA324（カラー・シクセル・プリンタ）
+
+   − Digital漢字レーザ・プリンタLN03S-JA
+
+o  HP-GL[R]（Hewlett-Packard[R] Graphics Language）装置
+
+   − Digital LVP16ペン・プロッタ
+
+   − HP[R]7475 Hewlett-Packardペン・プロッタ
+
+   − HP7550 Hewlett-Packardペン・プロッタ
+
+   − HP7580 Hewlett-Packardペン・プロッタ
+
+   − HP7585 Hewlett-Packardペン・プロッタ
+
+   − LASERGRAPHICS MPS-2000 [TM]フィルムレコーダ
+
+o  インク・ジェット・プロッタ
+
+   − Digital LCG01カラー・インク・ジェット・プロッタ（ReGIS）
+
+   − Digital LJ250（カラー・シクセル）
+
+                                      10
+
+ 
+
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ソフトウェア仕様書
+
+
+o  PostScript[R]装置
+
+   − Digital LPS20レーザ・プリンタ
+
+   − Digital LPS40レーザ・プリンタ
+
+   − Digital LN03R ScriptPrinterレーザ・プリンタ
+
+   − DEClaser 1150
+
+   − DEClaser 2150, 2250
+
+   − 日本語turboPrintServer（Digital LPS20-GJ）
+
+   − 日本語PrintServer 40（Digital LPS40-AJ）
+
+   − 日本語PrintServer 40 Plus（Digital LPS40-DJ）
+
+   − Apple[R] LaserWriter[R]
+
+   − Apple LaserWriter Plus
+
+   − Apple LaserWriter II NTX-J
+
+4  クラスタ環境
+
+本レイヤード・プロダクトは，正規のライセンスを持つVAXcluster構成上にインスト
+ールされている場合，
+機能上の制限を受けません。本ソフトウェアで必要とされるハードウェアについて
+は，必要なハードウェアの最小構成の項に記述されているとおりです。
+
+*  バージョン5.xのVAXcluster構成については，VAXclusterの『Software Product
+   Description（SPD 29.78.xx）』に詳しく説明されています。また，この構成には
+   CI，EthernetおよびMixed Interconnect構成が含まれます。
+
+5  必須ソフトウェア
+
+o  ターミナル使用のシステムの場合
+   （日本語DECwindowsインターフェイスなし）
+
+   − 日本語OpenVMS VAXオペレーティング・システムV5.5-2以降
+
+o  日本語OpenVMS VAXワークステーション・ソフトウェアの搭載されたワークステー
+   ションの場合
+
+   − 日本語OpenVMS VAXオペレーティング・システムV5.5-2以降
+
+   − 日本語OpenVMS VAXワークステーション・ソフトウェアV4.4
+
+o  日本語OpenVMS VAX DECwindowsの搭載されたワークステーションの場合
+
+   − 日本語OpenVMS VAXオペレーティング・システムV5.5-2以降
+      （および日本語OpenVMS VAX DECwindowsの必要な構成要素）
+
+                                      11
+
+ 
+
+
+ DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ ソフトウェア仕様書
+
+
+o  日本語OpenVMS VAX DECwindows Motifの搭載されたワークステーションの場合
+
+   − 日本語OpenVMS VAXオペレーティング・システムV5.5-2以降
+      （および日本語OpenVMS VAX DECwindowsの必要な構成要素）
+
+   − 日本語OpenVMS VAX DECwindows Motif V1.2
+
+DEC PHIGS for OpenVMS VAXアプリケーションは，次のいずれの方法でも実行できま
+す。
+
+o  スタンドアロンでの実行
+
+   − X11ディスプレイ・サーバとクライアント・アプリケーションを同一マシン上で
+      実行する
+
+o  リモートでの実行
+
+   − X11ディスプレイ・サーバとクライアント・アプリケーションを別のマシン上で
+      実行する
+
+日本語OpenVMS VAX DECwindowsは，日本語OpenVMS VAXオペレーティング・システムの
+一部で，日本語OpenVMS VAXとは別にインストールしてください。日本語OpenVMS VAX
+DECwindowsをインストールすると，次の4つの構成要素のいくつか，またはすべてをイ
+ンストールすることのできるオプションを得ることができます。
+
+o  OpenVMS VAX DECwindows Device Support
+
+o  OpenVMS VAX DECwindows Applications
+
+o  OpenVMS VAX DECwindows Programming Support
+
+o  OpenVMS VAX DECwindows Example Files
+
+日本語OpenVMS VAX DECwindowsの搭載されたワークステーション上でスタンドアロン
+で実行する場合は，次の日本語DECwindowsの構成要素がマシンにインストールされて
+いる必要があります。
+
+o  OpenVMS VAX DECwindows Device Support
+
+o  OpenVMS VAX DECwindows Applications
+
+o  OpenVMS VAX DECwindows Programming Support
+
+日本語OpenVMS VAX DECwindowsの搭載されたワークステーション上でリモートで実行
+する場合は，次の日本語DECwindowsの構成要素がそれぞれのマシンにインストールさ
+れている必要があります。
+
+o  サーバ・マシンの場合
+
+   − OpenVMS VAX DECwindows Device Support
+
+   − OpenVMS VAX DECwindows Applications
+
+o  クライアント・マシンの場合
+
+   − OpenVMS VAX DECwindows Device Support
+
+                                      12
+
+ 
+
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ソフトウェア仕様書
+
+
+   − OpenVMS VAX DECwindows Applications
+
+   − OpenVMS VAX DECwindows Programming Support
+
+日本語OpenVMS VAX DECwindows Motifの搭載されているワークステーションの場合
+に，スタンドアロンで実行したり，リモートでサーバ・マシンやクライアント・マシ
+ンを実行したりするときには，次の日本語DECwindowsの構成要素がそれぞれのマシン
+にインストールされている必要があります。
+
+o  OpenVMS VAX DECwindows Device Support
+
+また，日本語OpenVMS VAX DECwindows Motifワークステーション上でリモートで実行
+する場合は，日本語OpenVMS VAX DECwindows Motifがクライアントとサーバにインス
+トールされていなければなりません。
+
+DEC PHIGS for OpenVMS VAXを使用してアプリケーション・プログラムを開発するに
+は，DEC PHIGS for OpenVMS VAXのサポートする言語が必要です。
+
+6  OpenVMS VAXテーラリング
+
+OpenVMS VAXバージョン5.xのシステムで，本レイヤード・プロダクトの全機能を得る
+には次のOpenVMS VAX構成要素が必要です。
+
+o  OpenVMS Required Saveset
+
+o  Network Support
+
+o  Programming Support
+
+OpenVMS VAXのクラスおよびテーラリングについては，OpenVMS VAXオペレーティン
+グ・システムの『Software Product Description（SPD 25.01.xx）』を参照してくだ
+さい。
+
+7  オプション・ソフトウェア
+
+o  DEC FORTRAN V5.8
+
+o  DEC Ada V3.0A-10
+
+o  VAX Pascal V4.3
+
+o  VAX C V3.2
+
+o  VAX PL/I V3.5
+
+o  VAX BASIC V3.5
+
+*  これらの製品のバージョンはオペレーティング・システムのバージョンに依存して
+   います。必要なバージョンについては，各製品のソフトウェア仕様書(SPD)を参照
+   してください。
+
+                                      13
+
+ 
+
+
+ DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ ソフトウェア仕様書
+
+
+8  バージョンアップの考慮
+
+本製品の将来のバージョンでは，必要なハードウェアおよびソフトウェアの最小構成
+が変更されることがあります。
+
+9  提供媒体
+
+テープ:     9トラック1600 BPI磁気テープ，
+
+            TK50ストリーム・テープ
+
+
+10  注文情報
+
+最寄りの日本DECの各支店／営業所にお問い合わせください。
+
+11  ソフトウェア・ライセンス
+
+本ソフトウェアは日本DEC標準販売約款中のライセンス規定に基づいて提供されます。
+
+日本DECのライセンス条件とその方針についての詳細は，最寄りの日本DECの各支店／
+営業所にお問い合わせください。
+
+12  ライセンス管理機能
+
+本ソフトウェアはOpenVMS VAXライセンス管理機能（LMF）をサポートしています。
+
+開発用キットのライセンス単位には，無制限ユーザ・システムとパーソナル・ユース
+があります。ランタイム用キットのライセンス単位には，無制限ユーザ・システムと
+コンカレント・ユースがあります。
+
+パーソナル・ユースでは，登録された一人のみが利用できます。コンカレント・ユー
+スでは，規定された人数内で同時にだれでも利用できます。
+
+ライセンス管理機能についての詳細は，OpenVMS Operating Systemの『Software
+Product Description（SPD 25.01.xx）』またはOpenVMS Operating Systemのドキュメ
+ント・セットの中の『License Management Utility Manual』を参照してください。
+
+13  ソフトウェア製品サービス
+
+日本DECでは，様々なサービス・オプションを提供しています。詳細については，最寄
+りの日本DEC各支店／営業所にお問い合わせください。
+
+
+
+
+
+
+                                      14
+
+ 
+
+
+DEC PHIGS V3.0 for OpenVMS VAX                                   SPD 25.T8.06
+ソフトウェア仕様書
+
+
+14  保証
+
+本ソフトウェアについては，日本DEC所定のソフトウェア保証基準に定められた保証が
+提供されます。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_______________________
+
+  [R] AppleおよびLaserWriterは米国Apple Computer社の商標です。
+  [R] PostScriptはAdobe System Incorporated (アドビ<spc>システムズ社)の商標で
+
+      す。
+  [R] Hewlett-Packard，HPおよびHP-GLは米国Hewlett-Packard社の商標です。
+
+  [R] MotifはOpen Software Foundation社の商標です。
+
+  [R] TEKTRONIXおよびTekは米国Tektronix社の商標です。
+
+ [TM] LASERGRAPHICS MPS-200は米国Laser Graphics社の商標です。
+
+                                      15

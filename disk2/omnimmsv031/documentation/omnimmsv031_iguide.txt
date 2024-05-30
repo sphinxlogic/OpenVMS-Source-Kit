@@ -1,0 +1,2145 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    DEComni_MMS_for_OpenVMS_____________________________
+                    Installation Guide
+
+                    Order Number: AA-QH1RB-TE
+
+
+                    April 1997
+
+                    This manual describes the pre-requisites and
+                    procedures for installing the DEComni Manufacturing
+                    Message Specification (MMS) software on OpenVMS
+                    platforms.
+
+
+
+
+
+
+
+                    Revision/Update:              This is a new document
+                                                  for the current
+                                                  release.
+
+                    Operating System:             OpenVMS Version 6.1,
+                                                  6.2, 7.0, 7.1
+
+                    Software Version:             DEComni MMS Version 3.1
+
+                    Digital Equipment Corporation
+                    Maynard, Massachusetts
+
+ 
+
+
+
+
+
+
+          ________________________________________________________________
+          First printing, July 1996
+          Revised, April 1997
+
+          © Digital Equipment Corporation 1997.
+
+          Possession, use, or copying of the software described in
+          this documentation is authorized only pursuant to a valid
+          written license from DIGITAL or an authorized sublicensor.
+
+          Digital Equipment Corporation makes no representations
+          that the use of its products in the manner described in
+          this publication will not infringe on existing or future
+          patent rights, nor do the descriptions contained in this
+          publication imply the granting of licenses to make, use,
+          or sell equipment or software in accordance with the
+          description.
+
+          The postpaid Reader's Comments forms at the end of this
+          document request your critical evaluation to assist in
+          preparing future documentation.
+
+          The following are trademarks of Digital Equipment
+          Corporation: Alpha AXP, BASEstar, DEC, DECmessageQ,
+          DECnet, DECnet-DOS, DECosap, DEComni, DIGITAL, DIGITAL
+          UNIX, FMS, LN03, MicroVAX, NAS, OpenVMS, OpenVMS Alpha,
+          PATHWORKS, PDAS, Rdb/VMS, ReGIS, ThinWire, TK, ULTRIX, VAX,
+          VAXcluster, VAX COBOL, VAX FORTRAN, VAX Pascal, VAX RMS,
+          VMS/ULTRIX Connection, VT, and the DIGITAL logo.
+
+          The following are third-party trademarks:
+
+          Excel is a registered trademark of Microsoft Corporation.
+          IBM is a registered trademark of IBM Corp.
+          INGRES is a trademark of Ingres Corp.
+          LOTUS 1-2-3 is a registered trademark of Lotus Development
+          Corp.
+          MS, Microsoft, and MS-DOS are registered trademarks of
+          Microsoft Corporation.
+          Network File System and NFS are trademarks of Sun
+          Microsystems, Inc.
+          ORACLE is a trademark of Oracle Corp.
+          PostScript is a registered trademark of Adobe Systems
+          Incorporated.
+          SINEC AP, SINEC H1, SICOMP, Simatic, SINEC, SINUMERIK and
+          SIROTEC are registered trademarks of Siemens, AG.
+          UNIX is a registered trademark licensed exclusively by X
+          /Open Company Ltd.
+          Windows, Windows NT and Windows 95 are trademarks of
+          Microsoft Corporation.
+          Wonderware InTouch is a registered trademark of Wonderware
+          Corporation.
+          X/Open is a registered trademark of the X/Open Company
+          Limited
+
+          This document was prepared using VAX DOCUMENT, Version 2.1.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _________________________________________________________________
+
+                                                           Contents
+
+
+
+  Preface...................................................      v
+
+  1  Pre-installation Requirements
+
+     1.1  System Hardware Requirements.....................     1-1
+     1.2  System Software Requirements.....................     1-2
+     1.3  License Registration.............................     1-2
+     1.4  Installation Time................................     1-3
+     1.5  Installation Privileges..........................     1-3
+     1.6  Required Disk Space..............................     1-3
+     1.7  System Parameters and Settings...................     1-4
+     1.7.1   Displaying System Parameters ..................    1-4
+     1.7.2   Changing GBLPAGES and GBLSECTIONS with
+             AUTOGEN........................................    1-4
+     1.8  Installation Account Process Quotas..............     1-5
+     1.9  Backing Up the System Disk.......................     1-6
+
+  2  Installing DEComni MMS on OpenVMS Systems
+
+     2.1  Installation Considerations......................     2-1
+     2.1.1   VMSINSTAL Requirements ........................    2-1
+     2.1.2   VMSINSTAL Error Messages ......................    2-1
+     2.1.3   Stopping the Installation .....................    2-2
+     2.1.4   Accessing the Release Notes ...................    2-2
+     2.2  Installation Procedure...........................     2-2
+     2.2.1   Invoking VMSINSTAL ............................    2-3
+     2.2.2   Installation Process ..........................    2-3
+
+
+
+
+
+
+
+                                                                iii
+
+ 
+
+
+
+
+
+
+
+    3  Post-installation Requirements
+
+        3.1  Starting DEComni MMS.............................    3-1
+        3.2  Running the Installation Verification Procedure..    3-2
+        3.3  Linking a DEComni MMS Application................    3-3
+        3.4  User Account Quotas..............................    3-3
+        3.5  User Account Privileges..........................    3-4
+        3.6  Stopping DEComni MMS.............................    3-4
+
+    A  Files Added During Installation
+
+    B  Installation Dialogue Sample
+
+
+    Glossary of DEComni Terms
+
+    Index
+
+
+    Tables
+
+        3-1    Resolving DEComni MMS IVP Failures ............    3-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    iv
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                                  Preface
+
+
+
+              This document covers the installation of the DEComni
+              Manufacturing Message Specification (MMS) software on a
+              OpenVMS system. Keep this document with your distribution
+              kit. You may need it to install maintenance updates or to
+              reinstall the DEComni MMS software.
+
+              For more information about DEComni MMS features and
+              functions, refer to the DEComni MMS Software Product
+              Description (SPD) in your software distribution kit.
+
+        Intended Audience
+
+              This document is for system and network managers and
+              Digital personnel who are responsible for planning or
+              performing installations of the DEComni MMS software on
+              a OpenVMS system.
+
+        Document Structure
+
+              This manual is organized as follows:
+
+              o  Chapter 1, Pre-installation Requirements, describes
+                 the hardware and software requirements that must be met
+                 before you can install the DEComni MMS software.
+
+              o  Chapter 2, Installing DEComni MMS on OpenVMS Systems,
+                 describes the system environment required to install and
+                 run the DEComni MMS software. The chapter also provides
+                 the DEComni MMS installation procedures and guidelines.
+
+              o  Chapter 3, Post-installation Requirements, describes how
+                 to start or stop the DEComni MMS installation process
+                 and to access the release notes after the installation.
+                 The chapter also provides more information about the
+                 installed product.
+
+                                                                        v
+
+ 
+
+
+
+
+
+
+
+          o  Appendix A, Files Added During Installation, lists
+             directories and files added to the system during the
+             installation process.
+
+          o  Appendix B, Installation Dialogue Sample, provides a
+             sample installation dialogue.
+
+          o  The Glossary of DEComni Terms defines the terms used
+             in this document or in reference to the DEComni product
+             set.
+
+    Associated DEComni Documents
+
+          The following documents provide detailed information about
+          using DEComni API:
+
+          o  DEComni API and DEComni MMS User Guide
+
+          o  Guide to Using Omni Directory Services
+
+          o  DEComni API Guide to Using OmniView
+
+          o  DEComni API Omni Definition Facility User Guide
+
+    Related ISO/IEC Documents
+
+          The following documents provide information about the ISO
+          /IEC standard Manufacturing Message Specification (MMS):
+
+             Industrial Automation Systems - Manufacturing Message
+             Specification Service Definition, ISO/IEC 9506-1
+             Industrial Automation Systems - Manufacturing Message
+             Specification Protocol Specification, ISO/IEC 9506-2
+
+    Related System Documents
+
+          See your OpenVMS documentation for information about
+          software installation and licensing procedures.
+
+          The following documents are part of the OpenVMS
+          documentation set:
+
+          o  OpenVMS License Management Utility Manual
+
+          o  OpenVMS System Manager's Manual
+
+          o  OpenVMS System Management Utilities Reference Manual:
+             A-M
+
+    vi
+
+ 
+
+
+
+
+
+
+
+              o  OpenVMS System Management Utilities Reference Manual:
+                 N-Z
+
+        Conventions
+
+              This manual uses the following conventions:
+
+              ___________________________________________________________
+              Convention____Meaning______________________________________
+
+              DEComni       The term "DEComni" refers to the DEComni MMS
+                            product or to functions and services provided
+                            by the DEComni software.
+
+              OpenVMS       The term "OpenVMS" refers to OpenVMS products
+                            or to operations and functions performed by
+                            the OpenVMS operating system.
+
+              $             The dollar sign is the default OpenVMS system
+                            prompt for user input.
+
+              UPPERCASE,    The system differentiates between uppercase
+              lowercase     and lowercase characters. Literal strings
+                            that appear in descriptions, examples, or
+                            command syntax must be entered exactly as
+                            shown.
+
+              Boldface      Boldface type emphasizes user input to system
+              Type          prompts.
+
+              system        This typeface indicates system output in
+              output        interactive examples.
+
+              [ ]           Square brackets are part of the directory
+                            specification [directory_name] on OpenVMS
+                            systems.
+
+              <Ctrl>/<x>    Hold down the <Ctrl> key while you press
+                            another key, indicated here by <x>.
+
+              n             A lowercase italic n indicates the generic
+                            use of a number.
+
+              x             A lowercase italic x indicates the generic
+                            use of a letter.
+
+              italic type   Italic type emphasizes important or unique
+                            information or the complete titles of
+                            documents.
+
+                                                                      vii
+
+ 
+
+
+
+
+
+
+          ___________________________________________________________
+          Convention____Meaning______________________________________
+
+          .             Vertical ellipses (dots) in examples
+          .             represent data that has been omitted for
+          ._____________clarity._____________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    viii
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        1
+        _________________________________________________________________
+
+                                            Pre-installation Requirements
+
+
+              This chapter lists the minimum system hardware and software
+              environment required to install and run the DEComni
+              Manufacturing Message Specification (MMS) software.
+
+              Verify that your installation kit contains all items
+              listed on the Bill of Materials (BOM). Contact your Digital
+              representative if there are any problems or missing items.
+
+              The software distribution kit typically contains the
+              following items:
+
+              o  Installation media (CD-ROM) containing the DEComni MMS
+                 installation software
+
+              o  Product Authorization Key (PAK) for registering the
+                 DEComni MMS software
+
+              o  DEComni MMS installation and user documentation
+
+              o  Online release notes are included on the installation
+                 media. Directions for accessing the release notes are
+                 provided in Section 2.1.4.
+
+                ________________________ Note ________________________
+
+                Digital recommends that you read the release notes
+                before installing or running the DEComni MMS software.
+
+                ______________________________________________________
+
+        1.1 System Hardware Requirements
+
+              Your system must meet the hardware requirements specified
+              in the DEComni MMS Software Product Description (SPD).
+
+
+                                                                      1-1
+
+ 
+
+
+
+
+
+
+
+    1.2 System Software Requirements
+
+          Your system must be running the following software
+          versions:
+
+          o  OpenVMS Version 6.1, 6.2, 7.0 or 7.1
+
+          o  DECnet/OSI for OpenVMS Version 6.3 to 7.1
+
+          o  OSAK Version 3.0
+
+          o  DEComni API for OpenVMS Version 3.1
+
+          Pre-requisite software and versions can change. For the
+          latest pre-requisite information, see the current DEComni
+          MMS Software Product Description (SPD).
+
+          The following command displays the OpenVMS system version
+          you are running:
+
+          $ WRITE SYS$OUTPUT F$GETSYI("VERSION")
+
+    1.3 License Registration
+
+          You must use the License Management Facility (LMF) to
+          register the DEComni MMS software license in accordance
+          with the license agreement signed for your site before
+          you can run either the Installation Verification Procedure
+          (IVP) or the software. License registration information
+          is included in the Product Authorization Key (PAK) that
+          is shipped with the DEComni software. The PAK contains
+          licensing information that should be registered before you
+          start the installation.
+
+          To register the license, log into the SYSTEM account
+          and set your default to SYS$UPDATE. You can register
+          the license under LMF using either of the following two
+          methods:
+
+          o  Invoke the following procedure and enter the data
+             supplied by the PAK:
+
+             $ SYS$UPDATE:VMSLICENSE.COM
+
+          o  Enter the following command, using the qualifiers that
+             specify the data supplied by the PAK:
+
+             $ LICENSE REGISTER DECOMNI-MMS/qualifier,...
+
+    1-2
+
+ 
+
+
+
+
+
+
+
+              If you plan to use the DEComni software on more than one
+              node of a VAXcluster system, you must load the license on
+              each of the other nodes after you have completed this one.
+
+              See the OpenVMS License Management Utility Manual for more
+              information about using LMF.
+
+        1.4 Installation Time
+
+              Installing DEComni MMS from CD-ROM and running the
+              Installation Verification Procedure (IVP) on your target
+              system takes approximately 3 to 4 minutes, depending on
+              the system and media configuration. Installation can take
+              longer on a system that is dependent on network activity
+              during the installation.
+
+        1.5 Installation Privileges
+
+              You require either the SETPRV privilege or all of the
+              following privileges:
+
+                 CMKRNL
+                 WORLD
+                 SYSPRV
+
+              The following command verifies your installation
+              privileges:
+
+              $ SHOW PROCESS /PRIVILEGES
+
+        1.6 Required Disk Space
+
+              The following free disk space is required on OpenVMS
+              systems:
+
+              ___________________________________________________________
+              Blocks to     Blocks to
+              Install_______Run__________________________________________
+
+              20,000________10,000_______________________________________
+
+              The following command verifies the available disk space:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+                                                                      1-3
+
+ 
+
+
+
+
+
+
+
+    1.7 System Parameters and Settings
+
+          The DEComni MMS installation requires specific system
+          parameter settings.
+
+    1.7.1 Displaying System Parameters
+
+          The following minimum system parameter values are
+          required for the installation and to accommodate the space
+          requirements for DEComni data structures:
+
+             FREE_GBLPAGES = 3000 (VAX) or 5000 (Alpha)
+             FREE_GBLSECTS = 5
+
+          You can determine the current number of free global pages
+          and free global sections with the following commands:
+
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+
+          $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+
+          The system displays the current values associated with the
+          FREE_GBLPAGES and FREE_GBLSECTS parameter.
+
+          For additional information about these parameters, or for
+          help when verifying the values, see the OpenVMS System
+          Manager's Manual for information about the OpenVMS System
+          Generation Utility (SYSGEN).
+
+          o  If you need to change one or more system parameters,
+             continue with Section 1.7.2.
+
+          o  If you do not need to change system parameters, proceed
+             to Section 1.8.
+
+    1.7.2 Changing GBLPAGES and GBLSECTIONS with AUTOGEN
+
+          If you need to change the number of global pages or global
+          sections, invoke AUTOGEN after you have entered the new
+          parameter values in the SYS$SYSTEM:MODPARAMS.DAT file.
+          AUTOGEN adjusts values for the parameters associated with
+          the values that you reset manually.
+
+          To change system parameters with AUTOGEN:
+
+          1. Use an editor to access the SYS$SYSTEM:MODPARAMS.DAT
+             file.
+
+             o  To change a parameter value that is already listed
+                in the file, delete the current value associated with
+                that parameter and enter the new value.
+
+    1-4
+
+ 
+
+
+
+
+
+
+
+                 o  To modify incremental parameters, such as GBLPAGES
+                    or GBLSECTIONS, use the ADD_ command. The following
+                    example increases the global page setting by 380:
+
+                       ADD_GBLPAGES = 380
+
+              2. After you have made all of your changes, exit from the
+                 editor.
+
+              3. Invoke the AUTOGEN procedure with the following command
+                 to recalculate your system parameters:
+
+                 $ @SYS$UPDATE:AUTOGEN GETDATA REBOOT [NOFEEDBACK]
+
+                 If you specify REBOOT, AUTOGEN performs a system
+                 shutdown and reboots the system when it has finished.
+                 Any users logged in on the system are immediately
+                 disconnected during the shutdown. The reboot then puts
+                 the new parameter values into effect.
+
+                 The AUTOGEN utility adjusts some SYSGEN parameters based
+                 on the consumption of resources since the last reboot.
+                 If you do not want to use this adjustment, include the
+                 NOFEEDBACK parameter in the command line.
+
+              See the OpenVMS System Manager's Manual for more
+              information about using AUTOGEN.
+
+        1.8 Installation Account Process Quotas
+
+              You require the following minimum process quotas for the
+              installation account (typically the SYSTEM account):
+
+                  ASTLM     =     200
+                  BIOLM     =     50
+                  BYTLM     =     30480
+                  DIOLM     =     50
+                  ENQLM     =     2000
+                  FILLM     =     50
+                  PGFLQUO   =     30000
+                  PRCLM     =     1+
+                  WSDEF     =     256
+                  WSEXTENT  =     3072
+                  WSQUO     =     768
+
+                                                                      1-5
+
+ 
+
+
+
+
+
+
+
+          You can use the AUTHORIZE utility to display installation
+          process quotas by entering the following commands:
+
+          $ SET DEFAULT SYS$SYSTEM
+          $ RUN AUTHORIZE
+          UAF> SHOW SYSTEM
+
+          If no changes are necessary, enter the EXIT command to
+          leave the AUTHORIZE utility.
+
+          To modify system account quotas (BYTLM, for example):
+
+          UAF> MODIFY SYSTEM /BYTLM=30480
+
+          The utility responds with a message confirming the change
+          and you can enter the EXIT command to leave the utility.
+          You must then log out and log in again to reset the system
+          account quotas.
+
+          See the OpenVMS System Manager's Manual for more
+          information about using AUTHORIZE.
+
+    1.9 Backing Up the System Disk
+
+          Digital recommends that you do a full system disk backup
+          before you start any installation procedures. Use the
+          backup procedures established for your site. For an
+          explanation of how to back up a system disk, refer to your
+          OpenVMS documentation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1-6
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        2
+        _________________________________________________________________
+
+                                Installing DEComni MMS on OpenVMS Systems
+
+
+              This chapter provides the requirements and procedures for
+              installing the DEComni Manufacturing Message Specification
+              (MMS) software on your OpenVMS system.
+
+        2.1 Installation Considerations
+
+              This section provides information you may require during
+              the installation process.
+
+        2.1.1 VMSINSTAL Requirements
+
+              When you invoke VMSINSTAL, it verifies whether:
+
+              o  You are logged into a privileged account
+
+              o  There are adequate quotas for the installation
+
+              o  There are other users logged in on the system
+
+              o  You have the minimum SYSTEM account quotas listed in
+                 Section 1.8
+
+              If VMSINSTAL detects any errors during the installation, it
+              notifies you and exits from the installation procedure. You
+              can restart the installation after you have corrected the
+              problem.
+
+        2.1.2 VMSINSTAL Error Messages
+
+              The DEComni MMS installation can fail for various reasons.
+              Refer to the OpenVMS System Management Utilities Reference
+              Manual for information about VMSINSTAL error messages.
+
+              If the installation fails for any reason, either during
+              installation or during the IVP, VMSINSTAL displays a
+              message similar to the following:
+
+              %VMSINSTAL_E_INSFAIL, The installation of OMNIMMS V3.1 has failed.
+
+                                                                      2-1
+
+ 
+
+
+
+
+
+
+
+          If it is possible to correct the problem, repeat the
+          installation from the beginning. If the problem cannot
+          be corrected, follow the procedures described in Chapter 3.
+
+    2.1.3 Stopping the Installation
+
+          To abort the installation procedure at any time, press
+          <Ctrl>/<Y>.
+
+          To restart the installation after pressing <Ctrl>/<Y>, you
+          must repeat the entire procedure.
+
+    2.1.4 Accessing the Release Notes
+
+          Release notes contain information about known problems
+          or restrictions that apply to the current version of the
+          product. DEComni MMS release notes are in an online ASCII
+          text file that you can read or print before or after the
+          installation.
+
+          To display or print the release notes, use the OPTIONS N
+          parameter when you invoke VMSINSTAL for the installation
+          in Section 2.2. The OPTIONS N parameter also enables you to
+          exit the installation procedure after reading the release
+          notes.
+
+          VMSINSTAL copies the release notes to SYS$HELP by default.
+          The release notes file installed by VMSINSTAL is labelled
+          with the current product name and version number, such as
+          OMNIMMS031.RELEASE_NOTES.
+
+             ________________________ Note ________________________
+
+             Digital recommends that you read the release notes
+             before you attempt the installation procedure or run
+             the DEComni MMS software.
+
+             ______________________________________________________
+
+    2.2 Installation Procedure
+
+          To perform the installation, you must be logged in either
+          to the system manager's account or to an account with the
+          appropriate privileges.
+
+    2-2
+
+ 
+
+
+
+
+
+
+
+        2.2.1 Invoking VMSINSTAL
+
+              Either of the following commands invokes VMSINSTAL for the
+              installation:
+
+              $ @SYS$UPDATE:VMSINSTAL
+
+              $ @SYS$UPDATE:VMSINSTAL OMNIMMSA031 ddcu: OPTIONS N
+
+              Here, ddcu: is the device name, where dd is the device
+              code, c is the controller letter, and u is the drive unit
+              number of one or more digits (for example, MUA100:).
+
+              Using OPTIONS N allows you to display or print the release
+              notes before the installation. You can then continue the
+              installation or exit from the procedure.
+
+        2.2.2 Installation Process
+
+              VMSINSTAL starts the installation process and displays
+              messages and prompts similar to the following:
+
+              1. The VMSINSTAL process starts up by displaying a message
+                 similar to the following:
+
+                         OpenVMS AXP Software Product Installation Procedure V7.1
+
+                         It is 12-MAY-1997 at 11:39.
+
+                     Enter a question mark (?) at any time for help.
+
+              2. The process then asks if you are satisfied with your
+                 system disk backup.
+
+                ________________________ Note ________________________
+
+                System disk backup is a prerequisite for the
+                installation.
+
+                ______________________________________________________
+
+                 If you are not satisfied with the disk backup, type NO
+                 to terminate the installation and perform the backup.
+                 Otherwise, type YES or press <Return> to begin the
+                 installation process:
+
+                                                                      2-3
+
+ 
+
+
+
+
+
+
+
+             * Are you satisfied with the backup of your system disk [YES]?
+             YES
+
+             The following products will be processed:
+
+               OMNIMMSA V3.1
+
+                     Beginning installation of OMNIMMSA V3.1 at 11:40
+
+             %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+             %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+
+             © Digital Equipment Corporation. 1997. All Rights Reserved.
+
+             Installation procedure for: DEComni MMS for OpenVMS Alpha (TM) V3.0
+
+          3. If you used OPTIONS N in your VMSINSTAL command, the
+             process prompts you for a release notes option number
+             that executes one of the following:
+
+             1 - Display release notes
+
+                 Displays the online release notes.
+
+             2 - Print release notes
+
+                 The process prompts you for an ASCII text printer queue name.  You
+                 can  enter the queue name or press Return to send the file to your
+                 default print device.
+
+             3 - Both 1 and 2
+
+                 Displays  the release notes online.   If you terminate the  display
+                 with Ctrl/C, the process prompts you for a printer queue name.  You
+                 can enter the queue name, or you can press Return to send the  file
+                 to the default print device.
+
+             4 - None of the above
+
+             When the selected operation has completed, VMSINSTAL
+             copies the release notes to SYS$HELP.
+
+             ________________________ Note ________________________
+
+             Digital recommends that you read the release notes
+             before you continue the installation.
+
+             ______________________________________________________
+
+    2-4
+
+ 
+
+
+
+
+
+
+
+              4. The process then displays the product identification and
+                 authorization key prompt:
+
+                         Product:      DECOMNI-MMS
+                         Producer:     DEC
+                         Version:      3.1
+                         Release Date: 15-APR-1997
+
+                 * Does this product have an authorization key registered and loaded? YES
+
+                 The DEComni MMS software can be installed but cannot
+                 be run unless the Product Authorization Key (PAK) is
+                 registered. Enter YES to the authorization key prompt if
+                 you have registered and loaded the DEComni MMS PAK.
+
+                 Enter NO if you have not registered your PAK. The
+                 installation continues but you cannot run either
+                 the Installation Verification Procedure (IVP) or the
+                 software. To run the IVP after the installation, you
+                 must register and load the PAK then follow the IVP
+                 instructions in Section 3.2.
+
+              5. VMSINSTAL then displays the following questions about
+                 purging the files replaced by the installation,
+                 and whether you want to run the IVP as part of the
+                 installation:
+
+                 * Do you want to purge files replaced by this installation [YES]? YES
+
+                 * Do you want to run the IVP after the installation [YES]? YES
+
+              6. If you entered YES to run the IVP, the process displays
+                 informational messages about the progress of the
+                 installation, including the DEComni IVP startup.
+
+              7. The process displays a series of messages about the
+                 success of the installation, then exits from the
+                 VMSINSTAL utility:
+
+                 SUCCESS: Able to successfully establish an association.
+
+                 Subprocess OMNI-IVP_RESP has completed
+
+                 %OMNI-S-IVP, THE DECOMNI IVP HAS SUCCESSFULLY COMPLETED
+
+                         Installation of OMNIMMSA V3.1 completed at 11:50
+
+                                                                      2-5
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        3
+        _________________________________________________________________
+
+                                           Post-installation Requirements
+
+
+              This chapter explains how to start, verify, and stop
+              the DEComni MMS software, and provides account process
+              information.
+
+        3.1 Starting DEComni MMS
+
+              You require the following privileges to invoke the DEComni
+              MMS startup procedure:
+
+                 OPER
+                 DETACH
+                 PRMMBX
+                 SYSNAM
+                 CMKRNL
+                 SYSGBL
+                 PRMGBL
+                 WORLD
+                 GROUP
+                 SYSLCK
+                 SYSPRV
+
+              You must edit the system startup and shutdown files to
+              allow the automatic startup and shutdown of DEComni MMS
+              Alpha when your system is rebooted.
+
+              Add the command line that starts DEComni MMS to the
+              system startup file, SYS$MANAGER:SYSTARTUP_VMS.COM.
+              REFERENCE>(omni_mms_product_name) cannot start until after
+              the network, OSAK and DEComni MMS have started:
+
+              o  To use the thread-based version of DEComni MMS (BASEstar
+                 Open users), execute the following command:
+
+                 $ @SYS$STARTUP:OMNI_STARTUP_MMS
+
+
+                                                                      3-1
+
+ 
+
+
+
+
+
+
+
+          o  To use the AST-based version of DEComni MMS, execute the
+             following command:
+
+             $ @SYS$STARTUP:OMNI_STARTUP_MMS AST
+
+          For further information about starting up the system, refer
+          to the OpenVMS System Manager's Manual.
+
+    3.2 Running the Installation Verification Procedure
+
+          If you did not run the Installation Verification Procedure
+          (IVP) as part of the installation, you should run it
+          separately after you have installed and started the
+          product. You must start the DEComni MMS process (by typing
+          @sys$startup:omni_startup and @sys$startup:omni_startup_
+          MMS) before you can run the IVP.
+
+          You cannot invoke the IVP unless the following privileges
+          are enabled:
+
+             NETMBX
+             PRMMBX
+             SYSLCK
+             WORLD
+             GROUP
+
+          Enter the following command to run the IVP:
+
+          $ @SYS$TEST:OMNI_IVP_MMS
+
+          The DEComni MMS IVP verifies that the DEComni MMS system
+          is correctly installed and displays informational messages
+          as it progresses. If the IVP fails, it displays a message
+          indicating the reason for the failure. Correct the problem,
+          then re-execute the IVP. When the DEComni MMS IVP has
+          executed successfully, the DEComni MMS software is ready
+          for use.
+
+          The DEComni MMS IVP can fail for various reasons. Table 3-1
+          lists the possible causes for an IVP failure and ways to
+          resolve the problem.
+
+
+
+
+    3-2
+
+ 
+
+
+
+
+
+
+
+              Table_3-1_Resolving_DEComni_MMS_IVP_Failures_______________
+
+              Possible_Cause__________Resolution_________________________
+
+              Error while checking    See the required process quotas in
+              process quotas          Section 3.4.
+
+              Error while checking    See the required process privileges
+              process privileges      in this section.
+
+              Missing files error     See Appendix A for the list of
+                                      files.
+
+              IVP responder linking   OMNI_IVP_RESP.OBJ or OMNI_
+              error                   IVP.OPT file missing from
+                                      SYS$COMMON:[SYSTEST].
+
+              IVP Initiator linking   OMNI_IVP_INIT.OBJ or OMNI_
+              error                   IVP.OPT file missing from
+                                      SYS$COMMON:[SYSTEST].
+
+              Error while running     OSAK not running: check for
+              Initiator/Responder     OSAK$SERVER process.
+              test_______________________________________________________
+
+        3.3 Linking a DEComni MMS Application
+
+              You must link your DEComni MMS application at DEComni API
+              level to the AST-based shareable image OMNI_AST_BASIC_
+              SHR.EXE The omni_server process and the client shareable
+              images OMNI_SHR.EXE and OMNI_PORT_SHR.EXE are no longer
+              provided (as of Version 3.0).
+
+        3.4 User Account Quotas
+
+              DEComni MMS user accounts require the following minimum
+              quotas:
+
+                  ASTLM     =     200
+                  BIOLM     =     50
+                  BYTLM     =     30480
+                  DIOLM     =     50
+                  ENQLM     =     2000
+                  FILLM     =     50
+                  PGFLQUO   =     30000
+                  PRCLM     =     1+
+                  WSDEF     =     256
+
+                                                                      3-3
+
+ 
+
+
+
+
+
+
+
+
+              WSEXTENT  =     3072
+              WSQUO     =     768
+
+    3.5 User Account Privileges
+
+          The following privileges are required to run an application
+          linked with OMNI_AST_BASIC_SHR:
+
+          o  PRMMBX may create permanent mailbox
+
+          o  TMPMBX may create temporary mailbox
+
+          o  WORLD may affect other processes in the world
+
+          o  NETMBX may create network device
+
+          o  SYSLCK may lock system wide resources
+
+    3.6 Stopping DEComni MMS
+
+          You require the following privileges to invoke the DEComni
+          MMS stop procedure:
+
+             DETACH
+             PRMMBX
+             SYSNAM
+             CMKRNL
+             SYSGBL
+             PRMGBL
+             WORLD
+             GROUP
+
+          Enter the following command to shut down the DEComni MMS
+          process manually:
+
+          $ @SYS$MANAGER:OMNI_STOP
+
+          If you want the DEComni MMS process to shut down each time
+          the system is brought down, include the command in the
+          site-specific shutdown file SYS$MANAGER:SYSHUTDWN.COM.
+
+
+
+
+    3-4
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        A
+        _________________________________________________________________
+
+                                          Files Added During Installation
+
+
+              Below isa list of the OpenVMS directories and files that
+              are added during the DEComni MMS installation procedure.
+
+              SYS$COMMON:[SYS$STARTUP]
+              ------------------------
+               OMNI_STARTUP_MMS.COM
+
+              SYS$COMMON:[SYSTEST]
+              --------------------
+               OMNI_IVP_MMS.COM
+               OMNI_IVP_CONFIGURE.NCL
+               OMNI_IVP_INIT.OBJ
+               OMNI_IVP_RESP.OBJ
+               OMNI_IVP.OPT
+
+              SYS$COMMON:[SYSHLP.EXAMPLES.OMNI]
+              ------------------
+               OMNI_IVP_INIT.C
+               OMNI_IVP_RESP.C
+
+              SYS$COMMON:[SYSLIB]
+              ------------------
+               OMNI_STARTUP_MMS.COM
+               OMNI_MMS_SHR.EXE
+               OMNI_MMS_AST_SHR.EXE
+
+              SYS$COMMON:[SYSHLP.EXAMPLES.OMNI]
+              ------------------
+               MMS_REGISTER.COM
+               MMS_DEREGISTER.COM
+
+
+
+
+
+
+                                                                      A-1
+
+ 
+
+
+
+
+
+
+
+
+
+
+                                                                        B
+        _________________________________________________________________
+
+                                             Installation Dialogue Sample
+
+
+              The following example shows a DEComni MMS installation on
+              an OpenVMS system:
+
+              1. Start the installation
+
+                 $ @sys$update:vmsinstal OMNIMMSA030 MMS_ROOT:[KIT]
+
+                         OpenVMS AXP Software Product Installation Procedure V7.1
+
+                    It is 14-MAY-1997 at 14:16.
+
+                 Enter a question mark (?) at any time for help.
+
+              2. Confirm the system backup
+
+                 * Are you satisfied with the backup of your system disk [YES]?
+
+                 VMSINSTAL asks if you are satisfied with your system
+                 backup. Always back up your system disk before
+                 performing an installation. If you are satisfied with
+                 the backup of your system disk, press Return. Otherwise,
+                 enter NO to discontinue the installation. After you back
+                 up your system disk, you can restart the installation.
+
+                 The following products will be processed:
+                   OMNIMMSA V3.1
+                   Beginning installation of OMNIMMSA V3.1 at 14:18
+
+                 %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+
+                 You should now mount the first distribution volume on
+                 the device you specified when you invoked VMSINSTAL. The
+                 device name appears in the line preceding the question.
+                 VMSINSTAL then asks you if you are ready to continue
+                 with the installation.
+
+              3. Begin the installation
+
+                                                                      B-1
+
+ 
+
+
+
+
+
+
+
+             At this point, VMSINSTAL checks which license has
+             been installed and continues with the installation as
+             follows:
+
+             %VMSINSTAL-I-RESTORE, Restoring product save set A ...
+             %VMSINSTAL-I-RELMOVED, Product's release notes have been moved to SYS$HELP.
+             ************************************************************************
+
+             © Digital Equipment Corporation. 1997. All Rights Reserved.
+
+             Installation procedure for: DEComni MMS for OpenVMS Alpha (TM) V3.1
+
+             Now performing software prerequisite check...
+
+             Now checking for available disk space...
+
+             © DIGITAL EQUIPMENT CORPORATION. 1997. ALL RIGHTS RESERVED.
+
+             CONFIGURATION PROCEDURE FOR: DEComni for OpenVMS Alpha V3.1
+
+             Now checking process quota values...
+
+                     Product:      DECOMNI-MMS
+                     Producer:     DEC
+                     Version:      3.1
+                     Release Date: 15-APR-1997
+
+             * Does this product have an authorization key registered and loaded? y
+
+             * Do you want to purge files replaced by this installation [YES]?
+
+             * Do you want to run the IVP after the installation [YES]?
+
+             * Do you want to continue with this installation [YES]?
+
+             *****************************************************************
+
+             The installation will now continue unattended; no
+             further user intervention is required. The estimated
+             time of completion for this phase is 3 minutes for a
+             configuration consisting of a DEC 3000 and installation
+             from CD-ROM.
+
+               The current time is: 14:23.38
+
+             *****************************************************************
+
+             %VMSINSTAL-I-RESTORE, Restoring product save set B ...
+
+             Now integrating MMS protocol into DEComni for OpenVMS Alpha V3.1 ...
+
+             © DIGITAL EQUIPMENT CORPORATION. 1997. ALL RIGHTS RESERVED.
+
+    B-2
+
+ 
+
+
+
+
+
+
+
+                 STARTUP PROCEDURE FOR: DEComni MMS for OpenVMS Alpha V3.1
+
+                 Now checking process privileges...
+
+                 Now checking for the DEComni MMS license...
+
+                 Now checking that prerequisite software has been started...
+
+                 Now checking the DEComni sharable images...
+
+                 © DIGITAL EQUIPMENT CORPORATION. 1997. ALL RIGHTS RESERVED.
+
+                 STARTUP PROCEDURE FOR: DEComni API for OpenVMS Alpha (TM) V3.1
+
+                 Now checking process privileges...
+
+                 Now checking for the DEComni license...
+
+                  %OMNI-I-LICENSE, The following valid license was found -  DECOMNI MMS
+
+                 Now checking that prerequisite software has been started...
+
+                 Now installing the DEComni sharable images...
+
+                 Now creating DEComni logicals...
+
+                 Starting Omni Directory Services now...
+
+                 Checking for required directories...
+
+                 Checking for required files ...
+
+                 ODS Identification information : 2.14.0
+
+                 Checking cache area ODS:[CACHE]...
+
+                 Checking Schema area ODS:[LOCAL]...
+
+                 Valid Schema definitions found in the attribute schema database as:
+
+                 OC ALIASED_NAME CN C L S O OU P_ADDR APC OWNER APT AEQ MAPV SY OBJ_ID
+                 BER PSAP SSAP TSAP N_ADDR AS_LIST DESCR VMD DOM DEL VN APPSN APROF
+                 VERSION NLEVEL MAX_CALLED MAX_CALLING MAX_SEG CBB_LIST SS_LIST VENDOR
+                 MODEL REV INUM DN SHARE CONT_FILE CAP_FILE PN REUSE ARG MON DOM_LIST
+                 VAR ATYPE ADDR_T ADDR_V
+
+                 Valid Schema definitions found in the object class schema database as:
+
+                 TOP ALIAS C L O OU AP AE DSA DEVICE TAE OAE AS VMD DOMAIN PI NVAR UNVAR
+
+                                                                      B-3
+
+ 
+
+
+
+
+
+
+
+             ODS_STARTUP: Normal completion.
+
+             Now checking ODS schema definitions...
+
+             Checking ODS misc schema definitions ...
+
+             Checking ODS vmd schema definitions ...
+
+             Checking ODS domain schema definitions ...
+
+             Checking ODS pi schema definitions ...
+
+             Checking ODS var schema definitions ...
+
+             OMNI_SCHEMA.COM: Normal Completion.
+
+             Now Checking for OMNI_SERVER.EXE...
+
+             Now starting the OMNI_SERVER process...
+
+             %RUN-S-PROC_ID, identification of created process is 000001B3
+
+             %OMNI-S-STARTUP, DEComni startup successfully completed
+
+             %OMNIMMS-S-STARTUP, DEComni MMS startup successfully completed
+
+                 +-------------------------------------------------------------------+
+
+                 |                                                                   |
+                 |   The DEComni MMS for OpenVMS Alpha IVP will now be invoked...    |
+                 |                                                                   |
+
+                 +-------------------------------------------------------------------+
+
+             © DIGITAL EQUIPMENT CORPORATION. 1997. ALL RIGHTS RESERVED.
+
+             INSTALLATION VERIFICATION PROCEDURE FOR: DECOMNI MMS for OpenVMS
+             Alpha (TM) V3.1
+
+             Now checking process quotas...
+
+             Now checking process privileges...
+
+             Now checking that the OSI software was started...
+
+             Now checking that DEComni was started...
+
+             Now checking that files have reached target directories...
+
+             Now linking the IVP Initiator...
+
+             Now linking the IVP Responder...
+
+    B-4
+
+ 
+
+
+
+
+
+
+
+                 Node 0 OSI Transport Template OMNINET
+                 at 1995-01-12-14:26:19.495+01:00I0.828
+
+                 Node 0 OSI Transport Template OMNINET
+                 at 1995-01-12-14:26:19.719+01:00I0.828
+
+                 Characteristics
+
+                     Network Service                   = CLNS
+
+                 Node 0 OSI Transport Template OMNINET
+                 at 1995-01-12-14:26:19.726+01:00I0.828
+
+                 Characteristics
+
+                     Classes                           =
+                        {
+                           4
+                        }
+
+                 Node 0 OSI Transport Template OMNINET
+                 at 1995-01-12-14:26:19.733+01:00I0.828
+
+                 Characteristics
+
+                     Classes                           =
+                        {
+                           4
+                        }
+
+                 Node 0 OSI Transport Template OMNINET
+                 at 1995-01-12-14:26:19.733+01:00I0.828
+
+                 Characteristics
+
+                     CONS Template                     = ""
+
+                 Node 0 OSI Transport Template OMNINET
+                 at 1995-01-12-14:26:19.739+01:00I0.828
+
+                 Characteristics
+
+                     Checksums                         = False
+
+                 Node 0 OSI Transport Template OMNINET
+                 at 1995-01-12-14:26:19.745+01:00I0.828
+
+                 Characteristics
+
+                                                                      B-5
+
+ 
+
+
+
+
+
+
+
+                 Inbound                           = True
+
+             Copy used; entry is:
+
+             Name:
+
+             VN      (VMD Name)              =       OMNI_IVP_RESP_VMD
+
+             Entry:
+
+             OC      (Object Class)          =       13 (Virtual Manufacturing Device)
+
+             APPSN   (Application Simple Name)       =       /CN=OMNI_IVP_RESP_AE
+
+             VENDOR  (Vendor Name)           =       Digital
+
+             APROF   (Application Profile)   =       omni
+
+             VERSION         (MMS Version)           =       iso
+
+             INUM    (Integrator Number)     =       1
+
+             Copy used; entry is:
+
+             Name:
+
+             CN      (Common Name)           =       OMNI_IVP_RESP_AE
+
+             Entry:
+
+             OC      (Object Class)          =       10 (Titled Application Entity)
+
+             AEQ     (AE Qualifier)          =       111
+
+             APT     (AP Title)              =       {1 1 111}
+
+             APC     (Application Context)   =       {1 0 9506 2 3}
+
+             P_ADDR  (Presentation Address)  =       o.m.ni.osit$loop_clns%21
+
+             Copy used; entry is:
+
+             Name:
+
+             VN      (VMD Name)              =       OMNI_IVP_INIT_VMD
+
+             Entry:
+
+             OC      (Object Class)          =       13 (Virtual Manufacturing Device)
+
+    B-6
+
+ 
+
+
+
+
+
+
+
+                 APPSN   (Application Simple Name)       =       /CN=OMNI_IVP_INIT_AE
+
+                 VENDOR  (Vendor Name)           =       Digital
+
+                 APROF   (Application Profile)   =       omni
+
+                 VERSION         (MMS Version)           =       iso
+
+                 INUM    (Integrator Number)     =       1
+
+                 Copy used; entry is:
+
+                 Name:
+
+                 CN      (Common Name)           =       OMNI_IVP_INIT_AE
+
+                 Entry:
+
+                 OC      (Object Class)          =       10 (Titled Application Entity)
+
+                 AEQ     (AE Qualifier)          =       110
+
+                 APT     (AP Title)              =       {1 1 110}
+
+                 APC     (Application Context)   =       {1 0 9506 2 3}
+
+                 P_ADDR  (Presentation Address)  =       o.m.ni.osit$loop_clns%21
+
+                 Now running the DEComni IVP RESPonder and INITiator...
+
+                 RESP: STARTING the DEComni IVP REPONDER.
+
+                 RESP: calling omni_initialize...
+                 done.
+
+                 RESP: local VMD handle...
+                 /VN=OMNI_IVP_RESP_VMD...
+                 /CN=OMNI_IVP_RESP_AE...
+
+                                          /Creating a Variable Definition VAR_A...
+                 done.
+
+                 RESP: listening...
+
+                 INIT: STARTING the DEComni IVP INITIATOR...
+
+                 INIT: calling omni_initialize...
+                 done.
+
+                 appl prof done.
+
+                                                                      B-7
+
+ 
+
+
+
+
+
+
+
+             INIT: local VMD handle...
+             /VN=OMNI_IVP_INIT_VMD...
+             /CN=OMNI_IVP_INIT_AE...
+             done.
+
+             INIT: remote VMD handle...
+             /VN=OMNI_IVP_RESP_VMD...
+             /CN=OMNI_IVP_RESP_AE...
+
+                                       /Creating a Variable Definition VAR_A...
+             done.
+
+             INIT: Attempting a connect...
+             ACCEPTING a connect...
+             ACCEPTED the connect.
+
+             RESP: Initial value of variable VAR_A  - 12345
+
+             RESP: calling get_indications...
+             connected.
+
+             INIT: calling get_remote_attributes...
+             done.
+
+             INIT: calling get_attributes...
+
+                     VENDOR: DEC
+
+                     MODEL: DECOMNI
+
+                     REVISION: V3.1
+
+             INIT: Value of variable VAR_A from the Initiator - 54321
+
+             RESP: Received a read variable request...
+
+             INIT: READING a variable from the Responder now...
+
+             INIT: Value of variable VAR_A from the Responder -  12345
+
+             INIT: WRITING a variable to the Responder now...
+
+             INIT: Value of variable VAR_A from the Initiator - 12345
+
+             RESP: Received a write variable request...
+
+    B-8
+
+ 
+
+
+
+
+
+
+
+                 INIT: READING the new value of the VAR_A from the Responder now...
+
+                 RESP: Received a read variable request...
+
+                 INIT: Value of variable VAR_A from the Responder is now -  98765
+
+                 INIT: CONCLUDING the association...
+
+                 RESP: Received an ACSE conclude.
+
+                 RESP: All done...bye!
+
+                 Subprocess OMNI_IVP_RESP has completed
+                 done.
+
+                 INIT: All done...bye!
+
+                 %OMNIMMS-S-IVP, THE DECOMNI IVP HAS SUCCESSFULLY COMPLETED
+
+                         Installation of OMNIMMSA V3.1 completed at 14:26
+
+                     Adding history entry in VMI$ROOT:[SYSUPD]VMSINSTAL.HISTORY
+
+                     Creating installation data file: VMI$ROOT:[SYSUPD]OMNIMMSA031.VMI_DATA
+
+                         VMSINSTAL procedure done at 14:26
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      B-9
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+        _________________________________________________________________
+
+                                                Glossary of DEComni Terms
+
+
+
+              This glossary defines DEComni terms that are used in this
+              document or in reference to DEComni functions.
+
+              AE
+
+              Application Entity.
+
+              API
+
+              Application Program Interface.
+
+              ASE
+
+              Application Service Element.
+
+              AST
+
+              OpenVMS Asynchronous System Trap.
+
+              AT
+
+              Application Type or Application Named Type.
+
+              CS
+
+              Companion Standard.
+
+              DOM
+
+              Domain.
+
+              FD
+
+              File Descriptor.
+
+              IOSB
+
+              Input/Output Status Block.
+
+                                                               Glossary-1
+
+ 
+
+
+
+
+
+
+
+          MMS
+
+          Manufacturing Message Specification.
+
+          MT
+
+          MMS Type or MMS Named Type.
+
+          NC
+
+          Numeric Controller.
+
+          NV
+
+          Named Variable.
+
+          ODF
+
+          Omni Definition Facility.
+
+          ODS
+
+          Omni Directory Services.
+
+          PDU
+
+          Protocol Data Unit.
+
+          PI
+
+          Program Invocation.
+
+          PID
+
+          Entry in a PI list of domains.
+
+          PLC
+
+          Programmable Logic Controller.
+
+          RMS
+
+          OpenVMS Record Management System.
+
+          UV
+
+          Unnamed Variable.
+
+          VAR
+
+          Simple Variable - Named or Unnamed.
+
+          VMD
+
+          Virtual Manufacturing Device.
+
+    Glossary-2
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     _________________________________________________________________
+
+                                                                 Index
+
+
+
+     A______________________________   H______________________________
+
+     Account privileges,  1-3, 3-1,    Hardware requirements,  1-1
+        3-2, 3-4
+     Account quotas,  1-5, 3-3         I______________________________
+     AUTHORIZE utility,  1-6           Installing DEComni MMS,
+     AUTOGEN utility,  1-4
+                                          Chapter 2
+     B______________________________   Installation
+
+     Backup                              dialogue sample, Appendix B
+
+       before installation, B-1          files added, Appendix A
+
+     Backup for system disk,  1-6        of product, Chapter 2
+
+                                         pre-requisites, Chapter 1
+     D______________________________     account process quotas,  1-5
+     DEComni MMS                         considerations,  2-1
+       installation error messages,      error messages,  2-1, 3-2
+         3-2                             kit,  1-1
+       startup privileges, 3-1           kit name,  B-1
+       startup procedure, 3-1            privileges,  1-3
+       stop procedure, 3-4               procedure,  2-2
+     Disk space requirements,  1-3       process,  2-1 to 2-5
+     Distribution kit,  1-1              stop,  2-2
+                                         time,  1-3
+     E                                 Installation Verification
+     _______________________________      Procedure (IVP),  3-2
+     Error messages,  2-1                privileges,  3-2
+                                         start procedure,  3-2
+
+     F______________________________
+
+     Files added during
+        installation, Appendix A
+
+                                                               Index-1
+
+ 
+
+
+
+
+
+
+
+                                       System version, 1-2
+    K______________________________
+
+    Kit                                U______________________________
+
+      name,  B-1                       User account privileges, 3-4
+
+                                       User account quotas, 3-3
+    L______________________________
+
+    License Management Facility        V______________________________
+
+       (LMF), 1-2                      VMSINSTAL utility, 2-1, 2-3
+    Linking applications,  3-3
+
+    O______________________________
+
+    Online release notes,  1-1
+    OpenVMS version,  1-2
+
+    P______________________________
+
+    Post-installation
+       requirements, Chapter 3
+
+    Pre-installation requirements,
+       Chapter 1
+    Parameters
+      for VMSINSTAL,  B-1
+    Process quotas,  1-5
+    Product Authorization Key
+       (PAK), 1-2
+
+    R______________________________
+
+    Release notes,  1-1, 2-2
+
+    S______________________________
+
+    Sample installation dialogue,
+       Appendix B
+    Software requirements,  1-2
+    Startup privileges,  3-1
+    Startup procedure,  3-1
+    Stop installation process,  2-2
+    SYSGEN utility,  1-4
+    System disk backup,  1-6
+    System parameters and settings
+       , 1-4
+    System quotas,  1-6
+
+    Index-2

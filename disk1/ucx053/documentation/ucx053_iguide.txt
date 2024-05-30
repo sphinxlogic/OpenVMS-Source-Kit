@@ -1,0 +1,4374 @@
+ 
+
+
+
+
+
+
+
+
+                     Compaq TCP/IP Services for OpenVMS
+                     Installation and Configuration
+
+                     Order Number: AA-LU49N-TE
+
+
+                     April 2002
+
+                     This manual explains how to install and configure
+                     the Compaq TCP/IP Services for OpenVMS product on
+                     your OpenVMS host.
+
+
+
+
+
+                     Revision Information:        This guide super-
+                                                  sedes the Compaq
+                                                  TCP/IP Services for
+                                                  OpenVMS Installation
+                                                  and Configuration
+                                                  manual, Version 5.1
+
+                     Software Version:            Compaq TCP/IP
+                                                  Services for OpenVMS
+                                                  Version 5.3
+
+                     Operating Systems:           OpenVMS Alpha
+                                                  Versions 7.2-2, 7.3
+                                                  OpenVMS VAX Versions
+                                                  7.2, 7.3
+
+
+
+
+
+
+
+                     Compaq Computer Corporation
+                     Houston, Texas
+
+ 
+
+
+
+
+
+
+              __________________________________________________________
+
+              © 2002 Compaq Information Technologies Group, L.P.
+
+              Compaq, the Compaq logo, Alpha, OpenVMS, Tru64, VAX,
+              VMS, and the Digital logo are trademarks of Compaq
+              Information Technologies Group, L.P. in the U.S. and/or
+              other countries.
+
+              All other product names mentioned herein may be trademarks
+              of their respective companies.
+
+              Confidential computer software. Valid license from Compaq
+              required for possession, use, or copying. Consistent
+              with FAR 12.211 and 12.212, Commercial Computer Software,
+              Computer Software Documentation, and Technical Data for
+              Commercial Items are licensed to the U.S. Government under
+              vendor's standard commercial license.
+
+              Compaq shall not be liable for technical or editorial
+              errors or omissions contained herein. The information
+              in this document is provided "as is" without warranty
+              of any kind and is subject to change without notice.
+              The warranties for Compaq products are set forth in
+              the express limited warranty statements accompanying
+              such products. Nothing herein should be construed as
+              constituting an additional warranty.
+
+                                                                  ZK6524
+
+              This document is available on CD-ROM.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                             Contents
+
+
+     Preface..................................................      v
+
+
+     1  Preparing to Install and Configure TCP/IP Services
+
+           1.1   Understanding the Major Tasks................    1-1
+           1.2   Preinstallation Tasks........................    1-2
+           1.2.1     Inspecting the Distribution Kit..........    1-3
+           1.2.2     Extracting the Release Notes.............    1-3
+           1.2.3     Backing Up the System Disk and Upgrading
+                     OpenVMS..................................    1-4
+           1.2.4     Registering the License Product
+                     Authorization Key........................    1-4
+           1.2.5     Checking the Disk Space..................    1-5
+           1.2.6     Checking the Physical Memory.............    1-5
+           1.2.7     Checking the System Parameters...........    1-6
+           1.2.7.1     Global Pagelets and Global Sections ...    1-6
+           1.2.7.2     Nonpaged Dynamic Pool..................    1-6
+           1.2.7.3     Interrupt Stack Pages (VAX Only).......    1-7
+           1.2.7.4     System Page Table Entries Parameter
+                       (VAX Only) ............................    1-7
+           1.2.8     Assigning a User Identification Code.....    1-8
+           1.3   Assembling Configuration Information.........    1-9
+
+     2  Installing TCP/IP Services
+
+           2.1   Invoking the Installation Procedure..........    2-1
+           2.2   Stepping Through the Installation
+                 Procedure....................................    2-3
+           2.3   Postinstallation Tasks.......................    2-5
+
+
+
+
+                                                                  iii
+
+ 
+
+
+
+
+
+
+        3  Configuring TCP/IP Services
+
+              3.1   Recommended Order for Configuring TCP/IP
+                    Services.....................................    3-1
+              3.2   Automatic Configuration of TCP/IP Services
+                    Using DHCP Client............................    3-2
+              3.3   Running TCPIP$CONFIG.........................    3-3
+              3.3.1     Converting Existing TCP/IP Services
+                        Configuration Files (Upgrade Only).......    3-4
+              3.3.2     Creating New TCP/IP Services
+                        Configuration Files......................    3-5
+              3.3.3     Understanding the Configuration Menus....    3-6
+              3.3.4     Configuring the Core Environment.........    3-8
+              3.3.4.1     Domain Configuration...................    3-9
+              3.3.4.2     Interface Configuration................    3-9
+              3.3.4.3     Dynamic Routing Configuration..........   3-10
+              3.3.4.4     BIND Resolver Configuration............   3-11
+              3.3.4.5     Time Zone Configuration................   3-11
+              3.3.5     Configuring the Client Environment.......   3-12
+              3.3.6     Configuring the Server Environment.......   3-15
+              3.3.7     Configuring the Optional Components......   3-17
+              3.3.7.1     Configuring and Enabling Kerberos
+                          Support................................   3-19
+              3.4   Using TCPIP$CONFIG Option Commands to Bypass
+                    TCPIP$CONFIG Menus...........................   3-21
+              3.5   Making Configuration Changes Take Effect.....   3-22
+              3.6   Stopping TCP/IP Services Using
+                    TCPIP$CONFIG.................................   3-23
+              3.7   Starting TCP/IP Services Using
+                    TCPIP$CONFIG.................................   3-24
+              3.8   Verifying the Configuration..................   3-26
+              3.8.1     Running the IVP from the TCPIP$CONFIG
+                        Command Procedure........................   3-27
+              3.8.2     Running the IVP from the OpenVMS DCL
+                        Prompt...................................   3-27
+              3.8.3     Verifying the TCP/IP Services Internet
+                        Configuration............................   3-27
+              3.8.4     Verifying the SNMP Configuration.........   3-28
+              3.9   Additional Configuration Tasks...............   3-30
+              3.10  Starting and Stopping TCP/IP Services by
+                    Command......................................   3-31
+              3.10.1    Automatically Starting and Stopping
+                        TCP/IP Services..........................   3-31
+
+
+        iv
+
+ 
+
+
+
+
+
+
+              3.10.2    Starting and Stopping TCP/IP Services
+                        Manually.................................   3-32
+              3.10.3    Starting and Stopping Individual Services
+                        .........................................   3-32
+              3.10.4    Starting and Stopping User-Written
+                        Services.................................   3-33
+              3.11  Specifying TCP/IP Services as the Transport
+                    for DECwindows Applications..................   3-33
+
+
+        A  Sample New TCP/IP Services Installation and
+           Configuration
+
+              A.1   Sample New Installation Procedure............    A-1
+              A.2   Sample New Configuration Procedure...........    A-2
+
+        Index
+
+
+        Examples
+
+              2-1       TCP/IP Services Installation: Sample
+                        POLYCENTER Software Installation Utility
+                        Procedure................................    2-3
+
+        Tables
+
+              1         TCP/IP Services Documentation............     vi
+
+              1-1       Major Tasks: Installing and
+                        Configuring..............................    1-2
+
+              1-2       Preinstallation Tasks....................    1-3
+
+              1-3       Configuration Planning Worksheet.........   1-10
+
+              3-1       Configuring TCP/IP Services..............    3-2
+
+              3-2       Troubleshooting IVP Errors ..............   3-28
+
+
+
+
+
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+        ________________________________________________________________
+
+                                                                 Preface
+
+
+
+              The Compaq TCP/IP Services for OpenVMS product is the
+              Compaq implementation of the TCP/IP networking protocol
+              suite and internet services for OpenVMS Alpha and OpenVMS
+              VAX systems.
+
+              TCP/IP Services provides a comprehensive suite of
+              functions and applications that support industry-standard
+              protocols for heterogeneous network communications and
+              resource sharing.
+
+              This manual explains how to install and configure the
+              Compaq TCP/IP Services for OpenVMS (TCP/IP Services)
+              networking software on an OpenVMS system. This manual
+              reflects the installation and configuration procedures
+              for Version 5.3 of the TCP/IP Services product. For
+              information about last-minute changes to these procedures,
+              see the Compaq TCP/IP Services for OpenVMS Release Notes.
+
+        Intended Audience
+
+              This manual is for experienced OpenVMS and UNIX system
+              managers and assumes a working knowledge of OpenVMS system
+              management, TCP/IP networking, and TCP/IP terminology.
+
+        Document Structure
+
+              This manual contains three chapters and one appendix:
+
+              o  Chapter 1 explains how to prepare for installing and
+                 configuring TCP/IP Services.
+
+              o  Chapter 2 describes how to install TCP/IP Services
+                 on an OpenVMS system using the POLYCENTER Software
+                 Installation utility.
+
+                                                                       v
+
+ 
+
+
+
+
+
+
+              o  Chapter 3 provides guidelines on how to configure
+                 the TCP/IP Services components and services after
+                 installation.
+
+              o  Appendix A provides a sample installation and
+                 configuration script as might appear on an OpenVMS
+                 system upon which TCP/IP Services has not been
+                 installed previously. The script examples in Chapter 3
+                 show what might be seen when you upgrade TCP/IP
+                 Services software.
+
+        Related Documents
+
+              Table 1 lists the documents available with this version of
+              TCP/IP Services.
+
+        Table_1_TCP/IP_Services_Documentation___________________________
+
+        Manual____________________Contents______________________________
+
+        Compaq TCP/IP Services    This manual provides conceptual infor-
+        for OpenVMS Concepts and  mation about TCP/IP networking on 
+        Planning                  OpenVMS systems, including general 
+                                  general planning issues to consider 
+                                  before configuring your system to use 
+                                  the TCP/IP Services software.
+
+                                  This manual also describes the manuals
+                                  in the documentation set and  provides
+                                  a glossary of terms and acronyms
+                                  for the TCP/IP Services software
+                                  product.
+
+                                                (continued on next page)
+
+
+
+
+        vi
+
+ 
+
+
+
+
+
+
+        Table_1_(Cont.)_TCP/IP_Services_Documentation___________________
+
+        Manual____________________Contents______________________________
+
+        Compaq TCP/IP Services    The release notes provide version-
+        for OpenVMS Release       specific information that supersedes
+        Notes                     the information in the documentation
+                                  set. The features, restrictions, and
+                                  corrections in this version of the
+                                  software are described in the release
+                                  notes. Always read the release notes
+                                  before installing the software.
+
+        Compaq TCP/IP Services    This manual explains how to install
+        for OpenVMS Installation  and configure the TCP/IP Services
+        and Configuration         product.
+
+        Compaq TCP/IP Services    This manual describes how to use
+        for OpenVMS User's Guide  the applications available with
+                                  TCP/IP Services such as remote file
+                                  operations, email, TELNET, TN3270,
+                                  and network printing. This manual
+                                  explains how to use these services
+                                  to communicate with systems on
+                                  private internets or on the worldwide
+                                  Internet.
+
+        Compaq TCP/IP Services    This manual describes how to configure
+        for OpenVMS Management    and manage the TCP/IP Services
+                                  product.
+
+                                  Use this manual with the Compaq
+                                  TCP/IP Services for OpenVMS Management
+                                  Command Reference manual.
+
+        Compaq TCP/IP Services    This manual describes the TCP/IP
+        for OpenVMS Management    Services management commands.
+        Command Reference         Use this manual with the Compaq
+
+                                  TCP/IP Services for OpenVMS Management
+                                  manual.
+
+                                                (continued on next page)
+
+
+                                                                     vii
+
+ 
+
+
+
+
+
+
+        Table_1_(Cont.)_TCP/IP_Services_Documentation___________________
+
+        Manual____________________Contents______________________________
+
+        Compaq TCP/IP Services    This reference card lists the TCP/IP
+        for OpenVMS Management    management commands by component and
+        Command Quick Reference   describes the purpose of each command.
+        Card
+
+        Compaq TCP/IP Services    This reference card contains
+        for OpenVMS UNIX Command  information about commonly performed
+        Reference Card            network management tasks and their
+                                  corresponding TCP/IP management and
+                                  Compaq Tru64 UNIX command formats.
+
+        Compaq TCP/IP Services    This manual presents an overview
+        for OpenVMS ONC RPC       of high-level programming using
+        Programming               open network computing remote
+                                  procedure calls (ONC RPCs). This
+                                  manual also describes the RPC
+                                  programming interface and how to use
+                                  the RPCGEN protocol compiler to create
+                                  applications.
+
+        Compaq TCP/IP Services    This manual describes how to
+        for OpenVMS Sockets       use the Sockets API and OpenVMS
+        API and System Services   system services to develop network
+        Programming               applications.
+
+        Compaq TCP/IP Services    This manual describes the Simple
+        for OpenVMS SNMP          Network Management Protocol (SNMP)
+        Programming and           and the SNMP application programming
+        Reference                 interface (eSNMP). It describes
+                                  the subagents provided with TCP/IP
+                                  Services, utilities provided for
+                                  managing subagents, and how to build
+                                  your own subagents.
+
+                                                (continued on next page)
+
+
+
+
+
+
+        viii
+
+ 
+
+
+
+
+
+
+        Table_1_(Cont.)_TCP/IP_Services_Documentation___________________
+
+        Manual____________________Contents______________________________
+
+        Compaq TCP/IP Services    This manual provides information
+        for OpenVMS Tuning and    about how to isolate the causes of
+        Troubleshooting           network problems and how to tune the
+                                  TCP/IP Services software for the best
+                                  performance.
+
+        Compaq TCP/IP Services    This manual describes the IPv6
+        for OpenVMS Guide to      environment, the roles of systems
+        IPv6                      in this environment, the types
+                                  and function of the different IPv6
+                                  addresses, and how to configure TCP/IP
+        __________________________Services_to_access_the_6bone_network._
+
+              For a comprehensive overview of the TCP/IP protocol suite,
+              you might find the book Internetworking with TCP/IP:
+              Principles, Protocols, and Architecture, by Douglas Comer,
+              useful.
+
+        Reader's Comments
+
+              Compaq welcomes your comments on this manual. Please send
+              comments to either of the following addresses:
+
+              Internet    openvmsdoc@compaq.com
+
+              Mail        Compaq Computer Corporation
+                          OSSG Documentation Group, ZKO3-4/U08
+                          110 Spit Brook Rd.
+                          Nashua, NH 03062-2698
+
+        How to Order Additional Documentation
+
+              Visit the following World Wide Web address for information
+              about how to order additional documentation:
+
+              http://www.openvms.compaq.com/
+
+
+
+
+
+                                                                      ix
+
+ 
+
+
+
+
+
+
+        Conventions
+
+              The name TCP/IP Services means both:
+
+              o  Compaq TCP/IP Services for OpenVMS Alpha
+
+              o  Compaq TCP/IP Services for OpenVMS VAX
+
+              The name UNIX refers to the Compaq Tru64 UNIX operating
+              system.
+
+              The following conventions are used in this manual.
+              In addition, please note that all IP addresses are
+              fictitious.
+
+              Ctrl/x           A sequence such as Ctrl/x indicates that
+                               you must hold down the key labeled Ctrl
+                               while you press another key or a pointing
+                               device button.
+
+              PF1 x            A sequence such as PF1 x indicates that
+                               you must first press and release the key
+                               labeled PF1 and then press and release
+                               another key or a pointing device button.
+
+              <Return>         In examples, a key name enclosed in a
+                               box indicates that you press a key on
+                               the keyboard. (In text, a key name is not
+                               enclosed in a box.)
+
+                               In the HTML version of this document,
+                               this convention appears as brackets,
+                               rather than a box.
+
+               . . .           A horizontal ellipsis in examples indi-
+                               cates one of the following possibilities:
+
+                               o  Additional optional arguments in a
+                                  statement have been omitted.
+
+                               o  The preceding item or items can be
+                                  repeated one or more times.
+
+                               o  Additional parameters, values, or
+                                  other information can be entered.
+
+        x
+
+ 
+
+
+
+
+
+
+
+              .                A vertical ellipsis indicates the
+              .                omission of items from a code example
+              .                or command format; the items are omitted
+                               because they are not important to the
+                               topic being discussed.
+
+              ( )              In command format descriptions,
+                               parentheses indicate that you must
+                               enclose choices in parentheses if you
+                               specify more than one.
+
+              [ ]              In command format descriptions, brackets
+                               indicate optional choices. You can choose
+                               one or more items or no items. Do not
+                               type the brackets on the command line.
+                               However, you must include the brackets
+                               in the syntax for OpenVMS directory
+                               specifications and for a substring
+                               specification in an assignment statement.
+
+              |                In command format descriptions, vertical
+                               bars separate choices within brackets
+                               or braces. Within brackets, the choices
+                               are optional; within braces, at least
+                               one choice is required. Do not type the
+                               vertical bars on the command line.
+
+              { }              In command format descriptions, braces
+                               indicate required choices; you must
+                               choose at least one of the items listed.
+                               Do not type the braces on the command
+                               line.
+
+              bold text        This typeface represents the introduction
+                               of a new term. It also represents the
+                               name of an argument, an attribute, or a
+                               reason.
+
+
+
+
+
+
+
+                                                                      xi
+
+ 
+
+
+
+
+
+
+
+              italic text      Italic text indicates important
+                               information, complete titles of
+                               manuals, or variables. Variables include
+                               information that varies in system output
+                               (Internal error number), in command
+                               lines (/PRODUCER=name), and in command
+                               parameters in text (where dd represents
+                               the predefined code for the device type).
+
+              UPPERCASE TEXT   Uppercase text indicates a command, the
+                               name of a routine, the name of a file, or
+                               the abbreviation for a system privilege.
+
+              Monospace text   Monospace type indicates code examples
+                               and interactive screen displays.
+
+                               In the C programming language, monospace
+                               type in text identifies the following
+                               elements: keywords, the names of
+                               independently compiled external functions
+                               and files, syntax summaries, and
+                               references to variables or identifiers
+                               introduced in an example.
+
+              -                A hyphen at the end of a command format
+                               description, command line, or code line
+                               indicates that the command or statement
+                               continues on the following line.
+
+              numbers          All numbers in text are assumed to
+                               be decimal unless otherwise noted.
+                               Nondecimal radixes-binary, octal, or
+                               hexadecimal-are explicitly indicated.
+
+
+
+
+
+
+
+
+
+
+
+        xii
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       1
+        ________________________________________________________________
+
+                      Preparing to Install and Configure TCP/IP Services
+
+
+
+              This chapter explains how to prepare for installing and
+              configuring Compaq TCP/IP Services for OpenVMS software.
+
+        1.1 Understanding the Major Tasks
+
+              Installing the TCP/IP Services software takes just a few
+              minutes to complete. You can install the software during
+              the OpenVMS operating system installation procedure or as
+              a layered product.
+
+              After you install TCP/IP Services, you need to enable the
+              components and verify the configuration through the menu-
+              driven TCPIP$CONFIG configuration procedure. This step may
+              take about 15 minutes to complete.
+
+              Table 1-1 lists the major tasks involved in installing and
+              configuring TCP/IP Services and the sections that describe
+              these tasks.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  Preparing to Install and Configure TCP/IP Services 1-1
+
+ 
+
+
+
+        Preparing to Install and Configure TCP/IP Services
+        1.1 Understanding the Major Tasks
+
+              Table_1-1_Major_Tasks:_Installing_and_Configuring_________
+
+              Step_Task________________________________Described_in...__
+
+              1    Prepare for installation and        Sections 1.2 and
+                   configuration.                      1.3
+
+              2    Shut down any previous versions     Section 2.1
+                   of TCP/IP Services running on the
+                   system.
+
+              3    Install TCP/IP Services.            Chapter 2
+
+              4    Configure TCP/IP Services           Chapter 3
+                   according to your network needs.
+
+              5    Start TCP/IP Services.              Section 3.5
+
+              6    Verify the configuration.           Section 3.8
+
+              7    Complete additional configuration   Section 3.9
+              _____and_setup_tasks,_as_appropriate._____________________
+
+        1.2 Preinstallation Tasks
+
+              Table 1-2 lists the tasks you should complete before you
+              install TCP/IP Services on your system, and the sections
+              that describe these tasks.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        1-2 Preparing to Install and Configure TCP/IP Services
+
+ 
+
+
+
+                      Preparing to Install and Configure TCP/IP Services
+                                               1.2 Preinstallation Tasks
+
+              Table_1-2_Preinstallation_Tasks___________________________
+
+              Step_Task________________________________Described_in...__
+
+              1    Inspect the distribution kit.       Section 1.2.1
+
+              2    Extract and read the TCP/IP         Section 1.2.2
+                   Services release notes.
+
+              3    Back up the system disk.            Section 1.2.3
+
+              4    Perform an OpenVMS operating        Section 1.2.3
+                   system upgrade, if applicable.
+
+              5    Register the TCP/IP Services        Section 1.2.4
+                   license PAK.
+
+              6    Check the disk space, memory, and   Sections 1.2.5
+                   system parameters.                  through 1.2.7
+
+              7    Assign a user identification code   Section 1.2.8
+                   (UIC), if necessary.
+
+              8    Assemble information for            Section 1.3
+              _____configuration._______________________________________
+
+        1.2.1 Inspecting the Distribution Kit
+
+              Make sure you have a complete software distribution kit.
+              If you have the OpenVMS consolidated distribution CD-ROM
+              kit, check the CD master index for the kit location. If
+              you have an individual CD-ROM, supply the device name
+              (such as DKAn) for the media when you issue the command to
+              install TCP/IP Services.
+
+              Check that the kit contains everything listed on the Bill
+              of Materials (BOM). If anything is missing or damaged,
+              contact your Compaq representative.
+
+        1.2.2 Extracting the Release Notes
+
+              The Compaq TCP/IP Services for OpenVMS Release Notes
+              document contains important information you should know
+              before you install the product.
+
+              You can have the POLYCENTER Software Installation utility
+              extract the release notes as either a text file or a
+              PostScript file. To extract the release notes as a text
+              file, enter the following POLYCENTER Software Installation
+              utility command:
+
+                  Preparing to Install and Configure TCP/IP Services 1-3
+
+ 
+
+
+
+        Preparing to Install and Configure TCP/IP Services
+        1.2 Preinstallation Tasks
+
+              $ PRODUCT EXTRACT RELEASE_NOTES TCPIP/SELECT=TCPIP053.RELEASE_NOTES
+
+              To extract the release notes as a PostScript file, enter
+              the following:
+
+              $ PRODUCT EXTRACT RELEASE_NOTES TCPIP/SELECT=TCPIP053_RELEASE_NOTES.PS
+
+        1.2.3 Backing Up the System Disk and Upgrading OpenVMS
+
+              Before you install TCP/IP Services, Compaq recommends that
+              you back up the system disk using the backup procedures
+              established at your site. After the backup operation is
+              complete, you should upgrade the OpenVMS operating system,
+              if applicable.
+
+              For information about backing up a system disk, see the
+              OpenVMS System Manager's Manual: Essentials.
+
+              For information about how to upgrade OpenVMS, refer to the
+              appropriate OpenVMS upgrade and installation manual.
+
+        1.2.4 Registering the License Product Authorization Key
+
+              Before you install TCP/IP Services on a newly licensed
+              node or cluster, you must register a License Product
+              Authorization Key (PAK) using the OpenVMS License
+              Management Facility (LMF). Without a PAK, you can use
+              only DECwindows TCP/IP Transport software.
+
+              If you are upgrading TCP/IP Services on a node or cluster
+              that is licensed for this software, you have already
+              completed the License PAK registration requirements.
+
+              If you ordered the license and the media together, the
+              PAK is included with your distribution kit. Otherwise, the
+              PAK is shipped separately to the location specified on the
+              license order.
+
+              If you are also installing prerequisite or optional
+              software, review the PAK status and install the PAKs for
+              any prerequisite or optional software before you install
+              TCP/IP Services.
+
+              To register a license, log in to the SYSTEM account and do
+              one of the following:
+
+              o  Run the SYS$UPDATE:VMSLICENSE.COM file and enter the
+                 data from your License PAK.
+
+        1-4 Preparing to Install and Configure TCP/IP Services
+
+ 
+
+
+
+                      Preparing to Install and Configure TCP/IP Services
+                                               1.2 Preinstallation Tasks
+
+              o  At the DCL prompt, enter the LICENSE REGISTER command
+                 and the appropriate qualifiers.
+
+              You must register a license for each node in an OpenVMS
+              Cluster.
+
+              For complete information about LMF, see the OpenVMS
+              License Management Utility Manual.
+
+        1.2.5 Checking the Disk Space
+
+              Make sure your system meets the following disk space
+              requirements:
+
+              __________________________________________________________
+              System_____________Minimum_Block_Size_____________________
+
+              OpenVMS Alpha      125,000
+
+              OpenVMS_VAX________70,000_________________________________
+
+              The actual disk space needed varies depending on the
+              system environment, configuration, and software options.
+
+              To find out how many free blocks exist on the system disk,
+              enter:
+
+              $ SHOW DEVICE SYS$SYSDEVICE
+
+        1.2.6 Checking the Physical Memory
+
+              Make sure the system meets the following physical memory
+              requirements:
+
+              __________________________________________________________
+              System_____________Minimum_Memory_________________________
+
+              OpenVMS Alpha      32 MB
+
+              OpenVMS_VAX________24_MB__________________________________
+
+              To check the memory, enter:
+
+              $ SHOW MEMORY/FULL
+
+                  Preparing to Install and Configure TCP/IP Services 1-5
+
+ 
+
+
+
+        Preparing to Install and Configure TCP/IP Services
+        1.2 Preinstallation Tasks
+
+        1.2.7 Checking the System Parameters
+
+              Most systems have adequate system resources readily
+              available to include the TCP/IP Services software.
+              However, you should check the system parameters outlined
+              in the following sections. Make any necessary changes to
+              the MODPARAMS.DAT file, then run AUTOGEN, and reboot your
+              system.
+
+        1.2.7.1 Global Pagelets and Global Sections
+
+              The TCP/IP Services software requires 65 global sections
+              and 8100 global pagelets.
+
+              To check the number of available global pagelets and
+              global sections, enter WRITE commands with the F$GETSYI
+              lexical functions. The following is an example from an
+              OpenVMS Alpha system:
+
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLPAGES")
+              143576
+
+              $ WRITE SYS$OUTPUT F$GETSYI("FREE_GBLSECTS")
+              249
+
+              To increase the global pagelets and global sections, add
+              statements to the SYS$SYSTEM:MODPARAMS.DAT file that
+              increase the values of the system parameters GBLPAGES
+              and GBLSECTIONS, as in the following example:
+
+              ADD_GBLPAGES = 7500
+              ADD_GBLSECTIONS = 75
+
+        1.2.7.2 Nonpaged Dynamic Pool
+
+              Add at least 500,000 bytes of nonpaged dynamic pool for
+              the software, as follows:
+
+              1. Log in to the SYSTEM account.
+
+              2. Identify the amount of additional nonpaged pool your
+                 system requires. Use the estimated value of 500,000
+                 bytes, and then increase the value depending on the
+                 maximum amount of sockets you have. For each socket,
+                 allow a value of 2,000 bytes.
+
+                ________________________Note  ________________________
+
+                On a system that uses FDDI, the default sizes
+                for the TCP/IP socket buffer quotas are increased
+
+        1-6 Preparing to Install and Configure TCP/IP Services
+
+ 
+
+
+
+                      Preparing to Install and Configure TCP/IP Services
+                                               1.2 Preinstallation Tasks
+
+                automatically. This increases throughput across the
+                FDDI for local TCP connections.
+
+                _____________________________________________________
+
+              3. Refer to the following example, and then edit
+                 MODPARAMS.DAT to reflect the appropriate value for
+                 the NPAGEDYN and NPAGEVIR parameters:
+
+                 ! Add nonpaged pool for Compaq TCP/IP Services for OpenVMS.
+                 !
+                 ADD_NPAGEDYN=500000
+                 ADD_NPAGEVIR=500000
+
+              For more information about nonpaged dynamic pool, see the
+              OpenVMS System Manager's Manual: Essentials.
+
+        1.2.7.3 Interrupt Stack Pages (VAX Only)
+
+              If you are using PATHWORKS Internet Protocol (PWIP) on
+              an OpenVMS VAX system, you should increase the number
+              of interrupt stack pages (INTSTKPAGES) to 12 or more to
+              help eliminate system startup warnings and failures. For
+              information about the PATHWORKS for OpenVMS (Advanced
+              Server), see the PATHWORKS documentation.
+
+              To increase the number of interrupt stack pages, add a
+              statement to the MODPARAMS.DAT file that increases the
+              value of the INTSTKPAGES system parameter, as in the
+              following example:
+
+              ADD_INTSTKPAGES = 12
+
+        1.2.7.4 System Page Table Entries Parameter (VAX Only)
+
+              On VAX systems, make sure the AUTOGEN parameter SPTREQ is
+              set to at least 6000. To check the minimum SPTREQ value,
+              run SYSMAN as follows:
+
+              $ RUN SYS$SYSTEM:SYSMAN
+
+              SYSMAN> parameter show sptreq
+              %SYSMAN, a USE ACTIVE has been defaulted on node VMSVAX
+
+              Node VMSVAX:   Parameters in use: ACTIVE
+              Parameter Name   Current  Default  Minimum  Maximum Unit   Dynamic
+              --------------   -------  -------  -------  ------- ----   -------
+              SPTREQ              8000     3900     3000       -1 Pages
+
+                  Preparing to Install and Configure TCP/IP Services 1-7
+
+ 
+
+
+
+        Preparing to Install and Configure TCP/IP Services
+        1.2 Preinstallation Tasks
+
+              SYSMAN>
+
+              To modify the minimum SPTREQ, run the AUTOGEN command
+              procedure as described in the OpenVMS System Management
+              Utilities Reference Manual: A-L. Modify the minimum SPTREQ
+              value as follows:
+
+              MIN_SPTREQ = 6000
+
+        1.2.8 Assigning a User Identification Code
+
+              An OpenVMS user or group of users is identified by a
+              unique, assigned user identification code (UIC) in the
+              format [group,member], where group and member are numeric,
+              alphanumeric, or alphabetic characters. For example, a UIC
+              can be either [306,210], [GROUP1, JONES], or simply JONES.
+              The UIC is linked to a system-defined rights database that
+              determines user and group privileges.
+
+              The TCPIP$CONFIG configuration procedure uses a group UIC
+              to create accounts for components. If a user-specified
+              UIC is not in place from a previous configuration, the
+              procedure creates the following UIC group numbers:
+
+              __________________________________________________________
+              Default
+              UIC Group
+              Number_____Description____________________________________
+
+              3655       The default UIC group number for service
+                         accounts. If this is an initial product
+                         configuration but the procedure detects that
+                         number 3655 is in use, TCPIP$CONFIG prompts you
+                         for a new UIC group number.
+
+              3375       The default UIC group number for the TCPIP$NOBODY
+                         user account.
+
+              3376       The default UIC group number for the ANONYMOUS
+              ___________account._______________________________________
+
+              Before you assign a new group UIC, check that the number
+              you chose is not already in use by entering the following
+              commands:
+
+        1-8 Preparing to Install and Configure TCP/IP Services
+
+ 
+
+
+
+                      Preparing to Install and Configure TCP/IP Services
+                                               1.2 Preinstallation Tasks
+
+              $ RUN SYS$SYSTEM:AUTHORIZE
+
+              UAF> SHOW /BRIEF [your-group-number,*]
+
+              UAF> SHOW /IDENTIFIER /VALUE=UIC:[your-group-number,*]
+
+              To force TCPIP$CONFIG to allow you to specify a new UIC
+              group number, assign the value TRUE to the logical name
+              TCPIP$ASK_GROUP_UIC, as in the following example. When you
+              configure TCP/IP Services, TCPIP$CONFIG prompts you for
+              the group UIC.
+
+              $ DEFINE TCPIP$ASK_GROUP_UIC TRUE
+
+        1.3 Assembling Configuration Information
+
+              Use the worksheet in Table 1-3 to assemble configuration
+              information.
+
+              If you are configuring TCP/IP Services on the system
+              for the first time, the TCPIP$CONFIG procedure prompts
+              you for the information listed in Table 1-3. If you are
+              reconfiguring after a product upgrade, the procedure uses
+              the previous configuration information as the default for
+              the new configuration.
+
+              For information to help you answer the questions on the
+              configuration worksheet, see appropriate chapters in the
+              Compaq TCP/IP Services for OpenVMS Management guide.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  Preparing to Install and Configure TCP/IP Services 1-9
+
+ 
+
+
+
+        Preparing to Install and Configure TCP/IP Services
+        1.3 Assembling Configuration Information
+
+        Table_1-3_Configuration_Planning_Worksheet______________________
+
+        _____Question__________________________________Answer___________
+
+        What is the system's host name (for example,   _________________
+        MYNODE)?
+
+        What is the system's Internet domain name      _________________
+        (for example, widgets.com)?
+
+        Do you plan to have your IP interface under    _________________
+        control of the DHCP client? If so, the
+        next items on this worksheet (the system's
+        addresses and masks, and the system's network
+        interface), might be configured automatically
+        by the DHCP server, in which case you do
+        not need to specify them. Ask your network
+        manager for details.
+
+
+        What are the system's addresses and masks?[1]
+
+        *    IP address (for example, 19.112.139.14)   _________________
+
+        *    Subnet (network mask) address (for        _________________
+             example, 255.0.0.0)
+
+        *    Broadcast address (for example,           _________________
+             19.255.255.255)
+
+        What is the system's network interface (for    _________________
+        example, WE0)?[1]
+
+                                                       _________________
+
+                                                       _________________
+
+        [1] If the IP interface runs under control of the DHCP client,
+        this information might be configured automatically. Check with
+        your network manager. For more information, see the DHCP client
+        documentation.
+
+                                                (continued on next page)
+
+        1-10 Preparing to Install and Configure TCP/IP Services
+
+ 
+
+
+
+                      Preparing to Install and Configure TCP/IP Services
+                                1.3 Assembling Configuration Information
+
+        Table_1-3_(Cont.)_Configuration_Planning_Worksheet______________
+
+        _____Question__________________________________Answer___________
+
+        What is the group UIC for TCP/IP Services      _________________
+        (see Section 1.2.8)? For example, [GROUP1,JONES].
+
+        Which type of routing is appropriate for the   _________________
+        network, Static or Dynamic?
+
+             Static - For simple networks where
+             routes do not change
+
+             If static, enter the default gateway's
+             host name and address (for example,
+             GATWY1; 19.112.0.65).
+
+             Dynamic - For complex networks where
+             flexibility is required
+
+             If dynamic, you must specify either
+             ROUTED or GATED routing.
+
+        Do you plan to enable the BIND resolver? If
+        so:
+
+        *    What is the name of the BIND server you   _________________
+             want the resolver to use (for example,
+             MAINSV)?
+
+        *    What is the IP address of the BIND        _________________
+             server (for example, 19.112.139.10)?
+
+        *    What is the domain name (for example,     _________________
+             mainsv.widgets.com)?
+
+        Do you plan to enable SNMP? If yes:
+
+        *    Do you want to allow SNMP management      _________________
+             clients to modify the MIBs by issuing
+             set requests?
+
+                                                (continued on next page)
+
+
+                 Preparing to Install and Configure TCP/IP Services 1-11
+
+ 
+
+
+
+        Preparing to Install and Configure TCP/IP Services
+        1.3 Assembling Configuration Information
+
+        Table_1-3_(Cont.)_Configuration_Planning_Worksheet______________
+
+        _____Question__________________________________Answer___________
+
+        *    Do you want to enable authentication      _________________
+             traps when the master agent receives
+             an SNMP request that specifies an
+             unauthorized community string?
+
+        *    What is the name of the system's contact  _________________
+             person? Specify text as in the following
+             example: Sam Spade.
+
+        *    What is the location of the system?       _________________
+             Specify one or two fields of text as in
+             the following three examples:
+
+             - Falcon Building, Los Angeles
+             - Boston, MA
+             - Northwest
+
+        *    Do you want to allow any network manager  _________________
+             to remotely monitor your system? If so,
+             you need to specify a public community
+             name. The default is "public." Specify
+             a string consisting of alphanumeric
+             characters only. Do not enclose the
+             string in quotes: the case is preserved
+             as you enter it. Example: Rw2.
+
+        *    Do you want to provide additional         _________________
+             community names and addresses (for
+             implementing traps and allowing access
+             beyond the default read-only provided by
+        _____the_"public"_community)?___________________________________
+
+
+
+
+
+
+
+
+
+
+        1-12 Preparing to Install and Configure TCP/IP Services
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       2
+        ________________________________________________________________
+
+                                              Installing TCP/IP Services
+
+
+
+              This chapter explains how to install the Compaq TCP/IP
+              Services for OpenVMS software as a layered product
+              using the POLYCENTER Software Installation utility. The
+              instructions are appropriate for an initial installation
+              or an upgrade.
+
+              For information about how to install the product directly
+              from the OpenVMS Alpha CD-ROM menu, refer to the OpenVMS
+              Alpha Upgrade and Installation Manual.
+
+              For information about the POLYCENTER Software Installation
+              utility, refer to the OpenVMS System Manager's Manual:
+              Essentials.
+
+        2.1 Invoking the Installation Procedure
+
+              When you have completed the recommended preinstallation
+              tasks outlined in Chapter 1 and have read the release
+              notes (Section 1.2.2), you are ready to upgrade or install
+              TCP/IP Services.
+
+              During a product upgrade, existing configuration files are
+              preserved in case you want to use them when you configure
+              this version of the software.
+
+              To install the TCP/IP Services software on an OpenVMS VAX
+              or Alpha system, proceed as follows:
+
+              1. Log in to the SYSTEM account.
+
+              2. Check to make sure that other users are not logged in
+                 to the system.
+
+              3. Edit the SYS$STARTUP:SYSTARTUP_VMS.COM file and check
+                 to see if the command @SYS$STARTUP:UCX$STARTUP is
+                 defined. If this command is defined, edit the line, re-
+                 placing the command definition with @SYS$STARTUP:TCPIP$STARTUP
+
+                                          Installing TCP/IP Services 2-1
+
+ 
+
+
+
+        Installing TCP/IP Services
+        2.1 Invoking the Installation Procedure
+
+                 so that the current version of the product starts
+                 automatically when the system starts up.
+
+              4. If a previous version of the software is installed on
+                 the system, shut it down. Enter one of the following
+                 commands:
+
+                 _______________________________________________________
+                 Software
+                 Version_____Use_This_Command___________________________
+
+                 Version     @SYS$MANAGER:UCX$SHUTDOWN.COM
+                 4.x
+
+                 Version     @SYS$STARTUP:TCPIP$SHUTDOWN.COM
+                 5.x____________________________________________________
+
+              5. Compaq recommends that you log the installation
+                 procedure. If you have DECnet configured on your
+                 system, you can create a log of the installation
+                 procedure by entering the following command and then
+                 log in to the system account again:
+
+                 $ SET HOST 0/LOG=file-specification
+
+                 In this command, file-specification is the name of the
+                 file to which you want the log written. The log file is
+                 written to the current directory.
+
+              6. Start the POLYCENTER Software Installation utility by
+                 entering the PRODUCT INSTALL command with the directory
+                 path appropriate for your system. For example:
+
+                 $ PRODUCT INSTALL TCPIP /SOURCE=directory-path
+
+                 In this command, directory-path specifies the disk
+                 and directory name for the source drive that holds the
+                 TCP/IP Services kit. For example, /SOURCE=DKA400:[TCPIPAXP053].
+
+                 If you do not specify the source qualifier, the
+                 POLYCENTER Software Installation utility searches the
+                 location defined by the logical name PCSI$SOURCE. If
+                 not defined, the utility searches the current default
+                 directory.
+
+        2-2 Installing TCP/IP Services
+
+ 
+
+
+
+                                              Installing TCP/IP Services
+                         2.2 Stepping Through the Installation Procedure
+
+        2.2 Stepping Through the Installation Procedure
+
+              After you invoke the installation procedure, you are
+              prompted for information. Example 2-1 shows a sample
+              installation on an OpenVMS Alpha system that has an
+              earlier version of TCP/IP Services installed on it.
+              Additional explanatory information follows each portion of
+              the script. For a sample installation on a system on which
+              the product has never been installed, see Appendix A.
+
+              The actual installation output that is displayed on
+              your system might vary, depending on your current
+              configuration.
+
+                ________________________Note  ________________________
+
+                To stop the installation at any time, press Ctrl/Y.
+                The installation procedure deletes any files that
+                were created, then exits.
+
+                The symbols xx in the following example and
+                elsewhere in this document represent the product's
+                two-digit update version number.
+
+                _____________________________________________________
+
+        Example 2-1 TCP/IP Services Installation: Sample POLYCENTER
+                    Software Installation Utility Procedure
+
+           1 - DEC AXPVMS TCPIP V5.3-xx            Layered Product
+           2 - DEC AXPVMS TCPIP V5.1-15            Layered Product
+           3 - DEC AXPVMS TCPIP V5.0-11            Layered Product
+           4 - All products listed above
+           5 - Exit
+
+        Choose one or more items from the menu separated by commas: 1 <Return>
+
+              The menu that is displayed initially includes the latest
+              TCP/IP Services product and any versions of the product
+              that are in place on the system. Install the latest
+              version (option 1).
+
+
+
+
+                                          Installing TCP/IP Services 2-3
+
+ 
+
+        Installing TCP/IP Services
+        2.2 Stepping Through the Installation Procedure
+
+
+
+        The following product has been selected:
+            DEC AXPVMS TCPIP V5.3-xx                  Layered Product
+
+        Do you want to continue? [YES] <Return>
+
+              Press Return to continue with the installation procedure.
+
+        Configuration phase starting ...
+
+        You will be asked to choose options, if any, for each selected product 
+        and for
+        any products that may be installed to satisfy software dependency 
+        requirements.
+
+        DEC AXPVMS TCPIP V5.3-xx: Compaq TCP/IP Services for OpenVMS.
+
+            Copyright 2002 Compaq Information Technologies Group, L.P.
+
+            Compaq Computer Corporation
+
+            Compaq TCP/IP Services for OpenVMS offers several license options.
+
+        Do you want the defaults for all options? [YES] <Return>
+
+              Answer YES to choose the POLYCENTER Software Installation
+              utility defaults for the options or NO to choose other
+              options.
+
+        Do you want to review the options? [NO] <Return>
+
+              Answer YES to review the POLYCENTER Software Installation
+              utility options. In this example, the options are not
+              reviewed.
+
+              If you select YES, the options are displayed and you are
+              asked whether you are satisfied with the options. Press
+              Return to accept the options as listed, or answer NO to
+              change the options.
+
+        Execution phase starting ...
+
+        The following product will be installed to destination:
+            DEC AXPVMS TCPIP V5.3-xx              DISK$ALPHASYS:[VMS$COMMON.]
+        The following product will be removed from destination:
+            DEC AXPVMS TCPIP V5.1-15              DISK$ALPHASYS:[VMS$COMMON.]
+
+        Portion done: 0%...10%...20%...30%...40%...50%...60%...70%...80%...90%
+
+        2-4 Installing TCP/IP Services
+
+
+
+
+                                              Installing TCP/IP Services
+                         2.2 Stepping Through the Installation Procedure
+
+              The following message appears only if an earlier version
+              of TCP/IP Services was configured on your system. A
+              similar message, verifying the product name and version,
+              appears if you are installing for the first time.
+
+        %PCSI-I-PRCOUTPUT, output from subprocess follows ...
+        % TCPIP-W-PCSI_INSTALL
+        % - BG device exists.
+        %   To use the version of Compaq TCP/IP Services that was just 
+        installed,
+        %   system must be rebooted.
+        %
+
+        Portion done: 100%
+
+        The following product has been installed:
+            DEC AXPVMS TCPIP V5.3-xx               Layered Product
+        The following product has been removed:
+            DEC AXPVMS TCPIP V5.1-15               Layered Product
+
+        DEC AXPVMS TCPIP V5.3-xx: Compaq TCP/IP Services for OpenVMS.
+
+            Check the release notes for current status of the product.
+
+        2.3 Postinstallation Tasks
+
+              After the installation completes, perform the following
+              steps:
+
+              1. Optionally, you can:
+
+                 -  Read the Compaq TCP/IP Services for OpenVMS
+                    Release Notes on line or print the file from
+                    SYS$HELP:TCPIP053_RELEASE_NOTES.PS or
+                    SYS$HELP:TCPIP053.RELEASE_NOTES.
+
+                 -  Display a list of the TCP/IP Services files that
+                    were installed. Enter the following command:
+
+                    $ PRODUCT LIST TCPIP /SOURCE=directory-path
+
+                    In this command, directory-path specifies the
+                    disk and directory name for the source drive
+                    that holds the TCP/IP Services kit (for example,
+                    /SOURCE=DKA400:[TCPIPAXP053]). If you do not specify
+                    the source qualifier, the POLYCENTER Software
+                    Installation utility searches the location defined
+
+                                          Installing TCP/IP Services 2-5
+
+ 
+
+
+
+        Installing TCP/IP Services
+        2.3 Postinstallation Tasks
+
+                    by the logical name PCSI$SOURCE. If not defined, the
+                    utility searches the current default directory.
+
+              2. If you had a previous version of TCP/IP Services
+                 configured on your system and the software was
+                 previously started, reboot your system for the new
+                 TCP/IP Services software to take effect. Proceed to
+                 step 4.
+
+                _____________________ Important _____________________
+
+                Do not delete any files that remain from the
+                previous version of the product. Many of these
+                files are used by TCPIP$CONFIG for converting your
+                existing configuration to the new configuration
+                (described in Chapter 3).
+
+                _____________________________________________________
+
+              3. Log out of the SYSTEM account, and then log back in
+                 to the SYSTEM account to establish the TCPIP command
+                 environment.
+
+              4. Proceed to Chapter 3 to configure TCP/IP Services.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        2-6 Installing TCP/IP Services
+
+ 
+
+
+
+
+
+
+
+
+
+                                                                       3
+        ________________________________________________________________
+
+                                             Configuring TCP/IP Services
+
+
+
+              After you install Compaq TCP/IP Services for OpenVMS,
+              you need to enable the components and characteristics you
+              require for your particular system using the menu-driven
+              TCPIP$CONFIG procedure.
+
+              This chapter explains the TCPIP$CONFIG menus, provides
+              sample installation output, and summarizes additional
+              configuration and setup tasks.
+
+        3.1 Recommended Order for Configuring TCP/IP Services
+
+              Table 3-1 lists the tasks involved in configuring the
+              TCP/IP Services components and functionality, and the
+              sections that describe these tasks.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                         Configuring TCP/IP Services 3-1
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.1 Recommended Order for Configuring TCP/IP Services
+
+              Table_3-1_Configuring_TCP/IP_Services_____________________
+
+                                                           Described
+              StepTask_____________________________________in...________
+
+              1   Assemble system information to prepare   Section 1.3
+                  for running TCPIP$CONFIG.
+
+              2   Run TCPIP$CONFIG. If you have a TCP/IP   Section 3.3
+                  Services V4.x configuration on your
+                  system, answer prompts to convert
+                  existing databases or create new ones.
+
+              3   If preferred, have TCP/IP Services       Section 3.2
+                  software configured automatically by a
+                  DHCP server.
+
+              4   Manually configure the major components  Section 3.3.4
+                  and functionality using TCPIP$CONFIG.
+
+              5   Configure the optional components using  Section 3.3.7
+                  TCPIP$CONFIG, as applicable.
+
+              6   Start TCP/IP Services.                   Section 3.5
+
+              7   Verify the configuration.                Section 3.8
+
+              8   Complete additional configuration        Section 3.9
+              ____tasks,_as_appropriate.________________________________
+
+        3.2 Automatic Configuration of TCP/IP Services Using DHCP
+            Client
+
+              TCP/IP Services Version 5.3 supports the DHCP client,
+              which allows you to have your system configured automati-
+              cally by a DHCP server. You can achieve this in one of two
+              ways:
+
+              o  If TCP/IP Services has never been configured on
+                 your system, you can run the TCP/IP Services startup
+                 procedure, SYS$MANAGER:TCPIP$STARTUP.COM. The startup
+                 procedure detects the fact that the TCP/IP Services
+                 software has not been configured and asks whether you
+                 want the DHCP client to configure the host for you.
+                 Answer YES.
+
+        3-2 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+        3.2 Automatic Configuration of TCP/IP Services Using DHCP Client
+
+                 The startup procedure invokes TCPIP$CONFIG, which sets
+                 up the environment for the DHCP client and designates
+                 any unconfigured interfaces to be under DHCP client
+                 control. The procedure enables the following set of
+                 services automatically:
+
+                 -  FTP client
+
+                 -  TELNET client
+
+                 -  TELNET server
+
+                 -  SMTP
+
+                 For more information about DHCP, see the Compaq TCP/IP
+                 Services for OpenVMS Management manual.
+
+              o  Run TCPIP$CONFIG. Choose option 2 from the Core
+                 Environment Configuration menu to configure the
+                 Internet interface, and then choose option 2 from the
+                 Interface Configuration menu:
+
+                 Configuration options:
+
+                      1 - Configure interface manually   (Current default)
+                      2 - Let DHCP configure interface
+
+                 You can also use TCPIP$CONFIG to configure additional
+                 services and parameters, as needed.
+
+        3.3 Running TCPIP$CONFIG
+
+              The TCPIP$CONFIG procedure displays menus from which you
+              do the following:
+
+              o  Make selections that enable components for your system.
+                 To select the default, press the Return key.
+
+              o  Start or stop TCP/IP Services software.
+
+              o  Verify the configuration.
+
+              To get started, enter:
+
+              $ @SYS$MANAGER:TCPIP$CONFIG
+
+                                         Configuring TCP/IP Services 3-3
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+        3.3.1 Converting Existing TCP/IP Services Configuration Files
+              (Upgrade Only)
+
+              If you have a TCP/IP Services for OpenVMS (UCX) configura-
+              tion in place from a V4.x version of the product, and you
+              have never configured a V5.x product on the system, the
+              procedure begins by asking you whether to convert the old
+              TCP/IP Services configuration files:
+
+              Convert the old configuration files [Y]
+
+              Unless you respond NO to the prompt, the procedure
+              converts existing configuration files to new configuration
+              files.
+
+              If you have already configured this product, the procedure
+              indicates that no new configuration files are being
+              created:
+
+              Checking TCP/IP Services for OpenVMS configuration database files.
+
+              No new database files were created.
+
+              The following sample output shows the start of the
+              TCPIP$CONFIG procedure and a portion of the conversion
+              of a previous configuration:
+
+                TCP/IP Network Configuration Procedure
+
+          This procedure helps you define the parameters required
+          to run Compaq TCP/IP Services for OpenVMS on this system.
+
+          NOTE:
+          TCP/IP has been previously configured from an earlier version
+          of this product.  You can avoid a complete reconfiguration of
+          TCP/IP by allowing this procedure to automatically convert the
+          old configuration files.  If you choose not to do this now, you
+          will not be asked again.  At the end of the conversion you will
+          be able to further modify your configuration.
+
+        Convert the old configuration files [Y]: <Return>
+        Preparing files for conversion...
+
+
+
+        3-4 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+            UCX$SERVICE.DAT        --> TCPIP$SERVICE.DAT
+            UCX$HOST.DAT           --> TCPIP$HOST.DAT
+            UCX$NETWORK.DAT        --> TCPIP$NETWORK.DAT
+            UCX$ROUTE.DAT          --> TCPIP$ROUTE.DAT
+            UCX$PROXY.DAT          --> TCPIP$PROXY.DAT
+            UCX$CONFIGURATION.DAT  --> TCPIP$CONFIGURATION.DAT
+            UCX$EXPORT.DAT         --> TCPIP$EXPORT.DAT
+            UCX$PRINTCAP.DAT       --> TCPIP$PRINTCAP.DAT
+
+               No new database files were created.
+
+        FTP SERVER Configuration
+
+        LPD SERVER Configuration
+
+        Service is not defined in the SYSUAF.
+          Nonprivileged user access is not enabled.
+
+        By default, Compaq TCP/IP Services for OpenVMS configures
+        LPD such that nonprivileged users cannot modify queue entries.
+
+        Creating TCPIP$AUX identifier with a value of 3655
+
+             Compaq TCP/IP Services for OpenVMS supports Line Printer Daemon
+             Protocol (see RFC 1179).
+
+               LPD requires the following:
+                 - Name of the local queue
+                 - Name of the remote queue
+                 - Name of the remote host
+                 - Spooling directory for the local queue
+
+               To add or delete printers in the TCPIP PRINTCAP database, use the
+               $RUN SYS$SYSTEM:TCPIP$LPRSETUP command.
+        .
+        .
+        .
+
+        3.3.2 Creating New TCP/IP Services Configuration Files
+
+              If you do not have an existing TCP/IP Services configura-
+              tion in place from a previous version of the product, the
+              procedure begins by creating configuration database files,
+              as shown in the following sample output:
+
+                                         Configuring TCP/IP Services 3-5
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+         TCP/IP Network Configuration Procedure
+
+         This procedure helps you define the parameters required
+         to run Compaq TCP/IP Services for OpenVMS on this system.
+
+         Checking TCP/IP Services for OpenVMS configuration database files.
+
+         Creating SYS$COMMON:[SYSEXE]TCPIP$SERVICE.DAT
+         Creating SYS$COMMON:[SYSEXE]TCPIP$HOST.DAT
+         Creating SYS$COMMON:[SYSEXE]TCPIP$NETWORK.DAT
+         Creating SYS$COMMON:[SYSEXE]TCPIP$ROUTE.DAT
+         Creating SYS$COMMON:[SYSEXE]TCPIP$PROXY.DAT
+         Creating SYS$COMMON:[SYSEXE]TCPIP$CONFIGURATION.DAT
+         Creating TCPIP$ETC:SYSCONFIGTAB.DAT
+
+        Compaq TCP/IP Services for OpenVMS requires a definition for at
+        least one interface.  There are no interfaces defined on this
+        system.
+
+        Please select the Interface option from the Core Environment Menu.
+
+        3.3.3 Understanding the Configuration Menus
+
+              After the configuration files are converted or created,
+              the Main Configuration menu is displayed:
+
+        Compaq TCP/IP Services for OpenVMS Configuration Menu
+
+            Configuration options:
+
+                   1  -  Core environment
+                   2  -  Client components
+                   3  -  Server components
+                   4  -  Optional components
+                   5  -  Shutdown Compaq TCP/IP Services for OpenVMS
+                   6  -  Startup Compaq TCP/IP Services for OpenVMS
+                   7  -  Run tests
+
+                   A  -  Configure options 1 - 4
+                  [E] -  Exit configuration procedure
+
+        Enter configuration option:
+
+
+
+        3-6 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+              The options are as follows:
+
+        ________________________________________________________________
+        Option_______________Description________________________________
+
+        1   Core environ-    Configure software associated with the
+            ment             Network, Internet, and Transport layers of
+                             the TCP/IP architecture (Section 3.3.4).
+
+        2   Client           Configure application software and related
+            components       components (Section 3.3.5).
+
+        3   Server           Configure server software and related
+            components       components (Section 3.3.6).
+
+        4   Optional         Configure software necessary if you plan
+            components       to allow Anonymous FTP access, enable
+                             Kerberos authentication for the TELNET
+                             server, or run such products as PATHWORKS
+                             for OpenVMS (Advanced Server), Advanced
+                             Server for OpenVMS, DECnet over TCP/IP,
+                             or any applications that use the Stanford
+                             Research Institute (SRI) QIO application
+                             programming interface (Section 3.3.7)
+
+        5   Shutdown TCP/IP  Stop TCP/IP Services (Section 3.6).
+            Services for
+            OpenVMS
+
+        6   Startup TCP/IP   Start TCP/IP Services (Section 3.7).
+            Services for
+            OpenVMS
+
+        7   Run tests        Run the installation verification procedure
+                             (Section 3.8).
+
+        A   Configure        Configure all the TCP/IP Services
+            options 1 -      components (the core, client, server,
+            4                and optional components). The procedure
+                             takes you through each of the component
+                             configuration options.
+
+        E   Exit the         Return to the system prompt.
+            configuration
+        ____procedure___________________________________________________
+
+              If you do not have experience with the TCP/IP Services
+              product, you should use the configuration menus. However,
+              if you have experience configuring the software and want
+              to bypass the menus, you can add one or more command
+
+                                         Configuring TCP/IP Services 3-7
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+              parameters when you run TCPIP$CONFIG. For information
+              about the command parameters, see Section 3.4.
+
+        3.3.4 Configuring the Core Environment
+
+              To display the Core Environment Configuration menu, choose
+              option 1 (Core environment) from the Main Configuration
+              menu. If you chose option A from the Main Configuration
+              menu to configure all the TCP/IP Services components,
+              the Core Environment Configuration menu is displayed
+              first. The sample output in the following sections show
+              the progression of the procedure when you choose option A.
+
+              You are required to configure the Domain, Interfaces,
+              and Routing components; BIND Resolver and Time Zone are
+              optional.
+
+                ________________________Note  ________________________
+
+                Use the Interfaces menu (option 2) to set up an
+                interface under control of the DHCP client. If
+                you mark a DHCP client interface as primary, you
+                might not need to set up the other Core Environment
+                components. Ask your network manager whether
+                these components are configured by DHCP. For more
+                information, see the DHCP client documentation.
+
+                _____________________________________________________
+
+        Compaq TCP/IP Services for OpenVMS Core Environment Configuration Menu
+
+           Configuration options:
+
+                   1 - Domain
+                   2 - Interfaces
+                   3 - Routing
+                   4 - BIND Resolver
+                   5 - Time Zone
+
+                   A  - Configure options 1 - 5
+                  [E] - Exit menu
+
+        Enter configuration option: A <Return>
+
+
+        3-8 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+              The following sections include sample output for the core
+              environment components. The samples reflect a TCP/IP
+              Services product configuration for a system on which
+              other TCP/IP Services configurations are in place. The
+              output varies for a new TCP/IP Services installation (see
+              Appendix A).
+
+              Enter your responses to the menu questions using the
+              information from your configuration planning worksheet
+              (Section 1.3).
+
+        3.3.4.1 Domain Configuration
+
+              The following is sample output for configuring the domain:
+
+        DOMAIN Configuration
+
+        Enter Internet domain [budget.acme.com]: widgets.com <Return>
+
+        3.3.4.2 Interface Configuration
+
+              The following is sample output for configuring the
+              Internet interface:
+
+        INTERFACE Configuration
+
+                The Ethernet device(s) on your system are: EWA0:
+
+                Start of configuration questions for Internet interface WE0.
+                WE0 is the Ethernet device EWA0:
+
+        Interface: WE0
+          IP_Addr: 10.10.2.2     NETWRK: 255.255.255.0    BRDCST: 10.10.2.255
+           C_Addr:             C_NETWRK:                C_BRDCST:
+
+           Flags:
+           Receive buffer:       0
+
+             Compaq TCP/IP Services for OpenVMS Interface WE0 Reconfiguration
+             Menu
+
+             Reconfiguration options:
+
+                   1  -  Configure interface manually   (Current default)
+                   2  -  Let DHCP configure interface
+
+                  [E] -  Exit menu (Do not reconfigure interface WE0)
+
+        Enter configuration option: <Return>
+
+              In this example, no changes are made to the interface.
+
+                                         Configuring TCP/IP Services 3-9
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+        3.3.4.3 Dynamic Routing Configuration
+
+              The following is sample output for configuring dynamic
+              routing:
+
+        DYNAMIC ROUTING Configuration
+
+         Dynamic routing has not been configured.
+
+            You may configure dynamic ROUTED or GATED routing.
+            You cannot enable both at the same time.  If you want
+            to change from one to the other, you must disable the
+            current routing first, then enable the desired routing.
+
+            If you enable dynamic ROUTED routing, this host will use the
+            Routing Information Protocol (RIP) - Version 1 to listen
+            for all dynamic routing information coming from other
+            hosts to update its internal routing tables.
+            It will also supply its own Internet addresses to
+            routing requests made from remote hosts.
+
+            If you enable dynamic GATED routing, you will be able to
+            configure this host to use any combination of the following
+            routing protocols to exchange dynamic routing information
+            with other hosts on the network:
+                Routing Information Protocol (RIP) - Version 1 & 2
+                Router Discovery Protocol (RDISC)
+                Open Shortest Path First (OSPF)
+                Exterior Gateway Protocol (EGP)
+                Border Gateway Protocol (BGP-4)
+                Static routes
+
+        * Do you want to configure dynamic ROUTED or GATED routing [NO]: 
+        YES <Return>
+        * Do you want to enable GATED routing configuration [NO]: <Return>
+
+            ROUTED option
+
+            If you enable the 'supply' option of dynamic routing,
+            this host will supply dynamic routing information to
+            other hosts on the network whether it is acting as an
+            internetwork gateway or not.
+
+        * Do you want this host to supply its dynamic routing information [NO]: 
+        <Return>
+
+
+        3-10 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+        3.3.4.4 BIND Resolver Configuration
+
+              The following is sample output for configuring the BIND
+              resolver:
+
+        A BIND resolver has already been configured.
+
+        BIND Resolver Configuration
+
+          Transport:  UDP
+          Domain:     budget.acme.com
+          Retry:         4
+          Timeout:       4
+          Servers:    island.budget.acme.com
+          Path:       No values defined
+
+        * Do you want to reconfigure BIND [NO]: <Return>
+
+              In this example, no changes are made to the BIND
+              resolver.
+
+        3.3.4.5 Time Zone Configuration
+
+              The following is sample output for configuring the time
+              zone:
+
+        TIME ZONE Configuration
+
+          TCPIP uses timezone information provided by the OpenVMS Operating
+          System. No additional timezone configuration is needed for TCPIP
+          when the operating system is configured correctly.
+
+          This section verifies the current OpenVMS timezone configuration.
+          A warning message (TCPIP-W-) indicates that corrective action should
+          be taken. TCPIP will appear to operate but components may display
+          either the wrong time or a time inconsistent with other applications.
+
+        %TCPIP-I-INFO, Logical name SYS$TIMEZONE_RULE found.
+        -TCPIP-I-INFO, Software for automatic Summer/Winter time (TDF) change
+        -TCPIP-I-INFO, is present.
+        -TCPIP-I-INFO, Further action to ensure TDF change is not necessary.
+
+        %TCPIP-I-NORMAL, timezone information verified
+
+        Press Return to continue ...
+
+                                        Configuring TCP/IP Services 3-11
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+              After you configure the core environment, press Return or
+              choose option E to exit from the Core Environment menu.
+              If you chose option A from the Main Configuration menu to
+              configure all the TCP/IP Services components, the Client
+              Components Configuration menu displays next; otherwise,
+              the procedure returns to the the Main Configuration menu.
+
+        3.3.5 Configuring the Client Environment
+
+              To display the Client Components Configuration menu,
+              choose option 2 (Client components) from the Main
+              Configuration menu. If you chose option A from the Main
+              Configuration menu to configure all the TCP/IP Services
+              components, the Client Components Configuration menu
+              displays automatically after you finish configuring the
+              core environment components.
+
+              From the Client Components Configuration menu, choose
+              option A to configure all the client components.
+              Alternatively, you can configure one client component at a
+              time. The sample output in the following sections show the
+              progression of the procedure when you choose option A.
+
+        Compaq TCP/IP Services for OpenVMS Client Components Configuration Menu
+
+        Configuration options:
+
+                1  - FTP              Enabled  Stopped
+                2  - NFS Client       Enabled  Stopped
+                3  - REXEC and RSH    Enabled  Stopped
+                4  - RLOGIN           Enabled  Stopped
+                5  - SMTP             Enabled  Stopped
+                6  - TELNET           Enabled  Stopped
+                7  - DHCP             Disabled Stopped
+                8  - Telnetsym        Disabled Stopped
+
+                A  - Configure options 1 - 8
+               [E] - Exit menu
+
+              Note that the sample Client Components Configuration
+              menu shows most components enabled and all of them
+              stopped. Components are enabled if they have been
+              enabled in the TCP/IP Services configuration database
+              (TCPIP$CONFIGURATION.DAT). The enabled services are
+              started the next time TCP/IP Services is started. You
+
+        3-12 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+              can also start (or stop) a specific component, without
+              having to restart TCP/IP Services, by choosing the "Start
+              service" option from that component's configuration menu.
+              In addition, you can use command procedures to start or
+              stop a specific component, as explained in Section 3.10.3.
+
+              The initial status of the components depends on whether
+              you have other TCP/IP Services installations in place
+              on the system, and whether the software or individual
+              components have been started. On a new system, all the
+              components would be disabled (the default). The status
+              of components is also affected by the selections you made
+              from the Core Environment menu.
+
+              To minimize resource consumption, enable and start only
+              those components that you are sure to use. Disable those
+              you do not plan to use.
+
+              To configure all the client components, choose option A.
+
+              The following is an example of the output for configuring
+              an FTP client. The configuration output for other clients
+              might vary. Note that after you configure a client (such
+              as FTP) that has an associated server, the configuration
+              prompts you about whether to configure the corresponding
+              server.
+
+        Enter configuration option: 1 <Return>
+
+        FTP CLIENT Configuration
+
+        Service is enabled on specific node.
+        Service is stopped.
+
+                 FTP CLIENT configuration options:
+
+                         1 - Disable service on this node
+
+                         2 - Start service on this node
+
+                        [E] - Exit FTP_CLIENT configuration
+
+        Enter configuration option: 1 <Return>
+
+        The FTP SERVER is enabled.
+
+        * Do you want to configure the FTP SERVER [NO] ? <Return>
+
+                                        Configuring TCP/IP Services 3-13
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+              In the preceding example, the FTP client was originally
+              enabled, and you chose option 1 to disable it. The
+              following example shows the configuration output that
+              might be seen if you want to enable an FTP client that had
+              been disabled.
+
+        FTP CLIENT Configuration
+
+        Service is not enabled.
+        Service is stopped.
+
+                FTP CLIENT configuration options:
+
+                         1 - Enable service on this node
+
+                         2 - Enable & Start service on this node
+
+                        [E] - Exit FTP_CLIENT configuration
+
+        Enter configuration option: 2 <Return>
+
+              In this example, as with the previous one, the TCP/IP
+              Services software has already been started, so you have
+              the choice of starting the client as well as enabling it.
+              If you choose option 1, the FTP service is enabled and FTP
+              starts the next time TCP/IP Services is started. If you
+              choose option 2, the FTP service is started immediately
+              and then every time the TCP/IP Services is started.
+
+              If the TCP/IP Services software is not already started,
+              then the FTP Client Components Configuration menu gives
+              you only the option of enabling the component, as in the
+              following example:
+
+                        1 - Enable service on this node
+
+                       [E] - Exit FTP_CLIENT configuration
+
+              After you configure the client component environment,
+              press Return or choose option E to exit from the Client
+              Components menu. If you chose option A from the Main
+              Configuration menu to configure all the TCP/IP Services
+              components, the Server Components Configuration menu
+              displays next; otherwise, the procedure returns to the
+              the Main Configuration menu.
+
+        3-14 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+        3.3.6 Configuring the Server Environment
+
+              To display the Server Components Configuration menu,
+              choose option 3 (Server components) from the Main
+              Configuration menu. If you chose option A from the Main
+              Configuration menu to configure all the TCP/IP Services
+              components, the Server Components Configuration menu
+              displays automatically after you finish configuring the
+              client components.
+
+        Compaq TCP/IP Services for OpenVMS Server Components Configuration Menu
+
+          1 - BIND         Enabled  Started    12 - NTP         Enabled  Started
+          2 - BOOTP        Disabled Stopped    13 - PC-NFS      Enabled  Started
+          3 - DHCP         Enabled  Started    14 - POP         Enabled  Started
+          4 - FINGER       Enabled  Started    15 - PORTMAPPER  Enabled  Started
+          5 - FTP          Enabled  Started    16 - RLOGIN      Enabled  Started
+          6 - IMAP         Disabled Stopped    17 - RMT         Disabled Stopped
+          7 - LBROKER      Disabled Stopped    18 - SNMP        Enabled  Stopped
+          8 - LPR/LPD      Disabled Stopped    19 - TELNET      Enabled  Started
+          9 - METRIC       Enabled  Started    20 - TFTP        Enabled  Started
+         10 - NFS          Enabled  Started    21 - XDM         Enabled  Started
+         11 - LOCKD/STATD  Disabled Stopped
+
+          A  -  Configure options 1 - 21
+         [E] -  Exit menu
+
+        Enter configuration option:
+
+              Components are enabled if they have been added to the
+              TCP/IP Services configuration database (TCPIP$CONFIGURATION.DAT),
+              and they are started the next time TCP/IP Services
+              is started. You can also start (or stop) a specific
+              component, without having to restart TCP/IP Services, by
+              choosing the "Start service" option from that component's
+              configuration menu. In addition, you can use command
+              procedures to start or stop a specific component, as
+              explained in Section 3.10.3.
+
+              The initial status of the components depends on whether
+              you have other TCP/IP Services installations in place
+              on the system, and whether the software or individual
+              components have been started. To minimize resource
+              consumption, enable and start the specific server
+              components you plan to use, and disable those you do not
+
+                                        Configuring TCP/IP Services 3-15
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+              plan to use. You can choose option A to configure all the
+              server components.
+
+              For server components that have associated client
+              components (such as the FTP server and client), when you
+              configure the server component you are prompted about
+              whether to configure the corresponding client component.
+
+                ________________________Note  ________________________
+
+                TELNET and RLOGIN are enabled from the client menu.
+                If you want to disable the TELNET or RLOGIN server,
+                then you must disable the service. To enable or
+                disable the TELNET server or the RLOGIN server, use
+                the Client Components Configuration menu, choose
+                the appropriate client, and disable and stop the
+                service by choosing the "Disable & Stop service on
+                this node" option.
+
+                _____________________________________________________
+
+              The following is an example of an XDM server configuration
+              output. The configuration displays for other server
+              components might vary.
+
+              Enter configuration option: 21 <Return>
+
+              XDM Configuration
+
+              Service is defined in the SYSUAF.
+              Service is not defined in the TCPIP$SERVICE database.
+              Service is not enabled.
+              Service is stopped.
+
+               XDM configuration options:
+
+                 1 - Enable service on this node
+
+                [E] - Exit XDM configuration
+
+              Enter configuration option:
+
+                ________________________Note  ________________________
+
+                XDM requires the following DECwindows components to
+                be installed:
+
+                o  SYS$COMMON:[SYSLIB]DECW$XLIBSHR.EXE
+
+        3-16 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+                o  SYS$COMMON:[SYSLIB]DECW$XTLIBSHRR5.EXE
+
+                o  SYS$COMMON:[SYSLIB]DECW$TRANSPORT_COMMON.EXE (VAX
+                   only)
+
+                The TCPIP$CONFIG procedure checks whether these
+                components are installed. If they are not found,
+                TCPIP$CONFIG notifies you and gives you the option
+                of configuring XDM and installing the DECwindows
+                components later before you attempt to activate XDM.
+                The notification and prompt are as follows:
+
+                XDM requires DECwindows components that are not installed.
+                Attempts to activate XDM will fail.
+
+                Type C to continue with XDM configuration, or E to exit [ E ]:
+
+                _____________________________________________________
+
+              After you configure the server components, press Return
+              or choose option E to exit from the Server Components
+              Configuration menu. If you chose option A from the Main
+              Configuration menu to configure all the TCP/IP Services
+              components, the Optional Components Configuration menu
+              displays next; otherwise, the procedure returns to the
+              Main Configuration menu.
+
+        3.3.7 Configuring the Optional Components
+
+              You may need to configure optional product components if
+              you plan to do one or more of the following:
+
+              o  Run the PATHWORKS for OpenVMS (Advanced Server), the
+                 Advanced Server for OpenVMS, or DECnet over TCP/IP
+                 software.
+
+              o  Run or develop applications that use the Stanford
+                 Research Institute's (SRI) QIO application programming
+                 interface (API).
+
+              o  Allow Anonymous FTP access.
+
+              o  Initialize Kerberos authentication for the TELNET
+                 server.
+
+                                        Configuring TCP/IP Services 3-17
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+              To display the Optional Components Configuration menu,
+              choose option 4 (Optional components) from the Main
+              Configuration menu. If you chose option A from the Main
+              Configuration menu to configure all the TCP/IP Services
+              components, the Optional Components Configuration menu
+              displays automatically after you finish configuring the
+              server components.
+
+              The Optional Components Configuration menu displays the
+              following menu options:
+
+        Compaq TCP/IP Services for OpenVMS Optional Components Configuration
+        Menu
+
+        Configuration options:
+
+                1 - Configure PWIP Driver (for DECnet-Plus and PATHWORKS)
+                2 - Configure SRI QIO Interface (INET Driver)
+                3 - Set up Anonymous FTP Account and Directories
+                4 - Configure Kerberos Applications
+
+                A - Configure options 1 - 3
+               [E] - Exit menu
+
+        Enter configuration option:
+
+              Choose the options that are appropriate for your system:
+              the PWIP Driver, the SRI QIO Interface, Anonymous FTP
+              Accounts and Directories, or Kerberos authentication for
+              TELNET.
+
+              o  If you want to run PATHWORKS for OpenVMS (Advanced
+                 Server), Advanced Server for OpenVMS, or DECnet over
+                 TCP/IP, configure the PWIP driver by choosing option 1.
+                 In addition, refer to the appropriate documentation for
+                 the layered product.
+
+              o  If you run or develop applications that use the SRI QIO
+                 API, choose option 2.
+
+              o  If you want to allow Anonymous FTP access, choose
+                 option 3 to set up an Anonymous FTP account and
+                 directories. Make sure you obtain the necessary
+                 user information code (UIC) (see Section 1.2.8) and
+                 determine guest user privileges.
+
+        3-18 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                                3.3 Running TCPIP$CONFIG
+
+              o  If you want to provide the security benefits of
+                 Kerberos authentication for the TELNET server, choose
+                 option 4 to configure Kerberos. For details about
+                 configuring Kerberos support, see Section 3.3.7.1.
+
+              The following example shows the output for configuring the
+              PWIP driver:
+
+        Enter configuration option: 1 <Return>
+
+        TCPIP Transport for DECnet and Pathworks Service Configuration
+
+        Service is enabled on specific node.
+        Service is stopped.
+
+         TCPIP Transport for DECnet and Pathworks Service configuration options:
+
+            1 - Disable service on this node
+
+           [E] - Exit PWIP_DRIVER configuration
+
+        Enter configuration option:
+
+        3.3.7.1 Configuring and Enabling Kerberos Support
+
+              To configure the TELNET service to support Kerberos,
+              follow these steps. For more details about Kerberos
+              features, including prerequisites and instructions for
+              using Kerberos, see the Compaq TCP/IP Services for OpenVMS
+              Release Notes.
+
+                ________________________Note  ________________________
+
+                Before you begin the following steps, make sure the
+                TELNET service is stopped.
+
+                _____________________________________________________
+
+              1. From the the TCPIP$CONFIG.COM procedure Main Configuration
+                 menu, choose option 2 (Client components).
+
+              2. From the list of client components, choose option 6
+                 (TELNET).
+
+              3. From the TELNET Configuration menu, choose option 1
+                 (Enable service on all nodes). This step creates the
+                 TCPIP$TELNET user account and directory.
+
+              4. Return to the Main Configuration menu.
+
+                                        Configuring TCP/IP Services 3-19
+
+ 
+
+
+        Configuring TCP/IP Services
+        3.3 Running TCPIP$CONFIG
+
+              5. From the Main Configuration menu, choose option 4
+                 (Optional components).
+
+              6. From the Optional Components Configuration menu,
+                 choose option 4 (Configure Kerberos Applications).
+                 The following menu is displayed:
+
+                 Kerberos Applications Configuration Menu
+
+                 TELNET Kerberos is not defined in the TCPIP$SERVICE database.
+
+                       Configuration options:
+
+                               1  -  Add Kerberos for TELNET server
+                               2  -  Remove Kerberos for TELNET server
+
+                              [E] -  Exit menu
+
+                 Enter configuration option:
+
+              7. From the Kerberos Applications Configuration menu,
+                 choose option 1 (Add Kerberos for TELNET Server).
+
+              8. Exit the command procedure.
+
+              9. When you are prompted to start the TELNET service,
+                 enter N.
+
+             10. Start the TELNET service by executing the TELNET
+                 startup procedure, as shown in the following example:
+
+                 $ @SYS$STARTUP:TCPIP$TELNET_STARTUP.COM
+                 %TCPIP-I-INFO, image SYS$SYSTEM:TCPIP$TELNET_SERVER.EXE 
+                 installed
+                 %TCPIP-I-INFO, image SYS$SYSTEM:TCPIP$TELNET.EXE installed
+                 %TCPIP-I-INFO, logical names created
+                 %TCPIP-I-INFO, telnet service enabled
+                 %TCPIP-I-INFO, telnet (kerberos) service enabled
+                 %TCPIP-S-STARTDONE, TCPIP$TELNET startup completed
+
+                 The information message confirms that the TELNET
+                 Kerberos service has been enabled.
+
+
+
+
+        3-20 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+     3.4 Using TCPIP$CONFIG Option Commands to Bypass TCPIP$CONFIG Menus
+
+        3.4 Using TCPIP$CONFIG Option Commands to Bypass TCPIP$CONFIG
+            Menus
+
+              If you are an experienced TCP/IP Services user, you
+              may want to bypass the configuration menus to enable or
+              disable functionality, as follows:
+
+              1. Log in to the SYSTEM account.
+
+              2. Run the TCPIP$CONFIG command procedure and include
+                 appropriate options and keywords in the command line,
+                 as shown:
+
+                 @SYS$MANAGER:TCPIP$CONFIG [option] {DISABLE | ENABLE} [CLUSTER]
+
+                 In this format, option can be one of the options
+                 described in the following table. The table also
+                 describes the function of the DISABLE, ENABLE, and
+                 CLUSTER keywords.
+
+                 _______________________________________________________
+                 Option________Description______________________________
+
+                 ALL           Configures the core environment and all
+                               client and server components.
+
+                 CLIENT        Configures all client components and
+                               related software.
+
+                 MINIMUM       Configures the domain, Internet
+                               interfaces, Rlogin client, FTP client,
+                               FTP server, TELNET client, and TELNET
+                               server. Prompts you for optional
+                               components.
+
+                 SERVER        Configures all server components and
+                               related software.
+
+                 WORKSTATION   Configures the BIND resolver, the domain,
+                               dynamic routing, Internet interfaces,
+                               time zone, remote login, remote shell,
+                               remote executive, FTP client, FTP server,
+                               TELNET client, TELNET server, and SMTP.
+
+
+                                        Configuring TCP/IP Services 3-21
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.4 Using TCPIP$CONFIG Option Commands to Bypass TCPIP$CONFIG Menus
+
+                 _______________________________________________________
+                 Keyword_______Description______________________________
+
+                 CLUSTER       Configures all specified components
+                               clusterwide (except for the BIND server
+                               and SMTP, which you cannot configure
+                               clusterwide).
+
+                 ENABLE        Enables the specified components.
+
+                 DISABLE_______Disables_the_specified_components._______
+
+                 For example, the following command enables the client
+                 components for the entire cluster:
+
+                 $ @SYS$MANAGER:TCPIP$CONFIG CLIENT ENABLE CLUSTER
+
+                ________________________Note  ________________________
+
+                The procedure implements two levels of enabling
+                and disabling: clusterwide and single node (except
+                for SMTP, which is configured and enabled as node
+                specific only).
+
+                _____________________________________________________
+
+        3.5 Making Configuration Changes Take Effect
+
+              Whenever you configure the core TCP/IP Services software
+              (the core environment), you must then start (or restart)
+              TCP/IP Services to make the changes take effect. Do
+              this before you run tests or customize the environment.
+              Start TCP/IP Services from TCPIP$CONFIG by following the
+              procedure described in Section 3.7.
+
+              If you made changes to the client, server, or optional
+              components only (that is, not to the core environment),
+              you do not have to restart TCP/IP Services; to initialize
+              the changes, you can restart the affected components
+              individually by choosing the "Start service" option in the
+              affected component's configuration menu. Alternatively,
+              you can use each component's startup command procedure, as
+              described in Section 3.10.3.
+
+              You can have the TCP/IP Services software started
+              automatically each time the OpenVMS operating system is
+              rebooted, or you can restart the software manually, as
+              explained in Section 3.10.
+
+        3-22 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                         3.6 Stopping TCP/IP Services Using TCPIP$CONFIG
+
+        3.6 Stopping TCP/IP Services Using TCPIP$CONFIG
+
+              Stop TCP/IP Services on your system by choosing option
+              5 (Shutdown Compaq TCP/IP Services for OpenVMS) from the
+              Main Configuration menu, as in the following example:
+
+        Compaq TCP/IP Services for OpenVMS Configuration Menu
+
+            Configuration options:
+
+                   1  -  Core environment
+                   2  -  Client components
+                   3  -  Server components
+                   4  -  Optional components
+                   5  -  Shutdown Compaq TCP/IP Services for OpenVMS
+                   6  -  Startup Compaq TCP/IP Services for OpenVMS
+                   7  -  Run tests
+
+                   A  -  Configure options 1 - 4
+                  [E] -  Exit configuration procedure
+
+        Enter configuration option: 5
+        Begin Shutdown...
+
+        %TCPIP-I-INFO, TCP/IP Services shutdown beginning at  5-MAR-2002
+        15:26:14.39
+        %TCPIP-S-SHUTDONE, TCPIP$FINGER shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$FTP_CLIENT shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$FTP shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$IMAP shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$LBROKER shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$LOCKD shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$LPD_CLIENT shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$LPD shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$METRIC shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$NFS_CLIENT shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$NFS shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$NTP shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$PCNFS shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$POP shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$PORTMAPPER shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$PROXY shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$PWIP_DRIVER shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$REXEC shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$RLOGIN shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$RMT shutdown completed
+
+                                        Configuring TCP/IP Services 3-23
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.6 Stopping TCP/IP Services Using TCPIP$CONFIG
+
+        %TCPIP-S-SHUTDONE, TCPIP$RSH shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$SMTP shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$SNMP shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$STATD shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$TELNETSYM shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$TELNET shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$TFTP shutdown completed
+        %TCPIP-S-SHUTDONE, TCPIP$XDM shutdown completed
+        %TCPIP-S-SHUTDONE, TCP/IP Kernel shutdown completed
+        %TCPIP-S-SHUTDONE, TCP/IP Services shutdown completed at  5-MAR-2002
+        15:26:17.78
+
+        Shutdown request completed.
+
+        3.7 Starting TCP/IP Services Using TCPIP$CONFIG
+
+              After configuring the core environment, start TCP/IP
+              Services on your system by choosing option 6 (Startup
+              Compaq TCP/IP Services for OpenVMS) from the Main
+              Configuration menu, as in the following example:
+
+        Compaq TCP/IP Services for OpenVMS Configuration Menu
+
+            Configuration options:
+
+                   1  -  Core environment
+                   2  -  Client components
+                   3  -  Server components
+                   4  -  Optional components
+                   5  -  Shutdown Compaq TCP/IP Services for OpenVMS
+                   6  -  Startup Compaq TCP/IP Services for OpenVMS
+                   7  -  Run tests
+
+                   A  -  Configure options 1 - 4
+                  [E] -  Exit configuration procedure
+
+
+
+
+
+
+
+
+
+
+        3-24 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                         3.7 Starting TCP/IP Services Using TCPIP$CONFIG
+
+        Enter configuration option: 6
+        Begin Startup...
+
+        %TCPIP-I-INFO, TCP/IP Services startup beginning at 5-MAR-2002
+        15:27:08.34
+        %TCPIP-I-NORMAL, timezone information verified
+        %RUN-S-PROC_ID, identification of created process is 00000D42
+        %TCPIP-I-SETLOCAL, setting domain and/or local host
+        %TCPIP-I-STARTCOMM, starting communication
+        %TCPIP-I-SETPROTP, setting protocol parameters
+        %TCPIP-I-DEFINTE, defining interfaces
+        %TCPIP-I-STARTNAME, starting name service
+        %TCPIP-S-STARTDONE, TCP/IP Kernel startup completed
+        %TCPIP-I-PROXYLOADED, loaded 0 NFS proxy records
+        %TCPIP-I-LOADSERV, loading TCPIP server proxy information
+        %TCPIP-I-SERVLOADED, auxiliary server loaded with 0 proxy records
+        -TCPIP-I-SERVSKIP, skipped 0 communication proxy records
+        -TCPIP-I-SERVTOTAL, total of 0 proxy records read
+        %TCPIP-S-STARTDONE, TCPIP$PROXY startup completed
+        %TCPIP-S-STARTDONE, TCPIP$PORTMAPPER startup completed
+        %TCPIP-S-STARTDONE, TCPIP$FINGER startup completed
+        %TCPIP-S-STARTDONE, TCPIP$FTP startup completed
+        %TCPIP-S-STARTDONE, TCPIP$FTP_CLIENT startup completed
+        %TCPIP-S-STARTDONE, TCPIP$IMAP startup completed
+        %TCPIP-S-STARTDONE, TCPIP$LBROKER startup completed
+        %TCPIP-S-STARTDONE, TCPIP$LOCKD startup completed
+        %TCPIP-S-STARTDONE, TCPIP$LPD startup completed
+        %TCPIP-S-STARTDONE, TCPIP$LPD_CLIENT startup completed
+        %TCPIP-S-STARTDONE, TCPIP$METRIC startup completed
+        %TCPIP-S-STARTDONE, TCPIP$NFS startup completed
+        %TCPIP-S-STARTDONE, TCPIP$NFS_CLIENT startup completed
+        %TCPIP-S-STARTDONE, TCPIP$NTP startup completed
+        %TCPIP-S-STARTDONE, TCPIP$PCNFS startup completed
+        %TCPIP-S-STARTDONE, TCPIP$POP startup completed
+        %RUN-S-PROC_ID, identification of created process is 00000C4E
+        %TCPIP-S-STARTDONE, TCPIP$PWIP_DRIVER startup completed
+        %TCPIP-S-STARTDONE, TCPIP$REXEC startup completed
+        %TCPIP-S-STARTDONE, TCPIP$RLOGIN startup completed
+        %TCPIP-S-STARTDONE, TCPIP$RMT startup completed
+        %TCPIP-S-STARTDONE, TCPIP$RSH startup completed
+        %TCPIP-S-STARTDONE, TCPIP$SMTP startup completed
+        %TCPIP-S-STARTDONE, TCPIP$SNMP startup completed
+        %TCPIP-S-STARTDONE, TCPIP$STATD startup completed
+
+
+                                        Configuring TCP/IP Services 3-25
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.7 Starting TCP/IP Services Using TCPIP$CONFIG
+
+        %TCPIP-S-STARTDONE, TCPIP$TELNET startup completed
+        %TCPIP-S-STARTDONE, TCPIP$TELNETSYM startup completed
+        %TCPIP-S-STARTDONE, TCPIP$TFTP startup completed
+        %TCPIP-S-STARTDONE, TCPIP$XDM startup completed
+        %TCPIP-S-STARTDONE, TCP/IP Services startup completed at 5-MAR-2002
+        15:27:50.47
+        Startup request completed.
+        Press Return to continue ...
+
+
+        3.8 Verifying the Configuration
+
+              You can verify the configuration by running the installa-
+              tion verification procedure (IVP).
+
+              You should run the IVP if any of the following apply:
+
+              o  You loaded the Product Authorization Key (PAK), and you
+                 want to verify that the lower-layer software and the
+                 Portmapper service are installed correctly.
+
+              o  You did not load the PAK, but you want to verify that
+                 TCP/IP Services is installed correctly for DECwindows
+                 to display the TCP/IP Services applications.
+
+              o  You require the software to transfer device socket
+                 packets that continuously vary in size between a sender
+                 and a receiver.
+
+              o  You need to test the Portmapper service with a pair
+                 of client/server programs. The IVP reports the time it
+                 took to run the test to SYS$OUTPUT.
+
+              o  You need to test your SNMP service.
+
+              Before you run the IVP, make sure TCP/IP Services has
+              started and you have SYSPRV, OPER, NETMBX, and TMPMBX
+              privileges.
+
+              You can run the IVP from the TCPIP$CONFIG configuration
+              procedure or by command line at the OpenVMS DCL prompt.
+              When you run the IVP from TCPIP$CONFIG, you have the
+              option of running an additional test that verifies the
+              SNMP configuration.
+
+        3-26 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                         3.8 Verifying the Configuration
+
+        3.8.1 Running the IVP from the TCPIP$CONFIG Command Procedure
+
+              In the TCP/IP Services for OpenVMS Main Configuration
+              menu, choose option 7 (Run tests). The Test menu appears,
+              as in the following example:
+
+        Compaq TCP/IP Services for OpenVMS TEST Menu
+
+                Test options:
+
+                         1  -  Internet IVP
+                         2  -  SNMP IVP
+
+                         A  -  Tests 1 - 2
+                        [E] -  Exit menu
+
+        Enter test option:
+
+              Choose the appropriate option for the test you want to
+              perform.
+
+        3.8.2 Running the IVP from the OpenVMS DCL Prompt
+
+              To run the IVP at the DCL prompt, any time after exiting
+              the configuration procedure, enter the following command.
+              This procedure performs the same test as option 1
+              (Internet IVP) of the TCPIP$CONFIG Test menu.
+
+              $ @SYS$TEST:TCPIP$IVP
+
+        3.8.3 Verifying the TCP/IP Services Internet Configuration
+
+              When you choose either option 1 or option A from the
+              TCPIP$CONFIG Test menu, or run the TCPIP$IVP command
+              procedure at the command line, the IVP tests the basic
+              TCP/IP Services software configuration, as in the
+              following example. Here, the test completes successfully.
+
+        Enter test option: 1 <Return>
+
+        %%% TCPIP IVP: started %%%
+
+        UDP/IP test started at 5-MAR-2002 16:13:03.02
+        UDP/IP test ended at 5-MAR-2002 16:13:03.69
+        UDP/IP transferred successfully in 0 seconds 4198400 bytes
+
+        TCP/IP test started at 5-MAR-2002 16:13:04.20
+        TCP/IP test ended at 5-MAR-2002 16:13:41.21
+        TCP/IP transferred successfully in 37 seconds 4198400 bytes
+
+                                        Configuring TCP/IP Services 3-27
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.8 Verifying the Configuration
+
+        RAW_IP test started at 5-MAR-2002 16:13:41.71
+        RAW_IP test ended at 5-MAR-2002 16:13:41.79
+        RAW_IP transferred successfully in 0 seconds 251000 bytes
+
+        %%% TCPIP IVP: completed successfully %%%
+        IVP request completed.
+        Press Return to continue ...
+
+              If the IVP does not complete successfully, the procedure
+              displays error messages. All IVP errors use the same
+              format as OpenVMS system messages. For example:
+
+              %TCPIP-E-IDENT, explanation of error.
+
+              Table 3-2 lists some common problems that cause IVP error
+              messages. If the recommended action does not correct the
+              problem, contact your Compaq support representative.
+
+              Table_3-2_Troubleshooting_IVP_Errors______________________
+
+              Problem_________________Corrective_Action_________________
+
+              Network configuration   Shut down TCP/IP Services and
+              is incorrect.           rerun the configuration procedure.
+
+              Startup fails.          Check the system parameters in the
+                                      MODPARAMS.DAT file and adjust them
+                                      if necessary. (See Section 1.2.7.)
+                                      Then shut down and restart TCP/IP
+                                      Services.
+
+              Installation kit is     Request a replacement kit.
+              defective.
+
+              IVP fails because the   Register a Compaq TCP/IP Services
+              PAK_is_missing._________for_OpenVMS_PAK.__________________
+
+        3.8.4 Verifying the SNMP Configuration
+
+              If you choose either option 2 or option A from the
+              TCPIP$CONFIG Test menu, the IVP tests the SNMP service, as
+              in the following example:
+
+
+
+        3-28 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                                         3.8 Verifying the Configuration
+
+              Begin SNMP IVP...
+
+              The SNMP IVP requires that TCPIP/IP Services be running.
+              It performs the following startups and shutdowns on the
+              SNMP service only (other TCP/IP services are not affected):
+
+              - If SNMP is running, shuts down SNMP before initial
+                configuration
+              - Starts SNMP and runs tests
+              - Shuts down SNMP and restores initial configuration
+              - Before exiting, starts SNMP
+
+              Shutting down the SNMP service... done.
+
+              Creating temporary read/write community SNMPIVP_6520.
+
+              Enabling SET operations.
+
+              Starting up the SNMP service... done.
+
+                    Saving sysContact: Ralph Nickleby
+                Setting sysContact to: Julius Caesar
+                 Retrieved sysContact: Julius Caesar
+              (Retrieved value matches SET value.)
+              Restoring sysContact to: Ralph Nickleby
+
+                  Saving snmpEnableAuthenTraps: 1 (enabled)
+              Setting snmpEnableAuthenTraps to: 2 (disabled)
+               Retrieved snmpEnableAuthenTraps: 2 (disabled)
+              (Retrieved value matches SET value.)
+               Restoring snmpEnableAuthenTraps: 1 (enabled)
+
+              Disabling SET operations.
+
+              Deleting temporary read/write community SNMPIVP_6520.
+
+              Shutting down and restarting the SNMP service...
+              Shutting down the SNMP service... done.
+
+              Starting up the SNMP service... done.
+
+              SNMP IVP request completed.
+              Press Return to continue ...
+
+
+                                        Configuring TCP/IP Services 3-29
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.8 Verifying the Configuration
+
+              If one of the SNMP tests fails, you will see messages such
+              as the following:
+
+        SNMPIVP: unexpected text in response to SNMP request:
+        "No reply."
+        See file SYS$SYSDEVICE:[TCPIP$SNMP]TCPIP$SNMP_REQUEST.DAT for more
+        details.
+        Verify that SNMP trace is not enabled.
+        sysContact could not be retrieved. Status = 0
+        The SNMP IVP has NOT completed successfully.
+
+              In this case, the error could indicate that not all
+              SNMP components have started, or that SNMP tracing is
+              enabled and needs to be disabled. For information about
+              SNMP trace, see the Compaq TCP/IP Services for OpenVMS
+              Management guide.
+
+        3.9 Additional Configuration Tasks
+
+              After you run TCPIP$CONFIG and enable the functionality
+              and components appropriate for your network, you need
+              to complete additional configuration tasks to enable
+              access to product applications. TCP/IP Services provides a
+              management command interface and logical names you can use
+              to modify or customize the software for your environment.
+
+              The additional configuration tasks include:
+
+              o  Populating databases (for example, for BIND and DHCP)
+
+              o  Setting up user accounts
+
+              o  Setting up communication and NFS proxies
+
+              o  Defining print queues
+
+              o  Setting up, exporting, and maintaining file systems
+
+              o  Tuning the system for optimum performance
+
+              Many of the services require additional configuration or
+              optimization. For more information about how to configure
+              each service, refer to the Compaq TCP/IP Services for
+              OpenVMS Management guide.
+
+        3-30 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                   3.10 Starting and Stopping TCP/IP Services by Command
+
+        3.10 Starting and Stopping TCP/IP Services by Command
+
+              You can use commands in your OpenVMS startup file to have
+              TCP/IP Services started and stopped automatically when the
+              OpenVMS system starts up or shuts down, as explained in
+              Section 3.10.1. These commands start and stop all the
+              TCP/IP Services components installed on your system.
+              Alternatively, you can start and stop individual TCP/IP
+              Services client or server components without affecting
+              other TCP/IP Services components currently running.
+              For information about starting and stopping individual
+              components, see Section 3.10.3.
+
+              If necessary, you can start and stop TCP/IP Services
+              manually, as explained in Section 3.10.2. You can also
+              start and stop user-written services, as explained in
+              Section 3.10.4.
+
+        3.10.1 Automatically Starting and Stopping TCP/IP Services
+
+              To allow TCP/IP Services software to start auto-
+              matically when the system starts up, and to stop
+              automatically when the system shuts down, edit the
+              SYS$COMMON:[SYSMGR]SYSTARTUP_VMS.COM file and include
+              the following command:
+
+              @SYS$STARTUP:TCPIP$STARTUP
+
+              If your system had earlier versions of TCP/IP Services,
+              UCX$STARTUP.COM and UCX$SHUTDOWN.COM files might be
+              present. These are no longer applicable; delete any
+              definition of them from SYS$MANAGER:SYSTARTUP_VMS.COM.
+
+              If you want TCP/IP Services to start after you log in
+              to your OpenVMS account, the OpenVMS systemwide login
+              procedure (typically SYS$MANAGER:SYLOGIN.COM) must have
+              world read and execute protections (W:RE).
+
+              To display the current protections, enter the following
+              command:
+
+              $ DIR/PROTECTION SYS$MANAGER:SYLOGIN.COM
+
+              For information about protections, refer to the OpenVMS
+              documentation.
+
+                                        Configuring TCP/IP Services 3-31
+
+ 
+
+
+
+        Configuring TCP/IP Services
+        3.10 Starting and Stopping TCP/IP Services by Command
+
+        3.10.2 Starting and Stopping TCP/IP Services Manually
+
+              To start TCP/IP Services manually, enter the following
+              command:
+
+              $ @SYS$STARTUP:TCPIP$STARTUP
+
+              To stop TCP/IP Services manually, enter the following
+              command:
+
+              $ @SYS$STARTUP:TCPIP$SHUTDOWN
+
+        3.10.3 Starting and Stopping Individual Services
+
+              On a system already running TCP/IP Services, you can
+              configure an individual server or client component without
+              affecting the other TCP/IP Services components running on
+              your system and without having to restart TCP/IP Services.
+
+              Most services can be shut down and started independently.
+              This is useful when you change parameters or logical names
+              that require the service to be restarted.
+
+              The following files are provided:
+
+              o  SYS$STARTUP:TCPIP$service_STARTUP.COM allows you to
+                 start the service service.
+
+              o  SYS$STARTUP:TCPIP$service_SHUTDOWN.COM allows you to
+                 shut down the service service.
+
+              To preserve site-specific parameter settings and
+              commands, create the following files. These files are
+              not overwritten when you reinstall TCP/IP Services:
+
+              o  SYS$STARTUP:TCPIP$service_SYSTARTUP.COM can be used
+                 as a repository for site-specific definitions and
+                 parameters to be invoked when service is started.
+
+              o  SYS$STARTUP:TCPIP$service_SYSHUTDOWN.COM can be used
+                 as a repository for site-specific definitions and
+                 parameters to be invoked when service is shut down.
+
+              In these file names, service is the name of the service
+              to be started or shut down. For example, use TCPIP$NTP_
+              SHUTDOWN to shut down the NTP service.
+
+              For more information, see the Compaq TCP/IP Services for
+              OpenVMS Management guide.
+
+        3-32 Configuring TCP/IP Services
+
+ 
+
+
+
+                                             Configuring TCP/IP Services
+                   3.10 Starting and Stopping TCP/IP Services by Command
+
+        3.10.4 Starting and Stopping User-Written Services
+
+              TCP/IP Services supplies command procedures for starting
+              and stopping user-written services. To start a user-
+              written service, enter the following command:
+
+              $ SYS$STARTUP:TCPIP$CUSTOMER_SERVICE_STARTUP service-name
+
+              For service-name, specify the name of the service as
+              defined using the TCP/IP management command SET SERVICE.
+
+              To stop the user-written service, enter the following
+              command:
+
+              $ SYS$STARTUP:TCPIP$CUSTOMER_SERVICE_SHUTDOWN service-name
+
+        3.11 Specifying TCP/IP Services as the Transport for DECwindows
+             Applications
+
+              To enable TCP/IP Services as the transport interface
+              for DECwindows applications, add the following line to
+              the SYS$MANAGER:DECW$PRIVATE_SERVER_SETUP.COM command
+              procedure:
+
+              $ DECW$SERVER_TRANSPORTS == "DECNET,LOCAL,TCPIP"
+
+              Then restart DECwindows:
+
+              $ @SYS$STARTUP:DECW$STARTUP RESTART
+
+              If DECnet or DECnet-Plus software runs on the system,
+              start it.
+
+              To display DECwindows applications from a DECwindows
+              client (remote host) to a DECwindows server (your
+              workstation), proceed as follows:
+
+              1. Set up security on the remote host.
+
+              2. Add the remote client to the local hosts database.
+
+              3. Add to SYS$MANAGER:DECW$PRIVATE_SERVER_SETUP.COM the
+                 following line:
+
+                 $ DECW$SERVER_TRANSPORTS == "DECNET,LOCAL,TCPIP"
+
+              4. Set the display for the applications to the remote
+                 host:
+
+                 $ SET DISPLAY/CREATE/NODE=remote-host/TRANSPORT=TCPIP
+
+                                        Configuring TCP/IP Services 3-33
+
+ 
+
+
+
+
+
+
+
+                                                                       A
+        ________________________________________________________________
+
+               Sample New TCP/IP Services Installation and Configuration
+
+
+
+              This appendix shows a sample installation and configura-
+              tion of the TCP/IP Services product on a system on which
+              the product has never been installed.
+
+        A.1 Sample New Installation Procedure
+
+              The following example shows a sample installation dialog
+              for the TCP/IP Services. In this example, the installation
+              takes place on a system where the product has not
+              been installed. If TCP/IP Services had been installed
+              previously on the system, the installation dialog would
+              differ slightly (see Chapter 2).
+
+                ________________________Note  ________________________
+
+                The symbols xx in the following example represent
+                the product's two-digit update version number.
+
+                _____________________________________________________
+
+        Choose one or more items from the menu separated by commas: 1
+
+        The following product has been selected:
+            DEC VAXVMS TCPIP V5.3-xx               Layered Product
+
+        Do you want to continue? [YES] <Return>
+
+        Configuration phase starting ...
+
+        You will be asked to choose options, if any, for each selected product 
+        and for
+        any products that may be installed to satisfy software dependency 
+        requirements.
+
+        DEC VAXVMS TCPIP V5.3-xx: Compaq TCP/IP Services for OpenVMS.
+
+            Copyright 2002 Compaq Information Technologies Group, L.P
+
+            Compaq Computer Corporation
+
+           Sample New TCP/IP Services Installation and Configuration A-1
+
+ 
+
+
+
+        Sample New TCP/IP Services Installation and Configuration
+        A.1 Sample New Installation Procedure
+
+            Compaq TCP/IP Services for OpenVMS offers several license options.
+
+        Do you want the defaults for all options? [YES] <Return>
+
+        Do you want to review the options? [NO] <Return>
+
+        Execution phase starting ...
+
+        The following product will be installed to destination:
+            DEC VAXVMS TCPIP V5.3-xx               DISK$OVMSVAXSYS:[VMS$COMMON.]
+
+        Portion done: 0%...10%...20%...30%...40%...50%...60%...70%...80%...90%
+        %PCSI-I-PRCOUTPUT, output from subprocess follows ...
+        % TCPIP-W-PCSI_INSTALL
+        % - Execute SYS$MANAGER:TCPIP$CONFIG.COM to proceed with configuration 
+        of
+        %   Compaq TCP/IP Services.
+        %
+
+        Portion done: 100%
+
+        The following product has been installed:
+            DEC VAXVMS TCPIP V5.3-xx               Layered Product
+
+        DEC VAXVMS TCPIP T5.3-xx: Compaq TCP/IP Services for OpenVMS.
+
+            Check the release notes for current status of the product.
+
+        A.2 Sample New Configuration Procedure
+
+              The following example shows a sample configuration dialog
+              for the TCP/IP Services, in which the following components
+              are configured:
+
+              o  Core environment
+
+              o  TELNET client
+
+              o  FTP server
+
+              In this example, the configuration takes place on a system
+              where the product has never been configured. If TCP/IP
+              Services had been configured previously on the system, the
+              dialog would differ significantly (see Chapter 3).
+
+
+        A-2 Sample New TCP/IP Services Installation and Configuration
+
+ 
+
+
+
+               Sample New TCP/IP Services Installation and Configuration
+                                  A.2 Sample New Configuration Procedure
+
+          TCP/IP Network Configuration Procedure
+
+        This procedure helps you define the parameters required
+        to run Compaq TCP/IP Services for OpenVMS on this system.
+
+        Checking TCP/IP Services for OpenVMS configuration database files.
+
+        Creating SYS$COMMON:[SYSEXE]TCPIP$SERVICE.DAT
+        Creating SYS$COMMON:[SYSEXE]TCPIP$HOST.DAT
+        Creating SYS$COMMON:[SYSEXE]TCPIP$NETWORK.DAT
+        Creating SYS$COMMON:[SYSEXE]TCPIP$ROUTE.DAT
+        Creating SYS$COMMON:[SYSEXE]TCPIP$PROXY.DAT
+        Creating SYS$COMMON:[SYSEXE]TCPIP$CONFIGURATION.DAT
+        Creating TCPIP$ETC:SYSCONFIGTAB.DAT
+
+        Compaq TCP/IP Services for OpenVMS requires a definition for at
+        least one interface.  There are no interfaces defined on this
+        system.
+
+        Please select the Interface option from the Core Environment Menu.
+
+          Compaq TCP/IP Services for OpenVMS Configuration Menu
+
+          Configuration options:
+
+               1  -  Core environment
+               2  -  Client components
+               3  -  Server components
+               4  -  Optional components
+
+               5  -  Shutdown Compaq TCP/IP Services for OpenVMS
+               6  -  Startup Compaq TCP/IP Services for OpenVMS
+               7  -  Run tests
+
+               A  -  Configure options 1 - 4
+              [E] -  Exit configuration procedure
+
+        Enter configuration option: 1 <Return>
+
+          Compaq TCP/IP Services for OpenVMS Core Environment Configuration Menu
+
+          Configuration options:
+
+               1  -  Domain
+               2  -  Interfaces
+               3  -  Routing
+               4  -  BIND Resolver
+               5  -  Time Zone
+
+           Sample New TCP/IP Services Installation and Configuration A-3
+
+ 
+
+
+
+        Sample New TCP/IP Services Installation and Configuration
+        A.2 Sample New Configuration Procedure
+
+               A  -  Configure options 1 - 5
+              [E] -  Exit menu
+
+        Enter configuration option: A <Return>
+
+        DOMAIN Configuration
+
+        Enter Internet domain: budget.acme.com
+
+        INTERFACE Configuration
+
+          The Ethernet device(s) on your system are: EWA0:  * Not Configured *
+
+          Start of configuration questions for Internet interface WE0.
+
+          WE0 is the Ethernet device ESA0:
+
+          WE0 has not been configured
+
+          Compaq TCP/IP Services for OpenVMS Interface WE0 Configuration Menu
+
+            Configuration options:
+
+                 1  -  Configure interface manually
+                 2  -  Let DHCP configure interface
+
+                [E] -  Exit menu (Do not configure interface WE0)
+
+        Enter configuration option: 1 <Return>
+        Enter fully qualified host name: HEARTS.BUDGET.ACME.COM <Return>
+        Enter Internet address for hearts: 10.0.2.4 <Return>
+        Enter Internet network mask for hearts [255.0.1.0]: 255.1.12.1<Return>
+        Enter broadcast mask for hearts [10.0.2.255]: <Return>
+
+            The following parameters will be used to define the
+            Internet interface WE0:
+
+              Host name:         hearts.budget.acme.com
+              Internet address:  10.0.2.4
+              Network mask:      255.0.0.0
+              Broadcast mask:    10.0.2.255
+
+         * Is the above correct [YES]: <Return>
+
+            End of configuration questions for Internet interface WE0
+
+        DYNAMIC ROUTING Configuration
+
+             Dynamic routing has not been configured.
+
+        A-4 Sample New TCP/IP Services Installation and Configuration
+
+ 
+
+
+
+               Sample New TCP/IP Services Installation and Configuration
+                                  A.2 Sample New Configuration Procedure
+
+             You may configure dynamic ROUTED or GATED routing.
+             You cannot enable both at the same time.  If you want
+             to change from one to the other, you must disable the
+             current routing first, then enable the desired routing.
+
+             If you enable dynamic ROUTED routing, this host will use the
+             Routing Information Protocol (RIP) - Version 1 to listen
+             for all dynamic routing information coming from other
+             hosts to update its internal routing tables.
+             It will also supply its own Internet addresses to
+             routing requests made from remote hosts.
+
+             If you enable dynamic GATED routing, you will be able to
+             configure this host to use any combination of the following
+             routing protocols to exchange dynamic routing information
+             with other hosts on the network:
+                Routing Information Protocol (RIP) - Version 1 & 2
+                Router Discovery Protocol (RDISC)
+                Open Shortest Path First (OSPF)
+                Exterior Gateway Protocol (EGP)
+                Border Gateway Protocol (BGP-4)
+                Static routes
+
+        * Do you want to configure dynamic ROUTED or GATED routing [NO]:<Return>
+
+                A default route has not been configured.
+        * Do you want to configure a default route [YES]: <Return>
+        Enter your Default Gateway host name or address: GATE1.BUDGET.ACME.COM
+
+              gate1.budget.acme.com is not in the local host database.
+
+        Enter Internet address for gate1.budget.acme.com: 10.0.2.66
+
+        BIND RESOLVER Configuration
+
+         A BIND resolver has not been configured.
+
+         Compaq TCP/IP Services for OpenVMS supports the Berkeley Internet Name
+         Domain (BIND) resolver.  BIND is a network service that enables clients
+         to name resources or objects and share information with other objects
+         on the network.
+
+         Before configuring your system as a BIND resolver, you should
+         first be sure that there is at least one system on the network
+         configured as either a BIND primary or secondary server for
+         this domain.
+
+           Sample New TCP/IP Services Installation and Configuration A-5
+
+ 
+
+
+
+        Sample New TCP/IP Services Installation and Configuration
+        A.2 Sample New Configuration Procedure
+
+         You can specify a BIND server by its address or name;
+         however, if specified by name, an entry for it must
+         exist in the TCPIP$HOST database.
+
+         You will be asked one question for each server.
+         Press Return at the prompt to terminate the list.
+
+        Enter your BIND server name: NUMB9.BUDGET.ACME.COM <Return>
+
+           numb9.budget.acme.com is not in the local host database.
+
+        Enter Internet address for numb9.budget.acme.com: 10.0.2.11
+        Enter your BIND server name: <Return>
+
+         Creating file TCPIP$ETC:IPNODES.DAT
+         Creating file TCPIP$ETC:SERVICES.DAT
+
+           TCPIP uses timezone information provided by the OpenVMS Operating
+           System. No additonal timezone configuration is needed for TCPIP
+           when the operating system is configured correctly.
+
+           This section verifies the current OpenVMS timezone configuration.
+           A warning message (TCPIP-W-) indicates that corrective action should
+           be taken. TCPIP will appear to operate but components may display
+           either the wrong time or a time inconsistent with other applications.
+
+        %TCPIP-I-INFO, Logical name SYS$TIMEZONE_RULE found.
+        -TCPIP-I-INFO, Software for automatic Summer/Winter time (TDF) change
+        -TCPIP-I-INFO, is present.
+        -TCPIP-I-INFO, Further action to ensure TDF change is not necessary.
+
+        %TCPIP-I-NORMAL, timezone information verified
+
+        Press Return to continue ... <Return>
+
+          Compaq TCP/IP Services for OpenVMS Core Environment Configuration Menu
+
+          Configuration options:
+
+               1  -  Domain
+               2  -  Interfaces
+               3  -  Routing
+               4  -  BIND Resolver
+               5  -  Time Zone
+
+               A  -  Configure options 1 - 5
+              [E] -  Exit menu
+
+        Enter configuration option: <Return>
+
+        A-6 Sample New TCP/IP Services Installation and Configuration
+
+ 
+
+
+               Sample New TCP/IP Services Installation and Configuration
+                                  A.2 Sample New Configuration Procedure
+
+            Compaq TCP/IP Services for OpenVMS Configuration Menu
+
+            Configuration options:
+
+                 1  -  Core environment
+                 2  -  Client components
+                 3  -  Server components
+                 4  -  Optional components
+
+                 5  -  Shutdown Compaq TCP/IP Services for OpenVMS
+                 6  -  Startup Compaq TCP/IP Services for OpenVMS
+                 7  -  Run tests
+
+                 A  -  Configure options 1 - 4
+                [E] -  Exit configuration procedure
+
+        Enter configuration option: 2 <Return>
+
+            Compaq TCP/IP Services for OpenVMS Client Components Configuration 
+            Menu
+
+            Configuration options:
+
+                 1  -  FTP              Disabled Stopped
+                 2  -  NFS Client       Disabled Stopped
+                 3  -  REXEC and RSH    Disabled Stopped
+                 4  -  RLOGIN           Disabled Stopped
+                 5  -  SMTP             Disabled Stopped
+                 6  -  TELNET           Disabled Stopped
+                 7  -  DHCP             Disabled Stopped
+                 8  -  Telnetsym        Disabled Stopped
+
+                 A  -  Configure options 1 - 8
+                [E] -  Exit menu
+
+        Enter configuration option: 6 <Return>
+
+        TELNET Configuration
+
+        Service is not defined in the TCPIP$SERVICE database.
+        Service is not enabled.
+        Service is stopped.
+
+            TELNET configuration options:
+
+                 1 - Enable service on this node
+
+                [E] - Exit TELNET configuration
+
+        Enter configuration option: 1 <Return>
+        Creating TELNET Service Entry
+
+           Sample New TCP/IP Services Installation and Configuration A-7
+
+ 
+
+
+        Sample New TCP/IP Services Installation and Configuration
+        A.2 Sample New Configuration Procedure
+
+            Compaq TCP/IP Services for OpenVMS Client Components Configuration 
+            Menu
+
+            Configuration options:
+
+                 1  -  FTP              Disabled Stopped
+                 2  -  NFS Client       Disabled Stopped
+                 3  -  REXEC and RSH    Disabled Stopped
+                 4  -  RLOGIN           Disabled Stopped
+                 5  -  SMTP             Disabled Stopped
+                 6  -  TELNET           Enabled  Stopped
+                 7  -  DHCP             Disabled Stopped
+                 8  -  Telnetsym        Disabled Stopped
+
+                 A  -  Configure options 1 - 8
+                [E] -  Exit menu
+
+        Enter configuration option: <Return>
+
+            Compaq TCP/IP Services for OpenVMS Configuration Menu
+
+            Configuration options:
+
+                 1  -  Core environment
+                 2  -  Client components
+                 3  -  Server components
+                 4  -  Optional components
+
+                 5  -  Shutdown Compaq TCP/IP Services for OpenVMS
+                 6  -  Startup Compaq TCP/IP Services for OpenVMS
+                 7  -  Run tests
+
+                 A  -  Configure options 1 - 4
+                [E] -  Exit configuration procedure
+
+        Enter configuration option: 3 <Return>
+
+        Compaq TCP/IP Services for OpenVMS Server Components Configuration Menu
+
+          1 - BIND         Enabled  Started    12 - NTP         Enabled  Started
+          2 - BOOTP        Disabled Stopped    13 - PC-NFS      Enabled  Started
+          3 - DHCP         Enabled  Started    14 - POP         Enabled  Started
+          4 - FINGER       Enabled  Started    15 - PORTMAPPER  Enabled  Started
+          5 - FTP          Enabled  Started    16 - RLOGIN      Enabled  Started
+          6 - IMAP         Disabled Stopped    17 - RMT         Disabled Stopped
+          7 - LBROKER      Disabled Stopped    18 - SNMP        Enabled  Stopped
+          8 - LPR/LPD      Disabled Stopped    19 - TELNET      Enabled  Started
+          9 - METRIC       Enabled  Started    20 - TFTP        Enabled  Started
+         10 - NFS          Enabled  Started    21 - XDM         Enabled  Started
+         11 - LOCKD/STATD  Disabled Stopped
+
+        A-8 Sample New TCP/IP Services Installation and Configuration
+
+ 
+
+
+
+               Sample New TCP/IP Services Installation and Configuration
+                                  A.2 Sample New Configuration Procedure
+
+          A  -  Configure options 1 - 21
+         [E] -  Exit menu
+
+        Enter configuration option: 5 <Return>
+
+        FTP Configuration
+
+        Service is defined in the SYSUAF.
+        Service is not defined in the TCPIP$SERVICE database.
+        Service is not enabled.
+        Service is stopped.
+
+            FTP configuration options:
+
+                 1 - Enable service on this node
+
+                [E] - Exit FTP configuration
+
+        Enter configuration option: 1 <Return>
+        Creating FTP Service Entry
+
+        The FTP CLIENT is enabled.
+
+        * Do you want to configure FTP CLIENT [NO]: <Return>
+
+        Compaq TCP/IP Services for OpenVMS Server Components Configuration Menu
+
+          1 - BIND         Enabled  Started    12 - NTP         Enabled  Started
+          2 - BOOTP        Disabled Stopped    13 - PC-NFS      Enabled  Started
+          3 - DHCP         Enabled  Started    14 - POP         Enabled  Started
+          4 - FINGER       Enabled  Started    15 - PORTMAPPER  Enabled  Started
+          5 - FTP          Enabled  Started    16 - RLOGIN      Enabled  Started
+          6 - IMAP         Disabled Stopped    17 - RMT         Disabled Stopped
+          7 - LBROKER      Disabled Stopped    18 - SNMP        Enabled  Stopped
+          8 - LPR/LPD      Disabled Stopped    19 - TELNET      Enabled  Started
+          9 - METRIC       Enabled  Started    20 - TFTP        Enabled  Started
+         10 - NFS          Enabled  Started    21 - XDM         Enabled  Started
+         11 - LOCKD/STATD  Disabled Stopped
+
+          A  -  Configure options 1 - 21
+         [E] -  Exit menu
+
+         Enter configuration option: <Return>
+
+            Compaq TCP/IP Services for OpenVMS Configuration Menu
+
+            Configuration options:
+
+           Sample New TCP/IP Services Installation and Configuration A-9
+
+ 
+
+
+
+        Sample New TCP/IP Services Installation and Configuration
+        A.2 Sample New Configuration Procedure
+
+                 1  -  Core environment
+                 2  -  Client components
+                 3  -  Server components
+                 4  -  Optional components
+
+                 5  -  Shutdown Compaq TCP/IP Services for OpenVMS
+                 6  -  Startup Compaq TCP/IP Services for OpenVMS
+                 7  -  Run tests
+
+                 A  -  Configure options 1 - 4
+                [E] -  Exit configuration procedure
+
+        Enter configuration option: 6 <Return>
+
+        Begin Startup...
+
+        %TCPIP-I-INFO, TCP/IP Services startup beginning at 5-MAR-2002 13:22:27
+        .82
+        %TCPIP-I-INFO, creating UCX compatibility file SYS$COMMON:[SYSEXE]UCX$S
+        ERVICE.DAT
+        %TCPIP-I-NORMAL, timezone information verified
+        %RUN-S-PROC_ID, identification of created process is 00000058
+        %TCPIP-I-SETLOCAL, setting domain and/or local host
+        %TCPIP-I-STARTCOMM, starting communication
+        %TCPIP-I-SETPROTP, setting protocol parameters
+        %TCPIP-I-DEFINTE, defining interfaces
+        %TCPIP-I-STARTNAME, starting name service
+        %TCPIP-S-STARTDONE, TCP/IP Kernel startup completed
+        %TCPIP-I-PROXYLOADED, loaded 0 NFS proxy records
+        %TCPIP-I-LOADSERV, loading TCPIP server proxy information
+        %TCPIP-I-SERVLOADED, auxiliary server loaded with 0 proxy records
+        -TCPIP-I-SERVSKIP, skipped 0 communication proxy records
+        -TCPIP-I-SERVTOTAL, total of 0 proxy records read
+        %TCPIP-S-STARTDONE, TCPIP$PROXY startup completed
+        %TCPIP-S-STARTDONE, TCPIP$FTP startup completed
+        %TCPIP-S-STARTDONE, TCPIP$TELNET startup completed
+        %TCPIP-S-STARTDONE, TCP/IP Services startup completed at 5-MAR-2002 13:
+        23:00.49
+
+        Startup request completed.
+        Press Return to continue ...
+
+
+
+
+        A-10 Sample New TCP/IP Services Installation and Configuration
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     ________________________________________________________________
+
+                                                                Index
+
+
+     A                                    Configuring TCP/IP Services
+     ___________________________            (cont'd)
+     Advanced Server for OpenVMS           configuration files
+       configuring, 3-17                      creating new,  3-5
+     Anonymous FTP                         core environment,  3-8 to
+       configuring, 3-17                      3-12
+     Automatic configuration of            description of major
+        TCP/IP Services, 3-2                  tasks,  1-1
+
+                                           new configuration,  1-1
+     B__________________________           optional components,  3-17
+
+     BIND resolver                         postconfiguration tasks,
+       configuring, 3-11                      3-30
+     BIND server                           server components,  3-15,
+       configuring, 3-15                      3-17
+     BOOTP server                          server environment,  3-15
+       configuring, 3-15                      to 3-17
+
+                                           tasks, recommended
+     C__________________________              sequence,  3-1
+
+     CD-ROM distribution kit               TCPIP$CONFIG menus,  3-8
+       inspecting, 1-3                     TCPIP$CONFIG menus,
+     Client components                        description,  3-6
+       starting and stopping               TCPIP$CONFIG option
+         individually,  3-32                  commands,  3-21
+     Client environment                    time required,  1-2
+       configuring, 3-12                   verifying services,  3-26
+
+     Configuration worksheet,
+        1-9                               D__________________________
+
+     Configuring TCP/IP Services          DECnet over TCP/IP
+       automatic, 3-2                      configuring to use,  3-17
+       client components, 3-13            DECwindows
+       client environment, 3-12            components required for
+         to 3-14                              XDM,  3-16
+
+                                                              Index-1
+
+ 
+
+
+
+
+
+
+        DECwindows (cont'd)                 Interface
+         defining TCP transport,              configuring,  3-9
+            3-33                            IVP (Installation
+         requirements for product              Verification Procedure)
+            installation,  1-4                description,  3-26
+
+        DHCP client
+         configuring,  3-12                 K__________________________
+
+        DHCP server                         Kerberos
+         configuring,  3-15                   benefits,  3-18
+         configuring TCP/IP                   configuring and enabling,
+            Services,  3-2                       3-19
+        Disk                                  optional component
+         space requirements,  1-5                configuration, 3-17
+         system, backing up,  1-4           Kerberos authentication
+        Distribution kit                      configuring and enabling,
+         inspecting,  1-3                        3-19
+        Domain                                configuring to use,  3-17,
+         configuring,  3-9                       3-18
+        Dynamic routing
+         configuring,  3-10                 L
+                                            ___________________________
+        F__________________________         LBROKER server
+        FINGER server                         configuring,  3-15
+
+         configuring,  3-15                 License Product
+        FTP client                             Authorization Key
+
+         configuring,  3-13                   See PAK
+        FTP server                          LOCKD/STATD server
+         configuring,  3-15                   configuring,  3-15
+                                            LPR/LPD client
+        G__________________________           configuring,  3-12
+        Global pagelets and                 LPR/LPD server
+          sections                            configuring,  3-15
+
+         increasing,  1-6                   M
+         requirements,  1-6                 ___________________________
+                                            Memory
+        I__________________________           physical memory
+        Installing TCP/IP Services,              requirements, 1-5
+          2-1 to 2-6                        Menus
+         installed files,  2-6                TCPIP$CONFIG,  3-6
+         major tasks,  1-1                  METRIC server
+         new installation,  A-2               configuring,  3-15
+
+         time required,  1-2
+
+        Index-2
+
+ 
+
+
+
+
+
+
+                                            PC-NFS server
+        N__________________________           configuring,  3-15
+        NFS client                          POLYCENTER Software
+         configuring,  3-12                    Installation utility
+        NFS server                            for installing or
+         configuring,  3-15                      upgrading (OpenVMS
+        Nonpaged dynamic pool                    VAX or Alpha), 2-1 to
+         increasing,  1-6                        2-6
+        NTP server                          POP server
+         configuring,  3-15                   configuring,  3-15
+                                            PORTMAPPER server
+        O__________________________           configuring,  3-15
+        OpenVMS License Management          Postconfiguration tasks,
+          Facility (LMF)                       3-30
+         using to register PAK,             PWIP
+            1-4                               configuring,  3-18
+        OpenVMS operating system              requirement, interrupt
+         reboot,  2-5                            stack pages, 1-7
+
+         upgrading,  1-4                    R
+        Optional components,                ___________________________
+          configuring                       Reboot,  2-6
+         Advanced Server for                Release notes
+            OpenVMS,  3-18                    extracting into a .TXT
+         Anonymous FTP,  3-18                    file, 1-3
+         Kerberos authentication,             location after
+            3-18                                 installation, 2-6
+         PATHWORKS (Advanced                REXEC and RSH client
+            Server),  3-18                    configuring,  3-12
+         PWIP driver,  3-18                 RLOGIN client
+         SRI QIO interface,  3-18             configuring,  3-12
+                                            RLOGIN server
+        P__________________________           configuring,  3-15
+        PAK                                 RMT server
+         registering,  1-4                    configuring,  3-15
+
+        PATHWORKS                           S
+         configuring,  3-17                 ___________________________
+        PATHWORKS Advanced Server,          Server components
+          1-7                                 starting and stopping
+        PATHWORKS Internet Protocol              individually, 3-32
+
+          driver                            Shutting down TCP/IP
+         See PWIP                              Services
+
+                                              See Stopping TCP/IP
+                                                 Services
+
+                                                                 Index-3
+
+ 
+
+
+
+
+
+
+        SMTP client                         TCP/IP Services
+         configuring,  3-12                   configuration files
+        SNMP                                     (cont'd)
+         testing,  3-28                          converting from
+         verifying the                              previous
+            configuration,  3-28                    configuration, 3-4
+        SNMP server                           core environment
+         configuring,  3-15                      configuring,  3-8 to
+        SRI QIO                                     3-12
+         configuring to use,  3-17            installation,  2-1 to 2-6
+        Starting TCP/IP Services                 new,  A-1
+         after configuration,  3-24           preparing to configure,
+         automatically,  3-31                    1-9
+         by command,  3-31                    preparing to install,  1-2
+         manually,  3-32                         to 1-9
+         using TCPIP$CONFIG,  3-24            server components
+        Stopping TCP/IP Services                 configuring,  3-15 to
+         automatically,  3-31
+         by command,  3-31                          3-17
+         manually,  3-32                         starting and stopping
+         using TCPIP$CONFIG,  3-23                  individually, 3-32
+        System parameters                     starting after
+         checking and changing                   configuration, 3-22
+            before installing,  1-6           starting and stopping
+            to 1-7                               automatically, 3-31
+         setting the SPTREQ                   starting and stopping
+            parameter,  1-7                      manually, 3-32
+                                              starting using
+        T__________________________              TCPIP$CONFIG, 3-24
+        Tasks                                 stopping using
+         major, installing and                   TCPIP$CONFIG, 3-23
+            configuring,  1-1                 upgrading,  2-1 to 2-6
+        TCP/IP Services                       verifying,  3-26
+         and Anonymous FTP access,          TCPIP$CONFIG menus
+            3-18                              description,  3-6
+
+         client components                  TCPIP$CONFIG procedure
+
+            configuring,  3-12 to             See Configuring TCP/IP
+               3-14                              Services
+            starting and stopping           TELNET client
+               individually,  3-32            configuring,  3-12
+         configuration,  3-1 to             TELNET server
+            3-30                              configuring,  3-15
+
+            new,  A-2
+         configuration files
+
+        Index-4
+
+ 
+
+
+
+
+
+
+        TFTP server                           configuring to allow
+         configuring,  3-15                      Anonymous FTP access,
+        Time zone                                3-17
+         configuring,  3-11
+        Troubleshooting                     V__________________________
+         configuration procedure            Verifying the SNMP
+            problems,  3-28                    configuration, 3-28
+
+        U                                   Verifying the TCP/IP
+        ___________________________            Services configuration,
+        UIC codes                              3-26
+         assigning,  1-8
+        Upgrading TCP/IP Services,          X
+          2-1 to 2-6                        ___________________________
+        User access                         XDM server
+                                              and DECwindows
+                                                 requirements, 3-16
+                                              configuring,  3-16
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                 Index-5
